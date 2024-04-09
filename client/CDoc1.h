@@ -34,7 +34,7 @@ class CDoc1 final: public CDoc, private QFile
 public:
 	CDoc1() = default;
 	CDoc1(const QString &path);
-	CKey canDecrypt(const QSslCertificate &cert) const final;
+	std::shared_ptr<CKey> canDecrypt(const QSslCertificate &cert) const final;
 	bool decryptPayload(const QByteArray &key) final;
 	bool save(const QString &path) final;
 	QByteArray transportKey(const CKey &key) final;

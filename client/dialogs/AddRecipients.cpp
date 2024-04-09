@@ -109,7 +109,7 @@ void AddRecipients::addAllRecipientToRightPane()
 		if(rightList.contains(value->getKey()))
 			continue;
 		addRecipientToRightPane(value);
-		history.append(value->getKey().cert);
+		history.append(value->getKey()->cert);
 	}
 	ui->confirm->setDisabled(rightList.isEmpty());
 	historyCertData.addAndSave(history);
@@ -169,10 +169,17 @@ AddressItem * AddRecipients::addRecipientToLeftPane(const QSslCertificate& cert)
 	if(leftItem)
 		return leftItem;
 
-	leftItem = new AddressItem(CKey(cert), ui->leftPane);
+	leftItem = new AddressItem(CKey::fromCertificate(cert), ui->leftPane);
 	leftList.insert(cert, leftItem);
 	ui->leftPane->addWidget(leftItem);
-	bool contains = rightList.contains(cert);
+	bool contains = false;
+	std::shared_ptr<CKey> t = CKey::fromCertificate(cert);
+	for (std::shared_ptr<CKey> k: rightList) {
+		if (*k == *t) {
+			contains = true;
+			break;
+		}
+	}
 	leftItem->setDisabled(contains);
 	leftItem->showButton(contains ? AddressItem::Added : AddressItem::Add);
 
@@ -186,14 +193,15 @@ AddressItem * AddRecipients::addRecipientToLeftPane(const QSslCertificate& cert)
 	return leftItem;
 }
 
-bool AddRecipients::addRecipientToRightPane(const CKey &key, bool update)
+bool AddRecipients::addRecipientToRightPane(std::shared_ptr<CKey> key, bool update)
 {
-	if (rightList.contains(key))
-		return false;
+	for (std::shared_ptr<CKey> k: rightList) {
+		if (*k == *key) return false;
+	}
 
 	if(update)
 	{
-		if(auto expiryDate = key.cert.expiryDate(); expiryDate <= QDateTime::currentDateTime())
+		if(auto expiryDate = key->cert.expiryDate(); expiryDate <= QDateTime::currentDateTime())
 		{
 			if(Settings::CDOC2_DEFAULT && Settings::CDOC2_USE_KEYSERVER)
 			{
@@ -210,9 +218,9 @@ bool AddRecipients::addRecipientToRightPane(const CKey &key, bool update)
 		}
 		QSslConfiguration backup = QSslConfiguration::defaultConfiguration();
 		QSslConfiguration::setDefaultConfiguration(CheckConnection::sslConfiguration());
-		QList<QSslError> errors = QSslCertificate::verify({ key.cert });
+		QList<QSslError> errors = QSslCertificate::verify({ key->cert });
 		QSslConfiguration::setDefaultConfiguration(backup);
-		errors.removeAll(QSslError(QSslError::CertificateExpired, key.cert));
+		errors.removeAll(QSslError(QSslError::CertificateExpired, key->cert));
 		if(!errors.isEmpty())
 		{
 			auto *dlg = new WarningDialog(tr("Recipient’s certification chain contains certificates that are not trusted. Continue with encryption?"), this);
@@ -230,7 +238,7 @@ bool AddRecipients::addRecipientToRightPane(const CKey &key, bool update)
 	connect(rightItem, &AddressItem::remove, this, &AddRecipients::removeRecipientFromRightPane);
 	ui->rightPane->addWidget(rightItem);
 	ui->confirm->setDisabled(rightList.isEmpty());
-	historyCertData.addAndSave({key.cert});
+	historyCertData.addAndSave({key->cert});
 	return true;
 }
 
@@ -270,9 +278,9 @@ bool AddRecipients::isUpdated() const
 	return updated;
 }
 
-QList<CKey> AddRecipients::keys()
+QList<std::shared_ptr<CKey>> AddRecipients::keys()
 {
-	QList<CKey> recipients;
+	QList<std::shared_ptr<CKey>> recipients;
 	for(auto *item: ui->rightPane->items)
 	{
 		if(auto *address = qobject_cast<AddressItem *>(item))
@@ -284,7 +292,7 @@ QList<CKey> AddRecipients::keys()
 void AddRecipients::removeRecipientFromRightPane(Item *toRemove)
 {
 	auto *rightItem = qobject_cast<AddressItem*>(toRemove);
-	if(auto it = leftList.find(rightItem->getKey().cert); it != leftList.end())
+	if(auto it = leftList.find(rightItem->getKey()->cert); it != leftList.end())
 	{
 		it.value()->setDisabled(false);
 		it.value()->showButton(AddressItem::Add);

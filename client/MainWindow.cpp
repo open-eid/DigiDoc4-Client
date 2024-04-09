@@ -508,7 +508,7 @@ void MainWindow::convertToCDoc()
 
 	auto cardData = qApp->signer()->tokenauth();
 	if(!cardData.cert().isNull())
-		cryptoContainer->addKey(CKey(cardData.cert()));
+		cryptoContainer->addKey(CKey::fromCertificate(cardData.cert()));
 
 	resetCryptoDoc(cryptoContainer.release());
 	resetDigiDoc(nullptr, false);
@@ -1122,7 +1122,7 @@ void MainWindow::updateSelectorData(TokenData data)
 		showCardMenu(false);
 }
 
-void MainWindow::updateKeys(const QList<CKey> &keys)
+void MainWindow::updateKeys(const QList<std::shared_ptr<CKey>> &keys)
 {
 	if(!cryptoDoc)
 		return;

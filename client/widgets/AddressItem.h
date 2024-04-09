@@ -36,11 +36,11 @@ public:
 		Added,
 	};
 
-	explicit AddressItem(CKey k, QWidget *parent = {}, bool showIcon = false);
+	explicit AddressItem(std::shared_ptr<CKey> k, QWidget *parent = {}, bool showIcon = false);
 	~AddressItem() final;
 
-	const CKey& getKey() const;
-	void idChanged(const CKey &cert);
+	const std::shared_ptr<CKey> getKey() const;
+	void idChanged(std::shared_ptr<CKey> cert);
 	void idChanged(const SslCertificate &cert) final;
 	void initTabOrder(QWidget *item) final;
 	QWidget* lastTabWidget() final;

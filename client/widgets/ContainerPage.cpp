@@ -294,7 +294,7 @@ void ContainerPage::transition(CryptoDoc *container, const QSslCertificate &cert
 	if(!container)
 		return;
 	setHeader(container->fileName());
-	for(const CKey &key: container->keys())
+	for(std::shared_ptr<CKey> key: container->keys())
 		ui->rightPane->addWidget(new AddressItem(key, ui->rightPane, true));
 	ui->leftPane->setModel(container->documentModel());
 	updatePanes(container->state());
@@ -369,7 +369,7 @@ void ContainerPage::update(bool canDecrypt, CryptoDoc* container)
 
 	hasEmptyFile = false;
 	ui->rightPane->clear();
-	for(const CKey &key: container->keys())
+	for(std::shared_ptr<CKey> key: container->keys())
 		ui->rightPane->addWidget(new AddressItem(key, ui->rightPane, true));
 	if(container->state() & UnencryptedContainer)
 		showMainAction({ EncryptContainer });

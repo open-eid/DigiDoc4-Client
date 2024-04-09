@@ -32,12 +32,12 @@ class AddressItem::Private: public Ui::AddressItem
 {
 public:
 	QString code;
-	CKey key;
+	std::shared_ptr<CKey> key;
 	QString label;
 	bool yourself = false;
 };
 
-AddressItem::AddressItem(CKey k, QWidget *parent, bool showIcon)
+AddressItem::AddressItem(std::shared_ptr<CKey> k, QWidget *parent, bool showIcon)
 	: Item(parent)
 	, ui(new Private)
 {
@@ -60,12 +60,12 @@ AddressItem::AddressItem(CKey k, QWidget *parent, bool showIcon)
 	ui->add->setFont(Styles::font(Styles::Condensed, 12));
 	ui->added->setFont(ui->add->font());
 
-	ui->code = SslCertificate(ui->key.cert).personalCode().toHtmlEscaped();
-	ui->label = (!ui->key.cert.subjectInfo("GN").isEmpty() && !ui->key.cert.subjectInfo("SN").isEmpty() ?
-			ui->key.cert.subjectInfo("GN").join(' ') + " " + ui->key.cert.subjectInfo("SN").join(' ') :
-			ui->key.cert.subjectInfo("CN").join(' ')).toHtmlEscaped();
+	ui->code = SslCertificate(ui->key->cert).personalCode().toHtmlEscaped();
+	ui->label = (!ui->key->cert.subjectInfo("GN").isEmpty() && !ui->key->cert.subjectInfo("SN").isEmpty() ?
+			ui->key->cert.subjectInfo("GN").join(' ') + " " + ui->key->cert.subjectInfo("SN").join(' ') :
+			ui->key->cert.subjectInfo("CN").join(' ')).toHtmlEscaped();
 	if(ui->label.isEmpty())
-		ui->label = ui->key.recipient;
+		ui->label = ui->key->encrypted_kek;
 	setIdType();
 	showButton(AddressItem::Remove);
 }
@@ -90,26 +90,26 @@ bool AddressItem::eventFilter(QObject *o, QEvent *e)
 {
 	if((o == ui->name || o == ui->idType) && e->type() == QEvent::MouseButtonRelease)
 	{
-		(new KeyDialog(ui->key, this))->open();
+		(new KeyDialog(*ui->key, this))->open();
 		return true;
 	}
 	return Item::eventFilter(o, e);
 }
 
-const CKey& AddressItem::getKey() const
+const std::shared_ptr<CKey> AddressItem::getKey() const
 {
 	return ui->key;
 }
 
-void AddressItem::idChanged(const CKey &key)
+void AddressItem::idChanged(std::shared_ptr<CKey> key)
 {
-	ui->yourself = !key.key.isNull() && ui->key == key;
+	ui->yourself = !key->key.isNull() && *ui->key == *key;
 	setName();
 }
 
 void AddressItem::idChanged(const SslCertificate &cert)
 {
-	idChanged(CKey(cert));
+	idChanged(CKey::fromCertificate(cert));
 }
 
 void AddressItem::initTabOrder(QWidget *item)
@@ -128,7 +128,7 @@ QWidget* AddressItem::lastTabWidget()
 
 void AddressItem::mouseReleaseEvent(QMouseEvent * /*event*/)
 {
-	(new KeyDialog(ui->key, this))->open();
+	(new KeyDialog(*ui->key, this))->open();
 }
 
 void AddressItem::setName()
@@ -151,12 +151,12 @@ void AddressItem::stateChange(ContainerState state)
 
 void AddressItem::setIdType()
 {
-	ui->idType->setHidden(ui->key.cert.isNull());
-	if(ui->key.cert.isNull())
+	ui->idType->setHidden(ui->key->cert.isNull());
+	if(ui->key->cert.isNull())
 		return;
 
 	QString str;
-	SslCertificate cert(ui->key.cert);
+	SslCertificate cert(ui->key->cert);
 	SslCertificate::CertType type = cert.type();
 	if(type & SslCertificate::DigiIDType)
 		str = tr("digi-ID");

@@ -105,7 +105,7 @@ private:
 	void showPinBlockedWarning(const QSmartCardData& t);
 	void updateSelector();
 	void updateSelectorData(TokenData data);
-	void updateKeys(const QList<CKey> &keys);
+	void updateKeys(const QList<std::shared_ptr<CKey>> &keys);
 	void updateMyEID(const TokenData &t);
 	void updateMyEid(const QSmartCardData &data);
 	bool wrap(const QString& wrappedFile, bool enclose);

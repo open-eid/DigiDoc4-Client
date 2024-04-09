@@ -28,7 +28,7 @@ public:
 	explicit CDoc2() = default;
 	explicit CDoc2(const QString &path);
 
-	CKey canDecrypt(const QSslCertificate &cert) const final;
+	std::shared_ptr<CKey> canDecrypt(const QSslCertificate &cert) const final;
 	bool decryptPayload(const QByteArray &fmk) final;
 	QByteArray deriveFMK(const QByteArray &priv, const CKey &key);
 	bool isSupported();

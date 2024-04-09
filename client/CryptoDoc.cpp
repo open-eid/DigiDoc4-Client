@@ -246,6 +246,20 @@ void CKey::setCert(const QSslCertificate &c)
 	isRSA = k.algorithm() == QSsl::Rsa;
 }
 
+std::shared_ptr<CKey>
+CKey::newEmpty() {
+	return std::shared_ptr<CKey>(new CKey());
+}
+
+std::shared_ptr<CKey>
+CKey::fromKey(QByteArray _key, bool _isRSA) {
+	return std::shared_ptr<CKey>(new CKey(_key, _isRSA));
+}
+
+std::shared_ptr<CKey>
+CKey::fromCertificate(const QSslCertificate &cert) {
+	return std::shared_ptr<CKey>(new CKey(cert));
+}
 
 CryptoDoc::CryptoDoc( QObject *parent )
 	: QObject(parent)
@@ -257,14 +271,15 @@ CryptoDoc::CryptoDoc( QObject *parent )
 
 CryptoDoc::~CryptoDoc() { clear(); delete d; }
 
-bool CryptoDoc::addKey( const CKey &key )
+bool CryptoDoc::addKey(std::shared_ptr<CKey> key )
 {
 	if(d->isEncryptedWarning())
 		return false;
-	if(d->cdoc->keys.contains(key))
-	{
-		WarningDialog::show(tr("Key already exists"));
-		return false;
+	for (std::shared_ptr<CKey> k: d->cdoc->keys) {
+		if (*k == *key) {
+			WarningDialog::show(tr("Key already exists"));
+			return false;
+		}
 	}
 	d->cdoc->keys.append(key);
 	return true;
@@ -272,7 +287,8 @@ bool CryptoDoc::addKey( const CKey &key )
 
 bool CryptoDoc::canDecrypt(const QSslCertificate &cert)
 {
-	return !d->cdoc->canDecrypt(cert).key.isEmpty();
+	auto ckey = d->cdoc->canDecrypt(cert);
+	return !ckey->key.isEmpty();
 }
 
 void CryptoDoc::clear( const QString &file )
@@ -307,14 +323,14 @@ bool CryptoDoc::decrypt()
 	if(!d->isEncrypted)
 		return true;
 
-	CKey key = d->cdoc->canDecrypt(qApp->signer()->tokenauth().cert());
-	if(key.key.isEmpty())
+	auto ckey = d->cdoc->canDecrypt(qApp->signer()->tokenauth().cert());
+	if(ckey->key.isEmpty())
 	{
 		WarningDialog::show(tr("You do not have the key to decrypt this document"));
 		return false;
 	}
 
-	if(d->cdoc->version() == 2 && !key.transaction_id.isEmpty() && !Settings::CDOC2_NOTIFICATION.isSet())
+	if(d->cdoc->version() == 2 && !ckey->transaction_id.isEmpty() && !Settings::CDOC2_NOTIFICATION.isSet())
 	{
 		auto *dlg = new WarningDialog(tr("You must enter your PIN code twice in order to decrypt the CDOC2 container. "
 			"The first PIN entry is required for authentication to the key server referenced in the CDOC2 container. "
@@ -332,7 +348,7 @@ bool CryptoDoc::decrypt()
 		}
 	}
 
-	d->key = d->cdoc->transportKey(key);
+	d->key = d->cdoc->transportKey(*ckey);
 #ifndef NDEBUG
 	qDebug() << "Transport key" << d->key.toHex();
 #endif
@@ -380,7 +396,7 @@ bool CryptoDoc::encrypt( const QString &filename )
 
 QString CryptoDoc::fileName() const { return d->fileName; }
 
-QList<CKey> CryptoDoc::keys() const
+QList<std::shared_ptr<CKey>> CryptoDoc::keys() const
 {
 	return d->cdoc->keys;
 }

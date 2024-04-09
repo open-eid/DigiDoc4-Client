@@ -107,9 +107,9 @@ CDoc1::CDoc1(const QString &path)
 		if(xml.name() != QLatin1String("EncryptedKey"))
 			return;
 
-		CKey key;
-		key.id = xml.attributes().value(QLatin1String("Id")).toString();
-		key.recipient = xml.attributes().value(QLatin1String("Recipient")).toString();
+		std::shared_ptr<CKey> key = CKey::newEmpty();
+		key->id = xml.attributes().value(QLatin1String("Id")).toString();
+		key->recipient = xml.attributes().value(QLatin1String("Recipient")).toString();
 		while(!xml.atEnd())
 		{
 			xml.readNext();
@@ -119,49 +119,49 @@ CDoc1::CDoc1(const QString &path)
 				continue;
 			// EncryptedData/KeyInfo/KeyName
 			if(xml.name() == QLatin1String("KeyName"))
-				key.name = xml.readElementText();
+				key->name = xml.readElementText();
 			// EncryptedData/KeyInfo/EncryptedKey/EncryptionMethod
 			else if(xml.name() == QLatin1String("EncryptionMethod"))
-				key.method = xml.attributes().value(QLatin1String("Algorithm")).toString();
+				key->method = xml.attributes().value(QLatin1String("Algorithm")).toString();
 			// EncryptedData/KeyInfo/EncryptedKey/KeyInfo/AgreementMethod
 			else if(xml.name() == QLatin1String("AgreementMethod"))
-				key.agreement = xml.attributes().value(QLatin1String("Algorithm")).toString();
+				key->agreement = xml.attributes().value(QLatin1String("Algorithm")).toString();
 			// EncryptedData/KeyInfo/EncryptedKey/KeyInfo/AgreementMethod/KeyDerivationMethod
 			else if(xml.name() == QLatin1String("KeyDerivationMethod"))
-				key.derive = xml.attributes().value(QLatin1String("Algorithm")).toString();
+				key->derive = xml.attributes().value(QLatin1String("Algorithm")).toString();
 			// EncryptedData/KeyInfo/EncryptedKey/KeyInfo/AgreementMethod/KeyDerivationMethod/ConcatKDFParams
 			else if(xml.name() == QLatin1String("ConcatKDFParams"))
 			{
-				key.AlgorithmID = QByteArray::fromHex(xml.attributes().value(QLatin1String("AlgorithmID")).toUtf8());
-				if(key.AlgorithmID.front() == char(0x00)) key.AlgorithmID.remove(0, 1);
-				key.PartyUInfo = QByteArray::fromHex(xml.attributes().value(QLatin1String("PartyUInfo")).toUtf8());
-				if(key.PartyUInfo.front() == char(0x00)) key.PartyUInfo.remove(0, 1);
-				key.PartyVInfo = QByteArray::fromHex(xml.attributes().value(QLatin1String("PartyVInfo")).toUtf8());
-				if(key.PartyVInfo.front() == char(0x00)) key.PartyVInfo.remove(0, 1);
+				key->AlgorithmID = QByteArray::fromHex(xml.attributes().value(QLatin1String("AlgorithmID")).toUtf8());
+				if(key->AlgorithmID.front() == char(0x00)) key->AlgorithmID.remove(0, 1);
+				key->PartyUInfo = QByteArray::fromHex(xml.attributes().value(QLatin1String("PartyUInfo")).toUtf8());
+				if(key->PartyUInfo.front() == char(0x00)) key->PartyUInfo.remove(0, 1);
+				key->PartyVInfo = QByteArray::fromHex(xml.attributes().value(QLatin1String("PartyVInfo")).toUtf8());
+				if(key->PartyVInfo.front() == char(0x00)) key->PartyVInfo.remove(0, 1);
 			}
 			// EncryptedData/KeyInfo/EncryptedKey/KeyInfo/AgreementMethod/KeyDerivationMethod/ConcatKDFParams/DigestMethod
 			else if(xml.name() == QLatin1String("DigestMethod"))
-				key.concatDigest = xml.attributes().value(QLatin1String("Algorithm")).toString();
+				key->concatDigest = xml.attributes().value(QLatin1String("Algorithm")).toString();
 			// EncryptedData/KeyInfo/EncryptedKey/KeyInfo/AgreementMethod/OriginatorKeyInfo/KeyValue/ECKeyValue/PublicKey
 			else if(xml.name() == QLatin1String("PublicKey"))
 			{
 				xml.readNext();
-				key.publicKey = fromBase64(xml.text());
+				key->publicKey = fromBase64(xml.text());
 			}
 			// EncryptedData/KeyInfo/EncryptedKey/KeyInfo/X509Data/X509Certificate
 			else if(xml.name() == QLatin1String("X509Certificate"))
 			{
 				xml.readNext();
-				key.setCert(QSslCertificate(fromBase64(xml.text()), QSsl::Der));
+				key->setCert(QSslCertificate(fromBase64(xml.text()), QSsl::Der));
 			}
 			// EncryptedData/KeyInfo/EncryptedKey/KeyInfo/CipherData/CipherValue
 			else if(xml.name() == QLatin1String("CipherValue"))
 			{
 				xml.readNext();
-				key.cipher = fromBase64(xml.text());
+				key->cipher = fromBase64(xml.text());
 			}
 		}
-		keys.append(std::move(key));
+		keys.append(key);
 	});
 	if(!keys.isEmpty())
 		setLastError({});
@@ -267,22 +267,22 @@ bool CDoc1::decryptPayload(const QByteArray &key)
 	return !files.empty();
 }
 
-CKey CDoc1::canDecrypt(const QSslCertificate &cert) const
+std::shared_ptr<CKey> CDoc1::canDecrypt(const QSslCertificate &cert) const
 {
-	for(const CKey &k: qAsConst(keys))
+	for(std::shared_ptr<CKey> k: qAsConst(keys))
 	{
 		if(!ENC_MTH.contains(method) ||
-			k.cert != cert ||
-			k.cipher.isEmpty())
+			k->cert != cert ||
+			k->cipher.isEmpty())
 			continue;
 		if(cert.publicKey().algorithm() == QSsl::Rsa &&
-			k.method == RSA_MTH)
+			k->method == RSA_MTH)
 			return k;
 		if(cert.publicKey().algorithm() == QSsl::Ec &&
-			!k.publicKey.isEmpty() &&
-			KWAES_SIZE.contains(k.method) &&
-			k.derive == CONCATKDF_MTH &&
-			k.agreement == AGREEMENT_MTH)
+			!k->publicKey.isEmpty() &&
+			KWAES_SIZE.contains(k->method) &&
+			k->derive == CONCATKDF_MTH &&
+			k->agreement == AGREEMENT_MTH)
 			return k;
 	}
 	return {};
@@ -429,33 +429,33 @@ bool CDoc1::save(const QString &path)
 		});
 		w.writeNamespace(DS, QStringLiteral("ds"));
 		writeElement(w, DS, QStringLiteral("KeyInfo"), [&]{
-			for(const CKey &k: qAsConst(keys))
+			for(std::shared_ptr<CKey> k: qAsConst(keys))
 			{
 				writeElement(w, DENC, QStringLiteral("EncryptedKey"), [&]{
-					if(!k.id.isEmpty())
-						w.writeAttribute(QStringLiteral("Id"), k.id);
-					if(!k.recipient.isEmpty())
-						w.writeAttribute(QStringLiteral("Recipient"), k.recipient);
+					if(!k->id.isEmpty())
+						w.writeAttribute(QStringLiteral("Id"), k->id);
+					if(!k->recipient.isEmpty())
+						w.writeAttribute(QStringLiteral("Recipient"), k->recipient);
 					QByteArray cipher;
-					if(k.isRSA)
+					if(k->isRSA)
 					{
-						cipher = Crypto::encrypt(X509_get0_pubkey((const X509*)k.cert.handle()), RSA_PKCS1_PADDING, transportKey);
+						cipher = Crypto::encrypt(X509_get0_pubkey((const X509*)k->cert.handle()), RSA_PKCS1_PADDING, transportKey);
 						if(cipher.isEmpty())
 							return;
 						writeElement(w, DENC, QStringLiteral("EncryptionMethod"), {
 							{QStringLiteral("Algorithm"), RSA_MTH},
 						});
 						writeElement(w, DS, QStringLiteral("KeyInfo"), [&]{
-							if(!k.name.isEmpty())
-								w.writeTextElement(DS, QStringLiteral("KeyName"), k.name);
+							if(!k->name.isEmpty())
+								w.writeTextElement(DS, QStringLiteral("KeyName"), k->name);
 							writeElement(w, DS, QStringLiteral("X509Data"), [&]{
-								writeBase64Element(w, DS, QStringLiteral("X509Certificate"), k.cert.toDer());
+								writeBase64Element(w, DS, QStringLiteral("X509Certificate"), k->cert.toDer());
 							});
 						});
 					}
 					else
 					{
-						EVP_PKEY *peerPKey = X509_get0_pubkey((const X509*)k.cert.handle());
+						EVP_PKEY *peerPKey = X509_get0_pubkey((const X509*)k->cert.handle());
 						auto priv = Crypto::genECKey(peerPKey);
 						QByteArray sharedSecret = Crypto::derive(priv.get(), peerPKey);
 						if(sharedSecret.isEmpty())
@@ -472,7 +472,7 @@ bool CDoc1::save(const QString &path)
 						default: concatDigest = SHA512_MTH; break;
 						}
 						QByteArray encryptionKey = Crypto::concatKDF(SHA_MTH[concatDigest], KWAES_SIZE[encryptionMethod],
-							sharedSecret, props.value(QStringLiteral("DocumentFormat")).toUtf8() + SsDer + k.cert.toDer());
+							sharedSecret, props.value(QStringLiteral("DocumentFormat")).toUtf8() + SsDer + k->cert.toDer());
 #ifndef NDEBUG
 						qDebug() << "ENC Ss" << SsDer.toHex();
 						qDebug() << "ENC Ksr" << sharedSecret.toHex();
@@ -497,7 +497,7 @@ bool CDoc1::save(const QString &path)
 									writeElement(w, XENC11, QStringLiteral("ConcatKDFParams"), {
 										{QStringLiteral("AlgorithmID"), QStringLiteral("00") + props.value(QStringLiteral("DocumentFormat")).toUtf8().toHex()},
 										{QStringLiteral("PartyUInfo"), QStringLiteral("00") + SsDer.toHex()},
-										{QStringLiteral("PartyVInfo"), QStringLiteral("00") + k.cert.toDer().toHex()},
+										{QStringLiteral("PartyVInfo"), QStringLiteral("00") + k->cert.toDer().toHex()},
 									}, [&]{
 										writeElement(w, DS, QStringLiteral("DigestMethod"), {
 											{QStringLiteral("Algorithm"), concatDigest},
@@ -517,7 +517,7 @@ bool CDoc1::save(const QString &path)
 								});
 								writeElement(w, DENC, QStringLiteral("RecipientKeyInfo"), [&]{
 									writeElement(w, DS, QStringLiteral("X509Data"), [&]{
-										writeBase64Element(w, DS, QStringLiteral("X509Certificate"), k.cert.toDer());
+										writeBase64Element(w, DS, QStringLiteral("X509Certificate"), k->cert.toDer());
 									});
 								});
 							});

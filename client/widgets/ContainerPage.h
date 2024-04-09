@@ -58,7 +58,7 @@ signals:
 	void action(int code, const QString &info1 = {}, const QString &info2 = {});
 	void addFiles(const QStringList &files);
 	void fileRemoved(int row);
-	void keysSelected(const QList<CKey> &keys);
+	void keysSelected(const QList<std::shared_ptr<CKey>> &keys);
 	void moved(const QString &to);
 	void removed(int row);
 	void warning(const WarningText &warningText);
