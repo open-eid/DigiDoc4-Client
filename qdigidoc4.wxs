@@ -23,7 +23,6 @@
     <MediaTemplate EmbedCab="yes" CompressionLevel="high" />
     <Icon Id="qdigidoc4.ico" SourceFile="$(var.ico_path)" />
     <Property Id="ARPPRODUCTICON" Value="qdigidoc4.ico" />
-    <Property Id="APPLICATIONNAME" Value="qdigidoc4" />
     <Property Id="DESKTOP_SHORTCUT" Value="0" />
     <MajorUpgrade AllowSameVersionUpgrades="yes" Schedule="afterInstallInitialize" DowngradeErrorMessage=
         "A newer version of [ProductName] is already installed. If you are trying to downgrade, please uninstall the newer version first." />
@@ -33,17 +32,17 @@
     <!-- Desktop shortcut -->
     <StandardDirectory Id="DesktopFolder">
       <Component Id="DesktopShortcut4" Guid="7B821ED0-4838-4290-997C-AA4119F99DAD" Transitive="yes" Condition="DESKTOP_SHORTCUT = 1">
-        <Shortcut Id="ClientDesktopShortcut4" Name="DigiDoc4" Target="[!qdigidoc4.exe]" WorkingDirectory="APPLICATIONFOLDER" />
-        <RegistryValue Root="HKCU" Key="Software\[Manufacturer]\[APPLICATIONNAME]" Name="DesktopShortcut4" Value="1" Type="integer" KeyPath="yes" />
+        <Shortcut Id="ClientDesktopShortcut4" Name="DigiDoc4" Target="[!qdigidoc4.exe]" WorkingDirectory="INSTALLFOLDER" />
+        <RegistryValue Root="HKCU" Key="Software\[Manufacturer]\qdigidoc4" Name="DesktopShortcut4" Value="1" Type="integer" KeyPath="yes" />
       </Component>
     </StandardDirectory>
 
     <StandardDirectory Id="ProgramFiles6432Folder">
-      <Directory Id="APPLICATIONFOLDER" Name="DigiDoc4 Client" FileSource="$(var.libs_path)">
-        <Component Id="Application4" Guid="316B00EB-7519-476F-BCA5-7C8C1A0DF5AB" Transitive="yes">
+      <Directory Id="INSTALLFOLDER" Name="!(bind.Property.ProductName)" FileSource="$(var.libs_path)">
+        <Component Id="Application4">
           <File Id="qdigidoc4.exe" Source="$(var.client_path)" KeyPath="yes">
             <Shortcut Id="ClientStartMenu4" Advertise="yes" Name="DigiDoc4" Icon="qdigidoc4.ico"
-              Directory="ProgramMenuFolder" WorkingDirectory="APPLICATIONFOLDER" />
+              Directory="ProgramMenuFolder" WorkingDirectory="INSTALLFOLDER" />
           </File>
           <ProgId Id="qdigidoc4.adoc" Description="DigiDoc signed document" Icon="qdigidoc4.exe" IconIndex="1">
             <Extension Id="adoc" ContentType="application/vnd.lt.archyvai.adoc-2008">
@@ -96,87 +95,52 @@
             </Extension>
           </ProgId>
         </Component>
-        <Component Id="Base" Guid="6976e89e-e815-444a-9b1f-5ee63cfe230d">
-          <File Name="zlib$(var.qt_suffix)1.dll" />
-          <File Name="xerces-c_3_2$(var.qt_suffix).dll" />
-          <File Name="XalanMessages_1_12$(var.qt_suffix).dll" />
-          <File Name="Xalan-C_1_12$(var.qt_suffix).dll" />
-          <File Name="xsec_2_0$(var.qt_suffix).dll" />
-          <File Name="digidocpp$(var.qt_suffix).dll" />
-          <File Name="digidoc-tool.exe" />
-          <File Name="digidocpp.conf" />
+        <File Name="zlib$(var.qt_suffix)1.dll" />
+        <File Name="xerces-c_3_2$(var.qt_suffix).dll" />
+        <File Name="XalanMessages_1_12$(var.qt_suffix).dll" />
+        <File Name="Xalan-C_1_12$(var.qt_suffix).dll" />
+        <File Name="xsec_2_0$(var.qt_suffix).dll" />
+        <File Name="digidocpp$(var.qt_suffix).dll" />
+        <File Name="digidoc-tool.exe" />
+        <File Name="digidocpp.conf" />
 <?ifdef var.qt_path ?>
-          <File Source="$(var.VCPATH)\msvcp140$(var.qt_suffix).dll" />
-          <File Source="$(var.VCPATH)\vcruntime140$(var.qt_suffix).dll" />
-<?if $(sys.BUILDARCH) = x64 ?>
-          <File Source="$(var.VCPATH)\msvcp140_1$(var.qt_suffix).dll" />
-          <File Source="$(var.VCPATH)\msvcp140_2$(var.qt_suffix).dll" />
-          <File Source="$(var.VCPATH)\vcruntime140_1$(var.qt_suffix).dll" />
+        <File Name="libcrypto-3$(var.OpenSSLSuffix).dll" />
+        <File Name="libssl-3$(var.OpenSSLSuffix).dll" />
+        <File Source="$(var.VCPATH)\msvcp140$(var.qt_suffix).dll" />
+        <File Source="$(var.VCPATH)\msvcp140_1$(var.qt_suffix).dll" />
+        <File Source="$(var.VCPATH)\msvcp140_2$(var.qt_suffix).dll" />
+        <File Source="$(var.VCPATH)\vcruntime140$(var.qt_suffix).dll" />
+<?if $(sys.BUILDARCH) != x86 ?>
+        <File Source="$(var.VCPATH)\vcruntime140_1$(var.qt_suffix).dll" />
 <?endif?>
-          <File Name="libcrypto-3$(var.OpenSSLSuffix).dll" />
-          <File Name="libssl-3$(var.OpenSSLSuffix).dll" />
-          <File Source="$(var.qt_path)\Qt6Core$(var.qt_suffix).dll" />
-          <File Source="$(var.qt_path)\Qt6Gui$(var.qt_suffix).dll" />
-          <File Source="$(var.qt_path)\Qt6Network$(var.qt_suffix).dll" />
-          <File Source="$(var.qt_path)\Qt6PrintSupport$(var.qt_suffix).dll" />
-          <File Source="$(var.qt_path)\Qt6Svg$(var.qt_suffix).dll" />
-          <File Source="$(var.qt_path)\Qt6Widgets$(var.qt_suffix).dll" />
-          <File Source="$(var.qt_path)\D3DCompiler_47.dll" />
-          <File Source="$(var.qt_path)\opengl32sw.dll" />
-          <File Source="$(var.qt_path)\Qt6SvgWidgets$(var.qt_suffix).dll" />
+        <File Source="$(var.qt_path)\Qt6Core$(var.qt_suffix).dll" />
+        <File Source="$(var.qt_path)\Qt6Gui$(var.qt_suffix).dll" />
+        <File Source="$(var.qt_path)\Qt6Network$(var.qt_suffix).dll" />
+        <File Source="$(var.qt_path)\Qt6PrintSupport$(var.qt_suffix).dll" />
+        <File Source="$(var.qt_path)\Qt6Svg$(var.qt_suffix).dll" />
+        <File Source="$(var.qt_path)\Qt6Widgets$(var.qt_suffix).dll" />
+        <File Source="$(var.qt_path)\D3DCompiler_47.dll" />
+        <File Source="$(var.qt_path)\opengl32sw.dll" />
+        <File Source="$(var.qt_path)\Qt6SvgWidgets$(var.qt_suffix).dll" />
 <?endif?>
-        </Component>
-        <Directory Id="SchemaFolder" Name="schema" FileSource="$(var.libs_path)\schema">
-          <Component Id="Schemas" Guid="caf25ecf-70d0-46e4-9b82-21df3c2da235">
-            <File Name="xml.xsd" />
-            <File Name="conf.xsd" />
-            <File Name="OpenDocument_manifest.xsd" />
-            <File Name="OpenDocument_manifest_v1_2.xsd" />
-            <File Name="xmldsig-core-schema.xsd" />
-            <File Name="XAdES01903v132-201601.xsd" />
-            <File Name="XAdES01903v132-201601-relaxed.xsd" />
-            <File Name="XAdES01903v141-201601.xsd" />
-            <File Name="ts_119612v020201_201601xsd.xsd" />
-            <File Name="en_31916201v010101.xsd" />
-            <File Name="OpenDocument_dsig.xsd" />
-          </Component>
+        <Directory Name="schema">
+          <Files Include="$(var.libs_path)\schema\*.xsd" />
         </Directory>
 <?ifdef var.qt_path ?>
-        <Directory Id="platforms" Name="platforms">
-          <Component Id="qwindows.dll">
-            <File Source="$(var.qt_path)\..\plugins\platforms\qwindows$(var.qt_suffix).dll" />
-          </Component>
+        <Directory Name="platforms">
+          <File Source="$(var.qt_path)\..\plugins\platforms\qwindows$(var.qt_suffix).dll" />
         </Directory>
-        <Directory Id="tls" Name="tls">
-          <Component Id="qopensslbackend.dll">
-            <File Source="$(var.qt_path)\..\plugins\tls\qopensslbackend$(var.qt_suffix).dll" />
-          </Component>
+        <Directory Name="tls">
+          <File Source="$(var.qt_path)\..\plugins\tls\qopensslbackend$(var.qt_suffix).dll" />
         </Directory>
-        <Directory Id="styles" Name="styles">
-          <Component Id="qwindowsvistastyle.dll">
-            <File Source="$(var.qt_path)\..\plugins\styles\qwindowsvistastyle$(var.qt_suffix).dll" />
-          </Component>
+        <Directory Name="styles">
+          <File Source="$(var.qt_path)\..\plugins\styles\qwindowsvistastyle$(var.qt_suffix).dll" />
         </Directory>
-        <Directory Id="imageformats" Name="imageformats">
-          <Component Id="imageformats.dll">
-            <File Source="$(var.qt_path)\..\plugins\imageformats\qsvg$(var.qt_suffix).dll" />
-          </Component>
+        <Directory Name="imageformats">
+          <File Source="$(var.qt_path)\..\plugins\imageformats\qsvg$(var.qt_suffix).dll" />
         </Directory>
 <?endif?>
       </Directory>
     </StandardDirectory>
-
-    <Feature Id="InstallDigidoc" Level="1" Title="DigiDoc4 Client" Display="expand" ConfigurableDirectory="APPLICATIONFOLDER">
-      <ComponentRef Id="DesktopShortcut4" />
-      <ComponentRef Id="Application4" />
-      <ComponentRef Id="Base" />
-      <ComponentRef Id="Schemas" />
-<?ifdef var.qt_path ?>
-      <ComponentRef Id="qwindows.dll" />
-      <ComponentRef Id="qwindowsvistastyle.dll" />
-      <ComponentRef Id="qopensslbackend.dll" />
-      <ComponentRef Id="imageformats.dll" />
-<?endif?>
-    </Feature>
   </Package>
 </Wix>
