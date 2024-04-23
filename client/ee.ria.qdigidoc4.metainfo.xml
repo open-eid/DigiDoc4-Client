@@ -45,6 +45,7 @@
       <caption xml:lang="ee">DigiDoc4 ekraanipilt</caption>
     </screenshot>
   </screenshots>
+  <icon type="stock">qdigidoc4</icon>
   <provides>
     <binary>qdigidoc4</binary>
   </provides>
