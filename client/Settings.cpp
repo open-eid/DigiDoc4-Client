@@ -73,7 +73,9 @@ const QStringList Settings::SMARTID_COUNTRY_LIST {
 	QStringLiteral("LV"),
 };
 
-const Option<QByteArray> Settings::SIVA_CERT { QStringLiteral("SIVA-CERT") };
+const Option<QByteArray, QByteArray (*)()> Settings::SIVA_CERT { QStringLiteral("SIVA-CERT"), [] {
+	return Application::confValue(QLatin1String("SIVA-CERT")).toString().toLatin1();
+}};
 const Option<QString> Settings::SIVA_URL { QStringLiteral("SIVA-URL") };
 const Option<bool, bool (*)()> Settings::SIVA_URL_CUSTOM
 	{ QStringLiteral("SIVA-URL-CUSTOM"), [] { return Settings::SIVA_URL.isSet(); } };

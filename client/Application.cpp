@@ -161,7 +161,7 @@ public:
 	std::vector<digidoc::X509Cert> TSCerts() const final
 	{
 		std::vector<digidoc::X509Cert> list = toCerts(QLatin1String("CERT-BUNDLE"));
-		if(digidoc::X509Cert cert = toCert(fromBase64(QVariant(Settings::TSA_CERT))))
+		if(digidoc::X509Cert cert = toCert(fromBase64(Settings::TSA_CERT)))
 			list.push_back(cert);
 		list.emplace_back(); // Make sure that TSA cert pinning is enabled
 		return list;
@@ -169,12 +169,8 @@ public:
 
 	std::string TSUrl() const final
 	{
-		if(Settings::TSA_URL_CUSTOM)
-			return valueUserScope(Settings::TSA_URL, digidoc::XmlConfCurrent::TSUrl());
-		return valueSystemScope(Settings::TSA_URL.KEY, digidoc::XmlConfCurrent::TSUrl());
+		return valueUserScope(Settings::TSA_URL_CUSTOM, Settings::TSA_URL, digidoc::XmlConfCurrent::TSUrl());
 	}
-	void setTSUrl(const std::string &url) final
-	{ Settings::TSA_URL = url; }
 
 	std::string TSLUrl() const final
 	{ return valueSystemScope(QLatin1String("TSL-URL"), digidoc::XmlConfCurrent::TSLUrl()); }
@@ -186,7 +182,7 @@ public:
 
 	digidoc::X509Cert verifyServiceCert() const final
 	{
-		QByteArray cert = fromBase64(Application::confValue(Settings::SIVA_CERT.KEY));
+		QByteArray cert = fromBase64(Settings::SIVA_CERT);
 		return cert.isEmpty() ? digidoc::XmlConfCurrent::verifyServiceCert() : toCert(cert);
 	}
 	std::vector<digidoc::X509Cert> verifyServiceCerts() const final
@@ -199,12 +195,8 @@ public:
 	}
 	std::string verifyServiceUri() const final
 	{
-		if(Settings::SIVA_URL_CUSTOM)
-			return valueUserScope(Settings::SIVA_URL, digidoc::XmlConfCurrent::verifyServiceUri());
-		return valueSystemScope(Settings::SIVA_URL.KEY, digidoc::XmlConfCurrent::verifyServiceUri());
+		return valueUserScope(Settings::SIVA_URL_CUSTOM, Settings::SIVA_URL, digidoc::XmlConfCurrent::verifyServiceUri());
 	}
-	void setVerifyServiceUri(const std::string &url) final
-	{ Settings::SIVA_URL = url; }
 
 	bool TSLAllowExpired() const final
 	{
@@ -239,15 +231,15 @@ private:
 	template<class T>
 	static std::string valueSystemScope(const T &key, std::string &&defaultValue)
 	{
-		if(const auto &value = Application::confValue(key); value.isString())
+		if(auto value = Application::confValue(key); value.isString())
 			return value.toString().toStdString();
-		return std::forward<std::string>(defaultValue);
+		return std::move(defaultValue);
 	}
 
 	template<typename Option>
-	static std::string valueUserScope(const Option &option, std::string &&defaultValue)
+	static std::string valueUserScope(bool custom, const Option &option, std::string &&defaultValue)
 	{
-		return option.isSet() ? option : valueSystemScope(option.KEY, std::forward<std::string>(defaultValue));
+		return custom && option.isSet() ? option : valueSystemScope(option.KEY, std::move(defaultValue));
 	}
 
 	template<typename System, typename Config, class Option>
@@ -271,7 +263,10 @@ private:
 	template<class T>
 	static QByteArray fromBase64(const T &data)
 	{
-		return QByteArray::fromBase64(data.toString().toLatin1());
+		if constexpr (std::is_convertible_v<T, QByteArray>)
+			return QByteArray::fromBase64(data);
+		else
+			return QByteArray::fromBase64(data.toString().toLatin1());
 	}
 
 	static digidoc::X509Cert toCert(const QByteArray &der)
@@ -358,7 +353,7 @@ Application::Application( int &argc, char **argv )
 		connect(d->conf, &Configuration::finished, this, [lessThanVersion](bool changed, const QString &){
 			if(changed && lessThanVersion(QLatin1String("QDIGIDOC4-LATEST")))
 			{
-				auto dlg = new WarningDialog(tr(
+				auto *dlg = new WarningDialog(tr(
 					"An ID-software update has been found. To download the update, go to the "
 					"<a href=\"https://www.id.ee/en/article/install-id-software/\">id.ee</a> website. "
 					"macOS users can download the update from the "
@@ -849,8 +844,8 @@ void Application::setConfValue( ConfParameter parameter, const QVariant &value )
 		case ProxyPort: i->setProxyPort( v.isEmpty()? std::string() : v.constData() ); break;
 		case ProxyUser: i->setProxyUser( v.isEmpty()? std::string() : v.constData() ); break;
 		case ProxyPass: i->setProxyPass( v.isEmpty()? std::string() : v.constData() ); break;
-		case TSAUrl: i->setTSUrl(v.isEmpty()? std::string() : v.constData()); break;
-		case SiVaUrl: i->setVerifyServiceUri(v.isEmpty()? std::string() : v.constData()); break;
+		case TSAUrl:
+		case SiVaUrl:
 		case TSLCerts:
 		case TSLUrl:
 		case TSLCache: break;

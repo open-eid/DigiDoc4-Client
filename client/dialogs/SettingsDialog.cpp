@@ -430,7 +430,7 @@ void SettingsDialog::initFunctionality()
 		Settings::TSA_URL_CUSTOM = checked;
 	});
 	connect(ui->txtTimeStamp, &QLineEdit::textChanged, this, [this](const QString &url) {
-		Application::setConfValue(Application::TSAUrl, url);
+		Settings::TSA_URL = url;
 		if(url.isEmpty())
 		{
 			Settings::TSA_CERT.clear();
@@ -487,7 +487,7 @@ void SettingsDialog::initFunctionality()
 		Settings::SIVA_URL_CUSTOM = checked;
 	});
 	connect(ui->txtSiVa, &QLineEdit::textChanged, this, [this](const QString &url) {
-		Application::setConfValue(Application::SiVaUrl, url);
+		Settings::SIVA_URL = url;
 		if(url.isEmpty())
 		{
 			Settings::SIVA_CERT.clear();
