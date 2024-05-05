@@ -2,32 +2,16 @@ cmake_minimum_required(VERSION 3.16)
 project(EsteidShellExtension VERSION 3.13.9)
 
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules)
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 include(VersionInfo)
 
 if(CMAKE_SIZEOF_VOID_P EQUAL 8)
-    set(MIDL_TARGET "x64")
     set(PLATFORM "x64")
 else()
-    set(MIDL_TARGET "win32")
     set(PLATFORM "x86")
 endif()
 
-add_custom_command(
-    OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/EsteidShellExtension_i.h
-           ${CMAKE_CURRENT_BINARY_DIR}/EsteidShellExtension_i.c
-    COMMAND Midl.Exe ${CMAKE_CURRENT_SOURCE_DIR}/EsteidShellExtension.idl
-        /nologo /target NT100 /char signed /env ${MIDL_TARGET}
-        /tlb EsteidShellExtension.tlb
-        /h EsteidShellExtension_i.h
-        /iid EsteidShellExtension_i.c
-    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-    VERBATIM
-)
-
 add_library(${PROJECT_NAME} SHARED
-    ${CMAKE_CURRENT_BINARY_DIR}/EsteidShellExtension_i.c
     dllmain.cpp
     EsteidShellExtension.def
     EsteidShlExt.cpp
@@ -35,8 +19,7 @@ add_library(${PROJECT_NAME} SHARED
 )
 set_target_properties(${PROJECT_NAME} PROPERTIES
     MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>"
-    COMPILE_DEFINITIONS "_UNICODE;UNICODE;_WINDLL"
-    INCLUDE_DIRECTORIES ${CMAKE_CURRENT_BINARY_DIR}
+    COMPILE_DEFINITIONS "_UNICODE;UNICODE;_WINDLL;WIN32_LEAN_AND_MEAN"
     INTERPROCEDURAL_OPTIMIZATION YES
     COMPILE_OPTIONS "/guard:cf"
     LINK_OPTIONS "/guard:cf"
@@ -47,7 +30,6 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 add_custom_target(msishellext DEPENDS ${PROJECT_NAME}
     COMMAND wix.exe build -nologo
         -arch ${PLATFORM}
-        -d MSI_VERSION=${VERSION}
         -d ShellExt=$<TARGET_FILE:EsteidShellExtension>
         ${CMAKE_CURRENT_SOURCE_DIR}/EsteidShellExtension.wxs
         ${CMAKE_MODULE_PATH}/WelcomeDlg.wxs

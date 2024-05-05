@@ -15,7 +15,7 @@
 <Wix xmlns="http://wixtoolset.org/schemas/v4/wxs"
      xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
   <Package Name="EstEID Shell Extension" UpgradeCode="$(var.ShellUpgradeCode)"
-      Language="1033" Version="$(var.MSI_VERSION)" Codepage="1251" Manufacturer="RIA" InstallerVersion="500">
+      Language="1033" Version="!(bind.FileVersion.ShellExt)" Manufacturer="RIA" InstallerVersion="500">
     <MediaTemplate EmbedCab="yes" CompressionLevel="high" />
     <MajorUpgrade AllowSameVersionUpgrades="yes" Schedule="afterInstallInitialize" DowngradeErrorMessage=
        "A newer version of [ProductName] is already installed. If you are trying to downgrade, please uninstall the newer version first." />
@@ -29,7 +29,7 @@
           <!--RegistryValue Root='HKCR' Key='*\shell\[ProductName]' Type='string' Value='Sign with [ProductName]' />
           <RegistryValue Root='HKCR' Key='*\shell\[ProductName]' Name="Icon" Type='string' Value='"[INSTALLFOLDER]qdigidoc4.exe",0' />
           <RegistryValue Root='HKCR' Key='*\shell\[ProductName]\command' Type='string' Value='"[INSTALLFOLDER]qdigidoc4.exe" "%1"' /-->
-          <File Source="$(var.ShellExt)" />
+          <File Id="ShellExt" Source="$(var.ShellExt)" />
           <RegistryKey Root="HKCR" Key="CLSID\$(var.ShellExtId)\InprocServer32">
             <RegistryValue Type="string" Value="[INSTALLFOLDER]EsteidShellExtension.dll" />
             <RegistryValue Type="string" Name="ThreadingModel" Value="Apartment" />
