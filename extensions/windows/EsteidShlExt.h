@@ -1,41 +1,34 @@
 // EsteidShlExt.h : Declaration of the CEsteidShlExt
 
 #pragma once
-#include "resource.h"       // main symbols
 
-#include "EsteidShellExtension_i.h"
+#include "targetver.h"
 
-#if defined(_WIN32_WCE) && !defined(_CE_DCOM) && !defined(_CE_ALLOW_SINGLE_THREADED_OBJECTS_IN_MTA)
-#error "Single-threaded COM objects are not properly supported on Windows CE platform, such as the Windows Mobile platforms that do not include full DCOM support. Define _CE_ALLOW_SINGLE_THREADED_OBJECTS_IN_MTA to force ATL to support creating single-thread COM object's and allow use of it's single-threaded COM object implementations. The threading model in your rgs file was set to 'Free' as that is the only threading model supported in non DCOM Windows CE platforms."
+#include <unknwn.h>
+#include <winrt/base.h>
+#include <ShlObj.h>
+#include <string>
+#include <vector>
+
+class
+#ifdef _WIN64
+	__declspec(uuid("5606A547-759D-43DA-AEEB-D3BF1D1E816D"))
+#else
+	__declspec(uuid("310AAB39-76FE-401B-8A7F-0F578C5F6AB5"))
 #endif
-
-class ATL_NO_VTABLE CEsteidShlExt :
-	public CComObjectRootEx<CComSingleThreadModel>,
-	public CComCoClass<CEsteidShlExt, &CLSID_EsteidShlExt>,
-	public IShellExtInit,
-	public IContextMenu
+	CEsteidShlExt : public winrt::implements<CEsteidShlExt, IShellExtInit, IContextMenu>
 {
 public:
 	CEsteidShlExt();
 	~CEsteidShlExt();
 
-	DECLARE_NO_REGISTRY()
-	DECLARE_NOT_AGGREGATABLE(CEsteidShlExt)
-
-	BEGIN_COM_MAP(CEsteidShlExt)
-		COM_INTERFACE_ENTRY(IShellExtInit)
-		COM_INTERFACE_ENTRY(IContextMenu)
-	END_COM_MAP()
-
-	DECLARE_PROTECT_FINAL_CONSTRUCT()
-
 	// IShellExtInit
-	STDMETHODIMP Initialize(LPCITEMIDLIST, LPDATAOBJECT, HKEY) override;
+	STDMETHODIMP Initialize(LPCITEMIDLIST pidlFolder, LPDATAOBJECT pdtobj, HKEY hkeyProgID) final;
 
 	// IContextMenu
-	STDMETHODIMP QueryContextMenu(HMENU, UINT, UINT, UINT, UINT) override;
-	STDMETHODIMP InvokeCommand(LPCMINVOKECOMMANDINFO) override;
-	STDMETHODIMP GetCommandString(UINT_PTR, UINT, UINT*, LPSTR, UINT) override;
+	STDMETHODIMP QueryContextMenu(HMENU, UINT, UINT, UINT, UINT) final;
+	STDMETHODIMP InvokeCommand(LPCMINVOKECOMMANDINFO) final;
+	STDMETHODIMP GetCommandString(UINT_PTR, UINT, UINT *, LPSTR, UINT) final;
 
 private:
 	enum {
@@ -43,12 +36,9 @@ private:
 		MENU_ENCRYPT = 1,
 	};
 
-	using tstring = std::basic_string<TCHAR>;
-	bool WINAPI FindRegistryInstallPath(tstring* path);
+	bool WINAPI FindRegistryInstallPath(std::wstring &path);
 	STDMETHODIMP ExecuteDigidocclient(LPCMINVOKECOMMANDINFO pCmdInfo, bool crypto = false);
 
 	HBITMAP m_DigidocBmp = nullptr;
-	std::vector<tstring> m_Files;
+	std::vector<std::wstring> m_Files;
 };
-
-OBJECT_ENTRY_AUTO(__uuidof(EsteidShlExt), CEsteidShlExt)

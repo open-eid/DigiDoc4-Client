@@ -1,12 +1,18 @@
 ﻿// EsteidShlExt.cpp : Implementation of CEsteidShlExt
 // http://msdn.microsoft.com/en-us/library/bb757020.aspx
 
-#include "stdafx.h"
 #include "EsteidShlExt.h"
+#include "resource.h"
+
+#include <shellapi.h>
+#include <shlwapi.h>
+#include <uxtheme.h>
+
+extern HINSTANCE instanceHandle;
 
 typedef DWORD ARGB;
 
-bool HasAlpha(ARGB *pargb, SIZE &sizeImage, int cxRow)
+bool HasAlpha(ARGB *pargb, const SIZE &sizeImage, int cxRow)
 {
 	ULONG cxDelta = cxRow - sizeImage.cx;
 	for(ULONG y = sizeImage.cy; y; --y)
@@ -23,31 +29,16 @@ bool HasAlpha(ARGB *pargb, SIZE &sizeImage, int cxRow)
 
 BITMAPINFO InitBitmapInfo(const SIZE &sizeImage)
 {
-	BITMAPINFO pbmi = {};
-	pbmi.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
+	BITMAPINFO pbmi{{sizeof(BITMAPINFOHEADER)}};
 	pbmi.bmiHeader.biPlanes = 1;
 	pbmi.bmiHeader.biCompression = BI_RGB;
-
 	pbmi.bmiHeader.biWidth = sizeImage.cx;
 	pbmi.bmiHeader.biHeight = sizeImage.cy;
 	pbmi.bmiHeader.biBitCount = 32;
 	return pbmi;
 }
 
-HBITMAP Create32BitHBITMAP(HDC hdc, const SIZE &sizeImage, void **ppvBits)
-{
-	BITMAPINFO bmi = InitBitmapInfo(sizeImage);
-	if (HDC hdcUsed = hdc ? hdc : GetDC(nullptr))
-	{
-		HBITMAP phBmp = CreateDIBSection(hdcUsed, &bmi, DIB_RGB_COLORS, ppvBits, nullptr, 0);
-		if (hdc != hdcUsed)
-			ReleaseDC(NULL, hdcUsed);
-		return phBmp;
-	}
-	return nullptr;
-}
-
-HRESULT ConvertToPARGB32(HDC hdc, ARGB *pargb, HBITMAP hbmp, SIZE &sizeImage, int cxRow)
+HRESULT ConvertToPARGB32(HDC hdc, ARGB *pargb, HBITMAP hbmp, const SIZE &sizeImage, int cxRow)
 {
 	BITMAPINFO bmi = InitBitmapInfo(sizeImage);
 	HRESULT hr = E_OUTOFMEMORY;
@@ -77,7 +68,7 @@ HRESULT ConvertToPARGB32(HDC hdc, ARGB *pargb, HBITMAP hbmp, SIZE &sizeImage, in
 	return hr;
 }
 
-HRESULT ConvertBufferToPARGB32(HPAINTBUFFER hPaintBuffer, HDC hdc, HICON hicon, SIZE &sizeIcon)
+HRESULT ConvertBufferToPARGB32(HPAINTBUFFER hPaintBuffer, HDC hdc, HICON hicon, const SIZE &sizeIcon)
 {
 	RGBQUAD *prgbQuad;
 	int cxRow = 0;
@@ -102,18 +93,24 @@ HRESULT ConvertBufferToPARGB32(HPAINTBUFFER hPaintBuffer, HDC hdc, HICON hicon, 
 
 CEsteidShlExt::CEsteidShlExt()
 {
-	SIZE sizeIcon = { GetSystemMetrics(SM_CXSMICON), GetSystemMetrics(SM_CYSMICON) };
-	if(HICON hIcon = (HICON)LoadImage(_AtlBaseModule.GetModuleInstance(), MAKEINTRESOURCE(IDB_DIGIDOCICO), IMAGE_ICON, sizeIcon.cx, sizeIcon.cy, LR_DEFAULTCOLOR|LR_CREATEDIBSECTION))
+	const SIZE sizeIcon { GetSystemMetrics(SM_CXSMICON), GetSystemMetrics(SM_CYSMICON) };
+	if(HICON hIcon = (HICON)LoadImage(instanceHandle, MAKEINTRESOURCE(IDB_DIGIDOCICO), IMAGE_ICON, sizeIcon.cx, sizeIcon.cy, LR_DEFAULTCOLOR|LR_CREATEDIBSECTION))
 	{
-		if(HDC hdcDest = CreateCompatibleDC(nullptr)) {
-			if((m_DigidocBmp = Create32BitHBITMAP(hdcDest, sizeIcon, nullptr))) {
-				if(HBITMAP hbmpOld = (HBITMAP)SelectObject(hdcDest, m_DigidocBmp)) {
+		if(HDC hdcDest = CreateCompatibleDC(nullptr))
+		{
+			BITMAPINFO bmi = InitBitmapInfo(sizeIcon);
+			if((m_DigidocBmp = CreateDIBSection(hdcDest, &bmi, DIB_RGB_COLORS, nullptr, nullptr, 0)))
+			{
+				if(HBITMAP hbmpOld = (HBITMAP)SelectObject(hdcDest, m_DigidocBmp))
+				{
 					RECT rcIcon = { 0, 0, sizeIcon.cx, sizeIcon.cy };
 					BLENDFUNCTION bfAlpha = { AC_SRC_OVER, 0, 255, AC_SRC_ALPHA };
 					BP_PAINTPARAMS paintParams = { sizeof(paintParams), BPPF_ERASE, nullptr, &bfAlpha };
 					HDC hdcBuffer;
-					if(HPAINTBUFFER hPaintBuffer = BeginBufferedPaint(hdcDest, &rcIcon, BPBF_DIB, &paintParams, &hdcBuffer)) {
-						if(DrawIconEx(hdcBuffer, 0, 0, hIcon, sizeIcon.cx, sizeIcon.cy, 0, nullptr, DI_NORMAL)) {
+					if(HPAINTBUFFER hPaintBuffer = BeginBufferedPaint(hdcDest, &rcIcon, BPBF_DIB, &paintParams, &hdcBuffer))
+					{
+						if(DrawIconEx(hdcBuffer, 0, 0, hIcon, sizeIcon.cx, sizeIcon.cy, 0, nullptr, DI_NORMAL))
+						{
 							// If icon did not have an alpha channel, we need to convert buffer to PARGB.
 							ConvertBufferToPARGB32(hPaintBuffer, hdcDest, hIcon, sizeIcon);
 						}
@@ -136,13 +133,12 @@ CEsteidShlExt::~CEsteidShlExt()
 STDMETHODIMP CEsteidShlExt::Initialize(
 	LPCITEMIDLIST /* pidlFolder */, LPDATAOBJECT pDataObj, HKEY /* hProgID */)
 {
-	FORMATETC fmt = { CF_HDROP, nullptr, DVASPECT_CONTENT, -1, TYMED_HGLOBAL };
-	STGMEDIUM stg = { TYMED_HGLOBAL };
+	FORMATETC fmt{ CF_HDROP, nullptr, DVASPECT_CONTENT, -1, TYMED_HGLOBAL };
+	STGMEDIUM stg{ TYMED_HGLOBAL };
 	m_Files.clear();
 
 	// Look for CF_HDROP data in the data object.
 	if (FAILED(pDataObj->GetData(&fmt, &stg))) {
-		// Nope! Return an "invalid argument" error back to Explorer.
 		return E_INVALIDARG;
 	}
 
@@ -153,36 +149,21 @@ STDMETHODIMP CEsteidShlExt::Initialize(
 		return E_INVALIDARG;
 	}
 
-	// Sanity check - make sure there is at least one filename.
-	UINT nFiles = DragQueryFile(hDrop, 0xFFFFFFFF, nullptr, 0);
-	if (nFiles == 0) {
-		GlobalUnlock(stg.hGlobal);
-		ReleaseStgMedium(&stg);
-		return E_INVALIDARG;
-	}
-
-	for (UINT i = 0; i < nFiles; i++) {
+	for (UINT i = 0, nFiles = DragQueryFile(hDrop, 0xFFFFFFFF, nullptr, 0); i < nFiles; i++) {
 		// Get path length in chars
 		UINT len = DragQueryFile(hDrop, i, nullptr, 0);
 		if (len == 0 || len >= MAX_PATH)
 			continue;
 
 		// Get the name of the file
-		TCHAR szFile[MAX_PATH];
-		if (DragQueryFile(hDrop, i, szFile, len+1) == 0)
-			continue;
-
-		tstring str = tstring(szFile);
-		if (str.empty())
-			continue;
-
-		m_Files.push_back(str);
+		auto &szFile = m_Files.emplace_back(len, 0);
+		if (DragQueryFile(hDrop, i, szFile.data(), len + 1) != len)
+			m_Files.pop_back();
 	}
 
 	GlobalUnlock(stg.hGlobal);
 	ReleaseStgMedium(&stg);
 
-	// Don't show menu if no items were found
 	return m_Files.empty() ? E_INVALIDARG : S_OK;
 }
 
@@ -194,17 +175,17 @@ STDMETHODIMP CEsteidShlExt::QueryContextMenu(
 	if (uFlags & CMF_DEFAULTONLY)
 		return MAKE_HRESULT(SEVERITY_SUCCESS, FACILITY_NULL, 0);
 
-	PCTCH sign = _T("Sign digitally");
-	PCTCH encrypt = _T("Encrypt");
+	LPCWSTR sign = L"Sign digitally";
+	LPCWSTR encrypt = L"Encrypt";
 	switch (PRIMARYLANGID(GetUserDefaultUILanguage()))
 	{
 	case LANG_ESTONIAN:
-		sign = _T("Allkirjasta digitaalselt");
-		encrypt = _T("Krüpteeri");
+		sign = L"Allkirjasta digitaalselt";
+		encrypt = L"Krüpteeri";
 		break;
 	case LANG_RUSSIAN:
-		sign = _T("Подписать дигитально");
-		encrypt = _T("Зашифровать");
+		sign = L"Подписать дигитально";
+		encrypt = L"Зашифровать";
 		break;
 	default: break;
 	}
@@ -222,8 +203,6 @@ STDMETHODIMP CEsteidShlExt::QueryContextMenu(
 STDMETHODIMP CEsteidShlExt::GetCommandString(
 	UINT_PTR idCmd, UINT uFlags, UINT * /* pwReserved */, LPSTR pszName, UINT cchMax)
 {
-	USES_CONVERSION;
-
 	// Check idCmd, it must be 0 or 1 since we have only two menu items.
 	if (idCmd > MENU_ENCRYPT)
 		return E_INVALIDARG;
@@ -231,15 +210,19 @@ STDMETHODIMP CEsteidShlExt::GetCommandString(
 	// If Explorer is asking for a help string, copy our string into the
 	// supplied buffer.
 	if (uFlags & GCS_HELPTEXT) {
-		LPCTSTR szText = idCmd == MENU_SIGN ? _T("Allkirjasta valitud failid digitaalselt") : _T("Krüpteeri valitud failid");
-
 		if (uFlags & GCS_UNICODE) {
+			LPCWSTR szText = idCmd == MENU_SIGN
+								 ? L"Allkirjasta valitud failid digitaalselt"
+								 : L"Krüpteeri valitud failid";
 			// We need to cast pszName to a Unicode string, and then use the
 			// Unicode string copy API.
-			lstrcpynW(LPWSTR(pszName), T2CW(szText), int(cchMax));
+			lstrcpynW(LPWSTR(pszName), szText, int(cchMax));
 		} else {
+			LPCSTR szText = idCmd == MENU_SIGN
+								 ? "Allkirjasta valitud failid digitaalselt"
+								 : "Krüpteeri valitud failid";
 			// Use the ANSI string copy API to return the help string.
-			lstrcpynA(pszName, T2CA(szText), int(cchMax));
+			lstrcpynA(pszName, szText, int(cchMax));
 		}
 
 		return S_OK;
@@ -248,27 +231,19 @@ STDMETHODIMP CEsteidShlExt::GetCommandString(
 	return E_INVALIDARG;
 }
 
-bool WINAPI CEsteidShlExt::FindRegistryInstallPath(tstring* path)
+bool WINAPI CEsteidShlExt::FindRegistryInstallPath(std::wstring &path)
 {
-	static PCTCH IDCARD_REGKEY = _T("SOFTWARE\\RIA\\Open-EID");
-	static PCTCH IDCARD_REGVALUE = _T("Installed");
-	HKEY hkey;
-	DWORD dwSize = MAX_PATH * sizeof(TCHAR);
-	TCHAR szInstalldir[MAX_PATH];
-	LSTATUS dwRet = RegOpenKeyEx(HKEY_LOCAL_MACHINE, IDCARD_REGKEY, 0, KEY_QUERY_VALUE, &hkey);
-	if (dwRet == ERROR_SUCCESS) {
-		dwRet = RegQueryValueEx(hkey, IDCARD_REGVALUE, nullptr, nullptr, LPBYTE(szInstalldir), &dwSize);
-		RegCloseKey(hkey);
-		*path = tstring(szInstalldir);
-		return true;
-	}
-	dwRet = RegOpenKeyEx(HKEY_CURRENT_USER, IDCARD_REGKEY, 0, KEY_QUERY_VALUE, &hkey);
-	if (dwRet == ERROR_SUCCESS) {
-		RegCloseKey(hkey);
-		*path = tstring(szInstalldir);
-		return true;
-	}
-	return false;
+	HKEY hkey{};
+	if(RegOpenKeyEx(HKEY_LOCAL_MACHINE, L"SOFTWARE\\RIA\\Open-EID", 0, KEY_QUERY_VALUE, &hkey) != ERROR_SUCCESS)
+		return false;
+	DWORD dwSize = path.size() * sizeof(TCHAR);
+	bool result = true;
+	if(RegQueryValueEx(hkey, L"Installed", nullptr, nullptr, LPBYTE(path.data()), &dwSize) == ERROR_SUCCESS)
+		path.resize(dwSize / sizeof(TCHAR) - 1); // size includes any terminating null
+	else
+		result = false;
+	RegCloseKey(hkey);
+	return result;
 }
 
 STDMETHODIMP CEsteidShlExt::ExecuteDigidocclient(LPCMINVOKECOMMANDINFO /* pCmdInfo */, bool crypto)
@@ -276,31 +251,27 @@ STDMETHODIMP CEsteidShlExt::ExecuteDigidocclient(LPCMINVOKECOMMANDINFO /* pCmdIn
 	if (m_Files.empty())
 		return E_INVALIDARG;
 
-	tstring path(MAX_PATH, 0);
-	tstring command(MAX_PATH, 0);
+	std::wstring path(MAX_PATH, 0);
 
 	// Read the location of the installation from registry
-	if (!FindRegistryInstallPath(&path)) {
-		// .. and fall back to directory where shellext resides if not found from registry 
-		GetModuleFileName(_AtlBaseModule.m_hInst, &path[0], MAX_PATH);
-		path.resize(path.find_last_of(_T('\\')) + 1);
+	if (!FindRegistryInstallPath(path)) {
+		// .. and fall back to directory where shellext resides if not found from registry
+		GetModuleFileName(instanceHandle, path.data(), path.size());
+		path.resize(path.find_last_of(L'\\') + 1);
 	}
 
-	command = path + _T("qdigidoc4.exe");
-	if(PathFileExists(command.c_str()) != 1) {
-		// Replace "c:\Program Files\" with "c:\Program Files (x86)\"
-		command.insert(16, _T(" (x86)"));
-	}
-
+	path += L"qdigidoc4.exe";
 	// Construct command line arguments to pass to qdigidocclient.exe
-	tstring parameters = crypto ? _T("\"-crypto\" ") : _T("\"-sign\" ");
-	for (const tstring &file: m_Files)
-		parameters += _T("\"") + file + _T("\" ");
+	std::wstring parameters = crypto ? L"\"-crypto\" " : L"\"-sign\" ";
+	for (const auto &file: m_Files)
+		parameters += L"\"" + file + L"\" ";
 
-	SHELLEXECUTEINFO  seInfo = { sizeof(SHELLEXECUTEINFO) };
-	seInfo.lpFile       = command.c_str();
-	seInfo.lpParameters = parameters.c_str();
-	seInfo.nShow        = SW_SHOW;
+	SHELLEXECUTEINFO seInfo{
+		.cbSize = sizeof(SHELLEXECUTEINFO),
+		.lpFile = path.c_str(),
+		.lpParameters = parameters.c_str(),
+		.nShow = SW_SHOW
+	};
 	return ShellExecuteEx(&seInfo) ? S_OK : S_FALSE;
 }
 
