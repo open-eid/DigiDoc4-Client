@@ -53,16 +53,17 @@ set_target_properties(EsteidShellExtension PROPERTIES
 )
 
 add_custom_target(msishellext DEPENDS EsteidShellExtension
-    COMMAND "$ENV{WIX}bin\\candle.exe" -nologo -arch ${PLATFORM}
-        -dMSI_VERSION=${VERSION} -dShellExt=$<TARGET_FILE:EsteidShellExtension>
+    COMMAND wix.exe build -nologo
+        -arch ${PLATFORM}
+        -d MSI_VERSION=${VERSION}
+        -d ShellExt=$<TARGET_FILE:EsteidShellExtension>
         ${CMAKE_CURRENT_SOURCE_DIR}/EsteidShellExtension.wxs
-        ${CMAKE_MODULE_PATH}/WelcomeDlg2.wxs
-        ${CMAKE_MODULE_PATH}/WixUI_Minimal2.wxs
-    COMMAND "$ENV{WIX}bin\\light.exe" -nologo -ext WixUIExtension
-        EsteidShellExtension.wixobj WelcomeDlg2.wixobj WixUI_Minimal2.wixobj
-        -dWixUIDialogBmp=${CMAKE_MODULE_PATH}/dlgbmp.bmp
-        -dWixUIBannerBmp=${CMAKE_MODULE_PATH}/banner.bmp
-        -o "Digidoc_ShellExt-${VERSION}$ENV{VER_SUFFIX}.${PLATFORM}.msi"
+        ${CMAKE_MODULE_PATH}/WelcomeDlg.wxs
+        ${CMAKE_MODULE_PATH}/WixUI_Minimal.wxs
+        -ext WixToolset.UI.wixext
+        -bv WixUIDialogBmp=${CMAKE_MODULE_PATH}/dlgbmp.bmp
+        -bv WixUIBannerBmp=${CMAKE_MODULE_PATH}/banner.bmp
+        -o Digidoc_ShellExt-${VERSION}$ENV{VER_SUFFIX}.${PLATFORM}.msi
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
 )
 

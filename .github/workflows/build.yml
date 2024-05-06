@@ -62,10 +62,10 @@ jobs:
     steps:
     - name: Install dependencies
       if: matrix.container == '20.04'
-      run: apt update -qq && apt install --no-install-recommends -y git lsb-release fakeroot build-essential devscripts debhelper pkg-config cmake libldap2-dev gettext libpcsclite-dev libssl-dev libqt5svg5-dev qttools5-dev-tools qttools5-dev lintian libflatbuffers-dev zlib1g-dev
+      run: apt update -qq && apt install --no-install-recommends -y git lsb-release build-essential devscripts debhelper pkg-config cmake libldap2-dev gettext libpcsclite-dev libssl-dev libqt5svg5-dev qttools5-dev-tools qttools5-dev lintian libflatbuffers-dev zlib1g-dev
     - name: Install dependencies
       if: matrix.container != '20.04'
-      run: apt update -qq && apt install --no-install-recommends -y git lsb-release fakeroot build-essential devscripts debhelper pkg-config cmake libldap2-dev gettext libpcsclite-dev libssl-dev libgl-dev libqt6svg6-dev qt6-tools-dev qt6-tools-dev-tools qt6-l10n-tools lintian libflatbuffers-dev zlib1g-dev
+      run: apt update -qq && apt install --no-install-recommends -y git lsb-release build-essential devscripts debhelper pkg-config cmake libldap2-dev gettext libpcsclite-dev libssl-dev libgl-dev libqt6svg6-dev qt6-tools-dev qt6-tools-dev-tools qt6-l10n-tools lintian libflatbuffers-dev zlib1g-dev
     - name: Checkout
       uses: actions/checkout@v4
       with:
@@ -189,8 +189,8 @@ jobs:
         sdk: 10.0.19041.0
     - name: Install WiX
       run: |
-        dotnet tool install --global wix
-        wix extension -g add WixToolset.UI.wixext/4.0.4
+        dotnet tool install -g wix --version 5.0.0
+        wix extension -g add WixToolset.UI.wixext/5.0.0
     - name: Build
       run: |
         md build/client
