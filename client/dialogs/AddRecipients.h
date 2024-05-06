@@ -52,24 +52,15 @@ private:
 	AddressItem * addRecipientToLeftPane(const QSslCertificate& cert);
 	bool addRecipientToRightPane(const CKey &key, bool update = true);
 	void addRecipientToRightPane(AddressItem *leftItem, bool update = true);
-
 	void addSelectedCerts(const QList<HistoryCertData>& selectedCertData);
-
 	void enableRecipientFromCard();
-
-	void rememberCerts(const QList<HistoryCertData>& selectedCertData);
 	void removeRecipientFromRightPane(Item *toRemove);
-	void removeSelectedCerts(const QList<HistoryCertData>& removeCertData);
 
-	void saveHistory();
 	void search(const QString &term, bool select = false, const QString &type = {});
 	void showError(const QString &msg, const QString &details = {});
 	void showResult(const QList<QSslCertificate> &result, int resultCount, const QVariantMap &userData);
 
 	static QString defaultUrl(QLatin1String key, const QString &defaultValue);
-	static QString path();
-	static HistoryCertData toHistory(const SslCertificate &cert);
-	static QString toType(const SslCertificate &cert) ;
 
 	Ui::AddRecipients *ui;
 	QHash<QSslCertificate, AddressItem *> leftList;
@@ -77,5 +68,5 @@ private:
 	LdapSearch *ldap_person, *ldap_corp;
 	bool updated = false;
 
-	QList<HistoryCertData> historyCertData;
+	HistoryList historyCertData;
 };

@@ -31,16 +31,15 @@
 #include <QtCore/QScopedPointer>
 #include <QtCore/QTimer>
 #include <QtNetwork/QSslKey>
-#include <QTextCodec>
 
 Q_LOGGING_CATEGORY(CLog, "qdigidoc4.QSmartCard")
 
 QSmartCardData::QSmartCardData(): d(new QSmartCardDataPrivate) {}
 QSmartCardData::QSmartCardData(const QSmartCardData &other) = default;
-QSmartCardData::QSmartCardData(QSmartCardData &&other) Q_DECL_NOEXCEPT: d(std::move(other.d)) {}
+QSmartCardData::QSmartCardData(QSmartCardData &&other) Q_DECL_NOEXCEPT = default;
 QSmartCardData::~QSmartCardData() = default;
 QSmartCardData& QSmartCardData::operator =(const QSmartCardData &other) = default;
-QSmartCardData& QSmartCardData::operator =(QSmartCardData &&other) Q_DECL_NOEXCEPT { std::swap(d, other.d); return *this; }
+QSmartCardData& QSmartCardData::operator =(QSmartCardData &&other) Q_DECL_NOEXCEPT = default;
 bool QSmartCardData::operator ==(const QSmartCardData &other) const
 {
 	return d == other.d || (
@@ -65,7 +64,6 @@ QVariant QSmartCardData::data(PersonalDataType type) const
 SslCertificate QSmartCardData::authCert() const { return d->authCert; }
 SslCertificate QSmartCardData::signCert() const { return d->signCert; }
 quint8 QSmartCardData::retryCount(PinType type) const { return d->retry.value(type); }
-ulong QSmartCardData::usageCount(PinType type) const { return d->usage.value(type); }
 
 quint8 QSmartCardData::minPinLen(QSmartCardData::PinType type)
 {
@@ -113,181 +111,23 @@ QPCSCReader::Result Card::transfer(QPCSCReader *reader, bool verify, const QByte
 }
 
 
-
-const QByteArray EstEIDCard::ESTEIDDF = APDU("00A4010C 02 EEEE");
-const QByteArray EstEIDCard::PERSONALDATA = APDU("00A4020C 02 5044");
-const QTextCodec* EstEIDCard::codec = QTextCodec::codecForName("Windows-1252");
-
-QPCSCReader::Result EstEIDCard::change(QPCSCReader *reader, QSmartCardData::PinType type, const QString &pin_, const QString &newpin_) const
+QHash<quint8,QByteArray> Card::parseFCI(const QByteArray &data)
 {
-	QByteArray cmd = CHANGE;
-	QByteArray newpin = newpin_.toUtf8();
-	QByteArray pin = pin_.toUtf8();
-	cmd[3] = char(type == QSmartCardData::PukType ? 0 : type);
-	cmd[4] = char(pin.size() + newpin.size());
-	return transfer(reader, false, cmd + pin + newpin, type, quint8(pin.size()), true);
-}
-
-bool EstEIDCard::loadPerso(QPCSCReader *reader, QSmartCardDataPrivate *d) const
-{
-	static const QByteArray AUTHCERT = APDU("00A40200 02 AACE");
-	static const QByteArray SIGNCERT = APDU("00A40200 02 DDCE");
-
-	if(reader->transfer(MASTER_FILE) &&
-		reader->transfer(ESTEIDDF) &&
-		d->data.isEmpty() && reader->transfer(PERSONALDATA))
+	QHash<quint8,QByteArray> result;
+	for(QByteArray::const_iterator i = data.constBegin(); i != data.constEnd(); ++i)
 	{
-		QByteArray cmd = READRECORD;
-		for(char data = QSmartCardData::SurName; data != QSmartCardData::Comment4; ++data)
+		quint8 tag(*i), size(*++i);
+		result[tag] = QByteArray(i + 1, size);
+		switch(tag)
 		{
-			cmd[2] = data;
-			QPCSCReader::Result result = reader->transfer(cmd);
-			if(!result)
-				return false;
-			QString record = codec->toUnicode(result.data.trimmed());
-			if(record == QChar(0))
-				record.clear();
-			switch(data)
-			{
-			case QSmartCardData::BirthDate:
-			case QSmartCardData::IssueDate:
-				d->data[QSmartCardData::PersonalDataType(data)] = QDate::fromString(record, QStringLiteral("dd.MM.yyyy"));
-				break;
-			case QSmartCardData::Expiry:
-				d->data[QSmartCardData::PersonalDataType(data)] = QDateTime::fromString(record, QStringLiteral("dd.MM.yyyy")).addDays(1).addSecs(-1);
-				break;
-			default:
-				d->data[QSmartCardData::PersonalDataType(data)] = record;
-				break;
-			}
+		case 0x6F:
+		case 0x62:
+		case 0x64:
+		case 0xA1: continue;
+		default: i += size; break;
 		}
 	}
-	bool readFailed = false;
-	auto readCert = [&](const QByteArray &file) {
-		// Workaround some cards, add Le to end
-		QPCSCReader::Result data = reader->transfer(file + APDU(reader->protocol() == QPCSCReader::T1 ? "00" : ""));
-		if(!data)
-			return QSslCertificate();
-		QHash<quint8,QByteArray> fci = QSmartCard::parseFCI(data.data);
-		int size = fci.contains(0x85) ? quint8(fci[0x85][0]) << 8 | quint8(fci[0x85][1]) : 0x0600;
-		QByteArray cert;
-		QByteArray cmd = READBINARY;
-		while(cert.size() < size)
-		{
-			cmd[2] = char(cert.size() >> 8);
-			cmd[3] = char(cert.size());
-			data = reader->transfer(cmd);
-			if(!data)
-			{
-				readFailed = true;
-				return QSslCertificate();
-			}
-			cert += data.data;
-		}
-		return QSslCertificate(cert, QSsl::Der);
-	};
-	if(d->authCert.isNull())
-		d->authCert = readCert(AUTHCERT);
-	if(d->signCert.isNull())
-		d->signCert = readCert(SIGNCERT);
-	if(readFailed)
-		return false;
-	d->data[QSmartCardData::Email] = d->authCert.subjectAlternativeNames().values(QSsl::EmailEntry).value(0);
-	return updateCounters(reader, d);
-}
-
-QPCSCReader::Result EstEIDCard::replace(QPCSCReader *reader, QSmartCardData::PinType type, const QString &puk_, const QString &pin_) const
-{
-	QPCSCReader::Result result;
-	if(!reader->isPinPad()) //Verify PUK. Not for pinpad.
-	{
-		result = verify(reader, QSmartCardData::PukType, puk_);
-		if(!result)
-			return result;
-	}
-
-	// Replace PIN with PUK
-	QByteArray pin = pin_.toUtf8();
-	QByteArray puk = puk_.toUtf8();
-	QByteArray cmd = Card::REPLACE;
-	cmd[3] = type;
-	cmd[4] = char(puk.size() + pin.size());
-	return transfer(reader, false, cmd + puk + pin, type, 0, true);
-}
-
-QByteArray EstEIDCard::sign(QPCSCReader *reader, const QByteArray &dgst) const
-{
-	if(!reader->transfer(APDU("0022F301")) || // 00")) || // Compatibilty for some cards // SECENV1
-		!reader->transfer(APDU("002241B8 02 8300"))) //Key reference, 8303801100
-		return {};
-	QByteArray cmd = MUTUAL_AUTH;
-	cmd[4] = char(dgst.size());
-	cmd.insert(5, dgst);
-	return reader->transfer(cmd).data;
-}
-
-bool EstEIDCard::updateCounters(QPCSCReader *reader, QSmartCardDataPrivate *d) const
-{
-	static const QByteArray KEYPOINTER = APDU("00A4020C 02 0033");
-	static const QByteArray KEYUSAGE = APDU("00A4020C 02 0013");
-	static const QByteArray PINRETRY = APDU("00A4020C 02 0016");
-
-	if(!reader->transfer(MASTER_FILE) ||
-		!reader->transfer(PINRETRY))
-		return false;
-
-	QByteArray cmd = READRECORD;
-	for(int i = QSmartCardData::Pin1Type; i <= QSmartCardData::PukType; ++i)
-	{
-		cmd[2] = char(i);
-		QPCSCReader::Result data = reader->transfer(cmd);
-		if(!data)
-			return false;
-		d->retry[QSmartCardData::PinType(i)] = quint8(data.data[5]);
-	}
-
-	if(!reader->transfer(ESTEIDDF) ||
-		!reader->transfer(KEYPOINTER))
-		return false;
-
-	cmd[2] = 1;
-	QPCSCReader::Result data = reader->transfer(cmd);
-	if(!data)
-		return false;
-
-	/*
-	 * SIGN1 0100 1
-	 * SIGN2 0200 2
-	 * AUTH1 1100 3
-	 * AUTH2 1200 4
-	 */
-	quint8 signkey = data.data.at(0x13) == 0x01 && data.data.at(0x14) == 0x00 ? 1 : 2;
-	quint8 authkey = data.data.at(0x09) == 0x11 && data.data.at(0x0A) == 0x00 ? 3 : 4;
-
-	if(!reader->transfer(KEYUSAGE))
-		return false;
-
-	cmd[2] = char(authkey);
-	data = reader->transfer(cmd);
-	if(!data)
-		return false;
-	d->usage[QSmartCardData::Pin1Type] = 0xFFFFFF - ((quint8(data.data[12]) << 16) + (quint8(data.data[13]) << 8) + quint8(data.data[14]));
-
-	cmd[2] = char(signkey);
-	data = reader->transfer(cmd);
-	if(!data)
-		return false;
-	d->usage[QSmartCardData::Pin2Type] = 0xFFFFFF - ((quint8(data.data[12]) << 16) + (quint8(data.data[13]) << 8) + quint8(data.data[14]));
-	return true;
-}
-
-QPCSCReader::Result EstEIDCard::verify(QPCSCReader *reader, QSmartCardData::PinType type, const QString &pin_) const
-{
-	QByteArray pin = pin_.toUtf8();
-	QByteArray cmd = VERIFY;
-	cmd[3] = char(type == QSmartCardData::PukType ? 0 : type);
-	cmd[4] = char(pin.size());
-	return transfer(reader, true, cmd + pin, type, 0, true);
+	return result;
 }
 
 
@@ -332,7 +172,7 @@ bool IDEMIACard::loadPerso(QPCSCReader *reader, QSmartCardDataPrivate *d) const
 	if(d->data.isEmpty() && reader->transfer(APDU("00A4010C025000")))
 	{
 		QByteArray cmd = APDU("00A4010C025001");
-		for(char data = 1; data <= 15; ++data)
+		for(char data = 1; data <= 8; ++data)
 		{
 			cmd[6] = data;
 			if(!reader->transfer(cmd))
@@ -346,14 +186,12 @@ bool IDEMIACard::loadPerso(QPCSCReader *reader, QSmartCardDataPrivate *d) const
 			switch(data)
 			{
 			case 1: d->data[QSmartCardData::SurName] = record; break;
-			case 2: d->data[QSmartCardData::FirstName1] = record; break;
-			case 3: d->data[QSmartCardData::Sex] = record; break;
+			case 2: d->data[QSmartCardData::FirstName] = record; break;
 			case 4: d->data[QSmartCardData::Citizen] = record; break;
 			case 5:
 				if(!record.isEmpty())
 				{
 					QStringList data = record.split(' ');
-					d->data[QSmartCardData::BirthPlace] = data.value(3);
 					if(data.size() > 3)
 						data.removeLast();
 					d->data[QSmartCardData::BirthDate] = QDate::fromString(data.join('.'), QStringLiteral("dd.MM.yyyy"));
@@ -362,12 +200,6 @@ bool IDEMIACard::loadPerso(QPCSCReader *reader, QSmartCardDataPrivate *d) const
 			case 6: d->data[QSmartCardData::Id] = record; break;
 			case 7: d->data[QSmartCardData::DocumentId] = record; break;
 			case 8: d->data[QSmartCardData::Expiry] = QDateTime::fromString(record, QStringLiteral("dd MM yyyy")).addDays(1).addSecs(-1); break;
-			case 9: d->data[QSmartCardData::IssueDate] = record; break;
-			case 10: d->data[QSmartCardData::ResidencePermit] = record; break;
-			case 11: d->data[QSmartCardData::Comment1] = record; break;
-			case 12: d->data[QSmartCardData::Comment2] = record; break;
-			case 13: d->data[QSmartCardData::Comment3] = record; break;
-			case 14: d->data[QSmartCardData::Comment4] = record; break;
 			default: break;
 			}
 		}
@@ -383,7 +215,7 @@ bool IDEMIACard::loadPerso(QPCSCReader *reader, QSmartCardDataPrivate *d) const
 		QPCSCReader::Result data = reader->transfer(file2);
 		if(!data)
 			return QSslCertificate();
-		QHash<quint8,QByteArray> fci = QSmartCard::parseFCI(data.data);
+		QHash<quint8,QByteArray> fci = parseFCI(data.data);
 		int size = fci.contains(0x80) ? quint8(fci[0x80][0]) << 8 | quint8(fci[0x80][1]) : 0x0600;
 		QByteArray cert;
 		QByteArray cmd = READBINARY;
@@ -408,7 +240,6 @@ bool IDEMIACard::loadPerso(QPCSCReader *reader, QSmartCardDataPrivate *d) const
 
 	if(readFailed)
 		return false;
-	d->data[QSmartCardData::Email] = d->authCert.subjectAlternativeNames().values(QSsl::EmailEntry).value(0);
 	return updateCounters(reader, d);
 }
 
@@ -419,13 +250,21 @@ QByteArray IDEMIACard::pinTemplate(const QString &pin)
 	return result;
 }
 
-QPCSCReader::Result IDEMIACard::replace(QPCSCReader *reader, QSmartCardData::PinType type, const QString &puk, const QString &pin_) const
+QPCSCReader::Result IDEMIACard::replace(QPCSCReader *reader, QSmartCardData::PinType type, const QString &puk_, const QString &pin_) const
 {
-	QPCSCReader::Result result = verify(reader, QSmartCardData::PukType, puk);
+	auto result = reader->transfer(AID);
 	if(!result)
 		return result;
 
-	QByteArray cmd = Card::REPLACE;
+	QByteArray puk = pinTemplate(puk_);
+	QByteArray cmd = VERIFY;
+	cmd[3] = 2;
+	cmd[4] = char(puk.size());
+	result = transfer(reader, true, cmd + puk, type, 0, true);
+	if(!result)
+		return result;
+
+	cmd = Card::REPLACE;
 	cmd[2] = 2;
 	if(type == QSmartCardData::Pin2Type)
 	{
@@ -452,8 +291,6 @@ QByteArray IDEMIACard::sign(QPCSCReader *reader, const QByteArray &dgst) const
 
 bool IDEMIACard::updateCounters(QPCSCReader *reader, QSmartCardDataPrivate *d) const
 {
-	d->usage[QSmartCardData::Pin1Type] = 0;
-	d->usage[QSmartCardData::Pin2Type] = 0;
 	reader->transfer(AID);
 	if(auto data = reader->transfer(APDU("00CB3FFF 0A 4D087006BF810102A08000")))
 		d->retry[QSmartCardData::Pin1Type] = quint8(data.data[13]);
@@ -463,28 +300,6 @@ bool IDEMIACard::updateCounters(QPCSCReader *reader, QSmartCardDataPrivate *d) c
 	if(auto data = reader->transfer(APDU("00CB3FFF 0A 4D087006BF810502A08000")))
 		d->retry[QSmartCardData::Pin2Type] = quint8(data.data[13]);
 	return true;
-}
-
-QPCSCReader::Result IDEMIACard::verify(QPCSCReader *reader, QSmartCardData::PinType type, const QString &pin_) const
-{
-	QByteArray pin = pinTemplate(pin_);
-	QByteArray cmd = VERIFY;
-	switch (type) {
-	case QSmartCardData::Pin1Type:
-		reader->transfer(AID);
-		cmd[3] = 1;
-		break;
-	case QSmartCardData::PukType:
-		reader->transfer(AID);
-		cmd[3] = 2;
-		break;
-	case QSmartCardData::Pin2Type:
-		reader->transfer(AID_QSCD);
-		cmd[3] = char(0x85);
-		break;
-	}
-	cmd[4] = char(pin.size());
-	return transfer(reader, true, cmd + pin, type, 0, true);
 }
 
 
@@ -514,7 +329,7 @@ QSmartCard::ErrorType QSmartCard::Private::handlePinResult(QPCSCReader *reader, 
 	case 0x6402: return QSmartCard::DifferentError;
 	case 0x6403: return QSmartCard::LenghtError;
 	case 0x6983: return QSmartCard::BlockedError;
-	case 0x6985: return QSmartCard::OldNewPinSameError;
+	case 0x6985:
 	case 0x6A80: return QSmartCard::OldNewPinSameError;
 	default: return QSmartCard::UnknownError;
 	}
@@ -528,10 +343,7 @@ QSmartCard::QSmartCard(QObject *parent)
 {
 }
 
-QSmartCard::~QSmartCard()
-{
-	delete d;
-}
+QSmartCard::~QSmartCard() = default;
 
 QSmartCard::ErrorType QSmartCard::change(QSmartCardData::PinType type, QWidget* parent, const QString &newpin, const QString &pin, const QString &title, const QString &bodyText)
 {
@@ -558,25 +370,6 @@ QSmartCard::ErrorType QSmartCard::change(QSmartCardData::PinType type, QWidget* 
 }
 
 QSmartCardData QSmartCard::data() const { return d->t; }
-
-QHash<quint8,QByteArray> QSmartCard::parseFCI(const QByteArray &data)
-{
-	QHash<quint8,QByteArray> result;
-	for(QByteArray::const_iterator i = data.constBegin(); i != data.constEnd(); ++i)
-	{
-		quint8 tag(*i), size(*++i);
-		result[tag] = QByteArray(i + 1, size);
-		switch(tag)
-		{
-		case 0x6F:
-		case 0x62:
-		case 0x64:
-		case 0xA1: continue;
-		default: i += size; break;
-		}
-	}
-	return result;
-}
 
 QSmartCard::ErrorType QSmartCard::pinChange(QSmartCardData::PinType type, QWidget* parent)
 {
@@ -628,23 +421,16 @@ QSmartCard::ErrorType QSmartCard::pinUnblock(QSmartCardData::PinType type, bool 
 	return unblock(type, parent, newPin, puk, title, textBody);
 }
 
-void QSmartCard::reload()
+void QSmartCard::reloadCounters()
 {
-	QCardLocker locker;
-	QSharedDataPointer<QSmartCardDataPrivate> t = d->t.d;
-	t->data.clear();
-	t->authCert = QSslCertificate();
-	t->signCert = QSslCertificate();
-	d->t.d = t;
-	Q_EMIT dataChanged(d->t);
-	QTimer::singleShot(0, this, [this] { reloadCard(d->token); });
+	QMetaObject::invokeMethod(this, [this] { reloadCard(d->token, true); });
 }
 
-void QSmartCard::reloadCard(const TokenData &token)
+void QSmartCard::reloadCard(const TokenData &token, bool reloadCounters)
 {
 	qCDebug(CLog) << "Polling";
 	d->token = token;
-	if(!d->t.isNull() && !d->t.card().isEmpty() && d->t.card() == token.card())
+	if(!reloadCounters && !d->t.isNull() && !d->t.card().isEmpty() && d->t.card() == token.card())
 		return;
 
 	// check if selected card is same as signer
@@ -657,12 +443,12 @@ void QSmartCard::reloadCard(const TokenData &token)
 		QSharedDataPointer<QSmartCardDataPrivate> t = d->t.d;
 		t->card = token.card();
 		t->data.clear();
-		t->authCert = QSslCertificate();
-		t->signCert = QSslCertificate();
-		d->t.d = t;
+		t->authCert.clear();
+		t->signCert.clear();
+		d->t.d = std::move(t);
 	}
 
-	if(!d->t.isNull() || token.reader().isEmpty())
+	if(!reloadCounters && (!d->t.isNull() || token.reader().isEmpty()))
 		return;
 
 	QString reader = token.reader();
@@ -678,19 +464,21 @@ void QSmartCard::reloadCard(const TokenData &token)
 	if(!selectedReader->connect() || !selectedReader->beginTransaction())
 		return;
 
+	if(!IDEMIACard::isSupported(selectedReader->atr())) {
+		qDebug() << "Unsupported card";
+		return;
+	}
+
 	qCDebug(CLog) << "Read card" << token.card() << "info";
 	QSharedDataPointer<QSmartCardDataPrivate> t;
 	t = d->t.d;
 	t->reader = selectedReader->name();
 	t->pinpad = selectedReader->isPinPad();
-	delete d->card;
-	if(IDEMIACard::isSupported(selectedReader->atr()))
-		d->card = new IDEMIACard();
-	else
-		d->card = new EstEIDCard();
+	d->card.reset();
+	d->card = std::make_unique<IDEMIACard>();
 	if(d->card->loadPerso(selectedReader.data(), t))
 	{
-		d->t.d = t;
+		d->t.d = std::move(t);
 		emit dataChanged(d->t);
 	}
 	else

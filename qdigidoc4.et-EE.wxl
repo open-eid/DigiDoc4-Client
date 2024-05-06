@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<WixLocalization Culture="et-EE" xmlns="http://schemas.microsoft.com/wix/2006/localization">
-    <String Id="qdigidoc4Label" Overridable="yes">DigiDoc4 klient</String>
-    <String Id="idcardLabel" Overridable="yes">ID-kaart</String>
-</WixLocalization>

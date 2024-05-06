@@ -13,7 +13,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>${MACOSX_BUNDLE_BUNDLE_NAME}</string>
+	<string>DigiDoc4</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleSupportedPlatforms</key>
@@ -31,9 +31,7 @@
 	<key>NSHighResolutionCapable</key>
 	<true/>
 	<key>NSAppleEventsUsageDescription</key>
-	<string>DigiDoc4 Client can use AppleScript to talk with apps, for example to insert attachments to emails.</string>
-	<key>LSHasLocalizedDisplayName</key>
-	<true/>
+	<string>DigiDoc4 can use AppleScript to talk with apps, for example to insert attachments to emails.</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.productivity</string>
 	<key>LSMinimumSystemVersion</key>
@@ -169,7 +167,7 @@
 			<key>NSMenuItem</key>
 			<dict>
 				<key>default</key>
-				<string>Sign with DigiDoc4 Client</string>
+				<string>Sign with DigiDoc4</string>
 			</dict>
 			<key>NSMessage</key>
 			<string>signClient</string>
@@ -189,7 +187,7 @@
 			<key>NSMenuItem</key>
 			<dict>
 				<key>default</key>
-				<string>Encrypt with DigiDoc4 Client</string>
+				<string>Encrypt with DigiDoc4</string>
 			</dict>
 			<key>NSMessage</key>
 			<string>openCrypto</string>

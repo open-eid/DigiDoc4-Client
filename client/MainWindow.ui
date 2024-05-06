@@ -527,7 +527,7 @@ background-position: bottom; }</string>
          </property>
          <layout class="QVBoxLayout" name="signPageLayout">
           <item>
-           <spacer name="signPageLeftTopSpacer">
+           <spacer name="signPageTopSpacer">
             <property name="orientation">
              <enum>Qt::Vertical</enum>
             </property>
@@ -540,66 +540,63 @@ background-position: bottom; }</string>
            </spacer>
           </item>
           <item>
-           <widget class="QWidget" name="signIntroCentral" native="true">
+           <widget class="QLabel" name="signIntroLabel">
             <property name="minimumSize">
              <size>
               <width>0</width>
-              <height>128</height>
+              <height>45</height>
              </size>
             </property>
-            <layout class="QGridLayout" name="signIntroCentralLayout">
-             <item row="0" column="0" colspan="3">
-              <widget class="QLabel" name="signIntroLabel">
-               <property name="font">
-                <font>
-                 <pointsize>20</pointsize>
-                 <bold>true</bold>
-                </font>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">border: none;
+            <property name="font">
+             <font>
+              <pointsize>20</pointsize>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">border: none;
 color: #041E42;</string>
-               </property>
-               <property name="lineWidth">
-                <number>0</number>
-               </property>
-               <property name="text">
-                <string>Drag file here for signing ...</string>
-               </property>
-               <property name="alignment">
-                <set>Qt::AlignCenter</set>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="1">
-              <widget class="QPushButton" name="signIntroButton">
-               <property name="minimumSize">
-                <size>
-                 <width>240</width>
-                 <height>45</height>
-                </size>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>240</width>
-                 <height>45</height>
-                </size>
-               </property>
-               <property name="font">
-                <font>
-                 <pointsize>14</pointsize>
-                 <underline>false</underline>
-                 <strikeout>false</strikeout>
-                </font>
-               </property>
-               <property name="cursor">
-                <cursorShape>PointingHandCursor</cursorShape>
-               </property>
-               <property name="accessibleName">
-                <string comment="accessible">Load file from disk for signing or verifying</string>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">QPushButton {
+            </property>
+            <property name="lineWidth">
+             <number>0</number>
+            </property>
+            <property name="text">
+             <string>Drag file here for signing ...</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item alignment="Qt::AlignHCenter">
+           <widget class="QPushButton" name="signIntroButton">
+            <property name="minimumSize">
+             <size>
+              <width>240</width>
+              <height>45</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>240</width>
+              <height>45</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>14</pointsize>
+              <underline>false</underline>
+              <strikeout>false</strikeout>
+             </font>
+            </property>
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
+            <property name="accessibleName">
+             <string comment="accessible">Load file from disk for signing or verifying</string>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QPushButton {
 	padding: 6px 10px;
 	border-radius: 2px;
 	background-color: #006eb5;
@@ -616,17 +613,14 @@ QPushButton:hover:!pressed {
 QPushButton:disabled {
 	background-color: #BEDBED;
 }</string>
-               </property>
-               <property name="text">
-                <string>Open file for signing or verifying</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
+            </property>
+            <property name="text">
+             <string>Open file for signing or verifying</string>
+            </property>
            </widget>
           </item>
           <item>
-           <spacer name="signPageLeftBottomSpacer">
+           <spacer name="signPageBottomSpacer">
             <property name="orientation">
              <enum>Qt::Vertical</enum>
             </property>
@@ -664,43 +658,63 @@ background-position: bottom;
            </spacer>
           </item>
           <item>
-           <widget class="QWidget" name="cryptoIntroCentral" native="true">
+           <widget class="QLabel" name="cryptoIntroLabel">
             <property name="minimumSize">
              <size>
               <width>0</width>
-              <height>128</height>
+              <height>45</height>
              </size>
             </property>
-            <layout class="QGridLayout" name="cryptoIntroCentralLayout">
-             <item row="1" column="1">
-              <widget class="QPushButton" name="cryptoIntroButton">
-               <property name="minimumSize">
-                <size>
-                 <width>240</width>
-                 <height>45</height>
-                </size>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>240</width>
-                 <height>45</height>
-                </size>
-               </property>
-               <property name="font">
-                <font>
-                 <pointsize>14</pointsize>
-                 <underline>false</underline>
-                 <strikeout>false</strikeout>
-                </font>
-               </property>
-               <property name="cursor">
-                <cursorShape>PointingHandCursor</cursorShape>
-               </property>
-               <property name="accessibleName">
-                <string comment="accessible">Load file from disk for encryption or decryption</string>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">QPushButton {
+            <property name="font">
+             <font>
+              <pointsize>20</pointsize>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">border: none;
+color: #041E42;</string>
+            </property>
+            <property name="lineWidth">
+             <number>0</number>
+            </property>
+            <property name="text">
+             <string>Drag file here for encryption ...</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item alignment="Qt::AlignHCenter">
+           <widget class="QPushButton" name="cryptoIntroButton">
+            <property name="minimumSize">
+             <size>
+              <width>240</width>
+              <height>45</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>240</width>
+              <height>45</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>14</pointsize>
+              <underline>false</underline>
+              <strikeout>false</strikeout>
+             </font>
+            </property>
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
+            <property name="accessibleName">
+             <string comment="accessible">Load file from disk for encryption or decryption</string>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QPushButton {
 	padding: 6px 10px;
 	border-radius: 2px;
 	background-color: #006eb5;
@@ -717,36 +731,10 @@ QPushButton:hover:!pressed {
 QPushButton:disabled {
 	background-color: #BEDBED;
 }</string>
-               </property>
-               <property name="text">
-                <string>Open file for encryption or decryption</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="0" colspan="3">
-              <widget class="QLabel" name="cryptoIntroLabel">
-               <property name="font">
-                <font>
-                 <pointsize>20</pointsize>
-                 <bold>true</bold>
-                </font>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">border: none;
-color: #041E42;</string>
-               </property>
-               <property name="lineWidth">
-                <number>0</number>
-               </property>
-               <property name="text">
-                <string>Drag file here for encryption ...</string>
-               </property>
-               <property name="alignment">
-                <set>Qt::AlignCenter</set>
-               </property>
-              </widget>
-             </item>
-            </layout>
+            </property>
+            <property name="text">
+             <string>Open file for encryption or decryption</string>
+            </property>
            </widget>
           </item>
           <item>
@@ -838,12 +826,6 @@ background-position: bottom;
                <layout class="QVBoxLayout" name="noReaderInfoCentralLayout">
                 <item>
                  <widget class="QLabel" name="noReaderInfoText">
-                  <property name="maximumSize">
-                   <size>
-                    <width>16777215</width>
-                    <height>45</height>
-                   </size>
-                  </property>
                   <property name="font">
                    <font>
                     <pointsize>20</pointsize>
@@ -861,6 +843,12 @@ background-position: bottom;
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
+                  </property>
+                  <property name="wordWrap">
+                   <bool>true</bool>
+                  </property>
+                  <property name="openExternalLinks">
+                   <bool>true</bool>
                   </property>
                  </widget>
                 </item>
@@ -912,7 +900,7 @@ background-position: bottom;
   <customwidget>
    <class>QSvgWidget</class>
    <extends>QWidget</extends>
-   <header location="global">QSvgWidget.h</header>
+   <header location="global">QSvgWidget</header>
    <container>1</container>
   </customwidget>
   <customwidget>

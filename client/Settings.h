@@ -94,7 +94,7 @@ struct Settings
 		}
 		const QString KEY;
 		const D DEFAULT {};
-		std::function<void (const T &value)> f;
+		std::function<void (const T &value)> f {};
 	};
 
 	static const Option<bool> CDOC2_DEFAULT;
@@ -153,7 +153,6 @@ struct Settings
 	static const Option<QString> PROXY_USER;
 	static const Option<QString> PROXY_PASS;
 #ifdef Q_OS_MAC
-	static const Option<bool> PROXY_TUNNEL_SSL;
 	static const Option<QString> PLUGINS;
 	static const Option<bool> TSL_ONLINE_DIGEST;
 #endif

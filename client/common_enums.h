@@ -19,8 +19,7 @@
 
 #pragma once
 
-namespace ria {
-namespace qdigidoc4 {
+namespace ria::qdigidoc4 {
 
 enum ContainerState {
     Uninitialized           = (1 << 0),
@@ -37,8 +36,6 @@ enum ContainerState {
 };
 
 enum Actions {
-    AddressAdd,
-
     ContainerCancel,
     ContainerConvert,
     ContainerEncrypt,
@@ -53,15 +50,10 @@ enum Actions {
     DecryptContainer,
     DecryptToken,
 
-    FileAdd,
-    FileRemove,
-
     SignatureAdd,
     SignatureMobile,
     SignatureSmartID,
     SignatureToken,
-    SignatureRemove,
-    SignatureWarning,
     ClearSignatureWarning
 };
 
@@ -86,7 +78,6 @@ enum WarningType {
 
     CertExpiredWarning,
     CertExpiryWarning,
-    CertRevokedWarning,
     UnblockPin1Warning,
     UnblockPin2Warning,
 
@@ -100,5 +91,4 @@ enum WarningType {
     EmptyFileWarning,
 };
 
-}
 }

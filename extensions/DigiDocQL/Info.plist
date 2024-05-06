@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleDocumentTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>QLGenerator</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>ee.ria.bdoc</string>
+				<string>ee.ria.asics</string>
+			</array>
+		</dict>
+	</array>
+	<key>CFBundleExecutable</key>
+	<string>DigiDocQL</string>
+	<key>CFBundleIdentifier</key>
+	<string>ee.ria.DigiDocQL</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>DigiDocQL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>1</string>
+	<key>CFBundleVersion</key>
+	<string>1.0</string>
+	<key>CFPlugInDynamicRegisterFunction</key>
+	<string></string>
+	<key>CFPlugInDynamicRegistration</key>
+	<string>NO</string>
+	<key>CFPlugInFactories</key>
+	<dict>
+		<key>60213CB1-91F9-43A6-BEF5-9DE58A2B6C52</key>
+		<string>QuickLookGeneratorPluginFactory</string>
+	</dict>
+	<key>CFPlugInTypes</key>
+	<dict>
+		<key>5E2D9680-5022-40FA-B806-43349622E5B9</key>
+		<array>
+			<string>60213CB1-91F9-43A6-BEF5-9DE58A2B6C52</string>
+		</array>
+	</dict>
+	<key>CFPlugInUnloadFunction</key>
+	<string></string>
+	<key>NSHumanReadableCopyright</key>
+	<string>Copyright © 2012-2024 Estonian Information System's Authority. All rights reserved.</string>
+	<key>QLNeedsToBeRunInMainThread</key>
+	<false/>
+	<key>QLPreviewHeight</key>
+	<integer>600</integer>
+	<key>QLPreviewWidth</key>
+	<integer>500</integer>
+	<key>QLSupportsConcurrentRequests</key>
+	<false/>
+	<key>QLThumbnailMinimumSize</key>
+	<real>17</real>
+</dict>
+</plist>

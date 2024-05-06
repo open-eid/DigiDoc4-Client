@@ -177,7 +177,7 @@ void CDocumentModel::open(int row)
 	d->tempFiles.append(path);
 	FileDialog::setReadOnly(path);
 	if(FileDialog::isSignedPDF(path))
-		Application::showClient({ path }, false, false, true);
+		Application::showClient({ std::move(path) }, false, false, true);
 	else
 		QDesktopServices::openUrl(QUrl::fromLocalFile(path));
 }
@@ -226,14 +226,7 @@ CKey::CKey(const QSslCertificate &c)
 		QString sn = c.subjectInfo("SN");
 		if(!gn.isEmpty() || !sn.isEmpty())
 			cn = QStringLiteral("%1 %2 %3").arg(gn, sn, c.personalCode());
-		QString o = c.subjectInfo(QSslCertificate::Organization);
 
-		static const QRegularExpression rx(QStringLiteral("ESTEID \\((.*)\\)"));
-		QRegularExpressionMatch match = rx.match(o);
-		if(match.hasMatch())
-			return QStringLiteral("%1 %2").arg(cn, match.captured(1));
-		if(o == QLatin1String("ESTEID"))
-			return QStringLiteral("%1 %2").arg(cn, CryptoDoc::tr("ID-CARD"));
 		int certType = c.type();
 		if(certType & SslCertificate::EResidentSubType)
 			return QStringLiteral("%1 %2").arg(cn, CryptoDoc::tr("Digi-ID E-RESIDENT"));
@@ -390,15 +383,6 @@ QString CryptoDoc::fileName() const { return d->fileName; }
 QList<CKey> CryptoDoc::keys() const
 {
 	return d->cdoc->keys;
-}
-
-QList<QString> CryptoDoc::files()
-{
-	QList<QString> fileList;
-	fileList.reserve(d->cdoc->files.size());
-	for(const CDoc::File &f: qAsConst(d->cdoc->files))
-		fileList.append(f.name);
-	return fileList;
 }
 
 bool CryptoDoc::move(const QString &to)

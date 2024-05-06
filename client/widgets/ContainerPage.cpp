@@ -53,31 +53,35 @@ ContainerPage::ContainerPage(QWidget *parent)
 
 	ui->changeLocation->setIcons(QStringLiteral("/images/icon_Edit.svg"),
 		QStringLiteral("/images/icon_Edit_hover.svg"), QStringLiteral("/images/icon_Edit_pressed.svg"), 18, 18);
-	ui->changeLocation->init( LabelButton::BoxedDeepCeruleanWithCuriousBlue, tr("CHANGE"), Actions::ContainerLocation );
+	ui->changeLocation->init(LabelButton::BoxedDeepCeruleanWithCuriousBlue, tr("CHANGE"));
 	ui->containerFile->installEventFilter(this);
-	ui->cancel->init( LabelButton::BoxedMojo, tr("CANCEL"), Actions::ContainerCancel );
-	ui->convert->init( LabelButton::BoxedDeepCerulean, tr("ENCRYPT"), Actions::ContainerConvert );
-	ui->saveAs->init( LabelButton::BoxedDeepCerulean, tr("SAVE AS"), Actions::ContainerSaveAs );
-	ui->email->init( LabelButton::BoxedDeepCerulean, tr("SEND WITH E-MAIL"), Actions::ContainerEmail );
-	ui->summary->init( LabelButton::BoxedDeepCerulean, tr("PRINT SUMMARY"), Actions::ContainerSummary );
-	ui->save->init( LabelButton::BoxedDeepCerulean, tr("SAVE WITHOUT SIGNING"), Actions::ContainerSave );
+	ui->cancel->init(LabelButton::BoxedMojo, tr("CANCEL"));
+	ui->convert->init(LabelButton::BoxedDeepCerulean, tr("ENCRYPT"));
+	ui->saveAs->init(LabelButton::BoxedDeepCerulean, tr("SAVE AS"));
+	ui->email->init(LabelButton::BoxedDeepCerulean, tr("SEND WITH E-MAIL"));
+	ui->summary->init(LabelButton::BoxedDeepCerulean, tr("PRINT SUMMARY"));
+	ui->save->init(LabelButton::BoxedDeepCerulean, tr("SAVE WITHOUT SIGNING"));
 
 	mobileCode = Settings::MOBILEID_CODE;
 
+	auto connectCode = [this](QToolButton *btn, int code) {
+		connect(btn, &QToolButton::clicked, this, [this,code] { emit forward(code); });
+	};
+
 	connect(this, &ContainerPage::moved,this, &ContainerPage::setHeader);
-	connect(ui->changeLocation, &LabelButton::clicked, this, &ContainerPage::forward);
-	connect(ui->cancel, &LabelButton::clicked, this, &ContainerPage::forward);
-	connect(ui->save, &LabelButton::clicked, this, &ContainerPage::forward);
+	connectCode(ui->changeLocation, Actions::ContainerLocation);
+	connectCode(ui->cancel, Actions::ContainerCancel);
+	connectCode(ui->convert, Actions::ContainerConvert);
+	connectCode(ui->saveAs, Actions::ContainerSaveAs);
+	connectCode(ui->email, Actions::ContainerEmail);
+	connectCode(ui->summary, Actions::ContainerSummary);
+	connectCode(ui->save, Actions::ContainerSave);
 	connect(ui->leftPane, &FileList::addFiles, this, &ContainerPage::addFiles);
 	connect(ui->leftPane, &ItemList::removed, this, &ContainerPage::fileRemoved);
 	connect(ui->leftPane, &ItemList::addItem, this, &ContainerPage::forward);
 	connect(ui->rightPane, &ItemList::addItem, this, &ContainerPage::forward);
 	connect(ui->rightPane, &ItemList::addressSearch, this, &ContainerPage::addressSearch);
 	connect(ui->rightPane, &ItemList::removed, this, &ContainerPage::removed);
-	connect(ui->email, &LabelButton::clicked, this, &ContainerPage::forward);
-	connect(ui->summary, &LabelButton::clicked, this, &ContainerPage::forward);
-	connect(ui->saveAs, &LabelButton::clicked, this, &ContainerPage::forward);
-	connect(ui->convert, &LabelButton::clicked, this, &ContainerPage::forward);
 	connect(ui->containerFile, &QLabel::linkActivated, this, [this](const QString &link)
 		{ emit action(Actions::ContainerNavigate, link); });
 
@@ -186,7 +190,7 @@ void ContainerPage::forward(int code)
 
 		if(QString newCode = Settings::MOBILEID_CODE; newCode != mobileCode)
 		{
-			mobileCode = newCode;
+			mobileCode = std::move(newCode);
 			cardChanged(cardInReader);
 		}
 		break;
@@ -201,7 +205,7 @@ void ContainerPage::forward(int code)
 
 		if(QString newCode = Settings::SMARTID_CODE; newCode != mobileCode)
 		{
-			mobileCode = newCode;
+			mobileCode = std::move(newCode);
 			cardChanged(cardInReader);
 		}
 		break;

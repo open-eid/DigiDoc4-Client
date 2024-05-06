@@ -139,7 +139,7 @@ bool MainWindow::validateCardError(QSmartCardData::PinType type, QSmartCardData:
 
 void MainWindow::showNotification( const QString &msg, bool isSuccess )
 {
-	FadeInNotification* notification = new FadeInNotification(this,
+	auto *notification = new FadeInNotification(this,
 		isSuccess ? QStringLiteral("#ffffff") : QStringLiteral("#353739"),
 		isSuccess ? QStringLiteral("#498526") : QStringLiteral("#F8DDA7"), 110);
 	notification->start(msg, 750, 3000, 1200);
@@ -182,11 +182,6 @@ void MainWindow::updateCardWarnings(const QSmartCardData &data)
 		ui->myEid->invalidIcon(true);
 		warnings->showWarning(WarningText(WarningType::CertExpiredWarning));
 	}
-	else if(data.authCert().publicKey().algorithm() == QSsl::Rsa)
-	{
-		ui->myEid->invalidIcon(true);
-		warnings->showWarning(WarningText(WarningType::CertRevokedWarning));
-	}
 	else if(expiresIn <= 105 * DAY)
 	{
 		ui->myEid->warningIcon(true);
@@ -198,15 +193,23 @@ void MainWindow::updateMyEID(const TokenData &t)
 {
 	warnings->clearMyEIDWarnings();
 	SslCertificate cert(t.cert());
-	int type = cert.type();
-	ui->infoStack->setHidden(t.isNull() || type == SslCertificate::UnknownType);
-	ui->accordion->setHidden(t.isNull() || type == SslCertificate::UnknownType);
-	ui->noReaderInfo->setVisible(t.isNull() || type == SslCertificate::UnknownType);
+	auto type = cert.type();
+	ui->infoStack->setHidden(type == SslCertificate::UnknownType || type == SslCertificate::OldEstEidType);
+	ui->accordion->setHidden(type == SslCertificate::UnknownType || type == SslCertificate::OldEstEidType);
+	ui->noReaderInfo->setVisible(type == SslCertificate::UnknownType || type == SslCertificate::OldEstEidType);
 
-	if(!t.isNull())
+	auto setText = [this](const char *text) {
+		ui->noReaderInfoText->setProperty("currenttext", text);
+		ui->noReaderInfoText->setText(tr(text));
+	};
+	if(type == SslCertificate::OldEstEidType)
+		setText(QT_TR_NOOP(
+			"The ID-card in the card reader has expired and is no longer supported in the DigiDoc4 Client.<br />"
+			"You can apply for a new ID-card from the Estonian Police and Border Guard Board.<br />"
+			"<a href=\"https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult\">Additional information</a>."));
+	else if(!t.isNull())
 	{
-		ui->noReaderInfoText->setProperty("currenttext", "The card in the card reader is not an Estonian ID-card");
-		ui->noReaderInfoText->setText(tr("The card in the card reader is not an Estonian ID-card"));
+		setText(QT_TR_NOOP("The card in the card reader is not an Estonian ID-card"));
 		if(ui->cardInfo->token().card() != t.card())
 			ui->accordion->clear();
 		if(type & SslCertificate::TempelType)

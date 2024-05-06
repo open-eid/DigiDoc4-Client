@@ -28,7 +28,7 @@
 #include "PrintSheet.h"
 #include "QPCSC.h"
 #include "QSigner.h"
-#include "Settings.h"
+#include "SslCertificate.h"
 #include "Styles.h"
 #include "TokenData.h"
 #include "effects/ButtonHoverFilter.h"
@@ -43,7 +43,6 @@
 #include "dialogs/WarningDialog.h"
 #include "widgets/DropdownButton.h"
 #include "widgets/CardPopup.h"
-#include "widgets/VerifyCert.h"
 #include "widgets/WarningItem.h"
 #include "widgets/WarningList.h"
 
@@ -913,7 +912,7 @@ void MainWindow::sign(F &&sign)
 		if(!sign(city, state, zip, country, role))
 		{
 			resetDigiDoc(nullptr, false);
-			navigateToPage(SignDetails, {wrappedFile}, false);
+			navigateToPage(SignDetails, {std::move(wrappedFile)}, false);
 			return;
 		}
 	}
@@ -990,7 +989,7 @@ void MainWindow::removeSignature(int index)
 	if(!digiDoc)
 		return;
 	WaitDialogHolder waitDialog(this, tr("Removing signature"));
-	digiDoc->removeSignature(index);
+	digiDoc->removeSignature(unsigned(index));
 	save();
 	ui->signContainerPage->transition(digiDoc);
 	adjustDrops();
@@ -1030,15 +1029,17 @@ bool MainWindow::validateFiles(const QString &container, const QStringList &file
 	if(std::none_of(files.cbegin(), files.cend(),
 			[containerInfo] (const QString &file) { return containerInfo == QFileInfo(file); }))
 		return true;
-	WarningDialog::show(this, tr("Cannot add container to same container\n%1")
-		.arg(FileDialog::normalized(container)))->setCancelText(WarningDialog::Cancel);
+	auto *dlg = new WarningDialog(tr("Cannot add container to same container\n%1")
+		.arg(FileDialog::normalized(container)), this);
+	dlg->setCancelText(WarningDialog::Cancel);
+	dlg->open();
 	return false;
 }
 
 void MainWindow::warningClicked(const QString &link)
 {
 	if(link == QLatin1String("#unblock-PIN1"))
-		ui->accordion->changePin1Clicked (false, true);
+		ui->accordion->changePin1Clicked(false, true);
 	else if(link == QLatin1String("#unblock-PIN2"))
 		ui->accordion->changePin2Clicked (false, true);
 	else if(link.startsWith(QLatin1String("http")))
@@ -1143,7 +1144,7 @@ void MainWindow::containerSummary()
 		return;
 	}
 #endif
-	QPrintPreviewDialog *dialog = new QPrintPreviewDialog( this );
+	auto *dialog = new QPrintPreviewDialog( this );
 	dialog->printer()->setPageSize( QPageSize( QPageSize::A4 ) );
 	dialog->printer()->setPageOrientation( QPageLayout::Portrait );
 	dialog->setMinimumHeight( 700 );

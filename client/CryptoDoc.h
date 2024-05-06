@@ -33,7 +33,7 @@ class CKey
 {
 public:
 	CKey() = default;
-	CKey(const QByteArray &_key, bool _isRSA): key(_key), isRSA(_isRSA) {}
+	CKey(QByteArray _key, bool _isRSA): key(std::move(_key)), isRSA(_isRSA) {}
 	CKey(const QSslCertificate &cert);
 	bool operator==(const CKey &other) const { return other.key == key; }
 
@@ -90,7 +90,6 @@ public:
 	DocumentModel* documentModel() const;
 	bool encrypt(const QString &filename = {});
 	QString fileName() const;
-	QList<QString> files();
 	QList<CKey> keys() const;
 	bool move(const QString &to);
 	bool open( const QString &file );
@@ -114,12 +113,10 @@ public:
 	QString data(int row) const final;
 	quint64 fileSize(int row) const final;
 	QString mime(int row) const final;
+	void open(int row) final;
 	bool removeRow(int row) final;
 	int rowCount() const final;
 	QString save(int row, const QString &path) const final;
-
-public slots:
-	void open(int row) final;
 
 private:
 	CDocumentModel(CryptoDoc::Private *doc);

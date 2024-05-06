@@ -41,6 +41,7 @@ class MacMenuBar {};
 #include "effects/Overlay.h"
 
 #include <common/Configuration.h>
+#include <optional>
 
 #include <digidocpp/Container.h>
 #include <digidocpp/XmlConf.h>
@@ -144,8 +145,6 @@ public:
 	}
 
 #ifdef Q_OS_MAC
-	bool proxyTunnelSSL() const final
-	{ return Settings::PROXY_TUNNEL_SSL.value(digidoc::XmlConfCurrent::proxyTunnelSSL()); }
 	std::string TSLCache() const final
 	{ return QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation).toStdString(); }
 
@@ -157,8 +156,6 @@ public:
 	{ Settings::PROXY_USER = user; }
 	void setProxyPass( const std::string &pass ) final
 	{ Settings::PROXY_PASS = pass; }
-	void setProxyTunnelSSL( bool enable ) final
-	{ Settings::PROXY_TUNNEL_SSL.setValue(enable, digidoc::XmlConfCurrent::proxyTunnelSSL()); }
 #endif
 
 	std::vector<digidoc::X509Cert> TSCerts() const final
@@ -184,7 +181,7 @@ public:
 	std::vector<digidoc::X509Cert> TSLCerts() const final
 	{
 		std::vector<digidoc::X509Cert> tslcerts = toCerts(QLatin1String("TSL-CERTS"));
-		return tslcerts.empty() ? digidoc::XmlConfCurrent::TSLCerts() : tslcerts;
+		return tslcerts.empty() ? digidoc::XmlConfCurrent::TSLCerts() : std::move(tslcerts);
 	}
 
 	digidoc::X509Cert verifyServiceCert() const final
@@ -334,7 +331,7 @@ Application::Application( int &argc, char **argv )
 
 #ifdef CONFIG_URL
 	d->conf = new Configuration(this);
-	QTimer::singleShot(0, this, [this] {
+	QMetaObject::invokeMethod(this, [this] {
 		auto lessThanVersion = [](QLatin1String key) {
 			return QVersionNumber::fromString(applicationVersion()) <
 				QVersionNumber::fromString(confValue(key).toString());
@@ -456,12 +453,12 @@ Application::Application( int &argc, char **argv )
 		return;
 	}
 
-	QTimer::singleShot(0, this, [this] {
+	QMetaObject::invokeMethod(this, [this] {
 #ifdef Q_OS_MAC
 		if(!Settings::PLUGINS.isSet())
 		{
-			auto *dlg = WarningDialog::show(tr(
-				"In order to authenticate and sign in e-services with an ID-card you need to install the web browser components."));
+			auto *dlg = new WarningDialog(tr(
+				"In order to authenticate and sign in e-services with an ID-card you need to install the web browser components."), mainWindow());
 			dlg->setCancelText(tr("Ignore forever").toUpper());
 			dlg->addButton(tr("Remind later").toUpper(), QMessageBox::Ignore);
 			dlg->addButton(tr("Install").toUpper(), QMessageBox::Open);
@@ -473,6 +470,7 @@ Application::Application( int &argc, char **argv )
 				default: Settings::PLUGINS = QStringLiteral("ignore");
 				}
 			});
+			dlg->open();
 		}
 #endif
 		if(Settings::SHOW_INTRO)
@@ -485,7 +483,7 @@ Application::Application( int &argc, char **argv )
 	});
 
 	if( !args.isEmpty() || topLevelWindows().isEmpty() )
-		parseArgs( args );
+		parseArgs(std::move(args));
 }
 
 Application::~Application()
@@ -596,7 +594,6 @@ QVariant Application::confValue( ConfParameter parameter, const QVariant &value 
 	case ProxyPort: r = i->proxyPort().c_str(); break;
 	case ProxyUser: r = i->proxyUser().c_str(); break;
 	case ProxyPass: r = i->proxyPass().c_str(); break;
-	case ProxySSL: return i->proxyTunnelSSL();
 	case TSAUrl: r = i->TSUrl().c_str(); break;
 	case TSLUrl: r = i->TSLUrl().c_str(); break;
 	case TSLCache: r = i->TSLCache().c_str(); break;
@@ -625,7 +622,7 @@ bool Application::event(QEvent *event)
 	case QEvent::FileOpen:
 	{
 		QString fileName = static_cast<QFileOpenEvent*>(event)->file().normalized(QString::NormalizationForm_C);
-		QTimer::singleShot(0, this, [fileName] {
+		QMetaObject::invokeMethod(this, [fileName = std::move(fileName)] {
 			parseArgs({ fileName });
 		});
 		return true;
@@ -668,7 +665,7 @@ void Application::mailTo( const QUrl &url )
 {
 	QUrlQuery q(url);
 #if defined(Q_OS_WIN)
-	if(QLibrary lib("mapi32"); LPMAPISENDMAILW mapi = LPMAPISENDMAILW(lib.resolve("MAPISendMailW")))
+	if(QLibrary lib("mapi32"); auto mapi = LPMAPISENDMAILW(lib.resolve("MAPISendMailW")))
 	{
 		QString file = q.queryItemValue( "attachment", QUrl::FullyDecoded );
 		QString filePath = QDir::toNativeSeparators( file );
@@ -703,9 +700,8 @@ void Application::mailTo( const QUrl &url )
 			"--group", "PROFILE_Default",
 			"--key", "EmailClient"});
 		p.waitForFinished();
-		QByteArray data = p.readAllStandardOutput().trimmed();
-		if( data.contains("thunderbird") )
-			thunderbird = data;
+		if(QByteArray data = p.readAllStandardOutput().trimmed(); data.contains("thunderbird"))
+			thunderbird = std::move(data);
 	}
 	else if(env.indexOf(QRegularExpression(QStringLiteral("GNOME_DESKTOP_SESSION_ID.*"))) != -1)
 	{
@@ -799,7 +795,7 @@ void Application::parseArgs( const QString &msg )
 		QUrl url( param, QUrl::StrictMode );
 		params.append(param != QLatin1String("-crypto") && !url.toLocalFile().isEmpty() ? url.toLocalFile() : param);
 	}
-	parseArgs( params );
+	parseArgs(std::move(params));
 }
 
 void Application::parseArgs(QStringList args)
@@ -853,7 +849,6 @@ void Application::setConfValue( ConfParameter parameter, const QVariant &value )
 		case ProxyPort: i->setProxyPort( v.isEmpty()? std::string() : v.constData() ); break;
 		case ProxyUser: i->setProxyUser( v.isEmpty()? std::string() : v.constData() ); break;
 		case ProxyPass: i->setProxyPass( v.isEmpty()? std::string() : v.constData() ); break;
-		case ProxySSL: i->setProxyTunnelSSL( value.toBool() ); break;
 		case TSAUrl: i->setTSUrl(v.isEmpty()? std::string() : v.constData()); break;
 		case SiVaUrl: i->setVerifyServiceUri(v.isEmpty()? std::string() : v.constData()); break;
 		case TSLCerts:

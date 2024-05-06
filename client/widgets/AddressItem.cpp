@@ -53,7 +53,7 @@ AddressItem::AddressItem(CKey k, QWidget *parent, bool showIcon)
 
 	ui->remove->setIcons(QStringLiteral("/images/icon_remove.svg"), QStringLiteral("/images/icon_remove_hover.svg"),
 		QStringLiteral("/images/icon_remove_pressed.svg"), 17, 17);
-	ui->remove->init(LabelButton::White, {}, 0);
+	ui->remove->init(LabelButton::White);
 	connect(ui->add, &QToolButton::clicked, this, [this]{ emit add(this);});
 	connect(ui->remove, &LabelButton::clicked, this, [this]{ emit remove(this);});
 

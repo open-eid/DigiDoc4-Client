@@ -41,7 +41,6 @@ private:
 	bool event(QEvent *event) final;
 	bool eventFilter(QObject *o, QEvent *e) final;
 	void init();
-	void removeSignature();
 	void updateNameField();
 
 	class Private;

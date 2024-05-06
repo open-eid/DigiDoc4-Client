@@ -37,14 +37,19 @@
 
 #include <memory>
 
-#define toQByteArray(x) QByteArray((const char*)(x)->data, (x)->length)
+template<class T>
+auto toQByteArray(T &x)
+{
+	return QByteArray((const char*)x->data, x->length);
+}
+
 template <typename Func, typename Arg>
 static QByteArray i2dDer(Func func, Arg arg)
 {
 	if(!arg)
 		return {};
 	QByteArray der(func(arg, nullptr), 0);
-	unsigned char *p = (unsigned char*)der.data();
+	auto *p = (unsigned char*)der.data();
 	if(der.isEmpty() || func(arg, &p) != der.size())
 		return {};
 	return der;
@@ -265,7 +270,7 @@ QByteArray SslCertificate::toHex( const QByteArray &in, QChar separator )
 
 QString SslCertificate::toString( const QString &format ) const
 {
-	QRegularExpression r(QStringLiteral("[a-zA-Z]+"));
+	static const QRegularExpression r(QStringLiteral("[a-zA-Z]+"));
 	QString ret = format;
 	QRegularExpressionMatch match;
 	for(int pos = 0; (match = r.match(ret, pos)).hasMatch(); ) {
@@ -282,11 +287,10 @@ SslCertificate::CertType SslCertificate::type() const
 	for(const QString &p: policies())
 	{
 		if(p.startsWith(QLatin1String("1.3.6.1.4.1.10015.1.1")) ||
-			p.startsWith(QLatin1String("1.3.6.1.4.1.10015.3.1")))
-			return EstEidType;
-		if(p.startsWith(QLatin1String("1.3.6.1.4.1.10015.1.2")) ||
+			p.startsWith(QLatin1String("1.3.6.1.4.1.10015.3.1")) ||
+			p.startsWith(QLatin1String("1.3.6.1.4.1.10015.1.2")) ||
 			p.startsWith(QLatin1String("1.3.6.1.4.1.10015.3.2")))
-			return subjectInfo(QSslCertificate::Organization).contains(QStringLiteral("E-RESIDENT")) ? EResidentType : DigiIDType;
+			return OldEstEidType;
 		if(p.startsWith(QLatin1String("1.3.6.1.4.1.10015.1.3")) ||
 			p.startsWith(QLatin1String("1.3.6.1.4.1.10015.11.1")) ||
 			p.startsWith(QLatin1String("1.3.6.1.4.1.10015.3.3")) ||
@@ -311,8 +315,7 @@ SslCertificate::CertType SslCertificate::type() const
 	}
 
 	// Check qcStatements extension according to ETSI EN 319 412-5
-	QByteArray der = toDer();
-	if (!der.isNull())
+	if(QByteArray der = toDer(); !der.isNull())
 	{
 		try {
 			digidoc::X509Cert x509Cert((const unsigned char*)der.constData(),

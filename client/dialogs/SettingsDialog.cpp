@@ -161,7 +161,6 @@ SettingsDialog::SettingsDialog(int page, QWidget *parent)
 	ui->lblProxyPort->setFont(regularFont);
 	ui->lblProxyUsername->setFont(regularFont);
 	ui->lblProxyPassword->setFont(regularFont);
-	ui->chkProxyEnableForSSL->setFont(regularFont);
 	ui->txtProxyHost->setFont(regularFont);
 	ui->txtProxyPort->setFont(regularFont);
 	ui->txtProxyUsername->setFont(regularFont);
@@ -196,7 +195,7 @@ SettingsDialog::SettingsDialog(int page, QWidget *parent)
 			WarningDialog::show(this, tr("Checking updates has failed.") + "<br />" + tr("Please try again."), error);
 			return;
 		}
-		auto dlg = WarningDialog::show(this, tr("DigiDoc4 Client configuration update was successful."));
+		auto *dlg = WarningDialog::show(this, tr("DigiDoc4 Client configuration update was successful."));
 		new Overlay(dlg);
 #ifdef Q_OS_WIN
 		QString path = QApplication::applicationDirPath() + QLatin1String("/id-updater.exe");
@@ -238,15 +237,14 @@ SettingsDialog::SettingsDialog(int page, QWidget *parent)
 	});
 #ifdef Q_OS_WIN
 	connect(ui->btnNavFromHistory, &QPushButton::clicked, this, [this] {
-		// remove certificates (having %ESTEID% text) from browsing history of Internet Explorer and/or Google Chrome, and do it for all users.
+		// remove certificates from browsing history of Internet Explorer and/or Google Chrome, and do it for all users.
 		QList<TokenData> cache = qApp->signer()->cache();
 		CertStore s;
 		for(const QSslCertificate &c: s.list())
 		{
 			if(std::any_of(cache.cbegin(), cache.cend(), [&](const TokenData &token) { return token.cert() == c; }))
 				continue;
-			if(c.subjectInfo(QSslCertificate::Organization).join(QString()).contains(QStringLiteral("ESTEID"), Qt::CaseInsensitive) ||
-				c.issuerInfo(QSslCertificate::CommonName).join(QString()).contains(QStringLiteral("KLASS3-SK"), Qt::CaseInsensitive) ||
+			if(c.issuerInfo(QSslCertificate::CommonName).join(QString()).contains(QStringLiteral("KLASS3-SK"), Qt::CaseInsensitive) ||
 				c.issuerInfo(QSslCertificate::Organization).contains(QStringLiteral("SK ID Solutions AS"), Qt::CaseInsensitive))
 				s.remove( c );
 		}
@@ -413,7 +411,6 @@ void SettingsDialog::initFunctionality()
 	default: ui->rdProxyNone->setChecked(true); break;
 	}
 
-	ui->chkProxyEnableForSSL->setDisabled(Settings::PROXY_CONFIG != Settings::ProxyManual);
 	updateProxy();
 
 	// pageServices - TimeStamp
@@ -424,7 +421,7 @@ void SettingsDialog::initFunctionality()
 	ui->txtTimeStamp->setEnabled(ui->rdTimeStampCustom->isChecked());
 	ui->txtTimeStamp->setPlaceholderText(Application::confValue(Settings::TSA_URL.KEY).toString());
 	QString TSA_URL = Settings::TSA_URL.value(Application::confValue(Application::TSAUrl));
-	ui->txtTimeStamp->setText(ui->txtTimeStamp->placeholderText() == TSA_URL ? QString() : TSA_URL);
+	ui->txtTimeStamp->setText(ui->txtTimeStamp->placeholderText() == TSA_URL ? QString() : std::move(TSA_URL));
 	ui->wgtTSACert->setDisabled(Settings::TSA_CERT.isLocked());
 	ui->wgtTSACert->setVisible(ui->rdTimeStampCustom->isChecked());
 	connect(ui->rdTimeStampCustom, &QRadioButton::toggled, ui->txtTimeStamp, [this](bool checked) {
@@ -481,7 +478,7 @@ void SettingsDialog::initFunctionality()
 	ui->txtSiVa->setEnabled(ui->rdSiVaCustom->isChecked());
 	ui->txtSiVa->setPlaceholderText(Application::confValue(Settings::SIVA_URL.KEY).toString());
 	QString SIVA_URL = Settings::SIVA_URL.value(Application::confValue(Application::SiVaUrl));
-	ui->txtSiVa->setText(ui->txtSiVa->placeholderText() == SIVA_URL ? QString() : SIVA_URL);
+	ui->txtSiVa->setText(ui->txtSiVa->placeholderText() == SIVA_URL ? QString() : std::move(SIVA_URL));
 	ui->wgtSiVaCert->setDisabled(Settings::SIVA_CERT.isLocked());
 	ui->wgtSiVaCert->setVisible(ui->rdSiVaCustom->isChecked());
 	connect(ui->rdSiVaCustom, &QRadioButton::toggled, ui->txtSiVa, [this](bool checked) {
@@ -586,7 +583,6 @@ void SettingsDialog::setProxyEnabled()
 	ui->txtProxyPort->setEnabled(ui->rdProxyManual->isChecked());
 	ui->txtProxyUsername->setEnabled(ui->rdProxyManual->isChecked());
 	ui->txtProxyPassword->setEnabled(ui->rdProxyManual->isChecked());
-	ui->chkProxyEnableForSSL->setEnabled(ui->rdProxyManual->isChecked());
 }
 
 void SettingsDialog::updateProxy()
@@ -595,7 +591,6 @@ void SettingsDialog::updateProxy()
 	ui->txtProxyPort->setText(Application::confValue( Application::ProxyPort ).toString());
 	ui->txtProxyUsername->setText(Application::confValue( Application::ProxyUser ).toString());
 	ui->txtProxyPassword->setText(Application::confValue( Application::ProxyPass ).toString());
-	ui->chkProxyEnableForSSL->setChecked(Application::confValue( Application::ProxySSL ).toBool());
 }
 
 void SettingsDialog::updateVersion()
@@ -616,7 +611,6 @@ void SettingsDialog::saveProxy()
 	Application::setConfValue( Application::ProxyPort, ui->txtProxyPort->text() );
 	Application::setConfValue( Application::ProxyUser, ui->txtProxyUsername->text() );
 	Application::setConfValue( Application::ProxyPass, ui->txtProxyPassword->text() );
-	Application::setConfValue( Application::ProxySSL, ui->chkProxyEnableForSSL->isChecked() );
 	loadProxy(digidoc::Conf::instance());
 	updateProxy();
 }
@@ -650,7 +644,7 @@ void SettingsDialog::updateDiagnostics()
 	ui->btnNavSaveReport->setDisabled(true);
 
 	QApplication::setOverrideCursor( Qt::WaitCursor );
-	Diagnostics *worker = new Diagnostics();
+	auto *worker = new Diagnostics();
 	connect(worker, &Diagnostics::update, ui->txtDiagnostics, &QTextBrowser::insertHtml, Qt::QueuedConnection);
 	connect(worker, &Diagnostics::destroyed, this, [=]{
 		ui->txtDiagnostics->setEnabled(true);

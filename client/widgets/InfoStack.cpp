@@ -134,14 +134,8 @@ void InfoStack::update(const SslCertificate &cert)
 void InfoStack::update(const QSmartCardData &t)
 {
 	data = t;
-	QStringList firstName {
-		t.data( QSmartCardData::FirstName1 ).toString(),
-		t.data( QSmartCardData::FirstName2 ).toString()
-	};
-	firstName.removeAll({});
-
 	certType = t.authCert().type();
-	givenNamesText = firstName.join(' ');
+	givenNamesText = t.data(QSmartCardData::FirstName).toString();
 	surnameText = t.data(QSmartCardData::SurName).toString();
 	personalCodeText = t.data(QSmartCardData::Id).toString();
 	citizenshipText = t.data(QSmartCardData::Citizen).toString();

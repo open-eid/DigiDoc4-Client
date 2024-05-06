@@ -17,15 +17,15 @@ WarningList::WarningList(Ui::MainWindow *main, QWidget *parent)
 	parent->installEventFilter(this);
 }
 
-bool WarningList::appearsOnPage(WarningItem *warning, int page) const
+bool WarningList::appearsOnPage(WarningItem *warning, int page)
 {
 	return warning->page() == page || warning->page() == -1;
 }
 
 void WarningList::clearMyEIDWarnings()
 {
-	static const QList<int> warningTypes {CertExpiredWarning, CertExpiryWarning, CertRevokedWarning, UnblockPin1Warning, UnblockPin2Warning};
-	for(auto warning: warnings)
+	static const QList<int> warningTypes {CertExpiredWarning, CertExpiryWarning, UnblockPin1Warning, UnblockPin2Warning};
+	for(auto *warning: warnings)
 	{
 		if(warningTypes.contains(warning->warningType()) || warning->page() == MyEid)
 			closeWarning(warning);
@@ -35,7 +35,7 @@ void WarningList::clearMyEIDWarnings()
 
 void WarningList::closeWarning(int warningType)
 {
-	for(auto warning: warnings)
+	for(auto *warning: warnings)
 	{
 		if(warningType == warning->warningType())
 			closeWarning(warning);
@@ -51,7 +51,7 @@ void WarningList::closeWarning(WarningItem *warning)
 
 void WarningList::closeWarnings(int page)
 {
-	for(auto warning: warnings)
+	for(auto *warning: warnings)
 	{
 		if(warning->page() == page)
 			closeWarning(warning);
@@ -64,7 +64,7 @@ bool WarningList::eventFilter(QObject *object, QEvent *event)
 	if(object != parent() || event->type() != QEvent::MouseButtonPress)
 		return QObject::eventFilter(object, event);
 
-	for(auto warning: warnings)
+	for(auto *warning: warnings)
 	{
 		if(warning->underMouse())
 		{
@@ -93,14 +93,14 @@ void WarningList::showWarning(const WarningText &warningText)
 {
 	if(warningText.warningType)
 	{
-		for(auto warning: warnings)
+		for(auto *warning: warnings)
 		{
 			if(warning->warningType() == warningText.warningType)
 				return;
 		}
 	}
-	WarningItem *warning = new WarningItem(warningText, ui->page);
-	auto layout = qobject_cast<QBoxLayout*>(ui->page->layout());
+	auto *warning = new WarningItem(warningText, ui->page);
+	auto *layout = qobject_cast<QBoxLayout*>(ui->page->layout());
 	warnings << warning;
 	connect(warning, &WarningItem::linkActivated, this, &WarningList::warningClicked);
 	layout->insertWidget(warnings.size(), warning);
@@ -110,7 +110,7 @@ void WarningList::showWarning(const WarningText &warningText)
 void WarningList::updateRibbon(int page, bool expanded)
 {
 	short count = 0;
-	for(auto warning: warnings)
+	for(auto *warning: warnings)
 	{
 		if(appearsOnPage(warning, page))
 		{
@@ -133,7 +133,7 @@ void WarningList::updateWarnings()
 {
 	int page = ui->startScreen->currentIndex();
 	int count = 0;
-	for(auto warning: warnings)
+	for(auto *warning: warnings)
 	{
 		if(appearsOnPage(warning, page))
 			count++;
@@ -152,7 +152,7 @@ void WarningList::updateWarnings()
 		{
 			delete ribbon;
 			ribbon = nullptr;
-			for(auto warning: warnings)
+			for(auto *warning: warnings)
 			{
 				if(appearsOnPage(warning, page))
 					warning->show();
@@ -162,7 +162,7 @@ void WarningList::updateWarnings()
 	else if(!ribbon)
 	{
 		ribbon = new WarningRibbon(count - 3, ui->page);
-		auto layout = qobject_cast<QBoxLayout*>(ui->page->layout());
+		auto *layout = qobject_cast<QBoxLayout*>(ui->page->layout());
 		layout->insertWidget(warnings.size() + 1, ribbon);
 		ribbon->show();
 	}

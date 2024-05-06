@@ -60,7 +60,7 @@ RoleAddressDialog::RoleAddressDialog(QWidget *parent)
 		list.first()->setFocus();
 	for(QLineEdit *line: list)
 	{
-		Settings::Option<QStringList> s{line->objectName()};
+		Settings::Option<QStringList> s{line->objectName(), {}};
 		auto *completer = new QCompleter(s, line);
 		completer->setMaxVisibleItems(10);
 		completer->setCompletionMode(QCompleter::PopupCompletion);
@@ -68,7 +68,7 @@ RoleAddressDialog::RoleAddressDialog(QWidget *parent)
 		line->setText(QStringList(s).value(0));
 		line->setFont(regularFont);
 		line->setCompleter(completer);
-		connect(line, &QLineEdit::editingFinished, this, [=] {
+		connect(line, &QLineEdit::editingFinished, this, [line, s = std::move(s)] {
 			QStringList list = s;
 			list.removeAll(line->text());
 			list.insert(0, line->text());

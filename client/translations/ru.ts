@@ -764,10 +764,6 @@
         <translation>TSL-буфер</translation>
     </message>
     <message>
-        <source>Applet version</source>
-        <translation>Версия апплета</translation>
-    </message>
-    <message>
         <source>true</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1570,6 +1566,10 @@ ID-КАРТОЙ</translation>
     <message>
         <source>%1 changed!</source>
         <translation>%1-код изменён!</translation>
+    </message>
+    <message>
+        <source>The ID-card in the card reader has expired and is no longer supported in the DigiDoc4 Client.&lt;br /&gt;You can apply for a new ID-card from the Estonian Police and Border Guard Board.&lt;br /&gt;&lt;a href=&quot;https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult&quot;&gt;Additional information&lt;/a&gt;.</source>
+        <translation>Срок действия ID-карты подключенной к считывателю карт истек, и больше не поддерживается программой DigiDoc4 клиент.&lt;br /&gt;Вы можете ходатайствовать о новой ID-карте в Департаменте полиции и погранохраны.&lt;br /&gt;&lt;a href=&quot;https://www.politsei.ee/ru/instruktsii/hodataystvo-o-vydache-id-karty-vzroslomu&quot;&gt;Подробнее читайте здесь&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>Encrypting</source>
@@ -3057,10 +3057,6 @@ Additional licenses and components</source>
         <translation>Срок действия сертификата истек!</translation>
     </message>
     <message>
-        <source>Certificate is revoked!</source>
-        <translation>Сертификат отозван!</translation>
-    </message>
-    <message>
         <source>Certificate %1is valid%2 until %3</source>
         <translation>Сертификат %1действителен%2 до %3</translation>
     </message>
@@ -3107,16 +3103,6 @@ Additional licenses and components</source>
     <message>
         <source>PIN can be changed only using eToken utility</source>
         <translation>PIN-код можно сменить только при помощи программного обеспечения e-Tempel</translation>
-    </message>
-    <message>
-        <source>key has been used %1 times</source>
-        <comment>pin1</comment>
-        <translation>Сертификат использован %1 раз</translation>
-    </message>
-    <message>
-        <source>key has been used %1 times</source>
-        <comment>pin2</comment>
-        <translation>Сертификат использован %1 раз</translation>
     </message>
     <message>
         <source>Certificate for Encryption</source>
@@ -3167,10 +3153,6 @@ Additional licenses and components</source>
         <translation>PIN%1 не может быть использован, так как срок действия сертификата истек.</translation>
     </message>
     <message>
-        <source>PIN%1 can not be used because the certificate has revoked. </source>
-        <translation>PIN%1 не может быть использован, так как сертификат был отменен. </translation>
-    </message>
-    <message>
         <source>Certificate status check failed. Please check your internet connection.</source>
         <translation>Проверка статуса сертификата не удалась. Пожалуйста проверьте подключение к интернету.</translation>
     </message>
@@ -3205,18 +3187,6 @@ Additional licenses and components</source>
 </context>
 <context>
     <name>WarningItem</name>
-    <message>
-        <source>Certificates are revoked!</source>
-        <translation>Сертификаты отозваны!</translation>
-    </message>
-    <message>
-        <source>Additional information</source>
-        <translation>Дополнительная информация</translation>
-    </message>
-    <message>
-        <source>https://www.id.ee/en/article/the-majority-of-electronically-used-id-cards-were-renewed/</source>
-        <translation>https://www.id.ee/ru/artikkel/obnovleno-bolshinstvo-zatronutyh-riskom-id-kart-kotorye-ispolzovalis-elektronno/</translation>
-    </message>
     <message numerus="yes">
         <source>%n signatures are not valid!</source>
         <translation>
