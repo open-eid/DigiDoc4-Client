@@ -33,14 +33,20 @@ class CDoc1 final: public CDoc, private QFile
 {
 public:
 	CDoc1() = default;
-	CDoc1(const QString &path);
-	std::shared_ptr<CKey> canDecrypt(const QSslCertificate &cert) const final;
+
+	static bool isCDoc1File(const QString& path);
+
+	CKey::DecryptionStatus canDecrypt(const QSslCertificate &cert) const final;
+	std::shared_ptr<CKey> getDecryptionKey(const QSslCertificate &cert) const final;
 	bool decryptPayload(const QByteArray &key) final;
 	bool save(const QString &path) final;
-	QByteArray transportKey(const CKey &key) final;
+    QByteArray getFMK(const CKey &key, const QByteArray& secret) final;
 	int version() final;
 
+	static std::unique_ptr<CDoc1> load(const QString& path);
 private:
+	CDoc1(const QString &path);
+
 	void writeDDoc(QIODevice *ddoc);
 
 	static QByteArray fromBase64(QStringView data);

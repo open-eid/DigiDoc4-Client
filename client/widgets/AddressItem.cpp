@@ -41,7 +41,7 @@ AddressItem::AddressItem(std::shared_ptr<CKey> k, QWidget *parent, bool showIcon
 	: Item(parent)
 	, ui(new Private)
 {
-	ui->key = std::move(k);
+	ui->key = k;
 	ui->setupUi(this);
 	if(showIcon)
 		ui->icon->load(QStringLiteral(":/images/icon_Krypto_small.svg"));
@@ -55,17 +55,27 @@ AddressItem::AddressItem(std::shared_ptr<CKey> k, QWidget *parent, bool showIcon
 		QStringLiteral("/images/icon_remove_pressed.svg"), 17, 17);
 	ui->remove->init(LabelButton::White);
 	connect(ui->add, &QToolButton::clicked, this, [this]{ emit add(this);});
-	connect(ui->remove, &LabelButton::clicked, this, [this]{ emit remove(this);});
+    connect(ui->remove, &LabelButton::clicked, this, [this]{ emit remove(this);});
+    connect(ui->decrypt, &QToolButton::clicked, this, [this]{ emit decrypt(ui->key);});
 
 	ui->add->setFont(Styles::font(Styles::Condensed, 12));
 	ui->added->setFont(ui->add->font());
 
-	ui->code = SslCertificate(ui->key->cert).personalCode().toHtmlEscaped();
-	ui->label = (!ui->key->cert.subjectInfo("GN").isEmpty() && !ui->key->cert.subjectInfo("SN").isEmpty() ?
-			ui->key->cert.subjectInfo("GN").join(' ') + " " + ui->key->cert.subjectInfo("SN").join(' ') :
-			ui->key->cert.subjectInfo("CN").join(' ')).toHtmlEscaped();
-	if(ui->label.isEmpty())
-		ui->label = ui->key->encrypted_kek;
+	if (CKeyCD1::isCDoc1Key(*ui->key)) {
+		std::shared_ptr<CKeyCD1> key = std::static_pointer_cast<CKeyCD1>(ui->key);
+		ui->code = SslCertificate(key->cert).personalCode().toHtmlEscaped();
+		ui->label = (!key->cert.subjectInfo("GN").isEmpty() && !key->cert.subjectInfo("SN").isEmpty() ?
+				key->cert.subjectInfo("GN").join(' ') + " " + key->cert.subjectInfo("SN").join(' ') :
+				key->cert.subjectInfo("CN").join(' ')).toHtmlEscaped();
+	} else {
+		std::shared_ptr<CKeyCD2> cd2key = std::static_pointer_cast<CKeyCD2>(ui->key);
+		ui->code = {};
+		ui->label = cd2key->label;
+	}
+	if(ui->label.isEmpty() && ui->key->type == CKey::PUBLICKEY) {
+		const CKeyPK& pk = static_cast<const CKeyPK&>(*ui->key);
+		ui->label = pk.encrypted_kek;
+	}
 	setIdType();
 	showButton(AddressItem::Remove);
 }
@@ -109,7 +119,7 @@ void AddressItem::idChanged(std::shared_ptr<CKey> key)
 
 void AddressItem::idChanged(const SslCertificate &cert)
 {
-	idChanged(CKey::fromCertificate(cert));
+	idChanged(CKeyCD1::fromCertificate(cert));
 }
 
 void AddressItem::initTabOrder(QWidget *item)
@@ -133,8 +143,9 @@ void AddressItem::mouseReleaseEvent(QMouseEvent * /*event*/)
 
 void AddressItem::setName()
 {
-	ui->name->setText(QStringLiteral("%1 <span style=\"font-weight:normal;\">%2</span>")
-		.arg(ui->label, ui->yourself ? ui->code + tr(" (Yourself)") : ui->code));
+	QString str = QStringLiteral("%1 <span style=\"font-weight:normal;\">%2</span>").arg(ui->label, ui->yourself ? ui->code + tr(" (Yourself)") : ui->code);
+	qDebug() << "SetName:" << str;
+	ui->name->setText(str);
 }
 
 void AddressItem::showButton(ShowToolButton show)
@@ -151,12 +162,15 @@ void AddressItem::stateChange(ContainerState state)
 
 void AddressItem::setIdType()
 {
-	ui->idType->setHidden(ui->key->cert.isNull());
-	if(ui->key->cert.isNull())
+	if (ui->key->type != CKey::CDOC1) {
+        ui->idType->setText("CDOC2 Key");
 		return;
+	}
+	ui->idType->setHidden(false);
+	std::shared_ptr<CKeyCD1> ckd = std::static_pointer_cast<CKeyCD1>(ui->key);
 
 	QString str;
-	SslCertificate cert(ui->key->cert);
+	SslCertificate cert(ckd->cert);
 	SslCertificate::CertType type = cert.type();
 	if(type & SslCertificate::DigiIDType)
 		str = tr("digi-ID");
@@ -181,3 +195,4 @@ void AddressItem::setIdType()
 		cert.isValid() ? tr("Expires on") : tr("Expired on"),
 		date.formatDate(QStringLiteral("dd. MMMM yyyy"))));
 }
+

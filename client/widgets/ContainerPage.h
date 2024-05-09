@@ -28,7 +28,7 @@ namespace Ui {
 class ContainerPage;
 }
 
-class CKey;
+struct CKey;
 class CryptoDoc;
 class DigiDoc;
 class QSslCertificate;
@@ -63,6 +63,8 @@ signals:
 	void removed(int row);
 	void warning(const WarningText &warningText);
 
+    void decryptReq(std::shared_ptr<CKey> key);
+
 private:
 	void addressSearch();
 	void changeEvent(QEvent* event) final;
@@ -78,7 +80,7 @@ private:
 	void updatePanes(ria::qdigidoc4::ContainerState state);
 	void translateLabels();
 
-	Ui::ContainerPage *ui;
+    Ui::ContainerPage *ui;
 	std::unique_ptr<MainAction> mainAction;
 	QString cardInReader;
 	QString fileName;

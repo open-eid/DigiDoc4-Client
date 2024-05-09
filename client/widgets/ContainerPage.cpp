@@ -290,13 +290,18 @@ void ContainerPage::showSigningButton()
 void ContainerPage::transition(CryptoDoc *container, const QSslCertificate &cert)
 {
 	clear();
-	isSupported = container && (container->state() & UnencryptedContainer || container->canDecrypt(cert));
-	if(!container)
+	if (!container) {
+		isSupported = false;
 		return;
+	}
+	isSupported = (container->state() & UnencryptedContainer) || container->canDecrypt(cert);
 	setHeader(container->fileName());
-	for(std::shared_ptr<CKey> key: container->keys())
-		ui->rightPane->addWidget(new AddressItem(key, ui->rightPane, true));
-	ui->leftPane->setModel(container->documentModel());
+    for(std::shared_ptr<CKey>& key: container->keys()) {
+        AddressItem *addr = new AddressItem(key, ui->rightPane, true);
+        connect(addr, &AddressItem::decrypt, this, [this,key]{emit decryptReq(key);});
+        ui->rightPane->addWidget(addr);
+    }
+    ui->leftPane->setModel(container->documentModel());
 	updatePanes(container->state());
 }
 
@@ -368,9 +373,12 @@ void ContainerPage::update(bool canDecrypt, CryptoDoc* container)
 		return;
 
 	hasEmptyFile = false;
-	ui->rightPane->clear();
-	for(std::shared_ptr<CKey> key: container->keys())
-		ui->rightPane->addWidget(new AddressItem(key, ui->rightPane, true));
+    ui->rightPane->clear();
+    for(std::shared_ptr<CKey>& key: container->keys()) {
+        AddressItem *addr = new AddressItem(key, ui->rightPane, true);
+        connect(addr, &AddressItem::decrypt, this, [this,key]{emit decryptReq(key);});
+        ui->rightPane->addWidget(addr);
+    }
 	if(container->state() & UnencryptedContainer)
 		showMainAction({ EncryptContainer });
 }
@@ -470,3 +478,4 @@ void ContainerPage::translateLabels()
 	ui->convert->setText(tr(convertText));
 	ui->convert->setAccessibleName(tr(convertText).toLower());
 }
+

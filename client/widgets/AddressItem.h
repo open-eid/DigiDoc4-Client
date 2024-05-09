@@ -47,6 +47,9 @@ public:
 	void showButton(ShowToolButton show);
 	void stateChange(ria::qdigidoc4::ContainerState state) final;
 
+signals:
+    void decrypt(std::shared_ptr<CKey> key);
+
 private:
 	void changeEvent(QEvent *event) final;
 	bool eventFilter(QObject *o, QEvent *e) final;

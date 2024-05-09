@@ -109,7 +109,11 @@ void AddRecipients::addAllRecipientToRightPane()
 		if(rightList.contains(value->getKey()))
 			continue;
 		addRecipientToRightPane(value);
-		history.append(value->getKey()->cert);
+		std::shared_ptr<CKey> key = value->getKey();
+		if (key->type == CKey::Type::CDOC1) {
+			std::shared_ptr<CKeyCD1> kd = std::static_pointer_cast<CKeyCD1>(key);
+			history.append(kd->cert);
+		}
 	}
 	ui->confirm->setDisabled(rightList.isEmpty());
 	historyCertData.addAndSave(history);
@@ -169,11 +173,11 @@ AddressItem * AddRecipients::addRecipientToLeftPane(const QSslCertificate& cert)
 	if(leftItem)
 		return leftItem;
 
-	leftItem = new AddressItem(CKey::fromCertificate(cert), ui->leftPane);
+	leftItem = new AddressItem(CKeyCD1::fromCertificate(cert), ui->leftPane);
 	leftList.insert(cert, leftItem);
 	ui->leftPane->addWidget(leftItem);
 	bool contains = false;
-	std::shared_ptr<CKey> t = CKey::fromCertificate(cert);
+	std::shared_ptr<CKey> t = CKeyCD1::fromCertificate(cert);
 	for (std::shared_ptr<CKey> k: rightList) {
 		if (*k == *t) {
 			contains = true;
@@ -201,33 +205,36 @@ bool AddRecipients::addRecipientToRightPane(std::shared_ptr<CKey> key, bool upda
 
 	if(update)
 	{
-		if(auto expiryDate = key->cert.expiryDate(); expiryDate <= QDateTime::currentDateTime())
-		{
-			if(Settings::CDOC2_DEFAULT && Settings::CDOC2_USE_KEYSERVER)
+		if (key->type == CKey::Type::CDOC1) {
+			std::shared_ptr<CKeyCD1> kd = std::static_pointer_cast<CKeyCD1>(key);
+			if(auto expiryDate = kd->cert.expiryDate(); expiryDate <= QDateTime::currentDateTime())
 			{
-				WarningDialog::show(this, tr("Failed to add certificate. An expired certificate cannot be used for encryption."));
-				return false;
+				if(Settings::CDOC2_DEFAULT && Settings::CDOC2_USE_KEYSERVER)
+				{
+					WarningDialog::show(this, tr("Failed to add certificate. An expired certificate cannot be used for encryption."));
+					return false;
+				}
+				auto *dlg = new WarningDialog(tr("Are you sure that you want use certificate for encrypting, which expired on %1?<br />"
+					"When decrypter has updated certificates then decrypting is impossible.")
+					.arg(expiryDate.toString(QStringLiteral("dd.MM.yyyy hh:mm:ss"))), this);
+				dlg->setCancelText(WarningDialog::NO);
+				dlg->addButton(WarningDialog::YES, QMessageBox::Yes);
+				if(dlg->exec() != QMessageBox::Yes)
+					return false;
 			}
-			auto *dlg = new WarningDialog(tr("Are you sure that you want use certificate for encrypting, which expired on %1?<br />"
-				"When decrypter has updated certificates then decrypting is impossible.")
-				.arg(expiryDate.toString(QStringLiteral("dd.MM.yyyy hh:mm:ss"))), this);
-			dlg->setCancelText(WarningDialog::NO);
-			dlg->addButton(WarningDialog::YES, QMessageBox::Yes);
-			if(dlg->exec() != QMessageBox::Yes)
-				return false;
-		}
-		QSslConfiguration backup = QSslConfiguration::defaultConfiguration();
-		QSslConfiguration::setDefaultConfiguration(CheckConnection::sslConfiguration());
-		QList<QSslError> errors = QSslCertificate::verify({ key->cert });
-		QSslConfiguration::setDefaultConfiguration(backup);
-		errors.removeAll(QSslError(QSslError::CertificateExpired, key->cert));
-		if(!errors.isEmpty())
-		{
-			auto *dlg = new WarningDialog(tr("Recipient’s certification chain contains certificates that are not trusted. Continue with encryption?"), this);
-			dlg->setCancelText(WarningDialog::NO);
-			dlg->addButton(WarningDialog::YES, QMessageBox::Yes);
-			if(dlg->exec() != QMessageBox::Yes)
-				return false;
+			QSslConfiguration backup = QSslConfiguration::defaultConfiguration();
+			QSslConfiguration::setDefaultConfiguration(CheckConnection::sslConfiguration());
+			QList<QSslError> errors = QSslCertificate::verify({ kd->cert });
+			QSslConfiguration::setDefaultConfiguration(backup);
+			errors.removeAll(QSslError(QSslError::CertificateExpired, kd->cert));
+			if(!errors.isEmpty())
+			{
+				auto *dlg = new WarningDialog(tr("Recipient’s certification chain contains certificates that are not trusted. Continue with encryption?"), this);
+				dlg->setCancelText(WarningDialog::NO);
+				dlg->addButton(WarningDialog::YES, QMessageBox::Yes);
+				if(dlg->exec() != QMessageBox::Yes)
+					return false;
+			}
 		}
 	}
 	updated = update;
@@ -238,7 +245,10 @@ bool AddRecipients::addRecipientToRightPane(std::shared_ptr<CKey> key, bool upda
 	connect(rightItem, &AddressItem::remove, this, &AddRecipients::removeRecipientFromRightPane);
 	ui->rightPane->addWidget(rightItem);
 	ui->confirm->setDisabled(rightList.isEmpty());
-	historyCertData.addAndSave({key->cert});
+	if (key->type == CKey::Type::CDOC1) {
+		std::shared_ptr<CKeyCD1> kd = std::static_pointer_cast<CKeyCD1>(key);
+		historyCertData.addAndSave({kd->cert});
+	}
 	return true;
 }
 
@@ -292,10 +302,14 @@ QList<std::shared_ptr<CKey>> AddRecipients::keys()
 void AddRecipients::removeRecipientFromRightPane(Item *toRemove)
 {
 	auto *rightItem = qobject_cast<AddressItem*>(toRemove);
-	if(auto it = leftList.find(rightItem->getKey()->cert); it != leftList.end())
-	{
-		it.value()->setDisabled(false);
-		it.value()->showButton(AddressItem::Add);
+	std::shared_ptr<CKey> key = rightItem->getKey();
+	if (key->type == CKey::Type::CDOC1) {
+		std::shared_ptr<CKeyCD1> kd = std::static_pointer_cast<CKeyCD1>(key);
+		if(auto it = leftList.find(kd->cert); it != leftList.end())
+		{
+			it.value()->setDisabled(false);
+			it.value()->showButton(AddressItem::Add);
+		}
 	}
 	rightList.removeAll(rightItem->getKey());
 	updated = true;
