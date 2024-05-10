@@ -135,7 +135,7 @@
           <File Source="$(var.qt_path)\..\plugins\tls\qopensslbackend$(var.qt_suffix).dll" />
         </Directory>
         <Directory Name="styles">
-          <File Source="$(var.qt_path)\..\plugins\styles\qwindowsvistastyle$(var.qt_suffix).dll" />
+          <File Source="$(var.qt_path)\..\plugins\styles\qmodernwindowsstyle$(var.qt_suffix).dll" />
         </Directory>
         <Directory Name="imageformats">
           <File Source="$(var.qt_path)\..\plugins\imageformats\qsvg$(var.qt_suffix).dll" />
