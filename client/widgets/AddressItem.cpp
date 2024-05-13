@@ -68,13 +68,12 @@ AddressItem::AddressItem(std::shared_ptr<CKey> k, QWidget *parent, bool showIcon
 				key->cert.subjectInfo("GN").join(' ') + " " + key->cert.subjectInfo("SN").join(' ') :
 				key->cert.subjectInfo("CN").join(' ')).toHtmlEscaped();
 	} else {
-		std::shared_ptr<CKeyCD2> cd2key = std::static_pointer_cast<CKeyCD2>(ui->key);
 		ui->code = {};
-		ui->label = cd2key->label;
+        ui->label = k->label;
 	}
 	if(ui->label.isEmpty() && ui->key->type == CKey::PUBLICKEY) {
 		const CKeyPK& pk = static_cast<const CKeyPK&>(*ui->key);
-		ui->label = pk.encrypted_kek;
+        ui->label = pk.key_material;
 	}
 	setIdType();
 	showButton(AddressItem::Remove);
@@ -113,7 +112,7 @@ const std::shared_ptr<CKey> AddressItem::getKey() const
 
 void AddressItem::idChanged(std::shared_ptr<CKey> key)
 {
-	ui->yourself = !key->key.isNull() && *ui->key == *key;
+    ui->yourself = key->isTheSameRecipient(*ui->key);
 	setName();
 }
 
@@ -162,37 +161,52 @@ void AddressItem::stateChange(ContainerState state)
 
 void AddressItem::setIdType()
 {
-	if (ui->key->type != CKey::CDOC1) {
-        ui->idType->setText("CDOC2 Key");
-		return;
-	}
-	ui->idType->setHidden(false);
-	std::shared_ptr<CKeyCD1> ckd = std::static_pointer_cast<CKeyCD1>(ui->key);
+    if (ui->key->isPKI()) {
+        std::shared_ptr<CKeyPKI> pki = std::static_pointer_cast<CKeyPKI>(ui->key);
+        if (ui->key->isCertificate()) {
+            std::shared_ptr<CKeyCert> ckd = std::static_pointer_cast<CKeyCert>(ui->key);
+            ui->idType->setHidden(false);
+            QString str;
+            SslCertificate cert(ckd->cert);
+            SslCertificate::CertType type = cert.type();
+            if(type & SslCertificate::DigiIDType)
+                str = tr("digi-ID");
+            else if(type & SslCertificate::EstEidType)
+                str = tr("ID-card");
+            else if(type & SslCertificate::MobileIDType)
+                str = tr("mobile-ID");
+            else if(type & SslCertificate::TempelType)
+            {
+                if(cert.keyUsage().contains(SslCertificate::NonRepudiation))
+                    str = tr("e-Seal");
+                else if(cert.enhancedKeyUsage().contains(SslCertificate::ClientAuth))
+                    str = tr("Authentication certificate");
+                else
+                    str = tr("Certificate for Encryption");
+            }
 
-	QString str;
-	SslCertificate cert(ckd->cert);
-	SslCertificate::CertType type = cert.type();
-	if(type & SslCertificate::DigiIDType)
-		str = tr("digi-ID");
-	else if(type & SslCertificate::EstEidType)
-		str = tr("ID-card");
-	else if(type & SslCertificate::MobileIDType)
-		str = tr("mobile-ID");
-	else if(type & SslCertificate::TempelType)
-	{
-		if(cert.keyUsage().contains(SslCertificate::NonRepudiation))
-			str = tr("e-Seal");
-		else if(cert.enhancedKeyUsage().contains(SslCertificate::ClientAuth))
-			str = tr("Authentication certificate");
-		else
-			str = tr("Certificate for Encryption");
+            if(!str.isEmpty())
+                str += QStringLiteral(" - ");
+            DateTime date(cert.expiryDate().toLocalTime());
+            ui->idType->setText(QStringLiteral("%1%2 %3").arg(str,
+                                                              cert.isValid() ? tr("Expires on") : tr("Expired on"),
+                                                              date.formatDate(QStringLiteral("dd. MMMM yyyy"))));
+        } else {
+            QString type = (pki->pk_type == CKey::PKType::RSA) ? "RSA" : "ECC";
+            ui->idType->setHidden(false);
+            ui->idType->setText(type + " public key");
+        }
+    } else if (ui->key->isSymmetric()) {
+        std::shared_ptr<CKeySymmetric> ckd = std::static_pointer_cast<CKeySymmetric>(ui->key);
+        ui->idType->setHidden(false);
+        if (ckd->kdf_iter > 0) {
+            ui->idType->setText("Password derived key");
+        } else {
+            ui->idType->setText("Symmetric key");
+        }
+    } else {
+        ui->idType->setHidden(false);
+        ui->idType->setText("Unknown key type");
 	}
-
-	if(!str.isEmpty())
-		str += QStringLiteral(" - ");
-	DateTime date(cert.expiryDate().toLocalTime());
-	ui->idType->setText(QStringLiteral("%1%2 %3").arg(str,
-		cert.isValid() ? tr("Expires on") : tr("Expired on"),
-		date.formatDate(QStringLiteral("dd. MMMM yyyy"))));
 }
 

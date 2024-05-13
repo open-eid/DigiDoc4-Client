@@ -214,6 +214,8 @@ background-color: #F4F5F6;</string>
          <font>
           <family>Roboto Condensed</family>
           <pointsize>12</pointsize>
+          <underline>false</underline>
+          <strikeout>false</strikeout>
          </font>
         </property>
         <property name="cursor">
@@ -303,6 +305,8 @@ border: none;</string>
          <font>
           <family>Roboto Condensed</family>
           <pointsize>12</pointsize>
+          <underline>false</underline>
+          <strikeout>false</strikeout>
          </font>
         </property>
         <property name="cursor">
@@ -340,6 +344,8 @@ border: none;</string>
          <font>
           <family>Roboto Condensed</family>
           <pointsize>12</pointsize>
+          <underline>false</underline>
+          <strikeout>false</strikeout>
          </font>
         </property>
         <property name="cursor">
@@ -376,6 +382,8 @@ border: none;</string>
         <property name="font">
          <font>
           <pointsize>12</pointsize>
+          <underline>false</underline>
+          <strikeout>false</strikeout>
          </font>
         </property>
         <property name="cursor">
@@ -414,6 +422,8 @@ border: none;</string>
          <font>
           <family>Roboto Condensed</family>
           <pointsize>12</pointsize>
+          <underline>false</underline>
+          <strikeout>false</strikeout>
          </font>
         </property>
         <property name="cursor">
@@ -431,6 +441,46 @@ border: none;</string>
         </property>
         <property name="text">
          <string>SAVE WITHOUT SIGNING</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="LabelButton" name="encryptLT">
+        <property name="minimumSize">
+         <size>
+          <width>182</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>182</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Roboto Condensed</family>
+          <pointsize>12</pointsize>
+          <underline>false</underline>
+          <strikeout>false</strikeout>
+         </font>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="accessibleName">
+         <string extracomment="accessible">Encrypt long-term</string>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">border-radius: 3px;
+color: #006eb5;
+text-decoration: none solid rgb(0, 110, 181);
+text-align: center;
+border: none;</string>
+        </property>
+        <property name="text">
+         <string>ENCRYPT LONG_TERM</string>
         </property>
        </widget>
       </item>
@@ -457,15 +507,15 @@ border: none;</string>
  </widget>
  <customwidgets>
   <customwidget>
-   <class>LabelButton</class>
-   <extends>QToolButton</extends>
-   <header>widgets/LabelButton.h</header>
-  </customwidget>
-  <customwidget>
    <class>ItemList</class>
    <extends>QScrollArea</extends>
    <header>widgets/ItemList.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>LabelButton</class>
+   <extends>QToolButton</extends>
+   <header>widgets/LabelButton.h</header>
   </customwidget>
   <customwidget>
    <class>FileList</class>

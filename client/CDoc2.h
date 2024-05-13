@@ -38,6 +38,8 @@ public:
 	int version() final;
 
 	static std::unique_ptr<CDoc2> load(const QString& _path);
+
+    static bool save(QString path, const std::vector<File>& files, const QString& label, const QByteArray& secret, unsigned int kdf_iter);
 private:
 	CDoc2(const QString &path);
 

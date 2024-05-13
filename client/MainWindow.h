@@ -122,4 +122,5 @@ private:
 	WarningList *warnings;
 
     void decryptClicked(std::shared_ptr<CKey> key);
+    void encryptLTClicked();
 };

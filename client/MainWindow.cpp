@@ -161,6 +161,7 @@ MainWindow::MainWindow( QWidget *parent )
 	connect(ui->cryptoContainerPage, &ContainerPage::removed, this, &MainWindow::removeAddress);
 
     connect(ui->cryptoContainerPage, &ContainerPage::decryptReq, this, &MainWindow::decryptClicked);
+    connect(ui->cryptoContainerPage, &ContainerPage::encryptLTReq, this, &MainWindow::encryptLTClicked);
 
 	connect(ui->accordion, &Accordion::changePin1Clicked, this, &MainWindow::changePin1Clicked);
 	connect(ui->accordion, &Accordion::changePin2Clicked, this, &MainWindow::changePin2Clicked);
@@ -274,10 +275,17 @@ void MainWindow::decrypt(std::shared_ptr<CKey> key)
         std::shared_ptr<CKeySymmetric> skey = std::static_pointer_cast<CKeySymmetric>(key);
         qDebug() << skey->label;
         PasswordDialog p;
-        if(!p.exec()) return;
-        QString pwd = p.password();
-        qDebug() << pwd;
-        secret = pwd.toUtf8();
+        if (skey->kdf_iter > 0) {
+            p.setMode(PasswordDialog::Mode::DECRYPT, PasswordDialog::Type::PASSWORD);
+            if(!p.exec()) return;
+            secret = p.secret();
+            qDebug() << "Secret:" << QString::fromUtf8(secret);
+        } else {
+            p.setMode(PasswordDialog::Mode::DECRYPT, PasswordDialog::Type::KEY);
+            if(!p.exec()) return;
+            secret = p.secret();
+            qDebug() << "Secret:" << QString::fromUtf8(secret.toHex());
+        }
     }
 
     WaitDialogHolder waitDialog(this, tr("Decrypting"));
@@ -1172,4 +1180,23 @@ MainWindow::decryptClicked(std::shared_ptr<CKey> key)
 {
     qDebug() << "Decrypt clicked:";
     decrypt(key);
+}
+
+void
+MainWindow::encryptLTClicked()
+{
+    qDebug() << "LT encrypt";
+    if (!cryptoDoc) return;
+    PasswordDialog p;
+    p.setMode(PasswordDialog::Mode::ENCRYPT, PasswordDialog::Type::PASSWORD);
+    if(!p.exec()) return;
+    QString label = p.label();
+    QByteArray secret = p.secret();
+    if (p.type == PasswordDialog::Type::PASSWORD) {
+        qDebug() << "Secret:" << QString::fromUtf8(secret);
+        cryptoDoc->encryptLT(label, secret, 65536);
+    } else {
+        qDebug() << "Secret:" << QString::fromUtf8(secret.toHex());
+        cryptoDoc->encryptLT(label, secret, 0);
+    }
 }

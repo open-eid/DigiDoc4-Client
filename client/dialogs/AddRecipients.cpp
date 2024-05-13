@@ -19,6 +19,7 @@
 
 
 #include "AddRecipients.h"
+#include "dialogs/PasswordDialog.h"
 #include "ui_AddRecipients.h"
 
 #include "Application.h"
@@ -33,6 +34,7 @@
 #include "TokenData.h"
 #include "dialogs/WarningDialog.h"
 #include "effects/Overlay.h"
+#include "Crypto.h"
 
 #include <QtCore/QDateTime>
 #include <QtCore/QDebug>
@@ -63,6 +65,7 @@ AddRecipients::AddRecipients(ItemList* itemList, QWidget *parent)
 	ui->fromCard->setFont(Styles::font(Styles::Condensed, 12));
 	ui->fromFile->setFont(Styles::font(Styles::Condensed, 12));
 	ui->fromHistory->setFont(Styles::font(Styles::Condensed, 12));
+    ui->addKey->setFont(Styles::font(Styles::Condensed, 12));
 
 	ui->cancel->setFont(Styles::font(Styles::Condensed, 14));
 	ui->confirm->setFont(Styles::font(Styles::Condensed, 14));
@@ -90,6 +93,7 @@ AddRecipients::AddRecipients(ItemList* itemList, QWidget *parent)
 
 	connect(ui->fromFile, &QPushButton::clicked, this, &AddRecipients::addRecipientFromFile);
 	connect(ui->fromHistory, &QPushButton::clicked, this, &AddRecipients::addRecipientFromHistory);
+    connect(ui->addKey, &QPushButton::clicked, this, &AddRecipients::addRecipientKey);
 
 	for(Item *item: itemList->items)
 		addRecipientToRightPane((qobject_cast<AddressItem *>(item))->getKey(), false);
@@ -167,6 +171,11 @@ void AddRecipients::addRecipientFromHistory()
 	dlg->open();
 }
 
+void AddRecipients::addRecipientKey()
+{
+    qDebug() << "Adding key to recipients list";
+}
+
 AddressItem * AddRecipients::addRecipientToLeftPane(const QSslCertificate& cert)
 {
 	AddressItem *leftItem = leftList.value(cert);
@@ -176,10 +185,10 @@ AddressItem * AddRecipients::addRecipientToLeftPane(const QSslCertificate& cert)
 	leftItem = new AddressItem(CKeyCD1::fromCertificate(cert), ui->leftPane);
 	leftList.insert(cert, leftItem);
 	ui->leftPane->addWidget(leftItem);
-	bool contains = false;
-	std::shared_ptr<CKey> t = CKeyCD1::fromCertificate(cert);
+
+    bool contains = false;
 	for (std::shared_ptr<CKey> k: rightList) {
-		if (*k == *t) {
+        if (k->isTheSameRecipient(cert)) {
 			contains = true;
 			break;
 		}
@@ -200,7 +209,7 @@ AddressItem * AddRecipients::addRecipientToLeftPane(const QSslCertificate& cert)
 bool AddRecipients::addRecipientToRightPane(std::shared_ptr<CKey> key, bool update)
 {
 	for (std::shared_ptr<CKey> k: rightList) {
-		if (*k == *key) return false;
+        if (k->isTheSameRecipient(*key)) return false;
 	}
 
 	if(update)

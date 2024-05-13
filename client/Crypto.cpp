@@ -93,12 +93,20 @@ bool Crypto::Cipher::setTag(const QByteArray &data) const
 	return !isError(EVP_CIPHER_CTX_ctrl(ctx.get(), EVP_CTRL_AEAD_SET_TAG, int(data.size()), const_cast<char*>(data.data())));
 }
 
-QByteArray Crypto::aes_wrap(const QByteArray &key, const QByteArray &data, bool encrypt)
+QByteArray Crypto::aes_wrap(const QByteArray &key, const QByteArray &data)
 {
-	Cipher c(key.size() == 32 ? EVP_aes_256_wrap() : EVP_aes_128_wrap(), key, {}, encrypt);
+    Cipher c(key.size() == 32 ? EVP_aes_256_wrap() : EVP_aes_128_wrap(), key, {}, true);
 	if(QByteArray result = c.update(data); c.result())
 		return result;
 	return {};
+}
+
+QByteArray Crypto::aes_unwrap(const QByteArray &key, const QByteArray &data)
+{
+    Cipher c(key.size() == 32 ? EVP_aes_256_wrap() : EVP_aes_128_wrap(), key, {}, false);
+    if(QByteArray result = c.update(data); c.result())
+        return result;
+    return {};
 }
 
 QByteArray Crypto::cipher(const EVP_CIPHER *cipher, const QByteArray &key, QByteArray &data, bool encrypt)

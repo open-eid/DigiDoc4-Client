@@ -18,6 +18,7 @@
  */
 
 #include "ContainerPage.h"
+#include "dialogs/PasswordDialog.h"
 #include "ui_ContainerPage.h"
 
 #include "CryptoDoc.h"
@@ -84,6 +85,8 @@ ContainerPage::ContainerPage(QWidget *parent)
 	connect(ui->rightPane, &ItemList::removed, this, &ContainerPage::removed);
 	connect(ui->containerFile, &QLabel::linkActivated, this, [this](const QString &link)
 		{ emit action(Actions::ContainerNavigate, link); });
+
+    connect(ui->encryptLT, &LabelButton::clicked, this, [this]{emit encryptLTReq();});
 
 	ui->summary->setVisible(Settings::SHOW_PRINT_SUMMARY);
 }
@@ -408,7 +411,7 @@ void ContainerPage::updatePanes(ContainerState state)
 		ui->leftPane->init(fileName, QT_TRANSLATE_NOOP("ItemList", "Container files"));
 		showSigningButton();
 		setButtonsVisible({ ui->cancel, ui->convert, ui->save }, true);
-		setButtonsVisible({ ui->saveAs, ui->email, ui->summary }, false);
+        setButtonsVisible({ ui->saveAs, ui->email, ui->summary, ui->encryptLT }, false);
 		break;
 	case UnsignedSavedContainer:
 		cancelText = QT_TR_NOOP("STARTING");
@@ -419,7 +422,7 @@ void ContainerPage::updatePanes(ContainerState state)
 			setButtonsVisible({ ui->cancel, ui->convert, ui->saveAs, ui->email, ui->summary }, true);
 		else
 			setButtonsVisible({ ui->cancel, ui->convert, ui->saveAs, ui->email }, true);
-		setButtonsVisible({ ui->save }, false);
+        setButtonsVisible({ ui->save, ui->encryptLT }, false);
 		showRightPane( ItemSignature, QT_TRANSLATE_NOOP("ItemList", "Container is not signed"));
 		break;
 	case SignedContainer:
@@ -432,7 +435,7 @@ void ContainerPage::updatePanes(ContainerState state)
 			setButtonsVisible({ ui->cancel, ui->convert, ui->saveAs, ui->email, ui->summary }, true);
 		else
 			setButtonsVisible({ ui->cancel, ui->convert, ui->saveAs, ui->email }, true);
-		setButtonsVisible({ ui->save }, false);
+        setButtonsVisible({ ui->save, ui->encryptLT }, false);
 		break;
 	case UnencryptedContainer:
 		cancelText = QT_TR_NOOP("STARTING");
@@ -442,7 +445,7 @@ void ContainerPage::updatePanes(ContainerState state)
 		ui->leftPane->init(fileName);
 		showRightPane(ItemAddress, QT_TRANSLATE_NOOP("ItemList", "Recipients"));
 		showMainAction({ EncryptContainer });
-		setButtonsVisible({ ui->cancel, ui->convert }, true);
+        setButtonsVisible({ ui->cancel, ui->convert, ui->encryptLT }, true);
 		setButtonsVisible({ ui->save, ui->saveAs, ui->email, ui->summary }, false);
 		break;
 	case EncryptedContainer:
@@ -454,7 +457,7 @@ void ContainerPage::updatePanes(ContainerState state)
 		showRightPane(ItemAddress, QT_TRANSLATE_NOOP("ItemList", "Recipients"));
 		updateDecryptionButton();
 		setButtonsVisible({ ui->save, ui->summary }, false);
-		setButtonsVisible({ ui->cancel, ui->convert, ui->saveAs, ui->email }, true);
+        setButtonsVisible({ ui->cancel, ui->convert, ui->saveAs, ui->email, ui->encryptLT }, true);
 		break;
 	default:
 		// Uninitialized cannot be shown on container page
