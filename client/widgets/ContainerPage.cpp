@@ -86,7 +86,7 @@ ContainerPage::ContainerPage(QWidget *parent)
 	connect(ui->containerFile, &QLabel::linkActivated, this, [this](const QString &link)
 		{ emit action(Actions::ContainerNavigate, link); });
 
-    connect(ui->encryptLT, &LabelButton::clicked, this, [this]{emit encryptLTReq();});
+    connect(ui->encryptLT, &LabelButton::clicked, this, [this]{emit action(Actions::EncryptLT);});
 
 	ui->summary->setVisible(Settings::SHOW_PRINT_SUMMARY);
 }
@@ -456,8 +456,8 @@ void ContainerPage::updatePanes(ContainerState state)
 		ui->leftPane->init(fileName, QT_TRANSLATE_NOOP("ItemList", "Encrypted files"));
 		showRightPane(ItemAddress, QT_TRANSLATE_NOOP("ItemList", "Recipients"));
 		updateDecryptionButton();
-		setButtonsVisible({ ui->save, ui->summary }, false);
-        setButtonsVisible({ ui->cancel, ui->convert, ui->saveAs, ui->email, ui->encryptLT }, true);
+        setButtonsVisible({ ui->save, ui->summary, ui->encryptLT }, false);
+        setButtonsVisible({ ui->cancel, ui->convert, ui->saveAs, ui->email }, true);
 		break;
 	default:
 		// Uninitialized cannot be shown on container page

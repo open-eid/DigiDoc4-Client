@@ -35,8 +35,7 @@ public:
 private:
     Ui::PasswordDialog *ui;
 
-    void passwordSelected(bool checked);
-    void symmetricKeySelected(bool checked);
+    void typeChanged(int index);
     void genKeyClicked();
     void updateUI();
 };

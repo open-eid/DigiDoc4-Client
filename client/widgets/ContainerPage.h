@@ -64,7 +64,6 @@ signals:
 	void warning(const WarningText &warningText);
 
     void decryptReq(std::shared_ptr<CKey> key);
-    void encryptLTReq();
 
 private:
 	void addressSearch();

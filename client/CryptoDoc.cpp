@@ -276,16 +276,6 @@ void CKeyCert::setCert(const QSslCertificate &c)
     pk_type = (k.algorithm() == QSsl::Rsa) ? PKType::RSA : PKType::ECC;
 }
 
-std::shared_ptr<CKeyCD1>
-CKeyCD1::newEmpty() {
-	return std::shared_ptr<CKeyCD1>(new CKeyCD1());
-}
-
-std::shared_ptr<CKeyCD1>
-CKeyCD1::fromCertificate(const QSslCertificate &cert) {
-	return std::shared_ptr<CKeyCD1>(new CKeyCD1(cert));
-}
-
 std::shared_ptr<CKeyServer>
 CKeyServer::fromKey(QByteArray _key, PKType _pk_type) {
 	return std::shared_ptr<CKeyServer>(new CKeyServer(_key, _pk_type));
@@ -426,6 +416,16 @@ bool CryptoDoc::encrypt( const QString &filename )
 	return d->isEncrypted;
 }
 
+bool
+CryptoDoc::encryptLT(const QString& label, const QByteArray& secret, unsigned int kdf_iter)
+{
+    if( d->fileName.isEmpty()) {
+        WarningDialog::show(tr("Container is not open"));
+        return false;
+    }
+    return CDoc2::save(d->fileName, d->cdoc->files, label, secret, kdf_iter);
+}
+
 QString CryptoDoc::fileName() const { return d->fileName; }
 
 QList<std::shared_ptr<CKey>> CryptoDoc::keys() const
@@ -479,16 +479,6 @@ bool CryptoDoc::saveCopy(const QString &filename)
 	if(QFile::exists(filename))
 		QFile::remove(filename);
 	return QFile::copy(d->fileName, filename);
-}
-
-bool
-CryptoDoc::encryptLT(const QString& label, const QByteArray& secret, unsigned int kdf_iter)
-{
-    if( d->fileName.isEmpty()) {
-        WarningDialog::show(tr("Container is not open"));
-        return false;
-    }
-    return CDoc2::save(d->fileName, d->cdoc->files, label, secret, kdf_iter);
 }
 
 #include "CryptoDoc.moc"

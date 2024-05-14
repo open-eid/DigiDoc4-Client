@@ -34,9 +34,9 @@ struct CKey
 public:
 	enum Type {
         SYMMETRIC_KEY,
+        PUBLIC_KEY,
         CERTIFICATE,
 		CDOC1,
-		PUBLICKEY,
 		SERVER
 	};
 
@@ -61,8 +61,9 @@ public:
     // QByteArray key;
 
     bool isSymmetric() const { return type == Type::SYMMETRIC_KEY; }
-    bool isPKI() const { return (type == Type::CERTIFICATE) || (type == Type::CDOC1) || (type == Type::PUBLICKEY) || (type == Type::SERVER); }
+    bool isPKI() const { return (type == Type::CERTIFICATE) || (type == Type::CDOC1) || (type == Type::PUBLIC_KEY) || (type == Type::SERVER); }
     bool isCertificate() const { return (type == Type::CERTIFICATE) || (type == Type::CDOC1); }
+    bool isCDoc1() const { return type == Type::CDOC1; }
 
     bool isTheSameRecipient(const CKey &key) const;
     bool isTheSameRecipient(const QSslCertificate &cert) const;
@@ -74,6 +75,8 @@ private:
 };
 
 // Symmetric key (plain or PBKDF)
+// Usage:
+// CDoc2:encrypt/decrypt
 
 struct CKeySymmetric : public CKey {
     QByteArray salt;
@@ -85,7 +88,9 @@ struct CKeySymmetric : public CKey {
     CKeySymmetric(const QByteArray& _salt) : CKey(Type::SYMMETRIC_KEY), salt(_salt), kdf_iter(0) {}
 };
 
-// Public/private key
+// Base PKI key
+// Usage:
+// CDoc2:encrypt
 
 struct CKeyPKI : public CKey {
     // Recipient's public key
@@ -98,44 +103,51 @@ protected:
 };
 
 
-// Contains relevant encryption data
+// Public key with additonal information
+// Usage:
+// CDoc2:encrypt - if recipient is specified by certificate
+// CDoc1:encrypt
 
 struct CKeyCert : public CKeyPKI {
     QSslCertificate cert;
 
+    CKeyCert(const QSslCertificate &cert) : CKeyCert(CKey::Type::CERTIFICATE, cert) {};
+
+    void setCert(const QSslCertificate &c);
+
 protected:
     CKeyCert(Type _type) : CKeyPKI(_type) {};
     CKeyCert(Type _type, const QSslCertificate &cert);
-
-    void setCert(const QSslCertificate &c);
 };
 
-// CDoc1 key
+// CDoc1 decryption key (with additional information from file)
+// Usage:
+// CDoc1:decrypt
 
-struct CKeyCD1 : public CKeyCert {
+struct CKeyCDoc1 : public CKeyCert {
 
     QByteArray publicKey;
     QString concatDigest, method;
 	QByteArray AlgorithmID, PartyUInfo, PartyVInfo;
 
-	static std::shared_ptr<CKeyCD1> newEmpty();
-	static std::shared_ptr<CKeyCD1> fromCertificate(const QSslCertificate &cert);
-
-    void setCert(const QSslCertificate &c) { CKeyCert::setCert(c); }
-
-    static bool isCDoc1Key(const CKey& key) { return key.type == Type::CDOC1; }
-protected:
-    CKeyCD1() : CKeyCert(Type::CDOC1) {};
-    CKeyCD1(const QSslCertificate &cert) : CKeyCert(CKey::Type::CDOC1, cert) {};
+    CKeyCDoc1() : CKeyCert(Type::CDOC1) {};
 };
 
-struct CKeyPK : public CKeyPKI {
+// CDoc2 PKI key with key material
+// Usage:
+// CDoc2: decrypt
+
+struct CKeyPublicKey : public CKeyPKI {
     // Either ECC public key or RSA encrypted kek
     QByteArray key_material;
 
-    CKeyPK() : CKeyPKI(Type::PUBLICKEY) {};
-    CKeyPK(PKType _pk_type, QByteArray _rcpt_key) : CKeyPKI(Type::PUBLICKEY, _pk_type, _rcpt_key) {};
+    CKeyPublicKey() : CKeyPKI(Type::PUBLIC_KEY) {};
+    CKeyPublicKey(PKType _pk_type, QByteArray _rcpt_key) : CKeyPKI(Type::PUBLIC_KEY, _pk_type, _rcpt_key) {};
 };
+
+// CDoc2 PKI key with server info
+// Usage:
+// CDoc2: decrypt
 
 struct CKeyServer : public CKeyPKI {
     // Server info
@@ -184,15 +196,14 @@ public:
     bool decrypt(std::shared_ptr<CKey> key, const QByteArray& secret);
 	DocumentModel* documentModel() const;
 	bool encrypt(const QString &filename = {});
-	QString fileName() const;
+    bool encryptLT(const QString& label, const QByteArray& secret, unsigned int kdf_iter);
+    QString fileName() const;
 	QList<std::shared_ptr<CKey>> keys() const;
 	bool move(const QString &to);
 	bool open( const QString &file );
 	void removeKey( int id );
 	bool saveCopy(const QString &filename);
 	ria::qdigidoc4::ContainerState state() const;
-
-    bool encryptLT(const QString& label, const QByteArray& secret, unsigned int kdf_iter);
 
 private:
 	class Private;

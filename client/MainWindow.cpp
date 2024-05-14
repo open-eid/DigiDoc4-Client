@@ -161,7 +161,6 @@ MainWindow::MainWindow( QWidget *parent )
 	connect(ui->cryptoContainerPage, &ContainerPage::removed, this, &MainWindow::removeAddress);
 
     connect(ui->cryptoContainerPage, &ContainerPage::decryptReq, this, &MainWindow::decryptClicked);
-    connect(ui->cryptoContainerPage, &ContainerPage::encryptLTReq, this, &MainWindow::encryptLTClicked);
 
 	connect(ui->accordion, &Accordion::changePin1Clicked, this, &MainWindow::changePin1Clicked);
 	connect(ui->accordion, &Accordion::changePin2Clicked, this, &MainWindow::changePin2Clicked);
@@ -271,7 +270,7 @@ void MainWindow::decrypt(std::shared_ptr<CKey> key)
     if(!cryptoDoc) return;
 
     QByteArray secret;
-    if (key->type == CKey::Type::SYMMETRIC_KEY) {
+    if (key && (key->type == CKey::Type::SYMMETRIC_KEY)) {
         std::shared_ptr<CKeySymmetric> skey = std::static_pointer_cast<CKeySymmetric>(key);
         qDebug() << skey->label;
         PasswordDialog p;
@@ -361,6 +360,43 @@ bool MainWindow::encrypt()
 	WaitDialogHolder waitDialog(this, tr("Encrypting"));
 
 	return cryptoDoc->encrypt();
+}
+
+bool
+MainWindow::encryptLT()
+{
+    qDebug() << "LT encrypt";
+    if (!cryptoDoc) return false;
+    if(!FileDialog::fileIsWritable(cryptoDoc->fileName())) {
+        auto *dlg = new WarningDialog(tr("Cannot alter container %1. Save different location?")
+                                          .arg(FileDialog::normalized(cryptoDoc->fileName())), this);
+        dlg->addButton(WarningDialog::YES, QMessageBox::Yes);
+        if(dlg->exec() == QMessageBox::Yes) {
+            moveCryptoContainer();
+            return encryptLT();
+        }
+        return false;
+    }
+    PasswordDialog p;
+    p.setMode(PasswordDialog::Mode::ENCRYPT, PasswordDialog::Type::PASSWORD);
+    if(!p.exec()) return false;
+    QString label = p.label();
+    QByteArray secret = p.secret();
+    bool result;
+    if (p.type == PasswordDialog::Type::PASSWORD) {
+        qDebug() << "Secret:" << QString::fromUtf8(secret);
+        WaitDialogHolder waitDialog(this, tr("Encrypting"));
+        result = cryptoDoc->encryptLT(label, secret, 65536);
+    } else {
+        qDebug() << "Secret:" << QString::fromUtf8(secret.toHex());
+        WaitDialogHolder waitDialog(this, tr("Encrypting"));
+        result = cryptoDoc->encryptLT(label, secret, 0);
+    }
+    if (result) {
+        auto *notification = new FadeInNotification(this, WHITE, MANTIS, 110);
+        notification->start( tr("Encryption succeeded!"), 750, 3000, 1200 );
+    }
+    return result;
 }
 
 void MainWindow::mouseReleaseEvent(QMouseEvent *event)
@@ -533,7 +569,7 @@ void MainWindow::convertToCDoc()
 
 	auto cardData = qApp->signer()->tokenauth();
 	if(!cardData.cert().isNull())
-		cryptoContainer->addKey(CKeyCD1::fromCertificate(cardData.cert()));
+        cryptoContainer->addKey(std::make_shared<CKeyCert>(cardData.cert()));
 
 	resetCryptoDoc(cryptoContainer.release());
 	resetDigiDoc(nullptr, false);
@@ -582,7 +618,15 @@ void MainWindow::onCryptoAction(int action, const QString &/*id*/, const QString
 			notification->start( tr("Encryption succeeded!"), 750, 3000, 1200 );
 		}
 		break;
-	case ContainerSaveAs:
+    case EncryptLT:
+        if(encryptLT())
+        {
+            ui->cryptoContainerPage->transition(cryptoDoc, qApp->signer()->tokenauth().cert());
+            auto *notification = new FadeInNotification(this, WHITE, MANTIS, 110);
+            notification->start( tr("Encryption succeeded!"), 750, 3000, 1200 );
+        }
+        break;
+    case ContainerSaveAs:
 	{
 		if(!cryptoDoc)
 			break;
@@ -1182,21 +1226,3 @@ MainWindow::decryptClicked(std::shared_ptr<CKey> key)
     decrypt(key);
 }
 
-void
-MainWindow::encryptLTClicked()
-{
-    qDebug() << "LT encrypt";
-    if (!cryptoDoc) return;
-    PasswordDialog p;
-    p.setMode(PasswordDialog::Mode::ENCRYPT, PasswordDialog::Type::PASSWORD);
-    if(!p.exec()) return;
-    QString label = p.label();
-    QByteArray secret = p.secret();
-    if (p.type == PasswordDialog::Type::PASSWORD) {
-        qDebug() << "Secret:" << QString::fromUtf8(secret);
-        cryptoDoc->encryptLT(label, secret, 65536);
-    } else {
-        qDebug() << "Secret:" << QString::fromUtf8(secret.toHex());
-        cryptoDoc->encryptLT(label, secret, 0);
-    }
-}
