@@ -135,7 +135,8 @@ QString MainAction::label(Actions action)
 	case SignatureSmartID: return tr("SignatureSmartID");
 	case SignatureToken: return tr("SignatureToken");
 	case EncryptContainer: return tr("EncryptContainer");
-	case DecryptContainer: return tr("DecryptContainer");
+    case EncryptLT: return tr("EncryptLongTerm");
+    case DecryptContainer: return tr("DecryptContainer");
 	case DecryptToken: return tr("DECRYPT");
 	default: return tr("SignatureAdd");
 	}

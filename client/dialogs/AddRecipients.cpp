@@ -65,7 +65,6 @@ AddRecipients::AddRecipients(ItemList* itemList, QWidget *parent)
 	ui->fromCard->setFont(Styles::font(Styles::Condensed, 12));
 	ui->fromFile->setFont(Styles::font(Styles::Condensed, 12));
 	ui->fromHistory->setFont(Styles::font(Styles::Condensed, 12));
-    ui->addKey->setFont(Styles::font(Styles::Condensed, 12));
 
 	ui->cancel->setFont(Styles::font(Styles::Condensed, 14));
 	ui->confirm->setFont(Styles::font(Styles::Condensed, 14));
@@ -93,7 +92,6 @@ AddRecipients::AddRecipients(ItemList* itemList, QWidget *parent)
 
 	connect(ui->fromFile, &QPushButton::clicked, this, &AddRecipients::addRecipientFromFile);
 	connect(ui->fromHistory, &QPushButton::clicked, this, &AddRecipients::addRecipientFromHistory);
-    connect(ui->addKey, &QPushButton::clicked, this, &AddRecipients::addRecipientKey);
 
 	for(Item *item: itemList->items)
 		addRecipientToRightPane((qobject_cast<AddressItem *>(item))->getKey(), false);
@@ -115,7 +113,7 @@ void AddRecipients::addAllRecipientToRightPane()
 		addRecipientToRightPane(value);
 		std::shared_ptr<CKey> key = value->getKey();
 		if (key->type == CKey::Type::CDOC1) {
-			std::shared_ptr<CKeyCD1> kd = std::static_pointer_cast<CKeyCD1>(key);
+            std::shared_ptr<CKeyCDoc1> kd = std::static_pointer_cast<CKeyCDoc1>(key);
 			history.append(kd->cert);
 		}
 	}
@@ -171,18 +169,13 @@ void AddRecipients::addRecipientFromHistory()
 	dlg->open();
 }
 
-void AddRecipients::addRecipientKey()
-{
-    qDebug() << "Adding key to recipients list";
-}
-
 AddressItem * AddRecipients::addRecipientToLeftPane(const QSslCertificate& cert)
 {
 	AddressItem *leftItem = leftList.value(cert);
 	if(leftItem)
 		return leftItem;
 
-	leftItem = new AddressItem(CKeyCD1::fromCertificate(cert), ui->leftPane);
+    leftItem = new AddressItem(std::make_shared<CKeyCert>(cert), ui->leftPane);
 	leftList.insert(cert, leftItem);
 	ui->leftPane->addWidget(leftItem);
 
@@ -215,7 +208,7 @@ bool AddRecipients::addRecipientToRightPane(std::shared_ptr<CKey> key, bool upda
 	if(update)
 	{
 		if (key->type == CKey::Type::CDOC1) {
-			std::shared_ptr<CKeyCD1> kd = std::static_pointer_cast<CKeyCD1>(key);
+            std::shared_ptr<CKeyCDoc1> kd = std::static_pointer_cast<CKeyCDoc1>(key);
 			if(auto expiryDate = kd->cert.expiryDate(); expiryDate <= QDateTime::currentDateTime())
 			{
 				if(Settings::CDOC2_DEFAULT && Settings::CDOC2_USE_KEYSERVER)
@@ -255,7 +248,7 @@ bool AddRecipients::addRecipientToRightPane(std::shared_ptr<CKey> key, bool upda
 	ui->rightPane->addWidget(rightItem);
 	ui->confirm->setDisabled(rightList.isEmpty());
 	if (key->type == CKey::Type::CDOC1) {
-		std::shared_ptr<CKeyCD1> kd = std::static_pointer_cast<CKeyCD1>(key);
+        std::shared_ptr<CKeyCDoc1> kd = std::static_pointer_cast<CKeyCDoc1>(key);
 		historyCertData.addAndSave({kd->cert});
 	}
 	return true;
@@ -313,7 +306,7 @@ void AddRecipients::removeRecipientFromRightPane(Item *toRemove)
 	auto *rightItem = qobject_cast<AddressItem*>(toRemove);
 	std::shared_ptr<CKey> key = rightItem->getKey();
 	if (key->type == CKey::Type::CDOC1) {
-		std::shared_ptr<CKeyCD1> kd = std::static_pointer_cast<CKeyCD1>(key);
+        std::shared_ptr<CKeyCDoc1> kd = std::static_pointer_cast<CKeyCDoc1>(key);
 		if(auto it = leftList.find(kd->cert); it != leftList.end())
 		{
 			it.value()->setDisabled(false);

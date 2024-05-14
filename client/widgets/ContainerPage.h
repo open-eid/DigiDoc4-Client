@@ -64,7 +64,6 @@ signals:
 	void warning(const WarningText &warningText);
 
     void decryptReq(std::shared_ptr<CKey> key);
-    void encryptLTReq();
 
 private:
 	void addressSearch();
@@ -75,10 +74,11 @@ private:
 	void forward(int code);
 	void hideRightPane();
 	void showMainAction(const QList<ria::qdigidoc4::Actions> &actions);
-	void showRightPane(ria::qdigidoc4::ItemType itemType, const char *header);
+    void showMainActionEncrypt(bool showLT);
+    void showRightPane(ria::qdigidoc4::ItemType itemType, const char *header);
 	void showSigningButton();
-	void updateDecryptionButton();
-	void updatePanes(ria::qdigidoc4::ContainerState state);
+    void updateDecryptionButton();
+    void updatePanes(ria::qdigidoc4::ContainerState state, CryptoDoc *crypto_container);
 	void translateLabels();
 
     Ui::ContainerPage *ui;

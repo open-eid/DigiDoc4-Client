@@ -30,15 +30,18 @@ public:
 
     void setMode(Mode mode, Type type);
 
+    void setLabel(const QString& label);
     QString label();
     QByteArray secret() const;
 private:
     Ui::PasswordDialog *ui;
 
-    void passwordSelected(bool checked);
-    void symmetricKeySelected(bool checked);
+    void typeChanged(int index);
+    void lineChanged(const QString& text);
+    void editChanged();
     void genKeyClicked();
     void updateUI();
+    void updateOK();
 };
 
 #endif // PASSWORDDIALOG_H

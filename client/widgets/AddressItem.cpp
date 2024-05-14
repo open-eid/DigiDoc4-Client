@@ -37,11 +37,11 @@ public:
 	bool yourself = false;
 };
 
-AddressItem::AddressItem(std::shared_ptr<CKey> k, QWidget *parent, bool showIcon)
+AddressItem::AddressItem(std::shared_ptr<CKey> key, QWidget *parent, bool showIcon)
 	: Item(parent)
 	, ui(new Private)
 {
-	ui->key = k;
+    ui->key = key;
 	ui->setupUi(this);
 	if(showIcon)
 		ui->icon->load(QStringLiteral(":/images/icon_Krypto_small.svg"));
@@ -56,23 +56,29 @@ AddressItem::AddressItem(std::shared_ptr<CKey> k, QWidget *parent, bool showIcon
 	ui->remove->init(LabelButton::White);
 	connect(ui->add, &QToolButton::clicked, this, [this]{ emit add(this);});
     connect(ui->remove, &LabelButton::clicked, this, [this]{ emit remove(this);});
-    connect(ui->decrypt, &QToolButton::clicked, this, [this]{ emit decrypt(ui->key);});
+
+    if (key->isSymmetric()) {
+        ui->decrypt->show();
+        connect(ui->decrypt, &QToolButton::clicked, this, [this]{ emit decrypt(ui->key);});
+    } else {
+        ui->decrypt->hide();
+    }
 
 	ui->add->setFont(Styles::font(Styles::Condensed, 12));
 	ui->added->setFont(ui->add->font());
 
-	if (CKeyCD1::isCDoc1Key(*ui->key)) {
-		std::shared_ptr<CKeyCD1> key = std::static_pointer_cast<CKeyCD1>(ui->key);
+    if (ui->key->isCDoc1()) {
+		std::shared_ptr<CKeyCDoc1> key = std::static_pointer_cast<CKeyCDoc1>(ui->key);
 		ui->code = SslCertificate(key->cert).personalCode().toHtmlEscaped();
 		ui->label = (!key->cert.subjectInfo("GN").isEmpty() && !key->cert.subjectInfo("SN").isEmpty() ?
 				key->cert.subjectInfo("GN").join(' ') + " " + key->cert.subjectInfo("SN").join(' ') :
 				key->cert.subjectInfo("CN").join(' ')).toHtmlEscaped();
 	} else {
 		ui->code = {};
-        ui->label = k->label;
+        ui->label = key->label;
 	}
-	if(ui->label.isEmpty() && ui->key->type == CKey::PUBLICKEY) {
-		const CKeyPK& pk = static_cast<const CKeyPK&>(*ui->key);
+	if(ui->label.isEmpty() && ui->key->type == CKey::PUBLIC_KEY) {
+        const CKeyPublicKey& pk = static_cast<const CKeyPublicKey&>(*ui->key);
         ui->label = pk.key_material;
 	}
 	setIdType();
@@ -118,7 +124,7 @@ void AddressItem::idChanged(std::shared_ptr<CKey> key)
 
 void AddressItem::idChanged(const SslCertificate &cert)
 {
-	idChanged(CKeyCD1::fromCertificate(cert));
+    idChanged(std::make_shared<CKeyCert>(cert));
 }
 
 void AddressItem::initTabOrder(QWidget *item)

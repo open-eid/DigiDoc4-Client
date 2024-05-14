@@ -60,10 +60,15 @@ public:
 
 	std::unique_ptr<CDoc> cdoc;
 	QString			fileName;
-	QByteArray		fmk;
 	bool			isEncrypted = false;
 	CDocumentModel	*documents = new CDocumentModel(this);
 	QStringList		tempFiles;
+    // Decryption data
+    QByteArray fmk;
+    // Encryption data
+    QString label;
+    QByteArray secret;
+    uint32_t kdf_iter;
 };
 
 bool CryptoDoc::Private::isEncryptedWarning() const
@@ -85,7 +90,11 @@ void CryptoDoc::Private::run()
 	else
 	{
 		qCDebug(CRYPTO) << "Encrypt" << fileName;
-		isEncrypted = cdoc->save(fileName);
+        if (secret.isEmpty()) {
+            isEncrypted = cdoc->save(fileName);
+        } else {
+            isEncrypted = CDoc2::save(fileName, cdoc->files, label, secret, kdf_iter);
+        }
 	}
 }
 
@@ -236,12 +245,13 @@ CKey::isTheSameRecipient(const CKey& other) const
 bool
 CKey::isTheSameRecipient(const QSslCertificate &cert) const
 {
-    QByteArray this_key, other_key;
-    if (this->isCertificate()) {
-        const CKeyCert& ckc = static_cast<const CKeyCert&>(*this);
-        this_key = ckc.cert.publicKey().toDer();
-    }
-    other_key = cert.publicKey().toDer();
+    if (!isPKI()) return false;
+    const CKeyPKI& pki = static_cast<const CKeyPKI&>(*this);
+    QByteArray this_key = pki.rcpt_key;
+    QSslKey k = cert.publicKey();
+    QByteArray other_key = Crypto::toPublicKeyDer(k);
+    qDebug() << "This key:" << this_key.toHex();
+    qDebug() << "Other key:" << other_key.toHex();
     if (this_key.isEmpty() || other_key.isEmpty()) return false;
     return this_key == other_key;
 }
@@ -273,17 +283,8 @@ void CKeyCert::setCert(const QSslCertificate &c)
     cert = c;
     QSslKey k = c.publicKey();
     rcpt_key = Crypto::toPublicKeyDer(k);
+    qDebug() << "Set cert PK:" << rcpt_key.toHex();
     pk_type = (k.algorithm() == QSsl::Rsa) ? PKType::RSA : PKType::ECC;
-}
-
-std::shared_ptr<CKeyCD1>
-CKeyCD1::newEmpty() {
-	return std::shared_ptr<CKeyCD1>(new CKeyCD1());
-}
-
-std::shared_ptr<CKeyCD1>
-CKeyCD1::fromCertificate(const QSslCertificate &cert) {
-	return std::shared_ptr<CKeyCD1>(new CKeyCD1(cert));
 }
 
 std::shared_ptr<CKeyServer>
@@ -300,6 +301,12 @@ CryptoDoc::CryptoDoc( QObject *parent )
 }
 
 CryptoDoc::~CryptoDoc() { clear(); delete d; }
+
+bool
+CryptoDoc::supportsSymmetricKeys() const
+{
+    return d->cdoc->version() >= 2;
+}
 
 bool CryptoDoc::addKey(std::shared_ptr<CKey> key )
 {
@@ -401,25 +408,32 @@ bool CryptoDoc::decrypt(std::shared_ptr<CKey> key, const QByteArray& secret)
 
 DocumentModel* CryptoDoc::documentModel() const { return d->documents; }
 
-bool CryptoDoc::encrypt( const QString &filename )
+bool CryptoDoc::encrypt( const QString &filename, const QString& label, const QByteArray& secret, uint32_t kdf_iter)
 {
-	if( !filename.isEmpty() )
-		d->fileName = filename;
-	if( d->fileName.isEmpty() )
-	{
+    if(!filename.isEmpty()) d->fileName = filename;
+    if(d->fileName.isEmpty()) {
 		WarningDialog::show(tr("Container is not open"));
 		return false;
 	}
-	if(d->isEncrypted)
-		return true;
-	if(d->cdoc->keys.isEmpty())
-	{
-		WarningDialog::show(tr("No keys specified"));
-		return false;
-	}
-
+    // I think the correct semantics is to fail if container is already encrypted
+    if(d->isEncrypted) return false;
+    if (secret.isEmpty()) {
+        // Encrypt for address list
+        if(d->cdoc->keys.isEmpty())
+        {
+            WarningDialog::show(tr("No keys specified"));
+            return false;
+        }
+    } else {
+        // Encrypt with symmetric key
+        d->label = label;
+        d->secret = secret;
+        d->kdf_iter = kdf_iter;
+    }
 	d->waitForFinished();
-	if(d->isEncrypted)
+    d->label.clear();
+    d->secret.clear();
+    if(d->isEncrypted)
 		open(d->fileName);
 	else
 		WarningDialog::show(tr("Failed to encrypt document. Please check your internet connection and network settings."), d->cdoc->lastError);
@@ -479,16 +493,6 @@ bool CryptoDoc::saveCopy(const QString &filename)
 	if(QFile::exists(filename))
 		QFile::remove(filename);
 	return QFile::copy(d->fileName, filename);
-}
-
-bool
-CryptoDoc::encryptLT(const QString& label, const QByteArray& secret, unsigned int kdf_iter)
-{
-    if( d->fileName.isEmpty()) {
-        WarningDialog::show(tr("Container is not open"));
-        return false;
-    }
-    return CDoc2::save(d->fileName, d->cdoc->files, label, secret, kdf_iter);
 }
 
 #include "CryptoDoc.moc"

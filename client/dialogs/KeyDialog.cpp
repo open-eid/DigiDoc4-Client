@@ -50,7 +50,7 @@ KeyDialog::KeyDialog( const CKey &k, QWidget *parent )
 
 	connect(d->close, &QPushButton::clicked, this, &KeyDialog::accept);
 	if (k.type == CKey::CDOC1) {
-		const CKeyCD1& kd = static_cast<const CKeyCD1&>(k);
+		const CKeyCDoc1& kd = static_cast<const CKeyCDoc1&>(k);
 		connect(d->showCert, &QPushButton::clicked, this, [this, cert=kd.cert] {
 			CertificateDetails::showCertificate(cert, this);
 		});
@@ -70,7 +70,7 @@ KeyDialog::KeyDialog( const CKey &k, QWidget *parent )
 
 	bool adjust_size = false;
 	if (k.type == CKey::Type::CDOC1) {
-		const CKeyCD1& cd1key = static_cast<const CKeyCD1&>(k);
+		const CKeyCDoc1& cd1key = static_cast<const CKeyCDoc1&>(k);
         addItem(tr("Recipient"), cd1key.label);
 		addItem(tr("Crypto method"), cd1key.method);
         //7addItem(tr("Agreement method"), cd1key.agreement);
