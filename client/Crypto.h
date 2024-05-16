@@ -72,6 +72,7 @@ public:
 	static QByteArray random(int len = 32);
 	static QByteArray xor_data(const QByteArray &a, const QByteArray &b);
 
+    static QByteArray pbkdf2_sha256(const QByteArray& pw, const QByteArray& salt, uint32_t iter);
 private:
 	static bool isError(int err);
 };

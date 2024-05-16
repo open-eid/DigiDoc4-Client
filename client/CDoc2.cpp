@@ -41,7 +41,6 @@
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkReply>
 #include <QtNetwork/QSslKey>
-#include <QPasswordDigestor>
 #include <QSaveFile>
 
 #include <openssl/x509.h>
@@ -829,7 +828,7 @@ CDoc2::save(QString _path, const std::vector<File>& files, const QString& label,
         // PasswordSalt_i = CSRNG()
         QByteArray pw_salt = Crypto::random();
         // PasswordKeyMaterial_i = PBKDF2(Password_i, PasswordSalt_i)
-        QByteArray key_material = QPasswordDigestor::deriveKeyPbkdf2(QCryptographicHash::Sha256, secret, pw_salt, kdf_iter, 32);
+        QByteArray key_material = Crypto::pbkdf2_sha256(secret, pw_salt, kdf_iter);
 #ifndef NDEBUG
         qDebug() << "Key material: " << key_material.toHex();
 #endif \
@@ -947,7 +946,7 @@ QByteArray CDoc2::getFMK(const CKey &key, const QByteArray& secret)
             qDebug() << "Password based symmetric key: " << key.label;
 #endif
             // KEY_MATERIAL = PBKDF2(PASSWORD, PASSWORD_SALT)
-            QByteArray key_material = QPasswordDigestor::deriveKeyPbkdf2(QCryptographicHash::Sha256, secret, sk.pw_salt, sk.kdf_iter, 32);
+            QByteArray key_material = Crypto::pbkdf2_sha256(secret, sk.pw_salt, sk.kdf_iter);
 #ifndef NDEBUG
             qDebug() << "Key material: " << key_material.toHex();
 #endif
