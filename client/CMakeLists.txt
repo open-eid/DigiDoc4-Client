@@ -45,7 +45,6 @@ add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
 	CDoc2.h
 	CheckConnection.cpp
 	CheckConnection.h
-	Colors.h
 	Crypto.cpp
 	Crypto.h
 	CryptoDoc.cpp
