@@ -25,7 +25,6 @@
 #include "CertStore.h"
 #endif
 #include "CheckConnection.h"
-#include "Colors.h"
 #include "Diagnostics.h"
 #include "FileDialog.h"
 #include "QSigner.h"
@@ -287,22 +286,18 @@ void SettingsDialog::checkConnection()
 	if(CheckConnection connection; !connection.check())
 	{
 		Application::restoreOverrideCursor();
-		auto *notification = new FadeInNotification(this,
-			ria::qdigidoc4::colors::MOJO, ria::qdigidoc4::colors::MARZIPAN, 0, 120);
 		QString error;
 		QString details = connection.errorDetails();
 		QTextStream s(&error);
 		s << connection.errorString();
 		if (!details.isEmpty())
 			s << "\n\n" << details << ".";
-		notification->start(error, 750, 3000, 1200);
+		FadeInNotification::error(this, error, 120);
 	}
 	else
 	{
 		Application::restoreOverrideCursor();
-		auto *notification = new FadeInNotification(this,
-			ria::qdigidoc4::colors::WHITE, ria::qdigidoc4::colors::MANTIS, 0, 120);
-		notification->start(tr("The connection to certificate status service is successful!"), 750, 3000, 1200);
+		FadeInNotification::success(this, tr("The connection to certificate status service is successful!"));
 	}
 }
 

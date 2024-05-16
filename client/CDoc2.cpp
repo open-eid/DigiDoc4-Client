@@ -21,7 +21,6 @@
 
 #include "Application.h"
 #include "CheckConnection.h"
-#include "Colors.h"
 #include "Crypto.h"
 #include "QCryptoBackend.h"
 #include "QSigner.h"
@@ -58,9 +57,8 @@ namespace cdoc20 {
 		if(CheckConnection().check())
 			return true;
 		return dispatchToMain([] {
-			auto *notification = new FadeInNotification(Application::mainWindow(),
-				ria::qdigidoc4::colors::WHITE, ria::qdigidoc4::colors::MANTIS);
-			notification->start(QCoreApplication::translate("MainWindow", "Check internet connection"), 750, 3000, 1200);
+			FadeInNotification::error(Application::mainWindow()->findChild<QWidget*>(QStringLiteral("topBar")),
+				QCoreApplication::translate("MainWindow", "Check internet connection"));
 			return false;
 		});
 	}

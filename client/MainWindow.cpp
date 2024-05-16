@@ -22,7 +22,6 @@
 
 #include "Application.h"
 #include "CheckConnection.h"
-#include "Colors.h"
 #include "CryptoDoc.h"
 #include "DigiDoc.h"
 #include "PrintSheet.h"
@@ -56,7 +55,7 @@
 #include <QtWidgets/QMessageBox>
 
 using namespace ria::qdigidoc4;
-using namespace ria::qdigidoc4::colors;
+using namespace std::chrono;
 
 MainWindow::MainWindow( QWidget *parent )
 	: QWidget( parent )
@@ -457,11 +456,8 @@ void MainWindow::onSignAction(int action, const QString &info1, const QString &i
 
 void MainWindow::convertToBDoc()
 {
-	if(!wrap(cryptoDoc->fileName(), cryptoDoc->state() == EncryptedContainer))
-		return;
-
-	auto *notification = new FadeInNotification(this, WHITE, MANTIS);
-	notification->start( tr("Converted to signed document!"), 750, 3000, 1200 );
+	if(wrap(cryptoDoc->fileName(), cryptoDoc->state() == EncryptedContainer))
+		FadeInNotification::success(ui->topBar, tr("Converted to signed document!"));
 }
 
 void MainWindow::convertToCDoc()
@@ -488,8 +484,7 @@ void MainWindow::convertToCDoc()
 	ui->cryptoContainerPage->transition(cryptoDoc,  qApp->signer()->tokenauth().cert());
 	selectPage(CryptoDetails);
 
-	auto *notification = new FadeInNotification(this, WHITE, MANTIS);
-	notification->start( tr("Converted to crypto container!"), 750, 3000, 1200 );
+	FadeInNotification::success(ui->topBar, tr("Converted to crypto container!"));
 }
 
 void MainWindow::moveCryptoContainer()
@@ -523,16 +518,14 @@ void MainWindow::onCryptoAction(int action, const QString &/*id*/, const QString
 		if(decrypt())
 		{
 			ui->cryptoContainerPage->transition(cryptoDoc, qApp->signer()->tokenauth().cert());
-			auto *notification = new FadeInNotification(this, WHITE, MANTIS);
-			notification->start( tr("Decryption succeeded!"), 750, 3000, 1200 );
+			FadeInNotification::success(ui->topBar, tr("Decryption succeeded!"));
 		}
 		break;
 	case EncryptContainer:
 		if(encrypt())
 		{
 			ui->cryptoContainerPage->transition(cryptoDoc, qApp->signer()->tokenauth().cert());
-			auto *notification = new FadeInNotification(this, WHITE, MANTIS);
-			notification->start( tr("Encryption succeeded!"), 750, 3000, 1200 );
+			FadeInNotification::success(ui->topBar, tr("Encryption succeeded!"));
 		}
 		break;
 	case ContainerSaveAs:
@@ -818,15 +811,13 @@ void MainWindow::showEvent(QShowEvent * /*event*/)
 	static bool isShown = false;
 	if(isShown)
 		return;
-	static const int height = 94;
-	static const int width = 166;
-	auto *notification = new FadeInNotification(this, WHITE, NONE,
-		QPoint(this->width() - width - 15, this->height() - height - 70), width, height);
+	QRect r{{}, QSize{166, 94}};
+	r.moveBottomRight(rect().bottomRight() - QPoint{15, 70});
+	auto *notification = new FadeInNotification(this, r);
 	notification->setFocusPolicy(Qt::NoFocus);
 	auto *structureFunds = new QSvgWidget(QStringLiteral(":/images/Struktuurifondid.svg"), notification);
-	structureFunds->resize(width, height);
-	structureFunds->show();
-	notification->start({}, 400, 3000, 1100);
+	structureFunds->resize(notification->size());
+	notification->start(400ms);
 	isShown = true;
 }
 
@@ -853,8 +844,7 @@ void MainWindow::sign(F &&sign)
 {
 	if(!CheckConnection().check())
 	{
-		auto *notification = new FadeInNotification(this, MOJO, MARZIPAN);
-		notification->start(tr("Check internet connection"), 750, 3000, 1200);
+		FadeInNotification::error(ui->topBar, tr("Check internet connection"));
 		return;
 	}
 
@@ -884,8 +874,7 @@ void MainWindow::sign(F &&sign)
 
 	ui->signContainerPage->transition(digiDoc);
 
-	auto *notification = new FadeInNotification(this, WHITE, MANTIS);
-	notification->start(tr("The container has been successfully signed!"), 750, 3000, 1200);
+	FadeInNotification::success(ui->topBar, tr("The container has been successfully signed!"));
 	adjustDrops();
 }
 
