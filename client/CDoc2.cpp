@@ -836,7 +836,8 @@ CDoc2::save(QString _path, const std::vector<File>& files, const QString& label,
         QByteArray salt = Crypto::random();
         // KEK_i = HKDF(KeyMaterialSalt_i, PasswordKeyMaterial_i)
         QByteArray info = KEK + cdoc20::header::EnumNameFMKEncryptionMethod(cdoc20::header::FMKEncryptionMethod::XOR) + secret;
-        QByteArray kek = Crypto::hkdf(key_material, salt, info, 32, EVP_KDF_HKDF_MODE_EXTRACT_AND_EXPAND);
+        QByteArray tmp = Crypto::extract(key_material, salt, 32);
+        QByteArray kek = Crypto::expand(tmp, info, 32);
 
         QByteArray xor_key = Crypto::xor_data(fmk, kek);
 
@@ -851,7 +852,8 @@ CDoc2::save(QString _path, const std::vector<File>& files, const QString& label,
         // KeyMaterialSalt_i = CSRNG()
         // KEK_i = HKDF(KeyMaterialSalt_i, S_i)
         QByteArray info = KEK + cdoc20::header::EnumNameFMKEncryptionMethod(cdoc20::header::FMKEncryptionMethod::XOR) + label.toUtf8();
-        QByteArray kek = Crypto::hkdf(secret, salt, info, 32, EVP_KDF_HKDF_MODE_EXTRACT_AND_EXPAND);
+        QByteArray tmp = Crypto::extract(secret, salt, 32);
+        QByteArray kek = Crypto::expand(tmp, info, 32);
 
         QByteArray xor_key = Crypto::xor_data(fmk, kek);
 
@@ -952,14 +954,15 @@ QByteArray CDoc2::getFMK(const CKey &key, const QByteArray& secret)
 #endif
             // KEK = HKDF(SALT, KEY_MATERIAL)
             QByteArray info = KEK + cdoc20::header::EnumNameFMKEncryptionMethod(cdoc20::header::FMKEncryptionMethod::XOR) + secret;
-            kek = Crypto::hkdf(key_material, sk.salt, info, 32, EVP_KDF_HKDF_MODE_EXTRACT_AND_EXPAND);
+            QByteArray tmp = Crypto::extract(key_material, sk.salt, 32);
+            kek = Crypto::expand(tmp, info, 32);
         } else {
 #ifndef NDEBUG
             qDebug() << "Plain symmetric key: " << key.label;
 #endif
             QByteArray info = KEK + cdoc20::header::EnumNameFMKEncryptionMethod(cdoc20::header::FMKEncryptionMethod::XOR) + sk.label.toUtf8();
-            kek = Crypto::hkdf(secret, sk.salt, info, 32, EVP_KDF_HKDF_MODE_EXTRACT_AND_EXPAND);
-            qDebug() << "kek:" << kek.toHex();
+            QByteArray tmp = Crypto::extract(secret, sk.salt, 32);
+            kek = Crypto::expand(tmp, info, 32);
         }
     } else {
         // Public/private key
