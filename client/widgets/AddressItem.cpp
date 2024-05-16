@@ -75,7 +75,7 @@ AddressItem::AddressItem(std::shared_ptr<CKey> key, QWidget *parent, bool showIc
 				key->cert.subjectInfo("CN").join(' ')).toHtmlEscaped();
 	} else {
 		ui->code = {};
-        ui->label = key->label;
+        ui->label = key->label.toHtmlEscaped();
 	}
 	if(ui->label.isEmpty() && ui->key->type == CKey::PUBLIC_KEY) {
         const CKeyPublicKey& pk = static_cast<const CKeyPublicKey&>(*ui->key);
