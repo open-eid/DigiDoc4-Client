@@ -19,6 +19,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include "widgets/Item.h"
 
 struct CKey;

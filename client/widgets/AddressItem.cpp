@@ -17,6 +17,8 @@
  *
  */
 
+#include <QDebug>
+
 #include "AddressItem.h"
 #include "ui_AddressItem.h"
 
