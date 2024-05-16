@@ -21,7 +21,7 @@
 
 #include "widgets/Item.h"
 
-class CKey;
+struct CKey;
 
 class AddressItem final : public Item
 {

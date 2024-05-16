@@ -84,30 +84,30 @@ PasswordDialog::updateUI()
     if (mode == Mode::DECRYPT) {
         ui->labelLine->setReadOnly(true);
         if (type == Type::PASSWORD) {
-            ui->typeSelector->setTabVisible(Type::PASSWORD, true);
-            ui->typeSelector->setTabVisible(Type::KEY, false);
+            ui->typeSelector->setTabEnabled(Type::PASSWORD, true);
+            ui->typeSelector->setTabEnabled(Type::KEY, false);
             ui->passwordLabel->setText("Enter password to decrypt the document");
             ui->passwordLine->setEchoMode(QLineEdit::EchoMode::Password);
             ui->password2Label->hide();
             ui->password2Line->hide();
         } else {
-            ui->typeSelector->setTabVisible(Type::PASSWORD, false);
-            ui->typeSelector->setTabVisible(Type::KEY, true);
+            ui->typeSelector->setTabEnabled(Type::PASSWORD, false);
+            ui->typeSelector->setTabEnabled(Type::KEY, true);
             ui->keyLabel->setText("Enter key to decrypt the document");
             ui->generateKey->hide();
         }
     } else {
         ui->labelLine->setReadOnly(false);
         if (type == Type::PASSWORD) {
-            ui->typeSelector->setTabVisible(Type::PASSWORD, true);
-            ui->typeSelector->setTabVisible(Type::KEY, true);
+            ui->typeSelector->setTabEnabled(Type::PASSWORD, true);
+            ui->typeSelector->setTabEnabled(Type::KEY, true);
             ui->passwordLabel->setText("Enter a password to encrypt the document");
             ui->passwordLine->setEchoMode(QLineEdit::EchoMode::Password);
             ui->password2Label->show();
             ui->password2Line->show();
         } else {
-            ui->typeSelector->setTabVisible(Type::PASSWORD, true);
-            ui->typeSelector->setTabVisible(Type::KEY, true);
+            ui->typeSelector->setTabEnabled(Type::PASSWORD, true);
+            ui->typeSelector->setTabEnabled(Type::KEY, true);
             ui->keyLabel->setText("Enter a key to encrypt the document");
             ui->generateKey->show();
         }

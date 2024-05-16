@@ -28,7 +28,7 @@ namespace Ui {
 class MainWindow;
 }
 
-class CKey;
+struct CKey;
 class CryptoDoc;
 class DigiDoc;
 class DocumentModel;

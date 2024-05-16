@@ -21,7 +21,8 @@
 
 #include <QDialog>
 
-class CKey;
+struct CKey;
+
 class KeyDialog final: public QDialog
 {
 	Q_OBJECT
