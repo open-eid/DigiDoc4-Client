@@ -1,6 +1,6 @@
 #include "PasswordDialog.h"
 #include "Crypto.h"
-#include "ui_passworddialog.h"
+#include "ui_PasswordDialog.h"
 
 PasswordDialog::PasswordDialog(QWidget *parent)
     : QDialog(parent), mode(Mode::DECRYPT), type(Type::PASSWORD)
