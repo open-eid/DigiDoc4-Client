@@ -440,16 +440,6 @@ bool CryptoDoc::encrypt( const QString &filename, const QString& label, const QB
 	return d->isEncrypted;
 }
 
-bool
-CryptoDoc::encryptLT(const QString& label, const QByteArray& secret, unsigned int kdf_iter)
-{
-    if( d->fileName.isEmpty()) {
-        WarningDialog::show(tr("Container is not open"));
-        return false;
-    }
-    return CDoc2::save(d->fileName, d->cdoc->files, label, secret, kdf_iter);
-}
-
 QString CryptoDoc::fileName() const { return d->fileName; }
 
 QList<std::shared_ptr<CKey>> CryptoDoc::keys() const
