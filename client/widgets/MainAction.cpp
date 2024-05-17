@@ -135,8 +135,8 @@ QString MainAction::label(Actions action)
 	case SignatureSmartID: return tr("SignatureSmartID");
 	case SignatureToken: return tr("SignatureToken");
 	case EncryptContainer: return tr("EncryptContainer");
-    case EncryptLT: return tr("EncryptLongTerm");
-    case DecryptContainer: return tr("DecryptContainer");
+	case EncryptLT: return tr("EncryptLongTerm");
+	case DecryptContainer: return tr("DecryptContainer");
 	case DecryptToken: return tr("DECRYPT");
 	default: return tr("SignatureAdd");
 	}
@@ -151,10 +151,10 @@ void MainAction::showActions(const QList<Actions> &actions)
 {
 	QList<Actions> order = actions;
 	if(order.size() == 2 &&
-		std::all_of(order.cbegin(), order.cend(), [] (Actions action) {
-			return action == SignatureMobile || action == SignatureSmartID;
-		}) &&
-		!Settings::MOBILEID_ORDER)
+			std::all_of(order.cbegin(), order.cend(), [] (Actions action) {
+						return action == SignatureMobile || action == SignatureSmartID;
+			}) &&
+			!Settings::MOBILEID_ORDER)
 	{
 		std::reverse(order.begin(), order.end());
 	}
@@ -178,7 +178,7 @@ void MainAction::showDropdown()
 			other->move(pos() + QPoint(0, (-height() - 1) * (ui->list.size() + 1)));
 			other->show();
 			other->setStyleSheet(ui->mainAction->styleSheet() +
-				QStringLiteral("\nborder-top-left-radius: 2px; border-top-right-radius: 2px;"));
+								 QStringLiteral("\nborder-top-left-radius: 2px; border-top-right-radius: 2px;"));
 			if (*i == Actions::SignatureMobile)
 				connect(other, &QPushButton::clicked, this, []{ Settings::MOBILEID_ORDER = true; });
 			if (*i == Actions::SignatureSmartID)

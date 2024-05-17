@@ -63,12 +63,12 @@ public:
 	bool			isEncrypted = false;
 	CDocumentModel	*documents = new CDocumentModel(this);
 	QStringList		tempFiles;
-    // Decryption data
-    QByteArray fmk;
-    // Encryption data
-    QString label;
-    QByteArray secret;
-    uint32_t kdf_iter;
+	// Decryption data
+	QByteArray fmk;
+	// Encryption data
+	QString label;
+	QByteArray secret;
+	uint32_t kdf_iter;
 };
 
 bool CryptoDoc::Private::isEncryptedWarning() const
@@ -90,16 +90,16 @@ void CryptoDoc::Private::run()
 	else
 	{
 		qCDebug(CRYPTO) << "Encrypt" << fileName;
-        if (secret.isEmpty()) {
-            isEncrypted = cdoc->save(fileName);
-        } else {
-            isEncrypted = CDoc2::save(fileName, cdoc->files, label, secret, kdf_iter);
-        }
+		if (secret.isEmpty()) {
+			isEncrypted = cdoc->save(fileName);
+		} else {
+			isEncrypted = CDoc2::save(fileName, cdoc->files, label, secret, kdf_iter);
+		}
 	}
 }
 
 CDocumentModel::CDocumentModel(CryptoDoc::Private *doc)
-: d( doc )
+	: d( doc )
 {}
 
 bool CDocumentModel::addFile(const QString &file, const QString &mime)
@@ -116,28 +116,28 @@ bool CDocumentModel::addFile(const QString &file, const QString &mime)
 	if(d->cdoc->version() == 1 && info.size() > 120*1024*1024)
 	{
 		WarningDialog::show(tr("Added file(s) exceeds the maximum size limit of the container (∼120MB). "
-			"<a href='https://www.id.ee/en/article/encrypting-large-120-mb-files/'>Read more about it</a>"));
+							   "<a href='https://www.id.ee/en/article/encrypting-large-120-mb-files/'>Read more about it</a>"));
 		return false;
 	}
 
 	QString fileName(info.fileName());
 	if(std::any_of(d->cdoc->files.cbegin(), d->cdoc->files.cend(),
-			[&fileName](const auto &containerFile) { return containerFile.name == fileName; }))
+				   [&fileName](const auto &containerFile) { return containerFile.name == fileName; }))
 	{
 		WarningDialog::show(DocumentModel::tr("Cannot add the file to the envelope. File '%1' is already in container.")
-			 .arg(FileDialog::normalized(fileName)));
+							.arg(FileDialog::normalized(fileName)));
 		return false;
 	}
 
 	auto data = std::make_unique<QFile>(file);
 	data->open(QFile::ReadOnly);
 	d->cdoc->files.push_back({
-		QFileInfo(file).fileName(),
-		QStringLiteral("D%1").arg(d->cdoc->files.size()),
-		mime,
-		data->size(),
-		std::move(data),
-	});
+								 QFileInfo(file).fileName(),
+								 QStringLiteral("D%1").arg(d->cdoc->files.size()),
+								 mime,
+								 data->size(),
+								 std::move(data),
+							 });
 	emit added(FileDialog::normalized(d->cdoc->files.back().name));
 	return true;
 }
@@ -229,38 +229,38 @@ QString CDocumentModel::save(int row, const QString &path) const
 bool
 CKey::isTheSameRecipient(const CKey& other) const
 {
-    QByteArray this_key, other_key;
-    if (this->isCertificate()) {
-        const CKeyCert& ckc = static_cast<const CKeyCert&>(*this);
-        this_key = ckc.cert.publicKey().toDer();
-    }
-    if (other.isCertificate()) {
-        const CKeyCert& ckc = static_cast<const CKeyCert&>(other);
-        other_key = ckc.cert.publicKey().toDer();
-    }
-    if (this_key.isEmpty() || other_key.isEmpty()) return false;
-    return this_key == other_key;
+	QByteArray this_key, other_key;
+	if (this->isCertificate()) {
+		const CKeyCert& ckc = static_cast<const CKeyCert&>(*this);
+		this_key = ckc.cert.publicKey().toDer();
+	}
+	if (other.isCertificate()) {
+		const CKeyCert& ckc = static_cast<const CKeyCert&>(other);
+		other_key = ckc.cert.publicKey().toDer();
+	}
+	if (this_key.isEmpty() || other_key.isEmpty()) return false;
+	return this_key == other_key;
 }
 
 bool
 CKey::isTheSameRecipient(const QSslCertificate &cert) const
 {
-    if (!isPKI()) return false;
-    const CKeyPKI& pki = static_cast<const CKeyPKI&>(*this);
-    QByteArray this_key = pki.rcpt_key;
-    QSslKey k = cert.publicKey();
-    QByteArray other_key = Crypto::toPublicKeyDer(k);
-    qDebug() << "This key:" << this_key.toHex();
-    qDebug() << "Other key:" << other_key.toHex();
-    if (this_key.isEmpty() || other_key.isEmpty()) return false;
-    return this_key == other_key;
+	if (!isPKI()) return false;
+	const CKeyPKI& pki = static_cast<const CKeyPKI&>(*this);
+	QByteArray this_key = pki.rcpt_key;
+	QSslKey k = cert.publicKey();
+	QByteArray other_key = Crypto::toPublicKeyDer(k);
+	qDebug() << "This key:" << this_key.toHex();
+	qDebug() << "Other key:" << other_key.toHex();
+	if (this_key.isEmpty() || other_key.isEmpty()) return false;
+	return this_key == other_key;
 }
 
 CKeyCert::CKeyCert(Type _type, const QSslCertificate &c)
-    : CKeyPKI(_type)
+	: CKeyPKI(_type)
 {
 	setCert(c);
-    label = [](const SslCertificate &c) {
+	label = [](const SslCertificate &c) {
 		QString cn = c.subjectInfo(QSslCertificate::CommonName);
 		QString gn = c.subjectInfo("GN");
 		QString sn = c.subjectInfo("SN");
@@ -280,11 +280,11 @@ CKeyCert::CKeyCert(Type _type, const QSslCertificate &c)
 
 void CKeyCert::setCert(const QSslCertificate &c)
 {
-    cert = c;
-    QSslKey k = c.publicKey();
-    rcpt_key = Crypto::toPublicKeyDer(k);
-    qDebug() << "Set cert PK:" << rcpt_key.toHex();
-    pk_type = (k.algorithm() == QSsl::Rsa) ? PKType::RSA : PKType::ECC;
+	cert = c;
+	QSslKey k = c.publicKey();
+	rcpt_key = Crypto::toPublicKeyDer(k);
+	qDebug() << "Set cert PK:" << rcpt_key.toHex();
+	pk_type = (k.algorithm() == QSsl::Rsa) ? PKType::RSA : PKType::ECC;
 }
 
 std::shared_ptr<CKeyServer>
@@ -297,7 +297,7 @@ CryptoDoc::CryptoDoc( QObject *parent )
 	, d(new Private)
 {
 	const_cast<QLoggingCategory&>(CRYPTO()).setEnabled(QtDebugMsg,
-		QFile::exists(QStringLiteral("%1/%2.log").arg(QDir::tempPath(), Application::applicationName())));
+													   QFile::exists(QStringLiteral("%1/%2.log").arg(QDir::tempPath(), Application::applicationName())));
 }
 
 CryptoDoc::~CryptoDoc() { clear(); delete d; }
@@ -305,7 +305,7 @@ CryptoDoc::~CryptoDoc() { clear(); delete d; }
 bool
 CryptoDoc::supportsSymmetricKeys() const
 {
-    return d->cdoc->version() >= 2;
+	return d->cdoc->version() >= 2;
 }
 
 bool CryptoDoc::addKey(std::shared_ptr<CKey> key )
@@ -313,7 +313,7 @@ bool CryptoDoc::addKey(std::shared_ptr<CKey> key )
 	if(d->isEncryptedWarning())
 		return false;
 	for (std::shared_ptr<CKey> k: d->cdoc->keys) {
-        if (k->isTheSameRecipient(*key)) {
+		if (k->isTheSameRecipient(*key)) {
 			WarningDialog::show(tr("Key already exists"));
 			return false;
 		}
@@ -324,8 +324,6 @@ bool CryptoDoc::addKey(std::shared_ptr<CKey> key )
 
 bool CryptoDoc::canDecrypt(const QSslCertificate &cert)
 {
-	//std::shared_ptr<CKey> ckey = d->cdoc->getDecryptionKey(cert);
-	//return (ckey != nullptr) && !ckey->key.isEmpty();
 	CKey::DecryptionStatus dec_stat = d->cdoc->canDecrypt(cert);
 	return (dec_stat == CKey::CAN_DECRYPT) || (dec_stat == CKey::DecryptionStatus::NEED_KEY);
 }
@@ -362,19 +360,19 @@ bool CryptoDoc::decrypt(std::shared_ptr<CKey> key, const QByteArray& secret)
 	if(!d->isEncrypted)
 		return true;
 
-    if (key == nullptr) {
-        key = d->cdoc->getDecryptionKey(qApp->signer()->tokenauth().cert());
-    }
-    if((key == nullptr) || (key->isSymmetric() && secret.isEmpty())) {
+	if (key == nullptr) {
+		key = d->cdoc->getDecryptionKey(qApp->signer()->tokenauth().cert());
+	}
+	if((key == nullptr) || (key->isSymmetric() && secret.isEmpty())) {
 		WarningDialog::show(tr("You do not have the key to decrypt this document"));
 		return false;
 	}
 
-    if(d->cdoc->version() == 2 && (key->type == CKey::Type::SERVER) && !Settings::CDOC2_NOTIFICATION.isSet())
+	if(d->cdoc->version() == 2 && (key->type == CKey::Type::SERVER) && !Settings::CDOC2_NOTIFICATION.isSet())
 	{
 		auto *dlg = new WarningDialog(tr("You must enter your PIN code twice in order to decrypt the CDOC2 container. "
-			"The first PIN entry is required for authentication to the key server referenced in the CDOC2 container. "
-			"Second PIN entry is required to decrypt the CDOC2 container."), Application::mainWindow());
+										 "The first PIN entry is required for authentication to the key server referenced in the CDOC2 container. "
+										 "Second PIN entry is required to decrypt the CDOC2 container."), Application::mainWindow());
 		dlg->setCancelText(WarningDialog::Cancel);
 		dlg->addButton(WarningDialog::OK, QMessageBox::Ok);
 		dlg->addButton(tr("DON'T SHOW AGAIN"), QMessageBox::Ignore);
@@ -388,7 +386,7 @@ bool CryptoDoc::decrypt(std::shared_ptr<CKey> key, const QByteArray& secret)
 		}
 	}
 
-    d->fmk = d->cdoc->getFMK(*key, secret);
+	d->fmk = d->cdoc->getFMK(*key, secret);
 #ifndef NDEBUG
 	qDebug() << "FMK (Transport key)" << d->fmk.toHex();
 #endif
@@ -410,30 +408,30 @@ DocumentModel* CryptoDoc::documentModel() const { return d->documents; }
 
 bool CryptoDoc::encrypt( const QString &filename, const QString& label, const QByteArray& secret, uint32_t kdf_iter)
 {
-    if(!filename.isEmpty()) d->fileName = filename;
-    if(d->fileName.isEmpty()) {
+	if(!filename.isEmpty()) d->fileName = filename;
+	if(d->fileName.isEmpty()) {
 		WarningDialog::show(tr("Container is not open"));
 		return false;
 	}
-    // I think the correct semantics is to fail if container is already encrypted
-    if(d->isEncrypted) return false;
-    if (secret.isEmpty()) {
-        // Encrypt for address list
-        if(d->cdoc->keys.isEmpty())
-        {
-            WarningDialog::show(tr("No keys specified"));
-            return false;
-        }
-    } else {
-        // Encrypt with symmetric key
-        d->label = label;
-        d->secret = secret;
-        d->kdf_iter = kdf_iter;
-    }
+	// I think the correct semantics is to fail if container is already encrypted
+	if(d->isEncrypted) return false;
+	if (secret.isEmpty()) {
+		// Encrypt for address list
+		if(d->cdoc->keys.isEmpty())
+		{
+			WarningDialog::show(tr("No keys specified"));
+			return false;
+		}
+	} else {
+		// Encrypt with symmetric key
+		d->label = label;
+		d->secret = secret;
+		d->kdf_iter = kdf_iter;
+	}
 	d->waitForFinished();
-    d->label.clear();
-    d->secret.clear();
-    if(d->isEncrypted)
+	d->label.clear();
+	d->secret.clear();
+	if(d->isEncrypted)
 		open(d->fileName);
 	else
 		WarningDialog::show(tr("Failed to encrypt document. Please check your internet connection and network settings."), d->cdoc->lastError);

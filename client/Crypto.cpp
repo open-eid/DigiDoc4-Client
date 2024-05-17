@@ -83,7 +83,7 @@ bool Crypto::Cipher::result() const
 QByteArray Crypto::Cipher::tag() const
 {
 	if(QByteArray result(tagLen(), 0);
-		!isError(EVP_CIPHER_CTX_ctrl(ctx.get(), EVP_CTRL_AEAD_GET_TAG, int(result.size()), result.data())))
+			!isError(EVP_CIPHER_CTX_ctrl(ctx.get(), EVP_CTRL_AEAD_GET_TAG, int(result.size()), result.data())))
 		return result;
 	return {};
 }
@@ -95,7 +95,7 @@ bool Crypto::Cipher::setTag(const QByteArray &data) const
 
 QByteArray Crypto::aes_wrap(const QByteArray &key, const QByteArray &data)
 {
-    Cipher c(key.size() == 32 ? EVP_aes_256_wrap() : EVP_aes_128_wrap(), key, {}, true);
+	Cipher c(key.size() == 32 ? EVP_aes_256_wrap() : EVP_aes_128_wrap(), key, {}, true);
 	if(QByteArray result = c.update(data); c.result())
 		return result;
 	return {};
@@ -103,10 +103,10 @@ QByteArray Crypto::aes_wrap(const QByteArray &key, const QByteArray &data)
 
 QByteArray Crypto::aes_unwrap(const QByteArray &key, const QByteArray &data)
 {
-    Cipher c(key.size() == 32 ? EVP_aes_256_wrap() : EVP_aes_128_wrap(), key, {}, false);
-    if(QByteArray result = c.update(data); c.result())
-        return result;
-    return {};
+	Cipher c(key.size() == 32 ? EVP_aes_256_wrap() : EVP_aes_128_wrap(), key, {}, false);
+	if(QByteArray result = c.update(data); c.result())
+		return result;
+	return {};
 }
 
 QByteArray Crypto::cipher(const EVP_CIPHER *cipher, const QByteArray &key, QByteArray &data, bool encrypt)
@@ -202,9 +202,9 @@ QByteArray Crypto::derive(EVP_PKEY *priv, EVP_PKEY *pub)
 	auto ctx = SCOPE(EVP_PKEY_CTX, EVP_PKEY_CTX_new(priv, nullptr));
 	size_t sharedSecretLen = 0;
 	if(!ctx ||
-		isError(EVP_PKEY_derive_init(ctx.get())) ||
-		isError(EVP_PKEY_derive_set_peer(ctx.get(), pub)) ||
-		isError(EVP_PKEY_derive(ctx.get(), nullptr, &sharedSecretLen)))
+			isError(EVP_PKEY_derive_init(ctx.get())) ||
+			isError(EVP_PKEY_derive_set_peer(ctx.get(), pub)) ||
+			isError(EVP_PKEY_derive(ctx.get(), nullptr, &sharedSecretLen)))
 		return {};
 	QByteArray sharedSecret(int(sharedSecretLen), 0);
 	if(isError(EVP_PKEY_derive(ctx.get(), puchar(sharedSecret.data()), &sharedSecretLen)))
@@ -217,19 +217,19 @@ QByteArray Crypto::encrypt(EVP_PKEY *pub, int padding, const QByteArray &data)
 	auto ctx = SCOPE(EVP_PKEY_CTX, EVP_PKEY_CTX_new(pub, nullptr));
 	size_t size = 0;
 	if(isError(EVP_PKEY_encrypt_init(ctx.get())) ||
-		isError(EVP_PKEY_CTX_set_rsa_padding(ctx.get(), padding)) ||
-		isError(EVP_PKEY_encrypt(ctx.get(), nullptr, &size,
-			pcuchar(data.constData()), size_t(data.size()))))
+			isError(EVP_PKEY_CTX_set_rsa_padding(ctx.get(), padding)) ||
+			isError(EVP_PKEY_encrypt(ctx.get(), nullptr, &size,
+									 pcuchar(data.constData()), size_t(data.size()))))
 		return {};
 	if(padding == RSA_PKCS1_OAEP_PADDING)
 	{
 		if(isError(EVP_PKEY_CTX_set_rsa_oaep_md(ctx.get(), EVP_sha256())) ||
-			isError(EVP_PKEY_CTX_set_rsa_mgf1_md(ctx.get(), EVP_sha256())))
+				isError(EVP_PKEY_CTX_set_rsa_mgf1_md(ctx.get(), EVP_sha256())))
 			return {};
 	}
 	QByteArray result(int(size), 0);
 	if(isError(EVP_PKEY_encrypt(ctx.get(), puchar(result.data()), &size,
-			pcuchar(data.constData()), size_t(data.size()))))
+								pcuchar(data.constData()), size_t(data.size()))))
 		return {};
 	return result;
 }
@@ -254,11 +254,11 @@ std::unique_ptr<EVP_PKEY, void (*)(EVP_PKEY *)> Crypto::fromECPublicKeyDer(const
 {
 	EVP_PKEY *params = nullptr;
 	if(auto ctx = SCOPE(EVP_PKEY_CTX, EVP_PKEY_CTX_new_id(EVP_PKEY_EC, nullptr));
-		!ctx ||
-		isError(EVP_PKEY_paramgen_init(ctx.get())) ||
-		isError(EVP_PKEY_CTX_set_ec_paramgen_curve_nid(ctx.get(), curveName)) ||
-		isError(EVP_PKEY_CTX_set_ec_param_enc(ctx.get(), OPENSSL_EC_NAMED_CURVE)) ||
-		isError(EVP_PKEY_paramgen(ctx.get(), &params)))
+			!ctx ||
+			isError(EVP_PKEY_paramgen_init(ctx.get())) ||
+			isError(EVP_PKEY_CTX_set_ec_paramgen_curve_nid(ctx.get(), curveName)) ||
+			isError(EVP_PKEY_CTX_set_ec_param_enc(ctx.get(), OPENSSL_EC_NAMED_CURVE)) ||
+			isError(EVP_PKEY_paramgen(ctx.get(), &params)))
 		return SCOPE(EVP_PKEY, nullptr);
 	const auto *p = pcuchar(key.constData());
 	return SCOPE(EVP_PKEY, d2i_PublicKey(EVP_PKEY_EC, &params, &p, long(key.length())));
@@ -276,8 +276,8 @@ std::unique_ptr<EVP_PKEY, void (*)(EVP_PKEY *)> Crypto::genECKey(EVP_PKEY *param
 	auto ctx = SCOPE(EVP_PKEY_CTX, EVP_PKEY_CTX_new(params, nullptr));
 	auto result = SCOPE(EVP_PKEY, nullptr);
 	if(ctx &&
-		!isError(EVP_PKEY_keygen_init(ctx.get())) &&
-		!isError(EVP_PKEY_keygen(ctx.get(), &key)))
+			!isError(EVP_PKEY_keygen_init(ctx.get())) &&
+			!isError(EVP_PKEY_keygen(ctx.get(), &key)))
 		result.reset(key);
 	return result;
 }
@@ -296,7 +296,7 @@ QByteArray Crypto::genKey(const EVP_CIPHER *cipher)
 	RAND_bytes(salt.data(), int(salt.size()));
 	RAND_bytes(indata.data(), int(indata.size()));
 	if(isError(EVP_BytesToKey(cipher, EVP_sha256(), salt.data(), indata.data(),
-			int(indata.size()), 1, puchar(key.data()), puchar(iv.data()))))
+							  int(indata.size()), 1, puchar(key.data()), puchar(iv.data()))))
 		return {};
 	return key;
 }
@@ -307,13 +307,13 @@ QByteArray Crypto::hkdf(const QByteArray &key, const QByteArray &salt, const QBy
 	QByteArray out(len, 0);
 	auto outlen = size_t(out.length());
 	if(!ctx ||
-		isError(EVP_PKEY_derive_init(ctx.get())) ||
-		isError(EVP_PKEY_CTX_hkdf_mode(ctx.get(), mode)) ||
-		isError(EVP_PKEY_CTX_set_hkdf_md(ctx.get(), EVP_sha256())) ||
-		isError(EVP_PKEY_CTX_set1_hkdf_key(ctx.get(), pcuchar(key.data()), int(key.size()))) ||
-		isError(EVP_PKEY_CTX_set1_hkdf_salt(ctx.get(), pcuchar(salt.data()), int(salt.size()))) ||
-		isError(EVP_PKEY_CTX_add1_hkdf_info(ctx.get(), pcuchar(info.data()), int(info.size()))) ||
-		isError(EVP_PKEY_derive(ctx.get(), puchar(out.data()), &outlen)))
+			isError(EVP_PKEY_derive_init(ctx.get())) ||
+			isError(EVP_PKEY_CTX_hkdf_mode(ctx.get(), mode)) ||
+			isError(EVP_PKEY_CTX_set_hkdf_md(ctx.get(), EVP_sha256())) ||
+			isError(EVP_PKEY_CTX_set1_hkdf_key(ctx.get(), pcuchar(key.data()), int(key.size()))) ||
+			isError(EVP_PKEY_CTX_set1_hkdf_salt(ctx.get(), pcuchar(salt.data()), int(salt.size()))) ||
+			isError(EVP_PKEY_CTX_add1_hkdf_info(ctx.get(), pcuchar(info.data()), int(info.size()))) ||
+			isError(EVP_PKEY_derive(ctx.get(), puchar(out.data()), &outlen)))
 		return {};
 	return out;
 }
@@ -335,9 +335,9 @@ QByteArray Crypto::sign_hmac(const QByteArray &key, const QByteArray &data)
 	size_t req = 0;
 	auto ctx = SCOPE(EVP_MD_CTX, EVP_MD_CTX_new());
 	if(!ctx ||
-		isError(EVP_DigestSignInit(ctx.get(), nullptr, EVP_sha256(), nullptr, pkey)) ||
-		isError(EVP_DigestSignUpdate(ctx.get(), data.data(), size_t(data.length()))) ||
-		isError(EVP_DigestSignFinal(ctx.get(), nullptr, &req)))
+			isError(EVP_DigestSignInit(ctx.get(), nullptr, EVP_sha256(), nullptr, pkey)) ||
+			isError(EVP_DigestSignUpdate(ctx.get(), data.data(), size_t(data.length()))) ||
+			isError(EVP_DigestSignFinal(ctx.get(), nullptr, &req)))
 		return {};
 	QByteArray sig(int(req), 0);
 	if(isError(EVP_DigestSignFinal(ctx.get(), puchar(sig.data()), &req)))
@@ -384,10 +384,10 @@ QByteArray Crypto::xor_data(const QByteArray &a, const QByteArray &b)
 QByteArray
 Crypto::pbkdf2_sha256(const QByteArray& pw, const QByteArray& salt, uint32_t iter)
 {
-    unsigned char key[32];
-    PKCS5_PBKDF2_HMAC(pw.data(), pw.length(),
-                      (const unsigned char *) salt.data(), salt.length(),
-                      iter, EVP_sha256(), 32, key);
-    return QByteArray((const char *) key, 32);
+	unsigned char key[32];
+	PKCS5_PBKDF2_HMAC(pw.data(), pw.length(),
+					  (const unsigned char *) salt.data(), salt.length(),
+					  iter, EVP_sha256(), 32, key);
+	return QByteArray((const char *) key, 32);
 }
 

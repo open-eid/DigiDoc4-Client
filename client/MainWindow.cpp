@@ -160,7 +160,7 @@ MainWindow::MainWindow( QWidget *parent )
 	connect(ui->cryptoContainerPage, &ContainerPage::keysSelected, this, &MainWindow::updateKeys);
 	connect(ui->cryptoContainerPage, &ContainerPage::removed, this, &MainWindow::removeAddress);
 
-    connect(ui->cryptoContainerPage, &ContainerPage::decryptReq, this, &MainWindow::decryptClicked);
+	connect(ui->cryptoContainerPage, &ContainerPage::decryptReq, this, &MainWindow::decryptClicked);
 
 	connect(ui->accordion, &Accordion::changePin1Clicked, this, &MainWindow::changePin1Clicked);
 	connect(ui->accordion, &Accordion::changePin2Clicked, this, &MainWindow::changePin2Clicked);
@@ -267,31 +267,31 @@ ContainerState MainWindow::currentState()
 
 void MainWindow::decrypt(std::shared_ptr<CKey> key)
 {
-    if(!cryptoDoc) return;
+	if(!cryptoDoc) return;
 
-    QByteArray secret;
-    if (key && (key->type == CKey::Type::SYMMETRIC_KEY)) {
-        std::shared_ptr<CKeySymmetric> skey = std::static_pointer_cast<CKeySymmetric>(key);
-        PasswordDialog p;
-        p.setLabel(key->label);
-        if (skey->kdf_iter > 0) {
-            p.setMode(PasswordDialog::Mode::DECRYPT, PasswordDialog::Type::PASSWORD);
-            if(!p.exec()) return;
-            secret = p.secret();
-        } else {
-            p.setMode(PasswordDialog::Mode::DECRYPT, PasswordDialog::Type::KEY);
-            if(!p.exec()) return;
-            secret = p.secret();
-        }
-    }
+	QByteArray secret;
+	if (key && (key->type == CKey::Type::SYMMETRIC_KEY)) {
+		std::shared_ptr<CKeySymmetric> skey = std::static_pointer_cast<CKeySymmetric>(key);
+		PasswordDialog p;
+		p.setLabel(key->label);
+		if (skey->kdf_iter > 0) {
+			p.setMode(PasswordDialog::Mode::DECRYPT, PasswordDialog::Type::PASSWORD);
+			if(!p.exec()) return;
+			secret = p.secret();
+		} else {
+			p.setMode(PasswordDialog::Mode::DECRYPT, PasswordDialog::Type::KEY);
+			if(!p.exec()) return;
+			secret = p.secret();
+		}
+	}
 
-    WaitDialogHolder waitDialog(this, tr("Decrypting"));
+	WaitDialogHolder waitDialog(this, tr("Decrypting"));
 
-    if (cryptoDoc->decrypt(key, secret)) {
-        ui->cryptoContainerPage->transition(cryptoDoc, qApp->signer()->tokenauth().cert());
-        auto *notification = new FadeInNotification(this, WHITE, MANTIS, 110);
-        notification->start( tr("Decryption succeeded!"), 750, 3000, 1200 );
-    }
+	if (cryptoDoc->decrypt(key, secret)) {
+		ui->cryptoContainerPage->transition(cryptoDoc, qApp->signer()->tokenauth().cert());
+		auto *notification = new FadeInNotification(this, WHITE, MANTIS, 110);
+		notification->start( tr("Decryption succeeded!"), 750, 3000, 1200 );
+	}
 }
 
 void MainWindow::dragEnterEvent(QDragEnterEvent *event)
@@ -346,33 +346,33 @@ bool MainWindow::encrypt(bool askForKey)
 
 	if(!FileDialog::fileIsWritable(cryptoDoc->fileName())) {
 		auto *dlg = new WarningDialog(tr("Cannot alter container %1. Save different location?")
-			.arg(FileDialog::normalized(cryptoDoc->fileName())), this);
+									  .arg(FileDialog::normalized(cryptoDoc->fileName())), this);
 		dlg->addButton(WarningDialog::YES, QMessageBox::Yes);
 		if(dlg->exec() == QMessageBox::Yes) {
 			moveCryptoContainer();
-            return encrypt(askForKey);
+			return encrypt(askForKey);
 		}
 		return false;
 	}
 
-    if (askForKey) {
-        PasswordDialog p;
-        p.setMode(PasswordDialog::Mode::ENCRYPT, PasswordDialog::Type::PASSWORD);
-        if(!p.exec()) return false;
-        QString label = p.label();
-        QByteArray secret = p.secret();
-        bool result;
-        if (p.type == PasswordDialog::Type::PASSWORD) {
-            WaitDialogHolder waitDialog(this, tr("Encrypting"));
-            return cryptoDoc->encrypt(cryptoDoc->fileName(), label, secret, 65536);
-        } else {
-            WaitDialogHolder waitDialog(this, tr("Encrypting"));
-            return cryptoDoc->encrypt(cryptoDoc->fileName(), label, secret, 0);
-        }
-    } else {
-        WaitDialogHolder waitDialog(this, tr("Encrypting"));
-        return cryptoDoc->encrypt();
-    }
+	if (askForKey) {
+		PasswordDialog p;
+		p.setMode(PasswordDialog::Mode::ENCRYPT, PasswordDialog::Type::PASSWORD);
+		if(!p.exec()) return false;
+		QString label = p.label();
+		QByteArray secret = p.secret();
+		bool result;
+		if (p.type == PasswordDialog::Type::PASSWORD) {
+			WaitDialogHolder waitDialog(this, tr("Encrypting"));
+			return cryptoDoc->encrypt(cryptoDoc->fileName(), label, secret, 65536);
+		} else {
+			WaitDialogHolder waitDialog(this, tr("Encrypting"));
+			return cryptoDoc->encrypt(cryptoDoc->fileName(), label, secret, 0);
+		}
+	} else {
+		WaitDialogHolder waitDialog(this, tr("Encrypting"));
+		return cryptoDoc->encrypt();
+	}
 }
 
 void MainWindow::mouseReleaseEvent(QMouseEvent *event)
@@ -469,14 +469,14 @@ void MainWindow::onSignAction(int action, const QString &info1, const QString &i
 		sign([this, info1, info2](const QString &city, const QString &state, const QString &zip, const QString &country, const QString &role) {
 			MobileProgress m(this);
 			return m.init(info1, info2) &&
-				digiDoc->sign(city, state, zip, country, role, &m);
+					digiDoc->sign(city, state, zip, country, role, &m);
 		});
 		break;
 	case SignatureSmartID:
 		sign([this, info1, info2](const QString &city, const QString &state, const QString &zip, const QString &country, const QString &role) {
 			SmartIDProgress s(this);
 			return s.init(info1, info2, digiDoc->fileName()) &&
-				digiDoc->sign(city, state, zip, country, role, &s);
+					digiDoc->sign(city, state, zip, country, role, &s);
 		});
 		break;
 	case ClearSignatureWarning:
@@ -545,7 +545,7 @@ void MainWindow::convertToCDoc()
 
 	auto cardData = qApp->signer()->tokenauth();
 	if(!cardData.cert().isNull())
-        cryptoContainer->addKey(std::make_shared<CKeyCert>(cardData.cert()));
+		cryptoContainer->addKey(std::make_shared<CKeyCert>(cardData.cert()));
 
 	resetCryptoDoc(cryptoContainer.release());
 	resetDigiDoc(nullptr, false);
@@ -583,8 +583,8 @@ void MainWindow::onCryptoAction(int action, const QString &/*id*/, const QString
 			convertToBDoc();
 		break;
 	case DecryptContainer:
-    case DecryptToken:
-        decrypt(nullptr);
+	case DecryptToken:
+		decrypt(nullptr);
 		break;
 	case EncryptContainer:
 		if(encrypt())
@@ -594,15 +594,15 @@ void MainWindow::onCryptoAction(int action, const QString &/*id*/, const QString
 			notification->start( tr("Encryption succeeded!"), 750, 3000, 1200 );
 		}
 		break;
-    case EncryptLT:
-        if(encrypt(true))
-        {
-            ui->cryptoContainerPage->transition(cryptoDoc, qApp->signer()->tokenauth().cert());
-            auto *notification = new FadeInNotification(this, WHITE, MANTIS, 110);
-            notification->start( tr("Encryption succeeded!"), 750, 3000, 1200 );
-        }
-        break;
-    case ContainerSaveAs:
+	case EncryptLT:
+		if(encrypt(true))
+		{
+			ui->cryptoContainerPage->transition(cryptoDoc, qApp->signer()->tokenauth().cert());
+			auto *notification = new FadeInNotification(this, WHITE, MANTIS, 110);
+			notification->start( tr("Encryption succeeded!"), 750, 3000, 1200 );
+		}
+		break;
+	case ContainerSaveAs:
 	{
 		if(!cryptoDoc)
 			break;
@@ -639,7 +639,7 @@ void MainWindow::onCryptoAction(int action, const QString &/*id*/, const QString
 
 void MainWindow::openFiles(const QStringList &files, bool addFile, bool forceCreate)
 {
-/*
+	/*
 	1. If containers are not open:
 		- If on myEid page and either crypto- or signature document, open corresponding view
 		- If on encrypt page, open encryption view
@@ -662,15 +662,15 @@ void MainWindow::openFiles(const QStringList &files, bool addFile, bool forceCre
 	switch(state)
 	{
 	case Uninitialized:
-	// Case 1.
+		// Case 1.
 		if(content.size() == 1)
 		{
 			auto fileType = FileDialog::detect(content[0]);
 			if(current == MyEid)
 				page = (fileType == FileDialog::CryptoDocument) ? CryptoDetails : SignDetails;
 			create = forceCreate || (
-				(fileType != FileDialog::CryptoDocument || page != CryptoDetails) &&
-				(fileType != FileDialog::SignatureDocument || page != SignDetails));
+						(fileType != FileDialog::CryptoDocument || page != CryptoDetails) &&
+						(fileType != FileDialog::SignatureDocument || page != SignDetails));
 		}
 		break;
 	case ContainerState::UnsignedContainer:
@@ -685,7 +685,7 @@ void MainWindow::openFiles(const QStringList &files, bool addFile, bool forceCre
 				if(page != CryptoDetails && digiDoc->isPDF() && !wrap(digiDoc->fileName(), true))
 					return;
 				DocumentModel* model = (current == CryptoDetails) ?
-					cryptoDoc->documentModel() : digiDoc->documentModel();
+							cryptoDoc->documentModel() : digiDoc->documentModel();
 				for(const auto &file: content)
 					model->addFile(file);
 				selectPage(page);
@@ -747,7 +747,7 @@ void MainWindow::openContainer(bool signature)
 	QString filter = QFileDialog::tr("All Files (*)") + QStringLiteral(";;") + tr("Documents (%1)");
 	if(signature)
 		filter = filter.arg(QStringLiteral("*.bdoc *.ddoc *.asice *.sce *.asics *.scs *.edoc *.adoc%1")
-			.arg(Application::confValue(Application::SiVaUrl).toString().isEmpty() ? QLatin1String() : QLatin1String(" *.pdf")));
+							.arg(Application::confValue(Application::SiVaUrl).toString().isEmpty() ? QLatin1String() : QLatin1String(" *.pdf")));
 	else
 		filter = filter.arg(QLatin1String("*.cdoc *.cdoc2"));
 	QStringList files = FileDialog::getOpenFileNames(this, tr("Select documents"), {}, filter);
@@ -901,7 +901,7 @@ void MainWindow::showEvent(QShowEvent * /*event*/)
 	static const int height = 94;
 	static const int width = 166;
 	auto *notification = new FadeInNotification(this, WHITE, NONE,
-		QPoint(this->width() - width - 15, this->height() - height - 70), width, height);
+												QPoint(this->width() - width - 15, this->height() - height - 70), width, height);
 	notification->setFocusPolicy(Qt::NoFocus);
 	auto *structureFunds = new QSvgWidget(QStringLiteral(":/images/Struktuurifondid.svg"), notification);
 	structureFunds->resize(width, height);
@@ -1067,10 +1067,10 @@ bool MainWindow::validateFiles(const QString &container, const QStringList &file
 	// Check that container is not dropped into itself
 	QFileInfo containerInfo(container);
 	if(std::none_of(files.cbegin(), files.cend(),
-			[containerInfo] (const QString &file) { return containerInfo == QFileInfo(file); }))
+					[containerInfo] (const QString &file) { return containerInfo == QFileInfo(file); }))
 		return true;
 	auto *dlg = new WarningDialog(tr("Cannot add container to same container\n%1")
-		.arg(FileDialog::normalized(container)), this);
+								  .arg(FileDialog::normalized(container)), this);
 	dlg->setCancelText(WarningDialog::Cancel);
 	dlg->open();
 	return false;
@@ -1113,8 +1113,8 @@ bool MainWindow::wrap(const QString& wrappedFile, bool enclose)
 bool MainWindow::wrapContainer(bool signing)
 {
 	QString msg = signing ?
-		tr("Files can not be added to the signed container. The system will create a new container which shall contain the signed document and the files you wish to add.") :
-		tr("Files can not be added to the cryptocontainer. The system will create a new container which shall contain the cypto-document and the files you wish to add.");
+				tr("Files can not be added to the signed container. The system will create a new container which shall contain the signed document and the files you wish to add.") :
+				tr("Files can not be added to the cryptocontainer. The system will create a new container which shall contain the cypto-document and the files you wish to add.");
 	auto *dlg = new WarningDialog(msg, this);
 	dlg->setCancelText(WarningDialog::Cancel);
 	dlg->addButton(tr("CONTINUE"), ContainerSave);
@@ -1180,7 +1180,7 @@ void MainWindow::containerSummary()
 	if( QPrinterInfo::availablePrinterNames().isEmpty() )
 	{
 		WarningDialog::show(this,
-			tr("In order to view Validity Confirmation Sheet there has to be at least one printer installed!"));
+							tr("In order to view Validity Confirmation Sheet there has to be at least one printer installed!"));
 		return;
 	}
 #endif
@@ -1198,7 +1198,7 @@ void MainWindow::containerSummary()
 void
 MainWindow::decryptClicked(std::shared_ptr<CKey> key)
 {
-    qDebug() << "Decrypt clicked:";
-    decrypt(key);
+	qDebug() << "Decrypt clicked:";
+	decrypt(key);
 }
 

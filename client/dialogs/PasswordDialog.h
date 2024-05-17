@@ -9,39 +9,39 @@ class PasswordDialog;
 
 class PasswordDialog : public QDialog
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    enum Mode {
-        ENCRYPT,
-        DECRYPT
-    };
+	enum Mode {
+		ENCRYPT,
+		DECRYPT
+	};
 
-    enum Type {
-        PASSWORD,
-        KEY
-    };
+	enum Type {
+		PASSWORD,
+		KEY
+	};
 
-    Mode mode;
-    Type type;
+	Mode mode;
+	Type type;
 
-    explicit PasswordDialog(QWidget *parent = nullptr);
-    ~PasswordDialog();
+	explicit PasswordDialog(QWidget *parent = nullptr);
+	~PasswordDialog();
 
-    void setMode(Mode mode, Type type);
+	void setMode(Mode mode, Type type);
 
-    void setLabel(const QString& label);
-    QString label();
-    QByteArray secret() const;
+	void setLabel(const QString& label);
+	QString label();
+	QByteArray secret() const;
 private:
-    Ui::PasswordDialog *ui;
+	Ui::PasswordDialog *ui;
 
-    void typeChanged(int index);
-    void lineChanged(const QString& text);
-    void editChanged();
-    void genKeyClicked();
-    void updateUI();
-    void updateOK();
+	void typeChanged(int index);
+	void lineChanged(const QString& text);
+	void editChanged();
+	void genKeyClicked();
+	void updateUI();
+	void updateOK();
 };
 
 #endif // PASSWORDDIALOG_H

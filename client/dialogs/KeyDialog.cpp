@@ -71,20 +71,18 @@ KeyDialog::KeyDialog( const CKey &k, QWidget *parent )
 	bool adjust_size = false;
 	if (k.type == CKey::Type::CDOC1) {
 		const CKeyCDoc1& cd1key = static_cast<const CKeyCDoc1&>(k);
-        addItem(tr("Recipient"), cd1key.label);
+		addItem(tr("Recipient"), cd1key.label);
 		addItem(tr("Crypto method"), cd1key.method);
-        //7addItem(tr("Agreement method"), cd1key.agreement);
-        //addItem(tr("Key derivation method"), cd1key.derive);
 		addItem(tr("ConcatKDF digest method"), cd1key.concatDigest);
 		addItem(tr("Expiry date"), cd1key.cert.expiryDate().toLocalTime().toString(QStringLiteral("dd.MM.yyyy hh:mm:ss")));
 		addItem(tr("Issuer"), SslCertificate(cd1key.cert).issuerInfo(QSslCertificate::CommonName));
-        adjust_size = !cd1key.concatDigest.isEmpty();
-    }
-    addItem(tr("Label"), k.label);
-    if (k.type == CKey::SERVER) {
-        const CKeyServer& sk = static_cast<const CKeyServer&>(k);
-        addItem(tr("Key server ID"), sk.keyserver_id);
-        addItem(tr("Transaction ID"), sk.transaction_id);
+		adjust_size = !cd1key.concatDigest.isEmpty();
+	}
+	addItem(tr("Label"), k.label);
+	if (k.type == CKey::SERVER) {
+		const CKeyServer& sk = static_cast<const CKeyServer&>(k);
+		addItem(tr("Key server ID"), sk.keyserver_id);
+		addItem(tr("Transaction ID"), sk.transaction_id);
 	}
 	d->view->resizeColumnToContents( 0 );
 	if(adjust_size) adjustSize();

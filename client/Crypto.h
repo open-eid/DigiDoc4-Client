@@ -50,12 +50,12 @@ public:
 		bool setTag(const QByteArray &data) const;
 	};
 
-    static QByteArray aes_wrap(const QByteArray &key, const QByteArray &data);
-    static QByteArray aes_unwrap(const QByteArray &key, const QByteArray &data);
-    static QByteArray cipher(const EVP_CIPHER *cipher, const QByteArray &key, QByteArray &data, bool encrypt);
+	static QByteArray aes_wrap(const QByteArray &key, const QByteArray &data);
+	static QByteArray aes_unwrap(const QByteArray &key, const QByteArray &data);
+	static QByteArray cipher(const EVP_CIPHER *cipher, const QByteArray &key, QByteArray &data, bool encrypt);
 	static QByteArray curve_oid(EVP_PKEY *key);
 	static QByteArray concatKDF(QCryptographicHash::Algorithm digestMethod,
-		quint32 keyDataLen, const QByteArray &z, const QByteArray &otherInfo);
+								quint32 keyDataLen, const QByteArray &z, const QByteArray &otherInfo);
 	static QByteArray derive(EVP_PKEY *priv, EVP_PKEY *pub);
 	static QByteArray encrypt(EVP_PKEY *pub, int padding, const QByteArray &data);
 	static QByteArray expand(const QByteArray &key, const QByteArray &info, int len = 32);
@@ -72,7 +72,7 @@ public:
 	static QByteArray random(int len = 32);
 	static QByteArray xor_data(const QByteArray &a, const QByteArray &b);
 
-    static QByteArray pbkdf2_sha256(const QByteArray& pw, const QByteArray& salt, uint32_t iter);
+	static QByteArray pbkdf2_sha256(const QByteArray& pw, const QByteArray& salt, uint32_t iter);
 private:
 	static bool isError(int err);
 };

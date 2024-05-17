@@ -40,7 +40,7 @@ public:
 	std::shared_ptr<CKey> getDecryptionKey(const QSslCertificate &cert) const final;
 	bool decryptPayload(const QByteArray &key) final;
 	bool save(const QString &path) final;
-    QByteArray getFMK(const CKey &key, const QByteArray& secret) final;
+	QByteArray getFMK(const CKey &key, const QByteArray& secret) final;
 	int version() final;
 
 	static std::unique_ptr<CDoc1> load(const QString& path);

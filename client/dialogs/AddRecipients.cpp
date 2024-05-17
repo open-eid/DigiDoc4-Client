@@ -113,7 +113,7 @@ void AddRecipients::addAllRecipientToRightPane()
 		addRecipientToRightPane(value);
 		std::shared_ptr<CKey> key = value->getKey();
 		if (key->type == CKey::Type::CDOC1) {
-            std::shared_ptr<CKeyCDoc1> kd = std::static_pointer_cast<CKeyCDoc1>(key);
+			std::shared_ptr<CKeyCDoc1> kd = std::static_pointer_cast<CKeyCDoc1>(key);
 			history.append(kd->cert);
 		}
 	}
@@ -130,7 +130,7 @@ void AddRecipients::addRecipientFromCard()
 void AddRecipients::addRecipientFromFile()
 {
 	QString file = FileDialog::getOpenFileName(this, windowTitle(), {},
-		tr("Certificates (*.cer *.crt *.pem)") );
+											   tr("Certificates (*.cer *.crt *.pem)") );
 	if( file.isEmpty() )
 		return;
 
@@ -152,7 +152,7 @@ void AddRecipients::addRecipientFromFile()
 		WarningDialog::show(this, tr("Failed to read certificate"));
 	}
 	else if( !SslCertificate( cert ).keyUsage().contains( SslCertificate::KeyEncipherment ) &&
-		!SslCertificate( cert ).keyUsage().contains( SslCertificate::KeyAgreement ) )
+			 !SslCertificate( cert ).keyUsage().contains( SslCertificate::KeyAgreement ) )
 	{
 		WarningDialog::show(this, tr("This certificate cannot be used for encryption"));
 	}
@@ -175,13 +175,13 @@ AddressItem * AddRecipients::addRecipientToLeftPane(const QSslCertificate& cert)
 	if(leftItem)
 		return leftItem;
 
-    leftItem = new AddressItem(std::make_shared<CKeyCert>(cert), ui->leftPane);
+	leftItem = new AddressItem(std::make_shared<CKeyCert>(cert), ui->leftPane);
 	leftList.insert(cert, leftItem);
 	ui->leftPane->addWidget(leftItem);
 
-    bool contains = false;
+	bool contains = false;
 	for (std::shared_ptr<CKey> k: rightList) {
-        if (k->isTheSameRecipient(cert)) {
+		if (k->isTheSameRecipient(cert)) {
 			contains = true;
 			break;
 		}
@@ -202,13 +202,13 @@ AddressItem * AddRecipients::addRecipientToLeftPane(const QSslCertificate& cert)
 bool AddRecipients::addRecipientToRightPane(std::shared_ptr<CKey> key, bool update)
 {
 	for (std::shared_ptr<CKey> k: rightList) {
-        if (k->isTheSameRecipient(*key)) return false;
+		if (k->isTheSameRecipient(*key)) return false;
 	}
 
 	if(update)
 	{
 		if (key->type == CKey::Type::CDOC1) {
-            std::shared_ptr<CKeyCDoc1> kd = std::static_pointer_cast<CKeyCDoc1>(key);
+			std::shared_ptr<CKeyCDoc1> kd = std::static_pointer_cast<CKeyCDoc1>(key);
 			if(auto expiryDate = kd->cert.expiryDate(); expiryDate <= QDateTime::currentDateTime())
 			{
 				if(Settings::CDOC2_DEFAULT && Settings::CDOC2_USE_KEYSERVER)
@@ -217,8 +217,8 @@ bool AddRecipients::addRecipientToRightPane(std::shared_ptr<CKey> key, bool upda
 					return false;
 				}
 				auto *dlg = new WarningDialog(tr("Are you sure that you want use certificate for encrypting, which expired on %1?<br />"
-					"When decrypter has updated certificates then decrypting is impossible.")
-					.arg(expiryDate.toString(QStringLiteral("dd.MM.yyyy hh:mm:ss"))), this);
+												 "When decrypter has updated certificates then decrypting is impossible.")
+											  .arg(expiryDate.toString(QStringLiteral("dd.MM.yyyy hh:mm:ss"))), this);
 				dlg->setCancelText(WarningDialog::NO);
 				dlg->addButton(WarningDialog::YES, QMessageBox::Yes);
 				if(dlg->exec() != QMessageBox::Yes)
@@ -248,7 +248,7 @@ bool AddRecipients::addRecipientToRightPane(std::shared_ptr<CKey> key, bool upda
 	ui->rightPane->addWidget(rightItem);
 	ui->confirm->setDisabled(rightList.isEmpty());
 	if (key->type == CKey::Type::CDOC1) {
-        std::shared_ptr<CKeyCDoc1> kd = std::static_pointer_cast<CKeyCDoc1>(key);
+		std::shared_ptr<CKeyCDoc1> kd = std::static_pointer_cast<CKeyCDoc1>(key);
 		historyCertData.addAndSave({kd->cert});
 	}
 	return true;
@@ -306,7 +306,7 @@ void AddRecipients::removeRecipientFromRightPane(Item *toRemove)
 	auto *rightItem = qobject_cast<AddressItem*>(toRemove);
 	std::shared_ptr<CKey> key = rightItem->getKey();
 	if (key->type == CKey::Type::CDOC1) {
-        std::shared_ptr<CKeyCDoc1> kd = std::static_pointer_cast<CKeyCDoc1>(key);
+		std::shared_ptr<CKeyCDoc1> kd = std::static_pointer_cast<CKeyCDoc1>(key);
 		if(auto it = leftList.find(kd->cert); it != leftList.end())
 		{
 			it.value()->setDisabled(false);
@@ -329,16 +329,16 @@ void AddRecipients::search(const QString &term, bool select, const QString &type
 		{QStringLiteral("select"), select}
 	};
 	QString cleanTerm = term.simplified()
-#ifdef Q_OS_WIN
-		.replace(QStringLiteral("\\"), QStringLiteral("\\5c"))
-		.replace(QStringLiteral("*"), QStringLiteral("\\2A"))
-		.replace(QStringLiteral("("), QStringLiteral("\\28"))
-		.replace(QStringLiteral(")"), QStringLiteral("\\29"));
+		#ifdef Q_OS_WIN
+			.replace(QStringLiteral("\\"), QStringLiteral("\\5c"))
+			.replace(QStringLiteral("*"), QStringLiteral("\\2A"))
+			.replace(QStringLiteral("("), QStringLiteral("\\28"))
+			.replace(QStringLiteral(")"), QStringLiteral("\\29"));
 #else
-		.replace(QStringLiteral("\\"), QStringLiteral("\\\\"))
-		.replace(QStringLiteral("*"), QStringLiteral("\\*"))
-		.replace(QStringLiteral("("), QStringLiteral("\\("))
-		.replace(QStringLiteral(")"), QStringLiteral("\\)"));
+			.replace(QStringLiteral("\\"), QStringLiteral("\\\\"))
+			.replace(QStringLiteral("*"), QStringLiteral("\\*"))
+			.replace(QStringLiteral("("), QStringLiteral("\\("))
+			.replace(QStringLiteral(")"), QStringLiteral("\\)"));
 #endif
 	bool isDigit = false;
 	void(cleanTerm.toULongLong(&isDigit));
@@ -378,14 +378,14 @@ void AddRecipients::showResult(const QList<QSslCertificate> &result, int resultC
 		SslCertificate c(k);
 		if((c.keyUsage().contains(SslCertificate::KeyEncipherment) ||
 			c.keyUsage().contains(SslCertificate::KeyAgreement)) &&
-			!c.enhancedKeyUsage().contains(SslCertificate::ServerAuth) &&
-			(userData.value(QStringLiteral("personSearch"), false).toBool() || !c.enhancedKeyUsage().contains(SslCertificate::ClientAuth)) &&
-			c.type() != SslCertificate::MobileIDType)
+				!c.enhancedKeyUsage().contains(SslCertificate::ServerAuth) &&
+				(userData.value(QStringLiteral("personSearch"), false).toBool() || !c.enhancedKeyUsage().contains(SslCertificate::ClientAuth)) &&
+				c.type() != SslCertificate::MobileIDType)
 		{
 			isEmpty = false;
 			AddressItem *item = addRecipientToLeftPane(k);
 			if(userData.value(QStringLiteral("select"), false).toBool() &&
-				(userData.value(QStringLiteral("type")).isNull() || HistoryCertData::toType(SslCertificate(k)) == userData[QStringLiteral("type")]))
+					(userData.value(QStringLiteral("type")).isNull() || HistoryCertData::toType(SslCertificate(k)) == userData[QStringLiteral("type")]))
 				addRecipientToRightPane(item, true);
 		}
 	}
@@ -394,8 +394,8 @@ void AddRecipients::showResult(const QList<QSslCertificate> &result, int resultC
 	else if(isEmpty)
 	{
 		showError(tr("Person or company does not own a valid certificate.<br />"
-			"It is necessary to have a valid certificate for encryption.<br />"
-			"<a href='https://www.id.ee/en/article/encryption-and-decryption-of-documents/'>Read more about it</a>."));
+					 "It is necessary to have a valid certificate for encryption.<br />"
+					 "<a href='https://www.id.ee/en/article/encryption-and-decryption-of-documents/'>Read more about it</a>."));
 	}
 	QApplication::restoreOverrideCursor();
 }

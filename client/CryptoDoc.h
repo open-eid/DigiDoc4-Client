@@ -33,9 +33,9 @@ struct CKey
 {
 public:
 	enum Type {
-        SYMMETRIC_KEY,
-        PUBLIC_KEY,
-        CERTIFICATE,
+		SYMMETRIC_KEY,
+		PUBLIC_KEY,
+		CERTIFICATE,
 		CDOC1,
 		SERVER
 	};
@@ -52,26 +52,26 @@ public:
 	};
 
 	Type type;
-    QString label;
+	QString label;
 
-    // Decryption data
-    QByteArray encrypted_fmk;
+	// Decryption data
+	QByteArray encrypted_fmk;
 
-    // Recipients public key
-    // QByteArray key;
+	// Recipients public key
+	// QByteArray key;
 
-    bool isSymmetric() const { return type == Type::SYMMETRIC_KEY; }
-    bool isPKI() const { return (type == Type::CERTIFICATE) || (type == Type::CDOC1) || (type == Type::PUBLIC_KEY) || (type == Type::SERVER); }
-    bool isCertificate() const { return (type == Type::CERTIFICATE) || (type == Type::CDOC1); }
-    bool isCDoc1() const { return type == Type::CDOC1; }
+	bool isSymmetric() const { return type == Type::SYMMETRIC_KEY; }
+	bool isPKI() const { return (type == Type::CERTIFICATE) || (type == Type::CDOC1) || (type == Type::PUBLIC_KEY) || (type == Type::SERVER); }
+	bool isCertificate() const { return (type == Type::CERTIFICATE) || (type == Type::CDOC1); }
+	bool isCDoc1() const { return type == Type::CDOC1; }
 
-    bool isTheSameRecipient(const CKey &key) const;
-    bool isTheSameRecipient(const QSslCertificate &cert) const;
+	bool isTheSameRecipient(const CKey &key) const;
+	bool isTheSameRecipient(const QSslCertificate &cert) const;
 
 protected:
-    CKey(Type _type) : type(_type) {};
+	CKey(Type _type) : type(_type) {};
 private:
-    bool operator==(const CKey &other) const { return false; }
+	bool operator==(const CKey &other) const { return false; }
 };
 
 // Symmetric key (plain or PBKDF)
@@ -79,13 +79,13 @@ private:
 // CDoc2:encrypt/decrypt LT
 
 struct CKeySymmetric : public CKey {
-    QByteArray salt;
-    // PBKDF
-    QByteArray pw_salt;
-    // 0 symmetric key, >0 password
-    int32_t kdf_iter;
+	QByteArray salt;
+	// PBKDF
+	QByteArray pw_salt;
+	// 0 symmetric key, >0 password
+	int32_t kdf_iter;
 
-    CKeySymmetric(const QByteArray& _salt) : CKey(Type::SYMMETRIC_KEY), salt(_salt), kdf_iter(0) {}
+	CKeySymmetric(const QByteArray& _salt) : CKey(Type::SYMMETRIC_KEY), salt(_salt), kdf_iter(0) {}
 };
 
 // Base PKI key
@@ -93,13 +93,13 @@ struct CKeySymmetric : public CKey {
 // CDoc2:encrypt
 
 struct CKeyPKI : public CKey {
-    // Recipient's public key
-    PKType pk_type;
-    QByteArray rcpt_key;
+	// Recipient's public key
+	PKType pk_type;
+	QByteArray rcpt_key;
 
 protected:
-    CKeyPKI(Type _type) : CKey(_type), pk_type(PKType::ECC) {};
-    CKeyPKI(Type _type, PKType _pk_type, QByteArray _rcpt_key) : CKey(_type), pk_type(_pk_type), rcpt_key(_rcpt_key) {};
+	CKeyPKI(Type _type) : CKey(_type), pk_type(PKType::ECC) {};
+	CKeyPKI(Type _type, PKType _pk_type, QByteArray _rcpt_key) : CKey(_type), pk_type(_pk_type), rcpt_key(_rcpt_key) {};
 };
 
 
@@ -108,15 +108,15 @@ protected:
 // CDoc1:encrypt
 
 struct CKeyCert : public CKeyPKI {
-    QSslCertificate cert;
+	QSslCertificate cert;
 
-    CKeyCert(const QSslCertificate &cert) : CKeyCert(CKey::Type::CERTIFICATE, cert) {};
+	CKeyCert(const QSslCertificate &cert) : CKeyCert(CKey::Type::CERTIFICATE, cert) {};
 
-    void setCert(const QSslCertificate &c);
+	void setCert(const QSslCertificate &c);
 
 protected:
-    CKeyCert(Type _type) : CKeyPKI(_type) {};
-    CKeyCert(Type _type, const QSslCertificate &cert);
+	CKeyCert(Type _type) : CKeyPKI(_type) {};
+	CKeyCert(Type _type, const QSslCertificate &cert);
 };
 
 // CDoc1 decryption key (with additional information from file)
@@ -125,11 +125,11 @@ protected:
 
 struct CKeyCDoc1 : public CKeyCert {
 
-    QByteArray publicKey;
-    QString concatDigest, method;
+	QByteArray publicKey;
+	QString concatDigest, method;
 	QByteArray AlgorithmID, PartyUInfo, PartyVInfo;
 
-    CKeyCDoc1() : CKeyCert(Type::CDOC1) {};
+	CKeyCDoc1() : CKeyCert(Type::CDOC1) {};
 };
 
 // CDoc2 PKI key with key material
@@ -137,10 +137,10 @@ struct CKeyCDoc1 : public CKeyCert {
 // CDoc2: decrypt
 
 struct CKeyPublicKey : public CKeyPKI {
-    // Either ECC public key or RSA encrypted kek
-    QByteArray key_material;
+	// Either ECC public key or RSA encrypted kek
+	QByteArray key_material;
 
-    CKeyPublicKey(PKType _pk_type, QByteArray _rcpt_key) : CKeyPKI(Type::PUBLIC_KEY, _pk_type, _rcpt_key) {};
+	CKeyPublicKey(PKType _pk_type, QByteArray _rcpt_key) : CKeyPKI(Type::PUBLIC_KEY, _pk_type, _rcpt_key) {};
 };
 
 // CDoc2 PKI key with server info
@@ -148,12 +148,12 @@ struct CKeyPublicKey : public CKeyPKI {
 // CDoc2: decrypt
 
 struct CKeyServer : public CKeyPKI {
-    // Server info
-    QString keyserver_id, transaction_id;
+	// Server info
+	QString keyserver_id, transaction_id;
 
 	static std::shared_ptr<CKeyServer> fromKey(QByteArray _key, PKType _pk_type);
 protected:
-    CKeyServer(QByteArray _rcpt_key, PKType _pk_type) : CKeyPKI(Type::SERVER, _pk_type, _rcpt_key) {};
+	CKeyServer(QByteArray _rcpt_key, PKType _pk_type) : CKeyPKI(Type::SERVER, _pk_type, _rcpt_key) {};
 };
 
 class CDoc
@@ -173,7 +173,7 @@ public:
 	virtual bool decryptPayload(const QByteArray &fmk) = 0;
 	virtual bool save(const QString &path) = 0;
 	bool setLastError(const QString &msg) { return (lastError = msg).isEmpty(); }
-    virtual QByteArray getFMK(const CKey &key, const QByteArray& secret) = 0;
+	virtual QByteArray getFMK(const CKey &key, const QByteArray& secret) = 0;
 	virtual int version() = 0;
 
 	QList<std::shared_ptr<CKey>> keys;
@@ -188,14 +188,14 @@ public:
 	CryptoDoc(QObject *parent = nullptr);
 	~CryptoDoc() final;
 
-    bool supportsSymmetricKeys() const;
+	bool supportsSymmetricKeys() const;
 	bool addKey(std::shared_ptr<CKey> key );
 	bool canDecrypt(const QSslCertificate &cert);
 	void clear(const QString &file = {});
-    bool decrypt(std::shared_ptr<CKey> key, const QByteArray& secret);
-    bool encrypt(const QString &filename = {}, const QString& label = {}, const QByteArray& secret = {}, uint32_t kdf_iter = 0);
-    DocumentModel* documentModel() const;
-    QString fileName() const;
+	bool decrypt(std::shared_ptr<CKey> key, const QByteArray& secret);
+	bool encrypt(const QString &filename = {}, const QString& label = {}, const QByteArray& secret = {}, uint32_t kdf_iter = 0);
+	DocumentModel* documentModel() const;
+	QString fileName() const;
 	QList<std::shared_ptr<CKey>> keys() const;
 	bool move(const QString &to);
 	bool open( const QString &file );
