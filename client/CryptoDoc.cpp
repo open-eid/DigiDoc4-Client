@@ -99,7 +99,7 @@ void CryptoDoc::Private::run()
 }
 
 CDocumentModel::CDocumentModel(CryptoDoc::Private *doc)
-	: d( doc )
+: d( doc )
 {}
 
 bool CDocumentModel::addFile(const QString &file, const QString &mime)
@@ -116,13 +116,13 @@ bool CDocumentModel::addFile(const QString &file, const QString &mime)
 	if(d->cdoc->version() == 1 && info.size() > 120*1024*1024)
 	{
 		WarningDialog::show(tr("Added file(s) exceeds the maximum size limit of the container (∼120MB). "
-							   "<a href='https://www.id.ee/en/article/encrypting-large-120-mb-files/'>Read more about it</a>"));
+			"<a href='https://www.id.ee/en/article/encrypting-large-120-mb-files/'>Read more about it</a>"));
 		return false;
 	}
 
 	QString fileName(info.fileName());
 	if(std::any_of(d->cdoc->files.cbegin(), d->cdoc->files.cend(),
-				   [&fileName](const auto &containerFile) { return containerFile.name == fileName; }))
+			[&fileName](const auto &containerFile) { return containerFile.name == fileName; }))
 	{
 		WarningDialog::show(DocumentModel::tr("Cannot add the file to the envelope. File '%1' is already in container.")
 							.arg(FileDialog::normalized(fileName)));
@@ -132,12 +132,12 @@ bool CDocumentModel::addFile(const QString &file, const QString &mime)
 	auto data = std::make_unique<QFile>(file);
 	data->open(QFile::ReadOnly);
 	d->cdoc->files.push_back({
-								 QFileInfo(file).fileName(),
-								 QStringLiteral("D%1").arg(d->cdoc->files.size()),
-								 mime,
-								 data->size(),
-								 std::move(data),
-							 });
+		QFileInfo(file).fileName(),
+		QStringLiteral("D%1").arg(d->cdoc->files.size()),
+		mime,
+		data->size(),
+		std::move(data),
+	});
 	emit added(FileDialog::normalized(d->cdoc->files.back().name));
 	return true;
 }
@@ -297,7 +297,7 @@ CryptoDoc::CryptoDoc( QObject *parent )
 	, d(new Private)
 {
 	const_cast<QLoggingCategory&>(CRYPTO()).setEnabled(QtDebugMsg,
-													   QFile::exists(QStringLiteral("%1/%2.log").arg(QDir::tempPath(), Application::applicationName())));
+		QFile::exists(QStringLiteral("%1/%2.log").arg(QDir::tempPath(), Application::applicationName())));
 }
 
 CryptoDoc::~CryptoDoc() { clear(); delete d; }
@@ -371,8 +371,8 @@ bool CryptoDoc::decrypt(std::shared_ptr<CKey> key, const QByteArray& secret)
 	if(d->cdoc->version() == 2 && (key->type == CKey::Type::SERVER) && !Settings::CDOC2_NOTIFICATION.isSet())
 	{
 		auto *dlg = new WarningDialog(tr("You must enter your PIN code twice in order to decrypt the CDOC2 container. "
-										 "The first PIN entry is required for authentication to the key server referenced in the CDOC2 container. "
-										 "Second PIN entry is required to decrypt the CDOC2 container."), Application::mainWindow());
+			"The first PIN entry is required for authentication to the key server referenced in the CDOC2 container. "
+			"Second PIN entry is required to decrypt the CDOC2 container."), Application::mainWindow());
 		dlg->setCancelText(WarningDialog::Cancel);
 		dlg->addButton(WarningDialog::OK, QMessageBox::Ok);
 		dlg->addButton(tr("DON'T SHOW AGAIN"), QMessageBox::Ignore);

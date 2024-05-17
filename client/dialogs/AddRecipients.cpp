@@ -130,7 +130,7 @@ void AddRecipients::addRecipientFromCard()
 void AddRecipients::addRecipientFromFile()
 {
 	QString file = FileDialog::getOpenFileName(this, windowTitle(), {},
-											   tr("Certificates (*.cer *.crt *.pem)") );
+		tr("Certificates (*.cer *.crt *.pem)") );
 	if( file.isEmpty() )
 		return;
 
@@ -217,8 +217,8 @@ bool AddRecipients::addRecipientToRightPane(std::shared_ptr<CKey> key, bool upda
 					return false;
 				}
 				auto *dlg = new WarningDialog(tr("Are you sure that you want use certificate for encrypting, which expired on %1?<br />"
-												 "When decrypter has updated certificates then decrypting is impossible.")
-											  .arg(expiryDate.toString(QStringLiteral("dd.MM.yyyy hh:mm:ss"))), this);
+					"When decrypter has updated certificates then decrypting is impossible.")
+					.arg(expiryDate.toString(QStringLiteral("dd.MM.yyyy hh:mm:ss"))), this);
 				dlg->setCancelText(WarningDialog::NO);
 				dlg->addButton(WarningDialog::YES, QMessageBox::Yes);
 				if(dlg->exec() != QMessageBox::Yes)
@@ -329,16 +329,16 @@ void AddRecipients::search(const QString &term, bool select, const QString &type
 		{QStringLiteral("select"), select}
 	};
 	QString cleanTerm = term.simplified()
-		#ifdef Q_OS_WIN
-			.replace(QStringLiteral("\\"), QStringLiteral("\\5c"))
-			.replace(QStringLiteral("*"), QStringLiteral("\\2A"))
-			.replace(QStringLiteral("("), QStringLiteral("\\28"))
-			.replace(QStringLiteral(")"), QStringLiteral("\\29"));
+#ifdef Q_OS_WIN
+		.replace(QStringLiteral("\\"), QStringLiteral("\\5c"))
+		.replace(QStringLiteral("*"), QStringLiteral("\\2A"))
+		.replace(QStringLiteral("("), QStringLiteral("\\28"))
+		.replace(QStringLiteral(")"), QStringLiteral("\\29"));
 #else
-			.replace(QStringLiteral("\\"), QStringLiteral("\\\\"))
-			.replace(QStringLiteral("*"), QStringLiteral("\\*"))
-			.replace(QStringLiteral("("), QStringLiteral("\\("))
-			.replace(QStringLiteral(")"), QStringLiteral("\\)"));
+		.replace(QStringLiteral("\\"), QStringLiteral("\\\\"))
+		.replace(QStringLiteral("*"), QStringLiteral("\\*"))
+		.replace(QStringLiteral("("), QStringLiteral("\\("))
+		.replace(QStringLiteral(")"), QStringLiteral("\\)"));
 #endif
 	bool isDigit = false;
 	void(cleanTerm.toULongLong(&isDigit));
@@ -378,14 +378,14 @@ void AddRecipients::showResult(const QList<QSslCertificate> &result, int resultC
 		SslCertificate c(k);
 		if((c.keyUsage().contains(SslCertificate::KeyEncipherment) ||
 			c.keyUsage().contains(SslCertificate::KeyAgreement)) &&
-				!c.enhancedKeyUsage().contains(SslCertificate::ServerAuth) &&
-				(userData.value(QStringLiteral("personSearch"), false).toBool() || !c.enhancedKeyUsage().contains(SslCertificate::ClientAuth)) &&
-				c.type() != SslCertificate::MobileIDType)
+			!c.enhancedKeyUsage().contains(SslCertificate::ServerAuth) &&
+			(userData.value(QStringLiteral("personSearch"), false).toBool() || !c.enhancedKeyUsage().contains(SslCertificate::ClientAuth)) &&
+			c.type() != SslCertificate::MobileIDType)
 		{
 			isEmpty = false;
 			AddressItem *item = addRecipientToLeftPane(k);
 			if(userData.value(QStringLiteral("select"), false).toBool() &&
-					(userData.value(QStringLiteral("type")).isNull() || HistoryCertData::toType(SslCertificate(k)) == userData[QStringLiteral("type")]))
+				(userData.value(QStringLiteral("type")).isNull() || HistoryCertData::toType(SslCertificate(k)) == userData[QStringLiteral("type")]))
 				addRecipientToRightPane(item, true);
 		}
 	}
@@ -394,8 +394,8 @@ void AddRecipients::showResult(const QList<QSslCertificate> &result, int resultC
 	else if(isEmpty)
 	{
 		showError(tr("Person or company does not own a valid certificate.<br />"
-					 "It is necessary to have a valid certificate for encryption.<br />"
-					 "<a href='https://www.id.ee/en/article/encryption-and-decryption-of-documents/'>Read more about it</a>."));
+			"It is necessary to have a valid certificate for encryption.<br />"
+			"<a href='https://www.id.ee/en/article/encryption-and-decryption-of-documents/'>Read more about it</a>."));
 	}
 	QApplication::restoreOverrideCursor();
 }

@@ -42,8 +42,8 @@
 using namespace ria::qdigidoc4;
 
 ContainerPage::ContainerPage(QWidget *parent)
-	: QWidget(parent)
-	, ui(new Ui::ContainerPage)
+: QWidget(parent)
+, ui(new Ui::ContainerPage)
 {
 	ui->setupUi( this );
 	ui->leftPane->init(fileName);
@@ -52,7 +52,7 @@ ContainerPage::ContainerPage(QWidget *parent)
 	ui->containerFile->setFont(Styles::font(Styles::Regular, 14));
 
 	ui->changeLocation->setIcons(QStringLiteral("/images/icon_Edit.svg"),
-								 QStringLiteral("/images/icon_Edit_hover.svg"), QStringLiteral("/images/icon_Edit_pressed.svg"), 18, 18);
+		QStringLiteral("/images/icon_Edit_hover.svg"), QStringLiteral("/images/icon_Edit_pressed.svg"), 18, 18);
 	ui->changeLocation->init(LabelButton::BoxedDeepCeruleanWithCuriousBlue, tr("CHANGE"));
 	ui->containerFile->installEventFilter(this);
 	ui->cancel->init(LabelButton::BoxedMojo, tr("CANCEL"));
@@ -83,7 +83,7 @@ ContainerPage::ContainerPage(QWidget *parent)
 	connect(ui->rightPane, &ItemList::addressSearch, this, &ContainerPage::addressSearch);
 	connect(ui->rightPane, &ItemList::removed, this, &ContainerPage::removed);
 	connect(ui->containerFile, &QLabel::linkActivated, this, [this](const QString &link)
-	{ emit action(Actions::ContainerNavigate, link); });
+		{ emit action(Actions::ContainerNavigate, link); });
 
 	ui->summary->setVisible(Settings::SHOW_PRINT_SUMMARY);
 }
@@ -127,12 +127,12 @@ bool ContainerPage::checkAction(int code, const QString& selectedCard, const QSt
 	case SignatureMobile:
 	case SignatureSmartID:
 		if(ui->rightPane->hasItem(
-					[selectedCard, selectedMobile, code](Item* const item) -> bool
-		{
-					auto *signatureItem = qobject_cast<SignatureItem* const>(item);
-					return signatureItem && signatureItem->isSelfSigned(selectedCard, (code == SignatureMobile) ? selectedMobile: QString());
-	}
-					))
+			[selectedCard, selectedMobile, code](Item* const item) -> bool
+			{
+				auto *signatureItem = qobject_cast<SignatureItem* const>(item);
+				return signatureItem && signatureItem->isSelfSigned(selectedCard, (code == SignatureMobile) ? selectedMobile: QString());
+			}
+		))
 		{
 			auto *dlg = new WarningDialog(tr("The document has already been signed by you."), this);
 			dlg->addButton(tr("CONTINUE SIGNING"), SignatureAdd);
@@ -159,7 +159,7 @@ void ContainerPage::clearPopups()
 void ContainerPage::elideFileName()
 {
 	ui->containerFile->setText(QStringLiteral("<a href='#browse-Container' style='color:rgb(53, 55, 57)'>%1</a>")
-							   .arg(ui->containerFile->fontMetrics().elidedText(FileDialog::normalized(fileName).toHtmlEscaped(), Qt::ElideMiddle, ui->containerFile->width())));
+		.arg(ui->containerFile->fontMetrics().elidedText(FileDialog::normalized(fileName).toHtmlEscaped(), Qt::ElideMiddle, ui->containerFile->width())));
 }
 
 bool ContainerPage::eventFilter(QObject *o, QEvent *e)
@@ -265,7 +265,7 @@ void ContainerPage::showMainAction(const QList<Actions> &actions)
 	bool isEncrypt = actions.contains(EncryptContainer) && !ui->rightPane->findChildren<AddressItem*>().isEmpty();
 	bool isDecrypt = actions.contains(DecryptContainer) || actions.contains(DecryptToken);
 	mainAction->setButtonEnabled(isSupported && !hasEmptyFile &&
-								 (isEncrypt || isSignMobile || (!isBlocked && ((isSignCard && !isExpired) || isDecrypt))));
+		(isEncrypt || isSignMobile || (!isBlocked && ((isSignCard && !isExpired) || isDecrypt))));
 	ui->mainActionSpacer->changeSize(198, 20, QSizePolicy::Fixed);
 	ui->navigationArea->layout()->invalidate();
 }

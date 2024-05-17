@@ -346,7 +346,7 @@ bool MainWindow::encrypt(bool askForKey)
 
 	if(!FileDialog::fileIsWritable(cryptoDoc->fileName())) {
 		auto *dlg = new WarningDialog(tr("Cannot alter container %1. Save different location?")
-									  .arg(FileDialog::normalized(cryptoDoc->fileName())), this);
+			.arg(FileDialog::normalized(cryptoDoc->fileName())), this);
 		dlg->addButton(WarningDialog::YES, QMessageBox::Yes);
 		if(dlg->exec() == QMessageBox::Yes) {
 			moveCryptoContainer();
@@ -469,14 +469,14 @@ void MainWindow::onSignAction(int action, const QString &info1, const QString &i
 		sign([this, info1, info2](const QString &city, const QString &state, const QString &zip, const QString &country, const QString &role) {
 			MobileProgress m(this);
 			return m.init(info1, info2) &&
-					digiDoc->sign(city, state, zip, country, role, &m);
+				digiDoc->sign(city, state, zip, country, role, &m);
 		});
 		break;
 	case SignatureSmartID:
 		sign([this, info1, info2](const QString &city, const QString &state, const QString &zip, const QString &country, const QString &role) {
 			SmartIDProgress s(this);
 			return s.init(info1, info2, digiDoc->fileName()) &&
-					digiDoc->sign(city, state, zip, country, role, &s);
+				digiDoc->sign(city, state, zip, country, role, &s);
 		});
 		break;
 	case ClearSignatureWarning:
@@ -669,8 +669,8 @@ void MainWindow::openFiles(const QStringList &files, bool addFile, bool forceCre
 			if(current == MyEid)
 				page = (fileType == FileDialog::CryptoDocument) ? CryptoDetails : SignDetails;
 			create = forceCreate || (
-						(fileType != FileDialog::CryptoDocument || page != CryptoDetails) &&
-						(fileType != FileDialog::SignatureDocument || page != SignDetails));
+				(fileType != FileDialog::CryptoDocument || page != CryptoDetails) &&
+				(fileType != FileDialog::SignatureDocument || page != SignDetails));
 		}
 		break;
 	case ContainerState::UnsignedContainer:
@@ -685,7 +685,7 @@ void MainWindow::openFiles(const QStringList &files, bool addFile, bool forceCre
 				if(page != CryptoDetails && digiDoc->isPDF() && !wrap(digiDoc->fileName(), true))
 					return;
 				DocumentModel* model = (current == CryptoDetails) ?
-							cryptoDoc->documentModel() : digiDoc->documentModel();
+					cryptoDoc->documentModel() : digiDoc->documentModel();
 				for(const auto &file: content)
 					model->addFile(file);
 				selectPage(page);
@@ -747,7 +747,7 @@ void MainWindow::openContainer(bool signature)
 	QString filter = QFileDialog::tr("All Files (*)") + QStringLiteral(";;") + tr("Documents (%1)");
 	if(signature)
 		filter = filter.arg(QStringLiteral("*.bdoc *.ddoc *.asice *.sce *.asics *.scs *.edoc *.adoc%1")
-							.arg(Application::confValue(Application::SiVaUrl).toString().isEmpty() ? QLatin1String() : QLatin1String(" *.pdf")));
+			.arg(Application::confValue(Application::SiVaUrl).toString().isEmpty() ? QLatin1String() : QLatin1String(" *.pdf")));
 	else
 		filter = filter.arg(QLatin1String("*.cdoc *.cdoc2"));
 	QStringList files = FileDialog::getOpenFileNames(this, tr("Select documents"), {}, filter);
@@ -901,7 +901,7 @@ void MainWindow::showEvent(QShowEvent * /*event*/)
 	static const int height = 94;
 	static const int width = 166;
 	auto *notification = new FadeInNotification(this, WHITE, NONE,
-												QPoint(this->width() - width - 15, this->height() - height - 70), width, height);
+		QPoint(this->width() - width - 15, this->height() - height - 70), width, height);
 	notification->setFocusPolicy(Qt::NoFocus);
 	auto *structureFunds = new QSvgWidget(QStringLiteral(":/images/Struktuurifondid.svg"), notification);
 	structureFunds->resize(width, height);
@@ -1067,7 +1067,7 @@ bool MainWindow::validateFiles(const QString &container, const QStringList &file
 	// Check that container is not dropped into itself
 	QFileInfo containerInfo(container);
 	if(std::none_of(files.cbegin(), files.cend(),
-					[containerInfo] (const QString &file) { return containerInfo == QFileInfo(file); }))
+			[containerInfo] (const QString &file) { return containerInfo == QFileInfo(file); }))
 		return true;
 	auto *dlg = new WarningDialog(tr("Cannot add container to same container\n%1")
 								  .arg(FileDialog::normalized(container)), this);
@@ -1113,8 +1113,8 @@ bool MainWindow::wrap(const QString& wrappedFile, bool enclose)
 bool MainWindow::wrapContainer(bool signing)
 {
 	QString msg = signing ?
-				tr("Files can not be added to the signed container. The system will create a new container which shall contain the signed document and the files you wish to add.") :
-				tr("Files can not be added to the cryptocontainer. The system will create a new container which shall contain the cypto-document and the files you wish to add.");
+		tr("Files can not be added to the signed container. The system will create a new container which shall contain the signed document and the files you wish to add.") :
+		tr("Files can not be added to the cryptocontainer. The system will create a new container which shall contain the cypto-document and the files you wish to add.");
 	auto *dlg = new WarningDialog(msg, this);
 	dlg->setCancelText(WarningDialog::Cancel);
 	dlg->addButton(tr("CONTINUE"), ContainerSave);
@@ -1180,7 +1180,7 @@ void MainWindow::containerSummary()
 	if( QPrinterInfo::availablePrinterNames().isEmpty() )
 	{
 		WarningDialog::show(this,
-							tr("In order to view Validity Confirmation Sheet there has to be at least one printer installed!"));
+			tr("In order to view Validity Confirmation Sheet there has to be at least one printer installed!"));
 		return;
 	}
 #endif
