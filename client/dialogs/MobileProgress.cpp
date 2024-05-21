@@ -23,7 +23,6 @@
 #include "Application.h"
 #include "CheckConnection.h"
 #include "Settings.h"
-#include "Styles.h"
 #include "Utils.h"
 #include "dialogs/WarningDialog.h"
 
@@ -70,12 +69,7 @@ MobileProgress::MobileProgress(QWidget *parent)
 		QFile::exists(QStringLiteral("%1/%2.log").arg(QDir::tempPath(), QApplication::applicationName())));
 	d->setWindowFlags(Qt::Dialog|Qt::CustomizeWindowHint);
 	d->setupUi(d);
-	d->move(parent->geometry().center() - d->geometry().center());
 	d->code->setBuddy(d->signProgressBar);
-	d->code->setFont(Styles::font(Styles::Regular, 48));
-	d->info->setFont(Styles::font(Styles::Regular, 14));
-	d->controlCode->setFont(d->info->font());
-	d->signProgressBar->setFont(d->info->font());
 #if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
 const auto styleSheet = R"(QProgressBar {
 background-color: #d3d3d3;
@@ -92,7 +86,6 @@ background-color: #007aff;
 })";
 	d->signProgressBar->setStyleSheet(styleSheet);
 #endif
-	d->cancel->setFont(Styles::font(Styles::Condensed, 14));
 	QObject::connect(d->cancel, &QPushButton::clicked, d, &QDialog::reject);
 
 	d->statusTimer = new QTimeLine(d->signProgressBar->maximum() * 1000, d);
@@ -269,9 +262,8 @@ std::vector<unsigned char> MobileProgress::sign(const std::string &method, const
 		throw Exception(__FILE__, __LINE__, "Unsupported digest method");
 
 	d->code->setText(QStringLiteral("%1").arg((digest.front() >> 2) << 7 | (digest.back() & 0x7F), 4, 10, QChar('0')));
-	d->info->setText(tr("Make sure control code matches with one in phone screen\n"
-		"and enter mobile-ID PIN2-code."));
-	d->code->setAccessibleName(QStringLiteral("%1 %2. %3").arg(d->controlCode->text(), d->code->text(), d->info->text()));
+	d->info->setText(tr("Make sure control code matches with one in phone screen and enter mobile-ID PIN2-code."));
+	d->code->setAccessibleName(QStringLiteral("%1 %2. %3").arg(d->label->text(), d->code->text(), d->info->text()));
 
 	QByteArray data = QJsonDocument(QJsonObject::fromVariantHash({
 		{"relyingPartyUUID", d->UUID.isEmpty() ? QStringLiteral("00000000-0000-0000-0000-000000000000") : d->UUID},

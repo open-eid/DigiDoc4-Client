@@ -21,7 +21,15 @@
 		<file>icon_Allkiri.svg</file>
 		<file>icon_check.svg</file>
 		<file>icon_checkbox.png</file>
+		<file>icon_checkbox.svg</file>
+		<file>icon_checkbox_active.svg</file>
+		<file>icon_checkbox_disabled.svg</file>
+		<file>icon_checkbox_hover.svg</file>
 		<file>icon_checkbox_check.png</file>
+		<file>icon_checkbox_check.svg</file>
+		<file>icon_checkbox_check_active.svg</file>
+		<file>icon_checkbox_check_disabled.svg</file>
+		<file>icon_checkbox_check_hover.svg</file>
 		<file>icon_digitempel.svg</file>
 		<file>icon_download_hover.svg</file>
 		<file>icon_download.svg</file>

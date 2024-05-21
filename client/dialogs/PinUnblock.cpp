@@ -20,7 +20,6 @@
 #include "PinUnblock.h"
 #include "ui_PinUnblock.h"
 
-#include "Styles.h"
 #include "effects/Overlay.h"
 
 #include <QtGui/QRegularExpressionValidator>
@@ -40,23 +39,10 @@ PinUnblock::PinUnblock(WorkMode mode, QWidget *parent, QSmartCardData::PinType t
 		list.first()->setFocus();
 	for(QLineEdit *w: list)
 		w->setAttribute(Qt::WA_MacShowFocusRect, false);
+	ui->errorPuk->hide();
+	ui->errorPin->hide();
+	ui->errorRepeat->hide();
 	new Overlay(this);
-
-	QFont condensed14 = Styles::font(Styles::Condensed, 14);
-	QFont condensed12 = Styles::font(Styles::Condensed, 12);
-	QFont regular14 = Styles::font(Styles::Regular, 14);
-	QFont regular12 = Styles::font(Styles::Regular, 12);
-	ui->errorPuk->setFont(regular12);
-	ui->errorPin->setFont(regular12);
-	ui->errorRepeat->setFont(regular12);
-	ui->labelPuk->setFont(condensed12);
-	ui->labelPin->setFont(condensed12);
-	ui->labelRepeat->setFont(condensed12);
-	ui->labelNameId->setFont(Styles::font(Styles::Regular, 20, QFont::DemiBold));
-	ui->cancel->setFont(condensed14);
-	ui->change->setFont(condensed14);
-	for(QLabel *text: findChildren<QLabel*>(QRegularExpression(QStringLiteral("line\\d_[text,bullet]"))))
-		text->setFont(regular14);
 
 	auto pattern = [](QSmartCardData::PinType type) {
 		return QStringLiteral("^\\d{%1,12}$").arg(QSmartCardData::minPinLen(type));
@@ -68,8 +54,8 @@ PinUnblock::PinUnblock(WorkMode mode, QWidget *parent, QSmartCardData::PinType t
 	switch(mode)
 	{
 	case PinUnblock::UnBlockPinWithPuk:
-		ui->labelNameId->setText(tr("%1 unblocking").arg(QSmartCardData::typeString(type)));
-		ui->change->setText(tr("UNBLOCK"));
+		ui->label->setText(tr("%1 unblocking").arg(QSmartCardData::typeString(type)));
+		ui->change->setText(tr("Unblock"));
 		regexpValidateCode.setPattern(pattern(QSmartCardData::PukType));
 		ui->line1_text->setText(tr("To unblock the certificate you have to enter the PUK code."));
 		ui->line2_text->setText(tr("You can find your PUK code inside the ID-card codes envelope."));
@@ -78,7 +64,7 @@ PinUnblock::PinUnblock(WorkMode mode, QWidget *parent, QSmartCardData::PinType t
 								   "the Police and Border Guard Board service center</span></a> to obtain new PIN codes."));
 		break;
 	case PinUnblock::ChangePinWithPuk:
-		ui->labelNameId->setText(tr("%1 code change").arg(QSmartCardData::typeString(type)));
+		ui->label->setText(tr("%1 code change").arg(QSmartCardData::typeString(type)));
 		regexpValidateCode.setPattern(pattern(QSmartCardData::PukType));
 		ui->line1_text->setText(type == QSmartCardData::Pin2Type
 									? tr("PIN2 code is used to digitally sign documents.")
@@ -87,8 +73,8 @@ PinUnblock::PinUnblock(WorkMode mode, QWidget *parent, QSmartCardData::PinType t
 		ui->line3_text->setText(tr("PUK code is written in the envelope, that is given with the ID-card."));
 		break;
 	case PinUnblock::PinChange:
-		ui->labelNameId->setText(tr("%1 code change").arg(QSmartCardData::typeString(type)));
-		ui->labelPuk->setText(tr("VALID %1 CODE").arg(QSmartCardData::typeString(type)));
+		ui->label->setText(tr("%1 code change").arg(QSmartCardData::typeString(type)));
+		ui->labelPuk->setText(tr("Valid %1 code").arg(QSmartCardData::typeString(type)));
 		regexpValidateCode.setPattern(pattern(type));
 		if(type == QSmartCardData::PukType)
 		{
@@ -107,23 +93,17 @@ PinUnblock::PinUnblock(WorkMode mode, QWidget *parent, QSmartCardData::PinType t
 				type == QSmartCardData::Pin2Type ? tr("digital signing") : tr("verify identification"))
 			);
 	}
-	setWindowTitle(ui->labelNameId->text());
-	ui->labelPin->setText(tr("NEW %1 CODE").arg(QSmartCardData::typeString(type)));
-	ui->labelRepeat->setText(tr("NEW %1 CODE AGAIN").arg(QSmartCardData::typeString(type)));
-	ui->pin->setAccessibleName(ui->labelPin->text().toLower());
+	setWindowTitle(ui->label->text());
+	ui->labelPin->setText(tr("New %1 code").arg(QSmartCardData::typeString(type)));
+	ui->labelRepeat->setText(tr("Repeat new %1 code").arg(QSmartCardData::typeString(type)));
 	ui->pin->setValidator(new QRegularExpressionValidator(regexpNewCode, ui->pin));
-	ui->repeat->setAccessibleName(ui->labelRepeat->text().toLower());
 	ui->repeat->setValidator(new QRegularExpressionValidator(regexpNewCode, ui->repeat));
-	ui->puk->setAccessibleName(ui->labelPuk->text().toLower());
 	ui->puk->setValidator(new QRegularExpressionValidator(regexpValidateCode, ui->puk));
-	ui->change->setAccessibleName(ui->change->text().toLower());
 
-	if(leftAttempts == 3)
-		ui->errorPuk->clear();
-	else if(mode == PinUnblock::PinChange)
-		ui->errorPuk->setText(tr("Remaining attempts: %1").arg(leftAttempts));
-	else
-		ui->errorPuk->setText(tr("PUK remaining attempts: %1").arg(leftAttempts));
+	if(leftAttempts < 3)
+		ui->errorPuk->setText(mode == PinUnblock::PinChange ?
+			tr("Remaining attempts: %1").arg(leftAttempts) :
+			tr("PUK remaining attempts: %1").arg(leftAttempts));
 
 	for(int i = 1; i < 4; i++)
 	{
@@ -134,9 +114,10 @@ PinUnblock::PinUnblock(WorkMode mode, QWidget *parent, QSmartCardData::PinType t
 			bullet->setHidden(isHidden);
 	}
 	auto setError = [](QLineEdit *input, QLabel *error, const QString &msg) {
-		input->setStyleSheet(msg.isEmpty() ? QString() :QStringLiteral("border-color: #c53e3e"));
+		input->setStyleSheet(msg.isEmpty() ? QString() : QStringLiteral("border-color: #BE7884"));
 		error->setFocusPolicy(msg.isEmpty() ? Qt::NoFocus : Qt::TabFocus);
 		error->setText(msg);
+		error->setHidden(msg.isEmpty());
 	};
 	connect(ui->cancel, &QPushButton::clicked, this, &PinUnblock::reject);
 	connect(this, &PinUnblock::finished, this, &PinUnblock::close);
@@ -160,9 +141,9 @@ PinUnblock::PinUnblock(WorkMode mode, QWidget *parent, QSmartCardData::PinType t
 		ui->puk->setStyleSheet({});
 		ui->pin->setStyleSheet({});
 		ui->repeat->setStyleSheet({});
-		ui->errorPuk->clear();
-		ui->errorPin->clear();
-		ui->errorRepeat->clear();
+		ui->errorPuk->hide();
+		ui->errorPin->hide();
+		ui->errorRepeat->hide();
 
 		auto pinError = [](auto type) {
 			return tr("%1 length has to be between %2 and 12")
@@ -209,8 +190,6 @@ PinUnblock::PinUnblock(WorkMode mode, QWidget *parent, QSmartCardData::PinType t
 				tr("New %1 codes doesn't match").arg(QSmartCardData::typeString(type)));
 		accept();
 	});
-	adjustSize();
-	setFixedSize(size());
 }
 
 PinUnblock::~PinUnblock()
