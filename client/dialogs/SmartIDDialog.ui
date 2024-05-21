@@ -3,14 +3,14 @@
  <class>SmartIDDialog</class>
  <widget class="QDialog" name="SmartIDDialog">
   <property name="windowModality">
-   <enum>Qt::WindowModal</enum>
+   <enum>Qt::WindowModality::WindowModal</enum>
   </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>382</width>
-    <height>301</height>
+    <width>430</width>
+    <height>455</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,44 +18,53 @@
   </property>
   <property name="styleSheet">
    <string notr="true">QWidget {
-background-color: #FFFFFF;
-color: #000000;
-border-radius: 2px;
+font-family: Roboto, Helvetica;
+font-size: 14px;
 }
-QLineEdit, QComboBox {
-padding: 0px 10px;
-border: 1px solid #8E969D;
-border-radius: 2px;
+#SmartIDDialog {
+background-color: #FFFFFF;
+border-radius: 4px;
+}
+#label {
+color: #003168;
+font-size: 20px;
+font-weight: 700;
 }
 #labelCode, #labelCountry {
-color: #353739
+color: #07142A;
 }
 #errorCode, #errorCountry {
-color: #c53e3e
+color: #AD2A45;
+}
+QLineEdit, QComboBox {
+padding: 10px 14px;
+border: 1px solid #C4CBD8;
+border-radius: 4px;
+color: #07142A;
+placeholder-text-color: #607496;
+font-size: 16px;
 }
 QComboBox QWidget#popup {
 background-color: transparent;
 }
 QComboBox QWidget#content {
-border: 1px solid #8E969D;
-border-radius: 2px;
+border: 1px solid #C4CBD8;
+border-radius: 4px;
 background-color: #FFFFFF;
 }
 QComboBox QPushButton {
 margin: 3px;
-padding: 0px 8px 0px 4px;
+padding: 0px 12px 0px 4px;
 border: 0px;
-color: #353739;
+color: #07142A;
 text-align: left;
+font-weight: normal;
+font-size: 16px;
 qproperty-iconSize: 14px 9px;
 qproperty-layoutDirection: RightToLeft;
 }
 QComboBox QPushButton#selected {
 qproperty-icon: url(:/images/arrow_up.svg);
-}
-QComboBox QPushButton:hover {
-background-color: #006EB5;
-color: #FFFFFF;
 }
 QComboBox QPushButton:hover#selected {
 qproperty-icon: url(:/images/arrow_up_white.svg);
@@ -72,57 +81,98 @@ top: 1px;
 left: 1px;
 }
 QCheckBox {
-min-height: 31px;
-spacing: 5px;
+spacing: 8px;
+color: #07142A;
+border: none; /*Workaround for right padding*/
 }
 QCheckBox:disabled {
-color: #727679;
+color: #C4CBD8;
 }
 QCheckBox::indicator {
-width: 14px;
-height: 14px;
+width: 16px;
+height: 16px;
 }
 QCheckBox::indicator:unchecked {
-image: url(:/images/icon_checkbox.png);
+image: url(:/images/icon_checkbox.svg);
+}
+QCheckBox::indicator:unchecked:hover {
+image: url(:/images/icon_checkbox_active.svg);
+}
+QCheckBox::indicator:unchecked:disabled {
+image: url(:/images/icon_checkbox_disabled.svg);
 }
 QCheckBox::indicator:checked {
-image: url(:/images/icon_checkbox_check.png);
+image: url(:/images/icon_checkbox_check.svg);
+}
+QCheckBox::indicator:checked:hover {
+image: url(:/images/icon_checkbox_check_active.svg);
+}
+QCheckBox::indicator:checked:disabled {
+image: url(:/images/icon_checkbox_check_disabled.svg);
+}
+QPushButton {
+padding: 12px 12px;
+border-radius: 4px;
+border: 1px solid #AD2A45;
+color: #AD2A45;
+font-weight: 700;
+}
+QPushButton:hover {
+background-color: #F5EBED;
+}
+QPushButton:pressed {
+background-color: #E1C1C6;
+}
+QPushButton:default {
+color: #ffffff;
+border-color: #2F70B6;
+background-color: #2F70B6;
+}
+QPushButton:default:hover {
+background-color: #2B66A6;
+}
+QPushButton:default:pressed {
+background-color: #215081;
+}
+QPushButton:default:disabled {
+background-color: #2F70B6;
 }</string>
   </property>
   <layout class="QVBoxLayout" name="SmartIDDialogLayout">
    <property name="spacing">
-    <number>0</number>
+    <number>40</number>
+   </property>
+   <property name="sizeConstraint">
+    <enum>QLayout::SizeConstraint::SetFixedSize</enum>
    </property>
    <property name="leftMargin">
-    <number>30</number>
+    <number>40</number>
    </property>
    <property name="topMargin">
-    <number>30</number>
+    <number>32</number>
    </property>
    <property name="rightMargin">
-    <number>30</number>
+    <number>40</number>
    </property>
    <property name="bottomMargin">
-    <number>30</number>
+    <number>32</number>
    </property>
    <item>
-    <widget class="QLabel" name="labelNameId">
-     <property name="font">
-      <font>
-       <pointsize>14</pointsize>
-      </font>
+    <widget class="QLabel" name="label">
+     <property name="minimumSize">
+      <size>
+       <width>350</width>
+       <height>0</height>
+      </size>
      </property>
      <property name="focusPolicy">
-      <enum>Qt::TabFocus</enum>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color: #041E42;</string>
+      <enum>Qt::FocusPolicy::TabFocus</enum>
      </property>
      <property name="text">
       <string>Enter your personal code to sign with Smart-ID</string>
      </property>
      <property name="alignment">
-      <set>Qt::AlignCenter</set>
+      <set>Qt::AlignmentFlag::AlignCenter</set>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
@@ -130,167 +180,119 @@ image: url(:/images/icon_checkbox_check.png);
     </widget>
    </item>
    <item>
-    <spacer name="topSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>0</width>
-       <height>8</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item>
-    <widget class="QLabel" name="labelCountry">
-     <property name="font">
-      <font>
-       <pointsize>12</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>Country</string>
-     </property>
-     <property name="buddy">
-      <cstring>idCountry</cstring>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="ComboBox" name="idCountry">
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>34</height>
-      </size>
+    <layout class="QVBoxLayout" name="layoutContent">
+     <property name="spacing">
+      <number>24</number>
      </property>
      <item>
-      <property name="text">
-       <string>Estonia</string>
-      </property>
+      <layout class="QVBoxLayout" name="layoutCountry">
+       <property name="spacing">
+        <number>6</number>
+       </property>
+       <item>
+        <widget class="QLabel" name="labelCountry">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Country</string>
+         </property>
+         <property name="buddy">
+          <cstring>idCountry</cstring>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="ComboBox" name="idCountry">
+         <item>
+          <property name="text">
+           <string>Estonia</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Lithuania</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Latvia</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+      </layout>
      </item>
      <item>
-      <property name="text">
-       <string>Lithuania</string>
-      </property>
+      <layout class="QVBoxLayout" name="layoutCode">
+       <property name="spacing">
+        <number>6</number>
+       </property>
+       <item>
+        <widget class="QLabel" name="labelCode">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Personal code</string>
+         </property>
+         <property name="buddy">
+          <cstring>idCode</cstring>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="LineEdit" name="idCode">
+         <property name="placeholderText">
+          <string notr="true">47101010033</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="errorCode">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>20</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
      <item>
-      <property name="text">
-       <string>Latvia</string>
-      </property>
+      <widget class="QCheckBox" name="cbRemember">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>17</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Remember me</string>
+       </property>
+      </widget>
      </item>
-    </widget>
-   </item>
-   <item>
-    <widget class="QLabel" name="errorCountry">
-     <property name="font">
-      <font>
-       <pointsize>12</pointsize>
-      </font>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QLabel" name="labelCode">
-     <property name="font">
-      <font>
-       <pointsize>12</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>Personal code</string>
-     </property>
-     <property name="buddy">
-      <cstring>idCode</cstring>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="LineEdit" name="idCode">
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>34</height>
-      </size>
-     </property>
-     <property name="placeholderText">
-      <string notr="true">47101010033</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QLabel" name="errorCode">
-     <property name="font">
-      <font>
-       <pointsize>12</pointsize>
-      </font>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="CheckBox" name="cbRemember">
-     <property name="styleSheet">
-      <string notr="true">color: #353739;</string>
-     </property>
-     <property name="text">
-      <string>Remember me</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <spacer name="bottomSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>0</width>
-       <height>8</height>
-      </size>
-     </property>
-    </spacer>
+    </layout>
    </item>
    <item>
     <layout class="QHBoxLayout" name="buttonLayout">
      <property name="spacing">
-      <number>40</number>
+      <number>0</number>
      </property>
      <item>
       <widget class="QPushButton" name="cancel">
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>30</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>14</pointsize>
-        </font>
-       </property>
        <property name="cursor">
         <cursorShape>PointingHandCursor</cursorShape>
        </property>
-       <property name="accessibleName">
-        <string extracomment="accessible">Cancel</string>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">QPushButton {
-	border-radius: 2px; 
-	border: none;
-	color: #ffffff;
-	background-color: #981E32;
-}
-QPushButton:pressed {
-	background-color: #F24A66;
-}
-QPushButton:hover:!pressed {
-	background-color: #CD2541;
-}</string>
-       </property>
        <property name="text">
-        <string>CANCEL</string>
+        <string>Cancel</string>
        </property>
        <property name="autoDefault">
         <bool>false</bool>
@@ -298,43 +300,25 @@ QPushButton:hover:!pressed {
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="sign">
-       <property name="minimumSize">
+      <spacer name="buttonSpacer">
+       <property name="orientation">
+        <enum>Qt::Orientation::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
         <size>
-         <width>0</width>
-         <height>30</height>
+         <width>40</width>
+         <height>20</height>
         </size>
        </property>
-       <property name="font">
-        <font>
-         <pointsize>14</pointsize>
-        </font>
-       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="sign">
        <property name="cursor">
         <cursorShape>PointingHandCursor</cursorShape>
        </property>
-       <property name="accessibleName">
-        <string extracomment="accessible">Sign</string>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">QPushButton {
-	border-radius: 2px; 
-	border: none;
-	color: #ffffff;
-	background-color: #006EB5;
-}
-QPushButton:pressed {
-	background-color: #41B6E6;
-}
-QPushButton:hover:!pressed {
-	background-color: #008DCF;
-}
-QPushButton:disabled {
-	background-color: #BEDBED;
-}</string>
-       </property>
        <property name="text">
-        <string>SIGN</string>
+        <string>Sign</string>
        </property>
        <property name="default">
         <bool>true</bool>
@@ -346,11 +330,6 @@ QPushButton:disabled {
   </layout>
  </widget>
  <customwidgets>
-  <customwidget>
-   <class>CheckBox</class>
-   <extends>QCheckBox</extends>
-   <header>widgets/CheckBox.h</header>
-  </customwidget>
   <customwidget>
    <class>ComboBox</class>
    <extends>QComboBox</extends>

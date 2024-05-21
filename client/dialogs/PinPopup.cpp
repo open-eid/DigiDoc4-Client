@@ -19,25 +19,22 @@
 
 #include "PinPopup.h"
 #include "ui_PinPopup.h"
-#include "Styles.h"
 #include "SslCertificate.h"
 #include "effects/Overlay.h"
 
 #include <QtCore/QTimeLine>
 #include <QtGui/QRegularExpressionValidator>
-#include <QtGui/QTextDocument>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QProgressBar>
 #include <QtWidgets/QPushButton>
 #include <QSvgWidget>
 
 PinPopup::PinPopup(PinFlags flags, const SslCertificate &c, TokenFlags count, QWidget *parent)
-	: PinPopup(flags, c.toString(c.showCN() ? QStringLiteral("<b>CN,</b> serialNumber") : QStringLiteral("<b>GN SN,</b> serialNumber")), count, parent)
+	: PinPopup(flags, c.toString(c.showCN() ? QStringLiteral("CN, serialNumber") : QStringLiteral("GN SN, serialNumber")), count, parent)
 {
 	if(c.type() & SslCertificate::TempelType)
 	{
-		regexp.setPattern(QStringLiteral("^.{4,}$"));
-		ui->pin->setValidator(new QRegularExpressionValidator(regexp, ui->pin));
+		regexp->setRegularExpression(QRegularExpression(QStringLiteral("^.{4,}$")));
 		ui->pin->setMaxLength(32767);
 	}
 }
@@ -48,50 +45,45 @@ PinPopup::PinPopup(PinFlags flags, const QString &title, TokenFlags count, QWidg
 {
 	ui->setupUi(this);
 	setWindowFlags(Qt::Dialog | Qt::CustomizeWindowHint);
+#ifdef Q_OS_WIN
+	ui->buttonLayout->setDirection(QBoxLayout::RightToLeft);
+#endif
 	for(QLineEdit *w: findChildren<QLineEdit*>())
 		w->setAttribute(Qt::WA_MacShowFocusRect, false);
+	ui->pin->setValidator(regexp = new QRegularExpressionValidator(ui->pin));
 	new Overlay(this);
-
-	ui->labelNameId->setFont(Styles::font(Styles::Regular, 20, QFont::DemiBold));
-	ui->label->setFont(Styles::font(Styles::Regular, 14));
-	ui->ok->setFont(Styles::font(Styles::Condensed, 14));
-	ui->cancel->setFont(ui->ok->font());
 
 	connect( ui->ok, &QPushButton::clicked, this, &PinPopup::accept );
 	connect( ui->cancel, &QPushButton::clicked, this, &PinPopup::reject );
 	connect( this, &PinPopup::finished, this, &PinPopup::close );
 	connect(ui->pin, &QLineEdit::returnPressed, ui->ok, &QPushButton::click);
 
-	if(text.isEmpty())
+	if(!text.isEmpty())
+		ui->labelPin->hide();
+	else if( flags & Pin2Type )
 	{
-		if(count & PinFinalTry)
-			text += QStringLiteral("<font color='red'><b>%1</b></font><br />").arg(tr("PIN will be locked next failed attempt"));
-		else if(count & PinCountLow)
-			text += QStringLiteral("<font color='red'><b>%1</b></font><br />").arg(tr("PIN has been entered incorrectly at least once"));
-
-		if( flags & Pin2Type )
-		{
-			QString t = flags & PinpadFlag ?
-				tr("For using sign certificate enter PIN2 at the reader") :
-				tr("For using sign certificate enter PIN2");
-			text += tr("Selected action requires sign certificate.") + QLatin1String("<br />") + t;
-			setPinLen(5);
-		}
-		else
-		{
-			QString t = flags & PinpadFlag ?
-				tr("For using authentication certificate enter PIN1 at the reader") :
-				tr("For using authentication certificate enter PIN1");
-			text += tr("Selected action requires authentication certificate.") + QLatin1String("<br />") + t;
-			setPinLen(4);
-		}
+		text = tr("Selected action requires sign certificate.");
+		ui->labelPin->setText(flags & PinpadFlag ?
+			tr("For using sign certificate enter PIN2 at the reader") :
+			tr("For using sign certificate enter PIN2"));
+		setPinLen(5);
 	}
-	ui->labelNameId->setText(QStringLiteral("<b>%1</b>").arg(title));
-	ui->label->setText( text );
-
-	QTextDocument doc;
-	doc.setHtml(ui->labelNameId->text() + "\n" + ui->label->text());
-	ui->pin->setAccessibleName(doc.toPlainText());
+	else
+	{
+		text = tr("Selected action requires authentication certificate.");
+		ui->labelPin->setText(flags & PinpadFlag ?
+			tr("For using authentication certificate enter PIN1 at the reader") :
+			tr("For using authentication certificate enter PIN1"));
+		setPinLen(4);
+	}
+	ui->label->setText(title);
+	ui->text->setText(text);
+	if(count & PinFinalTry)
+		ui->errorPin->setText(tr("PIN will be locked next failed attempt"));
+	else if(count & PinCountLow)
+		ui->errorPin->setText(tr("PIN has been entered incorrectly at least once"));
+	else
+		ui->errorPin->hide();
 
 	if(flags & PinpadChangeFlag)
 	{
@@ -101,7 +93,7 @@ PinPopup::PinPopup(PinFlags flags, const QString &title, TokenFlags count, QWidg
 		auto *movie = new QSvgWidget(QStringLiteral(":/images/wait.svg"), this);
 		movie->setFixedSize(ui->pin->size().height(), ui->pin->size().height());
 		movie->show();
-		ui->PinPopupLayout->addWidget(movie, 0, Qt::AlignCenter);
+		ui->layoutContent->addWidget(movie, 0, Qt::AlignCenter);
 	}
 	if( flags & PinpadFlag )
 	{
@@ -114,7 +106,7 @@ PinPopup::PinPopup(PinFlags flags, const QString &title, TokenFlags count, QWidg
 		progress->setTextVisible( false );
 		progress->resize( 200, 30 );
 		progress->move( 153, 122 );
-		ui->PinPopupLayout->addWidget(progress);
+		ui->layoutContent->addWidget(progress);
 		auto *statusTimer = new QTimeLine(progress->maximum() * 1000, this);
 		statusTimer->setEasingCurve(QEasingCurve::Linear);
 		statusTimer->setFrameRange( progress->maximum(), progress->minimum() );
@@ -124,15 +116,13 @@ PinPopup::PinPopup(PinFlags flags, const QString &title, TokenFlags count, QWidg
 	else
 	{
 		ui->pin->setFocus();
-		ui->pin->setValidator(new QRegularExpressionValidator(regexp, ui->pin));
 		ui->pin->setMaxLength( 12 );
 		connect(ui->pin, &QLineEdit::textEdited, this, [&](const QString &text) {
-			ui->ok->setEnabled(regexp.match(text).hasMatch());
+			ui->ok->setEnabled(regexp->regularExpression().match(text).hasMatch());
 		});
-		ui->label->setBuddy( ui->pin );
+		ui->text->setBuddy( ui->pin );
 		ui->ok->setDisabled(true);
 	}
-	adjustSize();
 }
 
 PinPopup::~PinPopup()
@@ -142,8 +132,8 @@ PinPopup::~PinPopup()
 
 void PinPopup::setPinLen(unsigned long minLen, unsigned long maxLen)
 {
-	QString charPattern = regexp.pattern().startsWith(QLatin1String("^.")) ? QStringLiteral(".") : QStringLiteral("\\d");
-	regexp.setPattern(QStringLiteral("^%1{%2,%3}$").arg(charPattern).arg(minLen).arg(maxLen));
+	QString charPattern = regexp->regularExpression().pattern().startsWith(QLatin1String("^.")) ? QStringLiteral(".") : QStringLiteral("\\d");
+	regexp->setRegularExpression(QRegularExpression(QStringLiteral("^%1{%2,%3}$").arg(charPattern).arg(minLen).arg(maxLen)));
 }
 
 QString PinPopup::pin() const { return ui->pin->text(); }

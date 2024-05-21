@@ -46,7 +46,5 @@ public:
 	QString newCodeText() const;
 
 private:
-	bool validatePin(QSmartCardData::PinType type, WorkMode mode);
-
 	Ui::PinUnblock *ui;
 };
