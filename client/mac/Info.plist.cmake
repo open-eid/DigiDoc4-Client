@@ -13,7 +13,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>DigiDoc4</string>
+	<string>${MACOSX_BUNDLE_BUNDLE_NAME}</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleSupportedPlatforms</key>
@@ -32,6 +32,8 @@
 	<true/>
 	<key>NSAppleEventsUsageDescription</key>
 	<string>DigiDoc4 can use AppleScript to talk with apps, for example to insert attachments to emails.</string>
+	<key>LSHasLocalizedDisplayName</key>
+	<true/>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.productivity</string>
 	<key>LSMinimumSystemVersion</key>
