@@ -29,7 +29,7 @@ jobs:
       run: |
         brew install ninja flatbuffers
         HASH=($(shasum prepare_osx_build_environment.sh))
-        curl -O -L -s https://installer.id.ee/media/github/opensc_0.22.0.pkg
+        curl -O -L -s https://installer.id.ee/media/github/opensc_0.23.0.pkg
         curl -O -L -s https://installer.id.ee/media/github/${HASH}.zip
         sudo installer -verboseR -pkg libdigidocpp-pkg/libdigidocpp*.pkg -target /
         sudo installer -verboseR -pkg opensc_*.pkg -target /
@@ -62,10 +62,10 @@ jobs:
     steps:
     - name: Install dependencies
       if: matrix.container == '20.04'
-      run: apt update -qq && apt install --no-install-recommends -y git lsb-release fakeroot build-essential devscripts debhelper pkg-config cmake libldap2-dev gettext libpcsclite-dev libssl-dev libqt5svg5-dev qttools5-dev-tools qttools5-dev lintian libflatbuffers-dev zlib1g-dev
+      run: apt update -qq && apt install --no-install-recommends -y git lsb-release build-essential devscripts debhelper pkg-config cmake libldap2-dev gettext libpcsclite-dev libssl-dev libqt5svg5-dev qttools5-dev-tools qttools5-dev lintian libflatbuffers-dev zlib1g-dev
     - name: Install dependencies
       if: matrix.container != '20.04'
-      run: apt update -qq && apt install --no-install-recommends -y git lsb-release fakeroot build-essential devscripts debhelper pkg-config cmake libldap2-dev gettext libpcsclite-dev libssl-dev libgl-dev libqt6svg6-dev qt6-tools-dev qt6-tools-dev-tools qt6-l10n-tools lintian libflatbuffers-dev zlib1g-dev
+      run: apt update -qq && apt install --no-install-recommends -y git lsb-release build-essential devscripts debhelper pkg-config cmake libldap2-dev gettext libpcsclite-dev libssl-dev libgl-dev libqt6svg6-dev qt6-tools-dev qt6-tools-dev-tools qt6-l10n-tools lintian libflatbuffers-dev zlib1g-dev
     - name: Checkout
       uses: actions/checkout@v4
       with:
@@ -180,7 +180,7 @@ jobs:
     - name: Install Qt
       uses: jurplel/install-qt-action@v3
       with:
-        version: 6.6.2
+        version: 6.6.3
         arch: win64_msvc2019_64
     - name: Setup dev env
       uses: ilammy/msvc-dev-cmd@v1
@@ -189,8 +189,8 @@ jobs:
         sdk: 10.0.19041.0
     - name: Install WiX
       run: |
-        dotnet tool install --global wix
-        wix extension -g add WixToolset.UI.wixext/4.0.4
+        dotnet tool install -g wix --version 5.0.0
+        wix extension -g add WixToolset.UI.wixext/5.0.0
     - name: Build
       run: |
         md build/client

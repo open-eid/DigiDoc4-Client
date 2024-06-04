@@ -202,6 +202,9 @@ QScrollBar::sub-line:vertical {
              <height>31</height>
             </size>
            </property>
+           <property name="textFormat">
+            <enum>Qt::PlainText</enum>
+           </property>
            <property name="textInteractionFlags">
             <set>Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
            </property>
@@ -230,6 +233,9 @@ QScrollBar::sub-line:vertical {
              <width>0</width>
              <height>31</height>
             </size>
+           </property>
+           <property name="textFormat">
+            <enum>Qt::PlainText</enum>
            </property>
            <property name="textInteractionFlags">
             <set>Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
@@ -260,6 +266,9 @@ QScrollBar::sub-line:vertical {
              <height>31</height>
             </size>
            </property>
+           <property name="textFormat">
+            <enum>Qt::PlainText</enum>
+           </property>
            <property name="textInteractionFlags">
             <set>Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
            </property>
@@ -288,6 +297,9 @@ QScrollBar::sub-line:vertical {
              <width>0</width>
              <height>31</height>
             </size>
+           </property>
+           <property name="textFormat">
+            <enum>Qt::PlainText</enum>
            </property>
            <property name="wordWrap">
             <bool>true</bool>
@@ -326,6 +338,9 @@ QScrollBar::sub-line:vertical {
              <width>16777215</width>
              <height>300</height>
             </size>
+           </property>
+           <property name="textFormat">
+            <enum>Qt::PlainText</enum>
            </property>
            <property name="wordWrap">
             <bool>true</bool>
