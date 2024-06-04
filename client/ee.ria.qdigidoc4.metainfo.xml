@@ -43,9 +43,9 @@
   <launchable type="desktop-id">ee.ria.qdigidoc4.desktop</launchable>
   <screenshots>
     <screenshot type="default">
-      <image>https://github.com/minosimo/qdigidoc-flatpak/assets/19229302/d1e535ce-d86a-4c6b-ab27-b2a8d683b694</image>
-      <caption>DigiDoc4 screenshot</caption>
-      <caption xml:lang="ee">DigiDoc4 ekraanipilt</caption>
+      <image>https://www.id.ee/wp-content/uploads/2023/04/a-abi-allkirjastamine-e-allkirja-kinnituslehe-salvestamine-eng-2.png</image>
+      <caption>Main screen</caption>
+      <caption xml:lang="ee">Põhiekraan</caption>
     </screenshot>
   </screenshots>
   <icon type="stock">qdigidoc4</icon>
