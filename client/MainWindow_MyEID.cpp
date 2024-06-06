@@ -69,13 +69,13 @@ void MainWindow::pinUnblock( QSmartCardData::PinType type, bool isForgotPin )
 		updateCardWarnings(data);
 		if (type == QSmartCardData::Pin1Type)
 		{
-			warnings->closeWarning(WarningType::UnblockPin1Warning);
+			ui->warnings->closeWarning(WarningType::UnblockPin1Warning);
 			ui->cryptoContainerPage->cardChanged(data.authCert(),
 				data.retryCount(QSmartCardData::Pin1Type) == 0);
 		}
 		if (type == QSmartCardData::Pin2Type)
 		{
-			warnings->closeWarning(WarningType::UnblockPin2Warning);
+			ui->warnings->closeWarning(WarningType::UnblockPin2Warning);
 			ui->signContainerPage->cardChanged(data.signCert(),
 				data.retryCount(QSmartCardData::Pin2Type) == 0);
 		}
@@ -132,9 +132,9 @@ void MainWindow::showPinBlockedWarning(const QSmartCardData& t)
 {
 	bool isBlockedPuk = t.retryCount(QSmartCardData::PukType) == 0;
 	if(!isBlockedPuk && t.retryCount(QSmartCardData::Pin2Type) == 0)
-		warnings->showWarning(WarningText(WarningType::UnblockPin2Warning));
+		ui->warnings->showWarning({WarningType::UnblockPin2Warning});
 	if(!isBlockedPuk && t.retryCount(QSmartCardData::Pin1Type) == 0)
-		warnings->showWarning(WarningText(WarningType::UnblockPin1Warning));
+		ui->warnings->showWarning({WarningType::UnblockPin1Warning});
 	ui->signContainerPage->cardChanged(t.signCert(),
 		t.retryCount(QSmartCardData::Pin2Type) == 0);
 	ui->cryptoContainerPage->cardChanged(t.authCert(),
@@ -163,18 +163,18 @@ void MainWindow::updateCardWarnings(const QSmartCardData &data)
 	if(expiresIn <= 0)
 	{
 		ui->myEid->invalidIcon(true);
-		warnings->showWarning(WarningText(WarningType::CertExpiredWarning));
+		ui->warnings->showWarning({WarningType::CertExpiredError});
 	}
 	else if(expiresIn <= 105 * DAY)
 	{
 		ui->myEid->warningIcon(true);
-		warnings->showWarning(WarningText(WarningType::CertExpiryWarning));
+		ui->warnings->showWarning({WarningType::CertExpiryWarning});
 	}
 }
 
 void MainWindow::updateMyEID(const TokenData &t)
 {
-	warnings->clearMyEIDWarnings();
+	ui->warnings->clearMyEIDWarnings();
 	SslCertificate cert(t.cert());
 	auto type = cert.type();
 	ui->infoStack->setHidden(type == SslCertificate::UnknownType || type == SslCertificate::OldEstEidType);

@@ -116,5 +116,4 @@ private:
 	CryptoDoc* cryptoDoc = nullptr;
 	DigiDoc* digiDoc = nullptr;
 	Ui::MainWindow *ui;
-	WarningList *warnings;
 };

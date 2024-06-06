@@ -60,7 +60,6 @@ using namespace std::chrono;
 MainWindow::MainWindow( QWidget *parent )
 	: QWidget( parent )
 	, ui( new Ui::MainWindow )
-	, warnings(new WarningList(ui, this))
 {
 	setAttribute(Qt::WA_DeleteOnClose, true);
 	setAcceptDrops( true );
@@ -80,7 +79,7 @@ MainWindow::MainWindow( QWidget *parent )
 	ui->help->setFont( condensed11 );
 	ui->settings->setFont( condensed11 );
 
-	connect(warnings, &WarningList::warningClicked, this, &MainWindow::warningClicked);
+	connect(ui->warnings, &WarningList::warningClicked, this, &MainWindow::warningClicked);
 
 	ui->version->setText(QStringLiteral("%1%2").arg(tr("Ver. "), Application::applicationVersion()));
 	connect(ui->version, &QPushButton::clicked, this, [this] {showSettings(SettingsDialog::DiagnosticsSettings);});
@@ -145,7 +144,7 @@ MainWindow::MainWindow( QWidget *parent )
 	connect(ui->signContainerPage, &ContainerPage::fileRemoved, this, &MainWindow::removeSignatureFile);
 	connect(ui->signContainerPage, &ContainerPage::removed, this, &MainWindow::removeSignature);
 	connect(ui->signContainerPage, &ContainerPage::warning, this, [this](const WarningText &warningText) {
-		warnings->showWarning(warningText);
+		ui->warnings->showWarning(warningText);
 		ui->signature->warningIcon(true);
 	});
 
@@ -416,7 +415,7 @@ void MainWindow::onSignAction(int action, const QString &info1, const QString &i
 		break;
 	case ClearSignatureWarning:
 		ui->signature->warningIcon(false);
-		warnings->closeWarnings(SignDetails);
+		ui->warnings->closeWarnings(SignDetails);
 		break;
 	case ContainerCancel:
 		resetDigiDoc();
@@ -717,8 +716,8 @@ void MainWindow::resetDigiDoc(DigiDoc *doc, bool warnOnChange)
 
 	ui->signContainerPage->clear();
 	delete digiDoc;
-	warnings->closeWarnings(SignDetails);
-	warnings->closeWarning(EmptyFileWarning);
+	ui->warnings->closeWarnings(SignDetails);
+	ui->warnings->closeWarning(EmptyFileWarning);
 	digiDoc = doc;
 }
 
@@ -784,7 +783,7 @@ void MainWindow::selectPage(Pages page)
 	auto *btn = page < CryptoIntro ? ui->signature : (page == MyEid ? ui->myEid : ui->crypto);
 	btn->setChecked(true);
 	ui->startScreen->setCurrentIndex(page);
-	warnings->updateWarnings();
+	ui->warnings->updateWarnings(page);
 	adjustDrops();
 	updateSelector();
 }
@@ -924,7 +923,7 @@ bool MainWindow::removeFile(DocumentModel *model, int index)
 	for(auto i = 0; i < model->rowCount(); ++i) {
 		if(model->fileSize(i) > 0)
 			continue;
-		warnings->closeWarning(EmptyFileWarning);
+		ui->warnings->closeWarning(EmptyFileWarning);
 		if(digiDoc)
 			ui->signContainerPage->transition(digiDoc);
 		break;
@@ -988,11 +987,9 @@ bool MainWindow::validateFiles(const QString &container, const QStringList &file
 void MainWindow::warningClicked(const QString &link)
 {
 	if(link == QLatin1String("#unblock-PIN1"))
-		ui->accordion->changePin1Clicked(false, true);
+		changePin1Clicked(false, true);
 	else if(link == QLatin1String("#unblock-PIN2"))
-		ui->accordion->changePin2Clicked (false, true);
-	else if(link.startsWith(QLatin1String("http")))
-		QDesktopServices::openUrl(QUrl(link));
+		changePin2Clicked(false, true);
 }
 
 bool MainWindow::wrap(const QString& wrappedFile, bool enclose)
