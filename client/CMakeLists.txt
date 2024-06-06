@@ -287,8 +287,9 @@ else()
 	configure_file( qdigidoc4.1.cmake qdigidoc4.1 )
 	install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_BINDIR})
 	install( FILES ${CMAKE_CURRENT_BINARY_DIR}/qdigidoc4.1 DESTINATION ${CMAKE_INSTALL_MANDIR}/man1 )
-	install( FILES qdigidoc4.desktop DESTINATION ${CMAKE_INSTALL_DATADIR}/applications )
+	install( FILES ee.ria.qdigidoc4.desktop DESTINATION ${CMAKE_INSTALL_DATADIR}/applications )
 	install( FILES qdigidoc4.xml DESTINATION ${CMAKE_INSTALL_DATADIR}/mime/packages )
+	install( FILES ee.ria.qdigidoc4.metainfo.xml DESTINATION /usr/share/metainfo )
 	foreach(RES 16 22 32 48 128 256 512)
 		install(
 			FILES images/digidoc_${RES}.png
