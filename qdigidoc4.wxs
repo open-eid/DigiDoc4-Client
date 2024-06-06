@@ -100,6 +100,7 @@
         <File Name="XalanMessages_1_12$(var.qt_suffix).dll" />
         <File Name="Xalan-C_1_12$(var.qt_suffix).dll" />
         <File Name="xsec_2_0$(var.qt_suffix).dll" />
+        <File Name="libxml2.dll" />
         <File Name="digidocpp$(var.qt_suffix).dll" />
         <File Name="digidoc-tool.exe" />
         <File Name="digidocpp.conf" />
