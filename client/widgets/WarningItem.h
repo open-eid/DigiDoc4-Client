@@ -23,15 +23,9 @@
 
 namespace Ui { class WarningItem; }
 
-
 struct WarningText {
-
-	QString text, details, url;
-	int counter = 0, page = -1;
-	ria::qdigidoc4::WarningType warningType = ria::qdigidoc4::NoWarning;
-
-	WarningText(QString text);
-	WarningText(ria::qdigidoc4::WarningType warningType, int counter = 0);
+	ria::qdigidoc4::WarningType type = ria::qdigidoc4::NoWarning;
+	int counter = 0;
 };
 
 
@@ -50,9 +44,13 @@ signals:
 	void linkActivated(const QString& link);
 
 private:
-	void changeEvent(QEvent* event) final;
+	Q_DISABLE_COPY(WarningItem)
+	void changeEvent(QEvent *event) final;
+	void mousePressEvent(QMouseEvent *event) final;
 	void lookupWarning();
 
 	Ui::WarningItem *ui;
 	WarningText warnText;
+	QString url;
+	int _page = -1;
 };
