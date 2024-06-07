@@ -639,7 +639,7 @@ void MainWindow::onCryptoAction(int action, const QString &/*id*/, const QString
 
 void MainWindow::openFiles(const QStringList &files, bool addFile, bool forceCreate)
 {
-	/*
+/*
 	1. If containers are not open:
 		- If on myEid page and either crypto- or signature document, open corresponding view
 		- If on encrypt page, open encryption view
@@ -662,7 +662,7 @@ void MainWindow::openFiles(const QStringList &files, bool addFile, bool forceCre
 	switch(state)
 	{
 	case Uninitialized:
-		// Case 1.
+	// Case 1.
 		if(content.size() == 1)
 		{
 			auto fileType = FileDialog::detect(content[0]);

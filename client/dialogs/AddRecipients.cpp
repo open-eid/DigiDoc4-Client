@@ -152,7 +152,7 @@ void AddRecipients::addRecipientFromFile()
 		WarningDialog::show(this, tr("Failed to read certificate"));
 	}
 	else if( !SslCertificate( cert ).keyUsage().contains( SslCertificate::KeyEncipherment ) &&
-			 !SslCertificate( cert ).keyUsage().contains( SslCertificate::KeyAgreement ) )
+		!SslCertificate( cert ).keyUsage().contains( SslCertificate::KeyAgreement ) )
 	{
 		WarningDialog::show(this, tr("This certificate cannot be used for encryption"));
 	}

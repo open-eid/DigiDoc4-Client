@@ -54,7 +54,7 @@ AddressItem::AddressItem(std::shared_ptr<CKey> key, QWidget *parent, bool showIc
 	ui->idType->installEventFilter(this);
 
 	ui->remove->setIcons(QStringLiteral("/images/icon_remove.svg"), QStringLiteral("/images/icon_remove_hover.svg"),
-						 QStringLiteral("/images/icon_remove_pressed.svg"), 17, 17);
+		QStringLiteral("/images/icon_remove_pressed.svg"), 17, 17);
 	ui->remove->init(LabelButton::White);
 	connect(ui->add, &QToolButton::clicked, this, [this]{ emit add(this);});
 	connect(ui->remove, &LabelButton::clicked, this, [this]{ emit remove(this);});

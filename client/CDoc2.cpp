@@ -986,7 +986,7 @@ QByteArray CDoc2::getFMK(const CKey &key, const QByteArray& secret)
 			kek = qApp->signer()->decrypt([&pki, &key_material](QCryptoBackend *backend) {
 				QByteArray kekPm = backend->deriveHMACExtract(key_material, KEKPREMASTER, KEY_LEN);
 #ifndef NDEBUG
-				qDebug() << "kekPm" << kekPm.toHex();
+                qDebug() << "kekPm" << kekPm.toHex();
 #endif
 				QByteArray info = KEK + cdoc20::header::EnumNameFMKEncryptionMethod(cdoc20::header::FMKEncryptionMethod::XOR) + pki.rcpt_key + key_material;
 				return Crypto::expand(kekPm, info, KEY_LEN);

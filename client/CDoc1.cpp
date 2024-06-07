@@ -530,17 +530,17 @@ bool CDoc1::save(const QString &path)
 						});
 						writeElement(w, DS, QStringLiteral("KeyInfo"), [&]{
 							writeElement(w, DENC, QStringLiteral("AgreementMethod"), {
-											 {QStringLiteral("Algorithm"), AGREEMENT_MTH},
-										 }, [&]{
+								{QStringLiteral("Algorithm"), AGREEMENT_MTH},
+							}, [&]{
 								w.writeNamespace(XENC11, QStringLiteral("xenc11"));
 								writeElement(w, XENC11, QStringLiteral("KeyDerivationMethod"), {
 									{QStringLiteral("Algorithm"), CONCATKDF_MTH},
 								}, [&]{
 									writeElement(w, XENC11, QStringLiteral("ConcatKDFParams"), {
-													 {QStringLiteral("AlgorithmID"), QStringLiteral("00") + props.value(QStringLiteral("DocumentFormat")).toUtf8().toHex()},
-													 {QStringLiteral("PartyUInfo"), QStringLiteral("00") + SsDer.toHex()},
-													 {QStringLiteral("PartyVInfo"), QStringLiteral("00") + ckey->cert.toDer().toHex()},
-												 }, [&]{
+										{QStringLiteral("AlgorithmID"), QStringLiteral("00") + props.value(QStringLiteral("DocumentFormat")).toUtf8().toHex()},
+										{QStringLiteral("PartyUInfo"), QStringLiteral("00") + SsDer.toHex()},
+                                        {QStringLiteral("PartyVInfo"), QStringLiteral("00") + ckey->cert.toDer().toHex()},
+									}, [&]{
 										writeElement(w, DS, QStringLiteral("DigestMethod"), {
 											{QStringLiteral("Algorithm"), concatDigest},
 										});
