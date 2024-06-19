@@ -3,8 +3,6 @@
 // Used by EsteidShellExtension.rc
 //
 #define IDS_PROJNAME                    100
-#define IDR_ESTEIDEXT                   101
-#define IDR_ESTEIDSHLEXT                102
 #define IDB_DIGIDOCICO                  201
 
 // Next default values for new objects
