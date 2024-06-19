@@ -22,15 +22,26 @@
 #include <QLabel>
 
 // A label that fades in on the parent, shows a notification and then fades out.
-class FadeInNotification : public QLabel
+class FadeInNotification final: public QLabel
 {
 	Q_OBJECT
 
 public:
-	explicit FadeInNotification(QWidget *parent, const QString &fgColor, const QString &bgColor, int leftOffset = 0, int height = 65);
-	explicit FadeInNotification(QWidget *parent, const QString &fgColor, const QString &bgColor, QPoint pos, int width, int height);
-	void start(const QString &label, int fadeInTime, int displayTime, int fadeOutTime);
+	using ms = std::chrono::milliseconds;
+	enum Type {
+		Success,
+		Warning,
+		Error,
+		Default,
+		None,
+	};
+	explicit FadeInNotification(QWidget *parent, QRect rect, Type type = None, const QString &label = {});
+	void start(ms fadeInTime = ms(750));
+
+	static void success(QWidget *parent, const QString &label);
+	static void warning(QWidget *parent, const QString &label);
+	static void error(QWidget *parent, const QString &label, int height = 65);
 
 private:
-	bool eventFilter(QObject *watched, QEvent *event);
+	bool eventFilter(QObject *watched, QEvent *event) final;
 };

@@ -1,173 +1,58 @@
 #include "WarningList.h"
 
-#include "MainWindow.h"
 #include "WarningItem.h"
-#include "WarningRibbon.h"
 
-#include "../ui_MainWindow.h"
-
-#include <QtWidgets/QBoxLayout>
+#include <QtWidgets/QLayout>
 
 using namespace ria::qdigidoc4;
 
-WarningList::WarningList(Ui::MainWindow *main, QWidget *parent)
-	: QObject(parent)
-	, ui(main)
-{
-	parent->installEventFilter(this);
-}
-
-bool WarningList::appearsOnPage(WarningItem *warning, int page)
-{
-	return warning->page() == page || warning->page() == -1;
-}
+WarningList::WarningList(QWidget *parent)
+	: StyledWidget(parent)
+{}
 
 void WarningList::clearMyEIDWarnings()
 {
-	static const QList<int> warningTypes {CertExpiredWarning, CertExpiryWarning, UnblockPin1Warning, UnblockPin2Warning};
-	for(auto *warning: warnings)
+	static const QList<int> warningTypes {CertExpiredError, CertExpiryWarning, UnblockPin1Warning, UnblockPin2Warning};
+	for(auto *warning: findChildren<WarningItem*>())
 	{
-		if(warningTypes.contains(warning->warningType()) || warning->page() == MyEid)
-			closeWarning(warning);
+		if(warningTypes.contains(warning->warningType()))
+			warning->deleteLater();
 	}
-	updateWarnings();
 }
 
 void WarningList::closeWarning(int warningType)
 {
-	for(auto *warning: warnings)
+	for(auto *warning: findChildren<WarningItem*>())
 	{
-		if(warningType == warning->warningType())
-			closeWarning(warning);
+		if(warning->warningType() == warningType)
+			warning->deleteLater();
 	}
-	updateWarnings();
-}
-
-void WarningList::closeWarning(WarningItem *warning)
-{
-	warnings.removeOne(warning);
-	warning->deleteLater();
 }
 
 void WarningList::closeWarnings(int page)
 {
-	for(auto *warning: warnings)
+	for(auto *warning: findChildren<WarningItem*>())
 	{
 		if(warning->page() == page)
-			closeWarning(warning);
+			warning->deleteLater();
 	}
-	updateWarnings();
 }
 
-bool WarningList::eventFilter(QObject *object, QEvent *event)
+void WarningList::showWarning(WarningText warningText)
 {
-	if(object != parent() || event->type() != QEvent::MouseButtonPress)
-		return QObject::eventFilter(object, event);
-
-	for(auto *warning: warnings)
-	{
-		if(warning->underMouse())
-		{
-			// this warning should be closed iff there are no zero-byte(empty) files in the container
-			if (warning->warningType() == ria::qdigidoc4::EmptyFileWarning)
-			{
-				continue;
-			}
-
-			closeWarning(warning);
-			break;
-		}
-	}
-
-	if(ribbon && ribbon->underMouse())
-	{
-		ribbon->flip();
-		updateRibbon(ui->startScreen->currentIndex(), ribbon->isExpanded());
-	}
-
-	updateWarnings();
-	return QObject::eventFilter(object, event);
-}
-
-void WarningList::showWarning(const WarningText &warningText)
-{
-	if(warningText.warningType)
-	{
-		for(auto *warning: warnings)
-		{
-			if(warning->warningType() == warningText.warningType)
-				return;
-		}
-	}
-	auto *warning = new WarningItem(warningText, ui->page);
-	auto *layout = qobject_cast<QBoxLayout*>(ui->page->layout());
-	warnings << warning;
+	if(!warningText.type)
+		return;
+	for(auto *warning: findChildren<WarningItem*>())
+		if(warning->warningType() == warningText.type)
+			return;
+	auto *warning = new WarningItem(warningText, this);
 	connect(warning, &WarningItem::linkActivated, this, &WarningList::warningClicked);
-	layout->insertWidget(warnings.size(), warning);
-	updateWarnings();
+	layout()->addWidget(warning);
 }
 
-void WarningList::updateRibbon(int page, bool expanded)
+
+void WarningList::updateWarnings(int page)
 {
-	short count = 0;
-	for(auto *warning: warnings)
-	{
-		if(appearsOnPage(warning, page))
-		{
-			warning->setVisible(expanded || count < 3);
-			count++;
-		}
-	}
-	if (count > 1)
-	{
-		QWidget *parentWidget = qobject_cast<QWidget*>(parent());
-		QSize sizeBeforeAdjust = parentWidget->size();
-		parentWidget->adjustSize();
-		QSize sizeAfterAdjust = parentWidget->size();
-		// keep the size set-up by user, if possible
-		parentWidget->resize(sizeBeforeAdjust.width(), sizeBeforeAdjust.height() > sizeAfterAdjust.height() ? sizeBeforeAdjust.height() : sizeAfterAdjust.height());
-	}
-}
-
-void WarningList::updateWarnings()
-{
-	int page = ui->startScreen->currentIndex();
-	int count = 0;
-	for(auto *warning: warnings)
-	{
-		if(appearsOnPage(warning, page))
-			count++;
-		else
-			warning->hide();
-	}
-
-	if(!count)
-		ui->topBarShadow->setStyleSheet(QStringLiteral("background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #c8c8c8, stop: 1 #F4F5F6); \nborder: none;"));
-	else
-		ui->topBarShadow->setStyleSheet(QStringLiteral("background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #b5aa92, stop: 1 #F8DDA7); \nborder: none;"));
-
-	if(count < 4)
-	{
-		if(ribbon)
-		{
-			delete ribbon;
-			ribbon = nullptr;
-			for(auto *warning: warnings)
-			{
-				if(appearsOnPage(warning, page))
-					warning->show();
-			}
-		}
-	}
-	else if(!ribbon)
-	{
-		ribbon = new WarningRibbon(count - 3, ui->page);
-		auto *layout = qobject_cast<QBoxLayout*>(ui->page->layout());
-		layout->insertWidget(warnings.size() + 1, ribbon);
-		ribbon->show();
-	}
-	else
-		ribbon->setCount(count - 3);
-
-	updateRibbon(page, !ribbon || ribbon->isExpanded());
+	for(auto *warning: findChildren<WarningItem*>())
+		warning->setVisible(warning->page() == page || warning->page() == -1);
 }

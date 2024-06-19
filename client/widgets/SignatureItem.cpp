@@ -124,7 +124,7 @@ void SignatureItem::init()
 		ui->status = color(QLatin1String("green"), isValid) + ' ' + color(QLatin1String("#996C0B"), QStringLiteral("(%1)").arg(tr("Restrictions")));
 		break;
 	case DigiDocSignature::Invalid:
-		ui->error = isSignature ? ria::qdigidoc4::InvalidSignatureWarning : ria::qdigidoc4::InvalidTimestampWarning;
+		ui->error = isSignature ? ria::qdigidoc4::InvalidSignatureError : ria::qdigidoc4::InvalidTimestampError;
 		ui->status = color(QLatin1String("red"), isSignature ? tr("Signature is not valid") : tr("Timestamp is not valid"));
 		break;
 	case DigiDocSignature::Unknown:

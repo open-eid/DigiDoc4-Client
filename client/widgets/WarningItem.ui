@@ -7,55 +7,48 @@
     <x>0</x>
     <y>0</y>
     <width>914</width>
-    <height>26</height>
+    <height>40</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>914</width>
-    <height>26</height>
-   </size>
-  </property>
-  <property name="maximumSize">
-   <size>
-    <width>16777215</width>
-    <height>45</height>
+    <height>40</height>
    </size>
   </property>
   <property name="styleSheet">
-   <string notr="true">border-bottom: 1px solid #B5AA92;
-background-color: #F8DDA7;
-color: #353739;</string>
+   <string notr="true">#WarningItem {
+background-color: #FAE7C9;
+}
+#WarningItemError {
+background-color: #FAC9C9;
+}
+QLabel, QToolButton {
+color: #003168;
+font-family: Roboto, Helvetica;
+font-size: 14px;
+}</string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,0">
    <property name="spacing">
     <number>0</number>
    </property>
    <property name="leftMargin">
-    <number>6</number>
+    <number>12</number>
    </property>
    <property name="topMargin">
     <number>0</number>
    </property>
    <property name="rightMargin">
-    <number>10</number>
+    <number>12</number>
    </property>
    <property name="bottomMargin">
-    <number>1</number>
+    <number>0</number>
    </property>
    <item>
     <widget class="QLabel" name="warningText">
-     <property name="font">
-      <font>
-       <family>Roboto</family>
-       <pointsize>14</pointsize>
-      </font>
-     </property>
      <property name="focusPolicy">
       <enum>Qt::TabFocus</enum>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">border: none;</string>
      </property>
      <property name="text">
       <string notr="true">One signature is invalid</string>
@@ -66,29 +59,39 @@ color: #353739;</string>
     </widget>
    </item>
    <item>
-    <widget class="QPushButton" name="warningAction">
-     <property name="font">
-      <font>
-       <family>Roboto</family>
-       <pointsize>14</pointsize>
-       <bold>true</bold>
-       <underline>true</underline>
-      </font>
-     </property>
+    <widget class="QToolButton" name="warningAction">
      <property name="cursor">
       <cursorShape>PointingHandCursor</cursorShape>
      </property>
+     <property name="layoutDirection">
+      <enum>Qt::RightToLeft</enum>
+     </property>
      <property name="styleSheet">
-      <string notr="true">text-decoration: underline solid rgb(53, 55, 57);
+      <string notr="true">text-decoration: underline solid #003168;
 border: none;</string>
      </property>
      <property name="text">
-      <string notr="true">PushButton</string>
+      <string>More information</string>
+     </property>
+     <property name="icon">
+      <iconset resource="../images/images.qrc">
+       <normaloff>:/images/icon_link.svg</normaloff>:/images/icon_link.svg</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>20</width>
+       <height>20</height>
+      </size>
+     </property>
+     <property name="toolButtonStyle">
+      <enum>Qt::ToolButtonTextBesideIcon</enum>
      </property>
     </widget>
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../images/images.qrc"/>
+ </resources>
  <connections/>
 </ui>

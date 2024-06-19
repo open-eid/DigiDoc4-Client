@@ -76,13 +76,13 @@ enum Pages {
 enum WarningType {
     NoWarning = 0,
 
-    CertExpiredWarning,
+    CertExpiredError,
     CertExpiryWarning,
     UnblockPin1Warning,
     UnblockPin2Warning,
 
-    InvalidSignatureWarning,
-    InvalidTimestampWarning,
+    InvalidSignatureError,
+    InvalidTimestampError,
     UnknownSignatureWarning,
     UnknownTimestampWarning,
     UnsupportedAsicSWarning,

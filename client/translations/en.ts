@@ -1647,6 +1647,18 @@ ID-CARD</translation>
         <source>Decrypting</source>
         <translation>Decrypting</translation>
     </message>
+    <message>
+        <source>My eID</source>
+        <translation>My eID</translation>
+    </message>
+    <message>
+        <source>Signature</source>
+        <translation>Signature</translation>
+    </message>
+    <message>
+        <source>Crypto</source>
+        <translation>Crypto</translation>
+    </message>
 </context>
 <context>
     <name>MobileDialog</name>
@@ -1898,21 +1910,6 @@ and enter Smart-ID PIN2-code.</translation>
     <message>
         <source>The PCSC service, required for using the ID-card, is not working. Check your computer settings.</source>
         <translation>The PCSC service, required for using the ID-card, is not working. Check your computer settings.</translation>
-    </message>
-</context>
-<context>
-    <name>PageIcon</name>
-    <message>
-        <source>SIGNATURE</source>
-        <translation>SIGNATURE</translation>
-    </message>
-    <message>
-        <source>CRYPTO</source>
-        <translation>CRYPTO</translation>
-    </message>
-    <message>
-        <source>My eID</source>
-        <translation>My eID</translation>
     </message>
 </context>
 <context>
@@ -2463,10 +2460,6 @@ and enter Smart-ID PIN2-code.</translation>
     <message>
         <source>Password</source>
         <translation>Password</translation>
-    </message>
-    <message>
-        <source>Enable proxy for SSL connections</source>
-        <translation>Enable proxy for SSL connections</translation>
     </message>
     <message>
         <source>The connection to certificate status service is successful!</source>
@@ -3235,24 +3228,16 @@ Additional licenses and components</translation>
         <translation>An empty file is attached to the container. Remove the empty file from the container to sign.</translation>
     </message>
     <message>
-        <source>Certificates have expired! </source>
-        <translation>Certificates have expired! </translation>
-    </message>
-    <message>
-        <source>You can find instructions on how to get a new document from </source>
-        <translation>You can find instructions on how to get a new document from </translation>
-    </message>
-    <message>
-        <source>here</source>
-        <translation>here</translation>
+        <source>Certificates have expired!</source>
+        <translation>Certificates have expired!</translation>
     </message>
     <message>
         <source>https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult/</source>
         <translation>https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult/</translation>
     </message>
     <message>
-        <source>Certificates expire soon! </source>
-        <translation>Certificates expire soon! </translation>
+        <source>Certificates expire soon!</source>
+        <translation>Certificates expire soon!</translation>
     </message>
     <message>
         <source>This ASiC-S container contains XAdES signature. You are not allowed to add or remove signatures to this container.</source>
@@ -3261,20 +3246,6 @@ Additional licenses and components</translation>
     <message>
         <source>This container contains CAdES signature. You are not allowed to add or remove signatures to this container.</source>
         <translation>This container contains CAdES signature. You are not allowed to add or remove signatures to this container.</translation>
-    </message>
-</context>
-<context>
-    <name>WarningRibbon</name>
-    <message numerus="yes">
-        <source>%n message</source>
-        <translation>
-            <numerusform>%n message</numerusform>
-            <numerusform>%n messages</numerusform>
-        </translation>
-    </message>
-    <message>
-        <source>Less</source>
-        <translation>Less</translation>
     </message>
 </context>
 </TS>

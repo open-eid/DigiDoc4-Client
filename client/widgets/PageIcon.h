@@ -19,65 +19,24 @@
 
 #pragma once
 
-#include "common_enums.h"
-
-#include <QtWidgets/QPushButton>
+#include <QtWidgets/QToolButton>
 
 class QSvgWidget;
 
-namespace Ui {
-class PageIcon;
-}
-
-class PageIcon final : public QPushButton
+class PageIcon final : public QToolButton
 {
 	Q_OBJECT
 
 public:
 	explicit PageIcon( QWidget *parent = nullptr );
-	~PageIcon() final;
 
-	void init( ria::qdigidoc4::Pages page, QWidget *shadow, bool selected );
-	void activate( bool selected );
-	ria::qdigidoc4::Pages getType();
 	void invalidIcon( bool show );
 	void warningIcon( bool show );
 
-signals:
-	void activated( PageIcon *icon );
-
 private:
-	enum IconType {
-		None,
-		Warning,
-		Error
-	};
-	struct Style
-	{
-		QFont font;
-		QString image, backColor, foreColor, border;
-	};
-
-	void changeEvent(QEvent *event) final;
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-	void enterEvent(QEnterEvent *ev) final;
-#else
-	void enterEvent(QEvent *ev) final;
-#endif
-	void leaveEvent(QEvent *event) final;
 	void updateIcon();
-	void updateSelection();
-	void updateSelection(const Style &style);
 
-	Ui::PageIcon *ui;
-	QWidget *shadow = nullptr;
 	QSvgWidget *errorIcon;
-	QSvgWidget *icon;
-
-	Style active;
-	IconType iconType = IconType::None;
-	Style inactive;
-	Style hover;
-	bool selected = false;
-	ria::qdigidoc4::Pages type = ria::qdigidoc4::Pages::SignIntro;
+	bool warn = false;
+	bool err = false;
 };
