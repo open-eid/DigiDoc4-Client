@@ -1647,6 +1647,18 @@ ID-CARD</translation>
         <source>Decrypting</source>
         <translation>Decrypting</translation>
     </message>
+    <message>
+        <source>My eID</source>
+        <translation>My eID</translation>
+    </message>
+    <message>
+        <source>Signature</source>
+        <translation>Signature</translation>
+    </message>
+    <message>
+        <source>Crypto</source>
+        <translation>Crypto</translation>
+    </message>
 </context>
 <context>
     <name>MobileDialog</name>
@@ -1898,21 +1910,6 @@ and enter Smart-ID PIN2-code.</translation>
     <message>
         <source>The PCSC service, required for using the ID-card, is not working. Check your computer settings.</source>
         <translation>The PCSC service, required for using the ID-card, is not working. Check your computer settings.</translation>
-    </message>
-</context>
-<context>
-    <name>PageIcon</name>
-    <message>
-        <source>SIGNATURE</source>
-        <translation>SIGNATURE</translation>
-    </message>
-    <message>
-        <source>CRYPTO</source>
-        <translation>CRYPTO</translation>
-    </message>
-    <message>
-        <source>My eID</source>
-        <translation>My eID</translation>
     </message>
 </context>
 <context>
@@ -2463,10 +2460,6 @@ and enter Smart-ID PIN2-code.</translation>
     <message>
         <source>Password</source>
         <translation>Password</translation>
-    </message>
-    <message>
-        <source>Enable proxy for SSL connections</source>
-        <translation>Enable proxy for SSL connections</translation>
     </message>
     <message>
         <source>The connection to certificate status service is successful!</source>

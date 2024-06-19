@@ -18,166 +18,35 @@
  */
 
 #include "PageIcon.h"
-#include "ui_PageIcon.h"
-#include "Colors.h"
-#include "Styles.h"
 
-#include <QPainter>
 #include <QSvgWidget>
 
-using namespace ria::qdigidoc4;
-
 PageIcon::PageIcon(QWidget *parent)
-	: QPushButton(parent)
-	, ui(new Ui::PageIcon)
+	: QToolButton(parent)
+	, errorIcon(new QSvgWidget(this))
 {
-	ui->setupUi(this);
-	connect(this, &QPushButton::clicked, this, [this] { emit activated(this); });
-
-	icon = new QSvgWidget(this);
-	icon->resize( 48, 38 );
-	icon->move( 31, 23 );
-
-	errorIcon = new QSvgWidget(QStringLiteral(":/images/icon_alert_filled_red.svg"), this);
-	errorIcon->resize( 13, 12 );
-	errorIcon->move( 84, 12 );
+	errorIcon->resize(22, 22);
+	errorIcon->move(64, 6);
 	errorIcon->hide();
-	errorIcon->setStyleSheet(QStringLiteral("border: none;"));
-}
-
-PageIcon::~PageIcon()
-{
-	delete ui;
-}
-
-void PageIcon::init( Pages type, QWidget *shadow, bool selected )
-{
-	const QString BOTTOM_BORDER = QStringLiteral("solid rgba(255, 255, 255, 0.1); border-width: 0px 0px 1px 0px");
-	const QString RIGHT_BORDER = QStringLiteral("solid #E7E7E7; border-width: 0px 1px 0px 0px");
-	const QFont font = Styles::font( Styles::Condensed, 16 );
-	switch( type )
-	{
-	case CryptoIntro:
-		active = PageIcon::Style { font, QStringLiteral("/images/icon_Krypto_hover.svg"), colors::WHITE, colors::CLAY_CREEK, RIGHT_BORDER };
-		hover = PageIcon::Style { font, QStringLiteral("/images/icon_Krypto_hover.svg"), colors::BAHAMA_BLUE, colors::WHITE, QStringLiteral("none") };
-		inactive = PageIcon::Style { font, QStringLiteral("/images/icon_Krypto.svg"), colors::ASTRONAUT_BLUE, colors::WHITE, BOTTOM_BORDER };
-		icon->resize( 34, 38 );
-		icon->move( 38, 26 );	
-		ui->label->setText( tr("CRYPTO") );
-		break;
-	case MyEid:
-		active = PageIcon::Style { font, QStringLiteral("/images/icon_Minu_eID_hover.svg"), colors::WHITE, colors::CLAY_CREEK, RIGHT_BORDER };
-		hover = PageIcon::Style { font, QStringLiteral("/images/icon_Minu_eID_hover.svg"), colors::BAHAMA_BLUE, colors::WHITE, QStringLiteral("none") };
-		inactive = PageIcon::Style { font, QStringLiteral("/images/icon_Minu_eID.svg"), colors::ASTRONAUT_BLUE, colors::WHITE, BOTTOM_BORDER };
-		icon->resize( 44, 31 );
-		icon->move( 33, 28 );	
-		ui->label->setText( tr("My eID") );
-		break;
-	default:
-		active = PageIcon::Style { font, QStringLiteral("/images/icon_Allkiri_hover.svg"), colors::WHITE, colors::CLAY_CREEK, RIGHT_BORDER };
-		hover = PageIcon::Style { font, QStringLiteral("/images/icon_Allkiri_hover.svg"), colors::BAHAMA_BLUE, colors::WHITE, QStringLiteral("none") };
-		inactive = PageIcon::Style { font, QStringLiteral("/images/icon_Allkiri.svg"), colors::ASTRONAUT_BLUE, colors::WHITE, BOTTOM_BORDER };
-		ui->label->setText( tr("SIGNATURE") );
-		break;
-	}
-
-	this->selected = selected;
-	this->shadow = shadow;
-	this->type = type;
-	updateSelection();
-}
-
-void PageIcon::changeEvent(QEvent* event)
-{
-	if (event->type() == QEvent::LanguageChange)
-	{
-		ui->retranslateUi(this);
-		switch( type )
-		{
-		case CryptoIntro: ui->label->setText(tr("CRYPTO")); break;
-		case MyEid: ui->label->setText(tr("My eID")); break;
-		default: ui->label->setText(tr("SIGNATURE")); break;
-		}
-	}
-
-	QPushButton::changeEvent(event);
-}
-
-void PageIcon::activate( bool selected )
-{
-	this->selected = selected;
-	updateIcon();
-	updateSelection();
-}
-
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-void PageIcon::enterEvent(QEnterEvent * /*ev*/)
-#else
-void PageIcon::enterEvent(QEvent * /*ev*/)
-#endif
-{
-	if( !selected )
-		updateSelection(hover);
-}
-
-Pages PageIcon::getType()
-{
-	return type;
 }
 
 void PageIcon::invalidIcon(bool show)
 {
-	iconType = show ? Error : None;
+	err = show;
 	updateIcon();
-}
-
-void PageIcon::leaveEvent( QEvent * /*ev*/ )
-{
-	if( !selected )
-		updateSelection(inactive);
 }
 
 void PageIcon::updateIcon()
 {
-	if(iconType == Error)
-		errorIcon->load(selected ?
-			QStringLiteral(":/images/icon_alert_red.svg") :
-			QStringLiteral(":/images/icon_alert_filled_red.svg"));
-	if(iconType == Warning)
-		errorIcon->load(selected ?
-			QStringLiteral(":/images/icon_alert_whitebg_orange.svg") :
-			QStringLiteral(":/images/icon_alert_filled_orange.svg"));
-	errorIcon->setHidden(iconType == None);
-}
-
-void PageIcon::updateSelection()
-{
-	const Style &style = selected ? active : inactive;
-
-	if (selected)
-	{
-		shadow->show();
-		shadow->raise();
-		raise();
-	}
-	else
-		shadow->hide();
-
-	ui->label->setFont(style.font);
-	icon->load(QStringLiteral(":%1").arg(style.image));
-	updateSelection(style);
-}
-
-void PageIcon::updateSelection(const Style &style)
-{
-	ui->label->setStyleSheet(QStringLiteral("background-color: %1; color: %2; border: none;").arg(style.backColor, style.foreColor));
-	icon->setStyleSheet(QStringLiteral("background-color: %1; border: none;").arg(style.backColor));
-	setStyleSheet(QStringLiteral("background-repeat: none; background-color: %1; border: %2;").arg(style.backColor, style.border));
+	if(err)
+		errorIcon->load(QStringLiteral(":/images/icon_alert_error.svg"));
+	else if(warn)
+		errorIcon->load(QStringLiteral(":/images/icon_alert_warning.svg"));
+	errorIcon->setVisible(err || warn);
 }
 
 void PageIcon::warningIcon(bool show)
 {
-	if(iconType != Error)
-		iconType = show ? Warning : None;
+	warn = show;
 	updateIcon();
 }

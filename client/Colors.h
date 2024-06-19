@@ -26,18 +26,14 @@ namespace qdigidoc4
 namespace colors
 {
 	// Blues
-	static const QString ASTRONAUT_BLUE = QStringLiteral("#023664");
-	static const QString BAHAMA_BLUE = QStringLiteral("#035894");
 	static const QString CURIOUS_BLUE = QStringLiteral("#31A3D9");
 	static const QString DEEP_CERULEAN = QStringLiteral("#006EB5");
-	static const QString LOCHMARA = QStringLiteral("#008DCF");
 	// Reds
 	static const QString MOJO = QStringLiteral("#981E32");
 	// Whites
 	static const QString PORCELAIN = QStringLiteral("#f4f5f6");
 	static const QString WHITE = QStringLiteral("#ffffff");
 	// Golds-yellows
-	static const QString CLAY_CREEK = QStringLiteral("#998B66");
 	static const QString MARZIPAN = QStringLiteral("#F8DDA7");
 	// Green
 	static const QString MANTIS = QStringLiteral("#498526");
