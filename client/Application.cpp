@@ -200,15 +200,17 @@ public:
 
 	bool TSLAllowExpired() const final
 	{
-		static bool isAllowed = false;
-		if(!isAllowed)
+		if(static std::atomic_bool isShown(false); !isShown.exchange(true))
 		{
-			QEventLoop e;
-			QMetaObject::invokeMethod( qApp, "showTSLWarning", Q_ARG(QEventLoop*,&e) );
-			e.exec();
-			isAllowed = true;
+			dispatchToMain([] {
+				WarningDialog::show(Application::tr(
+					"The renewal of Trust Service status List, used for digital signature validation, has failed. "
+					"Please check your internet connection and make sure you have the latest ID-software version "
+					"installed. An expired Trust Service List (TSL) will be used for signature validation. "
+					"<a href=\"https://www.id.ee/en/article/digidoc4-message-updating-the-list-of-trusted-certificates-was-unsuccessful/\">Additional information</a>"), QString());
+			});
 		}
-		return isAllowed;
+		return true;
 	}
 
 private:
@@ -435,9 +437,8 @@ Application::Application( int &argc, char **argv )
 				qDebug() << "TSL loading finished";
 				Q_EMIT qApp->TSLLoadingFinished();
 				qApp->d->ready = true;
-				if(ex) {
+				if(ex)
 					dispatchToMain(showWarning, tr("Failed to initalize."), *ex);
-				}
 			}
 		);
 	}
@@ -472,10 +473,10 @@ Application::Application( int &argc, char **argv )
 		{
 			Settings::SHOW_INTRO = false;
 			auto *dlg = new FirstRun(mainWindow());
-			connect(dlg, &FirstRun::langChanged, this, [this](const QString& lang) { loadTranslation( lang ); });
+			connect(dlg, &FirstRun::langChanged, this, &Application::loadTranslation);
 			dlg->open();
 		}
-	});
+	}, Qt::QueuedConnection);
 
 	if( !args.isEmpty() || topLevelWindows().isEmpty() )
 		parseArgs(std::move(args));
@@ -548,7 +549,7 @@ void Application::browse( const QUrl &url )
 void Application::closeWindow()
 {
 #ifndef Q_OS_MAC
-	if( MainWindow *w = qobject_cast<MainWindow*>(activeWindow()) )
+	if(auto *w = qobject_cast<MainWindow*>(activeWindow()))
 		w->close();
 	else
 #endif
@@ -740,7 +741,9 @@ void Application::mailTo( const QUrl &url )
 
 QWidget* Application::mainWindow()
 {
-	if(QWidget *win = qobject_cast<MainWindow*>(activeWindow()))
+	if(auto *win = qobject_cast<MainWindow*>(activeWindow()))
+		return win;
+	if(auto *win = qobject_cast<QDialog*>(activeWindow()))
 		return win;
 	auto list = topLevelWidgets();
 	// Prefer main window; on Mac also the menu is top level window
@@ -748,7 +751,11 @@ QWidget* Application::mainWindow()
 			[](QWidget *widget) { return qobject_cast<MainWindow*>(widget); });
 		i != list.cend())
 		return *i;
-	return list.value(0);
+	if(auto i = std::find_if(list.cbegin(), list.cend(),
+			[](QWidget *widget) { return qobject_cast<QDialog*>(widget); });
+		i != list.cend())
+		return *i;
+	return nullptr;
 }
 
 bool Application::notify(QObject *object, QEvent *event)
@@ -913,16 +920,6 @@ void Application::showClient(const QStringList &params, bool crypto, bool sign, 
 	w->raise();
 	if( !params.isEmpty() )
 		QMetaObject::invokeMethod(w, "open", Q_ARG(QStringList,params), Q_ARG(bool,crypto), Q_ARG(bool,sign));
-}
-
-void Application::showTSLWarning(QEventLoop *e)
-{
-	auto *dlg = WarningDialog::show(tr(
-		"The renewal of Trust Service status List, used for digital signature validation, has failed. "
-		"Please check your internet connection and make sure you have the latest ID-software version "
-		"installed. An expired Trust Service List (TSL) will be used for signature validation. "
-		"<a href=\"https://www.id.ee/en/article/digidoc4-message-updating-the-list-of-trusted-certificates-was-unsuccessful/\">Additional information</a>"));
-	connect(dlg, &WarningDialog::finished, e, &QEventLoop::quit);
 }
 
 void Application::showWarning( const QString &msg, const digidoc::Exception &e )

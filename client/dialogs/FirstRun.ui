@@ -10,24 +10,6 @@
     <height>600</height>
    </rect>
   </property>
-  <property name="styleSheet">
-   <string notr="true">#signGotoSigning, #cryptoGotoEncryption, #eidGotoEid {
-border: none;
-border-radius: 5px;
-background-color: #B9D9EB;
-width: 10px;
-height: 10px;
-}
-#signGotoEncryption, #signGotoEid,
-#cryptoGotoSigning, #cryptoGotoEid,
-#eidGotoSigning, #eidGotoEncryption {
-border: none;
-border-radius: 5px;
-background-color: #F4F5F6;
-width: 10px;
-height: 10px;
-}</string>
-  </property>
   <layout class="QHBoxLayout" name="FirstRunLayout">
    <property name="leftMargin">
     <number>0</number>
@@ -43,6 +25,51 @@ height: 10px;
    </property>
    <item>
     <widget class="QStackedWidget" name="stack">
+     <property name="styleSheet">
+      <string notr="true">QToolButton {
+border: none;
+border-radius: 5px;
+background-color: #F4F5F6;
+width: 10px;
+height: 10px;
+}
+#signGotoSigning, #cryptoGotoEncryption, #eidGotoEid {
+background-color: #B9D9EB;
+}
+QPushButton {
+border-radius: 2px; 
+border: none;
+color: #ffffff;
+background-color: #006EB5;
+}
+QPushButton:pressed {
+background-color: #41B6E6;
+}
+QPushButton:hover:!pressed {
+background-color: #008DCF;
+}
+QPushButton:disabled {
+background-color: #BEDBED;
+}
+#introSkip, #signSkip, #cryptoSkip {
+border-radius: 2px; 
+border: none;
+color: #006EB5;
+background-color: none;
+}
+#introSkip:pressed, #signSkip:pressed, #cryptoSkip:pressed {
+color: #FFFFFF;
+background-color: #006EB5;
+}
+#introSkip:hover:!pressed, #signSkip:hover:!pressed, #cryptoSkip:hover:!pressed {
+border: 1px solid #006EB5;
+color: #006EB5;
+}
+#introSkip:disabled, #signSkip:disabled, #cryptoSkip:disabled {
+color: #727679;
+background-color: #BEDBED;
+}</string>
+     </property>
      <property name="currentIndex">
       <number>0</number>
      </property>
@@ -102,6 +129,7 @@ QComboBox QPushButton {
     padding: 0px 8px 0px 4px;
     border: 0px;
     color: #353739;
+    background-color: #FFFFFF;
     text-align: left;
     qproperty-iconSize: 14px 9px;
     qproperty-layoutDirection: RightToLeft;
@@ -169,24 +197,6 @@ QComboBox::down-arrow:on {
        </property>
        <property name="accessibleName">
         <string extracomment="accessible">Continue</string>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">QPushButton {
-	image: none;
-	border-radius: 2px; 
-	border: none;
-	color: #ffffff;
-	background-color: #006EB5;
-}
-QPushButton:pressed {
-	background-color: #41B6E6;
-}
-QPushButton:hover:!pressed {
-	background-color: #008DCF;
-}
-QPushButton:disabled {
-	background-color: #BEDBED;
-}</string>
        </property>
        <property name="text">
         <string>CONTINUE</string>
@@ -603,24 +613,6 @@ QWidget { border: none; }</string>
          <property name="accessibleName">
           <string extracomment="accessible">View introduction</string>
          </property>
-         <property name="styleSheet">
-          <string notr="true">QPushButton {
-	image: none;
-	border-radius: 2px; 
-	border: none;
-	color: #ffffff;
-	background-color: #006EB5;
-}
-QPushButton:pressed {
-	background-color: #41B6E6;
-}
-QPushButton:hover:!pressed {
-	background-color: #008DCF;
-}
-QPushButton:disabled {
-	background-color: #BEDBED;
-}</string>
-         </property>
          <property name="text">
           <string>VIEW INTRODUCTION</string>
          </property>
@@ -648,24 +640,6 @@ QPushButton:disabled {
          </property>
          <property name="accessibleName">
           <string extracomment="accessible">View introduction</string>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QPushButton {
-	image: none;
-	border-radius: 2px;
-	border: none;
-	color: #ffffff;
-	background-color: #006EB5;
-}
-QPushButton:pressed {
-    background-color: #41B6E6;
-}
-QPushButton:hover:!pressed {
-    background-color: #008DCF;
-}
-QPushButton:disabled {
-    background-color: #BEDBED;
-}</string>
          </property>
          <property name="text">
           <string>VIEW INTRODUCTION</string>
@@ -695,24 +669,6 @@ QPushButton:disabled {
          <property name="accessibleName">
           <string extracomment="accessible">View introduction</string>
          </property>
-         <property name="styleSheet">
-          <string notr="true">QPushButton {
-	image: none;
-	border-radius: 2px;
-	border: none;
-	color: #ffffff;
-	background-color: #006EB5;
-}
-QPushButton:pressed {
-    background-color: #41B6E6;
-}
-QPushButton:hover:!pressed {
-    background-color: #008DCF;
-}
-QPushButton:disabled {
-    background-color: #BEDBED;
-}</string>
-         </property>
          <property name="text">
           <string>VIEW INTRODUCTION</string>
          </property>
@@ -737,26 +693,6 @@ QPushButton:disabled {
          </property>
          <property name="cursor">
           <cursorShape>PointingHandCursor</cursorShape>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QPushButton {
-	image: none;
-	border-radius: 2px;
-	border: none;
-	color: #006EB5;
-}
-QPushButton:pressed {
-    color: #FFFFFF;
-	background-color: #006EB5;
-}
-QPushButton:hover:!pressed {
-    border: 1px solid #006EB5;
-	color: #006EB5;
-}
-QPushButton:disabled {
-    color: #727679;
-	background-color: #BEDBED;
-}</string>
          </property>
          <property name="text">
           <string>Skip introductions</string>
@@ -903,24 +839,6 @@ border-radius: 3px;</string>
        <property name="accessibleName">
         <string extracomment="accessible">View next intro</string>
        </property>
-       <property name="styleSheet">
-        <string notr="true">QPushButton {
-	image: none;
-	border-radius: 2px; 
-	border: none;
-	color: #ffffff;
-	background-color: #006EB5;
-}
-QPushButton:pressed {
-	background-color: #41B6E6;
-}
-QPushButton:hover:!pressed {
-	background-color: #008DCF;
-}
-QPushButton:disabled {
-	background-color: #BEDBED;
-}</string>
-       </property>
        <property name="text">
         <string>VIEW NEXT INTRO</string>
        </property>
@@ -951,26 +869,6 @@ QPushButton:disabled {
        </property>
        <property name="cursor">
         <cursorShape>PointingHandCursor</cursorShape>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">QPushButton {
-	image: none;
-	border-radius: 2px; 
-	border: none;
-	color: #006EB5;
-}
-QPushButton:pressed {
-	color: #FFFFFF;
-	background-color: #006EB5;
-}
-QPushButton:hover:!pressed {
-	border: 1px solid #006EB5;
-	color: #006EB5;
-}
-QPushButton:disabled {
-	color: #727679;
-	background-color: #BEDBED;
-}</string>
        </property>
        <property name="text">
         <string>Skip introductions</string>
@@ -1518,26 +1416,6 @@ QPushButton:disabled {
        <property name="cursor">
         <cursorShape>PointingHandCursor</cursorShape>
        </property>
-       <property name="styleSheet">
-        <string notr="true">QPushButton {
-	image: none;
-	border-radius: 2px; 
-	border: none;
-	color: #006EB5;
-}
-QPushButton:pressed {
-	color: #FFFFFF;
-	background-color: #006EB5;
-}
-QPushButton:hover:!pressed {
-	border: 1px solid #006EB5;
-	color: #006EB5;
-}
-QPushButton:disabled {
-	color: #727679;
-	background-color: #BEDBED;
-}</string>
-       </property>
        <property name="text">
         <string>Skip introductions</string>
        </property>
@@ -1571,24 +1449,6 @@ QPushButton:disabled {
        </property>
        <property name="accessibleName">
         <string extracomment="accessible">View next intro</string>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">QPushButton {
-	image: none;
-	border-radius: 2px; 
-	border: none;
-	color: #ffffff;
-	background-color: #006EB5;
-}
-QPushButton:pressed {
-	background-color: #41B6E6;
-}
-QPushButton:hover:!pressed {
-	background-color: #008DCF;
-}
-QPushButton:disabled {
-	background-color: #BEDBED;
-}</string>
        </property>
        <property name="text">
         <string>VIEW NEXT INTRO</string>
@@ -1885,24 +1745,6 @@ border-radius: 3px;</string>
        </property>
        <property name="accessibleName">
         <string extracomment="accessible">Enter the application</string>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">QPushButton {
-	image: none;
-	border-radius: 2px; 
-	border: none;
-	color: #ffffff;
-	background-color: #006EB5;
-}
-QPushButton:pressed {
-	background-color: #41B6E6;
-}
-QPushButton:hover:!pressed {
-	background-color: #008DCF;
-}
-QPushButton:disabled {
-	background-color: #BEDBED;
-}</string>
        </property>
        <property name="text">
         <string>ENTER THE APPLICATION</string>

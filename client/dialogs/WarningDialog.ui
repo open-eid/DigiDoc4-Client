@@ -11,12 +11,12 @@
    </rect>
   </property>
   <property name="styleSheet">
-   <string notr="true">QWidget {
+   <string notr="true">#WarningDialog &gt; QLabel {
 color: #000000;
-background-color: #FFFFFF;
 }
-QDialog {
+#WarningDialog {
 border-radius: 2px;
+background-color: #FFFFFF;
 }
 QPushButton {
 border-radius: 2px;
