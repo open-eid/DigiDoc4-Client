@@ -1,10 +1,10 @@
 cmake_minimum_required(VERSION 3.16)
-project(digidocshellextension VERSION 3.13.9)
+project(EsteidShellExtension VERSION 3.13.9)
 
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-include( VersionInfo )
+include(VersionInfo)
 
 if(CMAKE_SIZEOF_VOID_P EQUAL 8)
     set(MIDL_TARGET "x64")
@@ -17,42 +17,34 @@ endif()
 add_custom_command(
     OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/EsteidShellExtension_i.h
            ${CMAKE_CURRENT_BINARY_DIR}/EsteidShellExtension_i.c
-           ${CMAKE_CURRENT_BINARY_DIR}/EsteidShellExtension_p.c
     COMMAND Midl.Exe ${CMAKE_CURRENT_SOURCE_DIR}/EsteidShellExtension.idl
-        /nologo /no_robust /char signed /Oicf /env ${MIDL_TARGET}
-        /I ${CMAKE_CURRENT_SOURCE_DIR}
+        /nologo /target NT100 /char signed /env ${MIDL_TARGET}
         /tlb EsteidShellExtension.tlb
         /h EsteidShellExtension_i.h
         /iid EsteidShellExtension_i.c
-        /proxy EsteidShellExtension_p.c 2> nul
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
     VERBATIM
 )
 
-add_library(EsteidShellExtension SHARED
+add_library(${PROJECT_NAME} SHARED
     ${CMAKE_CURRENT_BINARY_DIR}/EsteidShellExtension_i.c
     dllmain.cpp
-    EsteidShellExtension.cpp
     EsteidShellExtension.def
     EsteidShlExt.cpp
-    stdafx.cpp
     EsteidShellExtension.rc
-    EsteidShellExtension.rgs
-    EsteidShlExt_x86.rgs
-    EsteidShlExt_x64.rgs
 )
-set_target_properties(EsteidShellExtension PROPERTIES
+set_target_properties(${PROJECT_NAME} PROPERTIES
     MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>"
-    COMPILE_DEFINITIONS "_UNICODE;UNICODE;_MERGE_PROXYSTUB;_WINDLL"
-    COMPILE_OPTIONS "/guard:cf"
+    COMPILE_DEFINITIONS "_UNICODE;UNICODE;_WINDLL"
     INCLUDE_DIRECTORIES ${CMAKE_CURRENT_BINARY_DIR}
     INTERPROCEDURAL_OPTIMIZATION YES
+    COMPILE_OPTIONS "/guard:cf"
     LINK_OPTIONS "/guard:cf"
     LINK_LIBRARIES "uxtheme.lib"
     SKIP_AUTOMOC ON
 )
 
-add_custom_target(msishellext DEPENDS EsteidShellExtension
+add_custom_target(msishellext DEPENDS ${PROJECT_NAME}
     COMMAND wix.exe build -nologo
         -arch ${PLATFORM}
         -d MSI_VERSION=${VERSION}
@@ -69,9 +61,9 @@ add_custom_target(msishellext DEPENDS EsteidShellExtension
 
 if(SIGNCERT)
     if(CROSSSIGNCERT)
-        target_link_options(EsteidShellExtension PRIVATE "/INTEGRITYCHECK")
+        target_link_options(${PROJECT_NAME} PRIVATE "/INTEGRITYCHECK")
     endif()
-    add_custom_command(TARGET EsteidShellExtension POST_BUILD
+    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
         COMMAND signtool.exe sign /a /v /s MY /n "${SIGNCERT}" /fd SHA256 /du http://installer.id.ee
             "$<$<BOOL:${CROSSSIGNCERT}>:/ph;/ac;${CROSSSIGNCERT}>"
             /tr http://sha256timestamp.ws.symantec.com/sha256/timestamp /td SHA256 $<TARGET_FILE:EsteidShellExtension>
