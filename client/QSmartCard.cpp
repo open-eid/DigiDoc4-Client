@@ -87,13 +87,10 @@ QString QSmartCardData::typeString(QSmartCardData::PinType type)
 	return {};
 }
 
-
-
-const QByteArray Card::MASTER_FILE = APDU("00A4000C");// 00"); // Compatibilty for some cards
+const QByteArray Card::MASTER_FILE = APDU("00A4000C");
 const QByteArray Card::MUTUAL_AUTH = APDU("00880000 00 00");
 const QByteArray Card::CHANGE = APDU("00240000 00");
 const QByteArray Card::READBINARY = APDU("00B00000 00");
-const QByteArray Card::READRECORD = APDU("00B20004 00");
 const QByteArray Card::REPLACE = APDU("002C0000 00");
 const QByteArray Card::VERIFY = APDU("00200000 00");
 
@@ -171,7 +168,7 @@ bool IDEMIACard::loadPerso(QPCSCReader *reader, QSmartCardDataPrivate *d) const
 		return false;
 	if(d->data.isEmpty() && reader->transfer(APDU("00A4010C025000")))
 	{
-		QByteArray cmd = APDU("00A4010C025001");
+		QByteArray cmd = APDU("00A4020C025001");
 		for(char data = 1; data <= 8; ++data)
 		{
 			cmd[6] = data;
