@@ -17,7 +17,7 @@ jobs:
       with:
         submodules: recursive
     - name: Download artifact
-      uses: dawidd6/action-download-artifact@v3
+      uses: dawidd6/action-download-artifact@v6
       with:
         workflow: build.yml
         branch: master
@@ -72,7 +72,7 @@ jobs:
       with:
         submodules: recursive
     - name: Download artifact
-      uses: dawidd6/action-download-artifact@v3
+      uses: dawidd6/action-download-artifact@v6
       with:
         workflow: build.yml
         branch: master
@@ -81,7 +81,7 @@ jobs:
         repo: open-eid/libdigidocpp
     - name: Install artifact
       run: |
-        apt install --no-install-recommends -y ./libdigidocpp-pkg/*$(lsb_release -rs)*.deb
+        apt install --no-install-recommends -y ./libdigidocpp-pkg/*.deb
         rm -rf libdigidocpp-pkg
     - name: Setup changelog
       run: |
@@ -122,7 +122,7 @@ jobs:
       with:
         submodules: recursive
     - name: Download artifact
-      uses: dawidd6/action-download-artifact@v3
+      uses: dawidd6/action-download-artifact@v6
       with:
         workflow: build.yml
         branch: master
@@ -130,9 +130,7 @@ jobs:
         path: libdigidocpp-pkg
         repo: open-eid/libdigidocpp
     - name: Install artifact
-      run: |
-        . /etc/os-release
-        dnf install -y ./libdigidocpp-pkg/*.rpm
+      run: dnf install -y ./libdigidocpp-pkg/*.rpm
     - name: Build
       run: |
         cmake -DCMAKE_INSTALL_PREFIX=/usr -B build -S .
@@ -161,7 +159,7 @@ jobs:
       with:
         submodules: recursive
     - name: Download artifact
-      uses: dawidd6/action-download-artifact@v3
+      uses: dawidd6/action-download-artifact@v6
       with:
         workflow: build.yml
         branch: master
@@ -179,9 +177,9 @@ jobs:
         vcpkgGitCommitId: 18b028fe785e707265fa0e35590b7537ae1d12ea
         vcpkgTriplet: x64-windows
     - name: Install Qt
-      uses: jurplel/install-qt-action@v3
+      uses: jurplel/install-qt-action@v4
       with:
-        version: 6.7.1
+        version: 6.7.2
         arch: win64_msvc2019_64
     - name: Setup dev env
       uses: ilammy/msvc-dev-cmd@v1
@@ -193,8 +191,6 @@ jobs:
         wix extension -g add WixToolset.UI.wixext/5.0.0
     - name: Build
       run: |
-        md build/client
-        copy ${{ env.RUNVCPKG_VCPKG_ROOT }}\installed\x64-windows\bin\*.dll build\client\
         cmake "-GNinja" -B build -S . -DCMAKE_BUILD_TYPE=RelWithDebInfo `
           -DCMAKE_TOOLCHAIN_FILE=${{ env.RUNVCPKG_VCPKG_ROOT }}/scripts/buildsystems/vcpkg.cmake `
           "-DLibDigiDocpp_ROOT=libs/PFiles64/libdigidocpp"
@@ -223,7 +219,7 @@ jobs:
     - name: Install dependencies
       run: sudo apt update -qq && sudo apt install --no-install-recommends -y cmake libldap2-dev gettext libpcsclite-dev libminizip-dev libxml-security-c-dev libgl-dev libqt6svg6-dev qt6-tools-dev qt6-tools-dev-tools qt6-l10n-tools libflatbuffers-dev zlib1g-dev
     - name: Download artifact
-      uses: dawidd6/action-download-artifact@v3
+      uses: dawidd6/action-download-artifact@v6
       with:
         workflow: build.yml
         branch: master
@@ -231,7 +227,7 @@ jobs:
         path: libdigidocpp-pkg
         repo: open-eid/libdigidocpp
     - name: Install artifact
-      run: sudo dpkg -i libdigidocpp-pkg/*$(lsb_release -rs)*.deb
+      run: sudo dpkg -i libdigidocpp-pkg/*.deb
     - name: Download Coverity Build Tool
       run: |
         curl -s -d "token=$TOKEN&project=$PROJECTNAME" -o cov-analysis-linux64.tar.gz https://scan.coverity.com/download/cxx/linux64
@@ -267,7 +263,7 @@ jobs:
     - name: Install dependencies
       run: sudo apt update -qq && sudo apt install --no-install-recommends -y cmake libldap2-dev gettext libpcsclite-dev libminizip-dev libxml-security-c-dev libgl-dev libqt6svg6-dev qt6-tools-dev qt6-tools-dev-tools qt6-l10n-tools libflatbuffers-dev zlib1g-dev
     - name: Download artifact
-      uses: dawidd6/action-download-artifact@v3
+      uses: dawidd6/action-download-artifact@v6
       with:
         workflow: build.yml
         branch: master

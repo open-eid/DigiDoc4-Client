@@ -4,8 +4,8 @@
 set -e
 
 ######### Versions of libraries/frameworks to be compiled
-QT_VER="6.7.1"
-OPENSSL_VER="3.0.13"
+QT_VER="6.7.2"
+OPENSSL_VER="3.0.14"
 OPENLDAP_VER="2.6.8"
 REBUILD=false
 BUILD_PATH=~/cmake_builds
