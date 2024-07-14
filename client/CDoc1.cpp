@@ -72,10 +72,10 @@ const QByteArray XML_TAG = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
 
 bool CDoc1::isCDoc1File(const QString& path)
 {
-	QFile f(path);
-	if(!f.open(QFile::ReadOnly)) return false;
-	if (f.read(XML_TAG.length()) != XML_TAG) return false;
-	return true;
+	
+	if(QFile f(path); f.open(QFile::ReadOnly))
+		return f.read(XML_TAG.length()) == XML_TAG);
+	return false;
 }
 
 CDoc1::CDoc1(const QString &path)
