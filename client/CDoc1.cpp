@@ -199,10 +199,10 @@ CDoc1::CDoc1(const QString &path)
 std::unique_ptr<CDoc1>
 CDoc1::load(const QString& path)
 {
-	CDoc1 *cdoc = new CDoc1(path);
-	if (!cdoc->keys.isEmpty()) return std::unique_ptr<CDoc1>(cdoc);
-	delete cdoc;
-	return nullptr;
+	auto cdoc = std::make_unique<CDoc1>(path);
+	if (cdoc->keys.isEmpty())
+		cdoc.reset();
+	return cdoc;
 }
 
 bool CDoc1::decryptPayload(const QByteArray &key)
@@ -297,8 +297,8 @@ bool CDoc1::decryptPayload(const QByteArray &key)
 CKey::DecryptionStatus
 CDoc1::canDecrypt(const QSslCertificate &cert) const
 {
-	std::shared_ptr<CKey> key = getDecryptionKey(cert);
-	if (key) return CKey::DecryptionStatus::CAN_DECRYPT;
+	if(getDecryptionKey(cert))
+		return CKey::DecryptionStatus::CAN_DECRYPT;
 	return CKey::DecryptionStatus::CANNOT_DECRYPT;
 }
 
