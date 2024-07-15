@@ -54,7 +54,9 @@ enum Actions {
     SignatureMobile,
     SignatureSmartID,
     SignatureToken,
-    ClearSignatureWarning
+    ClearSignatureWarning,
+
+    EncryptLT
 };
 
 enum ItemType {
