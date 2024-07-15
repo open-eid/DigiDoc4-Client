@@ -388,6 +388,6 @@ Crypto::pbkdf2_sha256(const QByteArray& pw, const QByteArray& salt, uint32_t ite
 	PKCS5_PBKDF2_HMAC(pw.data(), pw.length(),
 					  (const unsigned char *) salt.data(), int(salt.length()),
 					  iter, EVP_sha256(), int(key.size()), (unsigned char *)key.data());
-	return data;
+	return key;
 }
 

@@ -74,7 +74,7 @@ bool CDoc1::isCDoc1File(const QString& path)
 {
 	
 	if(QFile f(path); f.open(QFile::ReadOnly))
-		return f.read(XML_TAG.length()) == XML_TAG);
+		return f.read(XML_TAG.length()) == XML_TAG;
 	return false;
 }
 
@@ -199,7 +199,7 @@ CDoc1::CDoc1(const QString &path)
 std::unique_ptr<CDoc1>
 CDoc1::load(const QString& path)
 {
-	auto cdoc = std::make_unique<CDoc1>(path);
+	auto cdoc = std::unique_ptr<CDoc1>(new CDoc1(path));
 	if (cdoc->keys.isEmpty())
 		cdoc.reset();
 	return cdoc;
