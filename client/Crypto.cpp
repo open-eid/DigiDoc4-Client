@@ -384,10 +384,10 @@ QByteArray Crypto::xor_data(const QByteArray &a, const QByteArray &b)
 QByteArray
 Crypto::pbkdf2_sha256(const QByteArray& pw, const QByteArray& salt, uint32_t iter)
 {
-	unsigned char key[32];
+	QByteArray key(32, 0);
 	PKCS5_PBKDF2_HMAC(pw.data(), pw.length(),
-					  (const unsigned char *) salt.data(), salt.length(),
-					  iter, EVP_sha256(), 32, key);
-	return QByteArray((const char *) key, 32);
+					  (const unsigned char *) salt.data(), int(salt.length()),
+					  iter, EVP_sha256(), int(key.size()), (unsigned char *)key.data());
+	return data;
 }
 
