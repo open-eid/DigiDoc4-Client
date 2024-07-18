@@ -743,8 +743,6 @@ QWidget* Application::mainWindow()
 {
 	if(auto *win = qobject_cast<MainWindow*>(activeWindow()))
 		return win;
-	if(auto *win = qobject_cast<QDialog*>(activeWindow()))
-		return win;
 	auto list = topLevelWidgets();
 	// Prefer main window; on Mac also the menu is top level window
 	if(auto i = std::find_if(list.cbegin(), list.cend(),
@@ -939,11 +937,11 @@ void Application::updateTSLCache(const QDateTime &tslTime)
 	for(const QString &file: tsllist)
 	{
 		if(QFile tl(cache + "/" + file);
-			Application::readTSLVersion(":/TSL/" + file) > Application::readTSLVersion(tl.fileName()))
+			readTSLVersion(":/TSL/" + file) > readTSLVersion(tl.fileName()))
 		{
 			const QStringList cleanup = QDir(cache, file + QStringLiteral("*")).entryList();
 			for(const QString &rm: cleanup)
-				QFile::remove(cache + "/" + rm);
+				QFile::remove(cache + '/' + rm);
 			QFile::copy(":/TSL/" + file, tl.fileName());
 			tl.setPermissions(QFile::Permissions(0x6444));
 			if(tslTime.isValid() && tl.open(QFile::Append))
