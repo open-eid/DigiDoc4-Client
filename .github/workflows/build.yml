@@ -5,6 +5,7 @@ permissions:
 env:
   BUILD_NUMBER: ${{ github.run_number }}
   CMAKE_BUILD_PARALLEL_LEVEL: 4
+  UBUNTU_DEPS: ./libdigidocpp-pkg/*.deb cmake libldap2-dev gettext libpcsclite-dev libssl-dev libgl-dev libqt6svg6-dev qt6-tools-dev qt6-tools-dev-tools qt6-l10n-tools libflatbuffers-dev zlib1g-dev
 jobs:
   macos:
     name: Build on macOS
@@ -61,16 +62,6 @@ jobs:
       DEBFULLNAME: github-actions
       DEBEMAIL: github-actions@github.com
     steps:
-    - name: Install dependencies
-      if: matrix.container == '20.04'
-      run: apt update -qq && apt install --no-install-recommends -y git lsb-release build-essential devscripts debhelper pkg-config cmake libldap2-dev gettext libpcsclite-dev libssl-dev libqt5svg5-dev qttools5-dev-tools qttools5-dev lintian libflatbuffers-dev zlib1g-dev
-    - name: Install dependencies
-      if: matrix.container != '20.04'
-      run: apt update -qq && apt install --no-install-recommends -y git lsb-release build-essential devscripts debhelper pkg-config cmake libldap2-dev gettext libpcsclite-dev libssl-dev libgl-dev libqt6svg6-dev qt6-tools-dev qt6-tools-dev-tools qt6-l10n-tools lintian libflatbuffers-dev zlib1g-dev
-    - name: Checkout
-      uses: actions/checkout@v4
-      with:
-        submodules: recursive
     - name: Download artifact
       uses: dawidd6/action-download-artifact@v6
       with:
@@ -79,12 +70,19 @@ jobs:
         name: ubuntu_${{ matrix.container }}
         path: libdigidocpp-pkg
         repo: open-eid/libdigidocpp
-    - name: Install artifact
-      run: |
-        apt install --no-install-recommends -y ./libdigidocpp-pkg/*.deb
-        rm -rf libdigidocpp-pkg
+    - name: Install dependencies
+      if: matrix.container == '20.04'
+      run: apt update -qq && apt install --no-install-recommends -y git lsb-release build-essential devscripts debhelper pkg-config lintian ./libdigidocpp-pkg/*.deb cmake libldap2-dev gettext libpcsclite-dev libssl-dev libqt5svg5-dev qttools5-dev-tools qttools5-dev libflatbuffers-dev zlib1g-dev
+    - name: Install dependencies
+      if: matrix.container != '20.04'
+      run: apt update -qq && apt install --no-install-recommends -y git lsb-release build-essential devscripts debhelper pkg-config lintian ${UBUNTU_DEPS}
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
     - name: Setup changelog
       run: |
+        rm -rf libdigidocpp-pkg
         export VERSION=$(grep project CMakeLists.txt | egrep -o "([0-9]{1,}\.)+[0-9]{1,}")
         export VERSIONEX=${VERSION}.${BUILD_NUMBER}.$(lsb_release -rs)
         dch --distribution $(lsb_release -cs) -v ${VERSIONEX} "Release ${VERSIONEX}."
@@ -216,8 +214,6 @@ jobs:
       uses: actions/checkout@v4
       with:
         submodules: recursive
-    - name: Install dependencies
-      run: sudo apt update -qq && sudo apt install --no-install-recommends -y cmake libldap2-dev gettext libpcsclite-dev libminizip-dev libxml-security-c-dev libgl-dev libqt6svg6-dev qt6-tools-dev qt6-tools-dev-tools qt6-l10n-tools libflatbuffers-dev zlib1g-dev
     - name: Download artifact
       uses: dawidd6/action-download-artifact@v6
       with:
@@ -226,8 +222,8 @@ jobs:
         name: ubuntu_22.04
         path: libdigidocpp-pkg
         repo: open-eid/libdigidocpp
-    - name: Install artifact
-      run: sudo dpkg -i libdigidocpp-pkg/*.deb
+    - name: Install dependencies
+      run: sudo apt update -qq && sudo apt install --no-install-recommends -y ${UBUNTU_DEPS}
     - name: Download Coverity Build Tool
       run: |
         curl -s -d "token=$TOKEN&project=$PROJECTNAME" -o cov-analysis-linux64.tar.gz https://scan.coverity.com/download/cxx/linux64
@@ -260,8 +256,6 @@ jobs:
       uses: actions/checkout@v4
       with:
         submodules: recursive
-    - name: Install dependencies
-      run: sudo apt update -qq && sudo apt install --no-install-recommends -y cmake libldap2-dev gettext libpcsclite-dev libminizip-dev libxml-security-c-dev libgl-dev libqt6svg6-dev qt6-tools-dev qt6-tools-dev-tools qt6-l10n-tools libflatbuffers-dev zlib1g-dev
     - name: Download artifact
       uses: dawidd6/action-download-artifact@v6
       with:
@@ -270,8 +264,8 @@ jobs:
         name: ubuntu_22.04
         path: libdigidocpp-pkg
         repo: open-eid/libdigidocpp
-    - name: Install artifact
-      run: sudo dpkg -i libdigidocpp-pkg/*.deb
+    - name: Install dependencies
+      run: sudo apt update -qq && sudo apt install --no-install-recommends -y ${UBUNTU_DEPS}
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v3
       with:

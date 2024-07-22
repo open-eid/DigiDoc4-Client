@@ -101,9 +101,14 @@
         <File Name="Xalan-C_1_12$(var.qt_suffix).dll" />
         <File Name="xsec_2_0$(var.qt_suffix).dll" />
         <File Name="libxml2.dll" />
+        <File Name="libxmlsec1.dll" />
+        <File Name="libxmlsec1-openssl.dll" />
         <File Name="digidocpp$(var.qt_suffix).dll" />
         <File Name="digidoc-tool.exe" />
         <File Name="digidocpp.conf" />
+        <Directory Name="schema">
+          <Files Include="$(var.libs_path)\schema\*.xsd" />
+        </Directory>
 <?ifdef var.qt_path ?>
         <File Name="libcrypto-3$(var.OpenSSLSuffix).dll" />
         <File Name="libssl-3$(var.OpenSSLSuffix).dll" />
@@ -123,11 +128,6 @@
         <File Source="$(var.qt_path)\D3DCompiler_47.dll" />
         <File Source="$(var.qt_path)\opengl32sw.dll" />
         <File Source="$(var.qt_path)\Qt6SvgWidgets$(var.qt_suffix).dll" />
-<?endif?>
-        <Directory Name="schema">
-          <Files Include="$(var.libs_path)\schema\*.xsd" />
-        </Directory>
-<?ifdef var.qt_path ?>
         <Directory Name="platforms">
           <File Source="$(var.qt_path)\..\plugins\platforms\qwindows$(var.qt_suffix).dll" />
         </Directory>
