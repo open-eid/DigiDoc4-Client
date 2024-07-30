@@ -30,6 +30,8 @@
 
 #include <qt_windows.h>
 
+using namespace Qt::StringLiterals;
+
 static QString getUserRights()
 {
 	HANDLE hToken {};
@@ -76,25 +78,24 @@ static QString getUserRights()
 QStringList Diagnostics::packages(const QStringList &names, bool withName)
 {
 	QStringList packages;
-	for(const QString &group: {QStringLiteral("HKEY_LOCAL_MACHINE"), QStringLiteral("HKEY_CURRENT_USER")})
+	for(const QString &group: {u"HKEY_LOCAL_MACHINE"_s, u"HKEY_CURRENT_USER"_s})
 	{
-		QString path = QStringLiteral("%1\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall").arg(group);
 		static const QVector<QSettings::Format> formats = []() -> QVector<QSettings::Format> {
-			if(QSysInfo::currentCpuArchitecture().contains(QStringLiteral("64")))
+			if(QSysInfo::currentCpuArchitecture().contains("64"_L1))
 				return {QSettings::Registry32Format, QSettings::Registry64Format};
 			return {QSettings::Registry32Format};
 		}();
 		for(QSettings::Format format: formats)
 		{
-			QSettings s(path, format);
+			QSettings s(u"%1\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall"_s.arg(group), format);
 			for(const QString &key: s.childGroups())
 			{
 				s.beginGroup(key);
-				QString name = s.value(QStringLiteral("/DisplayName")).toString();
-				QString version = s.value(QStringLiteral("/DisplayVersion")).toString();
-				QString type = s.value(QStringLiteral("/ReleaseType")).toString();
-				if(!type.contains(QStringLiteral("Update"), Qt::CaseInsensitive) &&
-					!name.contains(QStringLiteral("Update"), Qt::CaseInsensitive) &&
+				QString name = s.value("/DisplayName"_L1).toString();
+				QString version = s.value("/DisplayVersion"_L1).toString();
+				QString type = s.value("/ReleaseType"_L1).toString();
+				if(!type.contains("Update"_L1, Qt::CaseInsensitive) &&
+					!name.contains("Update"_L1, Qt::CaseInsensitive) &&
 					name.contains(QRegularExpression(names.join('|').prepend('^'), QRegularExpression::CaseInsensitiveOption)))
 					packages.append(packageName(name, version, withName));
 				s.endGroup();
@@ -142,19 +143,14 @@ void Diagnostics::run()
 	QByteArray path = qgetenv("PATH");
 	qputenv("PATH", path
 		+ ";C:\\Program Files\\Open-EID"
-		+ ";C:\\Program Files\\TeRa Client"
 		+ ";C:\\Program Files\\EstIDMinidriver Minidriver"
 		+ ";C:\\Program Files (x86)\\Open-EID"
-		+ ";C:\\Program Files (x86)\\TeRa Client"
 		+ ";C:\\Program Files (x86)\\EstIDMinidriver Minidriver");
 	SetDllDirectory(LPCWSTR(qApp->applicationDirPath().utf16()));
 	static const QStringList dlls{
-		"digidoc", "digidocpp", "qdigidoc4.exe", "qdigidocclient.exe", "qesteidutil.exe", "id-updater.exe", "qdigidoc_tera_gui.exe",
-		"esteidcm", "esteidcm64", "EstIDMinidriver", "EstIDMinidriver64", "onepin-opensc-pkcs11", "EsteidShellExtension",
-		"esteid-plugin-ie", "esteid-plugin-ie64", "chrome-token-signing.exe", "web-eid.exe",
-		"libcrypto-3", "libssl-3", "libcrypto-3-x64", "libssl-3-x64", "libcrypto-1_1", "libssl-1_1", "libcrypto-1_1-x64", "libssl-1_1-x64",
-		"zlib1", "xerces-c_3_1", "xerces-c_3_2", "xalan-c_1_12", "xalanmessages_1_12", "xsec_1_7", "xsec_2_0", "libxml2",
-		"advapi32", "crypt32", "winscard"};
+		"digidocpp", "qdigidoc4.exe", "EsteidShellExtension", "id-updater.exe",
+		"EstIDMinidriver", "EstIDMinidriver64", "web-eid.exe",
+		"zlib1", "libxml2", "libxmlsec1", "libxmlsec1-openssl"};
 	for(const QString &lib: dlls)
 	{
 		DWORD infoHandle {};
@@ -168,7 +164,7 @@ void Diagnostics::run()
 		UINT len {};
 		if( !VerQueryValueW( data.constData(), L"\\", (LPVOID*)&info, &len ) )
 			continue;
-		s << QStringLiteral("%1 (%2.%3.%4.%5)").arg(lib)
+		s << u"%1 (%2.%3.%4.%5)"_s.arg(lib)
 			.arg( HIWORD(info->dwFileVersionMS) )
 			.arg( LOWORD(info->dwFileVersionMS) )
 			.arg( HIWORD(info->dwFileVersionLS) )
@@ -181,53 +177,35 @@ void Diagnostics::run()
 	emit update( info );
 	info.clear();
 
-	enum {
-		Running,
-		Stopped,
-		NotFound
-	} atrfiltr = NotFound, certprop = NotFound;
+	QString atrfiltr = tr("Not found");
+	QString certprop = tr("Not found");
 	if(SC_HANDLE h = OpenSCManager(nullptr, nullptr, SC_MANAGER_CONNECT))
 	{
 		if( SC_HANDLE s = OpenService( h, L"atrfiltr", SERVICE_QUERY_STATUS ) )
 		{
 			SERVICE_STATUS status {};
 			QueryServiceStatus( s, &status );
-			atrfiltr = (status.dwCurrentState == SERVICE_RUNNING) ? Running : Stopped;
+			atrfiltr = status.dwCurrentState == SERVICE_RUNNING ? tr("Running") : tr("Not running");
 			CloseServiceHandle( s );
 		}
 		if( SC_HANDLE s = OpenService( h, L"CertPropSvc", SERVICE_QUERY_STATUS ))
 		{
 			SERVICE_STATUS status {};
 			QueryServiceStatus( s, &status );
-			certprop = (status.dwCurrentState == SERVICE_RUNNING) ? Running : Stopped;
+			certprop = status.dwCurrentState == SERVICE_RUNNING ? tr("Running") : tr("Not running");
 			CloseServiceHandle( s );
 		}
 		CloseServiceHandle( h );
 	}
-	s << "<br /><b>" << tr("ATRfiltr service status: ") << "</b>" << " ";
-	switch( atrfiltr )
-	{
-	case NotFound: s << tr("Not found"); break;
-	case Stopped: s << tr("Not running"); break;
-	case Running: s << tr("Running"); break;
-	}
-	s << "<br /><b>" << tr("Certificate Propagation service status: ") << "</b>" << " ";
-	switch( certprop )
-	{
-	case NotFound: s << tr("Not found"); break;
-	case Stopped: s << tr("Not running"); break;
-	case Running: s << tr("Running"); break;
-	}
-	s << "<br />";
+	s << "<br /><b>" << tr("ATRfiltr service status: ") << "</b " << atrfiltr
+		<< "<br /><b>" << tr("Certificate Propagation service status: ") << "</b> " << certprop << "<br />";
 
 	generalInfo( s );
 	emit update( info );
 	info.clear();
 
-	QStringList browsers = packages({"Mozilla Firefox", "Google Chrome", "Microsoft EDGE"});
-	QSettings reg(QStringLiteral("HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Internet Explorer"), QSettings::NativeFormat);
-	browsers << QStringLiteral("Internet Explorer (%1)").arg(reg.value("svcVersion", reg.value("Version")).toString());
-	s << "<br /><br /><b>" << tr("Browsers:") << "</b><br />" << browsers.join(QStringLiteral("<br />")) << "<br /><br />";
+	s << "<br /><br /><b>" << tr("Browsers:") << "</b><br />"
+		<< packages({"Mozilla Firefox", "Google Chrome", "Microsoft EDGE"}).join("<br />"_L1) << "<br /><br />";
 	emit update( info );
 	info.clear();
 }

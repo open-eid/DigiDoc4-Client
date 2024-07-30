@@ -96,10 +96,6 @@
           </ProgId>
         </Component>
         <File Name="zlib$(var.qt_suffix)1.dll" />
-        <File Name="xerces-c_3_2$(var.qt_suffix).dll" />
-        <File Name="XalanMessages_1_12$(var.qt_suffix).dll" />
-        <File Name="Xalan-C_1_12$(var.qt_suffix).dll" />
-        <File Name="xsec_2_0$(var.qt_suffix).dll" />
         <File Name="libxml2.dll" />
         <File Name="libxmlsec1.dll" />
         <File Name="libxmlsec1-openssl.dll" />
