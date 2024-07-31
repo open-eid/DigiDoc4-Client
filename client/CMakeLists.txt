@@ -1,14 +1,19 @@
-add_executable( TSLDownload TSLDownload.cpp )
-target_link_libraries(TSLDownload Qt${QT_VERSION_MAJOR}::Network)
-set_target_properties(TSLDownload PROPERTIES AUTOMOC OFF)
-get_target_property(qtCore_install_prefix Qt${QT_VERSION_MAJOR}::qmake IMPORTED_LOCATION)
-get_filename_component(qtCore_install_prefix ${qtCore_install_prefix} DIRECTORY)
-add_custom_command(
-	OUTPUT TSL.qrc
-	DEPENDS TSLDownload
-	COMMAND $<TARGET_FILE:TSLDownload> "${CMAKE_CURRENT_BINARY_DIR}" ${TSL_URL} ${TSL_INCLUDE}
-	WORKING_DIRECTORY ${qtCore_install_prefix}
-)
+if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/TSL.qrc)
+	set(TSL_QRC ${CMAKE_CURRENT_SOURCE_DIR}/TSL.qrc)
+else()
+	add_executable(TSLDownload TSLDownload.cpp)
+	target_link_libraries(TSLDownload Qt${QT_VERSION_MAJOR}::Network)
+	set_target_properties(TSLDownload PROPERTIES AUTOMOC OFF)
+	get_target_property(qtCore_install_prefix Qt${QT_VERSION_MAJOR}::qmake IMPORTED_LOCATION)
+	get_filename_component(qtCore_install_prefix ${qtCore_install_prefix} DIRECTORY)
+	add_custom_command(
+		OUTPUT TSL.qrc
+		DEPENDS TSLDownload
+		COMMAND $<TARGET_FILE:TSLDownload> "${CMAKE_CURRENT_BINARY_DIR}" ${TSL_URL} ${TSL_INCLUDE}
+		WORKING_DIRECTORY ${qtCore_install_prefix}
+	)
+	set(TSL_QRC ${CMAKE_CURRENT_BINARY_DIR}/TSL.qrc)
+endif()
 
 configure_file( translations/tr.qrc tr.qrc COPYONLY )
 qt_add_translation(SOURCES translations/en.ts translations/et.ts translations/ru.ts)
@@ -29,7 +34,7 @@ add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
 	images/images.qrc
 	fonts/fonts.qrc
 	${CMAKE_CURRENT_BINARY_DIR}/tr.qrc
-	${CMAKE_CURRENT_BINARY_DIR}/TSL.qrc
+	${TSL_QRC}
 	common_enums.h
 	main.cpp
 	Application.cpp
