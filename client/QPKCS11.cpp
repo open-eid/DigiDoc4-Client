@@ -32,7 +32,7 @@
 #include <array>
 
 template<class Container>
-QString toQString(const Container &c)
+static QString toQString(const Container &c)
 {
 	return QString::fromLatin1((const char*)std::data(c), std::size(c));
 }
@@ -163,8 +163,8 @@ bool QPKCS11::load( const QString &driver )
 	qWarning() << "Loading:" << driver;
 	unload();
 	d->lib.setFileName( driver );
-	auto l = CK_C_GetFunctionList(d->lib.resolve("C_GetFunctionList"));
-	if( !l || l( &d->f ) != CKR_OK )
+	if(auto l = CK_C_GetFunctionList(d->lib.resolve("C_GetFunctionList"));
+		!l || l(&d->f) != CKR_OK)
 	{
 		qWarning() << "Failed to resolve symbols";
 		return false;
@@ -266,16 +266,16 @@ void QPKCS11::logout()
 
 QList<TokenData> QPKCS11::tokens() const
 {
+	QList<TokenData> list;
 	if(!d->f)
-		return {};
+		return list;
 	size_t size = 0;
 	if(d->f->C_GetSlotList(CK_TRUE, nullptr, CK_ULONG_PTR(&size)) != CKR_OK)
-		return {};
+		return list;
 	std::vector<CK_SLOT_ID> slotIDs(size);
 	if(d->f->C_GetSlotList(CK_TRUE, slotIDs.data(), CK_ULONG_PTR(&size)) != CKR_OK)
-		return {};
+		return list;
 	slotIDs.resize(size);
-	QList<TokenData> list;
 	for(CK_SLOT_ID slot: slotIDs)
 	{
 		CK_SLOT_INFO slotInfo{};
@@ -329,6 +329,7 @@ bool QPKCS11::reload()
 		{ "/Library/latvia-eid/lib/eidlv-pkcs11.bundle/Contents/MacOS/eidlv-pkcs11", "3BDD18008131FE45904C41545649412D65494490008C" }, // LV-G1
 		{ "/Library/latvia-eid/lib/eidlv-pkcs11.bundle/Contents/MacOS/eidlv-pkcs11", "3BDB960080B1FE451F830012428F536549440F900020" }, // LV-G2
 		{ "/Library/mCard/lib/mcard-pkcs11.so", "3B9D188131FC358031C0694D54434F5373020505D3" }, // LT-G3
+		{ "/Library/mCard/lib/mcard-pkcs11.so", "3B9D188131FC358031C0694D54434F5373020604D1" }, // LT-G3.1
 		{ "/Library/mPolluxDigiSign/libcryptoki.dylib", "3B7F9600008031B865B0850300EF1200F6829000" }, // FI-G3
 		{ "/Library/mPolluxDigiSign/libcryptoki.dylib", "3B7F9600008031B865B08504021B1200F6829000" }, // FI-G3.1
 		{ "/Library/mPolluxDigiSign/libcryptoki.dylib", "3B7F9600008031B865B085050011122460829000" }, // FI-G4
@@ -345,6 +346,7 @@ bool QPKCS11::reload()
 		{ "/opt/latvia-eid/lib/eidlv-pkcs11.so", "3BDD18008131FE45904C41545649412D65494490008C" }, // LV-G1
 		{ "/opt/latvia-eid/lib/eidlv-pkcs11.so", "3BDB960080B1FE451F830012428F536549440F900020" }, // LV-G2
 		{ "mcard-pkcs11.so", "3B9D188131FC358031C0694D54434F5373020505D3" }, // LT-G3
+		{ "mcard-pkcs11.so", "3B9D188131FC358031C0694D54434F5373020604D1" }, // LT-G3.1
 #if Q_PROCESSOR_WORDSIZE == 8
 		{ "/usr/lib64/libcryptoki.so", "3B7F9600008031B865B0850300EF1200F6829000" }, // FI-G3
 		{ "/usr/lib64/libcryptoki.so", "3B7F9600008031B865B08504021B1200F6829000" }, // FI-G3.1

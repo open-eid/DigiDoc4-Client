@@ -161,7 +161,7 @@ public:
 	std::vector<digidoc::X509Cert> TSCerts() const final
 	{
 		std::vector<digidoc::X509Cert> list = toCerts(QLatin1String("CERT-BUNDLE"));
-		if(digidoc::X509Cert cert = toCert(fromBase64(QVariant(Settings::TSA_CERT))))
+		if(digidoc::X509Cert cert = toCert(fromBase64(Settings::TSA_CERT)))
 			list.push_back(cert);
 		list.emplace_back(); // Make sure that TSA cert pinning is enabled
 		return list;
@@ -169,12 +169,8 @@ public:
 
 	std::string TSUrl() const final
 	{
-		if(Settings::TSA_URL_CUSTOM)
-			return valueUserScope(Settings::TSA_URL, digidoc::XmlConfCurrent::TSUrl());
-		return valueSystemScope(Settings::TSA_URL.KEY, digidoc::XmlConfCurrent::TSUrl());
+		return valueUserScope(Settings::TSA_URL_CUSTOM, Settings::TSA_URL, digidoc::XmlConfCurrent::TSUrl());
 	}
-	void setTSUrl(const std::string &url) final
-	{ Settings::TSA_URL = url; }
 
 	std::string TSLUrl() const final
 	{ return valueSystemScope(QLatin1String("TSL-URL"), digidoc::XmlConfCurrent::TSLUrl()); }
@@ -186,7 +182,7 @@ public:
 
 	digidoc::X509Cert verifyServiceCert() const final
 	{
-		QByteArray cert = fromBase64(Application::confValue(Settings::SIVA_CERT.KEY));
+		QByteArray cert = fromBase64(Settings::SIVA_CERT);
 		return cert.isEmpty() ? digidoc::XmlConfCurrent::verifyServiceCert() : toCert(cert);
 	}
 	std::vector<digidoc::X509Cert> verifyServiceCerts() const final
@@ -199,24 +195,22 @@ public:
 	}
 	std::string verifyServiceUri() const final
 	{
-		if(Settings::SIVA_URL_CUSTOM)
-			return valueUserScope(Settings::SIVA_URL, digidoc::XmlConfCurrent::verifyServiceUri());
-		return valueSystemScope(Settings::SIVA_URL.KEY, digidoc::XmlConfCurrent::verifyServiceUri());
+		return valueUserScope(Settings::SIVA_URL_CUSTOM, Settings::SIVA_URL, digidoc::XmlConfCurrent::verifyServiceUri());
 	}
-	void setVerifyServiceUri(const std::string &url) final
-	{ Settings::SIVA_URL = url; }
 
 	bool TSLAllowExpired() const final
 	{
-		static bool isAllowed = false;
-		if(!isAllowed)
+		if(static std::atomic_bool isShown(false); !isShown.exchange(true))
 		{
-			QEventLoop e;
-			QMetaObject::invokeMethod( qApp, "showTSLWarning", Q_ARG(QEventLoop*,&e) );
-			e.exec();
-			isAllowed = true;
+			dispatchToMain([] {
+				WarningDialog::show(Application::tr(
+					"The renewal of Trust Service status List, used for digital signature validation, has failed. "
+					"Please check your internet connection and make sure you have the latest ID-software version "
+					"installed. An expired Trust Service List (TSL) will be used for signature validation. "
+					"<a href=\"https://www.id.ee/en/article/digidoc4-message-updating-the-list-of-trusted-certificates-was-unsuccessful/\">Additional information</a>"), QString());
+			});
 		}
-		return isAllowed;
+		return true;
 	}
 
 private:
@@ -239,15 +233,15 @@ private:
 	template<class T>
 	static std::string valueSystemScope(const T &key, std::string &&defaultValue)
 	{
-		if(const auto &value = Application::confValue(key); value.isString())
+		if(auto value = Application::confValue(key); value.isString())
 			return value.toString().toStdString();
-		return std::forward<std::string>(defaultValue);
+		return std::move(defaultValue);
 	}
 
 	template<typename Option>
-	static std::string valueUserScope(const Option &option, std::string &&defaultValue)
+	static std::string valueUserScope(bool custom, const Option &option, std::string &&defaultValue)
 	{
-		return option.isSet() ? option : valueSystemScope(option.KEY, std::forward<std::string>(defaultValue));
+		return custom && option.isSet() ? option : valueSystemScope(option.KEY, std::move(defaultValue));
 	}
 
 	template<typename System, typename Config, class Option>
@@ -271,7 +265,10 @@ private:
 	template<class T>
 	static QByteArray fromBase64(const T &data)
 	{
-		return QByteArray::fromBase64(data.toString().toLatin1());
+		if constexpr (std::is_convertible_v<T, QByteArray>)
+			return QByteArray::fromBase64(data);
+		else
+			return QByteArray::fromBase64(data.toString().toLatin1());
 	}
 
 	static digidoc::X509Cert toCert(const QByteArray &der)
@@ -358,7 +355,7 @@ Application::Application( int &argc, char **argv )
 		connect(d->conf, &Configuration::finished, this, [lessThanVersion](bool changed, const QString &){
 			if(changed && lessThanVersion(QLatin1String("QDIGIDOC4-LATEST")))
 			{
-				auto dlg = new WarningDialog(tr(
+				auto *dlg = new WarningDialog(tr(
 					"An ID-software update has been found. To download the update, go to the "
 					"<a href=\"https://www.id.ee/en/article/install-id-software/\">id.ee</a> website. "
 					"macOS users can download the update from the "
@@ -440,9 +437,8 @@ Application::Application( int &argc, char **argv )
 				qDebug() << "TSL loading finished";
 				Q_EMIT qApp->TSLLoadingFinished();
 				qApp->d->ready = true;
-				if(ex) {
+				if(ex)
 					dispatchToMain(showWarning, tr("Failed to initalize."), *ex);
-				}
 			}
 		);
 	}
@@ -477,10 +473,10 @@ Application::Application( int &argc, char **argv )
 		{
 			Settings::SHOW_INTRO = false;
 			auto *dlg = new FirstRun(mainWindow());
-			connect(dlg, &FirstRun::langChanged, this, [this](const QString& lang) { loadTranslation( lang ); });
+			connect(dlg, &FirstRun::langChanged, this, &Application::loadTranslation);
 			dlg->open();
 		}
-	});
+	}, Qt::QueuedConnection);
 
 	if( !args.isEmpty() || topLevelWindows().isEmpty() )
 		parseArgs(std::move(args));
@@ -553,7 +549,7 @@ void Application::browse( const QUrl &url )
 void Application::closeWindow()
 {
 #ifndef Q_OS_MAC
-	if( MainWindow *w = qobject_cast<MainWindow*>(activeWindow()) )
+	if(auto *w = qobject_cast<MainWindow*>(activeWindow()))
 		w->close();
 	else
 #endif
@@ -745,7 +741,7 @@ void Application::mailTo( const QUrl &url )
 
 QWidget* Application::mainWindow()
 {
-	if(QWidget *win = qobject_cast<MainWindow*>(activeWindow()))
+	if(auto *win = qobject_cast<MainWindow*>(activeWindow()))
 		return win;
 	auto list = topLevelWidgets();
 	// Prefer main window; on Mac also the menu is top level window
@@ -753,7 +749,11 @@ QWidget* Application::mainWindow()
 			[](QWidget *widget) { return qobject_cast<MainWindow*>(widget); });
 		i != list.cend())
 		return *i;
-	return list.value(0);
+	if(auto i = std::find_if(list.cbegin(), list.cend(),
+			[](QWidget *widget) { return qobject_cast<QDialog*>(widget); });
+		i != list.cend())
+		return *i;
+	return nullptr;
 }
 
 bool Application::notify(QObject *object, QEvent *event)
@@ -849,8 +849,8 @@ void Application::setConfValue( ConfParameter parameter, const QVariant &value )
 		case ProxyPort: i->setProxyPort( v.isEmpty()? std::string() : v.constData() ); break;
 		case ProxyUser: i->setProxyUser( v.isEmpty()? std::string() : v.constData() ); break;
 		case ProxyPass: i->setProxyPass( v.isEmpty()? std::string() : v.constData() ); break;
-		case TSAUrl: i->setTSUrl(v.isEmpty()? std::string() : v.constData()); break;
-		case SiVaUrl: i->setVerifyServiceUri(v.isEmpty()? std::string() : v.constData()); break;
+		case TSAUrl:
+		case SiVaUrl:
 		case TSLCerts:
 		case TSLUrl:
 		case TSLCache: break;
@@ -920,16 +920,6 @@ void Application::showClient(const QStringList &params, bool crypto, bool sign, 
 		QMetaObject::invokeMethod(w, "open", Q_ARG(QStringList,params), Q_ARG(bool,crypto), Q_ARG(bool,sign));
 }
 
-void Application::showTSLWarning(QEventLoop *e)
-{
-	auto *dlg = WarningDialog::show(tr(
-		"The renewal of Trust Service status List, used for digital signature validation, has failed. "
-		"Please check your internet connection and make sure you have the latest ID-software version "
-		"installed. An expired Trust Service List (TSL) will be used for signature validation. "
-		"<a href=\"https://www.id.ee/en/article/digidoc4-message-updating-the-list-of-trusted-certificates-was-unsuccessful/\">Additional information</a>"));
-	connect(dlg, &WarningDialog::finished, e, &QEventLoop::quit);
-}
-
 void Application::showWarning( const QString &msg, const digidoc::Exception &e )
 {
 	digidoc::Exception::ExceptionCode code = digidoc::Exception::General;
@@ -947,11 +937,11 @@ void Application::updateTSLCache(const QDateTime &tslTime)
 	for(const QString &file: tsllist)
 	{
 		if(QFile tl(cache + "/" + file);
-			Application::readTSLVersion(":/TSL/" + file) > Application::readTSLVersion(tl.fileName()))
+			readTSLVersion(":/TSL/" + file) > readTSLVersion(tl.fileName()))
 		{
 			const QStringList cleanup = QDir(cache, file + QStringLiteral("*")).entryList();
 			for(const QString &rm: cleanup)
-				QFile::remove(cache + "/" + rm);
+				QFile::remove(cache + '/' + rm);
 			QFile::copy(":/TSL/" + file, tl.fileName());
 			tl.setPermissions(QFile::Permissions(0x6444));
 			if(tslTime.isValid() && tl.open(QFile::Append))

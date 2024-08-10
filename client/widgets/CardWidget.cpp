@@ -91,9 +91,9 @@ void CardWidget::update(const TokenData &token, bool multiple)
 	SslCertificate c = t.cert();
 	QString id = c.personalCode();
 	if(!c.subjectInfo("GN").isEmpty() || !c.subjectInfo("SN").isEmpty())
-		ui->cardName->setText(c.toString(QStringLiteral("GN SN")));
+		ui->cardName->setText(c.toString(QStringLiteral("GN SN")).toHtmlEscaped());
 	else
-		ui->cardName->setText(c.toString(QStringLiteral("CN")));
+		ui->cardName->setText(c.toString(QStringLiteral("CN")).toHtmlEscaped());
 	ui->cardName->setAccessibleName(ui->cardName->text().toLower());
 	ui->cardCode->setText(id + "   |");
 	ui->cardCode->setAccessibleName(id);

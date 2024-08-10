@@ -126,7 +126,7 @@ struct Settings
 	static const Option<QString> SMARTID_COUNTRY;
 	static const QStringList SMARTID_COUNTRY_LIST;
 
-	static const Option<QByteArray> SIVA_CERT;
+	static const Option<QByteArray, QByteArray (*)()> SIVA_CERT;
 	static const Option<QString> SIVA_URL;
 	static const Option<bool, bool (*)()> SIVA_URL_CUSTOM;
 	static const Option<QByteArray> TSA_CERT;

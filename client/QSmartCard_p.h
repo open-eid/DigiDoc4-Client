@@ -48,7 +48,6 @@ public:
 	static const QByteArray MUTUAL_AUTH;
 	static const QByteArray CHANGE;
 	static const QByteArray READBINARY;
-	static const QByteArray READRECORD;
 	static const QByteArray REPLACE;
 	static const QByteArray VERIFY;
 };

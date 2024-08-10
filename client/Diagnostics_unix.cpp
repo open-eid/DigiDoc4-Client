@@ -28,14 +28,14 @@
 #include <QtNetwork/QSslSocket>
 
 #include <sys/utsname.h>
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
 #include <CoreFoundation/CFBundle.h>
 #endif
 
 QStringList Diagnostics::packages(const QStringList &names, bool withName)
 {
 	QStringList packages;
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
 	Q_UNUSED(withName);
 	for (const QString &name: names) {
 		CFStringRef id = QStringLiteral("ee.ria.%1").arg(name).toCFString();
@@ -88,7 +88,7 @@ void Diagnostics::run()
 	emit update( info );
 	info.clear();
 
-#ifndef Q_OS_MAC
+#ifndef Q_OS_DARWIN
 	QStringList package = packages({"open-eid"}, false);
 	if( !package.isEmpty() )
 		s << "<b>" << tr("Base version:") << "</b> " << package.first() << "<br />";
@@ -98,7 +98,7 @@ void Diagnostics::run()
 	info.clear();
 
 	s << "<b>" << tr("OS:") << "</b> " << Common::applicationOs() << "<br />";
-#ifndef Q_OS_MAC
+#ifndef Q_OS_DARWIN
 	s << "<b>" << tr("CPU:") << "</b> ";
 	QFile f( "/proc/cpuinfo" );
 	if( f.open( QFile::ReadOnly ) )
@@ -124,12 +124,11 @@ void Diagnostics::run()
 		<< "OpenSSL build (" << QSslSocket::sslLibraryBuildVersionString() << ")<br />"
 		<< "OpenSSL current (" << QSslSocket::sslLibraryVersionString() << ")<br />"
 		<< packages({
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
 		"digidocpp"
 #else
 		"libdigidocpp1", "qdigidoc4", "firefox-pkcs11-loader", "chrome-token-signing", "web-eid",
-		"libxerces-c3.2", "libxml-security-c20", "libxalan-c111", "libxalan-c112",
-		"openssl", "libpcsclite1", "pcsc-lite", "opensc", "awp"
+		"libxml2", "libxmlsec1", "libpcsclite1", "pcsc-lite", "opensc"
 #endif
 		}).join(QStringLiteral("<br />")) << "<br /><br />";
 	emit update( info );
@@ -139,7 +138,7 @@ void Diagnostics::run()
 	emit update( info );
 	info.clear();
 
-#ifndef Q_OS_MAC
+#ifndef Q_OS_DARWIN
 	QStringList browsers = packages({"chromium-browser", "firefox", "MozillaFirefox", "google-chrome-stable"});
 	if( !browsers.isEmpty() )
 		s << "<br /><br /><b>" << tr("Browsers:") << "</b><br />" << browsers.join(QStringLiteral("<br />")) << "<br /><br />";
