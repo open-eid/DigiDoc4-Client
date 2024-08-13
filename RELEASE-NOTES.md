@@ -1,3 +1,15 @@
+DigiDoc4 version [4.6.0](https://github.com/open-eid/DigiDoc4-Client/releases/tag/v4.6.0) release notes
+--------------------------------------
+- Code, Text and translation improvements and updates
+
+[Full Changelog](https://github.com/open-eid/DigiDoc4-Client/compare/v4.5.0...v4.6.0)
+
+DigiDoc4 version [4.5.0](https://github.com/open-eid/DigiDoc4-Client/releases/tag/v4.5.0) release notes
+--------------------------------------
+- Code, Text and translation improvements and updates
+
+[Full Changelog](https://github.com/open-eid/DigiDoc4-Client/compare/v4.4.0...v4.5.0)
+
 DigiDoc4 version [4.4.0](https://github.com/open-eid/DigiDoc4-Client/releases/tag/v4.4.0) release notes
 --------------------------------------
 - Code, Text and translation improvements and updates
