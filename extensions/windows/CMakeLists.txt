@@ -74,12 +74,12 @@ if(SIGNCERT)
     add_custom_command(TARGET EsteidShellExtension POST_BUILD
         COMMAND signtool.exe sign /a /v /s MY /n "${SIGNCERT}" /fd SHA256 /du http://installer.id.ee
             "$<$<BOOL:${CROSSSIGNCERT}>:/ph;/ac;${CROSSSIGNCERT}>"
-            /tr http://sha256timestamp.ws.symantec.com/sha256/timestamp /td SHA256 $<TARGET_FILE:EsteidShellExtension>
+            /tr http://timestamp.digicert.com /td SHA256 $<TARGET_FILE:EsteidShellExtension>
         COMMAND_EXPAND_LISTS
     )
     add_custom_command(TARGET msishellext POST_BUILD
         COMMAND signtool.exe sign /a /v /s MY /n "${SIGNCERT}" /fd SHA256 /du http://installer.id.ee
-            /tr http://sha256timestamp.ws.symantec.com/sha256/timestamp /td SHA256
+            /tr http://timestamp.digicert.com /td SHA256
             "${CMAKE_BINARY_DIR}/Digidoc_ShellExt-${VERSION}$ENV{VER_SUFFIX}.${PLATFORM}.msi"
     )
 endif()
