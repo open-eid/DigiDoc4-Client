@@ -109,6 +109,8 @@
         <File Name="libcrypto-3$(var.OpenSSLSuffix).dll" />
         <File Name="libssl-3$(var.OpenSSLSuffix).dll" />
         <File Source="$(var.VCPATH)\msvcp140$(var.qt_suffix).dll" />
+        <File Source="$(var.VCPATH)\msvcp140_1$(var.qt_suffix).dll" />
+        <File Source="$(var.VCPATH)\msvcp140_2$(var.qt_suffix).dll" />
         <File Source="$(var.VCPATH)\vcruntime140$(var.qt_suffix).dll" />
 <?if $(sys.BUILDARCH) != x86 ?>
         <File Source="$(var.VCPATH)\vcruntime140_1$(var.qt_suffix).dll" />
