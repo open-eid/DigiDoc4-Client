@@ -736,10 +736,6 @@
         <translation>Kasutajaõigused: </translation>
     </message>
     <message>
-        <source>ATRfiltr service status: </source>
-        <translation>ATRfiltr teenuse staatus: </translation>
-    </message>
-    <message>
         <source>Not found</source>
         <translation>Ei leitud</translation>
     </message>
@@ -2467,10 +2463,6 @@ ja sisesta nutiseadmes Smart-ID PIN2-kood.</translation>
     <message>
         <source>Password</source>
         <translation>Parool</translation>
-    </message>
-    <message>
-        <source>Enable proxy for SSL connections</source>
-        <translation>Luba proksi kasutamine SSL-ühenduste jaoks</translation>
     </message>
     <message>
         <source>The connection to certificate status service is successful!</source>

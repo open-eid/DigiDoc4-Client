@@ -736,10 +736,6 @@
         <translation>User rights: </translation>
     </message>
     <message>
-        <source>ATRfiltr service status: </source>
-        <translation>ATRfiltr service status: </translation>
-    </message>
-    <message>
         <source>Not found</source>
         <translation>Not found</translation>
     </message>
@@ -2463,10 +2459,6 @@ and enter Smart-ID PIN2-code.</translation>
     <message>
         <source>Password</source>
         <translation>Password</translation>
-    </message>
-    <message>
-        <source>Enable proxy for SSL connections</source>
-        <translation>Enable proxy for SSL connections</translation>
     </message>
     <message>
         <source>The connection to certificate status service is successful!</source>
