@@ -25,7 +25,7 @@
 
 include "recipients.fbs";
 
-namespace cdoc20.Header;
+namespace cdoc20.header;
 
 // FMK encryption method enum.
 enum FMKEncryptionMethod:byte {
@@ -44,7 +44,7 @@ enum PayloadEncryptionMethod:byte {
 // Thus it is better to have an an array of tables that
 // contains the union as a field.
 table RecipientRecord {
-    capsule:                cdoc20.Recipients.Capsule;
+    capsule:                recipients.Capsule;
     key_label:              string (required);
     encrypted_fmk:          [ubyte] (required);
     fmk_encryption_method:  FMKEncryptionMethod = UNKNOWN;
@@ -53,6 +53,7 @@ table RecipientRecord {
 // Header structure.
 table Header {
     recipients:                [RecipientRecord];
+
     payload_encryption_method: PayloadEncryptionMethod = UNKNOWN;
 }
 
