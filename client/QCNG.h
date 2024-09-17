@@ -21,8 +21,6 @@
 
 #include "QCryptoBackend.h"
 
-#include <functional>
-
 #include <qt_windows.h>
 #include <ncrypt.h>
 
@@ -44,8 +42,10 @@ public:
 	QByteArray sign(QCryptographicHash::Algorithm type, const QByteArray &digest) const final;
 
 private:
-	QByteArray derive(const QByteArray &publicKey, std::function<long (NCRYPT_SECRET_HANDLE, QByteArray &)> &&func) const;
-	QByteArray exec(std::function<long (NCRYPT_PROV_HANDLE, NCRYPT_KEY_HANDLE, QByteArray &)> &&func) const;
+	template<typename F>
+	QByteArray derive(const QByteArray &publicKey, F &&func) const;
+	template<typename F>
+	QByteArray exec(F &&func) const;
 
 	class Private;
 	Private *d;
