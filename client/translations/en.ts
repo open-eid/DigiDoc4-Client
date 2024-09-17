@@ -2465,10 +2465,6 @@ and enter Smart-ID PIN2-code.</translation>
         <translation>Password</translation>
     </message>
     <message>
-        <source>Enable proxy for SSL connections</source>
-        <translation>Enable proxy for SSL connections</translation>
-    </message>
-    <message>
         <source>The connection to certificate status service is successful!</source>
         <translation>Network settings are correct, certificate status service is accessible!</translation>
     </message>

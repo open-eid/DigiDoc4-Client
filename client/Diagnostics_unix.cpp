@@ -114,21 +114,21 @@ void Diagnostics::run()
 	struct utsname unameData = {};
 	uname(&unameData);
 	s << "<b>" << tr("Kernel:") << "</b> "
-		<< unameData.sysname << " " << unameData.release << " "
-		<< unameData.version << " " << unameData.machine << "<br /><br />";
+		<< unameData.sysname << ' ' << unameData.release << ' '
+		<< unameData.version << ' ' << unameData.machine << "<br /><br />";
 	emit update( info );
 	info.clear();
 
 	s << "<b>" << tr("Libraries") << ":</b><br />"
-		<< "QT (" << qVersion() << ")" << "<br />"
+		<< "QT (" << qVersion() << ")<br />"
 		<< "OpenSSL build (" << QSslSocket::sslLibraryBuildVersionString() << ")<br />"
 		<< "OpenSSL current (" << QSslSocket::sslLibraryVersionString() << ")<br />"
 		<< packages({
 #ifdef Q_OS_DARWIN
 		"digidocpp"
 #else
-		"libdigidocpp1", "qdigidoc4", "firefox-pkcs11-loader", "chrome-token-signing", "web-eid",
-		"libxml2", "libxmlsec1", "libpcsclite1", "pcsc-lite", "opensc"
+		"libdigidocpp1", "qdigidoc4", "firefox-pkcs11-loader", "web-eid",
+		"libxml2", "libpcsclite1", "pcsc-lite", "opensc"
 #endif
 		}).join(QStringLiteral("<br />")) << "<br /><br />";
 	emit update( info );

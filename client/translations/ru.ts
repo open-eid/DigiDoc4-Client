@@ -2470,10 +2470,6 @@ and enter Smart-ID PIN2-code.</source>
         <translation>Пароль</translation>
     </message>
     <message>
-        <source>Enable proxy for SSL connections</source>
-        <translation>Включить прокси-сервер для подключения SSL</translation>
-    </message>
-    <message>
         <source>The connection to certificate status service is successful!</source>
         <translation>Настройки Интернета верны, услуга подтверждения действительности доступна!</translation>
     </message>

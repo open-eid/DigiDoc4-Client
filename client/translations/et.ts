@@ -2469,10 +2469,6 @@ ja sisesta nutiseadmes Smart-ID PIN2-kood.</translation>
         <translation>Parool</translation>
     </message>
     <message>
-        <source>Enable proxy for SSL connections</source>
-        <translation>Luba proksi kasutamine SSL-ühenduste jaoks</translation>
-    </message>
-    <message>
         <source>The connection to certificate status service is successful!</source>
         <translation>Interneti seaded on korrektsed, kehtivuskinnitusteenus on kättesaadav!</translation>
     </message>
