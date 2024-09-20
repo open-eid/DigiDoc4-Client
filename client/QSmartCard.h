@@ -62,6 +62,7 @@ public:
 
 	bool isNull() const;
 	bool isPinpad() const;
+	bool isPUKReplacable() const;
 	bool isValid() const;
 
 	QVariant data( PersonalDataType type ) const;
