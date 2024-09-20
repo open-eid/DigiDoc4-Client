@@ -64,6 +64,21 @@ public:
 	static const QByteArray AID, AID_OT, AID_QSCD;
 };
 
+class THALESCard: public Card
+{
+  public:
+	QPCSCReader::Result change(QPCSCReader *reader, QSmartCardData::PinType type, const QString &pin, const QString &newpin) const final;
+	bool loadPerso(QPCSCReader *reader, QSmartCardDataPrivate *d) const final;
+	QPCSCReader::Result replace(QPCSCReader *reader, QSmartCardData::PinType type, const QString &puk, const QString &pin) const final;
+	QByteArray sign(QPCSCReader *reader, const QByteArray &dgst) const final;
+	bool updateCounters(QPCSCReader *reader, QSmartCardDataPrivate *d) const final;
+
+	static bool isSupported(const QByteArray &atr);
+	static QByteArray pinTemplate(const QString &pin);
+
+	static const QByteArray AID;
+};
+
 class QSmartCard::Private
 {
 public:
@@ -84,4 +99,5 @@ public:
 	SslCertificate authCert, signCert;
 	QHash<QSmartCardData::PinType,quint8> retry;
 	bool pinpad = false;
+	bool pukReplacable = true;
 };

@@ -121,7 +121,6 @@ void Diagnostics::generalInfo(QTextStream &s)
 		constexpr auto APDU = &QByteArray::fromHex;
 		auto printAID = [&](const QString &label, const QByteArray &apdu)
 		{
-			constexpr auto APDU = &QByteArray::fromHex;
 			QPCSCReader::Result r = reader.transfer(apdu);
 			s << label << ": " << Qt::hex << r.SW;
 			if (r.SW == 0x9000) s << " (OK)";
