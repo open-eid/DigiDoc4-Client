@@ -209,10 +209,9 @@ bool IDEMIACard::loadPerso(QPCSCReader *reader, QSmartCardDataPrivate *d) const
 			readFailed = true;
 			return QSslCertificate();
 		}
-		int size = quint8(fci[0x80][0]) << 8 | quint8(fci[0x80][1]);
 		QByteArray cert;
 		QByteArray cmd = READBINARY;
-		while(cert.size() < size)
+		for(int size = quint8(fci[0x80][0]) << 8 | quint8(fci[0x80][1]); cert.size() < size; )
 		{
 			cmd[2] = char(cert.size() >> 8);
 			cmd[3] = char(cert.size());
@@ -312,7 +311,7 @@ QSmartCard::ErrorType QSmartCard::Private::handlePinResult(QPCSCReader *reader, 
 {
 	if(!response || forceUpdate)
 		card->updateCounters(reader, t.d);
-	switch((quint8(response.SW[0]) << 8) + quint8(response.SW[1]))
+	switch(response.SW)
 	{
 	case 0x9000: return QSmartCard::NoError;
 	case 0x63C0: return QSmartCard::BlockedError;//pin retry count 0
