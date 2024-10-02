@@ -27,6 +27,12 @@
 #include <QtCore/QTextStream>
 #include <QtNetwork/QSslCertificate>
 
+#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
+namespace Qt {
+using ::hex;
+}
+#endif
+
 void Diagnostics::generalInfo(QTextStream &s)
 {
 	s << "<b>" << tr("Arguments:") << "</b> " << Application::arguments().join(' ') << "<br />"
@@ -122,10 +128,10 @@ void Diagnostics::generalInfo(QTextStream &s)
 		{
 			constexpr auto APDU = &QByteArray::fromHex;
 			QPCSCReader::Result r = reader.transfer(apdu);
-			s << label << ": " << r.SW.toHex();
-			if (r.SW == APDU("9000")) s << " (OK)";
-			if (r.SW == APDU("6A81")) s << " (Locked)";
-			if (r.SW == APDU("6A82")) s << " (Not found)";
+			s << label << ": " << Qt::hex << r.SW;
+			if (r.SW == 0x9000) s << " (OK)";
+			if (r.SW == 0x6A81) s << " (Locked)";
+			if (r.SW == 0x6A82) s << " (Not found)";
 			s << "<br />";
 			return r;
 		};
