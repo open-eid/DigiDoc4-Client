@@ -18,12 +18,9 @@
  */
 
 #include "LabelButton.h"
-#include "Colors.h"
 #include "Styles.h"
 
 #include <QEvent>
-
-using namespace ria::qdigidoc4::colors;
 
 LabelButton::LabelButton( QWidget *parent ): QToolButton(parent)
 {}
@@ -34,6 +31,16 @@ void LabelButton::init(Style style, const QString &label)
 	setFont(Styles::font(Styles::Condensed, 12));
 	if(!label.isEmpty())
 		setAccessibleName(label.toLower());
+
+	// Blues
+	static const QString CURIOUS_BLUE = QStringLiteral("#31A3D9");
+	static const QString DEEP_CERULEAN = QStringLiteral("#006EB5");
+	// Reds
+	static const QString MOJO = QStringLiteral("#981E32");
+	// Whites
+	static const QString PORCELAIN = QStringLiteral("#f4f5f6");
+	static const QString WHITE = QStringLiteral("#ffffff");
+
 	static const QString borderRadius = QStringLiteral(" border-radius: 2px;");
 	static const QString none = QStringLiteral("none");
 	static const QString solid = QStringLiteral("1px solid %1");

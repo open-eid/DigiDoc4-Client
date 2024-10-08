@@ -18,7 +18,6 @@
  */
 
 #include "FadeInNotification.h"
-#include "Styles.h"
 
 #include <QEasingCurve>
 #include <QGraphicsOpacityEffect>
@@ -26,25 +25,39 @@
 #include <QResizeEvent>
 #include <QTimer>
 
-FadeInNotification::FadeInNotification(QWidget *parent, const QString &fgColor, const QString &bgColor, int leftOffset, int height)
-	: FadeInNotification(parent, fgColor, bgColor, QPoint(leftOffset, 0), parent->width() - leftOffset, height)
+using namespace std::chrono;
+
+constexpr QRect adjustHeight(QRect rect, int height) noexcept
 {
+	rect.setHeight(height);
+	return rect;
 }
 
-FadeInNotification::FadeInNotification(QWidget *parent, const QString &fgColor, const QString &bgColor, QPoint pos, int width, int height)
+FadeInNotification::FadeInNotification(QWidget *parent, QRect rect, Type type, const QString &label)
 	: QLabel(parent)
 {
-	setStyleSheet(QStringLiteral("background-color: %2; color: %1;").arg(fgColor, bgColor));
+	auto bgcolor = [type] {
+		switch(type) {
+		case FadeInNotification::Success: return QStringLiteral("#218123");
+		case FadeInNotification::Warning: return QStringLiteral("#FBAE38");
+		case FadeInNotification::Error: return QStringLiteral("#AD2A45");
+		case FadeInNotification::Default: return QStringLiteral("#2F70B6");
+		default: return QStringLiteral("none");
+		}
+	}();
+	auto fgcolor = [type] {
+		return type == FadeInNotification::Warning ? QStringLiteral("#07142A") : QStringLiteral("#FFFFFF");
+	}();
+	setStyleSheet(QStringLiteral("color: %1; background-color: %2;").arg(fgcolor, bgcolor));
 	setFocusPolicy(Qt::TabFocus);
 	setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
-	QFont font = Styles::font(Styles::Condensed, 22);
-	font.setPixelSize(22);
-	setFont(font);
-	setMinimumSize(width, height);
+	QFont f(QStringLiteral("Roboto"));
+	f.setPixelSize(22);
+	setFont(f);
 	setGraphicsEffect(new QGraphicsOpacityEffect(this));
-	move(pos);
-	if(QPoint c = parent->geometry().center(); pos.x() > c.x() && pos.y() > c.y())
-		parent->installEventFilter(this);
+	setGeometry(rect);
+	setText(label);
+	parent->installEventFilter(this);
 }
 
 bool FadeInNotification::eventFilter(QObject *watched, QEvent *event)
@@ -53,29 +66,37 @@ bool FadeInNotification::eventFilter(QObject *watched, QEvent *event)
 	{
 		if(auto *resize = static_cast<QResizeEvent*>(event))
 		{
-			QSize newPos = resize->size() - resize->oldSize();
-			move(pos() + QPoint(newPos.width(), newPos.height()));
+			QRect rect = geometry();
+			if(QSize s = resize->oldSize() / 2; rect.x() > s.width() && rect.y() > s.height())
+			{
+				QSize newPos = resize->size() - resize->oldSize();
+				move(pos() + QPoint(newPos.width(), newPos.height()));
+			}
+			else
+			{
+				rect.setWidth(parentWidget()->width());
+				setGeometry(rect);
+			}
 		}
 	}
 	return QLabel::eventFilter(watched, event);
 }
 
-void FadeInNotification::start( const QString &label, int fadeInTime, int displayTime, int fadeOutTime )
+void FadeInNotification::start(ms fadeInTime)
 {
-	setText(label);
 	auto *a = new QPropertyAnimation(graphicsEffect(), "opacity", this);
-	a->setDuration(fadeInTime);
+	a->setDuration(int(fadeInTime.count()));
 	a->setStartValue(0);
-	a->setEndValue(0.95);
+	a->setEndValue(1);
 	a->setEasingCurve(QEasingCurve::InBack);
 	a->start(QPropertyAnimation::DeleteWhenStopped);
-	connect(a, &QPropertyAnimation::finished, this, [this, displayTime, fadeOutTime] {
+	connect(a, &QPropertyAnimation::finished, this, [this] {
 		if(focusPolicy() == Qt::TabFocus)
 			setFocus();
-		QTimer::singleShot(displayTime, this, [this, fadeOutTime] {
+		QTimer::singleShot(3s, this, [this] {
 			auto *a = new QPropertyAnimation(graphicsEffect(), "opacity", this);
-			a->setDuration(fadeOutTime);
-			a->setStartValue(0.95);
+			a->setDuration(int((1200ms).count()));
+			a->setStartValue(1);
 			a->setEndValue(0);
 			a->setEasingCurve(QEasingCurve::OutBack);
 			a->start(QPropertyAnimation::DeleteWhenStopped);
@@ -83,4 +104,19 @@ void FadeInNotification::start( const QString &label, int fadeInTime, int displa
 		});
 	});
 	show();
+}
+
+void FadeInNotification::success(QWidget *parent, const QString &label)
+{
+	(new FadeInNotification(parent, adjustHeight(parent->rect(), 65), FadeInNotification::Success, label))->start();
+}
+
+void FadeInNotification::warning(QWidget *parent, const QString &label)
+{
+	(new FadeInNotification(parent, adjustHeight(parent->rect(), 65), FadeInNotification::Warning, label))->start();
+}
+
+void FadeInNotification::error(QWidget *parent, const QString &label, int height)
+{
+	(new FadeInNotification(parent, adjustHeight(parent->rect(), height), FadeInNotification::Error, label))->start();
 }

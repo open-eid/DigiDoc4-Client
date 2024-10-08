@@ -94,11 +94,10 @@ private:
 	QString selectFile( const QString &title, const QString &filename, bool fixedExt );
 	void selectPage(ria::qdigidoc4::Pages page);
 	void showCardMenu( bool show );
-	void showNotification( const QString &msg, bool isSuccess = false );
 	template <typename F>
 	void sign(F &&sign);
 	void updateCardWarnings(const QSmartCardData &data);
-	bool validateCardError(QSmartCardData::PinType type, QSmartCardData::PinType t, QSmartCard::ErrorType err);
+	bool validateCardError(QSmartCardData::PinType type, QSmartCardData::PinType src, QSmartCard::ErrorType err);
 	bool validateFiles(const QString &container, const QStringList &files);
 	void showPinBlockedWarning(const QSmartCardData& t);
 	void updateSelector();
