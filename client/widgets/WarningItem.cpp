@@ -20,31 +20,25 @@
 #include "WarningItem.h"
 #include "ui_WarningItem.h"
 
-#include "Styles.h"
 #include "VerifyCert.h"
 
-#include <QtGui/QTextDocument>
+#include <QtCore/QUrl>
+#include <QtGui/QDesktopServices>
 
-WarningText::WarningText(QString text)
-	: text(std::move(text))
-{}
-
-WarningText::WarningText(ria::qdigidoc4::WarningType warningType, int counter)
-	: counter(counter)
-	, warningType(warningType)
-{}
+using namespace ria::qdigidoc4;
 
 WarningItem::WarningItem(WarningText warningText, QWidget *parent)
 	: StyledWidget(parent)
 	, ui(new Ui::WarningItem)
-	, warnText(std::move(warningText))
+	, warnText(warningText)
 {
 	ui->setupUi(this);
-	ui->warningText->setFont(Styles::font(Styles::Regular, 14));
-	ui->warningAction->setFont(Styles::font(Styles::Regular, 14, QFont::Bold));
 	lookupWarning();
-	connect(ui->warningAction, &QPushButton::clicked, this, [this] {
-		Q_EMIT WarningItem::linkActivated(ui->warningAction->property("link").toString());
+	connect(ui->warningAction, &QToolButton::clicked, this, [this] {
+		if(url.startsWith(QLatin1String("http")))
+			QDesktopServices::openUrl(QUrl(url));
+		else
+			Q_EMIT linkActivated(url);
 	});
 }
 
@@ -55,7 +49,7 @@ WarningItem::~WarningItem()
 
 int WarningItem::page() const
 {
-	return warnText.page;
+	return _page;
 }
 
 void WarningItem::changeEvent(QEvent* event)
@@ -65,114 +59,96 @@ void WarningItem::changeEvent(QEvent* event)
 		ui->retranslateUi(this);
 		lookupWarning();
 	}
-	QWidget::changeEvent(event);
+}
+
+void WarningItem::mousePressEvent(QMouseEvent */*event*/)
+{
+	// this warning should not be closed if there are zero-byte(empty) files in the container
+	if (warnText.type != EmptyFileWarning)
+		deleteLater();
 }
 
 void WarningItem::lookupWarning()
 {
-	auto link = [](const QString &url)
+	switch(warnText.type)
 	{
-		return QStringLiteral("<a href='%1' style='color: #006EB5; text-decoration: none;'>%2</a>.")
-			.arg(url, tr("here"));
-	};
-
-	switch(warnText.warningType)
-	{
-	case ria::qdigidoc4::CertExpiredWarning:
-		warnText.text = QStringLiteral("%1 %2 %3")
-				.arg(tr("Certificates have expired! "),
-					tr("You can find instructions on how to get a new document from "),
-					link(tr("https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult/")));
-		ui->warningText->setTextInteractionFlags(Qt::TextBrowserInteraction);
-		ui->warningText->setOpenExternalLinks(true);
+	case CertExpiredError:
+		setObjectName("WarningItemError");
+		ui->warningText->setText(tr("Certificates have expired!"));
+		url = tr("https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult/");
 		break;
-	case ria::qdigidoc4::CertExpiryWarning:
-		warnText.text = QStringLiteral("%1 %2 %3")
-				.arg(tr("Certificates expire soon! "),
-					 tr("You can find instructions on how to get a new document from "),
-					 link(tr("https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult/")));
-		ui->warningText->setTextInteractionFlags(Qt::TextBrowserInteraction);
-		ui->warningText->setOpenExternalLinks(true);
+	case CertExpiryWarning:
+		ui->warningText->setText(tr("Certificates expire soon!"));
+		url = tr("https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult/");
 		break;
-	case ria::qdigidoc4::UnblockPin1Warning:
-		warnText.text = QStringLiteral("%1 %2").arg(VerifyCert::tr("PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times.").arg(1), VerifyCert::tr("Unblock to reuse PIN%1.").arg(1));
-		warnText.url = QStringLiteral("#unblock-PIN1");
-		warnText.details = VerifyCert::tr("UNBLOCK");
+	case UnblockPin1Warning:
+		ui->warningText->setText(QStringLiteral("%1 %2").arg(
+			VerifyCert::tr("PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times.").arg(1),
+			VerifyCert::tr("Unblock to reuse PIN%1.").arg(1)));
+		url = QStringLiteral("#unblock-PIN1");
+		ui->warningAction->setText(VerifyCert::tr("UNBLOCK"));
+		ui->warningAction->setAccessibleName(ui->warningAction->text().toLower());
 		break;
-	case ria::qdigidoc4::UnblockPin2Warning:
-		warnText.text = QStringLiteral("%1 %2").arg(VerifyCert::tr("PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times.").arg(2), VerifyCert::tr("Unblock to reuse PIN%1.").arg(2));
-		warnText.url = QStringLiteral("#unblock-PIN2");
-		warnText.details = VerifyCert::tr("UNBLOCK");
+	case UnblockPin2Warning:
+		ui->warningText->setText(QStringLiteral("%1 %2").arg(
+			VerifyCert::tr("PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times.").arg(2),
+			VerifyCert::tr("Unblock to reuse PIN%1.").arg(2)));
+		url = QStringLiteral("#unblock-PIN2");
+		ui->warningAction->setText(VerifyCert::tr("UNBLOCK"));
+		ui->warningAction->setAccessibleName(ui->warningAction->text().toLower());
 		break;
 	// SignDetails
-	case ria::qdigidoc4::InvalidSignatureWarning:
-		warnText.text = tr("%n signatures are not valid!", nullptr, warnText.counter);
-		warnText.url = tr("https://www.id.ee/en/article/digital-signing-and-electronic-signatures/");
-		warnText.details = tr("More information");
-		warnText.page = ria::qdigidoc4::SignDetails;
+	case InvalidSignatureError:
+		setObjectName("WarningItemError");
+		ui->warningText->setText(tr("%n signatures are not valid!", nullptr, warnText.counter));
+		url = tr("https://www.id.ee/en/article/digital-signing-and-electronic-signatures/");
+		_page = SignDetails;
 		break;
-	case ria::qdigidoc4::InvalidTimestampWarning:
-		warnText.text = tr("%n timestamps are not valid!", nullptr, warnText.counter);
-		warnText.url = tr("https://www.id.ee/en/article/digital-signing-and-electronic-signatures/");
-		warnText.details = tr("More information");
-		warnText.page = ria::qdigidoc4::SignDetails;
+	case InvalidTimestampError:
+		setObjectName("WarningItemError");
+		ui->warningText->setText(tr("%n timestamps are not valid!", nullptr, warnText.counter));
+		url = tr("https://www.id.ee/en/article/digital-signing-and-electronic-signatures/");
+		_page = SignDetails;
 		break;
-	case ria::qdigidoc4::UnknownSignatureWarning:
-		warnText.text = tr("%n signatures are unknown!", nullptr, warnText.counter);
-		warnText.url = tr("https://www.id.ee/en/article/digital-signing-and-electronic-signatures/");
-		warnText.details = tr("More information");
-		warnText.page = ria::qdigidoc4::SignDetails;
+	case UnknownSignatureWarning:
+		ui->warningText->setText(tr("%n signatures are unknown!", nullptr, warnText.counter));
+		url = tr("https://www.id.ee/en/article/digital-signing-and-electronic-signatures/");
+		_page = SignDetails;
 		break;
-	case ria::qdigidoc4::UnknownTimestampWarning:
-		warnText.text = tr("%n timestamps are unknown!", nullptr, warnText.counter);
-		warnText.url = tr("https://www.id.ee/en/article/digital-signing-and-electronic-signatures/");
-		warnText.details = tr("More information");
-		warnText.page = ria::qdigidoc4::SignDetails;
+	case UnknownTimestampWarning:
+		ui->warningText->setText(tr("%n timestamps are unknown!", nullptr, warnText.counter));
+		url = tr("https://www.id.ee/en/article/digital-signing-and-electronic-signatures/");
+		_page = SignDetails;
 		break;
-	case ria::qdigidoc4::UnsupportedAsicSWarning:
-		warnText.text = tr("This ASiC-S container contains XAdES signature. "
-			"You are not allowed to add or remove signatures to this container.");
-		warnText.url = tr("https://www.id.ee/en/article/digidoc-container-format-life-cycle-2/");
-		warnText.details = tr("More information");
-		warnText.page = ria::qdigidoc4::SignDetails;
+	case UnsupportedAsicSWarning:
+		ui->warningText->setText(tr("This ASiC-S container contains XAdES signature. "
+			"You are not allowed to add or remove signatures to this container."));
+		url = tr("https://www.id.ee/en/article/digidoc-container-format-life-cycle-2/");
+		_page = SignDetails;
 		break;
-	case ria::qdigidoc4::UnsupportedAsicCadesWarning:
-		warnText.text = tr("This container contains CAdES signature. "
-			"You are not allowed to add or remove signatures to this container.");
-		warnText.url = tr("https://www.id.ee/en/article/digidoc-container-format-life-cycle-2/");
-		warnText.details = tr("More information");
-		warnText.page = ria::qdigidoc4::SignDetails;
+	case UnsupportedAsicCadesWarning:
+		ui->warningText->setText(tr("This container contains CAdES signature. "
+			"You are not allowed to add or remove signatures to this container."));
+		url = tr("https://www.id.ee/en/article/digidoc-container-format-life-cycle-2/");
+		_page = SignDetails;
 		break;
-	case ria::qdigidoc4::UnsupportedDDocWarning:
-		warnText.text = tr("The current file is a DigiDoc container that is not supported officially any longer. "
-			"You are not allowed to add or remove signatures to this container.");
-		warnText.url = tr("https://www.id.ee/en/article/digidoc-container-format-life-cycle-2/");
-		warnText.details = tr("More information");
-		warnText.page = ria::qdigidoc4::SignDetails;
+	case UnsupportedDDocWarning:
+		ui->warningText->setText(tr("The current file is a DigiDoc container that is not supported officially any longer. "
+			"You are not allowed to add or remove signatures to this container."));
+		url = tr("https://www.id.ee/en/article/digidoc-container-format-life-cycle-2/");
+		_page = SignDetails;
 		break;
-	case ria::qdigidoc4::EmptyFileWarning:
-		warnText.text = tr("An empty file is attached to the container. Remove the empty file from the container to sign.");
-		warnText.page = ria::qdigidoc4::SignDetails;
-	break;
-	default:
+	case EmptyFileWarning:
+		ui->warningText->setText(tr("An empty file is attached to the container. "
+			"Remove the empty file from the container to sign."));
+		ui->warningAction->hide();
+		_page = SignDetails;
 		break;
+	default: break;
 	}
-
-	auto setAccessibleName = [](QLabel *label) {
-		QTextDocument doc;
-		doc.setHtml(label->text().toLower());
-		label->setAccessibleName(doc.toPlainText());
-	};
-
-	ui->warningText->setText(warnText.text);
-	ui->warningAction->setText(warnText.details);
-	ui->warningAction->setProperty("link", warnText.url);
-	ui->warningAction->setAccessibleName(warnText.details.toLower());
-	ui->warningAction->setHidden(warnText.details.isEmpty());
-	setAccessibleName(ui->warningText);
 }
 
-ria::qdigidoc4::WarningType WarningItem::warningType() const
+WarningType WarningItem::warningType() const
 {
-	return warnText.warningType;
+	return warnText.type;
 }

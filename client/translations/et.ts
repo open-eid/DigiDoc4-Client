@@ -3228,24 +3228,16 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>Ümbrikule on lisatud tühi fail. Allkirjastamiseks eemalda ümbrikust tühi fail.</translation>
     </message>
     <message>
-        <source>You can find instructions on how to get a new document from </source>
-        <translation>Juhised uue dokumendi taotlemiseks leiad </translation>
-    </message>
-    <message>
-        <source>here</source>
-        <translation>siit</translation>
-    </message>
-    <message>
         <source>https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult/</source>
         <translation>https://www.politsei.ee/et/juhend/id-kaardi-taotlemine-taeiskasvanule/</translation>
     </message>
     <message>
-        <source>Certificates expire soon! </source>
-        <translation>Sertifikaadid aeguvad varsti! </translation>
+        <source>Certificates expire soon!</source>
+        <translation>Sertifikaadid aeguvad varsti!</translation>
     </message>
     <message>
-        <source>Certificates have expired! </source>
-        <translation>Sertifikaadid on aegunud! </translation>
+        <source>Certificates have expired!</source>
+        <translation>Sertifikaadid on aegunud!</translation>
     </message>
     <message>
         <source>This ASiC-S container contains XAdES signature. You are not allowed to add or remove signatures to this container.</source>
@@ -3254,20 +3246,6 @@ Täiendavad litsentsid ja komponendid</translation>
     <message>
         <source>This container contains CAdES signature. You are not allowed to add or remove signatures to this container.</source>
         <translation>Tegemist on CAdES allkirja sisaldava ümbrikuga. Sellele ümbrikule ei saa allkirja lisada ega eemaldada.</translation>
-    </message>
-</context>
-<context>
-    <name>WarningRibbon</name>
-    <message numerus="yes">
-        <source>%n message</source>
-        <translation>
-            <numerusform>%n teade</numerusform>
-            <numerusform>%n teadet</numerusform>
-        </translation>
-    </message>
-    <message>
-        <source>Less</source>
-        <translation>Vähem</translation>
     </message>
 </context>
 </TS>
