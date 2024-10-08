@@ -4,19 +4,8 @@
 // This file will be processed by the MIDL tool to
 // produce the type library (EsteidShellExtension.tlb) and marshalling code.
 
-import "oaidl.idl";
-import "ocidl.idl";
+import "shobjidl.idl";
 
-[
-	object,
-	uuid(8BD7CE13-2DB7-4268-8201-CED0626CB94E),
-	dual,
-	nonextensible,
-	helpstring("IEsteidShlExt Interface"),
-	pointer_default(unique)
-]
-interface IEsteidShlExt : IDispatch{
-};
 [
 	uuid(F4748FA8-B59E-43FA-9D53-2380EB141AED),
 	version(1.0),
@@ -24,7 +13,6 @@ interface IEsteidShlExt : IDispatch{
 ]
 library EsteidShellExtensionLib
 {
-	importlib("stdole2.tlb");
 	[
 #ifdef _WIN64
 		uuid(5606A547-759D-43DA-AEEB-D3BF1D1E816D),
@@ -35,6 +23,7 @@ library EsteidShellExtensionLib
 	]
 	coclass EsteidShlExt
 	{
-		[default] interface IEsteidShlExt;
+		[default] interface IShellExtInit;
+		interface IContextMenu;
 	};
 };

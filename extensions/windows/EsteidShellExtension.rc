@@ -93,14 +93,6 @@ END
 
 /////////////////////////////////////////////////////////////////////////////
 //
-// REGISTRY
-//
-
-IDR_ESTEIDEXT           REGISTRY                "EsteidShellExtension.rgs"
-
-
-/////////////////////////////////////////////////////////////////////////////
-//
 // String Table
 //
 
@@ -119,17 +111,6 @@ END
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ETI)
 LANGUAGE LANG_ESTONIAN, SUBLANG_DEFAULT
 #pragma code_page(1257)
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// REGISTRY
-//
-
-#ifdef _WIN64
-IDR_ESTEIDSHLEXT        REGISTRY                "EsteidShlExt_x64.rgs"
-#else
-IDR_ESTEIDSHLEXT        REGISTRY                "EsteidShlExt_x86.rgs"
-#endif
 
 /////////////////////////////////////////////////////////////////////////////
 //
