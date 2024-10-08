@@ -111,7 +111,7 @@ bool MainWindow::validateCardError(QSmartCardData::PinType type, QSmartCardData:
 	case QSmartCard::BlockedError:
 		showNotification( tr("%1 blocked").arg( QSmartCardData::typeString( t ) ) );
 		showPinBlockedWarning(data);
-		pageSelected( ui->myEid );
+		selectPage(Pages::MyEid);
 		ui->myEid->warningIcon(
 			data.retryCount(QSmartCardData::Pin1Type) == 0 ||
 			data.retryCount(QSmartCardData::Pin2Type) == 0 ||
@@ -141,7 +141,7 @@ void MainWindow::showNotification( const QString &msg, bool isSuccess )
 {
 	auto *notification = new FadeInNotification(this,
 		isSuccess ? QStringLiteral("#ffffff") : QStringLiteral("#353739"),
-		isSuccess ? QStringLiteral("#498526") : QStringLiteral("#F8DDA7"), 110);
+		isSuccess ? QStringLiteral("#498526") : QStringLiteral("#F8DDA7"));
 	notification->start(msg, 750, 3000, 1200);
 }
 

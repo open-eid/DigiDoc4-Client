@@ -59,7 +59,7 @@ namespace cdoc20 {
 			return true;
 		return dispatchToMain([] {
 			auto *notification = new FadeInNotification(Application::mainWindow(),
-				ria::qdigidoc4::colors::WHITE, ria::qdigidoc4::colors::MANTIS, 110);
+				ria::qdigidoc4::colors::WHITE, ria::qdigidoc4::colors::MANTIS);
 			notification->start(QCoreApplication::translate("MainWindow", "Check internet connection"), 750, 3000, 1200);
 			return false;
 		});
