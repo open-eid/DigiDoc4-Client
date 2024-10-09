@@ -32,17 +32,17 @@ class TokenData;
 class QSmartCardData
 {
 public:
-	enum PersonalDataType
+	enum PersonalDataType : char
 	{
-		SurName,
-		FirstName,
-		Citizen,
-		BirthDate,
-		Id,
-		DocumentId,
-		Expiry,
+		SurName = 1,
+		FirstName = 2,
+		Citizen = 4,
+		BirthDate = 5,
+		Id = 6,
+		DocumentId = 7,
+		Expiry = 8,
 	};
-	enum PinType
+	enum PinType : char
 	{
 		Pin1Type = 1,
 		Pin2Type,
@@ -84,7 +84,7 @@ class QSmartCard final: public QObject
 {
 	Q_OBJECT
 public:
-	enum ErrorType
+	enum ErrorType : quint8
 	{
 		NoError,
 		UnknownError,
