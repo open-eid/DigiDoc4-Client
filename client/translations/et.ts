@@ -736,10 +736,6 @@
         <translation>Kasutajaõigused: </translation>
     </message>
     <message>
-        <source>ATRfiltr service status: </source>
-        <translation>ATRfiltr teenuse staatus: </translation>
-    </message>
-    <message>
         <source>Not found</source>
         <translation>Ei leitud</translation>
     </message>

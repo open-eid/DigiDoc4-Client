@@ -736,10 +736,6 @@
         <translation>User rights: </translation>
     </message>
     <message>
-        <source>ATRfiltr service status: </source>
-        <translation>ATRfiltr service status: </translation>
-    </message>
-    <message>
         <source>Not found</source>
         <translation>Not found</translation>
     </message>

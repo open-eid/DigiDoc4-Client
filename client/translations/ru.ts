@@ -736,10 +736,6 @@
         <translation>Права пользователя: </translation>
     </message>
     <message>
-        <source>ATRfiltr service status: </source>
-        <translation>Статус ATRfiltr сервиса: </translation>
-    </message>
-    <message>
         <source>Not found</source>
         <translation>Не найдено</translation>
     </message>

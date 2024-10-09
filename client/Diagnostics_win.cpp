@@ -78,7 +78,7 @@ static QString getUserRights()
 QStringList Diagnostics::packages(const QStringList &names, bool withName)
 {
 	QStringList packages;
-	for(const QString &group: {u"HKEY_LOCAL_MACHINE"_s, u"HKEY_CURRENT_USER"_s})
+	for(auto group: {"HKEY_LOCAL_MACHINE"_L1, "HKEY_CURRENT_USER"_L1})
 	{
 		static const QVector<QSettings::Format> formats = []() -> QVector<QSettings::Format> {
 			if(QSysInfo::currentCpuArchitecture().contains("64"_L1))
@@ -112,7 +112,7 @@ void Diagnostics::run()
 
 	s << "<b>" << tr("Locale:") << "</b> ";
 	QLocale::Language language = QLocale::system().language();
-	QString locale = (language == QLocale::C ? "English/United States" : QLocale::languageToString( language ) );
+	QString locale = (language == QLocale::C ? u"English/United States"_s : QLocale::languageToString( language ) );
 	CPINFOEX CPInfoEx {};
 	if( GetCPInfoEx( GetConsoleCP(), 0, &CPInfoEx ) != 0 )
 		locale.append(" / ").append(QString::fromWCharArray(CPInfoEx.CodePageName));
@@ -124,7 +124,7 @@ void Diagnostics::run()
 	emit update( info );
 	info.clear();
 
-	QStringList base = packages({"eID software"}, false);
+	QStringList base = packages({u"eID software"_s}, false);
 	if( !base.isEmpty() )
 		s << "<b>" << tr("Base version:") << "</b> " << base.join( "<br />" ) << "<br />";
 	s << "<b>" << tr("Application version:") << "</b> " << QCoreApplication::applicationVersion() << " (" << QSysInfo::WordSize << " bit)<br />";
@@ -144,13 +144,13 @@ void Diagnostics::run()
 	qputenv("PATH", path
 		+ ";C:\\Program Files\\Open-EID"
 		+ ";C:\\Program Files\\EstIDMinidriver Minidriver"
-		+ ";C:\\Program Files (x86)\\Open-EID"
 		+ ";C:\\Program Files (x86)\\EstIDMinidriver Minidriver");
 	SetDllDirectory(LPCWSTR(qApp->applicationDirPath().utf16()));
 	static const QStringList dlls{
 		"digidocpp", "qdigidoc4.exe", "EsteidShellExtension", "id-updater.exe",
 		"EstIDMinidriver", "EstIDMinidriver64", "web-eid.exe",
-		"zlib1", "libxml2", "libxmlsec1", "libxmlsec1-openssl"};
+		"zlib1", "libxml2", "libxmlsec1", "libxmlsec1-openssl",
+		"msvcp140", "msvcp140_1", "msvcp140_2", "vcruntime140", "vcruntime140_1"};
 	for(const QString &lib: dlls)
 	{
 		DWORD infoHandle {};
@@ -177,17 +177,9 @@ void Diagnostics::run()
 	emit update( info );
 	info.clear();
 
-	QString atrfiltr = tr("Not found");
 	QString certprop = tr("Not found");
 	if(SC_HANDLE h = OpenSCManager(nullptr, nullptr, SC_MANAGER_CONNECT))
 	{
-		if( SC_HANDLE s = OpenService( h, L"atrfiltr", SERVICE_QUERY_STATUS ) )
-		{
-			SERVICE_STATUS status {};
-			QueryServiceStatus( s, &status );
-			atrfiltr = status.dwCurrentState == SERVICE_RUNNING ? tr("Running") : tr("Not running");
-			CloseServiceHandle( s );
-		}
 		if( SC_HANDLE s = OpenService( h, L"CertPropSvc", SERVICE_QUERY_STATUS ))
 		{
 			SERVICE_STATUS status {};
@@ -197,8 +189,7 @@ void Diagnostics::run()
 		}
 		CloseServiceHandle( h );
 	}
-	s << "<br /><b>" << tr("ATRfiltr service status: ") << "</b " << atrfiltr
-		<< "<br /><b>" << tr("Certificate Propagation service status: ") << "</b> " << certprop << "<br />";
+	s << "<br /><b>" << tr("Certificate Propagation service status: ") << "</b> " << certprop << "<br />";
 
 	generalInfo( s );
 	emit update( info );
