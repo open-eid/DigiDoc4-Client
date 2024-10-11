@@ -349,7 +349,7 @@ SslCertificate::Validity SslCertificate::validateOnline() const
 	// Get issuer
 	QNetworkRequest r(urls.values(SslCertificate::ad_CAIssuers).first());
 	r.setRawHeader("User-Agent", QStringLiteral("%1/%2 (%3)")
-		.arg(QApplication::applicationName(), QApplication::applicationVersion(), Common::applicationOs()).toUtf8());
+		.arg(QCoreApplication::applicationName(), QCoreApplication::applicationVersion(), Common::applicationOs()).toUtf8());
 	QNetworkReply *repl = m.get(r);
 	e.exec();
 	QSslCertificate issuer(repl->readAll(), QSsl::Der);

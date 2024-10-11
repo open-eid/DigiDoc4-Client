@@ -20,6 +20,7 @@
 #include "CheckConnection.h"
 
 #include "Application.h"
+#include "Common.h"
 
 #include <QtCore/QCoreApplication>
 #include <QtCore/QEventLoop>
@@ -106,8 +107,10 @@ QSslConfiguration CheckConnection::sslConfiguration(const QByteArray &add)
 {
 	QSslConfiguration ssl = QSslConfiguration::defaultConfiguration();
 #ifdef CONFIG_URL
+	const auto list = Application::confValue(QLatin1String("CERT-BUNDLE")).toArray();
 	QList<QSslCertificate> trusted;
-	for(const auto &cert: Application::confValue(QLatin1String("CERT-BUNDLE")).toArray())
+	trusted.reserve(list.size());
+	for(const auto &cert: list)
 		trusted.append(QSslCertificate(QByteArray::fromBase64(cert.toString().toLatin1()), QSsl::Der));
 	if(!add.isEmpty())
 		trusted.append(QSslCertificate(QByteArray::fromBase64(add), QSsl::Der));
