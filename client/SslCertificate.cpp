@@ -253,19 +253,9 @@ QByteArray SslCertificate::subjectKeyIdentifier() const
 	return !id ? QByteArray() : toQByteArray(id);
 }
 
-QByteArray SslCertificate::toHex( const QByteArray &in, QChar separator )
+QByteArray SslCertificate::toHex(const QByteArray &in, char separator)
 {
-#if QT_VERSION > QT_VERSION_CHECK(5, 14, 0)
-	QString ret = {in.toHex().toUpper()};
-	for( int i = 2; i < ret.size(); i += 3 )
-		ret.insert( i, separator );
-	return ret.toUtf8();
-#else
-	QByteArray ret = in.toHex().toUpper();
-	for( int i = 2; i < ret.size(); i += 3 )
-		ret.insert( i, separator );
-	return ret;
-#endif
+	return in.toHex(separator).toUpper();
 }
 
 QString SslCertificate::toString( const QString &format ) const
@@ -349,7 +339,7 @@ SslCertificate::Validity SslCertificate::validateOnline() const
 	// Get issuer
 	QNetworkRequest r(urls.values(SslCertificate::ad_CAIssuers).first());
 	r.setRawHeader("User-Agent", QStringLiteral("%1/%2 (%3)")
-		.arg(QApplication::applicationName(), QApplication::applicationVersion(), Common::applicationOs()).toUtf8());
+		.arg(QCoreApplication::applicationName(), QCoreApplication::applicationVersion(), Common::applicationOs()).toUtf8());
 	QNetworkReply *repl = m.get(r);
 	e.exec();
 	QSslCertificate issuer(repl->readAll(), QSsl::Der);

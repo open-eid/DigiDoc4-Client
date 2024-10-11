@@ -19,10 +19,9 @@
 
 #include "QCNG.h"
 
+#include "QPCSC.h"
 #include "SslCertificate.h"
 #include "TokenData.h"
-
-#include <common/QPCSC.h>
 
 #include <QtCore/QLoggingCategory>
 #include <QtNetwork/QSslKey>

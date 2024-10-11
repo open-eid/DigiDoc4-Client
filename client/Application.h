@@ -19,10 +19,15 @@
 
 #pragma once
 
-#include <common/Common.h>
+#include <QtCore/QtGlobal>
 
-#include <QtCore/QStringList>
-#include <QtCore/QVariant>
+#ifdef Q_OS_MAC
+#include <QtWidgets/QApplication>
+using BaseApplication = QApplication;
+#else
+#include "qtsingleapplication/src/QtSingleApplication"
+using BaseApplication = QtSingleApplication;
+#endif
 
 #if defined(qApp)
 #undef qApp
@@ -33,12 +38,12 @@ namespace digidoc { class Exception; }
 class Configuration;
 class QAction;
 class QSigner;
-class Application final: public Common
+class Application final: public BaseApplication
 {
 	Q_OBJECT
 
 public:
-	enum ConfParameter
+	enum ConfParameter : quint8
 	{
 		SiVaUrl,
 		ProxyHost,
@@ -86,6 +91,7 @@ Q_SIGNALS:
 private:
 	bool event(QEvent *event) final;
 	static void closeWindow();
+	static void msgHandler(QtMsgType type, const QMessageLogContext &ctx, const QString &msg);
 	static void parseArgs(const QString &msg = {});
 	static void parseArgs(QStringList args);
 	static void showWarning(const QString &msg, const digidoc::Exception &e);
@@ -102,7 +108,7 @@ private:
 class REOpenEvent: public QEvent
 {
 public:
-	enum { Type = QEvent::User + 1 };
+	enum : quint16 { Type = QEvent::User + 1 };
 	REOpenEvent(): QEvent( QEvent::Type(Type) ) {}
 };
 

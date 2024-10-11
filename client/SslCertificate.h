@@ -31,7 +31,7 @@ class SslCertificate: public QSslCertificate
 	Q_DECLARE_TR_FUNCTIONS( SslCertificate )
 
 public:
-	enum EnhancedKeyUsage
+	enum EnhancedKeyUsage : quint8
 	{
 		All,
 		ClientAuth,
@@ -40,7 +40,7 @@ public:
 		OCSPSign,
 		TimeStamping
 	};
-	enum KeyUsage
+	enum KeyUsage : quint8
 	{
 		DigitalSignature,
 		NonRepudiation,
@@ -52,12 +52,12 @@ public:
 		EncipherOnly,
 		DecipherOnly
 	};
-	enum AuthorityInfoAccess
+	enum AuthorityInfoAccess : quint8
 	{
 		ad_OCSP,
 		ad_CAIssuers,
 	};
-	enum CertType
+	enum CertType : quint8
 	{
 		UnknownType = 0,
 		DigiIDType = 1 << 0,
@@ -68,7 +68,7 @@ public:
 		EResidentSubType = 1 << 6,
 		EResidentType = DigiIDType|EResidentSubType,
 	};
-	enum Validity {
+	enum Validity : quint8 {
 		Good = 0,
 		Revoked = 1,
 		Unknown = 2,
@@ -87,7 +87,7 @@ public:
 	QByteArray	authorityKeyIdentifier() const;
 	QHash<EnhancedKeyUsage,QString> enhancedKeyUsage() const;
 	bool		isCA() const;
-	inline bool isValid() const {
+	bool isValid() const {
 		const QDateTime currentTime = QDateTime::currentDateTime();
 		return currentTime >= effectiveDate() &&
 			currentTime <= expiryDate() &&
@@ -100,7 +100,7 @@ public:
 	bool		showCN() const;
 	QString		signatureAlgorithm() const;
 	QByteArray	subjectKeyIdentifier() const;
-	static QByteArray	toHex( const QByteArray &in, QChar separator = ' ' );
+	static QByteArray	toHex(const QByteArray &in, char separator = ' ');
 	QString		toString( const QString &format ) const;
 	CertType	type() const;
 	Validity	validateOnline() const;
