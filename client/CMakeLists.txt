@@ -234,11 +234,12 @@ elseif(WIN32)
 		-d libs_path=${LIBS_PATH}
 		-d client_path=$<TARGET_FILE:${PROJECT_NAME}>
 		-d qt_suffix=$<$<CONFIG:Debug>:d>
+		-d ShellExt=$<TARGET_FILE:EsteidShellExtension>
 		${CMAKE_SOURCE_DIR}/${PROJECT_NAME}.wxs
 		${CMAKE_SOURCE_DIR}/cmake/modules/WelcomeDlg.wxs
 		${CMAKE_SOURCE_DIR}/cmake/modules/WixUI_Minimal.wxs
 	)
-	add_custom_target(msi DEPENDS ${PROJECT_NAME}
+	add_custom_target(msi DEPENDS ${PROJECT_NAME} EsteidShellExtension
 		COMMAND ${WIX_CMD} -o "${MSI_FILE}.msi"
 		#Build MSI with QT
 		COMMAND ${WIX_CMD} -d qt_path=${qtCore_install_prefix} -o "${MSI_FILE}.qt.msi"
