@@ -24,16 +24,20 @@
 
 #include <common/QPCSC.h>
 
-#include <QtCore/QDebug>
+#include <QtCore/QLoggingCategory>
 #include <QtNetwork/QSslKey>
+
+using namespace Qt::Literals::StringLiterals;
+
+Q_LOGGING_CATEGORY(CNG, "qdigidoc4.QCNG")
 
 template<typename T, typename D = decltype(NCryptFreeObject)>
 struct SCOPE
 {
 	T d {};
 	~SCOPE() { if(d) D(d); }
-	inline operator T() const { return d; }
-	inline T* operator&() { return &d; }
+	constexpr operator T() const { return d; }
+	constexpr T* operator&() { return &d; }
 };
 
 class QCNG::Private
@@ -73,7 +77,8 @@ QByteArray QCNG::decrypt(const QByteArray &data, bool oaep) const
 	});
 }
 
-QByteArray QCNG::derive(const QByteArray &publicKey, std::function<long (NCRYPT_SECRET_HANDLE, QByteArray &)> &&func) const
+template<typename F>
+QByteArray QCNG::derive(const QByteArray &publicKey, F &&func) const
 {
 	return exec([&](NCRYPT_PROV_HANDLE prov, NCRYPT_KEY_HANDLE key, QByteArray &derived) {
 		BCRYPT_ECCKEY_BLOB oh { BCRYPT_ECDH_PUBLIC_P384_MAGIC, ULONG((publicKey.size() - 1) / 2) };
@@ -100,22 +105,22 @@ QByteArray QCNG::deriveConcatKDF(const QByteArray &publicKey, QCryptographicHash
 	const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) const
 {
 	return derive(publicKey, [&](NCRYPT_SECRET_HANDLE sharedSecret, QByteArray &derived) {
-		QVector<BCryptBuffer> paramValues{
-			{ULONG(algorithmID.size()), KDF_ALGORITHMID, PBYTE(algorithmID.data())},
-			{ULONG(partyUInfo.size()), KDF_PARTYUINFO, PBYTE(partyUInfo.data())},
-			{ULONG(partyVInfo.size()), KDF_PARTYVINFO, PBYTE(partyVInfo.data())},
+		std::array paramValues{
+			BCryptBuffer{ULONG(algorithmID.size()), KDF_ALGORITHMID, PBYTE(algorithmID.data())},
+			BCryptBuffer{ULONG(partyUInfo.size()), KDF_PARTYUINFO, PBYTE(partyUInfo.data())},
+			BCryptBuffer{ULONG(partyVInfo.size()), KDF_PARTYVINFO, PBYTE(partyVInfo.data())},
+			BCryptBuffer{ULONG(sizeof(BCRYPT_SHA256_ALGORITHM)), KDF_HASH_ALGORITHM, PBYTE(BCRYPT_SHA256_ALGORITHM)}
 		};
 		switch(digest)
 		{
-		case QCryptographicHash::Sha256:
-			paramValues.push_back({ULONG(sizeof(BCRYPT_SHA256_ALGORITHM)), KDF_HASH_ALGORITHM, PBYTE(BCRYPT_SHA256_ALGORITHM)}); break;
+		case QCryptographicHash::Sha256: break;
 		case QCryptographicHash::Sha384:
-			paramValues.push_back({ULONG(sizeof(BCRYPT_SHA384_ALGORITHM)), KDF_HASH_ALGORITHM, PBYTE(BCRYPT_SHA384_ALGORITHM)}); break;
+			paramValues[3] = {ULONG(sizeof(BCRYPT_SHA384_ALGORITHM)), KDF_HASH_ALGORITHM, PBYTE(BCRYPT_SHA384_ALGORITHM)}; break;
 		case QCryptographicHash::Sha512:
-			paramValues.push_back({ULONG(sizeof(BCRYPT_SHA512_ALGORITHM)), KDF_HASH_ALGORITHM, PBYTE(BCRYPT_SHA512_ALGORITHM)}); break;
+			paramValues[3] = {ULONG(sizeof(BCRYPT_SHA512_ALGORITHM)), KDF_HASH_ALGORITHM, PBYTE(BCRYPT_SHA512_ALGORITHM)}; break;
 		default: return NTE_INVALID_PARAMETER;
 		}
-		BCryptBufferDesc params{ BCRYPTBUFFER_VERSION,  ULONG(paramValues.size()), paramValues.data() };
+		BCryptBufferDesc params{BCRYPTBUFFER_VERSION,  ULONG(paramValues.size()), paramValues.data()};
 		DWORD size {};
 		SECURITY_STATUS err {};
 		if(FAILED(err = NCryptDeriveKey(sharedSecret, BCRYPT_KDF_SP80056A_CONCAT, &params, nullptr, 0, &size, 0)))
@@ -130,13 +135,11 @@ QByteArray QCNG::deriveConcatKDF(const QByteArray &publicKey, QCryptographicHash
 QByteArray QCNG::deriveHMACExtract(const QByteArray &publicKey, const QByteArray &salt, int keySize) const
 {
 	return derive(publicKey, [&](NCRYPT_SECRET_HANDLE sharedSecret, QByteArray &derived) {
-		QVector<BCryptBuffer> paramValues{
-			{ULONG(salt.size()), KDF_HMAC_KEY, PBYTE(salt.data())},
-			{ULONG(sizeof(BCRYPT_SHA256_ALGORITHM)), KDF_HASH_ALGORITHM, PBYTE(BCRYPT_SHA256_ALGORITHM)},
+		std::array paramValues{
+			BCryptBuffer{ULONG(salt.size()), KDF_HMAC_KEY, PBYTE(salt.data())},
+			BCryptBuffer{ULONG(sizeof(BCRYPT_SHA256_ALGORITHM)), KDF_HASH_ALGORITHM, PBYTE(BCRYPT_SHA256_ALGORITHM)},
 		};
-		BCryptBufferDesc params{ BCRYPTBUFFER_VERSION };
-		params.cBuffers = ULONG(paramValues.size());
-		params.pBuffers = paramValues.data();
+		BCryptBufferDesc params{BCRYPTBUFFER_VERSION, ULONG(paramValues.size()), paramValues.data()};
 		DWORD size = 0;
 		SECURITY_STATUS err = 0;
 		if(FAILED(err = NCryptDeriveKey(sharedSecret, BCRYPT_KDF_HMAC, &params, nullptr, 0, &size, 0)))
@@ -148,15 +151,16 @@ QByteArray QCNG::deriveHMACExtract(const QByteArray &publicKey, const QByteArray
 	});
 }
 
-QByteArray QCNG::exec(std::function<long (NCRYPT_PROV_HANDLE, NCRYPT_KEY_HANDLE, QByteArray &)> &&func) const
+template<typename F>
+QByteArray QCNG::exec(F &&func) const
 {
 	d->err = UnknownError;
 	SCOPE<NCRYPT_PROV_HANDLE> prov;
-	if(FAILED(NCryptOpenStorageProvider(&prov, LPCWSTR(d->token.data(QStringLiteral("provider")).toString().utf16()), 0)))
+	if(FAILED(NCryptOpenStorageProvider(&prov, LPCWSTR(d->token.data(u"provider"_s).toString().utf16()), 0)))
 		return {};
 	SCOPE<NCRYPT_KEY_HANDLE> key;
-	if(FAILED(NCryptOpenKey(prov, &key, LPWSTR(d->token.data(QStringLiteral("key")).toString().utf16()),
-		d->token.data(QStringLiteral("spec")).value<DWORD>(), 0)))
+	if(FAILED(NCryptOpenKey(prov, &key, LPWSTR(d->token.data(u"key"_s).toString().utf16()),
+		d->token.data(u"spec"_s).value<DWORD>(), 0)))
 		return {};
 	// https://docs.microsoft.com/en-us/archive/blogs/alejacma/smart-cards-pin-gets-cached
 	NCryptSetProperty(key, NCRYPT_PIN_PROPERTY, nullptr, 0, 0);
@@ -191,14 +195,18 @@ QList<TokenData> QCNG::tokens() const
 		return data;
 	};
 	auto enumKeys = [&result, &prop](const QString &provider, QString reader = {}) {
-		QString scope = QStringLiteral(R"(\\.\%1\)").arg(reader);
+		if(provider == u"SafeCert Key Storage Provider"_s)
+		{
+			qCWarning(CNG) << "Skip: Crashes on NCryptEnumKeys";
+			return;
+		}
+		QString scope = uR"(\\.\%1\)"_s.arg(reader);
 		SCOPE<NCRYPT_PROV_HANDLE> h;
 		SECURITY_STATUS err = NCryptOpenStorageProvider(&h, LPCWSTR(provider.utf16()), 0);
-		NCryptKeyName *keyname {};
+		NCryptKeyName *keyname{};
 		PVOID pos {};
 		BCRYPT_PSS_PADDING_INFO rsaPSS { NCRYPT_SHA256_ALGORITHM, 32 };
 		DWORD size {};
-		QByteArray digest = QCryptographicHash::hash({0}, QCryptographicHash::Sha256);
 		while(SUCCEEDED(NCryptEnumKeys(h, reader.isEmpty() ? nullptr : LPCWSTR(scope.utf16()), &keyname, &pos, NCRYPT_SILENT_FLAG)))
 		{
 			SCOPE<NCryptKeyName*,decltype(NCryptFreeBuffer)> keyname_scope{keyname};
@@ -216,11 +224,11 @@ QList<TokenData> QCNG::tokens() const
 			t.setCard(cert.type() & SslCertificate::EstEidType || cert.type() & SslCertificate::DigiIDType ?
 				guid : cert.subjectInfo(QSslCertificate::CommonName) + "-" + cert.serialNumber());
 			t.setCert(cert);
-			t.setData(QStringLiteral("provider"), provider);
-			t.setData(QStringLiteral("key"), QString::fromWCharArray(keyname->pszName));
-			t.setData(QStringLiteral("spec"), QVariant::fromValue(keyname->dwLegacyKeySpec));
-			qWarning() << "key" << t.data(QStringLiteral("provider"))
-				<< "spec" << t.data(QStringLiteral("spec"))
+			t.setData(u"provider"_s, provider);
+			t.setData(u"key"_s, QString::fromWCharArray(keyname->pszName));
+			t.setData(u"spec"_s, QVariant::fromValue(keyname->dwLegacyKeySpec));
+			qCWarning(CNG) << "key" << t.data(u"provider"_s)
+				<< "spec" << t.data(u"spec"_s)
 				<< "alg" << QStringView(keyname->pszAlgid)
 				<< "flags" << keyname->dwFlags;
 			if(cert.publicKey().algorithm() != QSsl::Rsa || reader.isEmpty())
@@ -232,31 +240,30 @@ QList<TokenData> QCNG::tokens() const
 				{"3BD518008131FE7D8073C82110F4"}, // SafeNet 5110 FIPS
 				{"3BFF9600008131FE4380318065B0846566FB12017882900085"}, // SafeNet 5110+ FIPS
 			};
-			t.setData(QStringLiteral("PSS"), usePSS.contains(QPCSCReader(reader, &QPCSC::instance()).atr()));
+			t.setData(u"PSS"_s, usePSS.contains(QPCSCReader(reader, &QPCSC::instance()).atr()));
 		}
 	};
 
-	qWarning() << "Start enumerationg providers";
+	qCWarning(CNG) << "Start enumerationg providers";
 	DWORD count {};
-	NCryptProviderName *providers {};
+	SCOPE<NCryptProviderName*,decltype(NCryptFreeBuffer)> providers {};
 	NCryptEnumStorageProviders(&count, &providers, NCRYPT_SILENT_FLAG);
 	for(DWORD i {}; i < count; ++i)
 	{
 		QString provider = QString::fromWCharArray(providers[i].pszName);
-		qWarning() << "Found provider" << provider;
+		qCWarning(CNG) << "Found provider" << provider;
 		if(provider == QStringView(MS_SMART_CARD_KEY_STORAGE_PROVIDER))
 		{
 			for( const QString &reader: QPCSC::instance().readers() )
 			{
-				qWarning() << reader;
+				qCWarning(CNG) << reader;
 				enumKeys(provider, reader);
 			}
 		}
 		else
 			enumKeys(provider);
 	}
-	NCryptFreeBuffer(providers);
-	qWarning() << "End enumerationg providers";
+	qCWarning(CNG) << "End enumerationg providers";
 
 	return result;
 }
@@ -287,7 +294,7 @@ QByteArray QCNG::sign(QCryptographicHash::Algorithm type, const QByteArray &dige
 		bool isRSA = algo == QLatin1String("RSA");
 		DWORD padding {};
 		PVOID paddingInfo {};
-		if(isRSA && d->token.data(QStringLiteral("PSS")).toBool())
+		if(isRSA && d->token.data(u"PSS"_s).toBool())
 		{
 			padding = BCRYPT_PAD_PSS;
 			paddingInfo = &rsaPSS;
