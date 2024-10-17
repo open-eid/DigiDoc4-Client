@@ -22,43 +22,31 @@
 
 #include "IKValidator.h"
 #include "Settings.h"
-#include "Styles.h"
 #include "effects/Overlay.h"
 
-MobileDialog::MobileDialog(QWidget *parent) :
-	QDialog(parent),
-	ui(new Ui::MobileDialog)
+MobileDialog::MobileDialog(QWidget *parent)
+	: QDialog(parent)
+	, ui(new Ui::MobileDialog)
 {
 	static const QStringList countryCodes {QStringLiteral("372"), QStringLiteral("370")};
 	new Overlay(this);
+
 	ui->setupUi(this);
 	setWindowFlags(Qt::Dialog | Qt::CustomizeWindowHint);
-	setFixedSize(size());
 #ifdef Q_OS_WIN
 	ui->buttonLayout->setDirection(QBoxLayout::RightToLeft);
 #endif
-
-	QFont condensed = Styles::font(Styles::Condensed, 14);
-	QFont regularFont = Styles::font(Styles::Regular, 14);
-	ui->labelNameId->setFont(Styles::font(Styles::Regular, 16, QFont::DemiBold));
-	ui->labelPhone->setFont(regularFont);
-	ui->labelCode->setFont(regularFont);
-	ui->errorCode->setFont(regularFont);
-	ui->errorPhone->setFont(regularFont);
-	ui->phoneNo->setFont(regularFont);
-	ui->idCode->setFont(regularFont);
-	ui->cbRemember->setFont(regularFont);
-	ui->sign->setFont(condensed);
-	ui->cancel->setFont(condensed);
 
 	// Mobile
 	ui->idCode->setValidator(new NumberValidator(ui->idCode));
 	ui->idCode->setText(Settings::MOBILEID_CODE);
 	ui->idCode->setAttribute(Qt::WA_MacShowFocusRect, false);
+	ui->errorCode->hide();
 	ui->phoneNo->setValidator(new NumberValidator(ui->phoneNo));
 	ui->phoneNo->setText(Settings::MOBILEID_NUMBER.value(countryCodes[0]));
 	ui->phoneNo->setAttribute(Qt::WA_MacShowFocusRect, false);
 	ui->phoneNo->setFocus();
+	ui->errorPhone->hide();
 	ui->cbRemember->setChecked(Settings::MOBILEID_REMEMBER);
 	ui->cbRemember->setAttribute(Qt::WA_MacShowFocusRect, false);
 	auto saveSettings = [this] {
@@ -68,9 +56,9 @@ MobileDialog::MobileDialog(QWidget *parent) :
 		Settings::MOBILEID_NUMBER = checked ? ui->phoneNo->text() : QString();
 	};
 	auto setError = [](QLineEdit *input, QLabel *error, const QString &msg) {
-		input->setStyleSheet(msg.isEmpty() ? QString() :QStringLiteral("border-color: #c53e3e"));
-		error->setFocusPolicy(msg.isEmpty() ? Qt::NoFocus : Qt::TabFocus);
+		input->setStyleSheet(msg.isEmpty() ? QString() : QStringLiteral("border-color: #BE7884"));
 		error->setText(msg);
+		error->setHidden(msg.isEmpty());
 	};
 	connect(ui->idCode, &QLineEdit::returnPressed, ui->sign, &QPushButton::click);
 	connect(ui->idCode, &QLineEdit::textEdited, this, saveSettings);

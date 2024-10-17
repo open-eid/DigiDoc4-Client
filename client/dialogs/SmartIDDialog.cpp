@@ -22,7 +22,6 @@
 
 #include "IKValidator.h"
 #include "Settings.h"
-#include "Styles.h"
 #include "effects/Overlay.h"
 
 SmartIDDialog::SmartIDDialog(QWidget *parent)
@@ -34,26 +33,14 @@ SmartIDDialog::SmartIDDialog(QWidget *parent)
 
 	ui->setupUi(this);
 	setWindowFlags(Qt::Dialog | Qt::CustomizeWindowHint);
-	setFixedSize(size());
 #ifdef Q_OS_WIN
 	ui->buttonLayout->setDirection(QBoxLayout::RightToLeft);
 #endif
 
-	QFont condensed = Styles::font(Styles::Condensed, 14);
-	QFont regularFont = Styles::font(Styles::Regular, 14);
-	ui->labelNameId->setFont(Styles::font(Styles::Regular, 16, QFont::DemiBold));
-	ui->labelCode->setFont(regularFont);
-	ui->labelCountry->setFont(regularFont);
-	ui->errorCode->setFont(regularFont);
-	ui->errorCountry->setFont(regularFont);
-	ui->idCode->setFont(regularFont);
 	ui->idCode->setAttribute(Qt::WA_MacShowFocusRect, false);
 	ui->idCode->setFocus();
-	ui->idCountry->setFont(regularFont);
-	ui->cbRemember->setFont(regularFont);
 	ui->cbRemember->setAttribute(Qt::WA_MacShowFocusRect, false);
-	ui->sign->setFont(condensed);
-	ui->cancel->setFont(condensed);
+	ui->errorCode->hide();
 
 	auto *ik = new NumberValidator(ui->idCode);
 	ui->idCode->setValidator(Settings::SMARTID_COUNTRY == EE ? ik : nullptr);
@@ -69,9 +56,9 @@ SmartIDDialog::SmartIDDialog(QWidget *parent)
 		Settings::SMARTID_COUNTRY = checked ? country() : EE;
 	};
 	auto setError = [](QLineEdit *input, QLabel *error, const QString &msg) {
-		input->setStyleSheet(msg.isEmpty() ? QString() :QStringLiteral("border-color: #c53e3e"));
-		error->setFocusPolicy(msg.isEmpty() ? Qt::NoFocus : Qt::TabFocus);
+		input->setStyleSheet(msg.isEmpty() ? QString() : QStringLiteral("border-color: #BE7884"));
 		error->setText(msg);
+		error->setHidden(msg.isEmpty());
 	};
 	connect(ui->idCode, &QLineEdit::returnPressed, ui->sign, &QPushButton::click);
 	connect(ui->idCode, &QLineEdit::textEdited, this, saveSettings);

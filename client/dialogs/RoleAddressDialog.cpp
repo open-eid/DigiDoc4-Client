@@ -21,7 +21,6 @@
 #include "ui_RoleAddressDialog.h"
 
 #include "Settings.h"
-#include "Styles.h"
 #include "effects/Overlay.h"
 
 #include <QtWidgets/QCompleter>
@@ -33,27 +32,16 @@ RoleAddressDialog::RoleAddressDialog(QWidget *parent)
 	: QDialog(parent)
 	, d(new Private)
 {
-	const QFont regularFont = Styles::font(Styles::Regular, 14);
-	const QFont condensed = Styles::font(Styles::Condensed, 14);
-
 	d->setupUi(this);
 #if defined (Q_OS_WIN)
-	d->horizontalLayout->setDirection(QBoxLayout::RightToLeft);
+	d->buttonLayout->setDirection(QBoxLayout::RightToLeft);
 #endif
 	setWindowFlags(Qt::Dialog | Qt::CustomizeWindowHint);
 	for(QLineEdit *w: findChildren<QLineEdit*>())
 		w->setAttribute(Qt::WA_MacShowFocusRect, false);
 
 	connect( d->cancel, &QPushButton::clicked, this, &RoleAddressDialog::reject );
-	d->cancel->setFont(condensed);
-
 	connect( d->sign, &QPushButton::clicked, this, &RoleAddressDialog::accept );
-	d->sign->setFont(condensed);
-
-	for(auto *label: findChildren<QLabel*>())
-		label->setFont(regularFont);
-
-	d->title->setFont(Styles::font(Styles::Regular, 16, QFont::DemiBold));
 
 	auto list = findChildren<QLineEdit*>();
 	if(!list.isEmpty())
@@ -66,7 +54,6 @@ RoleAddressDialog::RoleAddressDialog(QWidget *parent)
 		completer->setCompletionMode(QCompleter::PopupCompletion);
 		completer->setCaseSensitivity(Qt::CaseInsensitive);
 		line->setText(QStringList(s).value(0));
-		line->setFont(regularFont);
 		line->setCompleter(completer);
 		connect(line, &QLineEdit::editingFinished, this, [line, s = std::move(s)] {
 			QStringList list = s;

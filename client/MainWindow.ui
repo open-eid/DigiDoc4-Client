@@ -98,7 +98,8 @@ QToolButton:checked {
 background-color: #ffffff;
 color: #003168;
 }
-#version {
+#version, #version:pressed {
+border: none;
 color: #BFD3E8;
 font-family: Roboto, Helvetica;
 font-size: 10px;
