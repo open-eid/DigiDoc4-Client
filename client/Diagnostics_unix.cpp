@@ -21,6 +21,7 @@
 
 #include "Common.h"
 
+#include <QtCore/QCoreApplication>
 #include <QtCore/QFile>
 #include <QtCore/QRegularExpression>
 #include <QtCore/QTextStream>

@@ -25,6 +25,7 @@
 #include "CertStore.h"
 #endif
 #include "CheckConnection.h"
+#include "Configuration.h"
 #include "Diagnostics.h"
 #include "FileDialog.h"
 #include "QSigner.h"
@@ -38,8 +39,6 @@
 #include "effects/ButtonHoverFilter.h"
 #include "effects/Overlay.h"
 #include "effects/FadeInNotification.h"
-
-#include "common/Configuration.h"
 
 #include <digidocpp/Conf.h>
 

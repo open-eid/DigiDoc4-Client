@@ -73,6 +73,9 @@ add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
 	QCardLock.h
 	QCryptoBackend.cpp
 	QCryptoBackend.h
+	QPCSC.cpp
+	QPCSC_p.h
+	QPCSC.h
 	QPKCS11.cpp
 	QPKCS11.h
 	QSigner.cpp
@@ -118,7 +121,7 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 	MACOSX_BUNDLE_BUNDLE_NAME ${PROJECT_NAME}
 	MACOSX_BUNDLE_GUI_IDENTIFIER "ee.ria.${PROJECT_NAME}"
 )
-target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR} ${LIBDIGIDOCPP_INCLUDE_DIR})
+target_include_directories(${PROJECT_NAME} PRIVATE ${LIBDIGIDOCPP_INCLUDE_DIR})
 target_compile_definitions(${PROJECT_NAME} PRIVATE
 	CDOC2_GET_URL="${CDOC2_GET_URL}"
 	CDOC2_POST_URL="${CDOC2_POST_URL}"
@@ -229,7 +232,6 @@ elseif(WIN32)
 		-ext WixToolset.UI.wixext
 		-bv WixUIDialogBmp=${CMAKE_SOURCE_DIR}/cmake/modules/dlgbmp.bmp
 		-bv WixUIBannerBmp=${CMAKE_SOURCE_DIR}/cmake/modules/banner.bmp
-		-d MSI_VERSION=${VERSION}
 		-d ico_path=${CMAKE_CURRENT_SOURCE_DIR}/images/digidoc.ico
 		-d libs_path=${LIBS_PATH}
 		-d client_path=$<TARGET_FILE:${PROJECT_NAME}>

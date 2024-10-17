@@ -19,7 +19,7 @@
 <Wix xmlns="http://wixtoolset.org/schemas/v4/wxs"
      xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
   <Package Name="DigiDoc4 Client" UpgradeCode="67932072-aa9e-45e3-b697-d825349f273d"
-      Language="1033" Version="$(var.MSI_VERSION)" Manufacturer="RIA" Scope="perMachine">
+      Language="1033" Version="!(bind.FileVersion.qdigidoc4.exe)" Manufacturer="RIA" Scope="perMachine">
     <MediaTemplate EmbedCab="yes" CompressionLevel="high" />
     <Icon Id="qdigidoc4.ico" SourceFile="$(var.ico_path)" />
     <Property Id="ARPPRODUCTICON" Value="qdigidoc4.ico" />
