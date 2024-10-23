@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.16)
 if(NOT EXISTS ${CMAKE_SOURCE_DIR}/cmake/modules/VersionInfo.cmake)
     message(FATAL_ERROR "cmake submodule directory empty, did you 'git clone --recursive'?")
 endif()
-project(qdigidoc4 VERSION 4.6.0)
+project(qdigidoc4 VERSION 4.6.1)
 
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)

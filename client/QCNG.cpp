@@ -217,7 +217,10 @@ QList<TokenData> QCNG::tokens() const
 				continue;
 
 			if(reader.isEmpty())
-				reader = QString::fromUtf16((const char16_t*)prop(key, NCRYPT_READER_PROPERTY).data());
+			{
+				if(QByteArray tmp = prop(key, NCRYPT_READER_PROPERTY); !tmp.isEmpty())
+					reader = QString::fromUtf16((const char16_t*)tmp.data());
+			}
 			QString guid = prop(h, NCRYPT_SMARTCARD_GUID_PROPERTY).trimmed();
 			TokenData &t = result.emplaceBack();
 			t.setReader(reader);
