@@ -24,6 +24,7 @@
 
 #include <QLabel>
 #include <QSvgWidget>
+#include <QKeyEvent>
 
 using namespace ria::qdigidoc4;
 
@@ -40,6 +41,7 @@ ItemList::ItemList(QWidget *parent)
 	ui->infoIcon->hide();
 	ui->txtFind->setAttribute(Qt::WA_MacShowFocusRect, false);
 	connect(this, &ItemList::idChanged, this, [this](const SslCertificate &cert){ this->cert = cert; });
+	ui->txtFind->installEventFilter(this);
 }
 
 ItemList::~ItemList()
@@ -143,6 +145,17 @@ void ItemList::clear()
 
 bool ItemList::eventFilter(QObject *o, QEvent *e)
 {
+	if (o == ui->txtFind && e->type() == QEvent::KeyPress)
+	{
+		QKeyEvent *keyEvent = static_cast<QKeyEvent *>(e);
+		// To avoid dialog default button trigger
+		if (keyEvent->key() == Qt::Key_Return || keyEvent->key() == Qt::Key_Enter)
+		{
+			ui->btnFind->click();
+			return true;
+		}
+	}
+
 	if(o != ui->infoIcon)
 		return QScrollArea::eventFilter(o, e);
 	switch(e->type())

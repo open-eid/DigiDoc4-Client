@@ -29,13 +29,11 @@
 #include "LdapSearch.h"
 #include "QSigner.h"
 #include "Settings.h"
-#include "Styles.h"
 #include "TokenData.h"
 #include "dialogs/WarningDialog.h"
 #include "effects/Overlay.h"
 
 #include <QtCore/QDateTime>
-#include <QtCore/QDebug>
 #include <QtCore/QJsonArray>
 #include <QtCore/QJsonObject>
 #include <QtNetwork/QSslConfiguration>
@@ -56,22 +54,11 @@ AddRecipients::AddRecipients(ItemList* itemList, QWidget *parent)
 	new Overlay(this);
 
 	ui->leftPane->init(ria::qdigidoc4::ToAddAdresses, QT_TRANSLATE_NOOP("ItemList", "Add recipients"));
-	ui->leftPane->setFont(Styles::font(Styles::Regular, 20));
 	ui->rightPane->init(ria::qdigidoc4::AddedAdresses, QT_TRANSLATE_NOOP("ItemList", "Added recipients"));
-	ui->rightPane->setFont(Styles::font(Styles::Regular, 20));
 
-	ui->fromCard->setFont(Styles::font(Styles::Condensed, 12));
-	ui->fromFile->setFont(Styles::font(Styles::Condensed, 12));
-	ui->fromHistory->setFont(Styles::font(Styles::Condensed, 12));
-
-	ui->cancel->setFont(Styles::font(Styles::Condensed, 14));
-	ui->confirm->setFont(Styles::font(Styles::Condensed, 14));
-
-	ui->confirm->setDisabled(rightList.isEmpty());
 	connect(ui->confirm, &QPushButton::clicked, this, &AddRecipients::accept);
 	connect(ui->cancel, &QPushButton::clicked, this, &AddRecipients::reject);
 	connect(ui->leftPane, &ItemList::search, this, [&](const QString &term) {
-		leftList.clear();
 		ui->leftPane->clear();
 		search(term);
 	});
@@ -81,18 +68,26 @@ AddRecipients::AddRecipients(ItemList* itemList, QWidget *parent)
 	connect(ldap_corp, &LdapSearch::error, this, &AddRecipients::showError);
 	connect(this, &AddRecipients::finished, this, &AddRecipients::close);
 
-	connect(ui->leftPane, &ItemList::addAll, this, &AddRecipients::addAllRecipientToRightPane );
+	connect(ui->leftPane, &ItemList::addAll, this, [this] {
+		for(Item *item: ui->leftPane->items)
+			addRecipientToRightPane(item);
+	});
 	connect(ui->rightPane, &ItemList::removed, ui->rightPane, &ItemList::removeItem );
 
-	connect(ui->fromCard, &QPushButton::clicked, this, &AddRecipients::addRecipientFromCard);
-	connect( qApp->signer(), &QSigner::authDataChanged, this, &AddRecipients::enableRecipientFromCard );
+	connect(ui->fromCard, &QPushButton::clicked, this, [this] {
+		addRecipient(qApp->signer()->tokenauth().cert());
+	});
+	auto enableRecipientFromCard = [this] {
+		ui->fromCard->setDisabled(qApp->signer()->tokenauth().cert().isNull());
+	};
 	enableRecipientFromCard();
+	connect(qApp->signer(), &QSigner::authDataChanged, this, std::move(enableRecipientFromCard));
 
 	connect(ui->fromFile, &QPushButton::clicked, this, &AddRecipients::addRecipientFromFile);
 	connect(ui->fromHistory, &QPushButton::clicked, this, &AddRecipients::addRecipientFromHistory);
 
 	for(Item *item: itemList->items)
-		addRecipientToRightPane((qobject_cast<AddressItem *>(item))->getKey(), false);
+		addRecipientToRightPane(item, false);
 }
 
 AddRecipients::~AddRecipients()
@@ -101,25 +96,6 @@ AddRecipients::~AddRecipients()
 	delete ui;
 }
 
-void AddRecipients::addAllRecipientToRightPane()
-{
-	QList<SslCertificate> history;
-	for(AddressItem *value: leftList)
-	{
-		if(rightList.contains(value->getKey()))
-			continue;
-		addRecipientToRightPane(value);
-		history.append(value->getKey().cert);
-	}
-	ui->confirm->setDisabled(rightList.isEmpty());
-	historyCertData.addAndSave(history);
-}
-
-void AddRecipients::addRecipientFromCard()
-{
-	if(auto *item = addRecipientToLeftPane(qApp->signer()->tokenauth().cert()))
-		addRecipientToRightPane(item, true);
-}
 
 void AddRecipients::addRecipientFromFile()
 {
@@ -150,47 +126,51 @@ void AddRecipients::addRecipientFromFile()
 	{
 		WarningDialog::show(this, tr("This certificate cannot be used for encryption"));
 	}
-	else if(auto *item = addRecipientToLeftPane(cert))
-	{
-		addRecipientToRightPane(item, true);
-	}
+	else
+		addRecipient(cert);
 }
 
 void AddRecipients::addRecipientFromHistory()
 {
 	auto *dlg = new CertificateHistory(historyCertData, this);
-	connect(dlg, &CertificateHistory::addSelectedCerts, this, &AddRecipients::addSelectedCerts);
+	connect(dlg, &CertificateHistory::addSelectedCerts, this, [this](const QList<HistoryCertData> &selectedCertData) {
+		if(selectedCertData.isEmpty())
+			return;
+
+		ui->leftPane->clear();
+		for(const HistoryCertData &certData: selectedCertData) {
+			QString term = (certData.type == QStringLiteral("1") || certData.type == QStringLiteral("3")) ? certData.CN : certData.CN.split(',').value(2);
+			search(term, true, certData.type);
+		}
+	});
 	dlg->open();
 }
 
-AddressItem * AddRecipients::addRecipientToLeftPane(const QSslCertificate& cert)
+void AddRecipients::addRecipient(const QSslCertificate& cert, bool select)
 {
-	AddressItem *leftItem = leftList.value(cert);
-	if(leftItem)
-		return leftItem;
+	AddressItem *leftItem = itemListValue(ui->leftPane, cert);
+	if(!leftItem)
+	{
+		leftItem = new AddressItem(cert, AddressItem::Add, ui->leftPane);
+		ui->leftPane->addWidget(leftItem);
+		bool contains = rightList.contains(cert);
+		leftItem->setDisabled(contains);
+		connect(leftItem, &AddressItem::add, this, [this](Item *item) { addRecipientToRightPane(item); });
+		if(auto *add = ui->leftPane->findChild<QWidget*>(QStringLiteral("add")))
+			add->setVisible(true);
+	}
 
-	leftItem = new AddressItem(CKey(cert), ui->leftPane);
-	leftList.insert(cert, leftItem);
-	ui->leftPane->addWidget(leftItem);
-	bool contains = rightList.contains(cert);
-	leftItem->setDisabled(contains);
-	leftItem->showButton(contains ? AddressItem::Added : AddressItem::Add);
-
-	connect(leftItem, &AddressItem::add, this, [this](Item *item) {
-		addRecipientToRightPane(qobject_cast<AddressItem*>(item), true);
-	});
-
-	if(auto *add = ui->leftPane->findChild<QWidget*>(QStringLiteral("add")))
-		add->setVisible(true);
-
-	return leftItem;
+	if(select)
+		addRecipientToRightPane(leftItem);
 }
 
-bool AddRecipients::addRecipientToRightPane(const CKey &key, bool update)
+void AddRecipients::addRecipientToRightPane(Item *item, bool update)
 {
-	if (rightList.contains(key))
-		return false;
+	auto *address = qobject_cast<AddressItem*>(item);
+	if(!address || rightList.contains(address->getKey()))
+		return;
 
+	const auto &key = address->getKey();
 	if(update)
 	{
 		if(auto expiryDate = key.cert.expiryDate(); expiryDate <= QDateTime::currentDateTime())
@@ -198,7 +178,7 @@ bool AddRecipients::addRecipientToRightPane(const CKey &key, bool update)
 			if(Settings::CDOC2_DEFAULT && Settings::CDOC2_USE_KEYSERVER)
 			{
 				WarningDialog::show(this, tr("Failed to add certificate. An expired certificate cannot be used for encryption."));
-				return false;
+				return;
 			}
 			auto *dlg = new WarningDialog(tr("Are you sure that you want use certificate for encrypting, which expired on %1?<br />"
 				"When decrypter has updated certificates then decrypting is impossible.")
@@ -206,7 +186,7 @@ bool AddRecipients::addRecipientToRightPane(const CKey &key, bool update)
 			dlg->setCancelText(WarningDialog::NO);
 			dlg->addButton(WarningDialog::YES, QMessageBox::Yes);
 			if(dlg->exec() != QMessageBox::Yes)
-				return false;
+				return;
 		}
 		QSslConfiguration backup = QSslConfiguration::defaultConfiguration();
 		QSslConfiguration::setDefaultConfiguration(CheckConnection::sslConfiguration());
@@ -219,40 +199,27 @@ bool AddRecipients::addRecipientToRightPane(const CKey &key, bool update)
 			dlg->setCancelText(WarningDialog::NO);
 			dlg->addButton(WarningDialog::YES, QMessageBox::Yes);
 			if(dlg->exec() != QMessageBox::Yes)
-				return false;
+				return;
 		}
 	}
 	updated = update;
 
 	rightList.append(key);
 
-	auto *rightItem = new AddressItem(key, ui->rightPane);
-	connect(rightItem, &AddressItem::remove, this, &AddRecipients::removeRecipientFromRightPane);
+	auto *rightItem = new AddressItem(key, AddressItem::Remove, ui->rightPane);
+	connect(rightItem, &AddressItem::remove, this, [this](Item *item) {
+		auto *rightItem = qobject_cast<AddressItem*>(item);
+		if(auto *leftItem = itemListValue(ui->leftPane, rightItem->getKey().cert))
+			leftItem->setDisabled(false);
+		rightList.removeAll(rightItem->getKey());
+		updated = true;
+		ui->confirm->setDisabled(rightList.isEmpty());
+	});
 	ui->rightPane->addWidget(rightItem);
-	ui->confirm->setDisabled(rightList.isEmpty());
-	historyCertData.addAndSave({key.cert});
-	return true;
-}
-
-void AddRecipients::addRecipientToRightPane(AddressItem *leftItem, bool update)
-{
-	if(addRecipientToRightPane(leftItem->getKey(), update)) {
+	ui->confirm->setEnabled(true);
+	historyCertData.addAndSave(key.cert);
+	if(auto *leftItem = itemListValue(ui->leftPane, key))
 		leftItem->setDisabled(true);
-		leftItem->showButton(AddressItem::Added);
-	}
-}
-
-void AddRecipients::addSelectedCerts(const QList<HistoryCertData>& selectedCertData)
-{
-	if(selectedCertData.isEmpty())
-		return;
-
-	leftList.clear();
-	ui->leftPane->clear();
-	for(const HistoryCertData &certData: selectedCertData) {
-		QString term = (certData.type == QStringLiteral("1") || certData.type == QStringLiteral("3")) ? certData.CN : certData.CN.split(',').value(2);
-		search(term, true, certData.type);
-	}
 }
 
 QString AddRecipients::defaultUrl(QLatin1String key, const QString &defaultValue)
@@ -260,14 +227,19 @@ QString AddRecipients::defaultUrl(QLatin1String key, const QString &defaultValue
 	return Application::confValue(key).toString(defaultValue);
 }
 
-void AddRecipients::enableRecipientFromCard()
-{
-	ui->fromCard->setDisabled( qApp->signer()->tokenauth().cert().isNull() );
-}
-
 bool AddRecipients::isUpdated() const
 {
 	return updated;
+}
+
+AddressItem* AddRecipients::itemListValue(ItemList *list, const CKey &cert)
+{
+	for(auto *item: list->items)
+	{
+		if(auto *address = qobject_cast<AddressItem*>(item); address && address->getKey() == cert)
+			return address;
+	}
+	return nullptr;
 }
 
 QList<CKey> AddRecipients::keys()
@@ -281,24 +253,9 @@ QList<CKey> AddRecipients::keys()
 	return recipients;
 }
 
-void AddRecipients::removeRecipientFromRightPane(Item *toRemove)
-{
-	auto *rightItem = qobject_cast<AddressItem*>(toRemove);
-	if(auto it = leftList.find(rightItem->getKey().cert); it != leftList.end())
-	{
-		it.value()->setDisabled(false);
-		it.value()->showButton(AddressItem::Add);
-	}
-	rightList.removeAll(rightItem->getKey());
-	updated = true;
-	ui->confirm->setDisabled(rightList.isEmpty());
-}
-
 void AddRecipients::search(const QString &term, bool select, const QString &type)
 {
 	QApplication::setOverrideCursor(Qt::WaitCursor);
-	ui->confirm->setDefault(false);
-	ui->confirm->setAutoDefault(false);
 
 	QVariantMap userData {
 		{QStringLiteral("type"), type},
@@ -318,25 +275,19 @@ void AddRecipients::search(const QString &term, bool select, const QString &type
 #endif
 	bool isDigit = false;
 	void(cleanTerm.toULongLong(&isDigit));
-	if(isDigit && (cleanTerm.size() == 11 || cleanTerm.size() == 8))
+	if(!isDigit || (cleanTerm.size() != 11 && cleanTerm.size() != 8))
+		ldap_corp->search(QStringLiteral("(cn=*%1*)").arg(cleanTerm), userData);
+	else if(cleanTerm.size() == 8)
+		ldap_corp->search(QStringLiteral("(serialNumber=%1)" ).arg(cleanTerm), userData);
+	else if(IKValidator::isValid(cleanTerm))
 	{
-		if(cleanTerm.size() == 11)
-		{
-			if(!IKValidator::isValid(cleanTerm))
-			{
-				QApplication::restoreOverrideCursor();
-				WarningDialog::show(this, tr("Personal code is not valid!"));
-				return;
-			}
-			userData[QStringLiteral("personSearch")] = true;
-			ldap_person->search(QStringLiteral("(serialNumber=%1%2)" ).arg(ldap_person->isSSL() ? QStringLiteral("PNOEE-") : QString(), cleanTerm), userData);
-		}
-		else
-			ldap_corp->search(QStringLiteral("(serialNumber=%1)" ).arg(cleanTerm), userData);
+		userData[QStringLiteral("personSearch")] = true;
+		ldap_person->search(QStringLiteral("(serialNumber=%1%2)" ).arg(ldap_person->isSSL() ? QStringLiteral("PNOEE-") : QString(), cleanTerm), userData);
 	}
 	else
 	{
-		ldap_corp->search(QStringLiteral("(cn=*%1*)").arg(cleanTerm), userData);
+		QApplication::restoreOverrideCursor();
+		WarningDialog::show(this, tr("Personal code is not valid!"));
 	}
 }
 
@@ -348,7 +299,6 @@ void AddRecipients::showError( const QString &msg, const QString &details )
 
 void AddRecipients::showResult(const QList<QSslCertificate> &result, int resultCount, const QVariantMap &userData)
 {
-	bool isEmpty = true;
 	for(const QSslCertificate &k: result)
 	{
 		SslCertificate c(k);
@@ -358,16 +308,13 @@ void AddRecipients::showResult(const QList<QSslCertificate> &result, int resultC
 			(userData.value(QStringLiteral("personSearch"), false).toBool() || !c.enhancedKeyUsage().contains(SslCertificate::ClientAuth)) &&
 			c.type() != SslCertificate::MobileIDType)
 		{
-			isEmpty = false;
-			AddressItem *item = addRecipientToLeftPane(k);
-			if(userData.value(QStringLiteral("select"), false).toBool() &&
-				(userData.value(QStringLiteral("type")).isNull() || HistoryCertData::toType(SslCertificate(k)) == userData[QStringLiteral("type")]))
-				addRecipientToRightPane(item, true);
+			addRecipient(k, userData.value(QStringLiteral("select"), false).toBool() &&
+				(userData.value(QStringLiteral("type")).isNull() || HistoryCertData::toType(SslCertificate(k)) == userData[QStringLiteral("type")]));
 		}
 	}
 	if(resultCount >= 50)
 		showError(tr("The name you were looking for gave too many results, please refine your search."));
-	else if(isEmpty)
+	else if(ui->leftPane->items.isEmpty())
 	{
 		showError(tr("Person or company does not own a valid certificate.<br />"
 			"It is necessary to have a valid certificate for encryption.<br />"

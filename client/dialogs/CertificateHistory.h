@@ -45,7 +45,7 @@ class HistoryList: public QList<HistoryCertData>
 public:
 	HistoryList();
 
-	void addAndSave(const QList<SslCertificate> &data);
+	void addAndSave(const SslCertificate &cert);
 	void removeAndSave(const QList<HistoryCertData> &data);
 
 private:

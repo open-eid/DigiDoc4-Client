@@ -21,8 +21,8 @@
 
 #include <QDialog>
 
-namespace Ui { class CertificateDetails; }
 class SslCertificate;
+class QSslCertificate;
 
 class CertificateDetails final : public QDialog
 {
@@ -30,10 +30,6 @@ class CertificateDetails final : public QDialog
 
 public:
 	explicit CertificateDetails(const SslCertificate &c, QWidget *parent = nullptr);
-	~CertificateDetails() final;
 
-	static void showCertificate(const SslCertificate &cert, QWidget *parent, const QString &suffix = {});
-
-private:
-	Ui::CertificateDetails *ui;
+	static void showCertificate(const QSslCertificate &cert, QWidget *parent, const QString &suffix = {});
 };

@@ -35,15 +35,15 @@ public:
 	bool yourself = false;
 };
 
-AddressItem::AddressItem(CKey k, QWidget *parent, bool showIcon)
+AddressItem::AddressItem(CKey k, Type type, QWidget *parent)
 	: Item(parent)
 	, ui(new Private)
 {
 	ui->key = std::move(k);
 	ui->setupUi(this);
-	if(showIcon)
+	if(type == Icon)
 		ui->icon->load(QStringLiteral(":/images/icon_Krypto_small.svg"));
-	ui->icon->setVisible(showIcon);
+	ui->icon->setVisible(type == Icon);
 	ui->name->setAttribute(Qt::WA_TransparentForMouseEvents, true);
 	ui->expire->setAttribute(Qt::WA_TransparentForMouseEvents, true);
 	ui->idType->setAttribute(Qt::WA_TransparentForMouseEvents, true);
@@ -60,7 +60,8 @@ AddressItem::AddressItem(CKey k, QWidget *parent, bool showIcon)
 	if(ui->label.isEmpty())
 		ui->label = ui->key.fromKeyLabel().value(QStringLiteral("cn"), ui->key.recipient);
 	setIdType();
-	showButton(AddressItem::Remove);
+	ui->add->setVisible(type == Add);
+	ui->remove->setVisible(type != Add);
 }
 
 AddressItem::~AddressItem()
@@ -76,6 +77,8 @@ void AddressItem::changeEvent(QEvent* event)
 		setName();
 		setIdType();
 	}
+	if (event->type() == QEvent::EnabledChange)
+		ui->add->setText(isEnabled() ? tr("Add") : tr("Added"));
 	QWidget::changeEvent(event);
 }
 
@@ -97,8 +100,7 @@ void AddressItem::initTabOrder(QWidget *item)
 	setTabOrder(ui->name, ui->idType);
 	setTabOrder(ui->idType, ui->expire);
 	setTabOrder(ui->expire, ui->remove);
-	setTabOrder(ui->remove, ui->added);
-	setTabOrder(ui->added, lastTabWidget());
+	setTabOrder(ui->remove, lastTabWidget());
 }
 
 QWidget* AddressItem::lastTabWidget()
@@ -120,16 +122,10 @@ void AddressItem::setName()
 		ui->name->hide();
 }
 
-void AddressItem::showButton(ShowToolButton show)
-{
-	ui->remove->setVisible(show == Remove);
-	ui->add->setVisible(show == Add);
-	ui->added->setVisible(show == Added);
-}
-
 void AddressItem::stateChange(ContainerState state)
 {
-	ui->remove->setVisible(state == UnencryptedContainer);
+	if(ui->add->isHidden())
+		ui->remove->setVisible(state == UnencryptedContainer);
 }
 
 void AddressItem::setIdType()
