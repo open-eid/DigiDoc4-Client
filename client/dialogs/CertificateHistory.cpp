@@ -21,7 +21,6 @@
 #include "ui_CertificateHistory.h"
 
 #include "Application.h"
-#include "Styles.h"
 #include "SslCertificate.h"
 
 #include <QtCore/QDir>
@@ -164,14 +163,6 @@ CertificateHistory::CertificateHistory(HistoryList &_historyCertData, QWidget *p
 	setMinimumSize(parent->frameSize());
 	move(parent->frameGeometry().center() - frameGeometry().center());
 
-	QFont condensed = Styles::font(Styles::Condensed, 12);
-	QFont regular = Styles::font(Styles::Regular, 14);
-	ui->view->header()->setFont(regular);
-	ui->view->setFont(regular);
-	ui->close->setFont(condensed);
-	ui->select->setFont(condensed);
-	ui->remove->setFont(condensed);
-
 	connect(ui->view->selectionModel(), &QItemSelectionModel::selectionChanged, ui->remove, [this] {
 		ui->select->setDisabled(ui->view->selectedItems().isEmpty());
 		ui->remove->setDisabled(ui->view->selectedItems().isEmpty());
@@ -193,7 +184,6 @@ CertificateHistory::CertificateHistory(HistoryList &_historyCertData, QWidget *p
 	ui->view->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
 	ui->view->header()->setSectionResizeMode(0, QHeaderView::Stretch);
 	ui->view->sortItems(0, Qt::AscendingOrder);
-	adjustSize();
 }
 
 CertificateHistory::~CertificateHistory()

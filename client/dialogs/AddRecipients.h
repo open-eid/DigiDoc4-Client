@@ -49,9 +49,9 @@ private:
 	void addRecipientFromCard();
 	void addRecipientFromFile();
 	void addRecipientFromHistory();
-	AddressItem * addRecipientToLeftPane(const QSslCertificate& cert);
-	bool addRecipientToRightPane(const CKey &key, bool update = true);
-	void addRecipientToRightPane(AddressItem *leftItem, bool update = true);
+	void addRecipient(const QSslCertificate& cert, bool updateRight);
+	bool addRecipientToRightPane(const CKey &key, bool update);
+	bool addRecipientToRightPane(AddressItem *leftItem, bool update);
 	void addSelectedCerts(const QList<HistoryCertData>& selectedCertData);
 	void enableRecipientFromCard();
 	void removeRecipientFromRightPane(Item *toRemove);

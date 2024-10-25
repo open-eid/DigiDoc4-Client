@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>500</width>
-    <height>222</height>
+    <width>515</width>
+    <height>369</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -20,24 +20,72 @@
    <string>Encrypt for</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">QWidget{ background-color: #FFFFFF; border: none;}
-QWidget#KeyDialog{ border-radius: 2px; }
-</string>
-  </property>
-  <layout class="QVBoxLayout" name="KeyDialogLayout">
-   <item>
-    <widget class="QTreeWidget" name="view">
-     <property name="styleSheet">
-      <string notr="true">#view {
-	border:none;
+   <string notr="true">QWidget {
+color: #07142A;
+font-family: Roboto, Helvetica;
+font-size: 14px;
+}
+#KeyDialog {
+background-color: #FFFFFF;
+border-radius: 4px;
 }
 QHeaderView::section {
-	border: 1px solid #D9D9D8;
-	border-width: 0px 0px 1px 0px;
-	padding: 2px 0px 3px 5px;
-	background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #FFFFFF, stop:1 #FFFFFF);
+border: 1px solid #E7EAEF;
+border-width: 0px 0px 1px 0px;
+padding: 0px 0px 8px 5px;
+background-color: #FFFFFF;
+}
+QPushButton {
+padding: 12px 12px;
+border-radius: 4px;
+border: 1px solid #AD2A45;
+color: #AD2A45;
+font-weight: 700;
+}
+QPushButton:hover {
+background-color: #F5EBED;
+}
+QPushButton:pressed {
+background-color: #E1C1C6;
+}
+QPushButton:default {
+color: #ffffff;
+border-color: #2F70B6;
+background-color: #2F70B6;
+}
+QPushButton:default:hover {
+border-color: #2B66A6;
+background-color: #2B66A6;
+}
+QPushButton:default:pressed {
+border-color: #215081;
+background-color: #215081;
+}
+QPushButton:default:disabled {
+border-color: #82A9D3;
+background-color: #82A9D3;
 }</string>
+  </property>
+  <layout class="QVBoxLayout" name="KeyDialogLayout">
+   <property name="spacing">
+    <number>40</number>
+   </property>
+   <property name="leftMargin">
+    <number>40</number>
+   </property>
+   <property name="topMargin">
+    <number>32</number>
+   </property>
+   <property name="rightMargin">
+    <number>40</number>
+   </property>
+   <property name="bottomMargin">
+    <number>32</number>
+   </property>
+   <item>
+    <widget class="QTreeWidget" name="view">
+     <property name="frameShape">
+      <enum>QFrame::NoFrame</enum>
      </property>
      <property name="rootIsDecorated">
       <bool>false</bool>
@@ -56,8 +104,24 @@ QHeaderView::section {
    </item>
    <item>
     <layout class="QHBoxLayout" name="buttonLayout">
+     <property name="spacing">
+      <number>0</number>
+     </property>
      <item>
-      <spacer name="leftSpacer">
+      <widget class="QPushButton" name="close">
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="text">
+        <string>Close</string>
+       </property>
+       <property name="autoDefault">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="buttonSpacer">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
@@ -70,102 +134,24 @@ QHeaderView::section {
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="close">
-       <property name="minimumSize">
-        <size>
-         <width>150</width>
-         <height>34</height>
-        </size>
-       </property>
+      <widget class="QPushButton" name="showCert">
        <property name="font">
         <font>
-         <pointsize>14</pointsize>
+         <family>Roboto</family>
+         <pointsize>-1</pointsize>
+         <bold>true</bold>
         </font>
        </property>
        <property name="cursor">
         <cursorShape>PointingHandCursor</cursorShape>
        </property>
-       <property name="accessibleName">
-        <string extracomment="accessible">Close</string>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">QPushButton {
-	border-radius: 2px; 
-	border: none;
-	color: #ffffff;
-	background-color: #981E32;
-}
-QPushButton:pressed {
-	background-color: #F24A66;
-}
-QPushButton:hover:!pressed {
-	background-color: #CD2541;
-}
-QPushButton:disabled {
-	background-color: #BEDBED;
-}</string>
-       </property>
        <property name="text">
-        <string>CLOSE</string>
+        <string>Show certificate</string>
        </property>
        <property name="default">
         <bool>true</bool>
        </property>
       </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="showCert">
-       <property name="minimumSize">
-        <size>
-         <width>150</width>
-         <height>34</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>14</pointsize>
-        </font>
-       </property>
-       <property name="cursor">
-        <cursorShape>PointingHandCursor</cursorShape>
-       </property>
-       <property name="accessibleName">
-        <string extracomment="accessible">Show certificate</string>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">QPushButton {
-	border-radius: 2px; 
-	border: none;
-	color: #ffffff;
-	background-color: #006EB5;
-}
-QPushButton:pressed {
-	background-color: #41B6E6;
-}
-QPushButton:hover:!pressed {
-	background-color: #008DCF;
-}
-QPushButton:disabled {
-	background-color: #BEDBED;
-}</string>
-       </property>
-       <property name="text">
-        <string>SHOW CERTIFICATE</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <spacer name="rightSpacer">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>25</width>
-         <height>18</height>
-        </size>
-       </property>
-      </spacer>
      </item>
     </layout>
    </item>
@@ -173,7 +159,4 @@ QPushButton:disabled {
  </widget>
  <resources/>
  <connections/>
- <slots>
-  <slot>showCertificate()</slot>
- </slots>
 </ui>
