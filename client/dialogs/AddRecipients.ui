@@ -21,25 +21,18 @@
   </property>
   <property name="styleSheet">
    <string notr="true">QWidget {
-color: #000000;
+color: #07142A;
+font-family: Roboto, Helvetica;
+font-size: 14px;
 }
 #leftPane, #rightPane {
 background-color: #ffffff;
 }
 #leftPane {
-border: solid #D9D9D8;
-border-width: 0px 1px 0px 0px;
-}
-#navigationArea {
-background-color: #f7f7f7;
-border: 1px solid #c8c8c8;
-border-width: 1px 0px 0px 0px;
+border-right: 1px solid #E7EAEF;
 }</string>
   </property>
-  <layout class="QVBoxLayout" name="AddRecipientsLayout">
-   <property name="spacing">
-    <number>0</number>
-   </property>
+  <layout class="QGridLayout" name="AddRecipientsLayout">
    <property name="leftMargin">
     <number>0</number>
    </property>
@@ -52,83 +45,95 @@ border-width: 1px 0px 0px 0px;
    <property name="bottomMargin">
     <number>0</number>
    </property>
-   <item>
-    <layout class="QHBoxLayout" name="containerListsLayout">
-     <property name="spacing">
-      <number>0</number>
-     </property>
-     <item>
-      <widget class="ItemList" name="leftPane"/>
-     </item>
-     <item>
-      <widget class="ItemList" name="rightPane"/>
-     </item>
-    </layout>
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <item row="0" column="0">
+    <widget class="ItemList" name="leftPane"/>
    </item>
-   <item>
+   <item row="0" column="1">
+    <widget class="ItemList" name="rightPane"/>
+   </item>
+   <item row="1" column="0" colspan="2">
     <widget class="QWidget" name="navigationArea" native="true">
      <property name="minimumSize">
       <size>
        <width>0</width>
-       <height>40</height>
+       <height>48</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
        <width>16777215</width>
-       <height>40</height>
+       <height>48</height>
       </size>
      </property>
      <property name="styleSheet">
-      <string notr="true">QPushButton {
-	border-radius: 2px; 
-	border: none;
-	color: #006EB5;
+      <string notr="true">#navigationArea {
+border-top: 1px solid #E7EAEF;
+background-color: #F3F5F7;
+}
+QPushButton {
+padding: 10px 12px;
+border: 1px solid transparent;
+border-radius: 4px;
+color: #2F70B6;
+font-size: 12px;
+font-weight: 700;
+}
+QPushButton:hover {
+background-color: #EAF1F8;
 }
 QPushButton:pressed {
-	color: #FFFFFF;
-	background-color: #006EB5;
-}
-QPushButton:hover:!pressed {
-	border: 1px solid #006EB5;
-	color: #006EB5;
+background-color: #BFD3E8;
 }
 QPushButton:disabled {
-	color: #727679;
+color: #82A9D3;
+}
+QPushButton:default {
+color: #ffffff;
+border-color: #2F70B6;
+background-color: #2F70B6;
+}
+QPushButton:default:hover {
+border-color: #2B66A6;
+background-color: #2B66A6;
+}
+QPushButton:default:pressed {
+border-color: #215081;
+background-color: #215081;
+}
+QPushButton:default:disabled {
+border-color: #82A9D3;
+background-color: #82A9D3;
 }</string>
      </property>
      <layout class="QHBoxLayout" name="navigationAreaLayout" stretch="0,0,0,1,0">
       <property name="spacing">
-       <number>15</number>
+       <number>16</number>
       </property>
       <property name="leftMargin">
-       <number>20</number>
+       <number>24</number>
       </property>
       <property name="topMargin">
-       <number>7</number>
+       <number>0</number>
       </property>
       <property name="rightMargin">
-       <number>15</number>
+       <number>24</number>
       </property>
       <property name="bottomMargin">
-       <number>8</number>
+       <number>0</number>
       </property>
       <item>
        <widget class="QPushButton" name="fromCard">
-        <property name="minimumSize">
-         <size>
-          <width>145</width>
-          <height>25</height>
-         </size>
+        <property name="enabled">
+         <bool>false</bool>
         </property>
         <property name="cursor">
          <cursorShape>PointingHandCursor</cursorShape>
         </property>
-        <property name="accessibleName">
-         <string extracomment="accessible">Certificate from card</string>
-        </property>
         <property name="text">
-         <string>CERTIFICATE FROM CARD</string>
+         <string>Certificate from card</string>
         </property>
         <property name="autoDefault">
          <bool>false</bool>
@@ -137,20 +142,11 @@ QPushButton:disabled {
       </item>
       <item>
        <widget class="QPushButton" name="fromFile">
-        <property name="minimumSize">
-         <size>
-          <width>134</width>
-          <height>25</height>
-         </size>
-        </property>
         <property name="cursor">
          <cursorShape>PointingHandCursor</cursorShape>
         </property>
-        <property name="accessibleName">
-         <string extracomment="accessible">Certificate from file</string>
-        </property>
         <property name="text">
-         <string>CERTIFICATE FROM FILE</string>
+         <string>Certificate from file</string>
         </property>
         <property name="autoDefault">
          <bool>false</bool>
@@ -159,20 +155,11 @@ QPushButton:disabled {
       </item>
       <item>
        <widget class="QPushButton" name="fromHistory">
-        <property name="minimumSize">
-         <size>
-          <width>145</width>
-          <height>25</height>
-         </size>
-        </property>
         <property name="cursor">
          <cursorShape>PointingHandCursor</cursorShape>
         </property>
-        <property name="accessibleName">
-         <string extracomment="accessible">Latest used certificate</string>
-        </property>
         <property name="text">
-         <string>LATEST USED CERTIFICATE</string>
+         <string>Latest used certificate</string>
         </property>
         <property name="autoDefault">
          <bool>false</bool>
@@ -195,38 +182,27 @@ QPushButton:disabled {
       <item>
        <layout class="QHBoxLayout" name="actionLayout">
         <property name="spacing">
-         <number>2</number>
+         <number>16</number>
         </property>
         <item>
          <widget class="QPushButton" name="cancel">
-          <property name="minimumSize">
-           <size>
-            <width>120</width>
-            <height>25</height>
-           </size>
-          </property>
           <property name="cursor">
            <cursorShape>PointingHandCursor</cursorShape>
           </property>
-          <property name="accessibleName">
-           <string extracomment="accessible">Cancel</string>
-          </property>
           <property name="styleSheet">
            <string notr="true">QPushButton {
-	border-radius: 2px; 
-	border: none;
-	color: #ffffff;
-	background-color: #981E32;
+border: 1px solid #AD2A45;
+color: #AD2A45;
+}
+QPushButton:hover {
+background-color: #F5EBED;
 }
 QPushButton:pressed {
-	background-color: #F24A66;
-}
-QPushButton:hover:!pressed {
-	background-color: #CD2541;
+background-color: #E1C1C6;
 }</string>
           </property>
           <property name="text">
-           <string>CANCEL</string>
+           <string>Cancel</string>
           </property>
           <property name="autoDefault">
            <bool>false</bool>
@@ -235,37 +211,14 @@ QPushButton:hover:!pressed {
         </item>
         <item>
          <widget class="QPushButton" name="confirm">
-          <property name="minimumSize">
-           <size>
-            <width>120</width>
-            <height>25</height>
-           </size>
+          <property name="enabled">
+           <bool>false</bool>
           </property>
           <property name="cursor">
            <cursorShape>PointingHandCursor</cursorShape>
           </property>
-          <property name="accessibleName">
-           <string extracomment="accessible">Confirm</string>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">QPushButton {
-	border-radius: 2px; 
-	border: none;
-	color: #ffffff;
-	background-color: #006EB5;
-}
-QPushButton:pressed {
-	background-color: #41B6E6;
-}
-QPushButton:hover:!pressed {
-	background-color: #008DCF;
-}
-QPushButton:disabled {
-	background-color: #BEDBED;
-}</string>
-          </property>
           <property name="text">
-           <string>CONFIRM</string>
+           <string>Confirm</string>
           </property>
           <property name="default">
            <bool>true</bool>
@@ -287,13 +240,6 @@ QPushButton:disabled {
    <container>1</container>
   </customwidget>
  </customwidgets>
- <tabstops>
-  <tabstop>fromCard</tabstop>
-  <tabstop>fromFile</tabstop>
-  <tabstop>fromHistory</tabstop>
-  <tabstop>cancel</tabstop>
-  <tabstop>confirm</tabstop>
- </tabstops>
  <resources/>
  <connections/>
 </ui>

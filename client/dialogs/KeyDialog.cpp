@@ -21,46 +21,34 @@
 #include "ui_KeyDialog.h"
 
 #include "CryptoDoc.h"
-#include "Styles.h"
-#include "SslCertificate.h"
 #include "effects/Overlay.h"
 #include "dialogs/CertificateDetails.h"
-
-#include <memory>
 
 KeyDialog::KeyDialog( const CKey &k, QWidget *parent )
 	: QDialog( parent )
 {
-	auto d = std::make_unique<Ui::KeyDialog>();
-	d->setupUi(this);
+	Ui::KeyDialog d;
+	d.setupUi(this);
 #if defined (Q_OS_WIN)
-	d->buttonLayout->setDirection(QBoxLayout::RightToLeft);
+	d.buttonLayout->setDirection(QBoxLayout::RightToLeft);
 #endif
 	setWindowFlags(Qt::Dialog|Qt::CustomizeWindowHint);
 	setAttribute(Qt::WA_DeleteOnClose);
 	new Overlay(this);
 
-	QFont condensed = Styles::font(Styles::Condensed, 12);
-	QFont regular = Styles::font(Styles::Regular, 14);
-	d->close->setFont(condensed);
-	d->showCert->setFont(condensed);
-	d->view->header()->setFont(regular);
-	d->view->setFont(regular);
-	d->view->setHeaderLabels({tr("Attribute"), tr("Value")});
-
-	connect(d->close, &QPushButton::clicked, this, &KeyDialog::accept);
-	connect(d->showCert, &QPushButton::clicked, this, [this, cert=k.cert] {
+	connect(d.close, &QPushButton::clicked, this, &KeyDialog::accept);
+	connect(d.showCert, &QPushButton::clicked, this, [this, cert=k.cert] {
 		CertificateDetails::showCertificate(cert, this);
 	});
-	d->showCert->setHidden(k.cert.isNull());
+	d.showCert->setHidden(k.cert.isNull());
 
-	auto addItem = [&](const QString &parameter, const QString &value) {
+	auto addItem = [view = d.view](const QString &parameter, const QString &value) {
 		if(value.isEmpty())
 			return;
-		auto *i = new QTreeWidgetItem(d->view);
+		auto *i = new QTreeWidgetItem(view);
 		i->setText(0, parameter);
 		i->setText(1, value);
-		d->view->addTopLevelItem(i);
+		view->addTopLevelItem(i);
 	};
 
 	addItem(tr("Recipient"), k.recipient);
@@ -68,7 +56,7 @@ KeyDialog::KeyDialog( const CKey &k, QWidget *parent )
 	addItem(tr("Key server ID"), k.keyserver_id);
 	addItem(tr("Transaction ID"), k.transaction_id);
 	addItem(tr("Expiry date"), k.cert.expiryDate().toLocalTime().toString(QStringLiteral("dd.MM.yyyy hh:mm:ss")));
-	addItem(tr("Issuer"), SslCertificate(k.cert).issuerInfo(QSslCertificate::CommonName));
-	d->view->resizeColumnToContents( 0 );
+	addItem(tr("Issuer"), k.cert.issuerInfo(QSslCertificate::CommonName).join(' '));
+	d.view->resizeColumnToContents( 0 );
 	adjustSize();
 }

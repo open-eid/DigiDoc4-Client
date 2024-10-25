@@ -21,7 +21,6 @@
 #include "ui_CertificateHistory.h"
 
 #include "Application.h"
-#include "Styles.h"
 #include "SslCertificate.h"
 
 #include <QtCore/QDir>
@@ -84,28 +83,20 @@ HistoryList::HistoryList()
 	}
 }
 
-void HistoryList::addAndSave(const QList<SslCertificate> &data)
+void HistoryList::addAndSave(const SslCertificate &cert)
 {
-	if(data.isEmpty())
+	if(cert.isNull())
 		return;
-	bool changed = false;
-	for(const auto &cert: data)
-	{
-		if(cert.isNull())
-			continue;
-		HistoryCertData certData{
-			cert.subjectInfo("CN"),
-			HistoryCertData::toType(cert),
-			cert.issuerInfo("CN"),
-			cert.expiryDate().toLocalTime().toString(QStringLiteral("dd.MM.yyyy")),
-		};
-		if(contains(certData))
-			continue;
-		append(std::move(certData));
-		changed = true;
-	}
-	if(changed)
-		save();
+	HistoryCertData certData{
+		cert.subjectInfo("CN"),
+		HistoryCertData::toType(cert),
+		cert.issuerInfo("CN"),
+		cert.expiryDate().toLocalTime().toString(QStringLiteral("dd.MM.yyyy")),
+	};
+	if(contains(certData))
+		return;
+	append(std::move(certData));
+	save();
 }
 
 void HistoryList::removeAndSave(const QList<HistoryCertData> &data)
@@ -156,14 +147,6 @@ CertificateHistory::CertificateHistory(HistoryList &_historyCertData, QWidget *p
 	setMinimumSize(parent->frameSize());
 	move(parent->frameGeometry().center() - frameGeometry().center());
 
-	QFont condensed = Styles::font(Styles::Condensed, 12);
-	QFont regular = Styles::font(Styles::Regular, 14);
-	ui->view->header()->setFont(regular);
-	ui->view->setFont(regular);
-	ui->close->setFont(condensed);
-	ui->select->setFont(condensed);
-	ui->remove->setFont(condensed);
-
 	connect(ui->view->selectionModel(), &QItemSelectionModel::selectionChanged, ui->remove, [this] {
 		ui->select->setDisabled(ui->view->selectedItems().isEmpty());
 		ui->remove->setDisabled(ui->view->selectedItems().isEmpty());
@@ -185,7 +168,6 @@ CertificateHistory::CertificateHistory(HistoryList &_historyCertData, QWidget *p
 	ui->view->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
 	ui->view->header()->setSectionResizeMode(0, QHeaderView::Stretch);
 	ui->view->sortItems(0, Qt::AscendingOrder);
-	adjustSize();
 }
 
 CertificateHistory::~CertificateHistory()
