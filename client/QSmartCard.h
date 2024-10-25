@@ -42,7 +42,7 @@ public:
 		DocumentId = 7,
 		Expiry = 8,
 	};
-	enum PinType : char
+	enum PinType : quint8
 	{
 		Pin1Type = 1,
 		Pin2Type,
@@ -89,6 +89,7 @@ public:
 		NoError,
 		UnknownError,
 		BlockedError,
+		TimeoutError,
 		CancelError,
 		DifferentError,
 		LenghtError,

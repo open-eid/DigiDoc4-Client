@@ -319,7 +319,7 @@ QSmartCard::ErrorType QSmartCard::Private::handlePinResult(QPCSCReader *reader, 
 	case 0x63C1: // Validate error, 1 tries left
 	case 0x63C2: // Validate error, 2 tries left
 	case 0x63C3: return QSmartCard::ValidateError;
-	case 0x6400: // Timeout (SCM)
+	case 0x6400: return QSmartCard::TimeoutError; // Timeout (SCM)
 	case 0x6401: return QSmartCard::CancelError; // Cancel (OK, SCM)
 	case 0x6402: return QSmartCard::DifferentError;
 	case 0x6403: return QSmartCard::LenghtError;
