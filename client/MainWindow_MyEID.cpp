@@ -95,7 +95,8 @@ bool MainWindow::validateCardError(QSmartCardData::PinType type, QSmartCardData:
 	switch( err )
 	{
 	case QSmartCard::NoError: return true;
-	case QSmartCard::CancelError:
+	case QSmartCard::CancelError: break;
+	case QSmartCard::TimeoutError:
 		FadeInNotification::warning(ui->topBar, tr("%1 timeout").arg(QSmartCardData::typeString(type)));
 		break;
 	case QSmartCard::BlockedError:
