@@ -41,10 +41,11 @@ class SettingsDialog final: public QDialog
 	Q_OBJECT
 
 public:
-	enum {
+	enum : quint8 {
 		GeneralSettings,
 		SigningSettings,
 		ValidationSettings,
+		EncryptionSettings,
 		NetworkSettings,
 		DiagnosticsSettings,
 		LicenseSettings
@@ -62,20 +63,16 @@ signals:
 	void togglePrinting(bool enable);
 
 private:
-	void changePage(QAbstractButton *button);
 	void checkConnection();
-	void initFunctionality();
 	void retranslate(const QString& lang);
 	void saveFile(const QString &name, const QString &path);
 	void saveFile(const QString &name, const QByteArray &content);
 	void saveProxy();
 	QSslCertificate selectCert(const QString &label, const QString &format);
 	void selectLanguage();
-	void setProxyEnabled();
 	void updateCert(const QSslCertificate &c, QPushButton *btn, CertLabel *lbl);
 	void updateSiVaCert(const QSslCertificate &c);
 	void updateTSACert(const QSslCertificate &c);
-	void updateProxy();
 	void updateVersion();
 	void updateDiagnostics();
 	void useDefaultSettings();

@@ -2311,50 +2311,6 @@ ID-CARD</translation>
         <translation>Settings</translation>
     </message>
     <message>
-        <source>GENERAL</source>
-        <translation>GENERAL</translation>
-    </message>
-    <message>
-        <source>PROXY</source>
-        <translation>PROXY</translation>
-    </message>
-    <message>
-        <source>DIAGNOSTICS</source>
-        <translation>DIAGNOSTICS</translation>
-    </message>
-    <message>
-        <source>INFO</source>
-        <translation>INFO</translation>
-    </message>
-    <message>
-        <source>CLOSE</source>
-        <translation>CLOSE</translation>
-    </message>
-    <message>
-        <source>REMOVE OLD CERTIFICATES</source>
-        <translation>REMOVE OLD CERTIFICATES</translation>
-    </message>
-    <message>
-        <source>SAVE DIAGNOSTICS REPORT TO DISK</source>
-        <translation>SAVE DIAGNOSTICS</translation>
-    </message>
-    <message>
-        <source>SHOW CERTIFICATE</source>
-        <translation>SHOW CERTIFICATE</translation>
-    </message>
-    <message>
-        <source>USE DEFAULT SETTINGS</source>
-        <translation>USE DEFAULT SETTINGS</translation>
-    </message>
-    <message>
-        <source>CHECK CONNECTIONS</source>
-        <translation>CHECK CONNECTIONS</translation>
-    </message>
-    <message>
-        <source>REFRESH CONFIGURATION</source>
-        <translation>REFRESH CONFIGURATION</translation>
-    </message>
-    <message>
         <source>Language</source>
         <translation>Language</translation>
     </message>
@@ -2447,10 +2403,6 @@ In case of questions please contact our support via &lt;a href=&quot;https://www
 Additional licenses and components</translation>
     </message>
     <message>
-        <source>FIRST RUN</source>
-        <translation>FIRST RUN</translation>
-    </message>
-    <message>
         <source>Select folder</source>
         <translation>Select folder</translation>
     </message>
@@ -2472,58 +2424,43 @@ Additional licenses and components</translation>
         <translation>General</translation>
     </message>
     <message>
-        <source>Services</source>
-        <extracomment>accessible</extracomment>
-        <translation>Services</translation>
-    </message>
-    <message>
         <source>Proxy</source>
-        <extracomment>accessible</extracomment>
         <translation>Proxy</translation>
     </message>
     <message>
         <source>Diagnostics</source>
-        <extracomment>accessible</extracomment>
         <translation>Diagnostics</translation>
     </message>
     <message>
         <source>Info</source>
-        <extracomment>accessible</extracomment>
         <translation>Info</translation>
     </message>
     <message>
         <source>First run</source>
-        <extracomment>accessible</extracomment>
         <translation>First run</translation>
     </message>
     <message>
         <source>Refresh configuration</source>
-        <extracomment>accessible</extracomment>
         <translation>Refresh configuration</translation>
     </message>
     <message>
         <source>Check connection</source>
-        <extracomment>accessible</extracomment>
         <translation>Check connection</translation>
     </message>
     <message>
         <source>Save diagnostics report</source>
-        <extracomment>accessible</extracomment>
         <translation>Save diagnostics report</translation>
     </message>
     <message>
         <source>Remove old certificates</source>
-        <extracomment>accessible</extracomment>
         <translation>Remove old certificates</translation>
     </message>
     <message>
         <source>Use default settings</source>
-        <extracomment>accessible</extracomment>
         <translation>Use default settings</translation>
     </message>
     <message>
         <source>Close</source>
-        <extracomment>accessible</extracomment>
         <translation>Close</translation>
     </message>
     <message>
@@ -2560,12 +2497,7 @@ Additional licenses and components</translation>
     </message>
     <message>
         <source>Save log</source>
-        <extracomment>accessible</extracomment>
         <translation>Save log</translation>
-    </message>
-    <message>
-        <source>SAVE LOG</source>
-        <translation>SAVE LOG</translation>
     </message>
     <message>
         <source>Restart DigiDoc4 Client to activate logging. Read more &lt;a href=&quot;https://www.id.ee/en/article/log-file-generation-in-digidoc4-client/&quot;&gt;here&lt;/a&gt;. Restart now?</source>
@@ -2580,12 +2512,12 @@ Additional licenses and components</translation>
         <translation>The project is supported by the European Regional Development Fund</translation>
     </message>
     <message>
-        <source>SIGNING SERVICES</source>
-        <translation>SIGNING SERVICES</translation>
+        <source>Signing services</source>
+        <translation>Signing services</translation>
     </message>
     <message>
-        <source>VALIDATION SERVICES</source>
-        <translation>VALIDATION SERVICES</translation>
+        <source>Validation services</source>
+        <translation>Validation services</translation>
     </message>
     <message>
         <source>Access to Digital Signature Validation Service SiVa</source>
@@ -2604,16 +2536,36 @@ Additional licenses and components</translation>
         <translation>Select SiVa server certificate</translation>
     </message>
     <message>
-        <source>ADD CERTIFICATE</source>
-        <translation>ADD CERTIFICATE</translation>
-    </message>
-    <message>
         <source>Select Time-Stamping server certificate</source>
         <translation>Select Time-Stamping server certificate</translation>
     </message>
     <message>
         <source>Time-Stamping service SSL certificate</source>
         <translation>Time-Stamping Service SSL certificate</translation>
+    </message>
+    <message>
+        <source>Encryption settings</source>
+        <translation>Encryption settings</translation>
+    </message>
+    <message>
+        <source>Add certificate</source>
+        <translation>Add certificate</translation>
+    </message>
+    <message>
+        <source>Show certificate</source>
+        <translation>Show certificate</translation>
+    </message>
+    <message>
+        <source>Use default CDOC1 solution</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use default CDOC2 solution</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Custom</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

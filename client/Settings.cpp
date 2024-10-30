@@ -33,6 +33,7 @@ const Option<QString, QString (*)()> Settings::CDOC2_DEFAULT_KEYSERVER { QString
 	return Application::confValue(QLatin1String("CDOC2-DEFAULT-KEYSERVER"))
 		.toString(QStringLiteral("00000000-0000-0000-0000-000000000000"));
 }};
+const Option<QString> Settings::CDOC2_UUID { QStringLiteral("CDOC2-UUID"), QStringLiteral("00000000-0000-0000-0000-000000000002") };
 const Option<QString> Settings::CDOC2_GET { QStringLiteral("CDOC2-GET"), QStringLiteral(CDOC2_GET_URL) };
 const Option<QByteArray> Settings::CDOC2_GET_CERT { QStringLiteral("CDOC2-GET-CERT") };
 const Option<QString> Settings::CDOC2_POST { QStringLiteral("CDOC2-POST"), QStringLiteral(CDOC2_POST_URL) };
