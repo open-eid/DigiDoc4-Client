@@ -1,7 +1,13 @@
 <?if $(sys.BUILDARCH) = x64 ?>
   <?define OpenSSLSuffix = "-x64" ?>
+  <!-- Separate upgrade code / component ID created for x64 installer because both 32-
+       and 64-bit shell extensions are installed on x64 machine and x64 installer
+       removes x86 component installed directly before it if same guids are used.
+  -->
+  <?define ShellExtId = "{5606A547-759D-43DA-AEEB-D3BF1D1E816D}" ?>
 <?else?>
   <?define OpenSSLSuffix = "" ?>
+  <?define ShellExtId = "{310AAB39-76FE-401B-8A7F-0F578C5F6AB5}" ?>
 <?endif?>
 
 <?if $(env.VisualStudioVersion) = "17.0" ?>
@@ -24,6 +30,7 @@
     <Icon Id="qdigidoc4.ico" SourceFile="$(var.ico_path)" />
     <Property Id="ARPPRODUCTICON" Value="qdigidoc4.ico" />
     <Property Id="DESKTOP_SHORTCUT" Value="0" />
+    <Property Id="SHELL_EXTENSION" Value="1" />
     <MajorUpgrade AllowSameVersionUpgrades="yes" Schedule="afterInstallInitialize" DowngradeErrorMessage=
         "A newer version of [ProductName] is already installed. If you are trying to downgrade, please uninstall the newer version first." />
     <Launch Condition="Installed OR (VersionNT &gt;= 601)" Message="[ProductName] requires Windows 7 or higher." />
@@ -136,6 +143,23 @@
         <Directory Name="imageformats">
           <File Source="$(var.qt_path)\..\plugins\imageformats\qsvg$(var.qt_suffix).dll" />
         </Directory>
+<?endif?>
+<?ifdef var.ShellExt ?>
+        <Component Id="ShellExt" Guid="7adaa2cc-c3f5-4e2e-a38d-5d9c9730444e" Transitive="yes" Condition="SHELL_EXTENSION = 1">
+          <!--Does not work with multiple files -->
+          <!--RegistryValue Root="HKCR" Key="*\shell\[ProductName]" Type="string" Value="Sign with [ProductName]" />
+          <RegistryValue Root="HKCR" Key="*\shell\[ProductName]" Name="Icon" Type="string" Value=""[INSTALLFOLDER]qdigidoc4.exe",0" />
+          <RegistryValue Root="HKCR" Key="*\shell\[ProductName]\command" Type="string" Value=""[INSTALLFOLDER]qdigidoc4.exe" "%1"" /-->
+          <File Source="$(var.ShellExt)"/>
+          <RegistryKey Root="HKCR" Key="CLSID\$(var.ShellExtId)\InprocServer32">
+            <RegistryValue Type="string" Value="[INSTALLFOLDER]EsteidShellExtension.dll"/>
+            <RegistryValue Type="string" Name="ThreadingModel" Value="Apartment" />
+          </RegistryKey>
+          <RegistryValue Root="HKCR" Key="*\shellex\ContextMenuHandlers\DigiDoc4ShellExtension$(sys.BUILDARCH)"
+                         Value="$(var.ShellExtId)" Type="string" />
+          <RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved"
+                         Name="$(var.ShellExtId)" Value="DigiDoc4 Shell Extension" Type="string" />
+        </Component>
 <?endif?>
       </Directory>
     </StandardDirectory>
