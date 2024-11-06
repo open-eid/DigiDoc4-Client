@@ -11,7 +11,7 @@ set(CMAKE_AUTOMOC ON)
 include( GNUInstallDirs )
 include( VersionInfo )
 
-find_package(LibDigiDocpp 4.0.0 REQUIRED)
+find_package(LibDigiDocpp 4.1.0 REQUIRED)
 find_package( LDAP REQUIRED )
 find_package(QT NAMES Qt6 Qt5 COMPONENTS Core REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} 5.12.0 REQUIRED COMPONENTS Core Widgets Network PrintSupport Svg LinguistTools)
