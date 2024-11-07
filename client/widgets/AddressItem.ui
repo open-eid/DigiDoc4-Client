@@ -77,14 +77,14 @@ color: #727679;
     <widget class="QSvgWidget" name="icon" native="true">
      <property name="minimumSize">
       <size>
-       <width>17</width>
-       <height>19</height>
+       <width>32</width>
+       <height>32</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>17</width>
-       <height>19</height>
+       <width>32</width>
+       <height>32</height>
       </size>
      </property>
      <property name="styleSheet">
