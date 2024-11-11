@@ -36,7 +36,7 @@ public:
 
 	bool save(const QString &path) final;
 	// Write payload encrypted with sinbgle symmetric key
-	static bool save(QString path, const std::vector<File>& files, const QString& label, const QByteArray& secret, unsigned int kdf_iter);
+	static bool save(const QString& path, const std::vector<File>& files, const QString& label, const QByteArray& secret, unsigned int kdf_iter);
 
 	QByteArray getFMK(const CKey &key, const QByteArray& secret) final;
 	int version() final;
@@ -44,7 +44,7 @@ public:
 	static std::unique_ptr<CDoc2> load(const QString& _path);
 
 private:
-	CDoc2(const QString &path);
+	CDoc2(QString path);
 
 	QString path;
 	QByteArray header_data, headerHMAC;

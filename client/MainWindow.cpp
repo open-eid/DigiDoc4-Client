@@ -260,8 +260,7 @@ void MainWindow::decrypt(std::shared_ptr<CKey> key)
 
 	if (cryptoDoc->decrypt(key, secret)) {
 		ui->cryptoContainerPage->transition(cryptoDoc, qApp->signer()->tokenauth().cert());
-		auto *notification = new FadeInNotification(this, WHITE, MANTIS, 110);
-		notification->start( tr("Decryption succeeded!"), 750, 3000, 1200 );
+		FadeInNotification::success(ui->topBar, tr("Decryption succeeded!"));
 	}
 }
 
@@ -332,18 +331,16 @@ bool MainWindow::encrypt(bool askForKey)
 		if(!p.exec()) return false;
 		QString label = p.label();
 		QByteArray secret = p.secret();
-		bool result;
 		if (p.type == PasswordDialog::Type::PASSWORD) {
 			WaitDialogHolder waitDialog(this, tr("Encrypting"));
 			return cryptoDoc->encrypt(cryptoDoc->fileName(), label, secret, 65536);
-		} else {
-			WaitDialogHolder waitDialog(this, tr("Encrypting"));
-			return cryptoDoc->encrypt(cryptoDoc->fileName(), label, secret, 0);
 		}
-	} else {
 		WaitDialogHolder waitDialog(this, tr("Encrypting"));
-		return cryptoDoc->encrypt();
+		return cryptoDoc->encrypt(cryptoDoc->fileName(), label, secret, 0);
 	}
+	WaitDialogHolder waitDialog(this, tr("Encrypting"));
+	return cryptoDoc->encrypt();
+
 }
 
 void MainWindow::mouseReleaseEvent(QMouseEvent *event)
@@ -1018,7 +1015,7 @@ bool MainWindow::validateFiles(const QString &container, const QStringList &file
 			[containerInfo] (const QString &file) { return containerInfo == QFileInfo(file); }))
 		return true;
 	auto *dlg = new WarningDialog(tr("Cannot add container to same container\n%1")
-								  .arg(FileDialog::normalized(container)), this);
+		.arg(FileDialog::normalized(container)), this);
 	dlg->setCancelText(WarningDialog::Cancel);
 	dlg->open();
 	return false;

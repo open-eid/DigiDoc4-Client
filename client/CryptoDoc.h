@@ -69,7 +69,7 @@ public:
 	bool isTheSameRecipient(const QSslCertificate &cert) const;
 
 protected:
-	CKey(Type _type) : type(_type) {};
+	CKey(Type _type) : type(_type) {}
 private:
 	bool operator==(const CKey &other) const { return false; }
 };
@@ -83,9 +83,9 @@ struct CKeySymmetric : public CKey {
 	// PBKDF
 	QByteArray pw_salt;
 	// 0 symmetric key, >0 password
-	int32_t kdf_iter;
+	int32_t kdf_iter{};
 
-	CKeySymmetric(const QByteArray& _salt) : CKey(Type::SYMMETRIC_KEY), salt(_salt), kdf_iter(0) {}
+	CKeySymmetric(QByteArray _salt) : CKey(Type::SYMMETRIC_KEY), salt(std::move(_salt)) {}
 };
 
 // Base PKI key
@@ -98,8 +98,8 @@ struct CKeyPKI : public CKey {
 	QByteArray rcpt_key;
 
 protected:
-	CKeyPKI(Type _type) : CKey(_type), pk_type(PKType::ECC) {};
-	CKeyPKI(Type _type, PKType _pk_type, QByteArray _rcpt_key) : CKey(_type), pk_type(_pk_type), rcpt_key(_rcpt_key) {};
+	CKeyPKI(Type _type) : CKey(_type), pk_type(PKType::ECC) {}
+	CKeyPKI(Type _type, PKType _pk_type, QByteArray _rcpt_key) : CKey(_type), pk_type(_pk_type), rcpt_key(std::move(_rcpt_key)) {}
 };
 
 
@@ -110,12 +110,12 @@ protected:
 struct CKeyCert : public CKeyPKI {
 	QSslCertificate cert;
 
-	CKeyCert(const QSslCertificate &cert) : CKeyCert(CKey::Type::CERTIFICATE, cert) {};
+	CKeyCert(const QSslCertificate &cert) : CKeyCert(CKey::Type::CERTIFICATE, cert) {}
 
 	void setCert(const QSslCertificate &c);
 
 protected:
-	CKeyCert(Type _type) : CKeyPKI(_type) {};
+	CKeyCert(Type _type) : CKeyPKI(_type) {}
 	CKeyCert(Type _type, const QSslCertificate &cert);
 };
 
@@ -129,7 +129,7 @@ struct CKeyCDoc1 : public CKeyCert {
 	QString concatDigest, method;
 	QByteArray AlgorithmID, PartyUInfo, PartyVInfo;
 
-	CKeyCDoc1() : CKeyCert(Type::CDOC1) {};
+	CKeyCDoc1() : CKeyCert(Type::CDOC1) {}
 };
 
 // CDoc2 PKI key with key material
@@ -140,7 +140,7 @@ struct CKeyPublicKey : public CKeyPKI {
 	// Either ECC public key or RSA encrypted kek
 	QByteArray key_material;
 
-	CKeyPublicKey(PKType _pk_type, QByteArray _rcpt_key) : CKeyPKI(Type::PUBLIC_KEY, _pk_type, _rcpt_key) {};
+	CKeyPublicKey(PKType _pk_type, QByteArray _rcpt_key) : CKeyPKI(Type::PUBLIC_KEY, _pk_type, std::move(_rcpt_key)) {}
 };
 
 // CDoc2 PKI key with server info
@@ -151,9 +151,9 @@ struct CKeyServer : public CKeyPKI {
 	// Server info
 	QString keyserver_id, transaction_id;
 
-	static std::shared_ptr<CKeyServer> fromKey(QByteArray _key, PKType _pk_type);
+	static std::shared_ptr<CKeyServer> fromKey(const QByteArray &_key, PKType _pk_type);
 protected:
-	CKeyServer(QByteArray _rcpt_key, PKType _pk_type) : CKeyPKI(Type::SERVER, _pk_type, _rcpt_key) {};
+	CKeyServer(QByteArray _rcpt_key, PKType _pk_type) : CKeyPKI(Type::SERVER, _pk_type, std::move(_rcpt_key)) {}
 };
 
 class CDoc
@@ -189,7 +189,7 @@ public:
 	~CryptoDoc() final;
 
 	bool supportsSymmetricKeys() const;
-	bool addKey(std::shared_ptr<CKey> key );
+	bool addKey(const std::shared_ptr<CKey> &key);
 	bool canDecrypt(const QSslCertificate &cert);
 	void clear(const QString &file = {});
 	bool decrypt(std::shared_ptr<CKey> key, const QByteArray& secret);

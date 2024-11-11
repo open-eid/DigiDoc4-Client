@@ -81,31 +81,6 @@ background-color: #00AEE5;
    <property name="verticalSpacing">
     <number>0</number>
    </property>
-   <item row="0" column="4" rowspan="2">
-    <widget class="QToolButton" name="added">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>25</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>25</height>
-      </size>
-     </property>
-     <property name="accessibleName">
-      <string extracomment="accessible">Added</string>
-     </property>
-     <property name="text">
-      <string>ADDED</string>
-     </property>
-    </widget>
-   </item>
    <item row="0" column="0" rowspan="2">
     <widget class="QSvgWidget" name="icon" native="true">
      <property name="minimumSize">
@@ -125,28 +100,55 @@ background-color: #00AEE5;
      </property>
     </widget>
    </item>
-   <item row="0" column="5" rowspan="2">
-    <widget class="QToolButton" name="add">
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>25</height>
-      </size>
+   <item row="0" column="1">
+    <widget class="QLabel" name="name">
+     <property name="font">
+      <font>
+       <family>Roboto</family>
+       <pointsize>14</pointsize>
+       <underline>false</underline>
+       <strikeout>false</strikeout>
+      </font>
      </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>25</height>
-      </size>
+     <property name="focusPolicy">
+      <enum>Qt::TabFocus</enum>
      </property>
-     <property name="cursor">
-      <cursorShape>PointingHandCursor</cursorShape>
-     </property>
-     <property name="accessibleName">
-      <string extracomment="accessible">Add</string>
+     <property name="styleSheet">
+      <string notr="true">border: none;</string>
      </property>
      <property name="text">
-      <string>ADD</string>
+      <string notr="true">MARI MAASIKAS MUSTIKAS 48405050123 (Sina ise)</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QLabel" name="idType">
+     <property name="font">
+      <font>
+       <family>Roboto</family>
+       <pointsize>11</pointsize>
+       <underline>false</underline>
+       <strikeout>false</strikeout>
+      </font>
+     </property>
+     <property name="focusPolicy">
+      <enum>Qt::TabFocus</enum>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: #727679;border: none;</string>
+     </property>
+     <property name="text">
+      <string notr="true">ID-card</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="2" rowspan="2">
+    <widget class="QToolButton" name="decrypt">
+     <property name="text">
+      <string>DECRYPT</string>
      </property>
     </widget>
    </item>
@@ -186,55 +188,53 @@ background-color: #00AEE5;
      </property>
     </widget>
    </item>
-   <item row="1" column="1">
-    <widget class="QLabel" name="idType">
-     <property name="font">
-      <font>
-       <family>Roboto</family>
-       <pointsize>11</pointsize>
-       <underline>false</underline>
-       <strikeout>false</strikeout>
-      </font>
+   <item row="0" column="4" rowspan="2">
+    <widget class="QToolButton" name="added">
+     <property name="enabled">
+      <bool>false</bool>
      </property>
-     <property name="focusPolicy">
-      <enum>Qt::TabFocus</enum>
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>25</height>
+      </size>
      </property>
-     <property name="styleSheet">
-      <string notr="true">color: #727679;border: none;</string>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>25</height>
+      </size>
+     </property>
+     <property name="accessibleName">
+      <string extracomment="accessible">Added</string>
      </property>
      <property name="text">
-      <string notr="true">ID-card</string>
+      <string>ADDED</string>
      </property>
     </widget>
    </item>
-   <item row="0" column="1">
-    <widget class="QLabel" name="name">
-     <property name="font">
-      <font>
-       <family>Roboto</family>
-       <pointsize>14</pointsize>
-       <underline>false</underline>
-       <strikeout>false</strikeout>
-      </font>
+   <item row="0" column="5" rowspan="2">
+    <widget class="QToolButton" name="add">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>25</height>
+      </size>
      </property>
-     <property name="focusPolicy">
-      <enum>Qt::TabFocus</enum>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>25</height>
+      </size>
      </property>
-     <property name="styleSheet">
-      <string notr="true">border: none;</string>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
+     <property name="accessibleName">
+      <string extracomment="accessible">Add</string>
      </property>
      <property name="text">
-      <string notr="true">MARI MAASIKAS MUSTIKAS 48405050123 (Sina ise)</string>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="2" rowspan="2">
-    <widget class="QToolButton" name="decrypt">
-     <property name="text">
-      <string>DECRYPT</string>
+      <string>ADD</string>
      </property>
     </widget>
    </item>
@@ -242,15 +242,15 @@ background-color: #00AEE5;
  </widget>
  <customwidgets>
   <customwidget>
-   <class>QSvgWidget</class>
-   <extends>QWidget</extends>
-   <header location="global">QSvgWidget</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
    <class>LabelButton</class>
    <extends>QToolButton</extends>
    <header>widgets/LabelButton.h</header>
+  </customwidget>
+  <customwidget>
+   <class>QSvgWidget</class>
+   <extends>QWidget</extends>
+   <header location="global">QtSvg/QSvgWidget</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>

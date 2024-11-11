@@ -417,7 +417,7 @@ void ContainerPage::updatePanes(ria::qdigidoc4::ContainerState state, CryptoDoc 
 		for(QWidget *button: buttons) button->setVisible(visible);
 	};
 
-	switch(state)
+	switch( state )
 	{
 	case UnsignedContainer:
 		cancelText = QT_TR_NOOP("CANCEL");
@@ -498,4 +498,3 @@ void ContainerPage::translateLabels()
 	ui->convert->setText(tr(convertText));
 	ui->convert->setAccessibleName(tr(convertText).toLower());
 }
-
