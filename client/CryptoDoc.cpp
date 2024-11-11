@@ -125,7 +125,7 @@ bool CDocumentModel::addFile(const QString &file, const QString &mime)
 			[&fileName](const auto &containerFile) { return containerFile.name == fileName; }))
 	{
 		WarningDialog::show(DocumentModel::tr("Cannot add the file to the envelope. File '%1' is already in container.")
-							.arg(FileDialog::normalized(fileName)));
+			 .arg(FileDialog::normalized(fileName)));
 		return false;
 	}
 
@@ -231,11 +231,11 @@ CKey::isTheSameRecipient(const CKey& other) const
 {
 	QByteArray this_key, other_key;
 	if (this->isCertificate()) {
-		const CKeyCert& ckc = static_cast<const CKeyCert&>(*this);
+		const auto& ckc = static_cast<const CKeyCert&>(*this);
 		this_key = ckc.cert.publicKey().toDer();
 	}
 	if (other.isCertificate()) {
-		const CKeyCert& ckc = static_cast<const CKeyCert&>(other);
+		const auto& ckc = static_cast<const CKeyCert&>(other);
 		other_key = ckc.cert.publicKey().toDer();
 	}
 	if (this_key.isEmpty() || other_key.isEmpty()) return false;
@@ -246,7 +246,7 @@ bool
 CKey::isTheSameRecipient(const QSslCertificate &cert) const
 {
 	if (!isPKI()) return false;
-	const CKeyPKI& pki = static_cast<const CKeyPKI&>(*this);
+	const auto& pki = static_cast<const CKeyPKI&>(*this);
 	QByteArray this_key = pki.rcpt_key;
 	QSslKey k = cert.publicKey();
 	QByteArray other_key = Crypto::toPublicKeyDer(k);
@@ -288,7 +288,7 @@ void CKeyCert::setCert(const QSslCertificate &c)
 }
 
 std::shared_ptr<CKeyServer>
-CKeyServer::fromKey(QByteArray _key, PKType _pk_type) {
+CKeyServer::fromKey(const QByteArray &_key, PKType _pk_type) {
 	return std::shared_ptr<CKeyServer>(new CKeyServer(_key, _pk_type));
 }
 
@@ -308,11 +308,11 @@ CryptoDoc::supportsSymmetricKeys() const
 	return d->cdoc->version() >= 2;
 }
 
-bool CryptoDoc::addKey(std::shared_ptr<CKey> key )
+bool CryptoDoc::addKey(const std::shared_ptr<CKey> &key)
 {
 	if(d->isEncryptedWarning())
 		return false;
-	for (std::shared_ptr<CKey> k: d->cdoc->keys) {
+	for (const std::shared_ptr<CKey> &k: d->cdoc->keys) {
 		if (k->isTheSameRecipient(*key)) {
 			WarningDialog::show(tr("Key already exists"));
 			return false;

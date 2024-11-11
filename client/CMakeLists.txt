@@ -89,7 +89,6 @@ add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
 	TokenData.cpp
 	TokenData.h
 	Utils.h
-        dialogs/PasswordDialog.h dialogs/PasswordDialog.cpp dialogs/PasswordDialog.ui
 )
 
 target_link_libraries(${PROJECT_NAME}

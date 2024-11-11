@@ -214,8 +214,6 @@ background-color: #F4F5F6;</string>
          <font>
           <family>Roboto Condensed</family>
           <pointsize>12</pointsize>
-          <underline>false</underline>
-          <strikeout>false</strikeout>
          </font>
         </property>
         <property name="cursor">
@@ -305,8 +303,6 @@ border: none;</string>
          <font>
           <family>Roboto Condensed</family>
           <pointsize>12</pointsize>
-          <underline>false</underline>
-          <strikeout>false</strikeout>
          </font>
         </property>
         <property name="cursor">
@@ -344,8 +340,6 @@ border: none;</string>
          <font>
           <family>Roboto Condensed</family>
           <pointsize>12</pointsize>
-          <underline>false</underline>
-          <strikeout>false</strikeout>
          </font>
         </property>
         <property name="cursor">
@@ -382,8 +376,6 @@ border: none;</string>
         <property name="font">
          <font>
           <pointsize>12</pointsize>
-          <underline>false</underline>
-          <strikeout>false</strikeout>
          </font>
         </property>
         <property name="cursor">
@@ -422,8 +414,6 @@ border: none;</string>
          <font>
           <family>Roboto Condensed</family>
           <pointsize>12</pointsize>
-          <underline>false</underline>
-          <strikeout>false</strikeout>
          </font>
         </property>
         <property name="cursor">
@@ -467,15 +457,15 @@ border: none;</string>
  </widget>
  <customwidgets>
   <customwidget>
+   <class>LabelButton</class>
+   <extends>QToolButton</extends>
+   <header>widgets/LabelButton.h</header>
+  </customwidget>
+  <customwidget>
    <class>ItemList</class>
    <extends>QScrollArea</extends>
    <header>widgets/ItemList.h</header>
    <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>LabelButton</class>
-   <extends>QToolButton</extends>
-   <header>widgets/LabelButton.h</header>
   </customwidget>
   <customwidget>
    <class>FileList</class>

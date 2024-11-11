@@ -39,7 +39,7 @@ public:
 	bool yourself = false;
 };
 
-AddressItem::AddressItem(std::shared_ptr<CKey> key, QWidget *parent, bool showIcon)
+AddressItem::AddressItem(const std::shared_ptr<CKey>& key, QWidget *parent, bool showIcon)
 	: Item(parent)
 	, ui(new Private)
 {
@@ -80,7 +80,7 @@ AddressItem::AddressItem(std::shared_ptr<CKey> key, QWidget *parent, bool showIc
 		ui->label = key->label.toHtmlEscaped();
 	}
 	if(ui->label.isEmpty() && ui->key->type == CKey::PUBLIC_KEY) {
-		const CKeyPublicKey& pk = static_cast<const CKeyPublicKey&>(*ui->key);
+		const auto& pk = static_cast<const CKeyPublicKey&>(*ui->key);
 		ui->label = pk.key_material;
 	}
 	setIdType();
@@ -113,12 +113,12 @@ bool AddressItem::eventFilter(QObject *o, QEvent *e)
 	return Item::eventFilter(o, e);
 }
 
-const std::shared_ptr<CKey> AddressItem::getKey() const
+std::shared_ptr<CKey> AddressItem::getKey() const
 {
 	return ui->key;
 }
 
-void AddressItem::idChanged(std::shared_ptr<CKey> key)
+void AddressItem::idChanged(const std::shared_ptr<CKey>& key)
 {
 	ui->yourself = key->isTheSameRecipient(*ui->key);
 	setName();
@@ -197,24 +197,23 @@ void AddressItem::setIdType()
 				str += QStringLiteral(" - ");
 			DateTime date(cert.expiryDate().toLocalTime());
 			ui->idType->setText(QStringLiteral("%1%2 %3").arg(str,
-															  cert.isValid() ? tr("Expires on") : tr("Expired on"),
-															  date.formatDate(QStringLiteral("dd. MMMM yyyy"))));
+				cert.isValid() ? tr("Expires on") : tr("Expired on"),
+				date.formatDate(QStringLiteral("dd. MMMM yyyy"))));
 		} else {
-			QString type = (pki->pk_type == CKey::PKType::RSA) ? "RSA" : "ECC";
+			QString type = (pki->pk_type == CKey::PKType::RSA) ? QStringLiteral("RSA") : QStringLiteral("ECC");
 			ui->idType->setHidden(false);
-			ui->idType->setText(type + " public key");
+			ui->idType->setText(type + tr(" public key"));
 		}
 	} else if (ui->key->isSymmetric()) {
 		std::shared_ptr<CKeySymmetric> ckd = std::static_pointer_cast<CKeySymmetric>(ui->key);
 		ui->idType->setHidden(false);
 		if (ckd->kdf_iter > 0) {
-			ui->idType->setText("Password derived key");
+			ui->idType->setText(tr("Password derived key"));
 		} else {
-			ui->idType->setText("Symmetric key");
+			ui->idType->setText(tr("Symmetric key"));
 		}
 	} else {
 		ui->idType->setHidden(false);
-		ui->idType->setText("Unknown key type");
+		ui->idType->setText(tr("Unknown key type"));
 	}
 }
-

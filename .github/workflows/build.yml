@@ -143,10 +143,8 @@ jobs:
     runs-on: ${{ matrix.image }}
     strategy:
       matrix:
-        vcver: [142, 143]
+        vcver: [143]
         include:
-        - vcver: 142
-          image: windows-2019
         - vcver: 143
           image: windows-2022
     env:

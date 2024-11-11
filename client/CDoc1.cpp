@@ -133,7 +133,7 @@ CDoc1::CDoc1(const QString &path)
 			//if(xml.name() == QLatin1String("KeyName"))
 			//	key->name = xml.readElementText();
 			// EncryptedData/KeyInfo/EncryptedKey/EncryptionMethod
-			else if(xml.name() == QLatin1String("EncryptionMethod"))
+			if(xml.name() == QLatin1String("EncryptionMethod"))
 				key->method = xml.attributes().value(QLatin1String("Algorithm")).toString();
 			// EncryptedData/KeyInfo/EncryptedKey/KeyInfo/AgreementMethod
 			else if(xml.name() == QLatin1String("AgreementMethod")) {
@@ -310,16 +310,16 @@ std::shared_ptr<CKey> CDoc1::getDecryptionKey(const QSslCertificate &cert) const
 		std::shared_ptr<CKeyCDoc1> k = std::static_pointer_cast<CKeyCDoc1>(key);
 		if(!ENC_MTH.contains(method) ||
 			k->cert != cert ||
-            k->encrypted_fmk.isEmpty())
+			k->encrypted_fmk.isEmpty())
 			continue;
 		if(cert.publicKey().algorithm() == QSsl::Rsa &&
 				k->method == RSA_MTH)
 			return k;
 		if(cert.publicKey().algorithm() == QSsl::Ec &&
 			!k->publicKey.isEmpty() &&
-            KWAES_SIZE.contains(k->method) /* &&
+			KWAES_SIZE.contains(k->method) /* &&
 			k->derive == CONCATKDF_MTH &&
-            k->agreement == AGREEMENT_MTH*/ )
+			k->agreement == AGREEMENT_MTH*/ )
 			return k;
 	}
 	return {};
@@ -514,7 +514,7 @@ bool CDoc1::save(const QString &path)
 						default: concatDigest = SHA512_MTH; break;
 						}
 						QByteArray encryptionKey = Crypto::concatKDF(SHA_MTH[concatDigest], KWAES_SIZE[encryptionMethod],
-                            sharedSecret, props.value(QStringLiteral("DocumentFormat")).toUtf8() + SsDer + ckey->cert.toDer());
+							sharedSecret, props.value(QStringLiteral("DocumentFormat")).toUtf8() + SsDer + ckey->cert.toDer());
 #ifndef NDEBUG
 						qDebug() << "ENC Ss" << SsDer.toHex();
 						qDebug() << "ENC Ksr" << sharedSecret.toHex();
@@ -539,7 +539,7 @@ bool CDoc1::save(const QString &path)
 									writeElement(w, XENC11, QStringLiteral("ConcatKDFParams"), {
 										{QStringLiteral("AlgorithmID"), QStringLiteral("00") + props.value(QStringLiteral("DocumentFormat")).toUtf8().toHex()},
 										{QStringLiteral("PartyUInfo"), QStringLiteral("00") + SsDer.toHex()},
-                                        {QStringLiteral("PartyVInfo"), QStringLiteral("00") + ckey->cert.toDer().toHex()},
+										{QStringLiteral("PartyVInfo"), QStringLiteral("00") + ckey->cert.toDer().toHex()},
 									}, [&]{
 										writeElement(w, DS, QStringLiteral("DigestMethod"), {
 											{QStringLiteral("Algorithm"), concatDigest},
@@ -589,32 +589,32 @@ bool CDoc1::save(const QString &path)
 	return true;
 }
 
-QByteArray CDoc1::getFMK(const CKey &key, const QByteArray& secret)
+QByteArray CDoc1::getFMK(const CKey &key, const QByteArray& /*secret*/)
 {
 	if (key.type != CKey::Type::CDOC1) {
 		setLastError(QStringLiteral("Not a CDoc1 key"));
 		return {};
 	}
-	const CKeyCDoc1& ckey = static_cast<const CKeyCDoc1&>(key);
+	const auto& ckey = static_cast<const CKeyCDoc1&>(key);
 	setLastError({});
 	QByteArray decryptedKey = qApp->signer()->decrypt([&ckey](QCryptoBackend *backend) {
 		if(ckey.pk_type == CKey::PKType::RSA)
-            return backend->decrypt(ckey.encrypted_fmk, false);
+			return backend->decrypt(ckey.encrypted_fmk, false);
 		return backend->deriveConcatKDF(ckey.publicKey, SHA_MTH[ckey.concatDigest],
 			int(KWAES_SIZE[ckey.method]), ckey.AlgorithmID, ckey.PartyUInfo, ckey.PartyVInfo);
-});
-if(decryptedKey.isEmpty())
-{
-	setLastError(QStringLiteral("Failed to decrypt/derive key"));
-	return {};
-}
-if(ckey.pk_type == CKey::PKType::RSA)
-return decryptedKey;
+	});
+	if(decryptedKey.isEmpty())
+	{
+		setLastError(QStringLiteral("Failed to decrypt/derive key"));
+		return {};
+	}
+	if(ckey.pk_type == CKey::PKType::RSA)
+		return decryptedKey;
 #ifndef NDEBUG
-    qDebug() << "DEC Ss" << ckey.publicKey.toHex();
+	qDebug() << "DEC Ss" << ckey.publicKey.toHex();
 	qDebug() << "DEC ConcatKDF" << decryptedKey.toHex();
 #endif
-return Crypto::aes_unwrap(decryptedKey, ckey.encrypted_fmk);
+	return Crypto::aes_unwrap(decryptedKey, ckey.encrypted_fmk);
 }
 
 int CDoc1::version()
