@@ -44,8 +44,6 @@ public:
 
 	static QHash<quint8,QByteArray> parseFCI(const QByteArray &data);
 
-	static const QByteArray MASTER_FILE;
-	static const QByteArray MUTUAL_AUTH;
 	static const QByteArray CHANGE;
 	static const QByteArray READBINARY;
 	static const QByteArray REPLACE;
@@ -61,7 +59,6 @@ public:
 	QByteArray sign(QPCSCReader *reader, const QByteArray &dgst) const final;
 	bool updateCounters(QPCSCReader *reader, QSmartCardDataPrivate *d) const final;
 
-	static QString cardNR(QPCSCReader *reader);
 	static bool isSupported(const QByteArray &atr);
 	static QByteArray pinTemplate(const QString &pin);
 

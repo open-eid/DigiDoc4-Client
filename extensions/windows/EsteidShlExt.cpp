@@ -4,8 +4,6 @@
 #include "stdafx.h"
 #include "EsteidShlExt.h"
 
-#include <uxtheme.h>
-
 typedef DWORD ARGB;
 
 bool HasAlpha(ARGB *pargb, SIZE &sizeImage, int cxRow)

@@ -20,6 +20,7 @@
 #include <atlcom.h>
 #include <ShlObj.h>
 #include <comdef.h>
+#include <uxtheme.h>
 #include <string>
 #include <vector>
 

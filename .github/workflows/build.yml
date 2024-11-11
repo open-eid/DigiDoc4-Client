@@ -177,7 +177,7 @@ jobs:
     - name: Install Qt
       uses: jurplel/install-qt-action@v4
       with:
-        version: 6.7.2
+        version: 6.7.3
         arch: win64_msvc2019_64
     - name: Setup dev env
       uses: ilammy/msvc-dev-cmd@v1
@@ -185,10 +185,13 @@ jobs:
         arch: x64
     - name: Install WiX
       run: |
-        dotnet tool install -g wix --version 5.0.0
-        wix extension -g add WixToolset.UI.wixext/5.0.0
+        dotnet tool install -g wix --version 5.0.2
+        wix extension -g add WixToolset.UI.wixext/5.0.2
     - name: Build
       run: |
+        if ($env:VCToolsRedistDir -eq $null) {
+          $env:VCToolsRedistDir = -join ($env:VCINSTALLDIR, "Redist\MSVC\", $env:VCToolsVersion, "\")
+        }
         cmake "-GNinja" -B build -S . -DCMAKE_BUILD_TYPE=RelWithDebInfo `
           -DCMAKE_TOOLCHAIN_FILE=${{ env.RUNVCPKG_VCPKG_ROOT }}/scripts/buildsystems/vcpkg.cmake `
           "-DLibDigiDocpp_ROOT=libs/PFiles64/libdigidocpp"

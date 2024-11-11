@@ -54,7 +54,7 @@ private Q_SLOTS:
 	void changePin2Clicked( bool isForgotPin, bool isBlockedPin );
 	void changePukClicked();
 	void open(const QStringList &params, bool crypto, bool sign);
-	void pageSelected(PageIcon *page);
+	void pageSelected(int page, bool checked = true);
 	void warningClicked(const QString &link);
 
 protected:
@@ -64,7 +64,6 @@ protected:
 	void dragLeaveEvent( QDragLeaveEvent *event ) final;
 	void dropEvent( QDropEvent *event ) final;
 	void mouseReleaseEvent(QMouseEvent *event) final;
-	void resizeEvent( QResizeEvent *event ) final;
 	void showEvent(QShowEvent *event) final;
 
 private:
@@ -94,13 +93,11 @@ private:
 	bool save(bool saveAs = false);
 	QString selectFile( const QString &title, const QString &filename, bool fixedExt );
 	void selectPage(ria::qdigidoc4::Pages page);
-	void selectPageIcon( PageIcon* page );
 	void showCardMenu( bool show );
-	void showNotification( const QString &msg, bool isSuccess = false );
 	template <typename F>
 	void sign(F &&sign);
 	void updateCardWarnings(const QSmartCardData &data);
-	bool validateCardError(QSmartCardData::PinType type, QSmartCardData::PinType t, QSmartCard::ErrorType err);
+	bool validateCardError(QSmartCardData::PinType type, QSmartCardData::PinType src, QSmartCard::ErrorType err);
 	bool validateFiles(const QString &container, const QStringList &files);
 	void showPinBlockedWarning(const QSmartCardData& t);
 	void updateSelector();
@@ -119,7 +116,6 @@ private:
 	CryptoDoc* cryptoDoc = nullptr;
 	DigiDoc* digiDoc = nullptr;
 	Ui::MainWindow *ui;
-	WarningList *warnings;
 
 	void decryptClicked(std::shared_ptr<CKey> key);
 };

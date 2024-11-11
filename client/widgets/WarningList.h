@@ -19,35 +19,22 @@
 
 #pragma once
 
-#include <QWidget>
+#include "StyledWidget.h"
 
-namespace Ui { class MainWindow; }
-class WarningItem;
 struct WarningText;
-class WarningRibbon;
 
-class WarningList: public QObject
+class WarningList: public StyledWidget
 {
 	Q_OBJECT
 public:
-	explicit WarningList(Ui::MainWindow *main, QWidget *parent = nullptr);
+	explicit WarningList(QWidget *parent = nullptr);
 
 	void clearMyEIDWarnings();
 	void closeWarning(int warningType);
 	void closeWarnings(int page);
-	void showWarning(const WarningText &warningText);
-	void updateWarnings();
+	void showWarning(WarningText warningText);
+	void updateWarnings(int page);
 
 signals:
 	void warningClicked(const QString &link);
-
-private:
-	static bool appearsOnPage(WarningItem *warning, int page);
-	void closeWarning(WarningItem *warning);
-	bool eventFilter(QObject *object, QEvent *event) final;
-	void updateRibbon(int page, bool expanded);
-
-	WarningRibbon *ribbon = nullptr;
-	QList<WarningItem*> warnings;
-	Ui::MainWindow *ui;
 };

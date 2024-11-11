@@ -19,6 +19,7 @@
 
 #include "QSmartCard_p.h"
 
+#include "IKValidator.h"
 #include "QCardLock.h"
 #include "Settings.h"
 #include "Utils.h"
@@ -26,10 +27,8 @@
 #include "dialogs/PinUnblock.h"
 
 #include <QtCore/QDateTime>
-#include <QtCore/QDebug>
 #include <QtCore/QLoggingCategory>
 #include <QtCore/QScopedPointer>
-#include <QtCore/QTimer>
 #include <QtNetwork/QSslKey>
 
 Q_LOGGING_CATEGORY(CLog, "qdigidoc4.QSmartCard")
@@ -87,8 +86,6 @@ QString QSmartCardData::typeString(QSmartCardData::PinType type)
 	return {};
 }
 
-const QByteArray Card::MASTER_FILE = APDU("00A4000C");
-const QByteArray Card::MUTUAL_AUTH = APDU("00880000 00 00");
 const QByteArray Card::CHANGE = APDU("00240000 00");
 const QByteArray Card::READBINARY = APDU("00B00000 00");
 const QByteArray Card::REPLACE = APDU("002C0000 00");
@@ -111,7 +108,7 @@ QPCSCReader::Result Card::transfer(QPCSCReader *reader, bool verify, const QByte
 QHash<quint8,QByteArray> Card::parseFCI(const QByteArray &data)
 {
 	QHash<quint8,QByteArray> result;
-	for(QByteArray::const_iterator i = data.constBegin(); i != data.constEnd(); ++i)
+	for(auto i = data.constBegin(); i != data.constEnd(); ++i)
 	{
 		quint8 tag(*i), size(*++i);
 		result[tag] = QByteArray(i + 1, size);
@@ -129,7 +126,7 @@ QHash<quint8,QByteArray> Card::parseFCI(const QByteArray &data)
 
 
 
-const QByteArray IDEMIACard::AID = APDU("00A40400 10 A000000077010800070000FE00000100");
+const QByteArray IDEMIACard::AID = APDU("00A4040C 10 A000000077010800070000FE00000100");
 const QByteArray IDEMIACard::AID_OT = APDU("00A4040C 0D E828BD080FF2504F5420415750");
 const QByteArray IDEMIACard::AID_QSCD = APDU("00A4040C 10 51534344204170706C69636174696F6E");
 
@@ -163,13 +160,10 @@ bool IDEMIACard::isSupported(const QByteArray &atr)
 
 bool IDEMIACard::loadPerso(QPCSCReader *reader, QSmartCardDataPrivate *d) const
 {
-	if(!reader->transfer(AID) ||
-		!reader->transfer(MASTER_FILE))
-		return false;
-	if(d->data.isEmpty() && reader->transfer(APDU("00A4010C025000")))
+	if(d->data.isEmpty() && reader->transfer(APDU("00A4090C 04 3F00 5000")))
 	{
-		QByteArray cmd = APDU("00A4020C025001");
-		for(char data = 1; data <= 8; ++data)
+		QByteArray cmd = APDU("00A4020C 02 5001");
+		for(char data = QSmartCardData::SurName; data <= QSmartCardData::Expiry; ++data)
 		{
 			cmd[6] = data;
 			if(!reader->transfer(cmd))
@@ -182,41 +176,42 @@ bool IDEMIACard::loadPerso(QPCSCReader *reader, QSmartCardDataPrivate *d) const
 				record.clear();
 			switch(data)
 			{
-			case 1: d->data[QSmartCardData::SurName] = record; break;
-			case 2: d->data[QSmartCardData::FirstName] = record; break;
-			case 4: d->data[QSmartCardData::Citizen] = record; break;
-			case 5:
-				if(!record.isEmpty())
-				{
-					QStringList data = record.split(' ');
-					if(data.size() > 3)
-						data.removeLast();
-					d->data[QSmartCardData::BirthDate] = QDate::fromString(data.join('.'), QStringLiteral("dd.MM.yyyy"));
-				}
+			case QSmartCardData::SurName:
+			case QSmartCardData::FirstName:
+			case QSmartCardData::Citizen:
+			case QSmartCardData::Id:
+			case QSmartCardData::DocumentId:
+				d->data[QSmartCardData::PersonalDataType(data)] = record;
 				break;
-			case 6: d->data[QSmartCardData::Id] = record; break;
-			case 7: d->data[QSmartCardData::DocumentId] = record; break;
-			case 8: d->data[QSmartCardData::Expiry] = QDateTime::fromString(record, QStringLiteral("dd MM yyyy")).addDays(1).addSecs(-1); break;
+			case QSmartCardData::BirthDate:
+				if(!record.isEmpty())
+					d->data[QSmartCardData::BirthDate] = QDate::fromString(record.left(10), QStringLiteral("dd MM yyyy"));
+				break;
+			case QSmartCardData::Expiry:
+				d->data[QSmartCardData::Expiry] = QDateTime::fromString(record, QStringLiteral("dd MM yyyy")).addDays(1).addSecs(-1);
+				break;
 			default: break;
 			}
 		}
 	}
 
 	bool readFailed = false;
-	auto readCert = [&](const QByteArray &file1, const QByteArray &file2) {
-		if(!reader->transfer(MASTER_FILE) || !reader->transfer(file1))
+	auto readCert = [&](const QByteArray &path) {
+		QPCSCReader::Result data = reader->transfer(path);
+		if(!data)
 		{
 			readFailed = true;
 			return QSslCertificate();
 		}
-		QPCSCReader::Result data = reader->transfer(file2);
-		if(!data)
-			return QSslCertificate();
 		QHash<quint8,QByteArray> fci = parseFCI(data.data);
-		int size = fci.contains(0x80) ? quint8(fci[0x80][0]) << 8 | quint8(fci[0x80][1]) : 0x0600;
+		if(!fci.contains(0x80))
+		{
+			readFailed = true;
+			return QSslCertificate();
+		}
 		QByteArray cert;
 		QByteArray cmd = READBINARY;
-		while(cert.size() < size)
+		for(int size = quint8(fci[0x80][0]) << 8 | quint8(fci[0x80][1]); cert.size() < size; )
 		{
 			cmd[2] = char(cert.size() >> 8);
 			cmd[3] = char(cert.size());
@@ -231,9 +226,11 @@ bool IDEMIACard::loadPerso(QPCSCReader *reader, QSmartCardDataPrivate *d) const
 		return QSslCertificate(cert, QSsl::Der);
 	};
 	if(d->authCert.isNull())
-		d->authCert = readCert(APDU("00A4010C02ADF1"), APDU("00A4020402340100"));
+		d->authCert = readCert(APDU("00A40904 06 3F00 ADF1 3401 00"));
 	if(d->signCert.isNull())
-		d->signCert = readCert(APDU("00A4010C02ADF2"), APDU("00A4020402341F00"));
+		d->signCert = readCert(APDU("00A40904 06 3F00 ADF2 341F 00"));
+	if(!d->data.contains(QSmartCardData::BirthDate) && !d->authCert.isNull())
+		d->data[QSmartCardData::BirthDate] = IKValidator::birthDate(d->authCert.personalCode());
 
 	if(readFailed)
 		return false;
@@ -269,7 +266,7 @@ QPCSCReader::Result IDEMIACard::replace(QPCSCReader *reader, QSmartCardData::Pin
 		cmd[3] = char(0x85);
 	}
 	else
-		cmd[3] = type;
+		cmd[3] = char(type);
 	QByteArray pin = pinTemplate(pin_);
 	cmd[4] = char(pin.size());
 	return transfer(reader, false, cmd + pin, type, 0, false);
@@ -280,7 +277,7 @@ QByteArray IDEMIACard::sign(QPCSCReader *reader, const QByteArray &dgst) const
 	if(!reader->transfer(AID_OT) ||
 		!reader->transfer(APDU("002241A4 09 8004FF200800840181")))
 		return {};
-	QByteArray cmd = MUTUAL_AUTH;
+	QByteArray cmd = APDU("00880000 00 00");
 	cmd[4] = char(std::min<size_t>(size_t(dgst.size()), 0x30));
 	cmd.insert(5, dgst.left(0x30));
 	return reader->transfer(cmd).data;
@@ -289,12 +286,12 @@ QByteArray IDEMIACard::sign(QPCSCReader *reader, const QByteArray &dgst) const
 bool IDEMIACard::updateCounters(QPCSCReader *reader, QSmartCardDataPrivate *d) const
 {
 	reader->transfer(AID);
-	if(auto data = reader->transfer(APDU("00CB3FFF 0A 4D087006BF810102A08000")))
+	if(auto data = reader->transfer(APDU("00CB3FFF 0A 4D087006BF810102A080 00")))
 		d->retry[QSmartCardData::Pin1Type] = quint8(data.data[13]);
-	if(auto data = reader->transfer(APDU("00CB3FFF 0A 4D087006BF810202A08000")))
+	if(auto data = reader->transfer(APDU("00CB3FFF 0A 4D087006BF810202A080 00")))
 		d->retry[QSmartCardData::PukType] = quint8(data.data[13]);
 	reader->transfer(AID_QSCD);
-	if(auto data = reader->transfer(APDU("00CB3FFF 0A 4D087006BF810502A08000")))
+	if(auto data = reader->transfer(APDU("00CB3FFF 0A 4D087006BF810502A080 00")))
 		d->retry[QSmartCardData::Pin2Type] = quint8(data.data[13]);
 	return true;
 }
@@ -314,14 +311,14 @@ QSmartCard::ErrorType QSmartCard::Private::handlePinResult(QPCSCReader *reader, 
 {
 	if(!response || forceUpdate)
 		card->updateCounters(reader, t.d);
-	switch((quint8(response.SW[0]) << 8) + quint8(response.SW[1]))
+	switch(response.SW)
 	{
 	case 0x9000: return QSmartCard::NoError;
 	case 0x63C0: return QSmartCard::BlockedError;//pin retry count 0
 	case 0x63C1: // Validate error, 1 tries left
 	case 0x63C2: // Validate error, 2 tries left
 	case 0x63C3: return QSmartCard::ValidateError;
-	case 0x6400: // Timeout (SCM)
+	case 0x6400: return QSmartCard::TimeoutError; // Timeout (SCM)
 	case 0x6401: return QSmartCard::CancelError; // Cancel (OK, SCM)
 	case 0x6402: return QSmartCard::DifferentError;
 	case 0x6403: return QSmartCard::LenghtError;
@@ -471,7 +468,6 @@ void QSmartCard::reloadCard(const TokenData &token, bool reloadCounters)
 	t = d->t.d;
 	t->reader = selectedReader->name();
 	t->pinpad = selectedReader->isPinPad();
-	d->card.reset();
 	d->card = std::make_unique<IDEMIACard>();
 	if(d->card->loadPerso(selectedReader.data(), t))
 	{

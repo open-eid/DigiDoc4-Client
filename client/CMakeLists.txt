@@ -45,7 +45,6 @@ add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
 	CDoc2.h
 	CheckConnection.cpp
 	CheckConnection.h
-	Colors.h
 	Crypto.cpp
 	Crypto.h
 	CryptoDoc.cpp
@@ -248,13 +247,13 @@ elseif(WIN32)
 	)
 	if(SIGNCERT)
 		list(APPEND SIGNCMD signtool.exe sign /a /v /s MY /n "${SIGNCERT}" /fd SHA256
-			/du http://installer.id.ee /tr http://sha256timestamp.ws.symantec.com/sha256/timestamp /td SHA256)
+			/du http://installer.id.ee /tr http://timestamp.digicert.com /td SHA256)
 		add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
 			COMMAND ${SIGNCMD} "$<$<BOOL:${CROSSSIGNCERT}>:/ph;/ac;${CROSSSIGNCERT}>" $<TARGET_FILE:${PROJECT_NAME}>
 			COMMAND_EXPAND_LISTS
 		)
 		add_custom_command(TARGET msi POST_BUILD
-			COMMAND ${SIGNCMD} "${MSI_FILE}.msi"
+			COMMAND ${SIGNCMD} "${MSI_FILE}.msi" "${MSI_FILE}.qt.msi"
 			WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
 		)
 	endif()
@@ -294,7 +293,7 @@ else()
 	install( FILES ${CMAKE_CURRENT_BINARY_DIR}/qdigidoc4.1 DESTINATION ${CMAKE_INSTALL_MANDIR}/man1 )
 	install( FILES ee.ria.qdigidoc4.desktop DESTINATION ${CMAKE_INSTALL_DATADIR}/applications )
 	install( FILES qdigidoc4.xml DESTINATION ${CMAKE_INSTALL_DATADIR}/mime/packages )
-	install( FILES ee.ria.qdigidoc4.metainfo.xml DESTINATION /usr/share/metainfo )
+	install( FILES ee.ria.qdigidoc4.metainfo.xml DESTINATION ${CMAKE_INSTALL_DATADIR}/metainfo )
 	foreach(RES 16 22 32 48 128 256 512)
 		install(
 			FILES images/digidoc_${RES}.png

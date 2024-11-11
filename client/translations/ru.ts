@@ -736,10 +736,6 @@
         <translation>Права пользователя: </translation>
     </message>
     <message>
-        <source>ATRfiltr service status: </source>
-        <translation>Статус ATRfiltr сервиса: </translation>
-    </message>
-    <message>
         <source>Not found</source>
         <translation>Не найдено</translation>
     </message>
@@ -1648,6 +1644,18 @@ ID-КАРТОЙ</translation>
         <source>Decrypting</source>
         <translation>Расшифровка</translation>
     </message>
+    <message>
+        <source>My eID</source>
+        <translation>Мой eID</translation>
+    </message>
+    <message>
+        <source>Signature</source>
+        <translation>Подпись</translation>
+    </message>
+    <message>
+        <source>Crypto</source>
+        <translation>Крипто</translation>
+    </message>
 </context>
 <context>
     <name>MobileDialog</name>
@@ -1899,21 +1907,6 @@ and enter Smart-ID PIN2-code.</source>
     <message>
         <source>The PCSC service, required for using the ID-card, is not working. Check your computer settings.</source>
         <translation>Необходимая для использования ID-карты услуга PCSC не работает. Проверьте настройки компьютера.</translation>
-    </message>
-</context>
-<context>
-    <name>PageIcon</name>
-    <message>
-        <source>SIGNATURE</source>
-        <translation>ПОДПИСЬ</translation>
-    </message>
-    <message>
-        <source>CRYPTO</source>
-        <translation>КРИПТО</translation>
-    </message>
-    <message>
-        <source>My eID</source>
-        <translation>Мой eID</translation>
     </message>
 </context>
 <context>
@@ -2468,10 +2461,6 @@ and enter Smart-ID PIN2-code.</source>
     <message>
         <source>Password</source>
         <translation>Пароль</translation>
-    </message>
-    <message>
-        <source>Enable proxy for SSL connections</source>
-        <translation>Включить прокси-сервер для подключения SSL</translation>
     </message>
     <message>
         <source>The connection to certificate status service is successful!</source>
@@ -3240,24 +3229,16 @@ Additional licenses and components</source>
         <translation>В контейнер добавлен пустой файл. Для подписания удалите из контейнера пустой файл.</translation>
     </message>
     <message>
-        <source>Certificates have expired! </source>
-        <translation>Срок действия сертификатов истек! </translation>
-    </message>
-    <message>
-        <source>You can find instructions on how to get a new document from </source>
-        <translation>Вы можете найти инструкции о том, как получить новый документ </translation>
-    </message>
-    <message>
-        <source>here</source>
-        <translation>здесь</translation>
+        <source>Certificates have expired!</source>
+        <translation>Срок действия сертификатов истек!</translation>
     </message>
     <message>
         <source>https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult/</source>
         <translation>https://www.politsei.ee/ru/instruktsii/hodataystvo-o-vydache-id-karty-vzroslomu/</translation>
     </message>
     <message>
-        <source>Certificates expire soon! </source>
-        <translation>Срок действия сертификатов скоро истекает! </translation>
+        <source>Certificates expire soon!</source>
+        <translation>Срок действия сертификатов скоро истекает!</translation>
     </message>
     <message>
         <source>This ASiC-S container contains XAdES signature. You are not allowed to add or remove signatures to this container.</source>
@@ -3266,21 +3247,6 @@ Additional licenses and components</source>
     <message>
         <source>This container contains CAdES signature. You are not allowed to add or remove signatures to this container.</source>
         <translation>Этот контейнер содержит подпись CAdES. К данному контейнеру нельзя добавить или удалить из него подпись.</translation>
-    </message>
-</context>
-<context>
-    <name>WarningRibbon</name>
-    <message numerus="yes">
-        <source>%n message</source>
-        <translation>
-            <numerusform>%n сообщение</numerusform>
-            <numerusform>%n сообщения</numerusform>
-            <numerusform>%n сообщения</numerusform>
-        </translation>
-    </message>
-    <message>
-        <source>Less</source>
-        <translation>Меньше</translation>
     </message>
 </context>
 </TS>
