@@ -29,29 +29,132 @@
 
 class QSslKey;
 
-class CKey
+struct CKey
 {
 public:
-	CKey() = default;
-	CKey(QByteArray _key, bool _isRSA): key(std::move(_key)), isRSA(_isRSA) {}
-	CKey(const QSslCertificate &cert);
-	bool operator==(const CKey &other) const { return other.key == key; }
+	enum Type {
+		SYMMETRIC_KEY,
+		PUBLIC_KEY,
+		CERTIFICATE,
+		CDOC1,
+		SERVER
+	};
 
-	void setCert(const QSslCertificate &c);
+	enum PKType {
+		ECC,
+		RSA
+	};
 
-	QByteArray key, cipher, publicKey;
-	QSslCertificate cert;
-	bool isRSA = false;
-	QString recipient;
-	// CDoc1
-	QString agreement, concatDigest, derive, method, id, name;
-	QByteArray AlgorithmID, PartyUInfo, PartyVInfo;
-	// CDoc2
-	QByteArray encrypted_kek;
-	QString keyserver_id, transaction_id;
+	enum DecryptionStatus {
+		CANNOT_DECRYPT,
+		CAN_DECRYPT,
+		NEED_KEY
+	};
+
+	Type type;
+	QString label;
+
+	// Decryption data
+	QByteArray encrypted_fmk;
+
+	// Recipients public key
+	// QByteArray key;
+
+	bool isSymmetric() const { return type == Type::SYMMETRIC_KEY; }
+	bool isPKI() const { return (type == Type::CERTIFICATE) || (type == Type::CDOC1) || (type == Type::PUBLIC_KEY) || (type == Type::SERVER); }
+	bool isCertificate() const { return (type == Type::CERTIFICATE) || (type == Type::CDOC1); }
+	bool isCDoc1() const { return type == Type::CDOC1; }
+
+	bool isTheSameRecipient(const CKey &key) const;
+	bool isTheSameRecipient(const QSslCertificate &cert) const;
+
+protected:
+	CKey(Type _type) : type(_type) {}
+private:
+	bool operator==(const CKey &other) const { return false; }
+};
+
+// Symmetric key (plain or PBKDF)
+// Usage:
+// CDoc2:encrypt/decrypt LT
+
+struct CKeySymmetric : public CKey {
+	QByteArray salt;
+	// PBKDF
+	QByteArray pw_salt;
+	// 0 symmetric key, >0 password
+	int32_t kdf_iter{};
+
+	CKeySymmetric(QByteArray _salt) : CKey(Type::SYMMETRIC_KEY), salt(std::move(_salt)) {}
+};
+
+// Base PKI key
+// Usage:
+// CDoc2:encrypt
+
+struct CKeyPKI : public CKey {
+	// Recipient's public key
+	PKType pk_type;
+	QByteArray rcpt_key;
+
+protected:
+	CKeyPKI(Type _type) : CKey(_type), pk_type(PKType::ECC) {}
+	CKeyPKI(Type _type, PKType _pk_type, QByteArray _rcpt_key) : CKey(_type), pk_type(_pk_type), rcpt_key(std::move(_rcpt_key)) {}
 };
 
 
+// Public key with additonal information
+// Usage:
+// CDoc1:encrypt
+
+struct CKeyCert : public CKeyPKI {
+	QSslCertificate cert;
+
+	CKeyCert(const QSslCertificate &cert) : CKeyCert(CKey::Type::CERTIFICATE, cert) {}
+
+	void setCert(const QSslCertificate &c);
+
+protected:
+	CKeyCert(Type _type) : CKeyPKI(_type) {}
+	CKeyCert(Type _type, const QSslCertificate &cert);
+};
+
+// CDoc1 decryption key (with additional information from file)
+// Usage:
+// CDoc1:decrypt
+
+struct CKeyCDoc1 : public CKeyCert {
+
+	QByteArray publicKey;
+	QString concatDigest, method;
+	QByteArray AlgorithmID, PartyUInfo, PartyVInfo;
+
+	CKeyCDoc1() : CKeyCert(Type::CDOC1) {}
+};
+
+// CDoc2 PKI key with key material
+// Usage:
+// CDoc2: decrypt
+
+struct CKeyPublicKey : public CKeyPKI {
+	// Either ECC public key or RSA encrypted kek
+	QByteArray key_material;
+
+	CKeyPublicKey(PKType _pk_type, QByteArray _rcpt_key) : CKeyPKI(Type::PUBLIC_KEY, _pk_type, std::move(_rcpt_key)) {}
+};
+
+// CDoc2 PKI key with server info
+// Usage:
+// CDoc2: decrypt
+
+struct CKeyServer : public CKeyPKI {
+	// Server info
+	QString keyserver_id, transaction_id;
+
+	static std::shared_ptr<CKeyServer> fromKey(const QByteArray &_key, PKType _pk_type);
+protected:
+	CKeyServer(QByteArray _rcpt_key, PKType _pk_type) : CKeyPKI(Type::SERVER, _pk_type, std::move(_rcpt_key)) {}
+};
 
 class CDoc
 {
@@ -64,14 +167,16 @@ public:
 	};
 
 	virtual ~CDoc() = default;
-	virtual CKey canDecrypt(const QSslCertificate &cert) const = 0;
-	virtual bool decryptPayload(const QByteArray &key) = 0;
+	// Return affirmative if keys match or NEED_KEY if document includes symmetric key */
+	virtual CKey::DecryptionStatus canDecrypt(const QSslCertificate &cert) const = 0;
+	virtual std::shared_ptr<CKey> getDecryptionKey(const QSslCertificate &cert) const = 0;
+	virtual bool decryptPayload(const QByteArray &fmk) = 0;
 	virtual bool save(const QString &path) = 0;
 	bool setLastError(const QString &msg) { return (lastError = msg).isEmpty(); }
-	virtual QByteArray transportKey(const CKey &key) = 0;
+	virtual QByteArray getFMK(const CKey &key, const QByteArray& secret) = 0;
 	virtual int version() = 0;
 
-	QList<CKey> keys;
+	QList<std::shared_ptr<CKey>> keys;
 	std::vector<File> files;
 	QString lastError;
 };
@@ -83,14 +188,15 @@ public:
 	CryptoDoc(QObject *parent = nullptr);
 	~CryptoDoc() final;
 
-	bool addKey( const CKey &key );
+	bool supportsSymmetricKeys() const;
+	bool addKey(const std::shared_ptr<CKey> &key);
 	bool canDecrypt(const QSslCertificate &cert);
 	void clear(const QString &file = {});
-	bool decrypt();
+	bool decrypt(std::shared_ptr<CKey> key, const QByteArray& secret);
+	bool encrypt(const QString &filename = {}, const QString& label = {}, const QByteArray& secret = {}, uint32_t kdf_iter = 0);
 	DocumentModel* documentModel() const;
-	bool encrypt(const QString &filename = {});
 	QString fileName() const;
-	QList<CKey> keys() const;
+	QList<std::shared_ptr<CKey>> keys() const;
 	bool move(const QString &to);
 	bool open( const QString &file );
 	void removeKey( int id );

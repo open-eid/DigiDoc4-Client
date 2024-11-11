@@ -52,7 +52,15 @@ color: #006EB5;
 }
 QToolButton:disabled {
 color: #727679;
-}</string>
+}
+#decrypt {
+color: white;
+background-color: #006EB5;
+}
+#decrypt:hover {
+background-color: #00AEE5;
+}
+</string>
   </property>
   <layout class="QGridLayout" name="AddressItemLayout">
    <property name="leftMargin">
@@ -138,6 +146,13 @@ color: #727679;
     </widget>
    </item>
    <item row="0" column="2" rowspan="2">
+    <widget class="QToolButton" name="decrypt">
+     <property name="text">
+      <string>DECRYPT</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="3" rowspan="2">
     <widget class="LabelButton" name="remove">
      <property name="minimumSize">
       <size>
@@ -173,7 +188,7 @@ color: #727679;
      </property>
     </widget>
    </item>
-   <item row="0" column="3" rowspan="2">
+   <item row="0" column="4" rowspan="2">
     <widget class="QToolButton" name="added">
      <property name="enabled">
       <bool>false</bool>
@@ -198,7 +213,7 @@ color: #727679;
      </property>
     </widget>
    </item>
-   <item row="0" column="4" rowspan="2">
+   <item row="0" column="5" rowspan="2">
     <widget class="QToolButton" name="add">
      <property name="minimumSize">
       <size>

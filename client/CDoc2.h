@@ -23,23 +23,35 @@
 
 #include <QtCore/QFile>
 
-class CDoc2 final: public CDoc, private QFile {
+class CDoc2 final: public CDoc, private QObject /*, private QFile */ {
 public:
 	explicit CDoc2() = default;
-	explicit CDoc2(const QString &path);
 
-	CKey canDecrypt(const QSslCertificate &cert) const final;
+	static bool isCDoc2File(const QString& path);
+
+	CKey::DecryptionStatus canDecrypt(const QSslCertificate &cert) const final;
+	std::shared_ptr<CKey> getDecryptionKey(const QSslCertificate &cert) const final;
 	bool decryptPayload(const QByteArray &fmk) final;
 	QByteArray deriveFMK(const QByteArray &priv, const CKey &key);
-	bool isSupported();
+
 	bool save(const QString &path) final;
-	QByteArray transportKey(const CKey &key) final;
+	// Write payload encrypted with sinbgle symmetric key
+	static bool save(const QString& path, const std::vector<File>& files, const QString& label, const QByteArray& secret, unsigned int kdf_iter);
+
+	QByteArray getFMK(const CKey &key, const QByteArray& secret) final;
 	int version() final;
 
+	static std::unique_ptr<CDoc2> load(const QString& _path);
+
 private:
+	CDoc2(QString path);
+
+	QString path;
 	QByteArray header_data, headerHMAC;
 	qint64 noncePos = -1;
 
 	static const QByteArray LABEL, CEK, HMAC, KEK, KEKPREMASTER, PAYLOAD, SALT;
 	static constexpr int KEY_LEN = 32, NONCE_LEN = 12;
+
+	QByteArray fetchKeyMaterial(const CKeyServer& key);
 };

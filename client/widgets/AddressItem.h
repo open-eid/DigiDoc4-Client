@@ -19,9 +19,11 @@
 
 #pragma once
 
+#include <memory>
+
 #include "widgets/Item.h"
 
-class CKey;
+struct CKey;
 
 class AddressItem final : public Item
 {
@@ -36,16 +38,19 @@ public:
 		Added,
 	};
 
-	explicit AddressItem(CKey k, QWidget *parent = {}, bool showIcon = false);
+	explicit AddressItem(const std::shared_ptr<CKey>& k, QWidget *parent = {}, bool showIcon = false);
 	~AddressItem() final;
 
-	const CKey& getKey() const;
-	void idChanged(const CKey &cert);
+	std::shared_ptr<CKey> getKey() const;
+	void idChanged(const std::shared_ptr<CKey>& cert);
 	void idChanged(const SslCertificate &cert) final;
 	void initTabOrder(QWidget *item) final;
 	QWidget* lastTabWidget() final;
 	void showButton(ShowToolButton show);
 	void stateChange(ria::qdigidoc4::ContainerState state) final;
+
+signals:
+	void decrypt(std::shared_ptr<CKey> key);
 
 private:
 	void changeEvent(QEvent *event) final;

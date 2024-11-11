@@ -49,10 +49,15 @@ KeyDialog::KeyDialog( const CKey &k, QWidget *parent )
 	d->view->setHeaderLabels({tr("Attribute"), tr("Value")});
 
 	connect(d->close, &QPushButton::clicked, this, &KeyDialog::accept);
-	connect(d->showCert, &QPushButton::clicked, this, [this, cert=k.cert] {
-		CertificateDetails::showCertificate(cert, this);
-	});
-	d->showCert->setHidden(k.cert.isNull());
+	if (k.type == CKey::CDOC1) {
+		const CKeyCDoc1& kd = static_cast<const CKeyCDoc1&>(k);
+		connect(d->showCert, &QPushButton::clicked, this, [this, cert=kd.cert] {
+			CertificateDetails::showCertificate(cert, this);
+		});
+		d->showCert->setHidden(kd.cert.isNull());
+	} else {
+		d->showCert->setHidden(true);
+	}
 
 	auto addItem = [&](const QString &parameter, const QString &value) {
 		if(value.isEmpty())
@@ -63,16 +68,22 @@ KeyDialog::KeyDialog( const CKey &k, QWidget *parent )
 		d->view->addTopLevelItem(i);
 	};
 
-	addItem(tr("Recipient"), k.recipient);
-	addItem(tr("Crypto method"), k.method);
-	addItem(tr("Agreement method"), k.agreement);
-	addItem(tr("Key derivation method"), k.derive);
-	addItem(tr("ConcatKDF digest method"), k.concatDigest);
-	addItem(tr("Key server ID"), k.keyserver_id);
-	addItem(tr("Transaction ID"), k.transaction_id);
-	addItem(tr("Expiry date"), k.cert.expiryDate().toLocalTime().toString(QStringLiteral("dd.MM.yyyy hh:mm:ss")));
-	addItem(tr("Issuer"), SslCertificate(k.cert).issuerInfo(QSslCertificate::CommonName));
+	bool adjust_size = false;
+	if (k.type == CKey::Type::CDOC1) {
+		const CKeyCDoc1& cd1key = static_cast<const CKeyCDoc1&>(k);
+		addItem(tr("Recipient"), cd1key.label);
+		addItem(tr("Crypto method"), cd1key.method);
+		addItem(tr("ConcatKDF digest method"), cd1key.concatDigest);
+		addItem(tr("Expiry date"), cd1key.cert.expiryDate().toLocalTime().toString(QStringLiteral("dd.MM.yyyy hh:mm:ss")));
+		addItem(tr("Issuer"), SslCertificate(cd1key.cert).issuerInfo(QSslCertificate::CommonName));
+		adjust_size = !cd1key.concatDigest.isEmpty();
+	}
+	addItem(tr("Label"), k.label);
+	if (k.type == CKey::SERVER) {
+		const CKeyServer& sk = static_cast<const CKeyServer&>(k);
+		addItem(tr("Key server ID"), sk.keyserver_id);
+		addItem(tr("Transaction ID"), sk.transaction_id);
+	}
 	d->view->resizeColumnToContents( 0 );
-	if(!k.agreement.isEmpty())
-		adjustSize();
+	if(adjust_size) adjustSize();
 }

@@ -29,6 +29,7 @@
 #include "Utils.h"
 #include "header_generated.h"
 #include "effects/FadeInNotification.h"
+#include "openssl/kdf.h"
 
 #include <QtCore/QBuffer>
 #include <QtCore/QDebug>
@@ -39,10 +40,16 @@
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkReply>
 #include <QtNetwork/QSslKey>
+#include <QSaveFile>
 
 #include <openssl/x509.h>
 
 #include <zlib.h>
+
+using cdoc20::recipients::KeyServerCapsule;
+using cdoc20::recipients::KeyDetailsUnion;
+using cdoc20::recipients::EccKeyDetails;
+using cdoc20::recipients::RsaKeyDetails;
 
 const QByteArray CDoc2::LABEL = "CDOC\x02";
 const QByteArray CDoc2::CEK = "CDOC20cek";
@@ -392,24 +399,36 @@ namespace cdoc20 {
 	const int TAR::Header::Size = int(sizeof(TAR::Header));
 }
 
-CDoc2::CDoc2(const QString &path)
-	: QFile(path)
+bool
+CDoc2::isCDoc2File(const QString& path)
 {
-	using namespace cdoc20::Recipients;
-	using namespace cdoc20::Header;
+	QFile f(path);
+	if(!f.open(QFile::ReadOnly)) return false;
+	if (f.read(LABEL.length()) != LABEL) return false;
+	return true;
+}
+
+CDoc2::CDoc2(QString _path)
+	: path(std::move(_path))
+	/*	: QFile(path) */
+{
+	using namespace cdoc20::recipients;
+	using namespace cdoc20::header;
 	setLastError(QStringLiteral("Invalid CDoc 2.0 header"));
 	uint32_t header_len = 0;
-	if(!open(QFile::ReadOnly) ||
-		read(LABEL.length()) != LABEL ||
-		read((char*)&header_len, int(sizeof(header_len))) != int(sizeof(header_len)))
+	QFile ifs(path);
+	if(!ifs.open(QFile::ReadOnly) ||
+		ifs.read(LABEL.length()) != LABEL ||
+		ifs.read((char*)&header_len, int(sizeof(header_len))) != int(sizeof(header_len)))
 		return;
-	header_data = read(qFromBigEndian<uint32_t>(header_len));
+	header_data = ifs.read(qFromBigEndian<uint32_t>(header_len));
 	if(header_data.size() != qFromBigEndian<uint32_t>(header_len))
 		return;
-	headerHMAC = read(KEY_LEN);
+	headerHMAC = ifs.read(KEY_LEN);
 	if(headerHMAC.size() != KEY_LEN)
 		return;
-	noncePos = pos();
+	noncePos = ifs.pos();
+	ifs.close();
 	flatbuffers::Verifier verifier(reinterpret_cast<const uint8_t*>(header_data.data()), header_data.size());
 	if(!VerifyHeaderBuffer(verifier))
 		return;
@@ -435,10 +454,10 @@ CDoc2::CDoc2(const QString &path)
 			qWarning() << "Unsupported FMK encryption method: skipping";
 			continue;
 		}
-		auto fillRecipient = [&] (auto key, bool isRSA) {
-			CKey k(toByteArray(key->recipient_public_key()), isRSA);
-			k.recipient = toString(recipient->key_label());
-			k.cipher = toByteArray(recipient->encrypted_fmk());
+		auto fillRecipientPK = [&] (CKey::PKType pk_type, auto key) {
+			std::shared_ptr<CKeyPublicKey> k(new CKeyPublicKey(pk_type, toByteArray(key->recipient_public_key())));
+			k->label = toString(recipient->key_label());
+			k->encrypted_fmk = toByteArray(recipient->encrypted_fmk());
 			return k;
 		};
 		switch(recipient->capsule_type())
@@ -451,44 +470,83 @@ CDoc2::CDoc2(const QString &path)
 					qWarning() << "Unsupported ECC curve: skipping";
 					continue;
 				}
-				CKey k = fillRecipient(key, false);
-				k.publicKey = toByteArray(key->sender_public_key());
-				keys.append(std::move(k));
+				std::shared_ptr<CKeyPublicKey> k = fillRecipientPK(CKey::PKType::ECC, key);
+				k->key_material = toByteArray(key->sender_public_key());
+				qDebug() << "Load PK:" << k->rcpt_key.toHex();
+				keys.append(k);
 			}
 			break;
 		case Capsule::RSAPublicKeyCapsule:
 			if(const auto *key = recipient->capsule_as_RSAPublicKeyCapsule())
 			{
-				CKey k = fillRecipient(key, true);
-				k.encrypted_kek = toByteArray(key->encrypted_kek());
-				keys.append(std::move(k));
+				std::shared_ptr<CKeyPublicKey> k = fillRecipientPK(CKey::PKType::RSA, key);
+				k->key_material = toByteArray(key->encrypted_kek());
+				keys.append(k);
 			}
 			break;
 		case Capsule::KeyServerCapsule:
-			if(const auto *server = recipient->capsule_as_KeyServerCapsule())
-			{
-				auto fillKeyServer = [&] (auto key, bool isRSA) {
-					CKey k = fillRecipient(key, isRSA);
-					k.keyserver_id = toString(server->keyserver_id());
-					k.transaction_id = toString(server->transaction_id());
-					return k;
-				};
-				switch(server->recipient_key_details_type())
-				{
-				case ServerDetailsUnion::ServerEccDetails:
-					if(const auto *eccDetails = server->recipient_key_details_as_ServerEccDetails())
-					{
-						if(eccDetails->curve() == EllipticCurve::secp384r1)
-							keys.append(fillKeyServer(eccDetails, false));
+			if (const KeyServerCapsule *server = recipient->capsule_as_KeyServerCapsule()) {
+				KeyDetailsUnion details = server->recipient_key_details_type();
+				std::shared_ptr<CKeyServer> ckey = nullptr;
+				switch (details) {
+				case KeyDetailsUnion::EccKeyDetails:
+					if(const EccKeyDetails *eccDetails = server->recipient_key_details_as_EccKeyDetails()) {
+						if(eccDetails->curve() == EllipticCurve::secp384r1) {
+							ckey = CKeyServer::fromKey(toByteArray(eccDetails->recipient_public_key()), CKey::PKType::ECC);
+						} else {
+							qWarning() << "Unsupported elliptic curve key type";
+						}
+					} else {
+						qWarning() << "Invalid file format";
 					}
 					break;
-				case ServerDetailsUnion::ServerRsaDetails:
-					if(const auto *rsaDetails = server->recipient_key_details_as_ServerRsaDetails())
-						keys.append(fillKeyServer(rsaDetails, true));
+				case KeyDetailsUnion::RsaKeyDetails:
+					if(const RsaKeyDetails *rsaDetails = server->recipient_key_details_as_RsaKeyDetails()) {
+						ckey = CKeyServer::fromKey(toByteArray(rsaDetails->recipient_public_key()), CKey::PKType::RSA);
+					} else {
+						qWarning() << "Invalid file format";
+					}
 					break;
 				default:
 					qWarning() << "Unsupported Key Server Details: skipping";
 				}
+				if (ckey) {
+					ckey->label = toString(recipient->key_label());
+					ckey->encrypted_fmk = toByteArray(recipient->encrypted_fmk());
+					ckey->keyserver_id = toString(server->keyserver_id());
+					ckey->transaction_id = toString(server->transaction_id());
+					keys.append(ckey);
+				}
+			} else {
+				qWarning() << "Invalid file format";
+			}
+			break;
+		case Capsule::SymmetricKeyCapsule:
+			if(const auto *capsule = recipient->capsule_as_SymmetricKeyCapsule())
+			{
+				auto salt = capsule->salt();
+				std::shared_ptr<CKeySymmetric> key(new CKeySymmetric(toByteArray(salt)));
+				key->label = toString(recipient->key_label());
+				key->encrypted_fmk = toByteArray(recipient->encrypted_fmk());
+				keys.append(key);
+			}
+			break;
+		case Capsule::PBKDF2Capsule:
+			if(const auto *capsule = recipient->capsule_as_PBKDF2Capsule()) {
+				KDFAlgorithmIdentifier kdf_id = capsule->kdf_algorithm_identifier();
+				if (kdf_id != KDFAlgorithmIdentifier::PBKDF2WithHmacSHA256) {
+					qWarning() << "Unsupported KDF algorithm: skipping";
+					continue;
+				}
+				auto salt = capsule->salt();
+				auto pw_salt = capsule->password_salt();
+				int32_t kdf_iter = capsule->kdf_iterations();
+				std::shared_ptr<CKeySymmetric> key(new CKeySymmetric(toByteArray(salt)));
+				key->label = toString(recipient->key_label());
+				key->encrypted_fmk = toByteArray(recipient->encrypted_fmk());
+				key->pw_salt = toByteArray(pw_salt);
+				key->kdf_iter = kdf_iter;
+				keys.append(key);
 			}
 			break;
 		default:
@@ -497,19 +555,43 @@ CDoc2::CDoc2(const QString &path)
 	}
 }
 
-CKey CDoc2::canDecrypt(const QSslCertificate &cert) const
+std::unique_ptr<CDoc2>
+CDoc2::load(const QString& path)
 {
-	return keys.value(keys.indexOf(CKey(cert)));
+	auto *cdoc = new CDoc2(path);
+	return std::unique_ptr<CDoc2>(cdoc);
+}
+
+CKey::DecryptionStatus
+CDoc2::canDecrypt(const QSslCertificate &cert) const
+{
+	CKey::DecryptionStatus status = CKey::DecryptionStatus::CANNOT_DECRYPT;
+	for (const std::shared_ptr<CKey> &key: keys) {
+		if (key->isTheSameRecipient(cert)) return CKey::CAN_DECRYPT;
+		if (key->isSymmetric()) status = CKey::DecryptionStatus::NEED_KEY;
+	}
+	return status;
+}
+
+std::shared_ptr<CKey> CDoc2::getDecryptionKey(const QSslCertificate &cert) const
+{
+	std::shared_ptr<CKey> best = {};
+	for (std::shared_ptr<CKey> key: keys) {
+		if (key->isTheSameRecipient(cert)) return key;
+		if (key->isSymmetric()) best = key;
+	}
+	return best;
 }
 
 bool CDoc2::decryptPayload(const QByteArray &fmk)
 {
-	if(!isOpen() || noncePos == -1)
-		return false;
+	QFile ifs(path);
+	if(!ifs.open(QFile::ReadOnly)) return false;
+	if (noncePos < 0) return false;
 	setLastError({});
-	seek(noncePos);
+	ifs.seek(noncePos);
 	QByteArray cek = Crypto::expand(fmk, CEK);
-	QByteArray nonce = read(NONCE_LEN);
+	QByteArray nonce = ifs.read(NONCE_LEN);
 #ifndef NDEBUG
 	qDebug() << "cek" << cek.toHex();
 	qDebug() << "nonce" << nonce.toHex();
@@ -518,10 +600,11 @@ bool CDoc2::decryptPayload(const QByteArray &fmk)
 	if(!dec.updateAAD(PAYLOAD + header_data + headerHMAC))
 		return false;
 	bool warning = false;
-	files = cdoc20::TAR(std::unique_ptr<QIODevice>(new cdoc20::stream(this, &dec))).files(warning);
+	files = cdoc20::TAR(std::unique_ptr<QIODevice>(new cdoc20::stream(&ifs, &dec))).files(warning);
 	if(warning)
 		setLastError(tr("CDoc contains additional payload data that is not part of content"));
-	QByteArray tag = read(16);
+	QByteArray tag = ifs.read(16);
+	ifs.close();
 #ifndef NDEBUG
 	qDebug() << "tag" << tag.toHex();
 #endif
@@ -531,7 +614,7 @@ bool CDoc2::decryptPayload(const QByteArray &fmk)
 	return !files.empty();
 }
 
-bool CDoc2::save(const QString &path)
+bool CDoc2::save(const QString &_path)
 {
 	setLastError({});
 	QByteArray fmk = Crypto::extract(Crypto::random(KEY_LEN), SALT);
@@ -544,23 +627,30 @@ bool CDoc2::save(const QString &path)
 #endif
 
 	flatbuffers::FlatBufferBuilder builder;
-	std::vector<flatbuffers::Offset<cdoc20::Header::RecipientRecord>> recipients;
+	std::vector<flatbuffers::Offset<cdoc20::header::RecipientRecord>> recipients;
+
 	auto toVector = [&builder](const QByteArray &data) {
 		return builder.CreateVector((const uint8_t*)data.data(), size_t(data.length()));
 	};
+
 	auto toString = [&builder](const QString &data) {
 		QByteArray utf8 = data.toUtf8();
 		return builder.CreateString(utf8.data(), size_t(utf8.length()));
 	};
-	auto sendToServer = [this](CKey &key, const QByteArray &recipient_id, const QByteArray &key_material, QLatin1String type) {
-		key.keyserver_id = Settings::CDOC2_DEFAULT_KEYSERVER;
-		if(key.keyserver_id.isEmpty())
-			return setLastError(QStringLiteral("keyserver_id cannot be empty"));
-		QNetworkRequest req = cdoc20::req(key.keyserver_id);
-		if(req.url().isEmpty())
-			return setLastError(QStringLiteral("No valid config found for keyserver_id: %1").arg(key.keyserver_id));
-		if(!cdoc20::checkConnection())
-			return false;
+
+	auto sendToServer = [this] (const QString& keyserver_id, const QByteArray &recipient_id, const QByteArray &key_material, QLatin1String type) -> QString {
+		if(keyserver_id.isEmpty()) {
+			setLastError(QStringLiteral("keyserver_id cannot be empty"));
+			return {};
+		}
+		QNetworkRequest req = cdoc20::req(keyserver_id);
+		if(req.url().isEmpty()) {
+			setLastError(QStringLiteral("No valid config found for keyserver_id: %1").arg(keyserver_id));
+			return {};
+		}
+		if(!cdoc20::checkConnection()) {
+			return {};
+		}
 		QScopedPointer<QNetworkAccessManager,QScopedPointerDeleteLater> nam(CheckConnection::setupNAM(req, Settings::CDOC2_POST_CERT));
 		QEventLoop e;
 		QNetworkReply *reply = nam->post(req, QJsonDocument({
@@ -570,96 +660,101 @@ bool CDoc2::save(const QString &path)
 		}).toJson());
 		connect(reply, &QNetworkReply::finished, &e, &QEventLoop::quit);
 		e.exec();
+		QString transaction_id;
 		if(reply->error() == QNetworkReply::NoError &&
-			reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() == 201)
-			key.transaction_id = QString::fromLatin1(reply->rawHeader("Location")).remove(QLatin1String("/key-capsules/"));
-		else
-			return setLastError(reply->errorString());
-		if(key.transaction_id.isEmpty())
-			return setLastError(QStringLiteral("Failed to post key capsule"));
-		return true;
+			reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() == 201) {
+			transaction_id = QString::fromLatin1(reply->rawHeader("Location")).remove(QLatin1String("/key-capsules/"));
+		} else {
+			setLastError(reply->errorString());
+			return {};
+		}
+		if(transaction_id.isEmpty())
+			setLastError(QStringLiteral("Failed to post key capsule"));
+		return transaction_id;
 	};
 
-	for(CKey &key: keys)
-	{
-		if(key.isRSA)
-		{
+	for(const std::shared_ptr<CKey> &key: keys) {
+		if (!key->isPKI()) {
+			return setLastError(QStringLiteral("Invalid key type"));
+		}
+		const auto& pki = static_cast<const CKeyPKI&>(*key);
+		if(pki.pk_type == CKey::PKType::RSA) {
 			QByteArray kek = Crypto::random(fmk.size());
 			QByteArray xor_key = Crypto::xor_data(fmk, kek);
-			auto publicKey = Crypto::fromRSAPublicKeyDer(key.key);
+			auto publicKey = Crypto::fromRSAPublicKeyDer(pki.rcpt_key);
 			if(!publicKey)
 				return false;
 			QByteArray encrytpedKek = Crypto::encrypt(publicKey.get(), RSA_PKCS1_OAEP_PADDING, kek);
 #ifndef NDEBUG
-			qDebug() << "publicKeyDer" << key.key.toHex();
+			qDebug() << "publicKeyDer" << pki.rcpt_key.toHex();
 			qDebug() << "kek" << kek.toHex();
 			qDebug() << "xor" << xor_key.toHex();
 			qDebug() << "encrytpedKek" << encrytpedKek.toHex();
 #endif
-			if(!Settings::CDOC2_USE_KEYSERVER)
-			{
-				auto rsaPublicKey = cdoc20::Recipients::CreateRSAPublicKeyCapsule(builder,
-					toVector(key.key), toVector(encrytpedKek));
-				recipients.push_back(cdoc20::Header::CreateRecipientRecord(builder,
-					cdoc20::Recipients::Capsule::RSAPublicKeyCapsule, rsaPublicKey.Union(),
-					toString(key.recipient), toVector(xor_key), cdoc20::Header::FMKEncryptionMethod::XOR));
-				continue;
+			if(!Settings::CDOC2_USE_KEYSERVER) {
+				auto rsaPublicKey = cdoc20::recipients::CreateRSAPublicKeyCapsule(builder,
+					toVector(pki.rcpt_key), toVector(encrytpedKek));
+				auto offs = cdoc20::header::CreateRecipientRecord(builder,
+					cdoc20::recipients::Capsule::RSAPublicKeyCapsule, rsaPublicKey.Union(),
+					toString(pki.label), toVector(xor_key), cdoc20::header::FMKEncryptionMethod::XOR);
+				recipients.push_back(offs);
+			} else {
+				QString keyserver_id = Settings::CDOC2_DEFAULT_KEYSERVER;
+				QString transaction_id = sendToServer(keyserver_id, pki.rcpt_key, encrytpedKek, QLatin1String("rsa"));
+				if (transaction_id.isEmpty()) return false;
+				auto rsaKeyServer = cdoc20::recipients::CreateRsaKeyDetails(builder, toVector(pki.rcpt_key));
+				auto keyServer = cdoc20::recipients::CreateKeyServerCapsule(builder,
+					cdoc20::recipients::KeyDetailsUnion::RsaKeyDetails,
+					rsaKeyServer.Union(), toString(keyserver_id), toString(transaction_id));
+				auto offs = cdoc20::header::CreateRecipientRecord(builder,
+					cdoc20::recipients::Capsule::KeyServerCapsule, keyServer.Union(),
+					toString(pki.label), toVector(xor_key), cdoc20::header::FMKEncryptionMethod::XOR);
+				recipients.push_back(offs);
 			}
-
-			if(!sendToServer(key, key.key, encrytpedKek, QLatin1String("rsa")))
-				return false;
-			auto rsaKeyServer = cdoc20::Recipients::CreateServerRsaDetails(builder, toVector(key.key));
-			auto keyServer = cdoc20::Recipients::CreateKeyServerCapsule(builder,
-				cdoc20::Recipients::ServerDetailsUnion::ServerRsaDetails,
-				rsaKeyServer.Union(), toString(key.keyserver_id), toString(key.transaction_id));
-			recipients.push_back(cdoc20::Header::CreateRecipientRecord(builder,
-				cdoc20::Recipients::Capsule::KeyServerCapsule, keyServer.Union(),
-				toString(key.recipient), toVector(xor_key), cdoc20::Header::FMKEncryptionMethod::XOR));
-			continue;
-		}
-
-		auto publicKey = Crypto::fromECPublicKeyDer(key.key, NID_secp384r1);
-		if(!publicKey)
-			return false;
-		auto ephKey = Crypto::genECKey(publicKey.get());
-		QByteArray sharedSecret = Crypto::derive(ephKey.get(), publicKey.get());
-		QByteArray ephPublicKeyDer = Crypto::toPublicKeyDer(ephKey.get());
-		QByteArray kekPm = Crypto::extract(sharedSecret, KEKPREMASTER);
-		QByteArray info = KEK + cdoc20::Header::EnumNameFMKEncryptionMethod(cdoc20::Header::FMKEncryptionMethod::XOR) + key.key + ephPublicKeyDer;
-		QByteArray kek = Crypto::expand(kekPm, info, fmk.size());
-		QByteArray xor_key = Crypto::xor_data(fmk, kek);
+		} else {
+			auto publicKey = Crypto::fromECPublicKeyDer(pki.rcpt_key, NID_secp384r1);
+			if(!publicKey) return false;
+			auto ephKey = Crypto::genECKey(publicKey.get());
+			QByteArray sharedSecret = Crypto::derive(ephKey.get(), publicKey.get());
+			QByteArray ephPublicKeyDer = Crypto::toPublicKeyDer(ephKey.get());
+			QByteArray kekPm = Crypto::extract(sharedSecret, KEKPREMASTER);
+			QByteArray info = KEK + cdoc20::header::EnumNameFMKEncryptionMethod(cdoc20::header::FMKEncryptionMethod::XOR) + pki.rcpt_key + ephPublicKeyDer;
+			QByteArray kek = Crypto::expand(kekPm, info, fmk.size());
+			QByteArray xor_key = Crypto::xor_data(fmk, kek);
 #ifndef NDEBUG
-		qDebug() << "publicKeyDer" << key.key.toHex();
-		qDebug() << "ephPublicKeyDer" << ephPublicKeyDer.toHex();
-		qDebug() << "sharedSecret" << sharedSecret.toHex();
-		qDebug() << "kekPm" << kekPm.toHex();
-		qDebug() << "kek" << kek.toHex();
-		qDebug() << "xor" << xor_key.toHex();
+			qDebug() << "publicKeyDer" << pki.rcpt_key.toHex();
+			qDebug() << "ephPublicKeyDer" << ephPublicKeyDer.toHex();
+			qDebug() << "sharedSecret" << sharedSecret.toHex();
+			qDebug() << "kekPm" << kekPm.toHex();
+			qDebug() << "kek" << kek.toHex();
+			qDebug() << "xor" << xor_key.toHex();
 #endif
-		if(!Settings::CDOC2_USE_KEYSERVER)
-		{
-			auto eccPublicKey = cdoc20::Recipients::CreateECCPublicKeyCapsule(builder,
-				cdoc20::Recipients::EllipticCurve::secp384r1, toVector(key.key), toVector(ephPublicKeyDer));
-			recipients.push_back(cdoc20::Header::CreateRecipientRecord(builder,
-				cdoc20::Recipients::Capsule::ECCPublicKeyCapsule, eccPublicKey.Union(),
-				toString(key.recipient), toVector(xor_key), cdoc20::Header::FMKEncryptionMethod::XOR));
-			continue;
+			if(!Settings::CDOC2_USE_KEYSERVER) {
+				auto eccPublicKey = cdoc20::recipients::CreateECCPublicKeyCapsule(builder,
+																				  cdoc20::recipients::EllipticCurve::secp384r1, toVector(pki.rcpt_key), toVector(ephPublicKeyDer));
+				auto offs = cdoc20::header::CreateRecipientRecord(builder,
+																  cdoc20::recipients::Capsule::ECCPublicKeyCapsule, eccPublicKey.Union(),
+																  toString(pki.label), toVector(xor_key), cdoc20::header::FMKEncryptionMethod::XOR);
+				recipients.push_back(offs);
+			} else {
+				QString keyserver_id = Settings::CDOC2_DEFAULT_KEYSERVER;
+				QString transaction_id = sendToServer(keyserver_id, pki.rcpt_key, ephPublicKeyDer, QLatin1String("ecc_secp384r1"));
+				if (transaction_id.isEmpty()) return false;
+				auto eccKeyServer = cdoc20::recipients::CreateEccKeyDetails(builder,
+																			cdoc20::recipients::EllipticCurve::secp384r1, toVector(pki.rcpt_key));
+				auto keyServer = cdoc20::recipients::CreateKeyServerCapsule(builder,
+																			cdoc20::recipients::KeyDetailsUnion::EccKeyDetails,
+																			eccKeyServer.Union(), toString(keyserver_id), toString(transaction_id));
+				auto offs = cdoc20::header::CreateRecipientRecord(builder,
+																  cdoc20::recipients::Capsule::KeyServerCapsule, keyServer.Union(),
+																  toString(pki.label), toVector(xor_key), cdoc20::header::FMKEncryptionMethod::XOR);
+				recipients.push_back(offs);
+			}
 		}
-
-		if(!sendToServer(key, key.key, ephPublicKeyDer, QLatin1String("ecc_secp384r1")))
-			return false;
-		auto eccKeyServer = cdoc20::Recipients::CreateServerEccDetails(builder,
-			cdoc20::Recipients::EllipticCurve::secp384r1, toVector(key.key));
-		auto keyServer = cdoc20::Recipients::CreateKeyServerCapsule(builder,
-			cdoc20::Recipients::ServerDetailsUnion::ServerEccDetails,
-			eccKeyServer.Union(), toString(key.keyserver_id), toString(key.transaction_id));
-		recipients.push_back(cdoc20::Header::CreateRecipientRecord(builder,
-			cdoc20::Recipients::Capsule::KeyServerCapsule, keyServer.Union(),
-			toString(key.recipient), toVector(xor_key), cdoc20::Header::FMKEncryptionMethod::XOR));
 	}
 
-	auto offset = cdoc20::Header::CreateHeader(builder, builder.CreateVector(recipients),
-		cdoc20::Header::PayloadEncryptionMethod::CHACHA20POLY1305);
+	auto offset = cdoc20::header::CreateHeader(builder, builder.CreateVector(recipients),
+											   cdoc20::header::PayloadEncryptionMethod::CHACHA20POLY1305);
 	builder.Finish(offset);
 
 	QByteArray header = QByteArray::fromRawData((const char*)builder.GetBufferPointer(), int(builder.GetSize()));
@@ -672,102 +767,252 @@ bool CDoc2::save(const QString &path)
 	Crypto::Cipher enc(EVP_chacha20_poly1305(), cek, nonce, true);
 	enc.updateAAD(PAYLOAD + header + headerHMAC);
 	auto header_len = qToBigEndian<uint32_t>(uint32_t(header.size()));
-	remove();
-	QFile file(path);
-	if(!file.open(QFile::WriteOnly))
-		return setLastError(file.errorString());
-	file.write(LABEL);
-	file.write((const char*)&header_len, int(sizeof(header_len)));
-	file.write(header);
-	file.write(headerHMAC);
-	file.write(nonce);
-	if(!cdoc20::TAR(std::unique_ptr<QIODevice>(new cdoc20::stream(&file, &enc))).save(files))
-	{
-		file.remove();
+
+	/* Use TmpFile wrapper so the original will not be lost during error */
+	QSaveFile tmp(_path);
+	tmp.setDirectWriteFallback(true);
+	if (!tmp.open(QFile::WriteOnly)) {
+		setLastError(tmp.errorString());
 		return false;
 	}
-	if(!enc.result())
-	{
-		file.remove();
+	/* Write contents to temporary */
+	tmp.write(LABEL);
+	tmp.write((const char*)&header_len, qint64(sizeof(header_len)));
+	tmp.write(header);
+	tmp.write(headerHMAC);
+	tmp.write(nonce);
+	if(!cdoc20::TAR(std::unique_ptr<QIODevice>(new cdoc20::stream(&tmp, &enc))).save(files)) {
+		return false;
+	}
+	if(!enc.result()) {
 		return false;
 	}
 	QByteArray tag = enc.tag();
 #ifndef NDEBUG
 	qDebug() << "tag" << tag.toHex();
 #endif
-	file.write(tag);
+	tmp.write(tag);
+	tmp.commit();
+	this->path = _path;
 	return true;
 }
 
-QByteArray CDoc2::transportKey(const CKey &_key)
+bool
+CDoc2::save(const QString& _path, const std::vector<File>& files, const QString& label, const QByteArray& secret, unsigned int kdf_iter)
+{
+	QByteArray fmk = Crypto::extract(Crypto::random(KEY_LEN), SALT);
+	QByteArray cek = Crypto::expand(fmk, CEK);
+	QByteArray hhk = Crypto::expand(fmk, HMAC);
+#ifndef NDEBUG
+	qDebug() << "fmk" << fmk.toHex();
+	qDebug() << "cek" << cek.toHex();
+	qDebug() << "hhk" << hhk.toHex();
+#endif
+
+	flatbuffers::FlatBufferBuilder builder;
+	std::vector<flatbuffers::Offset<cdoc20::header::RecipientRecord>> recipients;
+
+	auto toVector = [&builder](const QByteArray &data) {
+		return builder.CreateVector((const uint8_t*)data.data(), size_t(data.length()));
+	};
+
+	auto toString = [&builder](const QString &data) {
+		QByteArray utf8 = data.toUtf8();
+		return builder.CreateString(utf8.data(), size_t(utf8.length()));
+	};
+
+	if (kdf_iter > 0) {
+		// PasswordSalt_i = CSRNG()
+		QByteArray pw_salt = Crypto::random();
+		// PasswordKeyMaterial_i = PBKDF2(Password_i, PasswordSalt_i)
+		QByteArray key_material = Crypto::pbkdf2_sha256(secret, pw_salt, kdf_iter);
+#ifndef NDEBUG
+		qDebug() << "Key material: " << key_material.toHex();
+#endif \
+	// KeyMaterialSalt_i = CSRNG()
+		QByteArray salt = Crypto::random();
+		// KEK_i = HKDF(KeyMaterialSalt_i, PasswordKeyMaterial_i)
+		QByteArray info = KEK + cdoc20::header::EnumNameFMKEncryptionMethod(cdoc20::header::FMKEncryptionMethod::XOR) + secret;
+		QByteArray tmp = Crypto::extract(key_material, salt, 32);
+		QByteArray kek = Crypto::expand(tmp, info, 32);
+
+		QByteArray xor_key = Crypto::xor_data(fmk, kek);
+
+		auto capsule = cdoc20::recipients::CreatePBKDF2Capsule(builder, toVector(salt), toVector(pw_salt), cdoc20::recipients::KDFAlgorithmIdentifier::PBKDF2WithHmacSHA256, kdf_iter);
+		auto offs = cdoc20::header::CreateRecipientRecord(builder,
+														  cdoc20::recipients::Capsule::PBKDF2Capsule, capsule.Union(),
+														  toString(label), toVector(xor_key), cdoc20::header::FMKEncryptionMethod::XOR);
+		recipients.push_back(offs);
+	} else {
+		// KeyMaterialSalt_i = CSRNG()
+		QByteArray salt = Crypto::random();
+		// KeyMaterialSalt_i = CSRNG()
+		// KEK_i = HKDF(KeyMaterialSalt_i, S_i)
+		QByteArray info = KEK + cdoc20::header::EnumNameFMKEncryptionMethod(cdoc20::header::FMKEncryptionMethod::XOR) + label.toUtf8();
+		QByteArray tmp = Crypto::extract(secret, salt, 32);
+		QByteArray kek = Crypto::expand(tmp, info, 32);
+
+		QByteArray xor_key = Crypto::xor_data(fmk, kek);
+
+		auto capsule = cdoc20::recipients::CreateSymmetricKeyCapsule(builder, toVector(salt));
+		auto offs = cdoc20::header::CreateRecipientRecord(builder,
+														  cdoc20::recipients::Capsule::SymmetricKeyCapsule, capsule.Union(),
+														  toString(label), toVector(xor_key), cdoc20::header::FMKEncryptionMethod::XOR);
+		recipients.push_back(offs);
+	}
+
+	auto offset = cdoc20::header::CreateHeader(builder, builder.CreateVector(recipients),
+											   cdoc20::header::PayloadEncryptionMethod::CHACHA20POLY1305);
+	builder.Finish(offset);
+
+	QByteArray header = QByteArray::fromRawData((const char*)builder.GetBufferPointer(), int(builder.GetSize()));
+	QByteArray headerHMAC = Crypto::sign_hmac(hhk, header);
+	QByteArray nonce = Crypto::random(NONCE_LEN);
+#ifndef NDEBUG
+	qDebug() << "hmac" << headerHMAC.toHex();
+	qDebug() << "nonce" << nonce.toHex();
+#endif
+	Crypto::Cipher enc(EVP_chacha20_poly1305(), cek, nonce, true);
+	enc.updateAAD(PAYLOAD + header + headerHMAC);
+	auto header_len = qToBigEndian<uint32_t>(uint32_t(header.size()));
+
+	/* Use TmpFile wrapper so the original will not be lost during error */
+	QSaveFile tmp(_path);
+	tmp.setDirectWriteFallback(true);
+	if (!tmp.open(QFile::WriteOnly)) {
+		return false;
+	}
+	/* Write contents to temporary */
+	tmp.write(LABEL);
+	tmp.write((const char*)&header_len, qint64(sizeof(header_len)));
+	tmp.write(header);
+	tmp.write(headerHMAC);
+	tmp.write(nonce);
+	if(!cdoc20::TAR(std::unique_ptr<QIODevice>(new cdoc20::stream(&tmp, &enc))).save(files)) {
+		return false;
+	}
+	if(!enc.result()) {
+		return false;
+	}
+	QByteArray tag = enc.tag();
+#ifndef NDEBUG
+	qDebug() << "tag" << tag.toHex();
+#endif
+	tmp.write(tag);
+	tmp.commit();
+	return true;
+}
+
+
+QByteArray CDoc2::fetchKeyMaterial(const CKeyServer& key)
+{
+	QNetworkRequest req = cdoc20::req(key.keyserver_id, key.transaction_id);
+	if(req.url().isEmpty()) {
+		setLastError(QStringLiteral("No valid config found for keyserver_id: %1").arg(key.keyserver_id));
+		return {};
+	}
+	if(!cdoc20::checkConnection()) {
+		return {};
+	}
+	auto authKey = dispatchToMain(&QSigner::key, qApp->signer());
+	QScopedPointer<QNetworkAccessManager,QScopedPointerDeleteLater> nam(
+				CheckConnection::setupNAM(req, qApp->signer()->tokenauth().cert(), authKey, Settings::CDOC2_GET_CERT));
+	QEventLoop e;
+	QNetworkReply *reply = nam->get(req);
+	connect(reply, &QNetworkReply::finished, &e, &QEventLoop::quit);
+	e.exec();
+	if(authKey.handle()) {
+		qApp->signer()->logout();
+	}
+	if(reply->error() != QNetworkReply::NoError && reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() != 201) {
+		setLastError(reply->errorString());
+		return {};
+	}
+	QJsonObject json = QJsonDocument::fromJson(reply->readAll()).object();
+	QByteArray key_material = QByteArray::fromBase64(json.value(QLatin1String("ephemeral_key_material")).toString().toLatin1());
+	return std::move(key_material);
+}
+
+QByteArray CDoc2::getFMK(const CKey &key, const QByteArray& secret)
 {
 	setLastError({});
-	CKey key = _key;
-	if(!key.transaction_id.isEmpty())
-	{
-		QNetworkRequest req = cdoc20::req(key.keyserver_id, key.transaction_id);
-		if(req.url().isEmpty())
-		{
-			setLastError(QStringLiteral("No valid config found for keyserver_id: %1").arg(key.keyserver_id));
-			return {};
+	QByteArray kek;
+	if (key.isSymmetric()) {
+		// Symmetric key
+		const auto &sk = static_cast<const CKeySymmetric&>(key);
+		if (sk.kdf_iter > 0) {
+#ifndef NDEBUG
+			qDebug() << "Password based symmetric key: " << key.label;
+#endif
+			// KEY_MATERIAL = PBKDF2(PASSWORD, PASSWORD_SALT)
+			QByteArray key_material = Crypto::pbkdf2_sha256(secret, sk.pw_salt, sk.kdf_iter);
+#ifndef NDEBUG
+			qDebug() << "Key material: " << key_material.toHex();
+#endif
+			// KEK = HKDF(SALT, KEY_MATERIAL)
+			QByteArray info = KEK + cdoc20::header::EnumNameFMKEncryptionMethod(cdoc20::header::FMKEncryptionMethod::XOR) + secret;
+			QByteArray tmp = Crypto::extract(key_material, sk.salt, 32);
+			kek = Crypto::expand(tmp, info, 32);
+		} else {
+#ifndef NDEBUG
+			qDebug() << "Plain symmetric key: " << key.label;
+#endif
+			QByteArray info = KEK + cdoc20::header::EnumNameFMKEncryptionMethod(cdoc20::header::FMKEncryptionMethod::XOR) + sk.label.toUtf8();
+			QByteArray tmp = Crypto::extract(secret, sk.salt, 32);
+			kek = Crypto::expand(tmp, info, 32);
 		}
-		if(!cdoc20::checkConnection())
-			return {};
-		auto authKey = dispatchToMain(&QSigner::key, qApp->signer());
-		QScopedPointer<QNetworkAccessManager,QScopedPointerDeleteLater> nam(
-			CheckConnection::setupNAM(req, qApp->signer()->tokenauth().cert(), authKey, Settings::CDOC2_GET_CERT));
-		QEventLoop e;
-		QNetworkReply *reply = nam->get(req);
-		connect(reply, &QNetworkReply::finished, &e, &QEventLoop::quit);
-		e.exec();
-		if(authKey.handle())
-			qApp->signer()->logout();
-		if(reply->error() != QNetworkReply::NoError &&
-			reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() != 201)
-		{
-			setLastError(reply->errorString());
-			return {};
+	} else {
+		// Public/private key
+		const auto &pki = static_cast<const CKeyPKI&>(key);
+		QByteArray key_material;
+		if(key.type == CKey::Type::SERVER) {
+			const auto &sk = static_cast<const CKeyServer&>(key);
+			key_material = fetchKeyMaterial(sk);
+		} else if (key.type == CKey::PUBLIC_KEY) {
+			const auto& pk = static_cast<const CKeyPublicKey&>(key);
+			key_material = pk.key_material;
 		}
-		QJsonObject json = QJsonDocument::fromJson(reply->readAll()).object();
-		QByteArray key_material = QByteArray::fromBase64(
-			json.value(QLatin1String("ephemeral_key_material")).toString().toLatin1());
-		if(json.value(QLatin1String("capsule_type")) == QLatin1String("rsa"))
-			key.encrypted_kek = std::move(key_material);
-		else
-			key.publicKey = std::move(key_material);
+#ifndef NDEBUG
+		qDebug() << "Public key" << pki.rcpt_key.toHex();
+		qDebug() << "Key material" << key_material.toHex();
+#endif
+		if (pki.pk_type == CKey::PKType::RSA) {
+			kek = qApp->signer()->decrypt([&key_material](QCryptoBackend *backend) {
+					return backend->decrypt(key_material, true);
+		});
+		} else {
+			kek = qApp->signer()->decrypt([&pki, &key_material](QCryptoBackend *backend) {
+				QByteArray kekPm = backend->deriveHMACExtract(key_material, KEKPREMASTER, KEY_LEN);
+#ifndef NDEBUG
+				qDebug() << "kekPm" << kekPm.toHex();
+#endif
+				QByteArray info = KEK + cdoc20::header::EnumNameFMKEncryptionMethod(cdoc20::header::FMKEncryptionMethod::XOR) + pki.rcpt_key + key_material;
+				return Crypto::expand(kekPm, info, KEY_LEN);
+			});
+		}
 	}
 #ifndef NDEBUG
-	qDebug() << "publicKeyDer" << key.key.toHex();
-	qDebug() << "ephPublicKeyDer" << key.publicKey.toHex();
+	qDebug() << "KEK: " << kek.toHex();
 #endif
-	QByteArray kek = qApp->signer()->decrypt([&key](QCryptoBackend *backend) {
-		if(key.isRSA)
-			return backend->decrypt(key.encrypted_kek, true);
-		QByteArray kekPm = backend->deriveHMACExtract(key.publicKey, KEKPREMASTER, KEY_LEN);
-#ifndef NDEBUG
-		qDebug() << "kekPm" << kekPm.toHex();
-#endif
-		QByteArray info = KEK + cdoc20::Header::EnumNameFMKEncryptionMethod(cdoc20::Header::FMKEncryptionMethod::XOR) + key.key + key.publicKey;
-		return Crypto::expand(kekPm, info, KEY_LEN);
-	});
-	if(kek.isEmpty())
-	{
+
+	if(kek.isEmpty()) {
 		setLastError(QStringLiteral("Failed to derive key"));
 		return {};
 	}
-	QByteArray fmk = Crypto::xor_data(key.cipher, kek);
+	QByteArray fmk = Crypto::xor_data(key.encrypted_fmk, kek);
 	QByteArray hhk = Crypto::expand(fmk, HMAC);
 #ifndef NDEBUG
 	qDebug() << "kek" << kek.toHex();
-	qDebug() << "xor" << key.cipher.toHex();
+	qDebug() << "xor" << key.encrypted_fmk.toHex();
 	qDebug() << "fmk" << fmk.toHex();
 	qDebug() << "hhk" << hhk.toHex();
 	qDebug() << "hmac" << headerHMAC.toHex();
 #endif
-	if(Crypto::sign_hmac(hhk, header_data) == headerHMAC)
-		return fmk;
-	setLastError(QStringLiteral("CDoc 2.0 hash mismatch"));
-	return {};
+	if(Crypto::sign_hmac(hhk, header_data) != headerHMAC) {
+		setLastError(QStringLiteral("CDoc 2.0 hash mismatch"));
+		return {};
+	}
+	return fmk;
 }
 
 int CDoc2::version()
