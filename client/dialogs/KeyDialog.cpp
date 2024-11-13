@@ -64,15 +64,11 @@ KeyDialog::KeyDialog( const CKey &k, QWidget *parent )
 	};
 
 	addItem(tr("Recipient"), k.recipient);
-	addItem(tr("Crypto method"), k.method);
-	addItem(tr("Agreement method"), k.agreement);
-	addItem(tr("Key derivation method"), k.derive);
 	addItem(tr("ConcatKDF digest method"), k.concatDigest);
 	addItem(tr("Key server ID"), k.keyserver_id);
 	addItem(tr("Transaction ID"), k.transaction_id);
 	addItem(tr("Expiry date"), k.cert.expiryDate().toLocalTime().toString(QStringLiteral("dd.MM.yyyy hh:mm:ss")));
 	addItem(tr("Issuer"), SslCertificate(k.cert).issuerInfo(QSslCertificate::CommonName));
 	d->view->resizeColumnToContents( 0 );
-	if(!k.agreement.isEmpty())
-		adjustSize();
+	adjustSize();
 }

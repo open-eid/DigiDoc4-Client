@@ -157,6 +157,10 @@
         <source>Expired on</source>
         <translation>Aegus</translation>
     </message>
+    <message>
+        <source>Unsupported cryptographic algorithm or recipient type</source>
+        <translation>Mittetoetatud krüptograafiline algoritm või adressaadi tüüp</translation>
+    </message>
 </context>
 <context>
     <name>Application</name>
@@ -1292,18 +1296,6 @@
         <translation>NÄITA SERTIFIKAATI</translation>
     </message>
     <message>
-        <source>Crypto method</source>
-        <translation>Krüpteerimismeetod</translation>
-    </message>
-    <message>
-        <source>Agreement method</source>
-        <translation>Aktsepteeritud meetod</translation>
-    </message>
-    <message>
-        <source>Key derivation method</source>
-        <translation>Võtme tuletamise meetod</translation>
-    </message>
-    <message>
         <source>ConcatKDF digest method</source>
         <translation>ConcatKDF referaatmeetod</translation>
     </message>
@@ -1336,6 +1328,13 @@
     <message>
         <source>Transaction ID</source>
         <translation>Transaktsiooni identifikaator</translation>
+    </message>
+</context>
+<context>
+    <name>LabelItem</name>
+    <message>
+        <source>The container must be decrypted in order to see the contents of an encrypted container.</source>
+        <translation>Krüpteeritud ümbriku sisu nägemiseks tuleb ümbrik dekrüpteerida.</translation>
     </message>
 </context>
 <context>
@@ -3161,6 +3160,14 @@ Täiendavad litsentsid ja komponendid</translation>
     <message>
         <source>This container contains CAdES signature. You are not allowed to add or remove signatures to this container.</source>
         <translation>Tegemist on CAdES allkirja sisaldava ümbrikuga. Sellele ümbrikule ei saa allkirja lisada ega eemaldada.</translation>
+    </message>
+    <message>
+        <source>The encrypted container contains a cryptographic algorithm or recipient type that is not supported in this DigiDoc4 application version. Please make sure that you are using the latest DigiDoc4 application version.</source>
+        <translation>Krüpteeritud ümbrik sisaldab DigiDoc4 rakenduse käesolevas versioonis mittetoetatud krüptograafilist algoritmi või adressaadi tüüpi. Palun veendu, et kasutad uusimat DigiDoc4 rakenduse versiooni.</translation>
+    </message>
+    <message>
+        <source>https://www.id.ee/en/article/install-id-software/</source>
+        <translation>https://www.id.ee/artikkel/paigalda-id-tarkvara/</translation>
     </message>
 </context>
 </TS>

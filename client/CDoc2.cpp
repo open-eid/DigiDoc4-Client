@@ -432,13 +432,15 @@ CDoc2::CDoc2(const QString &path)
 	for(const auto *recipient: *recipients){
 		if(recipient->fmk_encryption_method() != FMKEncryptionMethod::XOR)
 		{
+			keys.append(CKey::Unsupported);
 			qWarning() << "Unsupported FMK encryption method: skipping";
 			continue;
 		}
-		auto fillRecipient = [&] (auto key, bool isRSA) {
+		auto fillRecipient = [&] (auto key, bool isRSA, bool unsupported = false) {
 			CKey k(toByteArray(key->recipient_public_key()), isRSA);
 			k.recipient = toString(recipient->key_label());
 			k.cipher = toByteArray(recipient->encrypted_fmk());
+			k.unsupported = unsupported;
 			return k;
 		};
 		switch(recipient->capsule_type())
@@ -446,12 +448,7 @@ CDoc2::CDoc2(const QString &path)
 		case Capsule::ECCPublicKeyCapsule:
 			if(const auto *key = recipient->capsule_as_ECCPublicKeyCapsule())
 			{
-				if(key->curve() != EllipticCurve::secp384r1)
-				{
-					qWarning() << "Unsupported ECC curve: skipping";
-					continue;
-				}
-				CKey k = fillRecipient(key, false);
+				CKey k = fillRecipient(key, false, key->curve() != EllipticCurve::secp384r1);
 				k.publicKey = toByteArray(key->sender_public_key());
 				keys.append(std::move(k));
 			}
@@ -467,8 +464,8 @@ CDoc2::CDoc2(const QString &path)
 		case Capsule::KeyServerCapsule:
 			if(const auto *server = recipient->capsule_as_KeyServerCapsule())
 			{
-				auto fillKeyServer = [&] (auto key, bool isRSA) {
-					CKey k = fillRecipient(key, isRSA);
+				auto fillKeyServer = [&] (auto key, bool isRSA, bool unsupported = false) {
+					CKey k = fillRecipient(key, isRSA, unsupported);
 					k.keyserver_id = toString(server->keyserver_id());
 					k.transaction_id = toString(server->transaction_id());
 					return k;
@@ -477,21 +474,20 @@ CDoc2::CDoc2(const QString &path)
 				{
 				case ServerDetailsUnion::ServerEccDetails:
 					if(const auto *eccDetails = server->recipient_key_details_as_ServerEccDetails())
-					{
-						if(eccDetails->curve() == EllipticCurve::secp384r1)
-							keys.append(fillKeyServer(eccDetails, false));
-					}
+						keys.append(fillKeyServer(eccDetails, false, eccDetails->curve() != EllipticCurve::secp384r1));
 					break;
 				case ServerDetailsUnion::ServerRsaDetails:
 					if(const auto *rsaDetails = server->recipient_key_details_as_ServerRsaDetails())
 						keys.append(fillKeyServer(rsaDetails, true));
 					break;
 				default:
+					keys.append(CKey::Unsupported);
 					qWarning() << "Unsupported Key Server Details: skipping";
 				}
 			}
 			break;
 		default:
+			keys.append(CKey::Unsupported);
 			qWarning() << "Unsupported Key Details: skipping";
 		}
 	}

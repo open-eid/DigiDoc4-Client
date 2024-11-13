@@ -52,7 +52,7 @@ public:
 	void togglePrinting(bool enable);
 	void transition(CryptoDoc *container, const QSslCertificate &cert);
 	void transition(DigiDoc* container);
-	void update(bool canDecrypt, CryptoDoc *container);
+	void update(CryptoDoc *container, const QSslCertificate &cert);
 
 signals:
 	void action(int code, const QString &info1 = {}, const QString &info2 = {});

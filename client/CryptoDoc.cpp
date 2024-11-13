@@ -217,6 +217,10 @@ QString CDocumentModel::save(int row, const QString &path) const
 	return fileName;
 }
 
+CKey::CKey(Tag)
+	: unsupported(true)
+{}
+
 CKey::CKey(const QSslCertificate &c)
 {
 	setCert(c);
@@ -245,6 +249,7 @@ void CKey::setCert(const QSslCertificate &c)
 	key = Crypto::toPublicKeyDer(k);
 	isRSA = k.algorithm() == QSsl::Rsa;
 }
+
 
 
 CryptoDoc::CryptoDoc( QObject *parent )

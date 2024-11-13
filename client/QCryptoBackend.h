@@ -28,7 +28,7 @@ class QCryptoBackend: public QObject
 {
 	Q_OBJECT
 public:
-	enum PinStatus
+	enum PinStatus : quint8
 	{
 		PinOK,
 		PinCanceled,
@@ -43,7 +43,7 @@ public:
 
 	virtual QList<TokenData> tokens() const = 0;
 	virtual QByteArray decrypt(const QByteArray &data, bool oaep) const = 0;
-	virtual QByteArray deriveConcatKDF(const QByteArray &publicKey, QCryptographicHash::Algorithm digest, int keySize,
+	virtual QByteArray deriveConcatKDF(const QByteArray &publicKey, QCryptographicHash::Algorithm digest,
 		const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) const = 0;
 	virtual QByteArray deriveHMACExtract(const QByteArray &publicKey, const QByteArray &salt, int keySize) const = 0;
 	virtual PinStatus lastError() const { return PinOK; }

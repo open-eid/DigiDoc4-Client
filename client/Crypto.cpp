@@ -144,10 +144,11 @@ QByteArray Crypto::cipher(const EVP_CIPHER *cipher, const QByteArray &key, QByte
 	return data;
 }
 
-QByteArray Crypto::concatKDF(QCryptographicHash::Algorithm hashAlg, quint32 keyDataLen, const QByteArray &z, const QByteArray &otherInfo)
+QByteArray Crypto::concatKDF(QCryptographicHash::Algorithm hashAlg, const QByteArray &z, const QByteArray &otherInfo)
 {
 	if(z.isEmpty())
 		return z;
+	quint32 keyDataLen = 32;
 	auto hashLen = quint32(QCryptographicHash::hashLength(hashAlg));
 	auto reps = quint32(std::ceil(double(keyDataLen) / double(hashLen)));
 	QCryptographicHash md(hashAlg);
