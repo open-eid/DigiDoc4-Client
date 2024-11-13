@@ -68,6 +68,8 @@ AddressItem::AddressItem(CKey k, QWidget *parent, bool showIcon)
 		ui->label = ui->key.recipient.toHtmlEscaped();
 	setIdType();
 	showButton(AddressItem::Remove);
+	if(ui->key.unsupported)
+		ui->idType->setText(tr("Unsupported cryptographic algorithm or recipient type"));
 }
 
 AddressItem::~AddressItem()
@@ -135,6 +137,8 @@ void AddressItem::setName()
 {
 	ui->name->setText(QStringLiteral("%1 <span style=\"font-weight:normal;\">%2</span>")
 		.arg(ui->label, ui->yourself ? ui->code + tr(" (Yourself)") : ui->code));
+	if(ui->name->text().isEmpty())
+		ui->name->hide();
 }
 
 void AddressItem::showButton(ShowToolButton show)

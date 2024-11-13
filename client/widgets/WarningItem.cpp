@@ -138,6 +138,12 @@ void WarningItem::lookupWarning()
 		url = tr("https://www.id.ee/en/article/digidoc-container-format-life-cycle-2/");
 		_page = SignDetails;
 		break;
+	case UnsupportedCDocWarning:
+		ui->warningText->setText(tr("The encrypted container contains a cryptographic algorithm or recipient type that is not supported in this DigiDoc4 application version. "
+			"Please make sure that you are using the latest DigiDoc4 application version."));
+		url = tr("https://www.id.ee/en/article/install-id-software/");
+		_page = CryptoDetails;
+		break;
 	case EmptyFileWarning:
 		ui->warningText->setText(tr("An empty file is attached to the container. "
 			"Remove the empty file from the container to sign."));

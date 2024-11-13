@@ -41,8 +41,6 @@ const QString CDoc1::AES128GCM_MTH = QStringLiteral("http://www.w3.org/2009/xmle
 const QString CDoc1::AES192GCM_MTH = QStringLiteral("http://www.w3.org/2009/xmlenc11#aes192-gcm");
 const QString CDoc1::AES256GCM_MTH = QStringLiteral("http://www.w3.org/2009/xmlenc11#aes256-gcm");
 const QString CDoc1::RSA_MTH = QStringLiteral("http://www.w3.org/2001/04/xmlenc#rsa-1_5");
-const QString CDoc1::KWAES128_MTH = QStringLiteral("http://www.w3.org/2001/04/xmlenc#kw-aes128");
-const QString CDoc1::KWAES192_MTH = QStringLiteral("http://www.w3.org/2001/04/xmlenc#kw-aes192");
 const QString CDoc1::KWAES256_MTH = QStringLiteral("http://www.w3.org/2001/04/xmlenc#kw-aes256");
 const QString CDoc1::CONCATKDF_MTH = QStringLiteral("http://www.w3.org/2009/xmlenc11#ConcatKDF");
 const QString CDoc1::AGREEMENT_MTH = QStringLiteral("http://www.w3.org/2009/xmlenc11#ECDH-ES");
@@ -66,7 +64,6 @@ const QHash<QString, const EVP_CIPHER*> CDoc1::ENC_MTH{
 const QHash<QString, QCryptographicHash::Algorithm> CDoc1::SHA_MTH{
 	{SHA256_MTH, QCryptographicHash::Sha256}, {SHA384_MTH, QCryptographicHash::Sha384}, {SHA512_MTH, QCryptographicHash::Sha512}
 };
-const QHash<QString, quint32> CDoc1::KWAES_SIZE{{KWAES128_MTH, 16}, {KWAES192_MTH, 24}, {KWAES256_MTH, 32}};
 
 CDoc1::CDoc1(const QString &path)
 	: QFile(path)
@@ -108,7 +105,6 @@ CDoc1::CDoc1(const QString &path)
 			return;
 
 		CKey key;
-		key.id = xml.attributes().value(QLatin1String("Id")).toString();
 		key.recipient = xml.attributes().value(QLatin1String("Recipient")).toString();
 		while(!xml.atEnd())
 		{
@@ -117,18 +113,17 @@ CDoc1::CDoc1(const QString &path)
 				break;
 			if(!xml.isStartElement())
 				continue;
-			// EncryptedData/KeyInfo/KeyName
-			if(xml.name() == QLatin1String("KeyName"))
-				key.name = xml.readElementText();
-			// EncryptedData/KeyInfo/EncryptedKey/EncryptionMethod
-			else if(xml.name() == QLatin1String("EncryptionMethod"))
-				key.method = xml.attributes().value(QLatin1String("Algorithm")).toString();
+			if(xml.name() == QLatin1String("EncryptionMethod"))
+			{
+				auto method = xml.attributes().value(QLatin1String("Algorithm"));
+				key.unsupported = std::max(key.unsupported, method != KWAES256_MTH && method != RSA_MTH);
+			}
 			// EncryptedData/KeyInfo/EncryptedKey/KeyInfo/AgreementMethod
 			else if(xml.name() == QLatin1String("AgreementMethod"))
-				key.agreement = xml.attributes().value(QLatin1String("Algorithm")).toString();
+				key.unsupported = std::max(key.unsupported, xml.attributes().value(QLatin1String("Algorithm")) != AGREEMENT_MTH);
 			// EncryptedData/KeyInfo/EncryptedKey/KeyInfo/AgreementMethod/KeyDerivationMethod
 			else if(xml.name() == QLatin1String("KeyDerivationMethod"))
-				key.derive = xml.attributes().value(QLatin1String("Algorithm")).toString();
+				key.unsupported = std::max(key.unsupported, xml.attributes().value(QLatin1String("Algorithm")) != CONCATKDF_MTH);
 			// EncryptedData/KeyInfo/EncryptedKey/KeyInfo/AgreementMethod/KeyDerivationMethod/ConcatKDFParams
 			else if(xml.name() == QLatin1String("ConcatKDFParams"))
 			{
@@ -273,16 +268,13 @@ CKey CDoc1::canDecrypt(const QSslCertificate &cert) const
 	{
 		if(!ENC_MTH.contains(method) ||
 			k.cert != cert ||
-			k.cipher.isEmpty())
+			k.cipher.isEmpty() ||
+			k.unsupported)
 			continue;
-		if(cert.publicKey().algorithm() == QSsl::Rsa &&
-			k.method == RSA_MTH)
+		if(cert.publicKey().algorithm() == QSsl::Rsa)
 			return k;
 		if(cert.publicKey().algorithm() == QSsl::Ec &&
-			!k.publicKey.isEmpty() &&
-			KWAES_SIZE.contains(k.method) &&
-			k.derive == CONCATKDF_MTH &&
-			k.agreement == AGREEMENT_MTH)
+			!k.publicKey.isEmpty())
 			return k;
 	}
 	return {};
@@ -432,8 +424,6 @@ bool CDoc1::save(const QString &path)
 			for(const CKey &k: qAsConst(keys))
 			{
 				writeElement(w, DENC, QStringLiteral("EncryptedKey"), [&]{
-					if(!k.id.isEmpty())
-						w.writeAttribute(QStringLiteral("Id"), k.id);
 					if(!k.recipient.isEmpty())
 						w.writeAttribute(QStringLiteral("Recipient"), k.recipient);
 					QByteArray cipher;
@@ -446,8 +436,6 @@ bool CDoc1::save(const QString &path)
 							{QStringLiteral("Algorithm"), RSA_MTH},
 						});
 						writeElement(w, DS, QStringLiteral("KeyInfo"), [&]{
-							if(!k.name.isEmpty())
-								w.writeTextElement(DS, QStringLiteral("KeyName"), k.name);
 							writeElement(w, DS, QStringLiteral("X509Data"), [&]{
 								writeBase64Element(w, DS, QStringLiteral("X509Certificate"), k.cert.toDer());
 							});
@@ -464,14 +452,13 @@ bool CDoc1::save(const QString &path)
 						QByteArray oid = Crypto::curve_oid(peerPKey);
 						QByteArray SsDer = Crypto::toPublicKeyDer(priv.get());
 
-						const QString encryptionMethod = KWAES256_MTH;
 						QString concatDigest = SHA384_MTH;
 						switch((SsDer.size() - 1) / 2) {
 						case 32: concatDigest = SHA256_MTH; break;
 						case 48: concatDigest = SHA384_MTH; break;
 						default: concatDigest = SHA512_MTH; break;
 						}
-						QByteArray encryptionKey = Crypto::concatKDF(SHA_MTH[concatDigest], KWAES_SIZE[encryptionMethod],
+						QByteArray encryptionKey = Crypto::concatKDF(SHA_MTH[concatDigest],
 							sharedSecret, props.value(QStringLiteral("DocumentFormat")).toUtf8() + SsDer + k.cert.toDer());
 #ifndef NDEBUG
 						qDebug() << "ENC Ss" << SsDer.toHex();
@@ -484,7 +471,7 @@ bool CDoc1::save(const QString &path)
 							return;
 
 						writeElement(w, DENC, QStringLiteral("EncryptionMethod"), {
-							{QStringLiteral("Algorithm"), encryptionMethod},
+							{QStringLiteral("Algorithm"), KWAES256_MTH},
 						});
 						writeElement(w, DS, QStringLiteral("KeyInfo"), [&]{
 							writeElement(w, DENC, QStringLiteral("AgreementMethod"), {
@@ -553,7 +540,7 @@ QByteArray CDoc1::transportKey(const CKey &key)
 		if(key.isRSA)
 			return backend->decrypt(key.cipher, false);
 		return backend->deriveConcatKDF(key.publicKey, SHA_MTH[key.concatDigest],
-			int(KWAES_SIZE[key.method]), key.AlgorithmID, key.PartyUInfo, key.PartyVInfo);
+			key.AlgorithmID, key.PartyUInfo, key.PartyVInfo);
 	});
 	if(decryptedKey.isEmpty())
 	{

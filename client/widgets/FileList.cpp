@@ -216,6 +216,9 @@ void FileList::setModel(DocumentModel *documentModel)
 	auto count = documentModel->rowCount();
 	for(int i = 0; i < count; i++)
 		addFile(documentModel->data(i));
+	if(state == EncryptedContainer && count == 0)
+		addWidget(new LabelItem(QT_TRANSLATE_NOOP("LabelItem",
+			"The container must be decrypted in order to see the contents of an encrypted container.")));
 }
 
 void FileList::stateChange(ria::qdigidoc4::ContainerState state)
@@ -226,7 +229,7 @@ void FileList::stateChange(ria::qdigidoc4::ContainerState state)
 
 void FileList::updateDownload()
 {
-	int c = findChildren<FileItem*>().size();
+	auto c = findChildren<FileItem*>().size();
 	ui->download->setVisible(state & (UnsignedSavedContainer | SignedContainer | UnencryptedContainer) && c);
 	ui->count->setVisible(state & (UnsignedSavedContainer | SignedContainer | UnencryptedContainer) && c);
 	ui->count->setText(QString::number(c));

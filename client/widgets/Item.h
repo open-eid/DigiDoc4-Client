@@ -21,6 +21,7 @@
 
 #include "widgets/StyledWidget.h"
 
+class QLabel;
 class SslCertificate;
 
 class Item : public StyledWidget
@@ -37,4 +38,19 @@ public:
 signals:
 	void add(Item* item);
 	void remove(Item* item);
+};
+
+
+class LabelItem : public Item
+{
+	Q_OBJECT
+
+public:
+	LabelItem(const char *text, QWidget *parent = nullptr);
+	void initTabOrder(QWidget *item) override;
+
+private:
+	void changeEvent(QEvent *event) override;
+	QLabel *label;
+	const char *_text;
 };
