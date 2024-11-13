@@ -29,19 +29,10 @@ class LabelButton : public QToolButton
 
 public:
 	enum Style {
-		BoxedDeepCerulean,
-		BoxedMojo,
-		BoxedDeepCeruleanWithCuriousBlue, // Edit
 		DeepCeruleanWithLochmara, // Add files
 	};
 
 	explicit LabelButton(QWidget *parent = nullptr);
 
 	void init(Style style, const QString &label = {});
-	void setIcons(const QString &normalIcon, const QString &hoverIcon, const QString &pressedIcon, int w, int h);
-
-private:
-	bool event(QEvent *e) override;
-
-	QString normal, hover, pressed;
 };
