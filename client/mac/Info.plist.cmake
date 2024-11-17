@@ -125,6 +125,7 @@
 			<key>LSItemContentTypes</key>
 			<array>
 				<string>ee.ria.cdoc</string>
+				<string>ee.ria.cdoc2</string>
 			</array>
 		</dict>
 		<dict>
@@ -272,15 +273,26 @@
 			<key>UTTypeTagSpecification</key>
 			<dict>
 				<key>public.filename-extension</key>
-				<array>
-					<string>cdoc</string>
-					<string>cdoc2</string>
-				</array>
+				<string>cdoc</string>
 				<key>public.mime-type</key>
-				<array>
-					<string>application/x-cdoc</string>
-					<string>application/x-cdoc2</string>
-				</array>
+				<string>application/x-cdoc</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<string>public.data</string>
+			<key>UTTypeDescription</key>
+			<string>DigiDoc encrypted document</string>
+			<key>UTTypeIconFile</key>
+			<string>cdoc.icns</string>
+			<key>UTTypeIdentifier</key>
+			<string>ee.ria.cdoc2</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<string>cdoc2</string>
+				<key>public.mime-type</key>
+				<string>application/x-cdoc2</string>
 			</dict>
 		</dict>
 		<dict>
