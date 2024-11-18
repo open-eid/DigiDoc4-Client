@@ -21,6 +21,7 @@
 
 #include "Common.h"
 
+#include <QtCore/QCoreApplication>
 #include <QtCore/QProcess>
 #include <QtCore/QRegularExpression>
 #include <QtCore/QSettings>
@@ -145,7 +146,7 @@ void Diagnostics::run()
 		+ ";C:\\Program Files\\Open-EID"
 		+ ";C:\\Program Files\\EstIDMinidriver Minidriver"
 		+ ";C:\\Program Files (x86)\\EstIDMinidriver Minidriver");
-	SetDllDirectory(LPCWSTR(qApp->applicationDirPath().utf16()));
+	SetDllDirectory(LPCWSTR(QCoreApplication::applicationDirPath().utf16()));
 	static const QStringList dlls{
 		"digidocpp", "qdigidoc4.exe", "EsteidShellExtension", "id-updater.exe",
 		"EstIDMinidriver", "EstIDMinidriver64", "web-eid.exe",

@@ -25,7 +25,6 @@ class CheckConnection
 {
 public:
 	bool check(const QUrl &url = QStringLiteral("https://id.eesti.ee/config.json"));
-	QNetworkReply::NetworkError error() const;
 	QString errorString() const;
 	QString errorDetails() const;
 

@@ -19,6 +19,7 @@
 #include "Diagnostics.h"
 
 #include "Application.h"
+#include "Common.h"
 #include "QPCSC.h"
 #include "Settings.h"
 
@@ -148,6 +149,6 @@ void Diagnostics::generalInfo(QTextStream &s)
 	}
 
 #ifdef Q_OS_WIN
-	s << "<b>" << tr("Smart Card reader drivers") << ":</b><br />" << QPCSC::instance().drivers().join(QLatin1String("<br />"));
+	s << "<b>" << tr("Smart Card reader drivers") << ":</b><br />" << Common::drivers().join(QLatin1String("<br />"));
 #endif
 }

@@ -21,6 +21,8 @@
 
 #include "Application.h"
 
+#include "Common.h"
+#include "Configuration.h"
 #include "MainWindow.h"
 #include "QSigner.h"
 #include "QSmartCard.h"
@@ -40,7 +42,6 @@ class MacMenuBar {};
 #include "dialogs/WarningDialog.h"
 #include "effects/Overlay.h"
 
-#include <common/Configuration.h>
 #include <optional>
 
 #include <digidocpp/Container.h>
@@ -308,13 +309,35 @@ public:
 };
 
 Application::Application( int &argc, char **argv )
-#ifdef Q_OS_MAC
-	: Common(argc, argv, QStringLiteral("qdigidoc4"), QStringLiteral(":/images/Icon.svg"))
-#else
-	: Common(argc, argv, QStringLiteral("qdigidoc4"), QStringLiteral(":/images/digidoc_128.png"))
-#endif
+	: BaseApplication(argc, argv)
 	, d(new Private)
 {
+	setApplicationName(QStringLiteral("qdigidoc4"));
+	setApplicationVersion(QStringLiteral("%1.%2.%3.%4")
+		.arg( MAJOR_VER ).arg( MINOR_VER ).arg( RELEASE_VER ).arg( BUILD_VER ) );
+	setOrganizationDomain(QStringLiteral("ria.ee"));
+	setOrganizationName(QStringLiteral("RIA"));
+	setWindowIcon(QIcon(QStringLiteral(":/images/Icon.svg")));
+	if(QFile::exists(QStringLiteral("%1/%2.log").arg(QDir::tempPath(), applicationName())))
+		qInstallMessageHandler(msgHandler);
+
+	Q_INIT_RESOURCE(common_tr);
+#if defined(Q_OS_WIN)
+	AllowSetForegroundWindow( ASFW_ANY );
+#ifdef NDEBUG
+	setLibraryPaths({ applicationDirPath() });
+#endif
+#elif defined(Q_OS_MAC)
+	qputenv("OPENSSL_CONF", applicationDirPath().toUtf8() + "../Resources/openssl.cnf");
+#ifdef NDEBUG
+	setLibraryPaths({ applicationDirPath() + "/../PlugIns" });
+#endif
+#endif
+	setStyleSheet(QStringLiteral(
+		"QDialogButtonBox { dialogbuttonbox-buttons-have-icons: 0; }\n"));
+
+	QNetworkProxyFactory::setUseSystemConfiguration(true);
+
 	QStringList args = arguments();
 	args.removeFirst();
 #ifndef Q_OS_MAC
@@ -432,7 +455,7 @@ Application::Application( int &argc, char **argv )
 		updateTSLCache(QDateTime::currentDateTimeUtc().addDays(-7));
 
 		digidoc::initialize(applicationName().toUtf8().constData(), QStringLiteral("%1/%2 (%3)")
-			.arg(applicationName(), applicationVersion(), applicationOs()).toUtf8().constData(),
+			.arg(applicationName(), applicationVersion(), Common::applicationOs()).toUtf8().constData(),
 			[](const digidoc::Exception *ex) {
 				qDebug() << "TSL loading finished";
 				Q_EMIT qApp->TSLLoadingFinished();
@@ -627,9 +650,9 @@ bool Application::event(QEvent *event)
 	// Load here because cocoa NSApplication overides events
 	case QEvent::ApplicationActivate:
 		initMacEvents();
-		return Common::event(event);
+		return BaseApplication::event(event);
 #endif
-	default: return Common::event(event);
+	default: return BaseApplication::event(event);
 	}
 }
 
@@ -754,6 +777,32 @@ QWidget* Application::mainWindow()
 		i != list.cend())
 		return *i;
 	return nullptr;
+}
+
+void Application::msgHandler(QtMsgType type, const QMessageLogContext &ctx, const QString &msg)
+{
+	QFile f(QStringLiteral("%1/%2.log").arg(QDir::tempPath(), applicationName()));
+	if(!f.open( QFile::Append ))
+		return;
+	f.write(QDateTime::currentDateTime().toString(QStringLiteral("yyyy-MM-dd hh:mm:ss ")).toUtf8());
+	switch(type)
+	{
+	case QtDebugMsg: f.write("D"); break;
+	case QtWarningMsg: f.write("W"); break;
+	case QtCriticalMsg: f.write("C"); break;
+	case QtFatalMsg: f.write("F"); break;
+	default: f.write("I"); break;
+	}
+	f.write(QStringLiteral(" %1 ").arg(QLatin1String(ctx.category)).toUtf8());
+	if(ctx.line > 0)
+	{
+		f.write(QStringLiteral("%1:%2 \"%3\" ")
+					.arg(QFileInfo(QString::fromLatin1(ctx.file)).fileName())
+					.arg(ctx.line)
+					.arg(QLatin1String(ctx.function)).toUtf8());
+	}
+	f.write(msg.toUtf8());
+	f.write("\n");
 }
 
 bool Application::notify(QObject *object, QEvent *event)

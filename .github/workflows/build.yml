@@ -22,7 +22,7 @@ jobs:
       with:
         workflow: build.yml
         branch: master
-        name: macOS
+        name: macos
         path: libdigidocpp-pkg
         repo: open-eid/libdigidocpp
     - name: Install dependencies
@@ -33,7 +33,7 @@ jobs:
         HASH=($(shasum prepare_osx_build_environment.sh))
         curl -O -L -s https://installer.id.ee/media/github/opensc_0.23.0.pkg
         curl -O -L -s https://installer.id.ee/media/github/${HASH}.zip
-        sudo installer -verboseR -pkg libdigidocpp-pkg/libdigidocpp*.pkg -target /
+        sudo installer -verboseR -pkg libdigidocpp-pkg/build/macos/libdigidocpp*.pkg -target /
         sudo installer -verboseR -pkg opensc_*.pkg -target /
         sudo unzip -qq -d /Library/Developer ${HASH}.zip
     - name: Build
@@ -56,7 +56,7 @@ jobs:
     container: ubuntu:${{ matrix.container }}
     strategy:
       matrix:
-        container: ['20.04', '22.04', '24.04']
+        container: ['20.04', '22.04', '24.04', '24.10']
     env:
       DEBIAN_FRONTEND: noninteractive
       DEBFULLNAME: github-actions
@@ -103,18 +103,12 @@ jobs:
     container: fedora:${{ matrix.container }}
     strategy:
       matrix:
-        container: [39, 40]
+        container: [40, 41]
     steps:
     - name: Install Deps
       run: |
         dnf install -y --setopt=install_weak_deps=False \
         git gcc-c++ cmake rpm-build gettext openssl-devel openldap-devel pcsc-lite-devel qt6-qtsvg-devel qt6-qttools-devel flatbuffers-devel flatbuffers-compiler zlib-devel
-    - name: Install CMake
-      if: matrix.container == 39
-      run: |
-        dnf install -y --setopt=install_weak_deps=False wget
-        wget -q https://github.com/Kitware/CMake/releases/download/v3.28.1/cmake-3.28.1-linux-x86_64.sh
-        sh cmake-3.28.1-linux-x86_64.sh --skip-license --prefix=/usr/local
     - name: Checkout
       uses: actions/checkout@v4
       with:
@@ -143,10 +137,8 @@ jobs:
     runs-on: ${{ matrix.image }}
     strategy:
       matrix:
-        vcver: [142, 143]
+        vcver: [143]
         include:
-        - vcver: 142
-          image: windows-2019
         - vcver: 143
           image: windows-2022
     env:
@@ -208,7 +200,7 @@ jobs:
   coverity:
     name: Run Coverity tests
     if: github.repository == 'open-eid/DigiDoc4-Client' && contains(github.ref, 'coverity_scan')
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     env:
       TOKEN: ${{ secrets.COVERITY_SCAN_TOKEN }}
       PROJECTNAME: open-eid/DigiDoc4-Client
@@ -222,7 +214,7 @@ jobs:
       with:
         workflow: build.yml
         branch: master
-        name: ubuntu_22.04
+        name: ubuntu_24.04
         path: libdigidocpp-pkg
         repo: open-eid/libdigidocpp
     - name: Install dependencies
@@ -251,7 +243,7 @@ jobs:
   codeql:
     name: Run CodeQL tests
     if: github.repository == 'open-eid/DigiDoc4-Client'
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     permissions:
       security-events: write
     steps:
@@ -264,7 +256,7 @@ jobs:
       with:
         workflow: build.yml
         branch: master
-        name: ubuntu_22.04
+        name: ubuntu_24.04
         path: libdigidocpp-pkg
         repo: open-eid/libdigidocpp
     - name: Install dependencies
