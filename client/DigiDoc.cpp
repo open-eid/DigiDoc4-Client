@@ -21,6 +21,8 @@
 
 #include "Application.h"
 #include "CheckConnection.h"
+#include "Common.h"
+#include "QPCSC.h"
 #include "QSigner.h"
 #include "SslCertificate.h"
 #include "TokenData.h"
@@ -367,7 +369,7 @@ bool SDocumentModel::removeRow(int row)
 
 	try
 	{
-		doc->b->removeDataFile(row);
+		doc->b->removeDataFile(unsigned(row));
 		doc->modified = true;
 		emit removed(row);
 		return true;
@@ -688,6 +690,11 @@ bool DigiDoc::sign(const QString &city, const QString &state, const QString &zip
 			roles.push_back(to(role));
 		signer->setSignerRoles(roles);
 		signer->setProfile("time-stamp");
+		signer->setUserAgent(QStringLiteral("%1/%2 (%3) Devices: %4").arg(
+			 QCoreApplication::applicationName(),
+			 QCoreApplication::applicationVersion(),
+			 Common::applicationOs(),
+			 Common::drivers().join(',')).toUtf8().constData());
 		qApp->waitForTSL( fileName() );
 		digidoc::Signature *s = b->sign(signer);
 		return modified = waitFor([&] {
