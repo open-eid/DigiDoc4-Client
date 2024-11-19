@@ -3,175 +3,247 @@
  <class>MobileProgress</class>
  <widget class="QDialog" name="MobileProgress">
   <property name="windowModality">
-   <enum>Qt::WindowModal</enum>
+   <enum>Qt::WindowModality::WindowModal</enum>
   </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>450</width>
-    <height>250</height>
+    <width>432</width>
+    <height>322</height>
    </rect>
   </property>
-  <property name="minimumSize">
-   <size>
-    <width>450</width>
-    <height>250</height>
-   </size>
-  </property>
   <property name="styleSheet">
-   <string notr="true">background-color: #FFFFFF;</string>
-  </property>
-  <layout class="QVBoxLayout" name="MobileProgressLayout" stretch="0,1,0,0,0">
-   <property name="spacing">
-    <number>6</number>
-   </property>
-   <property name="leftMargin">
-    <number>12</number>
-   </property>
-   <property name="topMargin">
-    <number>24</number>
-   </property>
-   <property name="rightMargin">
-    <number>12</number>
-   </property>
-   <property name="bottomMargin">
-    <number>24</number>
-   </property>
-   <item>
-    <widget class="QLabel" name="controlCode">
-     <property name="styleSheet">
-      <string notr="true">color: #353739;</string>
-     </property>
-     <property name="text">
-      <string>Control code:</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QLabel" name="code">
-     <property name="font">
-      <font>
-       <pointsize>14</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="focusPolicy">
-      <enum>Qt::TabFocus</enum>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color: #041E42;</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QLabel" name="info">
-     <property name="styleSheet">
-      <string notr="true">color: #353739;</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
-     </property>
-     <property name="openExternalLinks">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="signProgressBarLayout">
-     <item>
-      <widget class="QProgressBar" name="signProgressBar">
-       <property name="minimumSize">
-        <size>
-         <width>390</width>
-         <height>40</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>390</width>
-         <height>40</height>
-        </size>
-       </property>
-       <property name="maximum">
-        <number>75</number>
-       </property>
-       <property name="value">
-        <number>0</number>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-       <property name="textVisible">
-        <bool>false</bool>
-       </property>
-       <property name="format">
-        <string>%v sec</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="buttonLayout">
-     <item>
-      <widget class="QPushButton" name="cancel">
-       <property name="minimumSize">
-        <size>
-         <width>120</width>
-         <height>30</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>120</width>
-         <height>30</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>14</pointsize>
-        </font>
-       </property>
-       <property name="cursor">
-        <cursorShape>PointingHandCursor</cursorShape>
-       </property>
-       <property name="accessibleName">
-        <string extracomment="accessible">Cancel</string>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">QPushButton {
-	border-radius: 2px; 
-	border: none;
-	color: #ffffff;
-	background-color: #981E32;
+   <string notr="true">QWidget {
+font-family: Roboto, Helvetica;
+font-size: 14px;
+}
+#MobileProgress {
+background-color: #FFFFFF;
+border-radius: 4px;
+}
+#code {
+color: #003168;
+font-size: 32px;
+font-weight: 700;
+}
+#label, #info {
+color: #07142A;
+}
+QLineEdit, QComboBox {
+padding: 10px 14px;
+border: 1px solid #C4CBD8;
+border-radius: 4px;
+color: #07142A;
+placeholder-text-color: #607496;
+font-size: 16px;
+}
+QComboBox QWidget#popup {
+background-color: transparent;
+}
+QComboBox QWidget#content {
+border: 1px solid #C4CBD8;
+border-radius: 4px;
+background-color: #FFFFFF;
+}
+QComboBox QPushButton {
+margin: 3px;
+padding: 0px 12px 0px 4px;
+border: 0px;
+color: #07142A;
+text-align: left;
+font-weight: normal;
+font-size: 16px;
+qproperty-iconSize: 14px 9px;
+qproperty-layoutDirection: RightToLeft;
+}
+QComboBox QPushButton#selected {
+qproperty-icon: url(:/images/arrow_up.svg);
+}
+QComboBox QPushButton:hover#selected {
+qproperty-icon: url(:/images/arrow_up_white.svg);
+}
+QComboBox::drop-down {
+background-color: #FFFFFF;
+width: 25px;
+}
+QComboBox::down-arrow {
+image: url(:/images/arrow_down.svg);
+}
+QComboBox::down-arrow:on {
+top: 1px;
+left: 1px;
+}
+QCheckBox {
+spacing: 8px;
+color: #07142A;
+border: none; /*Workaround for right padding*/
+}
+QCheckBox:disabled {
+color: #C4CBD8;
+}
+QCheckBox::indicator {
+width: 16px;
+height: 16px;
+}
+QCheckBox::indicator:unchecked {
+image: url(:/images/icon_checkbox.svg);
+}
+QCheckBox::indicator:unchecked:hover {
+image: url(:/images/icon_checkbox_active.svg);
+}
+QCheckBox::indicator:unchecked:disabled {
+image: url(:/images/icon_checkbox_disabled.svg);
+}
+QCheckBox::indicator:checked {
+image: url(:/images/icon_checkbox_check.svg);
+}
+QCheckBox::indicator:checked:hover {
+image: url(:/images/icon_checkbox_check_active.svg);
+}
+QCheckBox::indicator:checked:disabled {
+image: url(:/images/icon_checkbox_check_disabled.svg);
+}
+QPushButton {
+padding: 12px 12px;
+border-radius: 4px;
+border: 1px solid #AD2A45;
+color: #AD2A45;
+font-weight: 700;
+}
+QPushButton:hover {
+background-color: #F5EBED;
 }
 QPushButton:pressed {
-	background-color: #F24A66;
+background-color: #E1C1C6;
 }
-QPushButton:hover:!pressed {
-	background-color: #CD2541;
+QPushButton:default {
+color: #ffffff;
+border-color: #2F70B6;
+background-color: #2F70B6;
+}
+QPushButton:default:hover {
+background-color: #2B66A6;
+}
+QPushButton:default:pressed {
+background-color: #215081;
+}
+QPushButton:default:disabled {
+background-color: #2F70B6;
 }</string>
+  </property>
+  <layout class="QVBoxLayout" name="MobileProgressLayout">
+   <property name="spacing">
+    <number>30</number>
+   </property>
+   <property name="sizeConstraint">
+    <enum>QLayout::SizeConstraint::SetFixedSize</enum>
+   </property>
+   <property name="leftMargin">
+    <number>40</number>
+   </property>
+   <property name="topMargin">
+    <number>32</number>
+   </property>
+   <property name="rightMargin">
+    <number>40</number>
+   </property>
+   <property name="bottomMargin">
+    <number>32</number>
+   </property>
+   <item>
+    <layout class="QVBoxLayout" name="layoutContent">
+     <property name="spacing">
+      <number>24</number>
+     </property>
+     <item>
+      <widget class="QLabel" name="label">
+       <property name="minimumSize">
+        <size>
+         <width>350</width>
+         <height>0</height>
+        </size>
        </property>
        <property name="text">
-        <string>CANCEL</string>
+        <string>Control code:</string>
        </property>
-       <property name="autoDefault">
-        <bool>false</bool>
+       <property name="alignment">
+        <set>Qt::AlignmentFlag::AlignCenter</set>
        </property>
       </widget>
      </item>
+     <item>
+      <widget class="QLabel" name="code">
+       <property name="focusPolicy">
+        <enum>Qt::FocusPolicy::TabFocus</enum>
+       </property>
+       <property name="text">
+        <string notr="true">1234</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignmentFlag::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="info">
+       <property name="text">
+        <string notr="true">Make sure control code matches with one in phone screen and enter mobile-ID PIN2-code.</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignmentFlag::AlignCenter</set>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
+       </property>
+       <property name="openExternalLinks">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="signProgressBarLayout">
+       <item>
+        <widget class="QProgressBar" name="signProgressBar">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>40</height>
+          </size>
+         </property>
+         <property name="maximum">
+          <number>75</number>
+         </property>
+         <property name="value">
+          <number>0</number>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignmentFlag::AlignCenter</set>
+         </property>
+         <property name="textVisible">
+          <bool>false</bool>
+         </property>
+         <property name="format">
+          <string>%v sec</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
     </layout>
+   </item>
+   <item alignment="Qt::AlignmentFlag::AlignHCenter">
+    <widget class="QPushButton" name="cancel">
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
+     <property name="text">
+      <string>Cancel</string>
+     </property>
+     <property name="autoDefault">
+      <bool>false</bool>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>

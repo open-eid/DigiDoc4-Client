@@ -23,12 +23,11 @@
 
 #include "WaitDialog.h"
 
-#include <QtCore/QRegularExpression>
-
 namespace Ui {
 class PinPopup;
 }
 
+class QRegularExpressionValidator;
 class SslCertificate;
 
 class PinPopup final : public QDialog
@@ -67,7 +66,7 @@ signals:
 
 private:
 	Ui::PinPopup *ui;
-	QRegularExpression regexp;
+	QRegularExpressionValidator *regexp {};
 	WaitDialogHider hider;
 };
 

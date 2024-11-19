@@ -3,289 +3,254 @@
  <class>PinUnblock</class>
  <widget class="QDialog" name="PinUnblock">
   <property name="windowModality">
-   <enum>Qt::WindowModal</enum>
+   <enum>Qt::WindowModality::WindowModal</enum>
   </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>460</width>
-    <height>446</height>
+    <width>430</width>
+    <height>570</height>
    </rect>
   </property>
   <property name="styleSheet">
-   <string notr="true">QDialog {
-   border-radius: 2px;
-   background-color: #FFFFFF;
+   <string notr="true">QWidget {
+font-family: Roboto, Helvetica;
+font-size: 14px;
 }
-QLabel {
-   color: #353739;
+#PinUnblock {
+background-color: #FFFFFF;
+border-radius: 4px;
+}
+#label {
+color: #003168;
+font-size: 20px;
+font-weight: 700;
+}
+#labelPuk, #labelPin, #labelRepeat {
+color: #07142A;
+}
+#errorPuk, #errorPin, #errorRepeat {
+color: #AD2A45;
 }
 QLineEdit {
-   border: 1px solid #8E969D;
-   border-radius: 2px;
-   padding: 0px 10px;
-   background-color: #ffffff;
-   font-size: 16px;
-   color: #000000;
-   font-weight: 400;
-   line-height: 14px;
+padding: 10px 14px;
+border: 1px solid #C4CBD8;
+border-radius: 4px;
+color: #07142A;
+placeholder-text-color: #607496;
+font-size: 16px;
+}
+QPushButton {
+padding: 12px 12px;
+border-radius: 4px;
+border: 1px solid #AD2A45;
+color: #AD2A45;
+font-weight: 700;
+}
+QPushButton:hover {
+background-color: #F5EBED;
+}
+QPushButton:pressed {
+background-color: #E1C1C6;
+}
+QPushButton:default {
+color: #ffffff;
+border-color: #2F70B6;
+background-color: #2F70B6;
+}
+QPushButton:default:hover {
+background-color: #2B66A6;
+}
+QPushButton:default:pressed {
+background-color: #215081;
+}
+QPushButton:default:disabled {
+background-color: #2F70B6;
 }</string>
   </property>
   <layout class="QVBoxLayout" name="PinUnblockLayout">
    <property name="spacing">
-    <number>10</number>
+    <number>40</number>
+   </property>
+   <property name="sizeConstraint">
+    <enum>QLayout::SizeConstraint::SetFixedSize</enum>
    </property>
    <property name="leftMargin">
-    <number>30</number>
+    <number>40</number>
    </property>
    <property name="topMargin">
-    <number>26</number>
+    <number>32</number>
    </property>
    <property name="rightMargin">
-    <number>30</number>
+    <number>40</number>
    </property>
    <property name="bottomMargin">
-    <number>26</number>
+    <number>32</number>
    </property>
    <item>
-    <widget class="QLabel" name="labelNameId">
-     <property name="font">
-      <font>
-       <family>Roboto</family>
-       <pointsize>20</pointsize>
-       <bold>false</bold>
-      </font>
+    <widget class="QLabel" name="label">
+     <property name="minimumSize">
+      <size>
+       <width>350</width>
+       <height>0</height>
+      </size>
      </property>
      <property name="focusPolicy">
-      <enum>Qt::TabFocus</enum>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">border: none;
-color: #041E42;
-line-height: 24px;</string>
+      <enum>Qt::FocusPolicy::TabFocus</enum>
      </property>
      <property name="text">
       <string notr="true">%1 code change</string>
      </property>
      <property name="alignment">
-      <set>Qt::AlignCenter</set>
+      <set>Qt::AlignmentFlag::AlignCenter</set>
      </property>
     </widget>
    </item>
    <item>
-    <layout class="QGridLayout" name="infoBoxLayout">
-     <property name="leftMargin">
-      <number>0</number>
-     </property>
-     <property name="topMargin">
-      <number>0</number>
-     </property>
-     <property name="rightMargin">
-      <number>0</number>
-     </property>
-     <property name="bottomMargin">
-      <number>0</number>
-     </property>
+    <layout class="QVBoxLayout" name="layoutContent">
      <property name="spacing">
-      <number>0</number>
-     </property>
-     <item row="0" column="0">
-      <widget class="QLabel" name="line1_bullet">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>15</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>15</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="text">
-        <string notr="true">&amp;bull;</string>
-       </property>
-       <property name="textFormat">
-        <enum>Qt::RichText</enum>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QLabel" name="line1_text">
-       <property name="font">
-        <font>
-         <family>Roboto</family>
-         <pointsize>14</pointsize>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="focusPolicy">
-        <enum>Qt::TabFocus</enum>
-       </property>
-       <property name="textFormat">
-        <enum>Qt::RichText</enum>
-       </property>
-       <property name="wordWrap">
-        <bool>true</bool>
-       </property>
-       <property name="openExternalLinks">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="line2_bullet">
-       <property name="minimumSize">
-        <size>
-         <width>15</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>15</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="text">
-        <string notr="true">&amp;bull;</string>
-       </property>
-       <property name="textFormat">
-        <enum>Qt::RichText</enum>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QLabel" name="line2_text">
-       <property name="font">
-        <font>
-         <family>Roboto</family>
-         <pointsize>14</pointsize>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="focusPolicy">
-        <enum>Qt::TabFocus</enum>
-       </property>
-       <property name="textFormat">
-        <enum>Qt::RichText</enum>
-       </property>
-       <property name="wordWrap">
-        <bool>true</bool>
-       </property>
-       <property name="openExternalLinks">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="line3_bullet">
-       <property name="minimumSize">
-        <size>
-         <width>15</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>15</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="text">
-        <string notr="true">&amp;bull;</string>
-       </property>
-       <property name="textFormat">
-        <enum>Qt::RichText</enum>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="1">
-      <widget class="QLabel" name="line3_text">
-       <property name="font">
-        <font>
-         <family>Roboto</family>
-         <pointsize>14</pointsize>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="focusPolicy">
-        <enum>Qt::TabFocus</enum>
-       </property>
-       <property name="textFormat">
-        <enum>Qt::RichText</enum>
-       </property>
-       <property name="wordWrap">
-        <bool>true</bool>
-       </property>
-       <property name="openExternalLinks">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeType">
-      <enum>QSizePolicy::Fixed</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>7</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item>
-    <layout class="QVBoxLayout" name="inputAndLabelPukLayout">
-     <property name="spacing">
-      <number>2</number>
+      <number>24</number>
      </property>
      <item>
-      <layout class="QVBoxLayout" name="inputAndLabelPuk">
+      <layout class="QGridLayout" name="infoBoxLayout">
        <property name="spacing">
-        <number>2</number>
+        <number>0</number>
        </property>
-       <property name="leftMargin">
-        <number>60</number>
-       </property>
-       <property name="rightMargin">
-        <number>60</number>
+       <item row="0" column="0">
+        <widget class="QLabel" name="line1_bullet">
+         <property name="minimumSize">
+          <size>
+           <width>15</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>15</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="text">
+          <string notr="true">&amp;bull;</string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::TextFormat::RichText</enum>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLabel" name="line1_text">
+         <property name="focusPolicy">
+          <enum>Qt::FocusPolicy::TabFocus</enum>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::TextFormat::RichText</enum>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
+         </property>
+         <property name="openExternalLinks">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="line2_bullet">
+         <property name="minimumSize">
+          <size>
+           <width>15</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>15</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="text">
+          <string notr="true">&amp;bull;</string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::TextFormat::RichText</enum>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLabel" name="line2_text">
+         <property name="focusPolicy">
+          <enum>Qt::FocusPolicy::TabFocus</enum>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::TextFormat::RichText</enum>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
+         </property>
+         <property name="openExternalLinks">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="line3_bullet">
+         <property name="minimumSize">
+          <size>
+           <width>15</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>15</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="text">
+          <string notr="true">&amp;bull;</string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::TextFormat::RichText</enum>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QLabel" name="line3_text">
+         <property name="focusPolicy">
+          <enum>Qt::FocusPolicy::TabFocus</enum>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::TextFormat::RichText</enum>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
+         </property>
+         <property name="openExternalLinks">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" name="inputAndLabelPukLayout">
+       <property name="spacing">
+        <number>6</number>
        </property>
        <item>
         <widget class="QLabel" name="labelPuk">
-         <property name="font">
-          <font>
-           <pointsize>12</pointsize>
-          </font>
-         </property>
-         <property name="accessibleName">
-          <string extracomment="accessible">Valid puk code</string>
-         </property>
          <property name="text">
-          <string>VALID PUK CODE</string>
+          <string>Current PUK code</string>
          </property>
          <property name="buddy">
           <cstring>puk</cstring>
@@ -294,82 +259,25 @@ line-height: 24px;</string>
        </item>
        <item>
         <widget class="QLineEdit" name="puk">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>34</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <property name="layoutDirection">
-          <enum>Qt::LeftToRight</enum>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
          <property name="echoMode">
-          <enum>QLineEdit::Password</enum>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+          <enum>QLineEdit::EchoMode::Password</enum>
          </property>
         </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="errorPuk"/>
        </item>
       </layout>
      </item>
      <item>
-      <widget class="QLabel" name="errorPuk">
-       <property name="font">
-        <font>
-         <pointsize>12</pointsize>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">color: #c53e3e</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QVBoxLayout" name="inputAndLabelPinLayout">
-     <property name="spacing">
-      <number>2</number>
-     </property>
-     <item>
-      <layout class="QVBoxLayout" name="inputAndLabelPin">
+      <layout class="QVBoxLayout" name="inputAndLabelPinLayout">
        <property name="spacing">
-        <number>2</number>
-       </property>
-       <property name="leftMargin">
-        <number>60</number>
-       </property>
-       <property name="rightMargin">
-        <number>60</number>
+        <number>6</number>
        </property>
        <item>
         <widget class="QLabel" name="labelPin">
-         <property name="font">
-          <font>
-           <pointsize>12</pointsize>
-          </font>
-         </property>
          <property name="text">
-          <string notr="true">NEW %1 CODE</string>
+          <string>New %1 code</string>
          </property>
          <property name="buddy">
           <cstring>pin</cstring>
@@ -378,73 +286,25 @@ line-height: 24px;</string>
        </item>
        <item>
         <widget class="QLineEdit" name="pin">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>32</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>16777215</height>
-          </size>
-         </property>
          <property name="echoMode">
-          <enum>QLineEdit::Password</enum>
+          <enum>QLineEdit::EchoMode::Password</enum>
          </property>
         </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="errorPin"/>
        </item>
       </layout>
      </item>
      <item>
-      <widget class="QLabel" name="errorPin">
-       <property name="font">
-        <font>
-         <pointsize>12</pointsize>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">color: #c53e3e</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QVBoxLayout" name="inputAndLabelPinRepeatLayout">
-     <property name="spacing">
-      <number>2</number>
-     </property>
-     <item>
-      <layout class="QVBoxLayout" name="inputAndLabelPinRepeat">
+      <layout class="QVBoxLayout" name="inputAndLabelPinRepeatLayout">
        <property name="spacing">
-        <number>2</number>
-       </property>
-       <property name="leftMargin">
-        <number>60</number>
-       </property>
-       <property name="rightMargin">
-        <number>60</number>
+        <number>6</number>
        </property>
        <item>
         <widget class="QLabel" name="labelRepeat">
-         <property name="font">
-          <font>
-           <pointsize>12</pointsize>
-          </font>
-         </property>
          <property name="text">
-          <string notr="true">NEW %1 CODE AGAIN</string>
+          <string>Repeat new %1 code</string>
          </property>
          <property name="buddy">
           <cstring>repeat</cstring>
@@ -453,86 +313,30 @@ line-height: 24px;</string>
        </item>
        <item>
         <widget class="QLineEdit" name="repeat">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>34</height>
-          </size>
-         </property>
          <property name="echoMode">
-          <enum>QLineEdit::Password</enum>
+          <enum>QLineEdit::EchoMode::Password</enum>
          </property>
         </widget>
        </item>
+       <item>
+        <widget class="QLabel" name="errorRepeat"/>
+       </item>
       </layout>
-     </item>
-     <item>
-      <widget class="QLabel" name="errorRepeat">
-       <property name="font">
-        <font>
-         <pointsize>12</pointsize>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">color: #c53e3e</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
      </item>
     </layout>
    </item>
    <item>
     <layout class="QHBoxLayout" name="buttonLayout">
      <property name="spacing">
-      <number>40</number>
-     </property>
-     <property name="leftMargin">
-      <number>60</number>
-     </property>
-     <property name="topMargin">
       <number>0</number>
-     </property>
-     <property name="rightMargin">
-      <number>60</number>
      </property>
      <item>
       <widget class="QPushButton" name="cancel">
-       <property name="minimumSize">
-        <size>
-         <width>120</width>
-         <height>34</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <family>Roboto Condensed</family>
-         <pointsize>14</pointsize>
-        </font>
-       </property>
        <property name="cursor">
         <cursorShape>PointingHandCursor</cursorShape>
        </property>
-       <property name="accessibleName">
-        <string extracomment="accessible">Cancel</string>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">QPushButton {
-         border-radius: 2px;
-         border: none;
-         color: #ffffff;
-         background-color: #981E32;
- }
- QPushButton:pressed {
-     background-color: #F24A66;
- }
- QPushButton:hover:!pressed {
-     background-color: #CD2541;
- }</string>
-       </property>
        <property name="text">
-        <string>CANCEL</string>
+        <string>Cancel</string>
        </property>
        <property name="autoDefault">
         <bool>false</bool>
@@ -540,44 +344,25 @@ line-height: 24px;</string>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="change">
-       <property name="minimumSize">
+      <spacer name="buttonSpacer">
+       <property name="orientation">
+        <enum>Qt::Orientation::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
         <size>
-         <width>120</width>
-         <height>34</height>
+         <width>40</width>
+         <height>20</height>
         </size>
        </property>
-       <property name="font">
-        <font>
-         <family>Roboto Condensed</family>
-         <pointsize>14</pointsize>
-        </font>
-       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="change">
        <property name="cursor">
         <cursorShape>PointingHandCursor</cursorShape>
        </property>
-       <property name="accessibleName">
-        <string extracomment="accessible">Unblock</string>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">QPushButton {
-         border-radius: 2px;
-         border: none;
-         color: #ffffff;
-         background-color: #006EB5;
- }
- QPushButton:pressed {
-     background-color: #41B6E6;
- }
- QPushButton:hover:!pressed {
-     background-color: #008DCF;
- }
- QPushButton:disabled {
-     background-color: #BEDBED;
- }</string>
-       </property>
        <property name="text">
-        <string>CHANGE</string>
+        <string>Unblock</string>
        </property>
        <property name="default">
         <bool>true</bool>
