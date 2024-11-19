@@ -90,8 +90,7 @@ void Diagnostics::run()
 	info.clear();
 
 #ifndef Q_OS_DARWIN
-	QStringList package = packages({"open-eid"}, false);
-	if( !package.isEmpty() )
+	if(QStringList package = packages({"open-eid"}, false); !package.isEmpty())
 		s << "<b>" << tr("Base version:") << "</b> " << package.first() << "<br />";
 #endif
 	s << "<b>" << tr("Application version:") << "</b> " << QCoreApplication::applicationVersion() << " (" << QSysInfo::WordSize << " bit)<br />";
@@ -101,13 +100,10 @@ void Diagnostics::run()
 	s << "<b>" << tr("OS:") << "</b> " << Common::applicationOs() << "<br />";
 #ifndef Q_OS_DARWIN
 	s << "<b>" << tr("CPU:") << "</b> ";
-	QFile f( "/proc/cpuinfo" );
-	if( f.open( QFile::ReadOnly ) )
+	if(QFile f("/proc/cpuinfo"); f.open(QFile::ReadOnly))
 	{
-		QRegularExpression rx(QStringLiteral("model name.*\\: (.*)\n"));
-		rx.setPatternOptions(QRegularExpression::InvertedGreedinessOption);
-		QRegularExpressionMatch match = rx.match(QString::fromLocal8Bit(f.readAll()));
-		if(match.hasMatch())
+		static const QRegularExpression rx(QStringLiteral("model name.*\\: (.*)\n"), QRegularExpression::InvertedGreedinessOption);
+		if(QRegularExpressionMatch match = rx.match(QString::fromLocal8Bit(f.readAll())); match.hasMatch())
 			s << match.captured(1);
 	}
 	s << "<br />";
@@ -140,8 +136,9 @@ void Diagnostics::run()
 	info.clear();
 
 #ifndef Q_OS_DARWIN
-	QStringList browsers = packages({"chromium-browser", "firefox", "MozillaFirefox", "google-chrome-stable"});
-	if( !browsers.isEmpty() )
+	s << "<br /><br /><b>XDG_SESSION_TYPE:</b> " << qEnvironmentVariable("XDG_SESSION_TYPE");
+
+	if(QStringList browsers = packages({"chromium-browser", "firefox", "MozillaFirefox", "google-chrome-stable"}); !browsers.isEmpty())
 		s << "<br /><br /><b>" << tr("Browsers:") << "</b><br />" << browsers.join(QStringLiteral("<br />")) << "<br /><br />";
 	emit update( info );
 	info.clear();
@@ -149,8 +146,7 @@ void Diagnostics::run()
 	QProcess p;
 	p.start(QStringLiteral("lsusb"), QStringList());
 	p.waitForFinished();
-	QString cmd = QString::fromLocal8Bit( p.readAll() );
-	if( !cmd.isEmpty() )
+	if(QString cmd = QString::fromLocal8Bit(p.readAll()); !cmd.isEmpty())
 		s << "<b>" << tr("USB info:") << "</b><br/> " << cmd.replace( "\n", "<br />" ) << "<br />";
 	emit update( info );
 	info.clear();
