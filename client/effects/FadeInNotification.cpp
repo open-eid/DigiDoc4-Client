@@ -36,17 +36,17 @@ constexpr QRect adjustHeight(QRect rect, int height) noexcept
 FadeInNotification::FadeInNotification(QWidget *parent, QRect rect, Type type, const QString &label)
 	: QLabel(parent)
 {
-	auto bgcolor = [type] {
+	auto bgcolor = [type]() -> QString {
 		switch(type) {
-		case FadeInNotification::Success: return QStringLiteral("#218123");
-		case FadeInNotification::Warning: return QStringLiteral("#FBAE38");
-		case FadeInNotification::Error: return QStringLiteral("#AD2A45");
-		case FadeInNotification::Default: return QStringLiteral("#2F70B6");
+		case Success: return QStringLiteral("#218123");
+		case Warning: return QStringLiteral("#FBAE38");
+		case Error: return QStringLiteral("#AD2A45");
+		case Default: return QStringLiteral("#2F70B6");
 		default: return QStringLiteral("none");
 		}
 	}();
-	auto fgcolor = [type] {
-		return type == FadeInNotification::Warning ? QStringLiteral("#07142A") : QStringLiteral("#FFFFFF");
+	auto fgcolor = [type]() -> QString {
+		return type == Warning ? QStringLiteral("#07142A") : QStringLiteral("#FFFFFF");
 	}();
 	setStyleSheet(QStringLiteral("color: %1; background-color: %2;").arg(fgcolor, bgcolor));
 	setFocusPolicy(Qt::TabFocus);

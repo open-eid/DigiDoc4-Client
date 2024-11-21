@@ -28,7 +28,7 @@ class FadeInNotification final: public QLabel
 
 public:
 	using ms = std::chrono::milliseconds;
-	enum Type {
+	enum Type : quint8 {
 		Success,
 		Warning,
 		Error,
