@@ -39,7 +39,6 @@ public:
 	~AddressItem() final;
 
 	const CKey& getKey() const;
-	void idChanged(const CKey &cert);
 	void idChanged(const SslCertificate &cert) final;
 	void initTabOrder(QWidget *item) final;
 	QWidget* lastTabWidget() final;
@@ -48,7 +47,6 @@ public:
 
 private:
 	void changeEvent(QEvent *event) final;
-	bool eventFilter(QObject *o, QEvent *e) final;
 	void mouseReleaseEvent(QMouseEvent *event) final;
 	void setName();
 	void setIdType();

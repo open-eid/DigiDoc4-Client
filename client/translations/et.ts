@@ -151,6 +151,18 @@
         <source>Unsupported cryptographic algorithm or recipient type</source>
         <translation>Mittetoetatud krüptograafiline algoritm või adressaadi tüüp</translation>
     </message>
+    <message>
+        <source>Decryption is possible until:</source>
+        <translation>Dekrüpteerimine on võimalik kuni:</translation>
+    </message>
+    <message>
+        <source>Decryption has expired</source>
+        <translation>Dekrüpteerimine on aegunud</translation>
+    </message>
+    <message>
+        <source>ID-CARD</source>
+        <translation>ID-KAART</translation>
+    </message>
 </context>
 <context>
     <name>Application</name>

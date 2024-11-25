@@ -38,6 +38,7 @@
 #include <QtCore/QRegularExpression>
 #include <QtCore/QThread>
 #include <QtCore/QUrl>
+#include <QtCore/QUrlQuery>
 #include <QtGui/QDesktopServices>
 #include <QtNetwork/QSslKey>
 #include <QtWidgets/QMessageBox>
@@ -248,6 +249,60 @@ void CKey::setCert(const QSslCertificate &c)
 	cert = c;
 	key = Crypto::toPublicKeyDer(k);
 	isRSA = k.algorithm() == QSsl::Rsa;
+}
+
+QHash<QString, QString> CKey::fromKeyLabel() const
+{
+	QHash<QString,QString> result;
+	if(!recipient.startsWith(QLatin1String("data:"), Qt::CaseInsensitive))
+		return result;
+	QString payload = recipient.mid(5);
+	QString mimeType;
+	QString encoding;
+	if(auto pos = payload.indexOf(','); pos != -1)
+	{
+		mimeType = payload.left(pos);
+		payload = payload.mid(pos + 1);
+		if(auto header = mimeType.split(';'); header.size() == 2)
+		{
+			mimeType = header.value(0);
+			encoding = header.value(1);
+		}
+	}
+	if(!mimeType.isEmpty() && mimeType != QLatin1String("application/x-www-form-urlencoded"))
+		return result;
+	if(encoding == QLatin1String("base64"))
+		payload = QByteArray::fromBase64(payload.toLatin1());
+	;
+	for(const auto &[key,value]: QUrlQuery(payload).queryItems(QUrl::FullyDecoded))
+		result[key.toLower()] = value;
+	if(!result.contains(QStringLiteral("type")) || !result.contains(QStringLiteral("v")))
+		result.clear();
+	return result;
+}
+
+QString CKey::toKeyLabel() const
+{
+	if(cert.isNull())
+		return recipient;
+	QDateTime exp = cert.expiryDate();
+	if(Settings::CDOC2_USE_KEYSERVER)
+		exp = std::min(exp, QDateTime::currentDateTimeUtc().addMonths(6));
+	auto escape = [](QString data) { return data.replace(',', QLatin1String("%2C")); };
+	QString type = QStringLiteral("ID-card");
+	if(auto t = SslCertificate(cert).type(); t & SslCertificate::EResidentSubType)
+		type = QStringLiteral("Digi-ID E-RESIDENT");
+	else if(t & SslCertificate::DigiIDType)
+		type = QStringLiteral("Digi-ID");
+	QUrlQuery q;
+	q.setQueryItems({
+		{QStringLiteral("v"), QString::number(1)},
+		{QStringLiteral("type"), type},
+		{QStringLiteral("serial_number"), escape(cert.subjectInfo("serialNumber").join(','))},
+		{QStringLiteral("cn"), escape(cert.subjectInfo("CN").join(','))},
+		{QStringLiteral("server_exp"), QString::number(exp.toSecsSinceEpoch())},
+	});
+	return "data:" + q.query(QUrl::FullyEncoded);
 }
 
 
