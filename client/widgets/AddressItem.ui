@@ -10,20 +10,16 @@
     <height>52</height>
    </rect>
   </property>
-  <property name="cursor">
-   <cursorShape>PointingHandCursor</cursorShape>
-  </property>
   <property name="styleSheet">
-   <string notr="true">QWidget {
-font-family: Roboto, Helvetica;
-font-size: 12px;
-}
-#AddressItem {
+   <string notr="true">#AddressItem {
 border-bottom: 1px solid rgba(217, 217, 216, 0.45);
 background-color: #FFFFFF;
 }
 #AddressItem:disabled {
 background-color: #F0F0F2;
+}
+#AddressItem &gt; QWidget {
+font-family: Roboto, Helvetica;
 }
 #name {
 color: #07142A;
@@ -32,14 +28,27 @@ font-weight: 700;
 }
 #idType {
 color: #07142A;
+font-size: 12px;
 }
-#expire {
-color: #07142A;
-background: #F3F5F7;
+QLabel[label] {
+font-size: 12px;
 padding: 2px 8px;
 border-radius: 8px;
 }
+QLabel[label=&quot;default&quot;] {
+color: #07142A;
+background: #F3F5F7;
+}
+QLabel[label=&quot;error&quot;] {
+color: #AD2A45;
+background: #F5EBED;
+}
+QLabel[label=&quot;good&quot;] {
+color: #1A641B;
+background: #EAF8EA;
+}
 QToolButton {
+font-size: 12px;
 font-weight: 700;
 border-radius: 2px;
 border: none;
@@ -95,7 +104,7 @@ color: #727679;
    <item row="0" column="1" colspan="3">
     <widget class="QLabel" name="name">
      <property name="focusPolicy">
-      <enum>Qt::FocusPolicy::TabFocus</enum>
+      <enum>Qt::TabFocus</enum>
      </property>
      <property name="text">
       <string notr="true">MARI MAASIKAS MUSTIKAS 48405050123 (Sina ise)</string>
@@ -108,7 +117,7 @@ color: #727679;
    <item row="1" column="1">
     <widget class="QLabel" name="idType">
      <property name="focusPolicy">
-      <enum>Qt::FocusPolicy::TabFocus</enum>
+      <enum>Qt::TabFocus</enum>
      </property>
      <property name="text">
       <string notr="true">ID-card</string>
@@ -117,20 +126,26 @@ color: #727679;
    </item>
    <item row="1" column="2">
     <widget class="QLabel" name="expire">
+     <property name="focusPolicy">
+      <enum>Qt::TabFocus</enum>
+     </property>
      <property name="text">
       <string notr="true">Expire</string>
+     </property>
+     <property name="label" stdset="0">
+      <string notr="true">default</string>
      </property>
     </widget>
    </item>
    <item row="1" column="3">
     <spacer name="horizontalSpacer">
      <property name="orientation">
-      <enum>Qt::Orientation::Horizontal</enum>
+      <enum>Qt::Horizontal</enum>
      </property>
      <property name="sizeHint" stdset="0">
       <size>
        <width>40</width>
-       <height>20</height>
+       <height>0</height>
       </size>
      </property>
     </spacer>
@@ -214,7 +229,7 @@ color: #727679;
   <customwidget>
    <class>QSvgWidget</class>
    <extends>QWidget</extends>
-   <header location="global">QtSvg/QSvgWidget</header>
+   <header location="global">QSvgWidget</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

@@ -151,6 +151,18 @@
         <source>Unsupported cryptographic algorithm or recipient type</source>
         <translation>Unsupported cryptographic algorithm or recipient type</translation>
     </message>
+    <message>
+        <source>Decryption is possible until:</source>
+        <translation>Decryption is possible until:</translation>
+    </message>
+    <message>
+        <source>Decryption has expired</source>
+        <translation>Decryption has expired</translation>
+    </message>
+    <message>
+        <source>ID-CARD</source>
+        <translation>ID-CARD</translation>
+    </message>
 </context>
 <context>
     <name>Application</name>

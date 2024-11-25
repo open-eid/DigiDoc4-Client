@@ -43,6 +43,8 @@ public:
 	bool operator==(const CKey &other) const { return other.key == key; }
 
 	void setCert(const QSslCertificate &c);
+	QHash<QString, QString> fromKeyLabel() const;
+	QString toKeyLabel() const;
 
 	QByteArray key, cipher, publicKey;
 	QSslCertificate cert;
