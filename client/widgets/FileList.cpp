@@ -22,7 +22,6 @@
 
 #include "dialogs/FileDialog.h"
 #include "dialogs/WarningDialog.h"
-#include "effects/ButtonHoverFilter.h"
 #include "widgets/FileItem.h"
 
 #include <QDrag>
@@ -39,13 +38,8 @@ using namespace ria::qdigidoc4;
 FileList::FileList(QWidget *parent)
 : ItemList(parent)
 {
-	ui->download->setIcons(QStringLiteral("/images/icon_download.svg"), QStringLiteral("/images/icon_download_hover.svg"),
-		QStringLiteral("/images/icon_download_pressed.svg"), 17, 17);
-	ui->download->init(LabelButton::White);
-	ui->download->installEventFilter(
-		new ButtonHoverFilter(QStringLiteral(":/images/icon_download.svg"), QStringLiteral(":/images/icon_download_hover.svg"), this));
 	connect(ui->add, &LabelButton::clicked, this, &FileList::selectFile);
-	connect(ui->download, &LabelButton::clicked, this, &FileList::saveAll);
+	connect(ui->download, &QToolButton::clicked, this, &FileList::saveAll);
 }
 
 void FileList::addFile( const QString& file )

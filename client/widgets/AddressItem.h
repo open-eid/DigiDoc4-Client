@@ -30,7 +30,6 @@ class AddressItem final : public Item
 public:
 	enum ShowToolButton
 	{
-		None,
 		Remove,
 		Add,
 		Added,
