@@ -280,7 +280,7 @@ private:
 	static std::vector<digidoc::X509Cert> toCerts(QLatin1String key)
 	{
 		std::vector<digidoc::X509Cert> certs;
-		for(const auto &cert: Application::confValue(key).toArray())
+		for(const auto list = Application::confValue(key).toArray(); auto cert: list)
 		{
 			if(QByteArray der = fromBase64(cert); !der.isEmpty())
 				certs.emplace_back((const unsigned char*)der.constData(), size_t(der.size()));
@@ -400,7 +400,7 @@ Application::Application( int &argc, char **argv )
 			});
 		}
 #endif
-	});
+	}, Qt::QueuedConnection);
 #endif
 
 	qRegisterMetaType<TokenData>("TokenData");
