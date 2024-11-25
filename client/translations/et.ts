@@ -2375,10 +2375,6 @@ ID-KAARDIGA</translation>
         <translation>Interneti seaded on korrektsed, kehtivuskinnitusteenus on kättesaadav!</translation>
     </message>
     <message>
-        <source>DigiDoc4 Client</source>
-        <translation>DigiDoc4 klient</translation>
-    </message>
-    <message>
         <source>Checking updates has failed.</source>
         <translation>Värskenduste kontrollimine on ebaõnnestunud.</translation>
     </message>
@@ -2480,8 +2476,8 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>DigiDoc4 kliendi konfiguratsiooni värskendamine õnnestus.</translation>
     </message>
     <message>
-        <source>%1 version %2, released %3</source>
-        <translation>%1 versioon %2, avalikustatud %3</translation>
+        <source>DigiDoc4 version %1, released %2</source>
+        <translation>DigiDoc4 versioon %1, avalikustatud %2</translation>
     </message>
     <message>
         <source>Use default access</source>
@@ -2545,7 +2541,7 @@ Täiendavad litsentsid ja komponendid</translation>
     </message>
     <message>
         <source>Encryption settings</source>
-        <translation>Krüpteerimiseseaded</translation>
+        <translation>Krüpteerimisseaded</translation>
     </message>
     <message>
         <source>Add certificate</source>
@@ -2556,15 +2552,39 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>Näita sertifikaati</translation>
     </message>
     <message>
-        <source>Use default CDOC1 solution</source>
+        <source>Use CDOC1 file format for encryption</source>
+        <translation>Kasuta krüpteerimiseks CDOC1 failivormingut</translation>
+    </message>
+    <message>
+        <source>Use CDOC2 file format for encryption</source>
+        <translation>Kasuta krüpteerimiseks CDOC2 failivormingut</translation>
+    </message>
+    <message>
+        <source>Use a manually specified key transfer server for encryption</source>
+        <translation>Kasuta krüpteerimiseks käsitsi määratud võtmeedastusserverit</translation>
+    </message>
+    <message>
+        <source>Key transfer server SSL certificate</source>
+        <translation>Võtmeedastusserveri SSL sertifikaat</translation>
+    </message>
+    <message>
+        <source>Select a key transfer server certificate</source>
+        <translation>Vali võtmeedastusserveri sertifikaat</translation>
+    </message>
+    <message>
+        <source>Use a key transfer server for encryption</source>
+        <translation>Kasuta krüpteerimiseks võtmeedastusserverit</translation>
+    </message>
+    <message>
+        <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Use default CDOC2 solution</source>
+        <source>Fetch URL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Custom</source>
+        <source>Post URL</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

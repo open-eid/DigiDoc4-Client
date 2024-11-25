@@ -67,6 +67,13 @@ SettingsDialog::SettingsDialog(int page, QWidget *parent)
 		w->setAttribute(Qt::WA_MacShowFocusRect, false);
 	for(QCheckBox *w: findChildren<QCheckBox*>())
 		w->setAttribute(Qt::WA_MacShowFocusRect, false);
+	for(QToolButton *b: findChildren<QToolButton*>())
+		b->setCursor(Qt::PointingHandCursor);
+	for(QPushButton *b: findChildren<QPushButton*>())
+	{
+		b->setCursor(Qt::PointingHandCursor);
+		b->setAutoDefault(false);
+	}
 
 	// pageGeneral
 	selectLanguage();
@@ -151,7 +158,7 @@ SettingsDialog::SettingsDialog(int page, QWidget *parent)
 	ui->txtMIDUUID->setReadOnly(Settings::MID_UUID.isLocked());
 	ui->txtMIDUUID->setVisible(ui->rdMIDUUIDCustom->isChecked());
 	ui->txtMIDUUID->setText(Settings::MID_UUID);
-	connect(ui->rdMIDUUIDCustom, &QRadioButton::toggled, ui->txtMIDUUID, [=](bool checked) {
+	connect(ui->rdMIDUUIDCustom, &QRadioButton::toggled, ui->txtMIDUUID, [this](bool checked) {
 		ui->txtMIDUUID->setVisible(checked);
 		Settings::MID_UUID_CUSTOM = checked;
 		Settings::SID_UUID_CUSTOM = checked;
@@ -218,13 +225,17 @@ SettingsDialog::SettingsDialog(int page, QWidget *parent)
 		ui->txtCdoc2Fetch->setText(data.value(QLatin1String("FETCH")).toString(Settings::CDOC2_GET));
 		ui->txtCdoc2Post->setText(data.value(QLatin1String("POST")).toString(Settings::CDOC2_POST));
 		bool disabled = ui->cmbCdoc2Name->currentIndex() < ui->cmbCdoc2Name->count() - 1;
-		ui->txtCdoc2UUID->setReadOnly(disabled);
-		ui->txtCdoc2Fetch->setReadOnly(disabled);
-		ui->txtCdoc2Post->setReadOnly(disabled);
+		ui->txtCdoc2UUID->setDisabled(disabled);
+		ui->txtCdoc2Fetch->setDisabled(disabled);
+		ui->txtCdoc2Post->setDisabled(disabled);
+		ui->txtCdoc2UUID->setClearButtonEnabled(!disabled);
+		ui->txtCdoc2Fetch->setClearButtonEnabled(!disabled);
+		ui->txtCdoc2Post->setClearButtonEnabled(!disabled);
+		ui->wgtCDoc2Cert->setHidden(disabled);
 	};
 	for(QJsonObject::const_iterator i = list.constBegin(); i != list.constEnd(); ++i)
 		ui->cmbCdoc2Name->addItem(i.value().toObject().value(QLatin1String("NAME")).toString(), i.key());
-	ui->cmbCdoc2Name->addItem(tr("Custom"), Settings::CDOC2_UUID);
+	ui->cmbCdoc2Name->addItem(tr("Use a manually specified key transfer server for encryption"), Settings::CDOC2_UUID);
 	QString cdoc2Service = Settings::CDOC2_DEFAULT_KEYSERVER;
 	ui->cmbCdoc2Name->setCurrentIndex(ui->cmbCdoc2Name->findData(cdoc2Service));
 	connect(ui->cmbCdoc2Name, qOverload<int>(&QComboBox::currentIndexChanged), this, [this, setCDoc2Values] (int index) {
@@ -234,14 +245,40 @@ SettingsDialog::SettingsDialog(int page, QWidget *parent)
 	});
 	setCDoc2Values(cdoc2Service);
 	connect(ui->txtCdoc2UUID, &QLineEdit::textEdited, this, Settings::CDOC2_UUID);
-	connect(ui->txtCdoc2Fetch, &QLineEdit::textEdited, this, Settings::CDOC2_GET);
-	connect(ui->txtCdoc2Post, &QLineEdit::textEdited, this, Settings::CDOC2_POST);
+	connect(ui->txtCdoc2Fetch, &QLineEdit::textEdited, this, [this](const QString &url) {
+		Settings::CDOC2_GET = url;
+		if(url.isEmpty())
+		{
+			Settings::CDOC2_GET_CERT.clear();
+			Settings::CDOC2_POST_CERT.clear();
+			updateCDoc2Cert(QSslCertificate());
+		}
+	});
+	connect(ui->txtCdoc2Post, &QLineEdit::textEdited, this, [this](const QString &url) {
+		Settings::CDOC2_POST = url;
+		if(url.isEmpty())
+		{
+			Settings::CDOC2_GET_CERT.clear();
+			Settings::CDOC2_POST_CERT.clear();
+			updateCDoc2Cert(QSslCertificate());
+		}
+	});
 #else
 	ui->cmbCdoc2Name->addItem(QStringLiteral("Default"));
 	ui->txtCdoc2UUID->setText(QStringLiteral("00000000-0000-0000-0000-000000000000"));
 	ui->txtCdoc2Fetch->setText(QStringLiteral(CDOC2_GET_URL));
 	ui->txtCdoc2Post->setText(QStringLiteral(CDOC2_POST_URL));
 #endif
+	connect(ui->btInstallCDoc2Cert, &QPushButton::clicked, this, [this] {
+		QSslCertificate cert = selectCert(tr("Select a key transfer server certificate"),
+			tr("Key transfer server SSL certificate"));
+		if(cert.isNull())
+			return;
+		Settings::CDOC2_GET_CERT = cert.toDer().toBase64();
+		Settings::CDOC2_POST_CERT = cert.toDer().toBase64();
+		updateCDoc2Cert(cert);
+	});
+	updateCDoc2Cert(QSslCertificate(QByteArray::fromBase64(Settings::CDOC2_GET_CERT), QSsl::Der));
 
 	// pageProxy
 	connect(this, &SettingsDialog::finished, this, &SettingsDialog::saveProxy);
@@ -313,7 +350,7 @@ SettingsDialog::SettingsDialog(int page, QWidget *parent)
 		dlg->open();
 	});
 #ifdef CONFIG_URL
-	connect(qApp->conf(), &Configuration::finished, this, [=](bool /*update*/, const QString &error){
+	connect(qApp->conf(), &Configuration::finished, this, [this](bool /*update*/, const QString &error){
 		if(!error.isEmpty()) {
 			WarningDialog::show(this, tr("Checking updates has failed.") + "<br />" + tr("Please try again."), error);
 			return;
@@ -334,10 +371,10 @@ SettingsDialog::SettingsDialog(int page, QWidget *parent)
 		Application::updateTSLCache({});
 	});
 	connect(ui->btnNavUseByDefault, &QPushButton::clicked, this, &SettingsDialog::useDefaultSettings);
-	connect(ui->btnNavSaveReport, &QPushButton::clicked, this, [=]{
+	connect(ui->btnNavSaveReport, &QPushButton::clicked, this, [this]{
 		saveFile(QStringLiteral("diagnostics.txt"), ui->txtDiagnostics->toPlainText().toUtf8());
 	});
-	connect(ui->btnNavSaveLibdigidocpp, &QPushButton::clicked, this, [=]{
+	connect(ui->btnNavSaveLibdigidocpp, &QPushButton::clicked, this, [this]{
 		Settings::LIBDIGIDOCPP_DEBUG = false;
 		QString log = QStringLiteral("%1/libdigidocpp.log").arg(QDir::tempPath());
 		saveFile(QStringLiteral("libdigidocpp.txt"), log);
@@ -424,6 +461,8 @@ void SettingsDialog::retranslate(const QString& lang)
 	ui->retranslateUi(this);
 	updateVersion();
 	updateDiagnostics();
+	ui->cmbCdoc2Name->setItemText(ui->cmbCdoc2Name->count() - 1,
+		tr("Use a manually specified key transfer server for encryption"));
 }
 
 void SettingsDialog::updateCert(const QSslCertificate &c, QPushButton *btn, CertLabel *lbl)
@@ -437,6 +476,11 @@ void SettingsDialog::updateCert(const QSslCertificate &c, QPushButton *btn, Cert
 	connect(btn, &QPushButton::clicked, this, [this, c] {
 		CertificateDetails::showCertificate(c, this);
 	});
+}
+
+void SettingsDialog::updateCDoc2Cert(const QSslCertificate &c)
+{
+	updateCert(c, ui->btShowCDoc2Cert, ui->txtCDoc2Cert);
 }
 
 void SettingsDialog::updateSiVaCert(const QSslCertificate &c)
@@ -469,8 +513,8 @@ void SettingsDialog::selectLanguage()
 
 void SettingsDialog::updateVersion()
 {
-	ui->txtNavVersion->setText(tr("%1 version %2, released %3")
-		.arg(tr("DigiDoc4 Client"), QApplication::applicationVersion(), QStringLiteral(BUILD_DATE)));
+	ui->txtNavVersion->setText(tr("DigiDoc4 version %1, released %2")
+		.arg(QApplication::applicationVersion(), QStringLiteral(BUILD_DATE)));
 }
 
 void SettingsDialog::saveProxy()
@@ -519,7 +563,7 @@ void SettingsDialog::updateDiagnostics()
 	QApplication::setOverrideCursor( Qt::WaitCursor );
 	auto *worker = new Diagnostics();
 	connect(worker, &Diagnostics::update, ui->txtDiagnostics, &QTextBrowser::insertHtml, Qt::QueuedConnection);
-	connect(worker, &Diagnostics::destroyed, this, [=]{
+	connect(worker, &Diagnostics::destroyed, this, [this]{
 		ui->txtDiagnostics->setEnabled(true);
 		ui->txtDiagnostics->moveCursor(QTextCursor::Start);
 		ui->txtDiagnostics->ensureCursorVisible();

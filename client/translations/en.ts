@@ -2375,10 +2375,6 @@ ID-CARD</translation>
         <translation>Network settings are correct, certificate status service is accessible!</translation>
     </message>
     <message>
-        <source>DigiDoc4 Client</source>
-        <translation>DigiDoc4 Client</translation>
-    </message>
-    <message>
         <source>Checking updates has failed.</source>
         <translation>Checking updates has failed.</translation>
     </message>
@@ -2480,8 +2476,8 @@ Additional licenses and components</translation>
         <translation>DigiDoc4 Client configuration update was successful.</translation>
     </message>
     <message>
-        <source>%1 version %2, released %3</source>
-        <translation>%1 version %2, released %3</translation>
+        <source>DigiDoc4 version %1, released %2</source>
+        <translation>DigiDoc4 version %1, released %2</translation>
     </message>
     <message>
         <source>Use default access</source>
@@ -2556,15 +2552,39 @@ Additional licenses and components</translation>
         <translation>Show certificate</translation>
     </message>
     <message>
-        <source>Use default CDOC1 solution</source>
+        <source>Use CDOC1 file format for encryption</source>
+        <translation>Use CDOC1 file format for encryption</translation>
+    </message>
+    <message>
+        <source>Use CDOC2 file format for encryption</source>
+        <translation>Use CDOC2 file format for encryption</translation>
+    </message>
+    <message>
+        <source>Use a manually specified key transfer server for encryption</source>
+        <translation>Use a manually specified key transfer server for encryption</translation>
+    </message>
+    <message>
+        <source>Key transfer server SSL certificate</source>
+        <translation>Key transfer server SSL certificate</translation>
+    </message>
+    <message>
+        <source>Select a key transfer server certificate</source>
+        <translation>Select a key transfer server certificate</translation>
+    </message>
+    <message>
+        <source>Use a key transfer server for encryption</source>
+        <translation>Use a key transfer server for encryption</translation>
+    </message>
+    <message>
+        <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Use default CDOC2 solution</source>
+        <source>Fetch URL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Custom</source>
+        <source>Post URL</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

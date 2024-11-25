@@ -2376,10 +2376,6 @@ ID-КАРТОЙ</translation>
         <translation>Настройки Интернета верны, услуга подтверждения действительности доступна!</translation>
     </message>
     <message>
-        <source>DigiDoc4 Client</source>
-        <translation>DigiDoc4 клиент</translation>
-    </message>
-    <message>
         <source>Checking updates has failed.</source>
         <translation>Ошибка проверки обновлений.</translation>
     </message>
@@ -2481,8 +2477,8 @@ Additional licenses and components</source>
         <translation>Обновление конфигурации программы DigiDoc4 удачно завершено.</translation>
     </message>
     <message>
-        <source>%1 version %2, released %3</source>
-        <translation>%1 версия %2, выпущенный %3</translation>
+        <source>DigiDoc4 version %1, released %2</source>
+        <translation>DigiDoc4 версия %1, выпущенный %2</translation>
     </message>
     <message>
         <source>Use default access</source>
@@ -2546,7 +2542,7 @@ Additional licenses and components</source>
     </message>
     <message>
         <source>Encryption settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Настройки шифрования</translation>
     </message>
     <message>
         <source>Add certificate</source>
@@ -2557,15 +2553,39 @@ Additional licenses and components</source>
         <translation>Показать сертификат</translation>
     </message>
     <message>
-        <source>Use default CDOC1 solution</source>
+        <source>Use CDOC1 file format for encryption</source>
+        <translation>Для шифрования используйте формат файла CDOC1</translation>
+    </message>
+    <message>
+        <source>Use CDOC2 file format for encryption</source>
+        <translation>Для шифрования используйте формат файла CDOC2</translation>
+    </message>
+    <message>
+        <source>Use a manually specified key transfer server for encryption</source>
+        <translation>Используйте вручную указанный сервер передачи ключей для шифрования</translation>
+    </message>
+    <message>
+        <source>Key transfer server SSL certificate</source>
+        <translation>SSL-сертификат сервера передачи ключей</translation>
+    </message>
+    <message>
+        <source>Select a key transfer server certificate</source>
+        <translation>Выберите сертификат сервера передачи ключей</translation>
+    </message>
+    <message>
+        <source>Use a key transfer server for encryption</source>
+        <translation>Используйте сервер передачи ключей для шифрования</translation>
+    </message>
+    <message>
+        <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Use default CDOC2 solution</source>
+        <source>Fetch URL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Custom</source>
+        <source>Post URL</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
