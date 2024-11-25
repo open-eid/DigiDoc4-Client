@@ -61,11 +61,8 @@ SignatureItem::SignatureItem(DigiDocSignature s, ContainerState /*state*/, QWidg
 	ui->idSignTime->installEventFilter(this);
 	ui->role->setFont(Styles::font(Styles::Regular, 11));
 	ui->role->installEventFilter(this);
-	ui->remove->setIcons(QStringLiteral("/images/icon_remove.svg"), QStringLiteral("/images/icon_remove_hover.svg"),
-		QStringLiteral("/images/icon_remove_pressed.svg"), 17, 17);
-	ui->remove->init(LabelButton::White);
 	ui->remove->setVisible(ui->signature.container()->isSupported());
-	connect(ui->remove, &LabelButton::clicked, this, [this]{
+	connect(ui->remove, &QToolButton::clicked, this, [this]{
 		const SslCertificate c = ui->signature.cert();
 		auto *dlg = new WarningDialog(tr("Remove signature %1?")
 			.arg(c.toString(c.showCN() ? QStringLiteral("CN serialNumber") : QStringLiteral("GN SN serialNumber"))), this);

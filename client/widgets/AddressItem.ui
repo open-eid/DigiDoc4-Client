@@ -6,38 +6,41 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>633</width>
-    <height>44</height>
+    <width>619</width>
+    <height>52</height>
    </rect>
-  </property>
-  <property name="minimumSize">
-   <size>
-    <width>0</width>
-    <height>44</height>
-   </size>
-  </property>
-  <property name="font">
-   <font>
-    <pointsize>14</pointsize>
-    <bold>false</bold>
-    <underline>false</underline>
-    <strikeout>false</strikeout>
-   </font>
   </property>
   <property name="cursor">
    <cursorShape>PointingHandCursor</cursorShape>
   </property>
   <property name="styleSheet">
-   <string notr="true">#AddressItem {
-border: solid rgba(217, 217, 216, 0.45);
-border-width: 0px 0px 1px 0px;
+   <string notr="true">QWidget {
+font-family: Roboto, Helvetica;
+font-size: 12px;
+}
+#AddressItem {
+border-bottom: 1px solid rgba(217, 217, 216, 0.45);
 background-color: #FFFFFF;
-color: #000000;
 }
 #AddressItem:disabled {
-background-color: #F0F0F0;
+background-color: #F0F0F2;
+}
+#name {
+color: #07142A;
+font-size: 14px;
+font-weight: 700;
+}
+#idType {
+color: #07142A;
+}
+#expire {
+color: #07142A;
+background: #F3F5F7;
+padding: 2px 8px;
+border-radius: 8px;
 }
 QToolButton {
+font-weight: 700;
 border-radius: 2px;
 border: none;
 color: #006EB5;
@@ -56,22 +59,22 @@ color: #727679;
   </property>
   <layout class="QGridLayout" name="AddressItemLayout">
    <property name="leftMargin">
-    <number>0</number>
+    <number>8</number>
    </property>
    <property name="topMargin">
-    <number>5</number>
+    <number>8</number>
    </property>
    <property name="rightMargin">
-    <number>0</number>
+    <number>8</number>
    </property>
    <property name="bottomMargin">
-    <number>7</number>
+    <number>8</number>
    </property>
    <property name="horizontalSpacing">
     <number>8</number>
    </property>
    <property name="verticalSpacing">
-    <number>0</number>
+    <number>2</number>
    </property>
    <item row="0" column="0" rowspan="2">
     <widget class="QSvgWidget" name="icon" native="true">
@@ -87,26 +90,12 @@ color: #727679;
        <height>32</height>
       </size>
      </property>
-     <property name="styleSheet">
-      <string notr="true">border: none;</string>
-     </property>
     </widget>
    </item>
-   <item row="0" column="1">
+   <item row="0" column="1" colspan="3">
     <widget class="QLabel" name="name">
-     <property name="font">
-      <font>
-       <family>Roboto</family>
-       <pointsize>14</pointsize>
-       <underline>false</underline>
-       <strikeout>false</strikeout>
-      </font>
-     </property>
      <property name="focusPolicy">
-      <enum>Qt::TabFocus</enum>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">border: none;</string>
+      <enum>Qt::FocusPolicy::TabFocus</enum>
      </property>
      <property name="text">
       <string notr="true">MARI MAASIKAS MUSTIKAS 48405050123 (Sina ise)</string>
@@ -118,46 +107,41 @@ color: #727679;
    </item>
    <item row="1" column="1">
     <widget class="QLabel" name="idType">
-     <property name="font">
-      <font>
-       <family>Roboto</family>
-       <pointsize>11</pointsize>
-       <underline>false</underline>
-       <strikeout>false</strikeout>
-      </font>
-     </property>
      <property name="focusPolicy">
-      <enum>Qt::TabFocus</enum>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color: #727679;border: none;</string>
+      <enum>Qt::FocusPolicy::TabFocus</enum>
      </property>
      <property name="text">
       <string notr="true">ID-card</string>
      </property>
     </widget>
    </item>
-   <item row="0" column="2" rowspan="2">
-    <widget class="LabelButton" name="remove">
-     <property name="minimumSize">
+   <item row="1" column="2">
+    <widget class="QLabel" name="expire">
+     <property name="text">
+      <string notr="true">Expire</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="3">
+    <spacer name="horizontalSpacer">
+     <property name="orientation">
+      <enum>Qt::Orientation::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
       <size>
-       <width>19</width>
-       <height>19</height>
+       <width>40</width>
+       <height>20</height>
       </size>
      </property>
+    </spacer>
+   </item>
+   <item row="0" column="4" rowspan="2">
+    <widget class="QToolButton" name="remove">
      <property name="maximumSize">
       <size>
-       <width>19</width>
-       <height>19</height>
+       <width>24</width>
+       <height>24</height>
       </size>
-     </property>
-     <property name="font">
-      <font>
-       <family>Roboto</family>
-       <pointsize>14</pointsize>
-       <underline>false</underline>
-       <strikeout>false</strikeout>
-      </font>
      </property>
      <property name="cursor">
       <cursorShape>PointingHandCursor</cursorShape>
@@ -166,14 +150,21 @@ color: #727679;
       <string>Remove</string>
      </property>
      <property name="styleSheet">
-      <string notr="true">border: none; background-color: none;</string>
+      <string notr="true">border: none; background: none;</string>
      </property>
-     <property name="text">
-      <string/>
+     <property name="icon">
+      <iconset resource="../images/images.qrc">
+       <normaloff>:/images/icon_remove.svg</normaloff>:/images/icon_remove.svg</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>20</width>
+       <height>20</height>
+      </size>
      </property>
     </widget>
    </item>
-   <item row="0" column="3" rowspan="2">
+   <item row="0" column="5" rowspan="2">
     <widget class="QToolButton" name="added">
      <property name="enabled">
       <bool>false</bool>
@@ -190,15 +181,12 @@ color: #727679;
        <height>25</height>
       </size>
      </property>
-     <property name="accessibleName">
-      <string extracomment="accessible">Added</string>
-     </property>
      <property name="text">
-      <string>ADDED</string>
+      <string>Added</string>
      </property>
     </widget>
    </item>
-   <item row="0" column="4" rowspan="2">
+   <item row="0" column="6" rowspan="2">
     <widget class="QToolButton" name="add">
      <property name="minimumSize">
       <size>
@@ -215,11 +203,8 @@ color: #727679;
      <property name="cursor">
       <cursorShape>PointingHandCursor</cursorShape>
      </property>
-     <property name="accessibleName">
-      <string extracomment="accessible">Add</string>
-     </property>
      <property name="text">
-      <string>ADD</string>
+      <string>Add</string>
      </property>
     </widget>
    </item>
@@ -227,17 +212,14 @@ color: #727679;
  </widget>
  <customwidgets>
   <customwidget>
-   <class>LabelButton</class>
-   <extends>QToolButton</extends>
-   <header>widgets/LabelButton.h</header>
-  </customwidget>
-  <customwidget>
    <class>QSvgWidget</class>
    <extends>QWidget</extends>
    <header location="global">QtSvg/QSvgWidget</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="../images/images.qrc"/>
+ </resources>
  <connections/>
 </ui>

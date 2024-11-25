@@ -100,14 +100,6 @@
 <context>
     <name>AddressItem</name>
     <message>
-        <source>ADD</source>
-        <translation>LISA</translation>
-    </message>
-    <message>
-        <source>ADDED</source>
-        <translation>LISATUD</translation>
-    </message>
-    <message>
         <source> (Yourself)</source>
         <translation> (Sina ise)</translation>
     </message>
@@ -129,12 +121,10 @@
     </message>
     <message>
         <source>Added</source>
-        <extracomment>accessible</extracomment>
         <translation>Lisatud</translation>
     </message>
     <message>
         <source>Add</source>
-        <extracomment>accessible</extracomment>
         <translation>Lisa</translation>
     </message>
     <message>

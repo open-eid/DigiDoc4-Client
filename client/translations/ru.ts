@@ -100,14 +100,6 @@
 <context>
     <name>AddressItem</name>
     <message>
-        <source>ADD</source>
-        <translation>ДОБАВИТЬ</translation>
-    </message>
-    <message>
-        <source>ADDED</source>
-        <translation>Добавлен</translation>
-    </message>
-    <message>
         <source> (Yourself)</source>
         <translation> (Вы сами)</translation>
     </message>
@@ -129,12 +121,10 @@
     </message>
     <message>
         <source>Added</source>
-        <extracomment>accessible</extracomment>
         <translation>Добавлен</translation>
     </message>
     <message>
         <source>Add</source>
-        <extracomment>accessible</extracomment>
         <translation>Добавить</translation>
     </message>
     <message>
