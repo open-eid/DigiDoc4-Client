@@ -45,18 +45,17 @@ PinUnblock::PinUnblock(WorkMode mode, QWidget *parent, QSmartCardData::PinType t
 	new Overlay(this);
 
 	auto pattern = [](QSmartCardData::PinType type) {
-		return QStringLiteral("^\\d{%1,12}$").arg(QSmartCardData::minPinLen(type));
+		return QRegularExpression(QStringLiteral("^\\d{%1,12}$").arg(QSmartCardData::minPinLen(type)));
 	};
 
 	QRegularExpression regexpValidateCode;
-	QRegularExpression regexpNewCode;
-	regexpNewCode.setPattern(pattern(type));
+	QRegularExpression regexpNewCode = pattern(type);
 	switch(mode)
 	{
 	case PinUnblock::UnBlockPinWithPuk:
 		ui->label->setText(tr("%1 unblocking").arg(QSmartCardData::typeString(type)));
 		ui->change->setText(tr("Unblock"));
-		regexpValidateCode.setPattern(pattern(QSmartCardData::PukType));
+		regexpValidateCode = pattern(QSmartCardData::PukType);
 		ui->line1_text->setText(tr("To unblock the certificate you have to enter the PUK code."));
 		ui->line2_text->setText(tr("You can find your PUK code inside the ID-card codes envelope."));
 		ui->line3_text->setText(tr("If you have forgotten the PUK code for your ID card, please visit "
@@ -65,7 +64,7 @@ PinUnblock::PinUnblock(WorkMode mode, QWidget *parent, QSmartCardData::PinType t
 		break;
 	case PinUnblock::ChangePinWithPuk:
 		ui->label->setText(tr("%1 code change").arg(QSmartCardData::typeString(type)));
-		regexpValidateCode.setPattern(pattern(QSmartCardData::PukType));
+		regexpValidateCode = pattern(QSmartCardData::PukType);
 		ui->line1_text->setText(type == QSmartCardData::Pin2Type
 									? tr("PIN2 code is used to digitally sign documents.")
 									: tr("PIN1 code is used for confirming the identity of a person."));
@@ -75,7 +74,7 @@ PinUnblock::PinUnblock(WorkMode mode, QWidget *parent, QSmartCardData::PinType t
 	case PinUnblock::PinChange:
 		ui->label->setText(tr("%1 code change").arg(QSmartCardData::typeString(type)));
 		ui->labelPuk->setText(tr("Valid %1 code").arg(QSmartCardData::typeString(type)));
-		regexpValidateCode.setPattern(pattern(type));
+		regexpValidateCode = pattern(type);
 		if(type == QSmartCardData::PukType)
 		{
 			ui->line1_text->setText(tr("PUK code is used for unblocking the certificates, when PIN1 or PIN2 has been entered 3 times incorrectly."));
@@ -100,8 +99,14 @@ PinUnblock::PinUnblock(WorkMode mode, QWidget *parent, QSmartCardData::PinType t
 	ui->repeat->setValidator(new QRegularExpressionValidator(regexpNewCode, ui->repeat));
 	ui->puk->setValidator(new QRegularExpressionValidator(regexpValidateCode, ui->puk));
 
+	auto setError = [](QLineEdit *input, QLabel *error, const QString &msg) {
+		input->setStyleSheet(msg.isEmpty() ? QString() : QStringLiteral("border-color: #BE7884"));
+		error->setFocusPolicy(msg.isEmpty() ? Qt::NoFocus : Qt::TabFocus);
+		error->setText(msg);
+		error->setHidden(msg.isEmpty());
+	};
 	if(leftAttempts < 3)
-		ui->errorPuk->setText(mode == PinUnblock::PinChange ?
+		setError(ui->puk, ui->errorPuk, mode == PinUnblock::PinChange ?
 			tr("Remaining attempts: %1").arg(leftAttempts) :
 			tr("PUK remaining attempts: %1").arg(leftAttempts));
 
@@ -113,12 +118,6 @@ PinUnblock::PinUnblock(WorkMode mode, QWidget *parent, QSmartCardData::PinType t
 		if(auto *bullet = findChild<QLabel*>(QStringLiteral("line%1_bullet").arg(i)))
 			bullet->setHidden(isHidden);
 	}
-	auto setError = [](QLineEdit *input, QLabel *error, const QString &msg) {
-		input->setStyleSheet(msg.isEmpty() ? QString() : QStringLiteral("border-color: #BE7884"));
-		error->setFocusPolicy(msg.isEmpty() ? Qt::NoFocus : Qt::TabFocus);
-		error->setText(msg);
-		error->setHidden(msg.isEmpty());
-	};
 	connect(ui->cancel, &QPushButton::clicked, this, &PinUnblock::reject);
 	connect(this, &PinUnblock::finished, this, &PinUnblock::close);
 	connect(ui->pin, &QLineEdit::returnPressed, ui->change, &QPushButton::click);

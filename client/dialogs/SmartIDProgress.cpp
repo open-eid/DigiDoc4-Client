@@ -83,6 +83,7 @@ SmartIDProgress::SmartIDProgress(QWidget *parent)
 	d->setupUi(d);
 	d->signProgressBar->setMaximum(100);
 	d->code->setBuddy(d->signProgressBar);
+	d->code->clear();
 #if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
 const auto styleSheet = R"(QProgressBar {
 background-color: #d3d3d3;;

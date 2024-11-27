@@ -2066,6 +2066,10 @@ ID-KAARDIGA</translation>
         <source>Current PUK code</source>
         <translation>Kehtiv PUK-kood</translation>
     </message>
+    <message>
+        <source>Change</source>
+        <translation>Muuda</translation>
+    </message>
 </context>
 <context>
     <name>PrintSheet</name>

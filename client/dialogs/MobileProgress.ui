@@ -3,7 +3,7 @@
  <class>MobileProgress</class>
  <widget class="QDialog" name="MobileProgress">
   <property name="windowModality">
-   <enum>Qt::WindowModality::WindowModal</enum>
+   <enum>Qt::WindowModal</enum>
   </property>
   <property name="geometry">
    <rect>
@@ -35,6 +35,7 @@ padding: 10px 14px;
 border: 1px solid #C4CBD8;
 border-radius: 4px;
 color: #07142A;
+background-color: white;
 placeholder-text-color: #607496;
 font-size: 16px;
 }
@@ -168,20 +169,20 @@ background-color: #2F70B6;
         <string>Control code:</string>
        </property>
        <property name="alignment">
-        <set>Qt::AlignmentFlag::AlignCenter</set>
+        <set>Qt::AlignCenter</set>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QLabel" name="code">
        <property name="focusPolicy">
-        <enum>Qt::FocusPolicy::TabFocus</enum>
+        <enum>Qt::TabFocus</enum>
        </property>
        <property name="text">
         <string notr="true">1234</string>
        </property>
        <property name="alignment">
-        <set>Qt::AlignmentFlag::AlignCenter</set>
+        <set>Qt::AlignCenter</set>
        </property>
       </widget>
      </item>
@@ -191,7 +192,7 @@ background-color: #2F70B6;
         <string notr="true">Make sure control code matches with one in phone screen and enter mobile-ID PIN2-code.</string>
        </property>
        <property name="alignment">
-        <set>Qt::AlignmentFlag::AlignCenter</set>
+        <set>Qt::AlignCenter</set>
        </property>
        <property name="wordWrap">
         <bool>true</bool>
@@ -218,7 +219,7 @@ background-color: #2F70B6;
           <number>0</number>
          </property>
          <property name="alignment">
-          <set>Qt::AlignmentFlag::AlignCenter</set>
+          <set>Qt::AlignCenter</set>
          </property>
          <property name="textVisible">
           <bool>false</bool>
@@ -232,7 +233,7 @@ background-color: #2F70B6;
      </item>
     </layout>
    </item>
-   <item alignment="Qt::AlignmentFlag::AlignHCenter">
+   <item alignment="Qt::AlignHCenter">
     <widget class="QPushButton" name="cancel">
      <property name="cursor">
       <cursorShape>PointingHandCursor</cursorShape>

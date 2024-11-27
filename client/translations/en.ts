@@ -2066,6 +2066,10 @@ ID-CARD</translation>
         <source>Current PUK code</source>
         <translation>Current PUK code</translation>
     </message>
+    <message>
+        <source>Change</source>
+        <translation>Change</translation>
+    </message>
 </context>
 <context>
     <name>PrintSheet</name>

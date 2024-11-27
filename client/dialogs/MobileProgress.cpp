@@ -70,6 +70,7 @@ MobileProgress::MobileProgress(QWidget *parent)
 	d->setWindowFlags(Qt::Dialog|Qt::CustomizeWindowHint);
 	d->setupUi(d);
 	d->code->setBuddy(d->signProgressBar);
+	d->code->clear();
 #if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
 const auto styleSheet = R"(QProgressBar {
 background-color: #d3d3d3;
