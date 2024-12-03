@@ -383,7 +383,7 @@ QSmartCard::ErrorType QSmartCard::pinChange(QSmartCardData::PinType type, QWidge
 	else
 	{
 		SslCertificate cert = d->t.authCert();
-		title = cert.toString(cert.showCN() ? QStringLiteral("<b>CN,</b> serialNumber") : QStringLiteral("<b>GN SN,</b> serialNumber"));
+		title = cert.toString(cert.showCN() ? QStringLiteral("CN, serialNumber") : QStringLiteral("GN SN, serialNumber"));
 		textBody = tr("To change %1 on a PinPad reader the old %1 code has to be entered first and then the new %1 code twice.").arg(QSmartCardData::typeString(type));
 	}
 	return change(type, parent, newPin, oldPin, title, textBody);
@@ -407,7 +407,7 @@ QSmartCard::ErrorType QSmartCard::pinUnblock(QSmartCardData::PinType type, bool 
 	else
 	{
 		SslCertificate cert = d->t.authCert();
-		title = cert.toString(cert.showCN() ? QStringLiteral("<b>CN,</b> serialNumber") : QStringLiteral("<b>GN SN,</b> serialNumber"));
+		title = cert.toString(cert.showCN() ? QStringLiteral("CN, serialNumber") : QStringLiteral("GN SN, serialNumber"));
 		textBody = isForgotPin ?
 			tr("To change %1 code with the PUK code on a PinPad reader the PUK code has to be entered first and then the %1 code twice.").arg(QSmartCardData::typeString(type)) :
 			tr("To unblock the %1 code on a PinPad reader the PUK code has to be entered first and then the %1 code twice.").arg(QSmartCardData::typeString(type));

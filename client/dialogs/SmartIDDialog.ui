@@ -3,7 +3,7 @@
  <class>SmartIDDialog</class>
  <widget class="QDialog" name="SmartIDDialog">
   <property name="windowModality">
-   <enum>Qt::WindowModality::WindowModal</enum>
+   <enum>Qt::WindowModal</enum>
   </property>
   <property name="geometry">
    <rect>
@@ -41,6 +41,7 @@ padding: 10px 14px;
 border: 1px solid #C4CBD8;
 border-radius: 4px;
 color: #07142A;
+background-color: white;
 placeholder-text-color: #607496;
 font-size: 16px;
 }
@@ -143,7 +144,7 @@ background-color: #2F70B6;
     <number>40</number>
    </property>
    <property name="sizeConstraint">
-    <enum>QLayout::SizeConstraint::SetFixedSize</enum>
+    <enum>QLayout::SetFixedSize</enum>
    </property>
    <property name="leftMargin">
     <number>40</number>
@@ -166,13 +167,13 @@ background-color: #2F70B6;
       </size>
      </property>
      <property name="focusPolicy">
-      <enum>Qt::FocusPolicy::TabFocus</enum>
+      <enum>Qt::TabFocus</enum>
      </property>
      <property name="text">
       <string>Enter your personal code to sign with Smart-ID</string>
      </property>
      <property name="alignment">
-      <set>Qt::AlignmentFlag::AlignCenter</set>
+      <set>Qt::AlignCenter</set>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
@@ -262,6 +263,9 @@ background-color: #2F70B6;
            <height>20</height>
           </size>
          </property>
+         <property name="focusPolicy">
+          <enum>Qt::TabFocus</enum>
+         </property>
         </widget>
        </item>
       </layout>
@@ -302,7 +306,7 @@ background-color: #2F70B6;
      <item>
       <spacer name="buttonSpacer">
        <property name="orientation">
-        <enum>Qt::Orientation::Horizontal</enum>
+        <enum>Qt::Horizontal</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>

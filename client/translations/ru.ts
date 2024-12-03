@@ -2067,6 +2067,10 @@ ID-КАРТОЙ</translation>
         <source>Current PUK code</source>
         <translation>Действующий PUK-код</translation>
     </message>
+    <message>
+        <source>Change</source>
+        <translation>Поменять</translation>
+    </message>
 </context>
 <context>
     <name>PrintSheet</name>

@@ -38,7 +38,7 @@ Q_LOGGING_CATEGORY(SCard,"QPCSC.SCard")
 
 static quint16 toUInt16(const QByteArray &data, int size)
 {
-	return size >= 2 ? quint16((quint16(data[size - 2]) << 8) | quint16(data[size - 1])) : 0;
+	return size >= 2 ? quint16((quint16(data[size - 2]) << 8) | quint8(data[size - 1])) : 0;
 }
 
 static QStringList stateToString(DWORD state)
@@ -58,31 +58,31 @@ static QStringList stateToString(DWORD state)
 	return result;
 }
 
-template<typename Func, typename... Args>
-static auto SCCall(const char *file, int line, const char *function, Func func, Args... args)
+template<auto Func, typename... Args>
+static auto SCCall(const char *file, int line, const char *function, Args... args)
 {
-	auto err = func(args...);
+	auto err = Func(args...);
 	if(SCard().isDebugEnabled())
 		QMessageLogger(file, line, function, SCard().categoryName()).debug()
 			<< function << Qt::hex << (unsigned long)err;
 	return err;
 }
-#define SC(API, ...) SCCall(__FILE__, __LINE__, "SCard"#API, SCard##API, __VA_ARGS__)
+#define SC(API, ...) SCCall<SCard##API>(__FILE__, __LINE__, "SCard"#API, __VA_ARGS__)
 
 QHash<DRIVER_FEATURES,quint32> QPCSCReader::Private::features()
 {
 	if(!featuresList.isEmpty())
 		return featuresList;
 	DWORD size = 0;
-	std::array<BYTE,256> feature{};
-	if(SC(Control, card, DWORD(CM_IOCTL_GET_FEATURE_REQUEST), nullptr, 0U, feature.data(), DWORD(feature.size()), &size))
+	std::array<PCSC_TLV_STRUCTURE,FEATURE_CCID_ESC_COMMAND> feature{};
+	if(SC(Control, card, DWORD(CM_IOCTL_GET_FEATURE_REQUEST), nullptr, 0U, feature.data(), DWORD(feature.size() * sizeof(PCSC_TLV_STRUCTURE)), &size))
 		return featuresList;
-	for(auto p = feature.cbegin(); std::distance(feature.cbegin(), p) < size; )
+	if(size % sizeof(PCSC_TLV_STRUCTURE))
+		return featuresList;
+	for(const auto &f: feature)
 	{
-		unsigned int tag = *p++, len = *p++, value = 0;
-		for(unsigned int i = 0; i < len; ++i)
-			value |= *p++ << 8 * i;
-		featuresList[DRIVER_FEATURES(tag)] = qFromBigEndian<quint32>(value);
+		if(f.tag)
+			featuresList[DRIVER_FEATURES(f.tag)] = qFromBigEndian<quint32>(f.value);
 	}
 	return featuresList;
 }
