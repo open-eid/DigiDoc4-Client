@@ -68,7 +68,6 @@ private:
 	void onSignAction(int action, const QString &idCode, const QString &info2);
 	void openContainer(bool signature);
 	void resetDigiDoc(std::unique_ptr<DigiDoc> &&doc);
-	void removeSignature(int index);
 	template <typename F>
 	void sign(F &&sign);
 	void updateSelector();

@@ -90,6 +90,8 @@ SettingsDialog::SettingsDialog(int page, QWidget *parent)
 	connect(ui->chkShowPrintSummary, &QCheckBox::toggled, this, Settings::SHOW_PRINT_SUMMARY);
 	ui->chkRoleAddressInfo->setChecked(Settings::SHOW_ROLE_ADDRESS_INFO);
 	connect(ui->chkRoleAddressInfo, &QCheckBox::toggled, this, Settings::SHOW_ROLE_ADDRESS_INFO);
+	connect(ui->chkDefaultLTA, &QCheckBox::toggled, this, Settings::DEFAULT_LTA);
+	ui->chkDefaultLTA->setChecked(Settings::DEFAULT_LTA);
 
 	// pageServices - TimeStamp
 	ui->rdTimeStampDefault->setDisabled(Settings::TSA_URL_CUSTOM.isLocked());

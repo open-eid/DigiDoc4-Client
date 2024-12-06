@@ -110,6 +110,7 @@ struct Settings
 	static const Option<QByteArray> TSA_CERT;
 	static const Option<QString> TSA_URL;
 	static const Option<bool, bool (*)()> TSA_URL_CUSTOM;
+	static const Option<bool> DEFAULT_LTA;
 
 	static const Option<QString> DEFAULT_DIR;
 	static const Option<QString, QString (*)()> LANGUAGE;
