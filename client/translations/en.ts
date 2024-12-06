@@ -502,6 +502,18 @@
         <translation>In order to view Validity Confirmation Sheet there has to be at least one printer installed!</translation>
     </message>
     <message>
+        <source>Extend signatures</source>
+        <translation>Extend signatures</translation>
+    </message>
+    <message>
+        <source>All signatures in the container will be extended to LTA format.</source>
+        <translation>All signatures in the container will be extended to LTA format.</translation>
+    </message>
+    <message>
+        <source>Extend</source>
+        <translation>Extend</translation>
+    </message>
+    <message>
         <source>Change</source>
         <translation>Change</translation>
     </message>
@@ -528,6 +540,10 @@
     <message>
         <source>Save without signing</source>
         <translation>Save without signing</translation>
+    </message>
+    <message>
+        <source>Extend signature(s)</source>
+        <translation>Extend signature(s)</translation>
     </message>
     <message>
         <source>Start</source>
@@ -587,6 +603,18 @@
     <message>
         <source>The first PIN entry is required for authentication to the key server referenced in the CDOC2 container. Second PIN entry is required to decrypt the CDOC2 container.</source>
         <translation>The first PIN entry is required for authentication to the key server referenced in the CDOC2 container. Second PIN entry is required to decrypt the CDOC2 container.</translation>
+    </message>
+    <message>
+        <source>PIN entry canceled</source>
+        <translation>PIN entry canceled</translation>
+    </message>
+    <message>
+        <source>PIN incorrect</source>
+        <translation>PIN incorrect</translation>
+    </message>
+    <message>
+        <source>PIN locked</source>
+        <translation>PIN locked</translation>
     </message>
     <message>
         <source>Please check your internet connection and network settings.</source>
@@ -697,27 +725,27 @@
     </message>
     <message>
         <source>Unknown - error %1</source>
-        <translation type="vanished">Unknown - error %1</translation>
+        <translation>Unknown - error %1</translation>
     </message>
     <message>
         <source>User</source>
-        <translation type="vanished">User</translation>
+        <translation>User</translation>
     </message>
     <message>
         <source>Administrator</source>
-        <translation type="vanished">Administrator</translation>
+        <translation>Administrator</translation>
     </message>
     <message>
         <source>User rights: </source>
-        <translation type="vanished">User rights: </translation>
+        <translation>User rights: </translation>
     </message>
     <message>
         <source>Not found</source>
-        <translation type="vanished">Not found</translation>
+        <translation>Not found</translation>
     </message>
     <message>
         <source>Certificate Propagation service status: </source>
-        <translation type="vanished">Certificate Propagation service status: </translation>
+        <translation>Certificate Propagation service status: </translation>
     </message>
     <message>
         <source>is set manually</source>
@@ -805,6 +833,10 @@
     <message>
         <source>Failed add file to container</source>
         <translation>Failed add file to container</translation>
+    </message>
+    <message>
+        <source>Please check the access to signing services and network settings.</source>
+        <translation>Please check the access to signing services and network settings.</translation>
     </message>
     <message>
         <source>Failed remove signature from container</source>
@@ -1406,6 +1438,14 @@ ID-Card</translation>
     <message>
         <source>DigiDoc4 Client</source>
         <translation>DigiDoc4 Client</translation>
+    </message>
+    <message>
+        <source>Documents (%1)</source>
+        <translation>Documents (%1)</translation>
+    </message>
+    <message>
+        <source>Save file</source>
+        <translation>Save file</translation>
     </message>
     <message>
         <source>Cannot alter container %1. Save different location?</source>

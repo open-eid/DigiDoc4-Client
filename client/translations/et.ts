@@ -502,6 +502,18 @@
         <translation>Digitaalallkirjade kinnituslehe kuvamiseks peab olema arvutis vähemalt üks printer seadistatud!</translation>
     </message>
     <message>
+        <source>Extend signatures</source>
+        <translation>Pikenda allkirju</translation>
+    </message>
+    <message>
+        <source>All signatures in the container will be extended to LTA format.</source>
+        <translation>Kõik ümbriku allkirjad pikendatakse LTA formaati.</translation>
+    </message>
+    <message>
+        <source>Extend</source>
+        <translation>Pikenda</translation>
+    </message>
+    <message>
         <source>Change</source>
         <translation>Muuda</translation>
     </message>
@@ -528,6 +540,10 @@
     <message>
         <source>Save without signing</source>
         <translation>Salvesta allkirjastamata</translation>
+    </message>
+    <message>
+        <source>Extend signature(s)</source>
+        <translation>Pikenda allkiri(d)</translation>
     </message>
     <message>
         <source>Start</source>
@@ -587,6 +603,18 @@
     <message>
         <source>The first PIN entry is required for authentication to the key server referenced in the CDOC2 container. Second PIN entry is required to decrypt the CDOC2 container.</source>
         <translation>Esimene PIN-koodi sisestamine on vajalik autentimiseks CDOC2 ümbrikus viidatud võtmeedastusserverisse. Teine PIN-koodi sisestamine on vajalik CDOC2 ümbriku dekrüpteerimiseks.</translation>
+    </message>
+    <message>
+        <source>PIN entry canceled</source>
+        <translation>PIN-koodi sisestamine tühistati</translation>
+    </message>
+    <message>
+        <source>PIN incorrect</source>
+        <translation>Vale PIN</translation>
+    </message>
+    <message>
+        <source>PIN locked</source>
+        <translation>PIN on lukus</translation>
     </message>
     <message>
         <source>Please check your internet connection and network settings.</source>
@@ -697,27 +725,27 @@
     </message>
     <message>
         <source>Unknown - error %1</source>
-        <translation type="vanished">Teadmata - viga %1</translation>
+        <translation>Teadmata - viga %1</translation>
     </message>
     <message>
         <source>User</source>
-        <translation type="vanished">Kasutaja</translation>
+        <translation>Kasutaja</translation>
     </message>
     <message>
         <source>Administrator</source>
-        <translation type="vanished">Administraator</translation>
+        <translation>Administraator</translation>
     </message>
     <message>
         <source>User rights: </source>
-        <translation type="vanished">Kasutajaõigused: </translation>
+        <translation>Kasutajaõigused: </translation>
     </message>
     <message>
         <source>Not found</source>
-        <translation type="vanished">Ei leitud</translation>
+        <translation>Ei leitud</translation>
     </message>
     <message>
         <source>Certificate Propagation service status: </source>
-        <translation type="vanished">Certificate Propagation teenuse staatus: </translation>
+        <translation>Certificate Propagation teenuse staatus: </translation>
     </message>
     <message>
         <source>is set manually</source>
@@ -805,6 +833,10 @@
     <message>
         <source>Failed add file to container</source>
         <translation>Faili lisamine ümbrikusse ebaõnnestus</translation>
+    </message>
+    <message>
+        <source>Please check the access to signing services and network settings.</source>
+        <translation>Palun kontrolli allkirjastamisteenuste ligipääsu ja võrgu sätteid.</translation>
     </message>
     <message>
         <source>Failed remove signature from container</source>
@@ -1406,6 +1438,14 @@ ID-kaardiga</translation>
     <message>
         <source>DigiDoc4 Client</source>
         <translation>DigiDoc4 klient</translation>
+    </message>
+    <message>
+        <source>Documents (%1)</source>
+        <translation>Dokumendid (%1)</translation>
+    </message>
+    <message>
+        <source>Save file</source>
+        <translation>Salvesta fail</translation>
     </message>
     <message>
         <source>Cannot alter container %1. Save different location?</source>

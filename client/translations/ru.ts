@@ -502,6 +502,18 @@
         <translation>Для отображения листа подтверждения действительности цифровой подписи на компьютере должен быть установлен как минимум один принтер!</translation>
     </message>
     <message>
+        <source>Extend signatures</source>
+        <translation>Продлить подписи</translation>
+    </message>
+    <message>
+        <source>All signatures in the container will be extended to LTA format.</source>
+        <translation>Все подписи в контейнере будут расширены до формата LTA.</translation>
+    </message>
+    <message>
+        <source>Extend</source>
+        <translation>Продлить</translation>
+    </message>
+    <message>
         <source>Change</source>
         <translation>Поменять</translation>
     </message>
@@ -528,6 +540,10 @@
     <message>
         <source>Save without signing</source>
         <translation>Сохранить без подписи</translation>
+    </message>
+    <message>
+        <source>Extend signature(s)</source>
+        <translation>Продлить подпись(и)</translation>
     </message>
     <message>
         <source>Start</source>
@@ -587,6 +603,18 @@
     <message>
         <source>The first PIN entry is required for authentication to the key server referenced in the CDOC2 container. Second PIN entry is required to decrypt the CDOC2 container.</source>
         <translation>Первый ввод PIN-кода требуется для аутентификации на сервере передачи ключей, указанном в конверте CDOC2. Для расшифровки конверта CDOC2 требуется второй ввод PIN-кода.</translation>
+    </message>
+    <message>
+        <source>PIN entry canceled</source>
+        <translation>Ввод PIN-кода отменён</translation>
+    </message>
+    <message>
+        <source>PIN incorrect</source>
+        <translation>Неверный PIN</translation>
+    </message>
+    <message>
+        <source>PIN locked</source>
+        <translation>PIN заблокирован</translation>
     </message>
     <message>
         <source>Please check your internet connection and network settings.</source>
@@ -697,27 +725,27 @@
     </message>
     <message>
         <source>Unknown - error %1</source>
-        <translation type="vanished">Неизвестная - ошибка %1</translation>
+        <translation>Неизвестная - ошибка %1</translation>
     </message>
     <message>
         <source>User</source>
-        <translation type="vanished">Пользователь</translation>
+        <translation>Пользователь</translation>
     </message>
     <message>
         <source>Administrator</source>
-        <translation type="vanished">Администратор</translation>
+        <translation>Администратор</translation>
     </message>
     <message>
         <source>User rights: </source>
-        <translation type="vanished">Права пользователя: </translation>
+        <translation>Права пользователя: </translation>
     </message>
     <message>
         <source>Not found</source>
-        <translation type="vanished">Не найдено</translation>
+        <translation>Не найдено</translation>
     </message>
     <message>
         <source>Certificate Propagation service status: </source>
-        <translation type="vanished">Статус Certificate Propagation сервиса: </translation>
+        <translation>Статус Certificate Propagation сервиса: </translation>
     </message>
     <message>
         <source>is set manually</source>
@@ -745,6 +773,10 @@
     <message>
         <source>Cannot add files to signed container</source>
         <translation>Нельзя добавлять файлы в подписанный контейнер</translation>
+    </message>
+    <message>
+        <source>Please check the access to signing services and network settings.</source>
+        <translation>Пожалуйста, проверьте доступ к службам подписания и настройки сети.</translation>
     </message>
     <message>
         <source>Missing signature</source>
@@ -1406,6 +1438,14 @@ ID-картой</translation>
     <message>
         <source>DigiDoc4 Client</source>
         <translation>DigiDoc4 клиент</translation>
+    </message>
+    <message>
+        <source>Documents (%1)</source>
+        <translation>Документы (%1)</translation>
+    </message>
+    <message>
+        <source>Save file</source>
+        <translation>Сохранить файл</translation>
     </message>
     <message>
         <source>Cannot alter container %1. Save different location?</source>

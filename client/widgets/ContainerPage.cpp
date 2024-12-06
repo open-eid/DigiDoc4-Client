@@ -61,6 +61,7 @@ ContainerPage::ContainerPage(QWidget *parent)
 	ui->leftPane->init(fileName);
 	ui->containerFile->installEventFilter(this);
 	ui->summary->hide();
+	ui->extend->hide();
 
 	auto connectCode = [this](QAbstractButton *btn, int code) {
 		connect(btn, &QAbstractButton::clicked, this, [this,code] { emit action(code); });
@@ -446,20 +447,29 @@ void ContainerPage::transition(DigiDoc* container)
 		}
 #endif
 		auto *dialog = new QPrintPreviewDialog( this );
+		dialog->setAttribute(Qt::WA_DeleteOnClose);
 		dialog->printer()->setPageSize( QPageSize( QPageSize::A4 ) );
 		dialog->printer()->setPageOrientation( QPageLayout::Portrait );
 		dialog->setMinimumHeight( 700 );
 		connect(dialog, &QPrintPreviewDialog::paintRequested, container, [container](QPrinter *printer) {
 			PrintSheet(container, printer);
 		});
-		dialog->exec();
-		dialog->deleteLater();
+		dialog->open();
 	});
 	disconnect(ui->changeLocation, &QPushButton::clicked, container, nullptr);
 	connect(ui->changeLocation, &QPushButton::clicked, container, [container, this] {
 		QString to = FileDialog::getSaveFileName(this, FileDialog::tr("Move file"), container->fileName());
 		if(!to.isNull() && container->move(to))
 			setHeader(to);
+	});
+	disconnect(ui->extend, &QPushButton::clicked, container, nullptr);
+	connect(ui->extend, &QPushButton::clicked, container, [container, this] {
+		auto *d = WarningDialog::create(this)
+			->withTitle(tr("Extend signatures"))
+			->withText(tr("All signatures in the container will be extended to LTA format."))
+			->addButton(tr("Extend"), QMessageBox::Yes);
+		if(d->exec() == QMessageBox::Yes && container->extend())
+			transition(container);
 	});
 	disconnect(ui->save, &QPushButton::clicked, container, nullptr);
 	connect(ui->save, &QPushButton::clicked, container, [container, this] {
@@ -552,7 +562,7 @@ void ContainerPage::updatePanes(ria::qdigidoc4::ContainerState state, CryptoDoc 
 		ui->changeLocation->show();
 		ui->rightPane->clear();
 		showSigningButton();
-		setButtonsVisible({ ui->saveAs, ui->email, ui->summary }, false);
+		setButtonsVisible({ ui->saveAs, ui->email, ui->summary, ui->extend }, false);
 		break;
 	case UnsignedSavedContainer:
 		cancelText = QT_TR_NOOP("Start");
@@ -561,6 +571,7 @@ void ContainerPage::updatePanes(ria::qdigidoc4::ContainerState state, CryptoDoc 
 		ui->rightPane->init(ItemList::ItemSignature, QT_TRANSLATE_NOOP("ItemList", "Container is not signed"));
 		ui->summary->setVisible(Settings::SHOW_PRINT_SUMMARY);
 		setButtonsVisible({ ui->saveAs, ui->email }, true);
+		ui->extend->hide();
 		break;
 	case SignedContainer:
 		cancelText = QT_TR_NOOP("Start");
@@ -568,14 +579,14 @@ void ContainerPage::updatePanes(ria::qdigidoc4::ContainerState state, CryptoDoc 
 		ui->changeLocation->hide();
 		ui->rightPane->init(ItemList::ItemSignature, QT_TRANSLATE_NOOP("ItemList", "Container signatures"));
 		ui->summary->setVisible(Settings::SHOW_PRINT_SUMMARY);
-		setButtonsVisible({ ui->saveAs, ui->email }, true);
+		setButtonsVisible({ ui->saveAs, ui->email, ui->extend }, true);
 		break;
 	case UnencryptedContainer:
 		cancelText = QT_TR_NOOP("Start");
 		convertText = QT_TR_NOOP("Sign");
 		showEncryptAction(crypto_container);
 		setButtonsVisible({ ui->changeLocation, ui->convert }, true);
-		setButtonsVisible({ ui->saveAs, ui->email }, false);
+		setButtonsVisible({ ui->saveAs, ui->email, ui->extend }, false);
 		break;
 	case EncryptedContainer:
 		cancelText = QT_TR_NOOP("Start");
@@ -583,6 +594,7 @@ void ContainerPage::updatePanes(ria::qdigidoc4::ContainerState state, CryptoDoc 
 		updateDecryptionButton();
 		setButtonsVisible({ ui->changeLocation, ui->convert }, false);
 		setButtonsVisible({ ui->saveAs, ui->email }, true);
+		ui->extend->hide();
 		break;
 	default:
 		// Uninitialized cannot be shown on container page

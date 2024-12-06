@@ -29,6 +29,7 @@
 class DigiDoc;
 class QDateTime;
 class QSslCertificate;
+class QWidget;
 
 class DigiDocSignature
 {
@@ -68,8 +69,7 @@ public:
 	QDateTime	trustedTime() const;
 	QSslCertificate tsCert() const;
 	QDateTime	tsTime() const;
-	QSslCertificate tsaCert() const;
-	QDateTime	tsaTime() const;
+	QList<std::pair<QSslCertificate,QDateTime>> archiveTimeStamps() const;
 	int warning() const;
 
 private:
@@ -110,18 +110,19 @@ private:
 	friend class DigiDoc;
 };
 
+struct ServiceConfirmation;
 
 class DigiDoc: public QObject
 {
 	Q_OBJECT
+
 public:
-	explicit DigiDoc(QObject *parent = {});
 	~DigiDoc();
 
 	bool addFile( const QString &file, const QString &mime );
-	void create( const QString &file );
-	void clear();
+	static std::unique_ptr<DigiDoc> create(const QString &file, QWidget *parent = {});
 	DocumentModel *documentModel() const;
+	bool extend();
 	QString fileName() const;
 	bool isAsicS() const;
 	bool isCades() const;
@@ -130,7 +131,7 @@ public:
 	bool isSupported() const;
 	QString mediaType() const;
 	bool move(const QString &to);
-	bool open( const QString &file );
+	static std::unique_ptr<DigiDoc> open(const QString &file, QWidget *parent = {});
 	void removeSignature( unsigned int num );
 	bool save(QString filename = {});
 	bool saveAs(const QString &filename);
@@ -148,7 +149,10 @@ public:
 		digidoc::Exception::ExceptionCode &code);
 
 private:
+	QWidget *parentWidget() const;
+	explicit DigiDoc(QWidget *parent = {});
 	bool isError(bool failure, const QString &title, const QString &text) const;
+	void load(std::unique_ptr<digidoc::Container> &&doc, ServiceConfirmation &cb);
 	static void setLastError(const QString &title, const digidoc::Exception &e);
 
 	std::unique_ptr<digidoc::Container> b;
