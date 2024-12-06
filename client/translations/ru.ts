@@ -548,6 +548,10 @@
         <source>Sign</source>
         <translation>Подписать</translation>
     </message>
+    <message>
+        <source>Extend signature(s)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>CryptoDoc</name>
@@ -1621,6 +1625,14 @@ ID-КАРТОЙ</translation>
     <message>
         <source>Crypto</source>
         <translation>Крипто</translation>
+    </message>
+    <message>
+        <source>All signatures are extended in container.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Extend</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

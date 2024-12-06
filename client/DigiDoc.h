@@ -68,8 +68,7 @@ public:
 	QDateTime	trustedTime() const;
 	QSslCertificate tsCert() const;
 	QDateTime	tsTime() const;
-	QSslCertificate tsaCert() const;
-	QDateTime	tsaTime() const;
+	QList<std::pair<QSslCertificate,QDateTime>> archiveTimeStamps() const;
 	int warning() const;
 
 private:
@@ -110,6 +109,7 @@ private:
 	friend class DigiDoc;
 };
 
+struct ServiceConfirmation;
 
 class DigiDoc: public QObject
 {
@@ -122,6 +122,7 @@ public:
 	void create( const QString &file );
 	void clear();
 	DocumentModel *documentModel() const;
+	bool extend();
 	QString fileName() const;
 	bool isAsicS() const;
 	bool isCades() const;
@@ -149,6 +150,7 @@ public:
 
 private:
 	bool isError(bool failure, const QString &msg = {}) const;
+	void load(std::unique_ptr<digidoc::Container> &&doc, ServiceConfirmation &cb);
 	static void setLastError( const QString &msg, const digidoc::Exception &e );
 
 	std::unique_ptr<digidoc::Container> b;

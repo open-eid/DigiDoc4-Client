@@ -548,6 +548,10 @@
         <source>Sign</source>
         <translation>Sign</translation>
     </message>
+    <message>
+        <source>Extend signature(s)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>CryptoDoc</name>
@@ -1620,6 +1624,14 @@ ID-CARD</translation>
     <message>
         <source>Crypto</source>
         <translation>Crypto</translation>
+    </message>
+    <message>
+        <source>All signatures are extended in container.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Extend</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

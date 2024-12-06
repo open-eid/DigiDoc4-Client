@@ -301,6 +301,13 @@ background-color: #E1C1C6;
        </widget>
       </item>
       <item>
+       <widget class="QPushButton" name="extend">
+        <property name="text">
+         <string>Extend signature(s)</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <spacer name="mainActionSpacer">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>

@@ -242,14 +242,12 @@ QDateTime DigiDocSignature::tsTime() const
 	return toTime(s->TimeStampTime());
 }
 
-QSslCertificate DigiDocSignature::tsaCert() const
+QList<std::pair<QSslCertificate,QDateTime>> DigiDocSignature::archiveTimeStamps() const
 {
-	return toCertificate(s->ArchiveTimeStampCertificate());
-}
-
-QDateTime DigiDocSignature::tsaTime() const
-{
-	return toTime(s->ArchiveTimeStampTime());
+	QList<std::pair<QSslCertificate,QDateTime>> result;
+	for(const TSAInfo &i: s->ArchiveTimeStamps())
+		result.append({toCertificate(i.cert), toTime(i.time)});;
+	return result;
 }
 
 DigiDocSignature::SignatureStatus DigiDocSignature::validate(bool qscd)
@@ -448,6 +446,56 @@ DocumentModel* DigiDoc::documentModel() const
 	return m_documentModel.get();
 }
 
+bool DigiDoc::extend()
+{
+	try {
+		auto *signer = qApp->signer();
+		signer->setUserAgent(QStringLiteral("%1/%2 (%3) Devices: %4").arg(
+			QCoreApplication::applicationName(),
+			QCoreApplication::applicationVersion(),
+			Common::applicationOs(),
+			Common::drivers().join(',')).toUtf8().constData());
+		qApp->waitForTSL(fileName());
+		QWidget *parent = qobject_cast<QWidget *>(QObject::parent());
+		if(parent == nullptr)
+			parent = Application::activeWindow();
+		ServiceConfirmation cb(parent);
+		QString current = m_fileName;
+		if(waitFor([&] {
+			if(auto container = Container::extendContainerValidity(*b, signer))
+			{
+				load(std::move(container), cb);
+				return true;
+			}
+			return false;
+		}))
+		{
+			const QString asics = QCoreApplication::translate("MainWindow", "Documents (%1)").arg(QLatin1String("*.asics *.scs"));
+			QFileInfo f(current);
+			QString name = f.absolutePath() + '/' + f.completeBaseName() + QStringLiteral(".asics");
+			return save(FileDialog::getSaveFileName(Application::mainWindow(), QCoreApplication::translate("MainWindow", "Save file"), name, asics));
+		}
+		else
+			save();
+	}
+	catch(const Exception &e)
+	{
+		Exception::ExceptionCode code = Exception::General;
+		QStringList causes = parseException(e, code);
+		switch(code)
+		{
+		case Exception::NetworkError:
+		case Exception::HostNotFound:
+			WarningDialog::show(tr("Failed to sign container. Please check the access to signing services and network settings."), causes.join('\n')); break;
+		case Exception::InvalidUrl:
+			WarningDialog::show(tr("Failed to sign container. Signing service URL is incorrect."), causes.join('\n')); break;
+		default:
+			setLastError(tr("Failed to sign container."), e); break;
+		}
+	}
+	return false;
+}
+
 QString DigiDoc::fileName() const { return m_fileName; }
 
 bool DigiDoc::isError(bool failure, const QString &msg) const
@@ -485,6 +533,39 @@ bool DigiDoc::isSupported() const
 	return b && b->mediaType() == "application/vnd.etsi.asic-e+zip" && !isCades();
 }
 
+void DigiDoc::load(std::unique_ptr<Container> &&doc, ServiceConfirmation &cb)
+{
+	clear();
+	b = std::move(doc);
+	if(b && b->mediaType() == "application/vnd.etsi.asic-s+zip" &&
+		b->dataFiles().size() == 1 &&
+		b->signatures().size() == 1)
+	{
+		const DataFile *f = b->dataFiles().at(0);
+		if(from(f->fileName()).endsWith(QStringLiteral(".ddoc"), Qt::CaseInsensitive))
+		{
+			const QString tmppath = FileDialog::tempPath(FileDialog::safeName(from(f->fileName())));
+			f->saveAs(to(tmppath));
+			if(QFileInfo::exists(tmppath))
+			{
+				m_tempFiles.append(tmppath);
+				try {
+					parentContainer = std::exchange(b, Container::openPtr(to(tmppath), &cb));
+				} catch(const Exception &) {}
+			}
+		}
+	}
+	bool isTimeStamped = parentContainer && parentContainer->signatures().at(0)->trustedSigningTime().compare("2018-07-01T00:00:00Z") < 0;
+	for(const Signature *signature: b->signatures())
+		m_signatures.append(DigiDocSignature(signature, this, isTimeStamped));
+	if(parentContainer)
+	{
+		for(const Signature *signature: parentContainer->signatures())
+			m_timestamps.append(DigiDocSignature(signature, this));
+	}
+	containerState = signatures().isEmpty() ? ContainerState::UnsignedSavedContainer : ContainerState::SignedContainer;
+}
+
 QString DigiDoc::mediaType() const
 { return b ? from( b->mediaType() ) : QString(); }
 
@@ -513,40 +594,12 @@ bool DigiDoc::open( const QString &file )
 		parent = Application::activeWindow();
 	ServiceConfirmation cb(parent);
 	qApp->waitForTSL( file );
-	clear();
 	try {
 		WaitDialogHolder waitDialog(parent, tr("Opening"), false);
 		return waitFor([&] {
-			b = Container::openPtr(to(file), &cb);
-			if(b && b->mediaType() == "application/vnd.etsi.asic-s+zip" &&
-				b->dataFiles().size() == 1 &&
-				b->signatures().size() == 1)
-			{
-				const DataFile *f = b->dataFiles().at(0);
-				if(from(f->fileName()).endsWith(QStringLiteral(".ddoc"), Qt::CaseInsensitive))
-				{
-					const QString tmppath = FileDialog::tempPath(FileDialog::safeName(from(f->fileName())));
-					f->saveAs(to(tmppath));
-					if(QFileInfo::exists(tmppath))
-					{
-						m_tempFiles.append(tmppath);
-						try {
-							parentContainer = std::exchange(b, Container::openPtr(to(tmppath), &cb));
-						} catch(const Exception &) {}
-					}
-				}
-			}
-			bool isTimeStamped = parentContainer && parentContainer->signatures().at(0)->trustedSigningTime().compare("2018-07-01T00:00:00Z") < 0;
-			for(const Signature *signature: b->signatures())
-				m_signatures.append(DigiDocSignature(signature, this, isTimeStamped));
-			if(parentContainer)
-			{
-				for(const Signature *signature: parentContainer->signatures())
-					m_timestamps.append(DigiDocSignature(signature, this));
-			}
+			load(Container::openPtr(to(file), &cb), cb);
 			Application::addRecent(file);
 			m_fileName = file;
-			containerState = signatures().isEmpty() ? ContainerState::UnsignedSavedContainer : ContainerState::SignedContainer;
 			return true;
 		});
 	} catch(const Exception &e) {

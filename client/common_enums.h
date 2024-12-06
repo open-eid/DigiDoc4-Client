@@ -49,13 +49,14 @@ enum Actions {
     EncryptContainer,
     DecryptContainer,
     DecryptToken,
+    ClearCryptoWarning,
 
     SignatureAdd,
     SignatureMobile,
     SignatureSmartID,
     SignatureToken,
+    SignatureExtend,
     ClearSignatureWarning,
-    ClearCryptoWarning,
 };
 
 enum ItemType {

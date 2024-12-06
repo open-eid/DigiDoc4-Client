@@ -405,6 +405,16 @@ void MainWindow::onSignAction(int action, const QString &info1, const QString &i
 				digiDoc->sign(city, state, zip, country, role, &s);
 		});
 		break;
+	case SignatureExtend:
+	{
+		if(!digiDoc)
+			break;
+		WarningDialog *d = new WarningDialog(tr("All signatures are extended in container."), this);
+		d->addButton(tr("Extend"), QMessageBox::Yes);
+		if(d->exec() == QMessageBox::Yes && digiDoc->extend())
+			ui->signContainerPage->transition(digiDoc);
+		break;
+	}
 	case ClearSignatureWarning:
 		ui->signature->warningIcon(false);
 		ui->warnings->closeWarnings(SignDetails);

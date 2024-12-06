@@ -47,6 +47,7 @@ ContainerPage::ContainerPage(QWidget *parent)
 	ui->leftPane->init(fileName);
 	ui->containerFile->installEventFilter(this);
 	ui->summary->hide();
+	ui->extend->hide();
 
 	mobileCode = Settings::MOBILEID_CODE;
 
@@ -62,6 +63,7 @@ ContainerPage::ContainerPage(QWidget *parent)
 	connectCode(ui->email, Actions::ContainerEmail);
 	connectCode(ui->summary, Actions::ContainerSummary);
 	connectCode(ui->save, Actions::ContainerSave);
+	connectCode(ui->extend, Actions::SignatureExtend);
 	connect(ui->leftPane, &FileList::addFiles, this, &ContainerPage::addFiles);
 	connect(ui->leftPane, &ItemList::removed, this, &ContainerPage::fileRemoved);
 	connect(ui->leftPane, &ItemList::addItem, this, &ContainerPage::forward);
@@ -370,7 +372,7 @@ void ContainerPage::updatePanes(ContainerState state)
 		ui->rightPane->clear();
 		ui->leftPane->init(fileName, QT_TRANSLATE_NOOP("ItemList", "Container files"));
 		showSigningButton();
-		setButtonsVisible({ ui->saveAs, ui->email, ui->summary }, false);
+		setButtonsVisible({ ui->saveAs, ui->email, ui->summary, ui->extend }, false);
 		break;
 	case UnsignedSavedContainer:
 		cancelText = QT_TR_NOOP("Start");
@@ -388,7 +390,7 @@ void ContainerPage::updatePanes(ContainerState state)
 		ui->leftPane->init(fileName, QT_TRANSLATE_NOOP("ItemList", "Container files"));
 		ui->rightPane->init(ItemSignature, QT_TRANSLATE_NOOP("ItemList", "Container signatures"));
 		ui->summary->setVisible(Settings::SHOW_PRINT_SUMMARY);
-		setButtonsVisible({ ui->saveAs, ui->email }, true);
+		setButtonsVisible({ ui->saveAs, ui->email, ui->extend }, true);
 		break;
 	case UnencryptedContainer:
 		cancelText = QT_TR_NOOP("Start");
