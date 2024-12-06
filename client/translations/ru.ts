@@ -2312,54 +2312,6 @@ ID-КАРТОЙ</translation>
         <translation>Настройки</translation>
     </message>
     <message>
-        <source>GENERAL</source>
-        <translation>ОСНОВНЫЕ</translation>
-    </message>
-    <message>
-        <source>PROXY</source>
-        <translation>ПРОКСИ</translation>
-    </message>
-    <message>
-        <source>DIAGNOSTICS</source>
-        <translation>ДИАГНОСТИКА</translation>
-    </message>
-    <message>
-        <source>INFO</source>
-        <translation>ИНФО</translation>
-    </message>
-    <message>
-        <source>CLOSE</source>
-        <translation>ЗАКРЫТЬ</translation>
-    </message>
-    <message>
-        <source>FIRST RUN</source>
-        <translation>ПЕРВЫЙ ЗАПУСК</translation>
-    </message>
-    <message>
-        <source>REMOVE OLD CERTIFICATES</source>
-        <translation>УДАЛИТЬ СТАРЫЕ СЕРТИФИКАТЫ</translation>
-    </message>
-    <message>
-        <source>SAVE DIAGNOSTICS REPORT TO DISK</source>
-        <translation>СОХРАНИТЬ ДИАГНОСТИКУ</translation>
-    </message>
-    <message>
-        <source>SHOW CERTIFICATE</source>
-        <translation>ПОКАЗАТЬ СЕРТИФИКАТ</translation>
-    </message>
-    <message>
-        <source>USE DEFAULT SETTINGS</source>
-        <translation>ИСПОЛЬЗОВАТЬ НАСТРОЙКИ ПО УМОЛЧАНИЮ</translation>
-    </message>
-    <message>
-        <source>CHECK CONNECTIONS</source>
-        <translation>ПРОВЕРЬТЕ НАСТРОЙКИ ИНТЕРНЕТА</translation>
-    </message>
-    <message>
-        <source>REFRESH CONFIGURATION</source>
-        <translation>ПРОВЕРЬТЕ ОБНОВЛЕНИЯ</translation>
-    </message>
-    <message>
         <source>Language</source>
         <translation>Язык</translation>
     </message>
@@ -2424,10 +2376,6 @@ ID-КАРТОЙ</translation>
         <translation>Настройки Интернета верны, услуга подтверждения действительности доступна!</translation>
     </message>
     <message>
-        <source>DigiDoc4 Client</source>
-        <translation>DigiDoc4 клиент</translation>
-    </message>
-    <message>
         <source>Checking updates has failed.</source>
         <translation>Ошибка проверки обновлений.</translation>
     </message>
@@ -2473,58 +2421,43 @@ Additional licenses and components</source>
         <translation>Основные</translation>
     </message>
     <message>
-        <source>Services</source>
-        <extracomment>accessible</extracomment>
-        <translation>Службы</translation>
-    </message>
-    <message>
         <source>Proxy</source>
-        <extracomment>accessible</extracomment>
         <translation>Прокси</translation>
     </message>
     <message>
         <source>Diagnostics</source>
-        <extracomment>accessible</extracomment>
         <translation>Диагностика</translation>
     </message>
     <message>
         <source>Info</source>
-        <extracomment>accessible</extracomment>
         <translation>Инфо</translation>
     </message>
     <message>
         <source>First run</source>
-        <extracomment>accessible</extracomment>
         <translation>Первый запуск</translation>
     </message>
     <message>
         <source>Refresh configuration</source>
-        <extracomment>accessible</extracomment>
         <translation>Проверьте обновления</translation>
     </message>
     <message>
         <source>Check connection</source>
-        <extracomment>accessible</extracomment>
         <translation>Проверьте настройки интернета</translation>
     </message>
     <message>
         <source>Save diagnostics report</source>
-        <extracomment>accessible</extracomment>
         <translation>Сохранить диагностику</translation>
     </message>
     <message>
         <source>Remove old certificates</source>
-        <extracomment>accessible</extracomment>
         <translation>Удалить старые сертификаты</translation>
     </message>
     <message>
         <source>Use default settings</source>
-        <extracomment>accessible</extracomment>
         <translation>Использовать настройки по умолчанию</translation>
     </message>
     <message>
         <source>Close</source>
-        <extracomment>accessible</extracomment>
         <translation>Закрыть</translation>
     </message>
     <message>
@@ -2544,8 +2477,8 @@ Additional licenses and components</source>
         <translation>Обновление конфигурации программы DigiDoc4 удачно завершено.</translation>
     </message>
     <message>
-        <source>%1 version %2, released %3</source>
-        <translation>%1 версия %2, выпущенный %3</translation>
+        <source>DigiDoc4 version %1, released %2</source>
+        <translation>DigiDoc4 версия %1, выпущенный %2</translation>
     </message>
     <message>
         <source>Use default access</source>
@@ -2561,12 +2494,7 @@ Additional licenses and components</source>
     </message>
     <message>
         <source>Save log</source>
-        <extracomment>accessible</extracomment>
         <translation>Сохранить лог-файл</translation>
-    </message>
-    <message>
-        <source>SAVE LOG</source>
-        <translation>СОХРАНИТЬ ЛОГ-ФАЙЛ</translation>
     </message>
     <message>
         <source>Restart DigiDoc4 Client to activate logging. Read more &lt;a href=&quot;https://www.id.ee/en/article/log-file-generation-in-digidoc4-client/&quot;&gt;here&lt;/a&gt;. Restart now?</source>
@@ -2581,12 +2509,12 @@ Additional licenses and components</source>
         <translation>Проект поддерживается Европейским фондом регионального развития</translation>
     </message>
     <message>
-        <source>SIGNING SERVICES</source>
-        <translation>УСЛУГИ ПОДПИСАНИЯ</translation>
+        <source>Signing services</source>
+        <translation>Услуги подписания</translation>
     </message>
     <message>
-        <source>VALIDATION SERVICES</source>
-        <translation>УСЛУГИ ВАЛИДАЦИИ</translation>
+        <source>Validation services</source>
+        <translation>Услуги валидации</translation>
     </message>
     <message>
         <source>Access to Digital Signature Validation Service SiVa</source>
@@ -2605,16 +2533,60 @@ Additional licenses and components</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>ADD CERTIFICATE</source>
-        <translation>ДОБАВИТЬ СЕРТИФИКАТ</translation>
-    </message>
-    <message>
         <source>Select Time-Stamping server certificate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Time-Stamping service SSL certificate</source>
         <translation>SSL сертификат службы отметок времени</translation>
+    </message>
+    <message>
+        <source>Encryption settings</source>
+        <translation>Настройки шифрования</translation>
+    </message>
+    <message>
+        <source>Add certificate</source>
+        <translation>Добавить сертификат</translation>
+    </message>
+    <message>
+        <source>Show certificate</source>
+        <translation>Показать сертификат</translation>
+    </message>
+    <message>
+        <source>Use CDOC1 file format for encryption</source>
+        <translation>Для шифрования используйте формат файла CDOC1</translation>
+    </message>
+    <message>
+        <source>Use CDOC2 file format for encryption</source>
+        <translation>Для шифрования используйте формат файла CDOC2</translation>
+    </message>
+    <message>
+        <source>Use a manually specified key transfer server for encryption</source>
+        <translation>Используйте вручную указанный сервер передачи ключей для шифрования</translation>
+    </message>
+    <message>
+        <source>Key transfer server SSL certificate</source>
+        <translation>SSL-сертификат сервера передачи ключей</translation>
+    </message>
+    <message>
+        <source>Select a key transfer server certificate</source>
+        <translation>Выберите сертификат сервера передачи ключей</translation>
+    </message>
+    <message>
+        <source>Use a key transfer server for encryption</source>
+        <translation>Используйте сервер передачи ключей для шифрования</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Fetch URL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Post URL</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

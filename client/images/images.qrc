@@ -20,12 +20,10 @@
 		<file>icon_Allkiri_small.svg</file>
 		<file>icon_Allkiri.svg</file>
 		<file>icon_check.svg</file>
-		<file>icon_checkbox.png</file>
 		<file>icon_checkbox.svg</file>
 		<file>icon_checkbox_active.svg</file>
 		<file>icon_checkbox_disabled.svg</file>
 		<file>icon_checkbox_hover.svg</file>
-		<file>icon_checkbox_check.png</file>
 		<file>icon_checkbox_check.svg</file>
 		<file>icon_checkbox_check_active.svg</file>
 		<file>icon_checkbox_check_disabled.svg</file>
@@ -37,6 +35,7 @@
 		<file>icon_Edit_hover.svg</file>
 		<file>icon_Edit_pressed.svg</file>
 		<file>icon_Edit.svg</file>
+		<file>icon_help.svg</file>
 		<file>icon_IDkaart_disabled.svg</file>
 		<file>icon_IDkaart_red.svg</file>
 		<file>icon_IDkaart_green.svg</file>
@@ -48,8 +47,14 @@
 		<file>icon_link.svg</file>
 		<file>icon_Minu_eID_hover.svg</file>
 		<file>icon_Minu_eID.svg</file>
-		<file>icon_radio.png</file>
-		<file>icon_radio_checked.png</file>
+		<file>icon_radio.svg</file>
+		<file>icon_radio_active.svg</file>
+		<file>icon_radio_disabled.svg</file>
+		<file>icon_radio_hover.svg</file>
+		<file>icon_radio_check.svg</file>
+		<file>icon_radio_check_active.svg</file>
+		<file>icon_radio_check_disabled.svg</file>
+		<file>icon_radio_check_hover.svg</file>
 		<file>icon_remove_hover.svg</file>
 		<file>icon_remove.svg</file>
 		<file>icon_remove_pressed.svg</file>

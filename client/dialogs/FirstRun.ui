@@ -849,21 +849,21 @@ border-radius: 3px;</string>
       <widget class="QPushButton" name="signSkip">
        <property name="geometry">
         <rect>
-         <x>436</x>
+         <x>363</x>
          <y>540</y>
-         <width>151</width>
+         <width>298</width>
          <height>25</height>
         </rect>
        </property>
        <property name="minimumSize">
         <size>
-         <width>151</width>
+         <width>298</width>
          <height>25</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
-         <width>151</width>
+         <width>298</width>
          <height>25</height>
         </size>
        </property>
@@ -1395,21 +1395,21 @@ border-radius: 3px;</string>
       <widget class="QPushButton" name="cryptoSkip">
        <property name="geometry">
         <rect>
-         <x>436</x>
+         <x>363</x>
          <y>540</y>
-         <width>151</width>
+         <width>298</width>
          <height>25</height>
         </rect>
        </property>
        <property name="minimumSize">
         <size>
-         <width>151</width>
+         <width>298</width>
          <height>25</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
-         <width>151</width>
+         <width>298</width>
          <height>25</height>
         </size>
        </property>

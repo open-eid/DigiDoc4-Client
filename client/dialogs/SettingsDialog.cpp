@@ -30,17 +30,15 @@
 #include "FileDialog.h"
 #include "QSigner.h"
 #include "Settings.h"
-#include "Styles.h"
 #include "SslCertificate.h"
 #include "TokenData.h"
 #include "dialogs/CertificateDetails.h"
 #include "dialogs/FirstRun.h"
 #include "dialogs/WarningDialog.h"
-#include "effects/ButtonHoverFilter.h"
 #include "effects/Overlay.h"
 #include "effects/FadeInNotification.h"
 
-#include <digidocpp/Conf.h>
+#include <digidocpp/XmlConf.h>
 
 #include <QtCore/QJsonObject>
 #include <QtCore/QProcess>
@@ -69,126 +67,290 @@ SettingsDialog::SettingsDialog(int page, QWidget *parent)
 		w->setAttribute(Qt::WA_MacShowFocusRect, false);
 	for(QCheckBox *w: findChildren<QCheckBox*>())
 		w->setAttribute(Qt::WA_MacShowFocusRect, false);
-
-	QFont headerFont = Styles::font(Styles::Regular, 18, QFont::Bold);
-	QFont regularFont = Styles::font(Styles::Regular, 14);
-	QFont condensed12 = Styles::font(Styles::Condensed, 12);
-	headerFont.setPixelSize(18);
-	regularFont.setPixelSize(14);
-	condensed12.setPixelSize(12);
-
-	// Menu
-	ui->lblMenuSettings->setFont(headerFont);
-	ui->btnMenuGeneral->setFont(condensed12);
-	ui->btnMenuCertificate->setFont(condensed12);
-	ui->btnMenuValidation->setFont(condensed12);
-	ui->btnMenuProxy->setFont(condensed12);
-	ui->btnMenuDiagnostics->setFont(condensed12);
-	ui->btnMenuInfo->setFont(condensed12);
+	for(QToolButton *b: findChildren<QToolButton*>())
+		b->setCursor(Qt::PointingHandCursor);
+	for(QPushButton *b: findChildren<QPushButton*>())
+	{
+		b->setCursor(Qt::PointingHandCursor);
+		b->setAutoDefault(false);
+	}
 
 	// pageGeneral
-	ui->lblGeneralLang->setFont(headerFont);
-	ui->lblDefaultDirectory->setFont(headerFont);
+	selectLanguage();
+	connect(ui->langGroup, qOverload<QAbstractButton*>(&QButtonGroup::buttonClicked), this,
+		[this](QAbstractButton *button){ retranslate(button->property("lang").toString()); });
 
-	ui->rdGeneralEstonian->setFont(regularFont);
-	ui->rdGeneralRussian->setFont(regularFont);
-	ui->rdGeneralEnglish->setFont(regularFont);
+	ui->chkShowPrintSummary->setChecked(Settings::SHOW_PRINT_SUMMARY);
+	connect(ui->chkShowPrintSummary, &QCheckBox::toggled, this, &SettingsDialog::togglePrinting);
+	connect(ui->chkShowPrintSummary, &QCheckBox::toggled, this, Settings::SHOW_PRINT_SUMMARY);
+	ui->chkRoleAddressInfo->setChecked(Settings::SHOW_ROLE_ADDRESS_INFO);
+	connect(ui->chkRoleAddressInfo, &QCheckBox::toggled, this, Settings::SHOW_ROLE_ADDRESS_INFO);
 
-	ui->rdGeneralSameDirectory->setFont(regularFont);
-	ui->rdGeneralSpecifyDirectory->setFont(regularFont);
-	ui->btGeneralChooseDirectory->setFont(regularFont);
-	ui->txtGeneralDirectory->setFont(regularFont);
-
-	ui->chkShowPrintSummary->setFont(regularFont);
-	ui->chkRoleAddressInfo->setFont(regularFont);
-	ui->chkLibdigidocppDebug->setFont(regularFont);
-
-	ui->lblGeneralCDoc2->setFont(headerFont);
-
-	ui->chkCdoc2KeyServer->setFont(regularFont);
-	ui->lblCdoc2Name->setFont(regularFont);
-	ui->lblCdoc2UUID->setFont(regularFont);
-	ui->lblCdoc2Fetch->setFont(regularFont);
-	ui->lblCdoc2Post->setFont(regularFont);
-	ui->cmbCdoc2Name->setFont(regularFont);
-	ui->txtCdoc2UUID->setFont(regularFont);
-	ui->txtCdoc2Fetch->setFont(regularFont);
-	ui->txtCdoc2Post->setFont(regularFont);
-
-	// pageServices
-	ui->lblTimeStamp->setFont(headerFont);
-	ui->rdTimeStampDefault->setFont(regularFont);
-	ui->rdTimeStampCustom->setFont(regularFont);
-	ui->txtTimeStamp->setFont(regularFont);
-	ui->lblTSACert->setFont(regularFont);
-	ui->txtTSACert->setFont(regularFont);
-	ui->btInstallTSACert->setFont(condensed12);
-	ui->btShowTSACert->setFont(condensed12);
-#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
-	ui->btInstallTSACert->setStyleSheet("background-color: #d3d3d3");
-	ui->btShowTSACert->setStyleSheet("background-color: #d3d3d3");
+#ifdef Q_OS_MACOS
+	ui->lblDefaultDirectory->hide();
+	ui->rdGeneralSameDirectory->hide();
+	ui->txtGeneralDirectory->hide();
+	ui->btGeneralChooseDirectory->hide();
+	ui->rdGeneralSpecifyDirectory->hide();
+#else
+	connect(ui->btGeneralChooseDirectory, &QPushButton::clicked, this, [=]{
+		QString dir = FileDialog::getExistingDirectory(this, tr("Select folder"), Settings::DEFAULT_DIR);
+		if(!dir.isEmpty())
+		{
+			ui->rdGeneralSpecifyDirectory->setChecked(true);
+			Settings::DEFAULT_DIR = dir;
+			ui->txtGeneralDirectory->setText(dir);
+		}
+	});
+	connect(ui->rdGeneralSpecifyDirectory, &QRadioButton::toggled, this, [=](bool enable) {
+		ui->btGeneralChooseDirectory->setVisible(enable);
+		ui->txtGeneralDirectory->setVisible(enable);
+		if(!enable)
+			ui->txtGeneralDirectory->clear();
+	});
+	ui->txtGeneralDirectory->setText(Settings::DEFAULT_DIR);
+	if(ui->txtGeneralDirectory->text().isEmpty())
+		ui->rdGeneralSameDirectory->setChecked(true);
+	connect(ui->txtGeneralDirectory, &QLineEdit::textChanged, this, Settings::DEFAULT_DIR);
 #endif
-	ui->lblMID->setFont(headerFont);
-	ui->rdMIDUUIDDefault->setFont(regularFont);
-	ui->rdMIDUUIDCustom->setFont(regularFont);
-	ui->txtMIDUUID->setFont(regularFont);
-	ui->helpTimeStamp->installEventFilter(new ButtonHoverFilter(QStringLiteral(":/images/icon_Abi.svg"), QStringLiteral(":/images/icon_Abi_hover.svg"), this));
-	ui->helpMID->installEventFilter(new ButtonHoverFilter(QStringLiteral(":/images/icon_Abi.svg"), QStringLiteral(":/images/icon_Abi_hover.svg"), this));
+
+	// pageServices - TimeStamp
+	ui->rdTimeStampDefault->setDisabled(Settings::TSA_URL_CUSTOM.isLocked());
+	ui->rdTimeStampCustom->setEnabled(ui->rdTimeStampDefault->isEnabled());
+	ui->rdTimeStampCustom->setChecked(Settings::TSA_URL_CUSTOM);
+	ui->txtTimeStamp->setReadOnly(Settings::TSA_URL.isLocked());
+	ui->txtTimeStamp->setVisible(ui->rdTimeStampCustom->isChecked());
+	ui->txtTimeStamp->setPlaceholderText(Application::confValue(Settings::TSA_URL.KEY).toString());
+	QString TSA_URL = Settings::TSA_URL.value(Application::confValue(Application::TSAUrl));
+	ui->txtTimeStamp->setText(ui->txtTimeStamp->placeholderText() == TSA_URL ? QString() : std::move(TSA_URL));
+	ui->wgtTSACert->setDisabled(Settings::TSA_CERT.isLocked());
+	ui->wgtTSACert->setVisible(ui->rdTimeStampCustom->isChecked());
+	connect(ui->rdTimeStampCustom, &QRadioButton::toggled, ui->txtTimeStamp, [this](bool checked) {
+		ui->txtTimeStamp->setVisible(checked);
+		ui->wgtTSACert->setVisible(checked);
+		Settings::TSA_URL_CUSTOM = checked;
+	});
+	connect(ui->txtTimeStamp, &QLineEdit::textChanged, this, [this](const QString &url) {
+		Settings::TSA_URL = url;
+		if(url.isEmpty())
+		{
+			Settings::TSA_CERT.clear();
+			updateTSACert(QSslCertificate());
+		}
+	});
+	connect(ui->helpTimeStamp, &QToolButton::clicked, this, []{
+		QDesktopServices::openUrl(tr("https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/"));
+	});
+	connect(ui->btInstallTSACert, &QPushButton::clicked, this, [this] {
+		QSslCertificate cert = selectCert(tr("Select Time-Stamping server certificate"),
+			tr("Time-Stamping service SSL certificate"));
+		if(cert.isNull())
+			return;
+		Settings::TSA_CERT = cert.toDer().toBase64();
+		updateTSACert(cert);
+	});
+	updateTSACert(QSslCertificate(QByteArray::fromBase64(Settings::TSA_CERT), QSsl::Der));
+
+	// pageServices - MID
+	ui->rdMIDUUIDDefault->setDisabled(Settings::MID_UUID_CUSTOM.isLocked());
+	ui->rdMIDUUIDCustom->setEnabled(ui->rdMIDUUIDDefault->isEnabled());
+	ui->rdMIDUUIDCustom->setChecked(Settings::MID_UUID_CUSTOM);
+	ui->txtMIDUUID->setReadOnly(Settings::MID_UUID.isLocked());
+	ui->txtMIDUUID->setVisible(ui->rdMIDUUIDCustom->isChecked());
+	ui->txtMIDUUID->setText(Settings::MID_UUID);
+	connect(ui->rdMIDUUIDCustom, &QRadioButton::toggled, ui->txtMIDUUID, [this](bool checked) {
+		ui->txtMIDUUID->setVisible(checked);
+		Settings::MID_UUID_CUSTOM = checked;
+		Settings::SID_UUID_CUSTOM = checked;
+	});
+	connect(ui->txtMIDUUID, &QLineEdit::textChanged, this, [](const QString &text) {
+		Settings::MID_UUID = text;
+		Settings::SID_UUID = text;
+	});
+	connect(ui->helpMID, &QToolButton::clicked, this, []{
+		QDesktopServices::openUrl(tr("https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/"));
+	});
 
 	// pageValidation
-	ui->lblSiVa->setFont(headerFont);
-	ui->txtSiVa->setFont(regularFont);
-	ui->rdSiVaDefault->setFont(regularFont);
-	ui->rdSiVaCustom->setFont(regularFont);
-	ui->lblSiVaCert->setFont(regularFont);
-	ui->txtSiVaCert->setFont(regularFont);
-	ui->btInstallSiVaCert->setFont(condensed12);
-	ui->btShowSiVaCert->setFont(condensed12);
-#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
-	ui->btInstallSiVaCert->setStyleSheet("background-color: #d3d3d3");
-	ui->btShowSiVaCert->setStyleSheet("background-color: #d3d3d3");
+	ui->rdSiVaDefault->setDisabled(Settings::SIVA_URL_CUSTOM.isLocked());
+	ui->rdSiVaCustom->setEnabled(ui->rdSiVaDefault->isEnabled());
+	ui->rdSiVaCustom->setChecked(Settings::SIVA_URL_CUSTOM);
+	ui->txtSiVa->setReadOnly(Settings::SIVA_URL.isLocked());
+	ui->txtSiVa->setVisible(ui->rdSiVaCustom->isChecked());
+	ui->txtSiVa->setPlaceholderText(Application::confValue(Settings::SIVA_URL.KEY).toString());
+	QString SIVA_URL = Settings::SIVA_URL.value(Application::confValue(Application::SiVaUrl));
+	ui->txtSiVa->setText(ui->txtSiVa->placeholderText() == SIVA_URL ? QString() : std::move(SIVA_URL));
+	ui->wgtSiVaCert->setDisabled(Settings::SIVA_CERT.isLocked());
+	ui->wgtSiVaCert->setVisible(ui->rdSiVaCustom->isChecked());
+	connect(ui->rdSiVaCustom, &QRadioButton::toggled, ui->txtSiVa, [this](bool checked) {
+		ui->txtSiVa->setVisible(checked);
+		ui->wgtSiVaCert->setVisible(checked);
+		Settings::SIVA_URL_CUSTOM = checked;
+	});
+	connect(ui->txtSiVa, &QLineEdit::textChanged, this, [this](const QString &url) {
+		Settings::SIVA_URL = url;
+		if(url.isEmpty())
+		{
+			Settings::SIVA_CERT.clear();
+			updateSiVaCert(QSslCertificate());
+		}
+	});
+	connect(ui->helpSiVa, &QToolButton::clicked, this, []{
+		QDesktopServices::openUrl(tr("https://www.id.ee/en/article/configuring-the-siva-validation-service-in-the-digidoc4-client/"));
+	});
+	connect(ui->btInstallSiVaCert, &QPushButton::clicked, this, [this] {
+		QSslCertificate cert = selectCert(tr("Select SiVa server certificate"),
+			tr("Digital Signature Validation Service SiVa SSL certificate"));
+		if(cert.isNull())
+			return;
+		Settings::SIVA_CERT = cert.toDer().toBase64();
+		updateSiVaCert(cert);
+	});
+	updateSiVaCert(QSslCertificate(QByteArray::fromBase64(Settings::SIVA_CERT), QSsl::Der));
+
+	// pageEncryption
+	ui->wgtCDoc2->hide();
+	connect(ui->rdCdoc2, &QRadioButton::toggled, ui->wgtCDoc2, &QWidget::setVisible);
+	ui->rdCdoc2->setChecked(Settings::CDOC2_DEFAULT);
+	connect(ui->rdCdoc2, &QRadioButton::toggled, this, Settings::CDOC2_DEFAULT);
+	ui->wgtCDoc2Server->hide();
+	connect(ui->chkCdoc2KeyServer, &QCheckBox::toggled, ui->wgtCDoc2Server, &QWidget::setVisible);
+	ui->chkCdoc2KeyServer->setChecked(Settings::CDOC2_USE_KEYSERVER);
+	connect(ui->chkCdoc2KeyServer, &QCheckBox::toggled, this, Settings::CDOC2_USE_KEYSERVER);
+#ifdef CONFIG_URL
+	QJsonObject list = Application::confValue(QLatin1String("CDOC2-CONF")).toObject();
+	auto setCDoc2Values = [this, list](const QString &key) {
+		ui->txtCdoc2UUID->setText(key);
+		QJsonObject data = list.value(key).toObject();
+		ui->txtCdoc2Fetch->setText(data.value(QLatin1String("FETCH")).toString(Settings::CDOC2_GET));
+		ui->txtCdoc2Post->setText(data.value(QLatin1String("POST")).toString(Settings::CDOC2_POST));
+		bool disabled = ui->cmbCdoc2Name->currentIndex() < ui->cmbCdoc2Name->count() - 1;
+		ui->txtCdoc2UUID->setDisabled(disabled);
+		ui->txtCdoc2Fetch->setDisabled(disabled);
+		ui->txtCdoc2Post->setDisabled(disabled);
+		ui->txtCdoc2UUID->setClearButtonEnabled(!disabled);
+		ui->txtCdoc2Fetch->setClearButtonEnabled(!disabled);
+		ui->txtCdoc2Post->setClearButtonEnabled(!disabled);
+		ui->wgtCDoc2Cert->setHidden(disabled);
+	};
+	for(QJsonObject::const_iterator i = list.constBegin(); i != list.constEnd(); ++i)
+		ui->cmbCdoc2Name->addItem(i.value().toObject().value(QLatin1String("NAME")).toString(), i.key());
+	ui->cmbCdoc2Name->addItem(tr("Use a manually specified key transfer server for encryption"), Settings::CDOC2_UUID);
+	QString cdoc2Service = Settings::CDOC2_DEFAULT_KEYSERVER;
+	ui->cmbCdoc2Name->setCurrentIndex(ui->cmbCdoc2Name->findData(cdoc2Service));
+	connect(ui->cmbCdoc2Name, qOverload<int>(&QComboBox::currentIndexChanged), this, [this, setCDoc2Values] (int index) {
+		QString key = ui->cmbCdoc2Name->itemData(index).toString();
+		Settings::CDOC2_DEFAULT_KEYSERVER = key;
+		setCDoc2Values(key);
+	});
+	setCDoc2Values(cdoc2Service);
+	connect(ui->txtCdoc2UUID, &QLineEdit::textEdited, this, Settings::CDOC2_UUID);
+	connect(ui->txtCdoc2Fetch, &QLineEdit::textEdited, this, [this](const QString &url) {
+		Settings::CDOC2_GET = url;
+		if(url.isEmpty())
+		{
+			Settings::CDOC2_GET_CERT.clear();
+			Settings::CDOC2_POST_CERT.clear();
+			updateCDoc2Cert(QSslCertificate());
+		}
+	});
+	connect(ui->txtCdoc2Post, &QLineEdit::textEdited, this, [this](const QString &url) {
+		Settings::CDOC2_POST = url;
+		if(url.isEmpty())
+		{
+			Settings::CDOC2_GET_CERT.clear();
+			Settings::CDOC2_POST_CERT.clear();
+			updateCDoc2Cert(QSslCertificate());
+		}
+	});
+#else
+	ui->cmbCdoc2Name->addItem(QStringLiteral("Default"));
+	ui->txtCdoc2UUID->setText(QStringLiteral("00000000-0000-0000-0000-000000000000"));
+	ui->txtCdoc2Fetch->setText(QStringLiteral(CDOC2_GET_URL));
+	ui->txtCdoc2Post->setText(QStringLiteral(CDOC2_POST_URL));
 #endif
-	ui->helpSiVa->installEventFilter(new ButtonHoverFilter(QStringLiteral(":/images/icon_Abi.svg"), QStringLiteral(":/images/icon_Abi_hover.svg"), this));
+	connect(ui->btInstallCDoc2Cert, &QPushButton::clicked, this, [this] {
+		QSslCertificate cert = selectCert(tr("Select a key transfer server certificate"),
+			tr("Key transfer server SSL certificate"));
+		if(cert.isNull())
+			return;
+		Settings::CDOC2_GET_CERT = cert.toDer().toBase64();
+		Settings::CDOC2_POST_CERT = cert.toDer().toBase64();
+		updateCDoc2Cert(cert);
+	});
+	updateCDoc2Cert(QSslCertificate(QByteArray::fromBase64(Settings::CDOC2_GET_CERT), QSsl::Der));
 
 	// pageProxy
-	ui->rdProxyNone->setFont(regularFont);
-	ui->rdProxySystem->setFont(regularFont);
-	ui->rdProxyManual->setFont(regularFont);
-
-	ui->lblProxyHost->setFont(regularFont);
-	ui->lblProxyPort->setFont(regularFont);
-	ui->lblProxyUsername->setFont(regularFont);
-	ui->lblProxyPassword->setFont(regularFont);
-	ui->txtProxyHost->setFont(regularFont);
-	ui->txtProxyPort->setFont(regularFont);
-	ui->txtProxyUsername->setFont(regularFont);
-	ui->txtProxyPassword->setFont(regularFont);
+	connect(this, &SettingsDialog::finished, this, &SettingsDialog::saveProxy);
+	ui->proxyGroup->setId(ui->rdProxyNone, Settings::ProxyNone);
+	ui->proxyGroup->setId(ui->rdProxySystem, Settings::ProxySystem);
+	ui->proxyGroup->setId(ui->rdProxyManual, Settings::ProxyManual);
+	ui->wgtProxyManual->hide();
+	connect(ui->rdProxyManual, &QRadioButton::toggled, ui->wgtProxyManual, &QWidget::setVisible);
+	ui->proxyGroup->button(Settings::PROXY_CONFIG)->setChecked(true);
+#ifdef Q_OS_MACOS
+	ui->txtProxyHost->setText(Settings::PROXY_HOST);
+	ui->txtProxyPort->setText(Settings::PROXY_PORT);
+	ui->txtProxyUsername->setText(Settings::PROXY_USER);
+	ui->txtProxyPassword->setText(Settings::PROXY_PASS);
+	connect(ui->txtProxyHost, &QLineEdit::textChanged, this, Settings::PROXY_HOST);
+	connect(ui->txtProxyPort, &QLineEdit::textChanged, this, Settings::PROXY_PORT);
+	connect(ui->txtProxyUsername, &QLineEdit::textChanged, this, Settings::PROXY_USER);
+	connect(ui->txtProxyPassword, &QLineEdit::textChanged, this, Settings::PROXY_PASS);
+#else
+	if(auto *i = digidoc::XmlConfCurrent::instance())
+	{
+		ui->txtProxyHost->setText(QString::fromStdString(i->digidoc::XmlConfCurrent::proxyHost()));
+		ui->txtProxyPort->setText(QString::fromStdString(i->digidoc::XmlConfCurrent::proxyPort()));
+		ui->txtProxyUsername->setText(QString::fromStdString(i->digidoc::XmlConfCurrent::proxyUser()));
+		ui->txtProxyPassword->setText(QString::fromStdString(i->digidoc::XmlConfCurrent::proxyPass()));
+	}
+#endif
 
 	// pageDiagnostics
 	ui->structureFunds->load(QStringLiteral(":/images/Struktuurifondid.svg"));
-	ui->contact->setFont(regularFont);
-	ui->txtDiagnostics->setFont(regularFont);
-
-	// pageInfo
-	ui->txtInfo->setFont(regularFont);
+	ui->chkLibdigidocppDebug->setChecked(Settings::LIBDIGIDOCPP_DEBUG);
+	connect(ui->chkLibdigidocppDebug, &QCheckBox::toggled, this, [this](bool checked) {
+		Settings::LIBDIGIDOCPP_DEBUG = checked;
+		if(!checked)
+		{
+			QFile::remove(qdigidoc4log);
+			return;
+		}
+		if(QFile f(qdigidoc4log); f.open(QFile::WriteOnly|QFile::Truncate))
+			f.write({});
+#ifdef Q_OS_MACOS
+		WarningDialog::show(this, tr("Restart DigiDoc4 Client to activate logging. Read more "
+			"<a href=\"https://www.id.ee/en/article/log-file-generation-in-digidoc4-client/\">here</a>."));
+#else
+		auto *dlg = WarningDialog::show(this, tr("Restart DigiDoc4 Client to activate logging. Read more "
+			"<a href=\"https://www.id.ee/en/article/log-file-generation-in-digidoc4-client/\">here</a>. Restart now?"));
+		dlg->setCancelText(WarningDialog::NO);
+		dlg->addButton(WarningDialog::YES, 1);
+		connect(dlg, &WarningDialog::finished, qApp, [](int result) {
+			if(result == 1) {
+				qApp->setProperty("restart", true);
+				QApplication::quit();
+			}
+		});
+#endif
+	});
 
 	// navigationArea
-	ui->txtNavVersion->setFont(Styles::font( Styles::Regular, 12 ));
-	ui->btnNavFromHistory->setFont(condensed12);
+	connect(ui->btNavClose, &QPushButton::clicked, this, &SettingsDialog::accept);
+	connect(this, &SettingsDialog::finished, this, &SettingsDialog::close);
 
-	ui->btnNavUseByDefault->setFont(condensed12);
-	ui->btnFirstRun->setFont(condensed12);
-	ui->btnRefreshConfig->setFont(condensed12);
-	ui->btnNavSaveReport->setFont(condensed12);
-	ui->btnNavSaveLibdigidocpp->setFont(condensed12);
-	ui->btnCheckConnection->setFont(condensed12);
-
-	ui->btNavClose->setFont(Styles::font( Styles::Condensed, 14 ));
-
-	changePage(ui->btnMenuGeneral);
-
+	connect(ui->btnCheckConnection, &QPushButton::clicked, this, &SettingsDialog::checkConnection);
+	connect(ui->btnFirstRun, &QPushButton::clicked, this, [this] {
+		auto *dlg = new FirstRun(this);
+		connect(dlg, &FirstRun::langChanged, this, [this](const QString &lang) {
+			retranslate(lang);
+			selectLanguage();
+		});
+		dlg->open();
+	});
 #ifdef CONFIG_URL
-	connect(qApp->conf(), &Configuration::finished, this, [=](bool /*update*/, const QString &error){
+	connect(qApp->conf(), &Configuration::finished, this, [this](bool /*update*/, const QString &error){
 		if(!error.isEmpty()) {
 			WarningDialog::show(this, tr("Checking updates has failed.") + "<br />" + tr("Please try again."), error);
 			return;
@@ -202,30 +364,17 @@ SettingsDialog::SettingsDialog(int page, QWidget *parent)
 #endif
 	});
 #endif
-
-	connect( ui->btNavClose, &QPushButton::clicked, this, &SettingsDialog::accept );
-	connect( this, &SettingsDialog::finished, this, &SettingsDialog::close );
-
-	connect(ui->btnCheckConnection, &QPushButton::clicked, this, &SettingsDialog::checkConnection);
-	connect(ui->btnFirstRun, &QPushButton::clicked, this, [this] {
-		auto *dlg = new FirstRun(this);
-		connect(dlg, &FirstRun::langChanged, this, [this](const QString &lang) {
-			retranslate(lang);
-			selectLanguage();
-		});
-		dlg->open();
-	});
 	connect(ui->btnRefreshConfig, &QPushButton::clicked, this, [] {
 #ifdef CONFIG_URL
 		qApp->conf()->update(true);
 #endif
 		Application::updateTSLCache({});
 	});
-	connect( ui->btnNavUseByDefault, &QPushButton::clicked, this, &SettingsDialog::useDefaultSettings );
-	connect( ui->btnNavSaveReport, &QPushButton::clicked, this, [=]{
+	connect(ui->btnNavUseByDefault, &QPushButton::clicked, this, &SettingsDialog::useDefaultSettings);
+	connect(ui->btnNavSaveReport, &QPushButton::clicked, this, [this]{
 		saveFile(QStringLiteral("diagnostics.txt"), ui->txtDiagnostics->toPlainText().toUtf8());
 	});
-	connect(ui->btnNavSaveLibdigidocpp, &QPushButton::clicked, this, [=]{
+	connect(ui->btnNavSaveLibdigidocpp, &QPushButton::clicked, this, [this]{
 		Settings::LIBDIGIDOCPP_DEBUG = false;
 		QString log = QStringLiteral("%1/libdigidocpp.log").arg(QDir::tempPath());
 		saveFile(QStringLiteral("libdigidocpp.txt"), log);
@@ -244,7 +393,7 @@ SettingsDialog::SettingsDialog(int page, QWidget *parent)
 				continue;
 			if(c.issuerInfo(QSslCertificate::CommonName).join(QString()).contains(QStringLiteral("KLASS3-SK"), Qt::CaseInsensitive) ||
 				c.issuerInfo(QSslCertificate::Organization).contains(QStringLiteral("SK ID Solutions AS"), Qt::CaseInsensitive))
-				s.remove( c );
+				s.remove(c);
 		}
 		WarningDialog::show(this, tr("Redundant certificates have been successfully removed."));
 	});
@@ -253,12 +402,16 @@ SettingsDialog::SettingsDialog(int page, QWidget *parent)
 	ui->pageGroup->setId(ui->btnMenuGeneral, GeneralSettings);
 	ui->pageGroup->setId(ui->btnMenuCertificate, SigningSettings);
 	ui->pageGroup->setId(ui->btnMenuValidation, ValidationSettings);
+	ui->pageGroup->setId(ui->btnMenuEncryption, EncryptionSettings);
 	ui->pageGroup->setId(ui->btnMenuProxy, NetworkSettings);
 	ui->pageGroup->setId(ui->btnMenuDiagnostics, DiagnosticsSettings);
 	ui->pageGroup->setId(ui->btnMenuInfo, LicenseSettings);
-	connect(ui->pageGroup, qOverload<QAbstractButton*>(&QButtonGroup::buttonClicked), this, &SettingsDialog::changePage);
+#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
+	connect(ui->pageGroup, qOverload<int>(&QButtonGroup::buttonClicked), this, &SettingsDialog::showPage);
+#else
+	connect(ui->pageGroup, qOverload<int>(&QButtonGroup::idClicked), this, &SettingsDialog::showPage);
+#endif
 
-	initFunctionality();
 	updateVersion();
 	updateDiagnostics();
 	showPage(page);
@@ -308,226 +461,8 @@ void SettingsDialog::retranslate(const QString& lang)
 	ui->retranslateUi(this);
 	updateVersion();
 	updateDiagnostics();
-}
-
-void SettingsDialog::initFunctionality()
-{
-	// pageGeneral
-	selectLanguage();
-	connect(ui->langGroup, qOverload<QAbstractButton*>(&QButtonGroup::buttonClicked), this,
-		[this](QAbstractButton *button){ retranslate(button->property("lang").toString()); });
-
-	ui->chkShowPrintSummary->setChecked(Settings::SHOW_PRINT_SUMMARY);
-	connect(ui->chkShowPrintSummary, &QCheckBox::toggled, this, &SettingsDialog::togglePrinting);
-	connect(ui->chkShowPrintSummary, &QCheckBox::toggled, this, [](bool checked) {
-		Settings::SHOW_PRINT_SUMMARY = checked;
-	});
-	ui->chkRoleAddressInfo->setChecked(Settings::SHOW_ROLE_ADDRESS_INFO);
-	connect(ui->chkRoleAddressInfo, &QCheckBox::toggled, this, [](bool checked) {
-		Settings::SHOW_ROLE_ADDRESS_INFO = checked;
-	});
-
-#ifdef Q_OS_MAC
-	ui->lblDefaultDirectory->hide();
-	ui->rdGeneralSameDirectory->hide();
-	ui->txtGeneralDirectory->hide();
-	ui->btGeneralChooseDirectory->hide();
-	ui->rdGeneralSpecifyDirectory->hide();
-#else
-	connect(ui->btGeneralChooseDirectory, &QPushButton::clicked, this, [=]{
-		QString dir = FileDialog::getExistingDirectory(this, tr("Select folder"), Settings::DEFAULT_DIR);
-		if(!dir.isEmpty())
-		{
-			ui->rdGeneralSpecifyDirectory->setChecked(true);
-			Settings::DEFAULT_DIR = dir;
-			ui->txtGeneralDirectory->setText(dir);
-		}
-	});
-	connect(ui->rdGeneralSpecifyDirectory, &QRadioButton::toggled, this, [=](bool enable) {
-		ui->btGeneralChooseDirectory->setVisible(enable);
-		ui->txtGeneralDirectory->setVisible(enable);
-		if(!enable)
-			ui->txtGeneralDirectory->clear();
-	});
-	ui->txtGeneralDirectory->setText(Settings::DEFAULT_DIR);
-	if(ui->txtGeneralDirectory->text().isEmpty())
-		ui->rdGeneralSameDirectory->setChecked(true);
-	connect(ui->txtGeneralDirectory, &QLineEdit::textChanged, this, [](const QString &text) {
-		Settings::DEFAULT_DIR = text;
-	});
-#endif
-	ui->wgtCDoc2->hide();
-#if 0
-	ui->chkCdoc2KeyServer->setChecked(Settings::CDOC2_USE_KEYSERVER);
-	ui->cmbCdoc2Name->setEnabled(ui->chkCdoc2KeyServer->isChecked());
-	connect(ui->chkCdoc2KeyServer, &QCheckBox::toggled, this, [this](bool checked) {
-		Settings::CDOC2_USE_KEYSERVER = checked;
-		ui->cmbCdoc2Name->setEnabled(checked);
-	});
-#ifdef CONFIG_URL
-	QJsonObject list = Application::confValue(QLatin1String("CDOC2-CONF")).toObject();
-	auto setCDoc2Values = [this, list](const QString &key) {
-		ui->txtCdoc2UUID->setText(key);
-		QJsonObject data = list.value(key).toObject();
-		ui->txtCdoc2Fetch->setText(data.value(QLatin1String("FETCH")).toString(Settings::CDOC2_GET));
-		ui->txtCdoc2Post->setText(data.value(QLatin1String("POST")).toString(Settings::CDOC2_POST));
-	};
-	for(QJsonObject::const_iterator i = list.constBegin(); i != list.constEnd(); ++i)
-		ui->cmbCdoc2Name->addItem(i.value().toObject().value(QLatin1String("NAME")).toString(), i.key());
-	if(Settings::CDOC2_GET.isSet() || Settings::CDOC2_POST.isSet())
-		ui->cmbCdoc2Name->addItem(QStringLiteral("Custom"), QStringLiteral("custom"));
-	connect(ui->cmbCdoc2Name, qOverload<int>(&QComboBox::currentIndexChanged), this, [this, setCDoc2Values] (int index) {
-		QString key = ui->cmbCdoc2Name->itemData(index).toString();
-		Settings::CDOC2_DEFAULT_KEYSERVER = key;
-		setCDoc2Values(key);
-	});
-	QString cdoc2Service = Settings::CDOC2_DEFAULT_KEYSERVER;
-	ui->cmbCdoc2Name->setCurrentIndex(ui->cmbCdoc2Name->findData(cdoc2Service));
-	setCDoc2Values(cdoc2Service);
-#else
-	ui->cmbCdoc2Name->addItem(QStringLiteral("Default"));
-	ui->txtCdoc2UUID->setText(QStringLiteral("default"));
-	ui->txtCdoc2Fetch->setText(QStringLiteral(CDOC2_GET_URL));
-	ui->txtCdoc2Post->setText(QStringLiteral(CDOC2_POST_URL));
-#endif
-#endif
-
-	// pageProxy
-	connect(this, &SettingsDialog::finished, this, &SettingsDialog::saveProxy);
-	setProxyEnabled();
-	connect( ui->rdProxyNone, &QRadioButton::toggled, this, &SettingsDialog::setProxyEnabled );
-	connect( ui->rdProxySystem, &QRadioButton::toggled, this, &SettingsDialog::setProxyEnabled );
-	connect( ui->rdProxyManual, &QRadioButton::toggled, this, &SettingsDialog::setProxyEnabled );
-	switch(Settings::PROXY_CONFIG)
-	{
-	case Settings::ProxySystem: ui->rdProxySystem->setChecked(true); break;
-	case Settings::ProxyManual: ui->rdProxyManual->setChecked(true); break;
-	default: ui->rdProxyNone->setChecked(true); break;
-	}
-
-	updateProxy();
-
-	// pageServices - TimeStamp
-	ui->rdTimeStampDefault->setDisabled(Settings::TSA_URL_CUSTOM.isLocked());
-	ui->rdTimeStampCustom->setEnabled(ui->rdTimeStampDefault->isEnabled());
-	ui->rdTimeStampCustom->setChecked(Settings::TSA_URL_CUSTOM);
-	ui->txtTimeStamp->setReadOnly(Settings::TSA_URL.isLocked());
-	ui->txtTimeStamp->setEnabled(ui->rdTimeStampCustom->isChecked());
-	ui->txtTimeStamp->setPlaceholderText(Application::confValue(Settings::TSA_URL.KEY).toString());
-	QString TSA_URL = Settings::TSA_URL.value(Application::confValue(Application::TSAUrl));
-	ui->txtTimeStamp->setText(ui->txtTimeStamp->placeholderText() == TSA_URL ? QString() : std::move(TSA_URL));
-	ui->wgtTSACert->setDisabled(Settings::TSA_CERT.isLocked());
-	ui->wgtTSACert->setVisible(ui->rdTimeStampCustom->isChecked());
-	connect(ui->rdTimeStampCustom, &QRadioButton::toggled, ui->txtTimeStamp, [this](bool checked) {
-		ui->txtTimeStamp->setEnabled(checked);
-		ui->wgtTSACert->setVisible(checked);
-		Settings::TSA_URL_CUSTOM = checked;
-	});
-	connect(ui->txtTimeStamp, &QLineEdit::textChanged, this, [this](const QString &url) {
-		Settings::TSA_URL = url;
-		if(url.isEmpty())
-		{
-			Settings::TSA_CERT.clear();
-			updateTSACert(QSslCertificate());
-		}
-	});
-	connect(ui->helpTimeStamp, &QToolButton::clicked, this, []{
-		QDesktopServices::openUrl(tr("https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/"));
-	});
-	connect(ui->btInstallTSACert, &QPushButton::clicked, this, [this] {
-		QSslCertificate cert = selectCert(tr("Select Time-Stamping server certificate"),
-			tr("Time-Stamping service SSL certificate"));
-		if(cert.isNull())
-			return;
-		Settings::TSA_CERT = cert.toDer().toBase64();
-		updateTSACert(cert);
-	});
-	updateTSACert(QSslCertificate(QByteArray::fromBase64(Settings::TSA_CERT), QSsl::Der));
-
-	// pageServices - MID
-	ui->rdMIDUUIDDefault->setDisabled(Settings::MID_UUID_CUSTOM.isLocked());
-	ui->rdMIDUUIDCustom->setEnabled(ui->rdMIDUUIDDefault->isEnabled());
-	ui->rdMIDUUIDCustom->setChecked(Settings::MID_UUID_CUSTOM);
-	ui->txtMIDUUID->setReadOnly(Settings::MID_UUID.isLocked());
-	ui->txtMIDUUID->setEnabled(ui->rdMIDUUIDCustom->isChecked());
-	ui->txtMIDUUID->setText(Settings::MID_UUID);
-	connect(ui->rdMIDUUIDCustom, &QRadioButton::toggled, ui->txtMIDUUID, [=](bool checked) {
-		ui->txtMIDUUID->setEnabled(checked);
-		Settings::MID_UUID_CUSTOM = checked;
-		Settings::SID_UUID_CUSTOM = checked;
-	});
-	connect(ui->txtMIDUUID, &QLineEdit::textChanged, this, [](const QString &text) {
-		Settings::MID_UUID = text;
-		Settings::SID_UUID = text;
-	});
-	connect(ui->helpMID, &QToolButton::clicked, this, []{
-		QDesktopServices::openUrl(tr("https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/"));
-	});
-
-	// pageValidation - SiVa
-	ui->rdSiVaDefault->setDisabled(Settings::SIVA_URL_CUSTOM.isLocked());
-	ui->rdSiVaCustom->setEnabled(ui->rdSiVaDefault->isEnabled());
-	ui->rdSiVaCustom->setChecked(Settings::SIVA_URL_CUSTOM);
-	ui->txtSiVa->setReadOnly(Settings::SIVA_URL.isLocked());
-	ui->txtSiVa->setEnabled(ui->rdSiVaCustom->isChecked());
-	ui->txtSiVa->setPlaceholderText(Application::confValue(Settings::SIVA_URL.KEY).toString());
-	QString SIVA_URL = Settings::SIVA_URL.value(Application::confValue(Application::SiVaUrl));
-	ui->txtSiVa->setText(ui->txtSiVa->placeholderText() == SIVA_URL ? QString() : std::move(SIVA_URL));
-	ui->wgtSiVaCert->setDisabled(Settings::SIVA_CERT.isLocked());
-	ui->wgtSiVaCert->setVisible(ui->rdSiVaCustom->isChecked());
-	connect(ui->rdSiVaCustom, &QRadioButton::toggled, ui->txtSiVa, [this](bool checked) {
-		ui->txtSiVa->setEnabled(checked);
-		ui->wgtSiVaCert->setVisible(checked);
-		Settings::SIVA_URL_CUSTOM = checked;
-	});
-	connect(ui->txtSiVa, &QLineEdit::textChanged, this, [this](const QString &url) {
-		Settings::SIVA_URL = url;
-		if(url.isEmpty())
-		{
-			Settings::SIVA_CERT.clear();
-			updateSiVaCert(QSslCertificate());
-		}
-	});
-	connect(ui->helpSiVa, &QToolButton::clicked, this, []{
-		QDesktopServices::openUrl(tr("https://www.id.ee/en/article/configuring-the-siva-validation-service-in-the-digidoc4-client/"));
-	});
-	connect(ui->btInstallSiVaCert, &QPushButton::clicked, this, [this] {
-		QSslCertificate cert = selectCert(tr("Select SiVa server certificate"),
-			tr("Digital Signature Validation Service SiVa SSL certificate"));
-		if(cert.isNull())
-			return;
-		Settings::SIVA_CERT = cert.toDer().toBase64();
-		updateSiVaCert(cert);
-	});
-	updateSiVaCert(QSslCertificate(QByteArray::fromBase64(Settings::SIVA_CERT), QSsl::Der));
-
-	// pageDiagnostics
-	ui->chkLibdigidocppDebug->setChecked(Settings::LIBDIGIDOCPP_DEBUG);
-	connect(ui->chkLibdigidocppDebug, &QCheckBox::toggled, this, [this](bool checked) {
-		Settings::LIBDIGIDOCPP_DEBUG = checked;
-		if(!checked)
-		{
-			QFile::remove(qdigidoc4log);
-			return;
-		}
-		if(QFile f(qdigidoc4log); f.open(QFile::WriteOnly|QFile::Truncate))
-			f.write({});
-#ifdef Q_OS_MAC
-		WarningDialog::show(this, tr("Restart DigiDoc4 Client to activate logging. Read more "
-			"<a href=\"https://www.id.ee/en/article/log-file-generation-in-digidoc4-client/\">here</a>."));
-#else
-		auto *dlg = WarningDialog::show(this, tr("Restart DigiDoc4 Client to activate logging. Read more "
-			"<a href=\"https://www.id.ee/en/article/log-file-generation-in-digidoc4-client/\">here</a>. Restart now?"));
-		dlg->setCancelText(WarningDialog::NO);
-		dlg->addButton(WarningDialog::YES, 1);
-		connect(dlg, &WarningDialog::finished, qApp, [](int result) {
-			if(result == 1) {
-				qApp->setProperty("restart", true);
-				QApplication::quit();
-			}
-		});
-#endif
-	});
+	ui->cmbCdoc2Name->setItemText(ui->cmbCdoc2Name->count() - 1,
+		tr("Use a manually specified key transfer server for encryption"));
 }
 
 void SettingsDialog::updateCert(const QSslCertificate &c, QPushButton *btn, CertLabel *lbl)
@@ -541,6 +476,11 @@ void SettingsDialog::updateCert(const QSslCertificate &c, QPushButton *btn, Cert
 	connect(btn, &QPushButton::clicked, this, [this, c] {
 		CertificateDetails::showCertificate(c, this);
 	});
+}
+
+void SettingsDialog::updateCDoc2Cert(const QSslCertificate &c)
+{
+	updateCert(c, ui->btShowCDoc2Cert, ui->txtCDoc2Cert);
 }
 
 void SettingsDialog::updateSiVaCert(const QSslCertificate &c)
@@ -571,42 +511,25 @@ void SettingsDialog::selectLanguage()
 		button->setChecked(button->property("lang").toString() == Settings::LANGUAGE);
 }
 
-void SettingsDialog::setProxyEnabled()
-{
-	ui->txtProxyHost->setEnabled(ui->rdProxyManual->isChecked());
-	ui->txtProxyPort->setEnabled(ui->rdProxyManual->isChecked());
-	ui->txtProxyUsername->setEnabled(ui->rdProxyManual->isChecked());
-	ui->txtProxyPassword->setEnabled(ui->rdProxyManual->isChecked());
-}
-
-void SettingsDialog::updateProxy()
-{
-	ui->txtProxyHost->setText(Application::confValue( Application::ProxyHost ).toString());
-	ui->txtProxyPort->setText(Application::confValue( Application::ProxyPort ).toString());
-	ui->txtProxyUsername->setText(Application::confValue( Application::ProxyUser ).toString());
-	ui->txtProxyPassword->setText(Application::confValue( Application::ProxyPass ).toString());
-}
-
 void SettingsDialog::updateVersion()
 {
-	ui->txtNavVersion->setText(tr("%1 version %2, released %3")
-		.arg(tr("DigiDoc4 Client"), QApplication::applicationVersion(), QStringLiteral(BUILD_DATE)));
+	ui->txtNavVersion->setText(tr("DigiDoc4 version %1, released %2")
+		.arg(QApplication::applicationVersion(), QStringLiteral(BUILD_DATE)));
 }
 
 void SettingsDialog::saveProxy()
 {
-	if(ui->rdProxyNone->isChecked())
-		Settings::PROXY_CONFIG = Settings::ProxyNone;
-	else if(ui->rdProxySystem->isChecked())
-		Settings::PROXY_CONFIG = Settings::ProxySystem;
-	else if(ui->rdProxyManual->isChecked())
-		Settings::PROXY_CONFIG = Settings::ProxyManual;
-	Application::setConfValue( Application::ProxyHost, ui->txtProxyHost->text() );
-	Application::setConfValue( Application::ProxyPort, ui->txtProxyPort->text() );
-	Application::setConfValue( Application::ProxyUser, ui->txtProxyUsername->text() );
-	Application::setConfValue( Application::ProxyPass, ui->txtProxyPassword->text() );
+	Settings::PROXY_CONFIG = ui->proxyGroup->checkedId();
+#ifndef Q_OS_MACOS
+	if(auto *i = digidoc::XmlConfCurrent::instance())
+	{
+		i->setProxyHost(ui->txtProxyHost->text().toStdString());
+		i->setProxyPort(ui->txtProxyPort->text().toStdString());
+		i->setProxyUser(ui->txtProxyUsername->text().toStdString());
+		i->setProxyPass(ui->txtProxyPassword->text().toStdString());
+	}
+#endif
 	loadProxy(digidoc::Conf::instance());
-	updateProxy();
 }
 
 void SettingsDialog::loadProxy( const digidoc::Conf *conf )
@@ -640,7 +563,7 @@ void SettingsDialog::updateDiagnostics()
 	QApplication::setOverrideCursor( Qt::WaitCursor );
 	auto *worker = new Diagnostics();
 	connect(worker, &Diagnostics::update, ui->txtDiagnostics, &QTextBrowser::insertHtml, Qt::QueuedConnection);
-	connect(worker, &Diagnostics::destroyed, this, [=]{
+	connect(worker, &Diagnostics::destroyed, this, [this]{
 		ui->txtDiagnostics->setEnabled(true);
 		ui->txtDiagnostics->moveCursor(QTextCursor::Start);
 		ui->txtDiagnostics->ensureCursorVisible();
@@ -655,26 +578,22 @@ void SettingsDialog::useDefaultSettings()
 	ui->rdTimeStampDefault->setChecked(true);
 	ui->rdSiVaDefault->setChecked(true);
 	ui->rdMIDUUIDDefault->setChecked(true);
+	ui->rdCdoc2->setChecked(Settings::CDOC2_DEFAULT.DEFAULT);
 }
 
 void SettingsDialog::showPage(int page)
 {
-	changePage(ui->pageGroup->button(page));
-}
-
-void SettingsDialog::changePage(QAbstractButton *button)
-{
-	button->setChecked(true);
-	ui->stackedWidget->setCurrentIndex(ui->pageGroup->id(button));
-	ui->btnNavUseByDefault->setVisible(button == ui->btnMenuCertificate || button == ui->btnMenuValidation);
-	ui->btnFirstRun->setVisible(button == ui->btnMenuGeneral);
-	ui->btnRefreshConfig->setVisible(button == ui->btnMenuGeneral);
-	ui->btnCheckConnection->setVisible(button == ui->btnMenuProxy);
-	ui->btnNavSaveReport->setVisible(button == ui->btnMenuDiagnostics);
-	ui->btnNavSaveLibdigidocpp->setVisible(button == ui->btnMenuDiagnostics &&
+	ui->pageGroup->button(page)->setChecked(true);
+	ui->stackedWidget->setCurrentIndex(page);
+	ui->btnNavUseByDefault->setVisible(page == SigningSettings || page == ValidationSettings);
+	ui->btnFirstRun->setVisible(page == GeneralSettings);
+	ui->btnRefreshConfig->setVisible(page == GeneralSettings);
+	ui->btnCheckConnection->setVisible(page == NetworkSettings);
+	ui->btnNavSaveReport->setVisible(page == DiagnosticsSettings);
+	ui->btnNavSaveLibdigidocpp->setVisible(page == DiagnosticsSettings &&
 		QFile::exists(QStringLiteral("%1/libdigidocpp.log").arg(QDir::tempPath())));
 #ifdef Q_OS_WIN
-	ui->btnNavFromHistory->setVisible(button == ui->btnMenuGeneral);
+	ui->btnNavFromHistory->setVisible(page == GeneralSettings);
 #else
 	ui->btnNavFromHistory->hide();
 #endif

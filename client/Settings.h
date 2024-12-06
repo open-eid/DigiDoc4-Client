@@ -46,6 +46,9 @@ struct Settings
 		void operator =(const T &value) const {
 			operator =(QVariant(value));
 		}
+		void operator() (const T &value) const {
+			operator =(QVariant(value));
+		}
 		template <typename P = T, typename = if_QString<P>>
 		void operator =(const std::string &value) const {
 			operator =(QString::fromStdString(value));
@@ -101,6 +104,7 @@ struct Settings
 	static const Option<bool> CDOC2_NOTIFICATION;
 	static const Option<bool> CDOC2_USE_KEYSERVER;
 	static const Option<QString, QString (*)()> CDOC2_DEFAULT_KEYSERVER;
+	static const Option<QString> CDOC2_UUID;
 	static const Option<QString> CDOC2_GET;
 	static const Option<QByteArray> CDOC2_GET_CERT;
 	static const Option<QString> CDOC2_POST;
