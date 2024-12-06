@@ -21,9 +21,7 @@
 #include "ui_AddressItem.h"
 
 #include "CryptoDoc.h"
-#include "DateTime.h"
 #include "SslCertificate.h"
-#include "Styles.h"
 #include "dialogs/KeyDialog.h"
 
 using namespace ria::qdigidoc4;
@@ -46,26 +44,21 @@ AddressItem::AddressItem(CKey k, QWidget *parent, bool showIcon)
 	if(showIcon)
 		ui->icon->load(QStringLiteral(":/images/icon_Krypto_small.svg"));
 	ui->icon->setVisible(showIcon);
-	ui->name->setFont(Styles::font(Styles::Regular, 14, QFont::DemiBold));
-	ui->name->installEventFilter(this);
-	ui->idType->setFont(Styles::font(Styles::Regular, 11));
-	ui->idType->installEventFilter(this);
+	ui->name->setAttribute(Qt::WA_TransparentForMouseEvents, true);
+	ui->expire->setAttribute(Qt::WA_TransparentForMouseEvents, true);
+	ui->idType->setAttribute(Qt::WA_TransparentForMouseEvents, true);
+	if(!ui->key.unsupported)
+		setCursor(Qt::PointingHandCursor);
 
-	ui->remove->setIcons(QStringLiteral("/images/icon_remove.svg"), QStringLiteral("/images/icon_remove_hover.svg"),
-		QStringLiteral("/images/icon_remove_pressed.svg"), 17, 17);
-	ui->remove->init(LabelButton::White);
 	connect(ui->add, &QToolButton::clicked, this, [this]{ emit add(this);});
-	connect(ui->remove, &LabelButton::clicked, this, [this]{ emit remove(this);});
+	connect(ui->remove, &QToolButton::clicked, this, [this]{ emit remove(this);});
 
-	ui->add->setFont(Styles::font(Styles::Condensed, 12));
-	ui->added->setFont(ui->add->font());
-
-	ui->code = SslCertificate(ui->key.cert).personalCode().toHtmlEscaped();
-	ui->label = (!ui->key.cert.subjectInfo("GN").isEmpty() && !ui->key.cert.subjectInfo("SN").isEmpty() ?
-			ui->key.cert.subjectInfo("GN").join(' ') + " " + ui->key.cert.subjectInfo("SN").join(' ') :
-			ui->key.cert.subjectInfo("CN").join(' ')).toHtmlEscaped();
+	ui->code = SslCertificate(ui->key.cert).personalCode();
+	ui->label = !ui->key.cert.subjectInfo("GN").isEmpty() && !ui->key.cert.subjectInfo("SN").isEmpty() ?
+			ui->key.cert.subjectInfo("GN").join(' ') + ' ' + ui->key.cert.subjectInfo("SN").join(' ') :
+			ui->key.cert.subjectInfo("CN").join(' ');
 	if(ui->label.isEmpty())
-		ui->label = ui->key.recipient.toHtmlEscaped();
+		ui->label = ui->key.fromKeyLabel().value(QStringLiteral("cn"), ui->key.recipient);
 	setIdType();
 	showButton(AddressItem::Remove);
 }
@@ -86,37 +79,24 @@ void AddressItem::changeEvent(QEvent* event)
 	QWidget::changeEvent(event);
 }
 
-bool AddressItem::eventFilter(QObject *o, QEvent *e)
-{
-	if((o == ui->name || o == ui->idType) && e->type() == QEvent::MouseButtonRelease)
-	{
-		(new KeyDialog(ui->key, this))->open();
-		return true;
-	}
-	return Item::eventFilter(o, e);
-}
-
 const CKey& AddressItem::getKey() const
 {
 	return ui->key;
 }
 
-void AddressItem::idChanged(const CKey &key)
-{
-	ui->yourself = !key.key.isNull() && ui->key == key;
-	setName();
-}
-
 void AddressItem::idChanged(const SslCertificate &cert)
 {
-	idChanged(CKey(cert));
+	CKey key(cert);
+	ui->yourself = !key.key.isNull() && ui->key == key;
+	setName();
 }
 
 void AddressItem::initTabOrder(QWidget *item)
 {
 	setTabOrder(item, ui->name);
 	setTabOrder(ui->name, ui->idType);
-	setTabOrder(ui->idType, ui->remove);
+	setTabOrder(ui->idType, ui->expire);
+	setTabOrder(ui->expire, ui->remove);
 	setTabOrder(ui->remove, ui->added);
 	setTabOrder(ui->added, lastTabWidget());
 }
@@ -128,13 +108,16 @@ QWidget* AddressItem::lastTabWidget()
 
 void AddressItem::mouseReleaseEvent(QMouseEvent * /*event*/)
 {
-	(new KeyDialog(ui->key, this))->open();
+	if(!ui->key.unsupported)
+		(new KeyDialog(ui->key, this))->open();
 }
 
 void AddressItem::setName()
 {
 	ui->name->setText(QStringLiteral("%1 <span style=\"font-weight:normal;\">%2</span>")
-		.arg(ui->label, ui->yourself ? ui->code + tr(" (Yourself)") : ui->code));
+		.arg(ui->label.toHtmlEscaped(), (ui->yourself ? ui->code + tr(" (Yourself)") : ui->code).toHtmlEscaped()));
+	if(ui->name->text().isEmpty())
+		ui->name->hide();
 }
 
 void AddressItem::showButton(ShowToolButton show)
@@ -151,33 +134,53 @@ void AddressItem::stateChange(ContainerState state)
 
 void AddressItem::setIdType()
 {
-	ui->idType->setHidden(ui->key.cert.isNull());
-	if(ui->key.cert.isNull())
-		return;
-
-	QString str;
+	ui->expire->clear();
 	SslCertificate cert(ui->key.cert);
 	SslCertificate::CertType type = cert.type();
-	if(type & SslCertificate::DigiIDType)
-		str = tr("digi-ID");
+	if(ui->key.unsupported)
+	{
+		ui->label = tr("Unsupported cryptographic algorithm or recipient type");
+		ui->idType->clear();
+	}
+	else if(type & SslCertificate::DigiIDType)
+		ui->idType->setText(tr("digi-ID"));
 	else if(type & SslCertificate::EstEidType)
-		str = tr("ID-card");
+		ui->idType->setText(tr("ID-card"));
 	else if(type & SslCertificate::MobileIDType)
-		str = tr("mobile-ID");
+		ui->idType->setText(tr("mobile-ID"));
 	else if(type & SslCertificate::TempelType)
 	{
 		if(cert.keyUsage().contains(SslCertificate::NonRepudiation))
-			str = tr("e-Seal");
+			ui->idType->setText(tr("e-Seal"));
 		else if(cert.enhancedKeyUsage().contains(SslCertificate::ClientAuth))
-			str = tr("Authentication certificate");
+			ui->idType->setText(tr("Authentication certificate"));
 		else
-			str = tr("Certificate for Encryption");
+			ui->idType->setText(tr("Certificate for Encryption"));
+	}
+	else
+	{
+		auto items = ui->key.fromKeyLabel();
+		void(QT_TR_NOOP("ID-CARD"));
+		ui->idType->setText(tr(items[QStringLiteral("type")].toUtf8().data()));
+		if(QString server_exp = items[QStringLiteral("server_exp")]; !server_exp.isEmpty())
+		{
+			auto date = QDateTime::fromSecsSinceEpoch(server_exp.toLongLong(), Qt::UTC);
+			bool canDecrypt = QDateTime::currentDateTimeUtc() < date;
+			ui->expire->setProperty("label", canDecrypt ? QStringLiteral("good") : QStringLiteral("error"));
+			ui->expire->setText(canDecrypt ? QStringLiteral("%1 %2").arg(
+				tr("Decryption is possible until:"), date.toLocalTime().toString(QStringLiteral("dd.MM.yyyy"))) :
+				tr("Decryption has expired"));
+		}
 	}
 
-	if(!str.isEmpty())
-		str += QStringLiteral(" - ");
-	DateTime date(cert.expiryDate().toLocalTime());
-	ui->idType->setText(QStringLiteral("%1%2 %3").arg(str,
-		cert.isValid() ? tr("Expires on") : tr("Expired on"),
-		date.formatDate(QStringLiteral("dd. MMMM yyyy"))));
+	if(!cert.isNull())
+	{
+		ui->expire->setProperty("label", QStringLiteral("default"));
+		ui->expire->setText(QStringLiteral("%1 %2").arg(
+			cert.isValid() ? tr("Expires on") : tr("Expired on"),
+			cert.expiryDate().toLocalTime().toString(QStringLiteral("dd.MM.yyyy"))));
+	}
+
+	ui->idType->setHidden(ui->idType->text().isEmpty());
+	ui->expire->setHidden(ui->expire->text().isEmpty());
 }

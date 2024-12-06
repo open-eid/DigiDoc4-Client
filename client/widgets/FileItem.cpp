@@ -30,16 +30,12 @@ FileItem::FileItem(QString file, ContainerState state, QWidget *parent)
 {
 	ui->setupUi(this);
 	ui->fileName->setFont(Styles::font(Styles::Regular, 14));
-	ui->download->setIcons(QStringLiteral("/images/icon_download.svg"), QStringLiteral("/images/icon_download_hover.svg"), QStringLiteral("/images/icon_download_pressed.svg"), 17, 17);
-	ui->download->init(LabelButton::White);
-	ui->remove->setIcons(QStringLiteral("/images/icon_remove.svg"), QStringLiteral("/images/icon_remove_hover.svg"), QStringLiteral("/images/icon_remove_pressed.svg"), 17, 17);
-	ui->remove->init(LabelButton::White);
 
 	stateChange(state);
 
 	connect(ui->fileName, &QToolButton::clicked, this, [this]{ emit open(this); setUnderline(false); });
-	connect(ui->download, &LabelButton::clicked, this, [this]{ emit download(this); setUnderline(false); });
-	connect(ui->remove, &LabelButton::clicked, this, [this]{ emit remove(this);});
+	connect(ui->download, &QToolButton::clicked, this, [this]{ emit download(this); setUnderline(false); });
+	connect(ui->remove, &QToolButton::clicked, this, [this]{ emit remove(this);});
 
 	setFileName();
 }

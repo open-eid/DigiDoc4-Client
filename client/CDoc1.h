@@ -57,12 +57,10 @@ private:
 	static const QString
 		AES128CBC_MTH, AES192CBC_MTH, AES256CBC_MTH,
 		AES128GCM_MTH, AES192GCM_MTH, AES256GCM_MTH,
-		KWAES128_MTH, KWAES192_MTH, KWAES256_MTH,
 		SHA256_MTH, SHA384_MTH, SHA512_MTH,
-		RSA_MTH, CONCATKDF_MTH, AGREEMENT_MTH;
+		RSA_MTH, CONCATKDF_MTH, AGREEMENT_MTH, KWAES256_MTH;
 	static const QString DS, DENC, DSIG11, XENC11;
 	static const QString MIME_ZLIB, MIME_DDOC, MIME_DDOC_OLD;
 	static const QHash<QString, const EVP_CIPHER*> ENC_MTH;
 	static const QHash<QString, QCryptographicHash::Algorithm> SHA_MTH;
-	static const QHash<QString, quint32> KWAES_SIZE;
 };

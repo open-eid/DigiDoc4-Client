@@ -74,12 +74,6 @@ void LabelButton::init(Style style, const QString &label)
 			styleTemplate.arg(DEEP_CERULEAN, WHITE, none, QString()),
 			styleTemplate.arg(CURIOUS_BLUE, WHITE, none, QString()));
 		break;
-	case White: // Add files
-		setStyle(
-			QStringLiteral("border: none; background-color: none;"),
-			QStringLiteral("border: none; background-color: none;"),
-			QStringLiteral("border: none; background-color: none;"));
-		break;
 	default: break;
 	}
 }

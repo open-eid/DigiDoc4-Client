@@ -100,14 +100,6 @@
 <context>
     <name>AddressItem</name>
     <message>
-        <source>ADD</source>
-        <translation>ДОБАВИТЬ</translation>
-    </message>
-    <message>
-        <source>ADDED</source>
-        <translation>Добавлен</translation>
-    </message>
-    <message>
         <source> (Yourself)</source>
         <translation> (Вы сами)</translation>
     </message>
@@ -129,12 +121,10 @@
     </message>
     <message>
         <source>Added</source>
-        <extracomment>accessible</extracomment>
         <translation>Добавлен</translation>
     </message>
     <message>
         <source>Add</source>
-        <extracomment>accessible</extracomment>
         <translation>Добавить</translation>
     </message>
     <message>
@@ -156,6 +146,22 @@
     <message>
         <source>Expired on</source>
         <translation>Истекший</translation>
+    </message>
+    <message>
+        <source>Unsupported cryptographic algorithm or recipient type</source>
+        <translation>Неподдерживаемый криптографический алгоритм или тип получателя</translation>
+    </message>
+    <message>
+        <source>Decryption is possible until:</source>
+        <translation>Расшифровка возможна до:</translation>
+    </message>
+    <message>
+        <source>Decryption has expired</source>
+        <translation>Срок расшифровки истек</translation>
+    </message>
+    <message>
+        <source>ID-CARD</source>
+        <translation>ID-КАРТА</translation>
     </message>
 </context>
 <context>
@@ -1292,18 +1298,6 @@
         <translation>ПОКАЗАТЬ СЕРТИФИКАТ</translation>
     </message>
     <message>
-        <source>Crypto method</source>
-        <translation>Метод шифровки</translation>
-    </message>
-    <message>
-        <source>Agreement method</source>
-        <translation>Метод подтверждения</translation>
-    </message>
-    <message>
-        <source>Key derivation method</source>
-        <translation>Метод деривации ключа</translation>
-    </message>
-    <message>
         <source>ConcatKDF digest method</source>
         <translation>Метод подсчета ConcatKDF</translation>
     </message>
@@ -1336,6 +1330,13 @@
     <message>
         <source>Transaction ID</source>
         <translation>Идентификатор транзакции</translation>
+    </message>
+</context>
+<context>
+    <name>LabelItem</name>
+    <message>
+        <source>The container must be decrypted in order to see the contents of an encrypted container.</source>
+        <translation>Контейнер должен быть расшифрован, чтобы увидеть его зашифрованное содержимое.</translation>
     </message>
 </context>
 <context>
@@ -2312,54 +2313,6 @@ ID-КАРТОЙ</translation>
         <translation>Настройки</translation>
     </message>
     <message>
-        <source>GENERAL</source>
-        <translation>ОСНОВНЫЕ</translation>
-    </message>
-    <message>
-        <source>PROXY</source>
-        <translation>ПРОКСИ</translation>
-    </message>
-    <message>
-        <source>DIAGNOSTICS</source>
-        <translation>ДИАГНОСТИКА</translation>
-    </message>
-    <message>
-        <source>INFO</source>
-        <translation>ИНФО</translation>
-    </message>
-    <message>
-        <source>CLOSE</source>
-        <translation>ЗАКРЫТЬ</translation>
-    </message>
-    <message>
-        <source>FIRST RUN</source>
-        <translation>ПЕРВЫЙ ЗАПУСК</translation>
-    </message>
-    <message>
-        <source>REMOVE OLD CERTIFICATES</source>
-        <translation>УДАЛИТЬ СТАРЫЕ СЕРТИФИКАТЫ</translation>
-    </message>
-    <message>
-        <source>SAVE DIAGNOSTICS REPORT TO DISK</source>
-        <translation>СОХРАНИТЬ ДИАГНОСТИКУ</translation>
-    </message>
-    <message>
-        <source>SHOW CERTIFICATE</source>
-        <translation>ПОКАЗАТЬ СЕРТИФИКАТ</translation>
-    </message>
-    <message>
-        <source>USE DEFAULT SETTINGS</source>
-        <translation>ИСПОЛЬЗОВАТЬ НАСТРОЙКИ ПО УМОЛЧАНИЮ</translation>
-    </message>
-    <message>
-        <source>CHECK CONNECTIONS</source>
-        <translation>ПРОВЕРЬТЕ НАСТРОЙКИ ИНТЕРНЕТА</translation>
-    </message>
-    <message>
-        <source>REFRESH CONFIGURATION</source>
-        <translation>ПРОВЕРЬТЕ ОБНОВЛЕНИЯ</translation>
-    </message>
-    <message>
         <source>Language</source>
         <translation>Язык</translation>
     </message>
@@ -2424,10 +2377,6 @@ ID-КАРТОЙ</translation>
         <translation>Настройки Интернета верны, услуга подтверждения действительности доступна!</translation>
     </message>
     <message>
-        <source>DigiDoc4 Client</source>
-        <translation>DigiDoc4 клиент</translation>
-    </message>
-    <message>
         <source>Checking updates has failed.</source>
         <translation>Ошибка проверки обновлений.</translation>
     </message>
@@ -2473,58 +2422,43 @@ Additional licenses and components</source>
         <translation>Основные</translation>
     </message>
     <message>
-        <source>Services</source>
-        <extracomment>accessible</extracomment>
-        <translation>Службы</translation>
-    </message>
-    <message>
         <source>Proxy</source>
-        <extracomment>accessible</extracomment>
         <translation>Прокси</translation>
     </message>
     <message>
         <source>Diagnostics</source>
-        <extracomment>accessible</extracomment>
         <translation>Диагностика</translation>
     </message>
     <message>
         <source>Info</source>
-        <extracomment>accessible</extracomment>
         <translation>Инфо</translation>
     </message>
     <message>
         <source>First run</source>
-        <extracomment>accessible</extracomment>
         <translation>Первый запуск</translation>
     </message>
     <message>
         <source>Refresh configuration</source>
-        <extracomment>accessible</extracomment>
         <translation>Проверьте обновления</translation>
     </message>
     <message>
         <source>Check connection</source>
-        <extracomment>accessible</extracomment>
         <translation>Проверьте настройки интернета</translation>
     </message>
     <message>
         <source>Save diagnostics report</source>
-        <extracomment>accessible</extracomment>
         <translation>Сохранить диагностику</translation>
     </message>
     <message>
         <source>Remove old certificates</source>
-        <extracomment>accessible</extracomment>
         <translation>Удалить старые сертификаты</translation>
     </message>
     <message>
         <source>Use default settings</source>
-        <extracomment>accessible</extracomment>
         <translation>Использовать настройки по умолчанию</translation>
     </message>
     <message>
         <source>Close</source>
-        <extracomment>accessible</extracomment>
         <translation>Закрыть</translation>
     </message>
     <message>
@@ -2544,8 +2478,8 @@ Additional licenses and components</source>
         <translation>Обновление конфигурации программы DigiDoc4 удачно завершено.</translation>
     </message>
     <message>
-        <source>%1 version %2, released %3</source>
-        <translation>%1 версия %2, выпущенный %3</translation>
+        <source>DigiDoc4 version %1, released %2</source>
+        <translation>DigiDoc4 версия %1, выпущенный %2</translation>
     </message>
     <message>
         <source>Use default access</source>
@@ -2561,12 +2495,7 @@ Additional licenses and components</source>
     </message>
     <message>
         <source>Save log</source>
-        <extracomment>accessible</extracomment>
         <translation>Сохранить лог-файл</translation>
-    </message>
-    <message>
-        <source>SAVE LOG</source>
-        <translation>СОХРАНИТЬ ЛОГ-ФАЙЛ</translation>
     </message>
     <message>
         <source>Restart DigiDoc4 Client to activate logging. Read more &lt;a href=&quot;https://www.id.ee/en/article/log-file-generation-in-digidoc4-client/&quot;&gt;here&lt;/a&gt;. Restart now?</source>
@@ -2581,12 +2510,12 @@ Additional licenses and components</source>
         <translation>Проект поддерживается Европейским фондом регионального развития</translation>
     </message>
     <message>
-        <source>SIGNING SERVICES</source>
-        <translation>УСЛУГИ ПОДПИСАНИЯ</translation>
+        <source>Signing services</source>
+        <translation>Услуги подписания</translation>
     </message>
     <message>
-        <source>VALIDATION SERVICES</source>
-        <translation>УСЛУГИ ВАЛИДАЦИИ</translation>
+        <source>Validation services</source>
+        <translation>Услуги валидации</translation>
     </message>
     <message>
         <source>Access to Digital Signature Validation Service SiVa</source>
@@ -2605,16 +2534,60 @@ Additional licenses and components</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>ADD CERTIFICATE</source>
-        <translation>ДОБАВИТЬ СЕРТИФИКАТ</translation>
-    </message>
-    <message>
         <source>Select Time-Stamping server certificate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Time-Stamping service SSL certificate</source>
         <translation>SSL сертификат службы отметок времени</translation>
+    </message>
+    <message>
+        <source>Encryption settings</source>
+        <translation>Настройки шифрования</translation>
+    </message>
+    <message>
+        <source>Add certificate</source>
+        <translation>Добавить сертификат</translation>
+    </message>
+    <message>
+        <source>Show certificate</source>
+        <translation>Показать сертификат</translation>
+    </message>
+    <message>
+        <source>Use CDOC1 file format for encryption</source>
+        <translation>Для шифрования используйте формат файла CDOC1</translation>
+    </message>
+    <message>
+        <source>Use CDOC2 file format for encryption</source>
+        <translation>Для шифрования используйте формат файла CDOC2</translation>
+    </message>
+    <message>
+        <source>Use a manually specified key transfer server for encryption</source>
+        <translation>Используйте вручную указанный сервер передачи ключей для шифрования</translation>
+    </message>
+    <message>
+        <source>Key transfer server SSL certificate</source>
+        <translation>SSL-сертификат сервера передачи ключей</translation>
+    </message>
+    <message>
+        <source>Select a key transfer server certificate</source>
+        <translation>Выберите сертификат сервера передачи ключей</translation>
+    </message>
+    <message>
+        <source>Use a key transfer server for encryption</source>
+        <translation>Используйте сервер передачи ключей для шифрования</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Fetch URL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Post URL</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3194,6 +3167,14 @@ Additional licenses and components</source>
     <message>
         <source>This container contains CAdES signature. You are not allowed to add or remove signatures to this container.</source>
         <translation>Этот контейнер содержит подпись CAdES. К данному контейнеру нельзя добавить или удалить из него подпись.</translation>
+    </message>
+    <message>
+        <source>The encrypted container contains a cryptographic algorithm or recipient type that is not supported in this DigiDoc4 application version. Please make sure that you are using the latest DigiDoc4 application version.</source>
+        <translation>Зашифрованный конверт содержит криптографический алгоритм или тип получателя, не поддерживаемый в текущей версии приложения DigiDoc4. Пожалуйста, убедитесь, что вы используете последнюю версию приложения DigiDoc4.</translation>
+    </message>
+    <message>
+        <source>https://www.id.ee/en/article/install-id-software/</source>
+        <translation>https://www.id.ee/ru/artikkel/ustanovite-id-programmu/</translation>
     </message>
 </context>
 </TS>

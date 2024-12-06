@@ -148,15 +148,6 @@ public:
 #ifdef Q_OS_MAC
 	std::string TSLCache() const final
 	{ return QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation).toStdString(); }
-
-	void setProxyHost( const std::string &host ) final
-	{ Settings::PROXY_HOST = host; }
-	void setProxyPort( const std::string &port ) final
-	{ Settings::PROXY_PORT = port; }
-	void setProxyUser( const std::string &user ) final
-	{ Settings::PROXY_USER = user; }
-	void setProxyPass( const std::string &pass ) final
-	{ Settings::PROXY_PASS = pass; }
 #endif
 
 	std::vector<digidoc::X509Cert> TSCerts() const final
@@ -609,10 +600,6 @@ QVariant Application::confValue( ConfParameter parameter, const QVariant &value 
 	switch( parameter )
 	{
 	case SiVaUrl: r = i->verifyServiceUri().c_str(); break;
-	case ProxyHost: r = i->proxyHost().c_str(); break;
-	case ProxyPort: r = i->proxyPort().c_str(); break;
-	case ProxyUser: r = i->proxyUser().c_str(); break;
-	case ProxyPass: r = i->proxyPass().c_str(); break;
 	case TSAUrl: r = i->TSUrl().c_str(); break;
 	case TSLUrl: r = i->TSLUrl().c_str(); break;
 	case TSLCache: r = i->TSLCache().c_str(); break;
@@ -882,33 +869,6 @@ int Application::run()
 	if( isRunning() ) return 0;
 #endif
 	return exec();
-}
-
-void Application::setConfValue( ConfParameter parameter, const QVariant &value )
-{
-	try
-	{
-		auto *i = dynamic_cast<digidoc::XmlConfCurrent*>(digidoc::Conf::instance());
-		if(!i)
-			return;
-		QByteArray v = value.toString().toUtf8();
-		switch( parameter )
-		{
-		case ProxyHost: i->setProxyHost( v.isEmpty()? std::string() :  v.constData() ); break;
-		case ProxyPort: i->setProxyPort( v.isEmpty()? std::string() : v.constData() ); break;
-		case ProxyUser: i->setProxyUser( v.isEmpty()? std::string() : v.constData() ); break;
-		case ProxyPass: i->setProxyPass( v.isEmpty()? std::string() : v.constData() ); break;
-		case TSAUrl:
-		case SiVaUrl:
-		case TSLCerts:
-		case TSLUrl:
-		case TSLCache: break;
-		}
-	}
-	catch( const digidoc::Exception &e )
-	{
-		showWarning(tr("Caught exception!"), e);
-	}
 }
 
 void Application::showClient(const QStringList &params, bool crypto, bool sign, bool newWindow)

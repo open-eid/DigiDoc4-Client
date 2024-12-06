@@ -274,6 +274,8 @@ namespace cdoc20 {
 					io->skip(padding(f.size));
 					if(!readHeader() || h.isNull() || !h.verify())
 						return {};
+					if(f.name.startsWith(QLatin1String("./PaxHeaders.X")))
+						f.name = QString::fromUtf8(h.name.data(), std::min<int>(h.name.size(), int(strlen(h.name.data()))));
 					f.size = fromOctal(h.size);
 					for(const QByteArray &data: paxData.split('\n'))
 					{
@@ -432,13 +434,15 @@ CDoc2::CDoc2(const QString &path)
 	for(const auto *recipient: *recipients){
 		if(recipient->fmk_encryption_method() != FMKEncryptionMethod::XOR)
 		{
+			keys.append(CKey::Unsupported);
 			qWarning() << "Unsupported FMK encryption method: skipping";
 			continue;
 		}
-		auto fillRecipient = [&] (auto key, bool isRSA) {
+		auto fillRecipient = [&] (auto key, bool isRSA, bool unsupported = false) {
 			CKey k(toByteArray(key->recipient_public_key()), isRSA);
 			k.recipient = toString(recipient->key_label());
 			k.cipher = toByteArray(recipient->encrypted_fmk());
+			k.unsupported = unsupported;
 			return k;
 		};
 		switch(recipient->capsule_type())
@@ -446,12 +450,7 @@ CDoc2::CDoc2(const QString &path)
 		case Capsule::ECCPublicKeyCapsule:
 			if(const auto *key = recipient->capsule_as_ECCPublicKeyCapsule())
 			{
-				if(key->curve() != EllipticCurve::secp384r1)
-				{
-					qWarning() << "Unsupported ECC curve: skipping";
-					continue;
-				}
-				CKey k = fillRecipient(key, false);
+				CKey k = fillRecipient(key, false, key->curve() != EllipticCurve::secp384r1);
 				k.publicKey = toByteArray(key->sender_public_key());
 				keys.append(std::move(k));
 			}
@@ -467,8 +466,8 @@ CDoc2::CDoc2(const QString &path)
 		case Capsule::KeyServerCapsule:
 			if(const auto *server = recipient->capsule_as_KeyServerCapsule())
 			{
-				auto fillKeyServer = [&] (auto key, bool isRSA) {
-					CKey k = fillRecipient(key, isRSA);
+				auto fillKeyServer = [&] (auto key, bool isRSA, bool unsupported = false) {
+					CKey k = fillRecipient(key, isRSA, unsupported);
 					k.keyserver_id = toString(server->keyserver_id());
 					k.transaction_id = toString(server->transaction_id());
 					return k;
@@ -477,21 +476,20 @@ CDoc2::CDoc2(const QString &path)
 				{
 				case ServerDetailsUnion::ServerEccDetails:
 					if(const auto *eccDetails = server->recipient_key_details_as_ServerEccDetails())
-					{
-						if(eccDetails->curve() == EllipticCurve::secp384r1)
-							keys.append(fillKeyServer(eccDetails, false));
-					}
+						keys.append(fillKeyServer(eccDetails, false, eccDetails->curve() != EllipticCurve::secp384r1));
 					break;
 				case ServerDetailsUnion::ServerRsaDetails:
 					if(const auto *rsaDetails = server->recipient_key_details_as_ServerRsaDetails())
 						keys.append(fillKeyServer(rsaDetails, true));
 					break;
 				default:
+					keys.append(CKey::Unsupported);
 					qWarning() << "Unsupported Key Server Details: skipping";
 				}
 			}
 			break;
 		default:
+			keys.append(CKey::Unsupported);
 			qWarning() << "Unsupported Key Details: skipping";
 		}
 	}
@@ -499,7 +497,10 @@ CDoc2::CDoc2(const QString &path)
 
 CKey CDoc2::canDecrypt(const QSslCertificate &cert) const
 {
-	return keys.value(keys.indexOf(CKey(cert)));
+	auto key = keys.value(keys.indexOf(CKey(cert)));
+	if(key.unsupported || (!key.transaction_id.isEmpty() && cert.expiryDate() <= QDateTime::currentDateTimeUtc()))
+		return {};
+	return key;
 }
 
 bool CDoc2::decryptPayload(const QByteArray &fmk)
@@ -562,6 +563,7 @@ bool CDoc2::save(const QString &path)
 		if(!cdoc20::checkConnection())
 			return false;
 		QScopedPointer<QNetworkAccessManager,QScopedPointerDeleteLater> nam(CheckConnection::setupNAM(req, Settings::CDOC2_POST_CERT));
+		req.setRawHeader("x-expiry-time", QDateTime::currentDateTimeUtc().addMonths(6).toString(Qt::ISODate).toLatin1());
 		QEventLoop e;
 		QNetworkReply *reply = nam->post(req, QJsonDocument({
 			{QLatin1String("recipient_id"), QLatin1String(recipient_id.toBase64())},
@@ -602,7 +604,7 @@ bool CDoc2::save(const QString &path)
 					toVector(key.key), toVector(encrytpedKek));
 				recipients.push_back(cdoc20::Header::CreateRecipientRecord(builder,
 					cdoc20::Recipients::Capsule::RSAPublicKeyCapsule, rsaPublicKey.Union(),
-					toString(key.recipient), toVector(xor_key), cdoc20::Header::FMKEncryptionMethod::XOR));
+					toString(key.toKeyLabel()), toVector(xor_key), cdoc20::Header::FMKEncryptionMethod::XOR));
 				continue;
 			}
 
@@ -614,7 +616,7 @@ bool CDoc2::save(const QString &path)
 				rsaKeyServer.Union(), toString(key.keyserver_id), toString(key.transaction_id));
 			recipients.push_back(cdoc20::Header::CreateRecipientRecord(builder,
 				cdoc20::Recipients::Capsule::KeyServerCapsule, keyServer.Union(),
-				toString(key.recipient), toVector(xor_key), cdoc20::Header::FMKEncryptionMethod::XOR));
+				toString(key.toKeyLabel()), toVector(xor_key), cdoc20::Header::FMKEncryptionMethod::XOR));
 			continue;
 		}
 
@@ -642,7 +644,7 @@ bool CDoc2::save(const QString &path)
 				cdoc20::Recipients::EllipticCurve::secp384r1, toVector(key.key), toVector(ephPublicKeyDer));
 			recipients.push_back(cdoc20::Header::CreateRecipientRecord(builder,
 				cdoc20::Recipients::Capsule::ECCPublicKeyCapsule, eccPublicKey.Union(),
-				toString(key.recipient), toVector(xor_key), cdoc20::Header::FMKEncryptionMethod::XOR));
+				toString(key.toKeyLabel()), toVector(xor_key), cdoc20::Header::FMKEncryptionMethod::XOR));
 			continue;
 		}
 
@@ -655,7 +657,7 @@ bool CDoc2::save(const QString &path)
 			eccKeyServer.Union(), toString(key.keyserver_id), toString(key.transaction_id));
 		recipients.push_back(cdoc20::Header::CreateRecipientRecord(builder,
 			cdoc20::Recipients::Capsule::KeyServerCapsule, keyServer.Union(),
-			toString(key.recipient), toVector(xor_key), cdoc20::Header::FMKEncryptionMethod::XOR));
+			toString(key.toKeyLabel()), toVector(xor_key), cdoc20::Header::FMKEncryptionMethod::XOR));
 	}
 
 	auto offset = cdoc20::Header::CreateHeader(builder, builder.CreateVector(recipients),

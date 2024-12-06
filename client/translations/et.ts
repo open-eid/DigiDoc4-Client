@@ -100,14 +100,6 @@
 <context>
     <name>AddressItem</name>
     <message>
-        <source>ADD</source>
-        <translation>LISA</translation>
-    </message>
-    <message>
-        <source>ADDED</source>
-        <translation>LISATUD</translation>
-    </message>
-    <message>
         <source> (Yourself)</source>
         <translation> (Sina ise)</translation>
     </message>
@@ -129,12 +121,10 @@
     </message>
     <message>
         <source>Added</source>
-        <extracomment>accessible</extracomment>
         <translation>Lisatud</translation>
     </message>
     <message>
         <source>Add</source>
-        <extracomment>accessible</extracomment>
         <translation>Lisa</translation>
     </message>
     <message>
@@ -156,6 +146,22 @@
     <message>
         <source>Expired on</source>
         <translation>Aegus</translation>
+    </message>
+    <message>
+        <source>Unsupported cryptographic algorithm or recipient type</source>
+        <translation>Mittetoetatud krüptograafiline algoritm või adressaadi tüüp</translation>
+    </message>
+    <message>
+        <source>Decryption is possible until:</source>
+        <translation>Dekrüpteerimine on võimalik kuni:</translation>
+    </message>
+    <message>
+        <source>Decryption has expired</source>
+        <translation>Dekrüpteerimine on aegunud</translation>
+    </message>
+    <message>
+        <source>ID-CARD</source>
+        <translation>ID-KAART</translation>
     </message>
 </context>
 <context>
@@ -1292,18 +1298,6 @@
         <translation>NÄITA SERTIFIKAATI</translation>
     </message>
     <message>
-        <source>Crypto method</source>
-        <translation>Krüpteerimismeetod</translation>
-    </message>
-    <message>
-        <source>Agreement method</source>
-        <translation>Aktsepteeritud meetod</translation>
-    </message>
-    <message>
-        <source>Key derivation method</source>
-        <translation>Võtme tuletamise meetod</translation>
-    </message>
-    <message>
         <source>ConcatKDF digest method</source>
         <translation>ConcatKDF referaatmeetod</translation>
     </message>
@@ -1336,6 +1330,13 @@
     <message>
         <source>Transaction ID</source>
         <translation>Transaktsiooni identifikaator</translation>
+    </message>
+</context>
+<context>
+    <name>LabelItem</name>
+    <message>
+        <source>The container must be decrypted in order to see the contents of an encrypted container.</source>
+        <translation>Krüpteeritud ümbriku sisu nägemiseks tuleb ümbrik dekrüpteerida.</translation>
     </message>
 </context>
 <context>
@@ -2311,54 +2312,6 @@ ID-KAARDIGA</translation>
         <translation>Seaded</translation>
     </message>
     <message>
-        <source>GENERAL</source>
-        <translation>ÜLDINE</translation>
-    </message>
-    <message>
-        <source>PROXY</source>
-        <translation>PROKSI</translation>
-    </message>
-    <message>
-        <source>DIAGNOSTICS</source>
-        <translation>DIAGNOSTIKA</translation>
-    </message>
-    <message>
-        <source>INFO</source>
-        <translation>INFO</translation>
-    </message>
-    <message>
-        <source>CLOSE</source>
-        <translation>SULGE</translation>
-    </message>
-    <message>
-        <source>FIRST RUN</source>
-        <translation>ESMANE TUTVUSTUS</translation>
-    </message>
-    <message>
-        <source>REMOVE OLD CERTIFICATES</source>
-        <translation>EEMALDA ÜLELIIGSED SERTIFIKAADID</translation>
-    </message>
-    <message>
-        <source>SAVE DIAGNOSTICS REPORT TO DISK</source>
-        <translation>SALVESTA DIAGNOSTIKA</translation>
-    </message>
-    <message>
-        <source>SHOW CERTIFICATE</source>
-        <translation>NÄITA SERTIFIKAATI</translation>
-    </message>
-    <message>
-        <source>USE DEFAULT SETTINGS</source>
-        <translation>TAASTA ALGSEADED</translation>
-    </message>
-    <message>
-        <source>CHECK CONNECTIONS</source>
-        <translation>KONTROLLI INTERNETIÜHENDUST</translation>
-    </message>
-    <message>
-        <source>REFRESH CONFIGURATION</source>
-        <translation>KONTROLLI VÄRSKENDUSI</translation>
-    </message>
-    <message>
         <source>Language</source>
         <translation>Keel</translation>
     </message>
@@ -2423,10 +2376,6 @@ ID-KAARDIGA</translation>
         <translation>Interneti seaded on korrektsed, kehtivuskinnitusteenus on kättesaadav!</translation>
     </message>
     <message>
-        <source>DigiDoc4 Client</source>
-        <translation>DigiDoc4 klient</translation>
-    </message>
-    <message>
         <source>Checking updates has failed.</source>
         <translation>Värskenduste kontrollimine on ebaõnnestunud.</translation>
     </message>
@@ -2472,58 +2421,43 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>Üldine</translation>
     </message>
     <message>
-        <source>Services</source>
-        <extracomment>accessible</extracomment>
-        <translation>Teenused</translation>
-    </message>
-    <message>
         <source>Proxy</source>
-        <extracomment>accessible</extracomment>
         <translation>Proksi</translation>
     </message>
     <message>
         <source>Diagnostics</source>
-        <extracomment>accessible</extracomment>
         <translation>Diagnostika</translation>
     </message>
     <message>
         <source>Info</source>
-        <extracomment>accessible</extracomment>
         <translation>Info</translation>
     </message>
     <message>
         <source>First run</source>
-        <extracomment>accessible</extracomment>
         <translation>Esmane tutvustus</translation>
     </message>
     <message>
         <source>Refresh configuration</source>
-        <extracomment>accessible</extracomment>
         <translation>Kontrolli värskendusi</translation>
     </message>
     <message>
         <source>Check connection</source>
-        <extracomment>accessible</extracomment>
         <translation>Kontrolli internetiühendust</translation>
     </message>
     <message>
         <source>Save diagnostics report</source>
-        <extracomment>accessible</extracomment>
         <translation>Salvesta diagnostika</translation>
     </message>
     <message>
         <source>Remove old certificates</source>
-        <extracomment>accessible</extracomment>
         <translation>Eemalda üleliigsed sertifikaadid</translation>
     </message>
     <message>
         <source>Use default settings</source>
-        <extracomment>accessible</extracomment>
         <translation>Taasta algseaded</translation>
     </message>
     <message>
         <source>Close</source>
-        <extracomment>accessible</extracomment>
         <translation>Sulge</translation>
     </message>
     <message>
@@ -2543,8 +2477,8 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>DigiDoc4 kliendi konfiguratsiooni värskendamine õnnestus.</translation>
     </message>
     <message>
-        <source>%1 version %2, released %3</source>
-        <translation>%1 versioon %2, avalikustatud %3</translation>
+        <source>DigiDoc4 version %1, released %2</source>
+        <translation>DigiDoc4 versioon %1, avalikustatud %2</translation>
     </message>
     <message>
         <source>Use default access</source>
@@ -2560,12 +2494,7 @@ Täiendavad litsentsid ja komponendid</translation>
     </message>
     <message>
         <source>Save log</source>
-        <extracomment>accessible</extracomment>
         <translation>Salvesta logifail</translation>
-    </message>
-    <message>
-        <source>SAVE LOG</source>
-        <translation>SALVESTA LOGIFAIL</translation>
     </message>
     <message>
         <source>Restart DigiDoc4 Client to activate logging. Read more &lt;a href=&quot;https://www.id.ee/en/article/log-file-generation-in-digidoc4-client/&quot;&gt;here&lt;/a&gt;. Restart now?</source>
@@ -2580,12 +2509,12 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>Projekti on toetatud Euroopa Liidu Regionaalarengu Fondist</translation>
     </message>
     <message>
-        <source>SIGNING SERVICES</source>
-        <translation>ALLKIRJASTAMISTEENUSED</translation>
+        <source>Signing services</source>
+        <translation>Allkirjastamisteenused</translation>
     </message>
     <message>
-        <source>VALIDATION SERVICES</source>
-        <translation>VALIDEERIMISTEENUSED</translation>
+        <source>Validation services</source>
+        <translation>Valideerimisteenused</translation>
     </message>
     <message>
         <source>Access to Digital Signature Validation Service SiVa</source>
@@ -2604,16 +2533,60 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>ADD CERTIFICATE</source>
-        <translation>LISA SERTIFIKAAT</translation>
-    </message>
-    <message>
         <source>Select Time-Stamping server certificate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Time-Stamping service SSL certificate</source>
         <translation>Ajatempliteenuse SSL sertifikaat</translation>
+    </message>
+    <message>
+        <source>Encryption settings</source>
+        <translation>Krüpteerimisseaded</translation>
+    </message>
+    <message>
+        <source>Add certificate</source>
+        <translation>Lisa sertifikaat</translation>
+    </message>
+    <message>
+        <source>Show certificate</source>
+        <translation>Näita sertifikaati</translation>
+    </message>
+    <message>
+        <source>Use CDOC1 file format for encryption</source>
+        <translation>Kasuta krüpteerimiseks CDOC1 failivormingut</translation>
+    </message>
+    <message>
+        <source>Use CDOC2 file format for encryption</source>
+        <translation>Kasuta krüpteerimiseks CDOC2 failivormingut</translation>
+    </message>
+    <message>
+        <source>Use a manually specified key transfer server for encryption</source>
+        <translation>Kasuta krüpteerimiseks käsitsi määratud võtmeedastusserverit</translation>
+    </message>
+    <message>
+        <source>Key transfer server SSL certificate</source>
+        <translation>Võtmeedastusserveri SSL sertifikaat</translation>
+    </message>
+    <message>
+        <source>Select a key transfer server certificate</source>
+        <translation>Vali võtmeedastusserveri sertifikaat</translation>
+    </message>
+    <message>
+        <source>Use a key transfer server for encryption</source>
+        <translation>Kasuta krüpteerimiseks võtmeedastusserverit</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Fetch URL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Post URL</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3189,6 +3162,14 @@ Täiendavad litsentsid ja komponendid</translation>
     <message>
         <source>This container contains CAdES signature. You are not allowed to add or remove signatures to this container.</source>
         <translation>Tegemist on CAdES allkirja sisaldava ümbrikuga. Sellele ümbrikule ei saa allkirja lisada ega eemaldada.</translation>
+    </message>
+    <message>
+        <source>The encrypted container contains a cryptographic algorithm or recipient type that is not supported in this DigiDoc4 application version. Please make sure that you are using the latest DigiDoc4 application version.</source>
+        <translation>Krüpteeritud ümbrik sisaldab DigiDoc4 rakenduse käesolevas versioonis mittetoetatud krüptograafilist algoritmi või adressaadi tüüpi. Palun veendu, et kasutad uusimat DigiDoc4 rakenduse versiooni.</translation>
+    </message>
+    <message>
+        <source>https://www.id.ee/en/article/install-id-software/</source>
+        <translation>https://www.id.ee/artikkel/paigalda-id-tarkvara/</translation>
     </message>
 </context>
 </TS>

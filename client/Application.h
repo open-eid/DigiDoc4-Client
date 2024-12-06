@@ -46,10 +46,6 @@ public:
 	enum ConfParameter : quint8
 	{
 		SiVaUrl,
-		ProxyHost,
-		ProxyPort,
-		ProxyUser,
-		ProxyPass,
 		TSAUrl,
 		TSLUrl,
 		TSLCerts,
@@ -77,7 +73,6 @@ public:
 	static QWidget* mainWindow();
 	static void openHelp();
 	static uint readTSLVersion(const QString &path);
-	static void setConfValue( ConfParameter parameter, const QVariant &value );
 	static void showClient(const QStringList &params = {}, bool crypto = false, bool sign = false, bool newWindow = false);
 	static void updateTSLCache(const QDateTime &tslTime);
 

@@ -138,7 +138,7 @@ background-color: #2F70B6;
     <number>30</number>
    </property>
    <property name="sizeConstraint">
-    <enum>QLayout::SizeConstraint::SetFixedSize</enum>
+    <enum>QLayout::SetFixedSize</enum>
    </property>
    <property name="leftMargin">
     <number>40</number>

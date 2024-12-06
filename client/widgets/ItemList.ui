@@ -62,7 +62,7 @@ border-width: 0px 0px 1px 0px;
    </property>
    <layout class="QVBoxLayout" name="itemLayout">
     <property name="spacing">
-     <number>4</number>
+     <number>0</number>
     </property>
     <property name="leftMargin">
      <number>20</number>
@@ -233,17 +233,11 @@ border-width: 0px 0px 1px 0px;
           </widget>
          </item>
          <item>
-          <widget class="LabelButton" name="download">
-           <property name="minimumSize">
-            <size>
-             <width>19</width>
-             <height>19</height>
-            </size>
-           </property>
+          <widget class="QToolButton" name="download">
            <property name="maximumSize">
             <size>
-             <width>19</width>
-             <height>19</height>
+             <width>24</width>
+             <height>24</height>
             </size>
            </property>
            <property name="cursor">
@@ -254,6 +248,16 @@ border-width: 0px 0px 1px 0px;
            </property>
            <property name="styleSheet">
             <string notr="true">border: none;</string>
+           </property>
+           <property name="icon">
+            <iconset resource="../images/images.qrc">
+             <normaloff>:/images/icon_download.svg</normaloff>:/images/icon_download.svg</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>20</width>
+             <height>20</height>
+            </size>
            </property>
           </widget>
          </item>
@@ -272,13 +276,13 @@ border-width: 0px 0px 1px 0px;
         <number>0</number>
        </property>
        <property name="topMargin">
-        <number>0</number>
+        <number>8</number>
        </property>
        <property name="rightMargin">
         <number>0</number>
        </property>
        <property name="bottomMargin">
-        <number>0</number>
+        <number>8</number>
        </property>
        <item>
         <widget class="LineEdit" name="txtFind">
