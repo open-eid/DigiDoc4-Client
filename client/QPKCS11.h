@@ -30,7 +30,7 @@ public:
 
 	QByteArray decrypt(const QByteArray &data, bool oaep) const final;
 	QByteArray derive(const QByteArray &publicKey) const;
-	QByteArray deriveConcatKDF(const QByteArray &publicKey, QCryptographicHash::Algorithm digest, int keySize,
+	QByteArray deriveConcatKDF(const QByteArray &publicKey, QCryptographicHash::Algorithm digest,
 		const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) const final;
 	QByteArray deriveHMACExtract(const QByteArray &publicKey, const QByteArray &salt, int keySize) const final;
 	bool isLoaded() const;

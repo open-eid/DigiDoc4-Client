@@ -33,7 +33,7 @@ public:
 
 	QList<TokenData> tokens() const final;
 	QByteArray decrypt(const QByteArray &data, bool oaep) const final;
-	QByteArray deriveConcatKDF(const QByteArray &publicKey, QCryptographicHash::Algorithm digest, int keySize,
+	QByteArray deriveConcatKDF(const QByteArray &publicKey, QCryptographicHash::Algorithm digest,
 		const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) const final;
 	QByteArray deriveHMACExtract(const QByteArray &publicKey, const QByteArray &salt, int keySize) const final;
 	PinStatus lastError() const final;

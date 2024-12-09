@@ -33,8 +33,6 @@ public:
 		BoxedMojo,
 		BoxedDeepCeruleanWithCuriousBlue, // Edit
 		DeepCeruleanWithLochmara, // Add files
-		White,
-		None
 	};
 
 	explicit LabelButton(QWidget *parent = nullptr);

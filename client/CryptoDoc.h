@@ -32,19 +32,26 @@ class QSslKey;
 class CKey
 {
 public:
+	enum Tag
+	{
+		Unsupported,
+	};
 	CKey() = default;
+	CKey(Tag);
 	CKey(QByteArray _key, bool _isRSA): key(std::move(_key)), isRSA(_isRSA) {}
 	CKey(const QSslCertificate &cert);
 	bool operator==(const CKey &other) const { return other.key == key; }
 
 	void setCert(const QSslCertificate &c);
+	QHash<QString, QString> fromKeyLabel() const;
+	QString toKeyLabel() const;
 
 	QByteArray key, cipher, publicKey;
 	QSslCertificate cert;
-	bool isRSA = false;
+	bool isRSA = false, unsupported = false;
 	QString recipient;
 	// CDoc1
-	QString agreement, concatDigest, derive, method, id, name;
+	QString concatDigest;
 	QByteArray AlgorithmID, PartyUInfo, PartyVInfo;
 	// CDoc2
 	QByteArray encrypted_kek;

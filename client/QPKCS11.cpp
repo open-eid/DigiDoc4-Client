@@ -140,9 +140,9 @@ QByteArray QPKCS11::derive(const QByteArray &publicKey) const
 }
 
 QByteArray QPKCS11::deriveConcatKDF(const QByteArray &publicKey, QCryptographicHash::Algorithm digest,
-	int keySize, const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) const
+	const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) const
 {
-	return Crypto::concatKDF(digest, quint32(keySize), derive(publicKey), algorithmID + partyUInfo + partyVInfo);
+	return Crypto::concatKDF(digest, derive(publicKey), algorithmID + partyUInfo + partyVInfo);
 }
 
 QByteArray QPKCS11::deriveHMACExtract(const QByteArray &publicKey, const QByteArray &salt, int keySize) const

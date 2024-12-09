@@ -22,7 +22,6 @@
 
 #include "dialogs/FileDialog.h"
 #include "dialogs/WarningDialog.h"
-#include "effects/ButtonHoverFilter.h"
 #include "widgets/FileItem.h"
 
 #include <QDrag>
@@ -39,13 +38,8 @@ using namespace ria::qdigidoc4;
 FileList::FileList(QWidget *parent)
 : ItemList(parent)
 {
-	ui->download->setIcons(QStringLiteral("/images/icon_download.svg"), QStringLiteral("/images/icon_download_hover.svg"),
-		QStringLiteral("/images/icon_download_pressed.svg"), 17, 17);
-	ui->download->init(LabelButton::White);
-	ui->download->installEventFilter(
-		new ButtonHoverFilter(QStringLiteral(":/images/icon_download.svg"), QStringLiteral(":/images/icon_download_hover.svg"), this));
 	connect(ui->add, &LabelButton::clicked, this, &FileList::selectFile);
-	connect(ui->download, &LabelButton::clicked, this, &FileList::saveAll);
+	connect(ui->download, &QToolButton::clicked, this, &FileList::saveAll);
 }
 
 void FileList::addFile( const QString& file )
@@ -216,6 +210,9 @@ void FileList::setModel(DocumentModel *documentModel)
 	auto count = documentModel->rowCount();
 	for(int i = 0; i < count; i++)
 		addFile(documentModel->data(i));
+	if(state == EncryptedContainer && count == 0)
+		addWidget(new LabelItem(QT_TRANSLATE_NOOP("LabelItem",
+			"The container must be decrypted in order to see the contents of an encrypted container.")));
 }
 
 void FileList::stateChange(ria::qdigidoc4::ContainerState state)
@@ -226,7 +223,7 @@ void FileList::stateChange(ria::qdigidoc4::ContainerState state)
 
 void FileList::updateDownload()
 {
-	int c = findChildren<FileItem*>().size();
+	auto c = findChildren<FileItem*>().size();
 	ui->download->setVisible(state & (UnsignedSavedContainer | SignedContainer | UnencryptedContainer) && c);
 	ui->count->setVisible(state & (UnsignedSavedContainer | SignedContainer | UnencryptedContainer) && c);
 	ui->count->setText(QString::number(c));

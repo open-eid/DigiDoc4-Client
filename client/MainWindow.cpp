@@ -115,17 +115,17 @@ MainWindow::MainWindow( QWidget *parent )
 	// Refresh ID card info in card widget
 	connect(qApp->signer(), &QSigner::cacheChanged, this, &MainWindow::updateSelector);
 	connect(&QPCSC::instance(), &QPCSC::statusChanged, this, &MainWindow::updateSelector);
-	connect(qApp->signer(), &QSigner::signDataChanged, this, [=](const TokenData &token){
+	connect(qApp->signer(), &QSigner::signDataChanged, this, [this](const TokenData &token) {
 		updateSelectorData(token);
 		updateMyEID(token);
 		ui->signContainerPage->cardChanged(token.cert());
 	});
-	connect(qApp->signer(), &QSigner::authDataChanged, this, [=](const TokenData &token){
+	connect(qApp->signer(), &QSigner::authDataChanged, this, [this](const TokenData &token) {
 		updateSelectorData(token);
 		updateMyEID(token);
 		ui->cryptoContainerPage->cardChanged(token.cert());
 		if(cryptoDoc)
-			ui->cryptoContainerPage->update(cryptoDoc->canDecrypt(token.cert()), cryptoDoc);
+			ui->cryptoContainerPage->update(cryptoDoc, token.cert());
 	});
 	QPCSC::instance().start();
 
@@ -143,7 +143,7 @@ MainWindow::MainWindow( QWidget *parent )
 	connect(ui->signContainerPage, &ContainerPage::addFiles, this, [this](const QStringList &files) { openFiles(files, true); } );
 	connect(ui->signContainerPage, &ContainerPage::fileRemoved, this, &MainWindow::removeSignatureFile);
 	connect(ui->signContainerPage, &ContainerPage::removed, this, &MainWindow::removeSignature);
-	connect(ui->signContainerPage, &ContainerPage::warning, this, [this](const WarningText &warningText) {
+	connect(ui->signContainerPage, &ContainerPage::warning, this, [this](WarningText warningText) {
 		ui->warnings->showWarning(warningText);
 		ui->signature->warningIcon(true);
 	});
@@ -153,6 +153,10 @@ MainWindow::MainWindow( QWidget *parent )
 	connect(ui->cryptoContainerPage, &ContainerPage::fileRemoved, this, &MainWindow::removeCryptoFile);
 	connect(ui->cryptoContainerPage, &ContainerPage::keysSelected, this, &MainWindow::updateKeys);
 	connect(ui->cryptoContainerPage, &ContainerPage::removed, this, &MainWindow::removeAddress);
+	connect(ui->cryptoContainerPage, &ContainerPage::warning, this, [this](WarningText warningText) {
+		ui->warnings->showWarning(warningText);
+		ui->crypto->warningIcon(true);
+	});
 
 	connect(ui->accordion, &Accordion::changePin1Clicked, this, &MainWindow::changePin1Clicked);
 	connect(ui->accordion, &Accordion::changePin2Clicked, this, &MainWindow::changePin2Clicked);
@@ -547,6 +551,10 @@ void MainWindow::onCryptoAction(int action, const QString &/*id*/, const QString
 		cryptoDoc->saveCopy(target);
 		break;
 	}
+	case ClearCryptoWarning:
+		ui->crypto->warningIcon(false);
+		ui->warnings->closeWarnings(CryptoDetails);
+		break;
 	case ContainerEmail:
 		if( cryptoDoc )
 			containerToEmail( cryptoDoc->fileName() );
@@ -682,6 +690,7 @@ void MainWindow::openContainer(bool signature)
 
 void MainWindow::resetCryptoDoc(CryptoDoc *doc)
 {
+	ui->crypto->warningIcon(false);
 	ui->cryptoContainerPage->clear();
 	delete cryptoDoc;
 	cryptoDoc = doc;
@@ -882,7 +891,7 @@ void MainWindow::removeAddress(int index)
 	if(cryptoDoc)
 	{
 		cryptoDoc->removeKey(index);
-		ui->cryptoContainerPage->transition(cryptoDoc, qApp->signer()->tokenauth().cert());
+		ui->cryptoContainerPage->update(cryptoDoc, qApp->signer()->tokenauth().cert());
 	}
 }
 
@@ -1077,7 +1086,7 @@ void MainWindow::updateKeys(const QList<CKey> &keys)
 		cryptoDoc->removeKey(i);
 	for(const auto &key: keys)
 		cryptoDoc->addKey(key);
-	ui->cryptoContainerPage->update(cryptoDoc->canDecrypt(qApp->signer()->tokenauth().cert()), cryptoDoc);
+	ui->cryptoContainerPage->update(cryptoDoc, qApp->signer()->tokenauth().cert());
 }
 
 void MainWindow::containerSummary()
@@ -1094,7 +1103,7 @@ void MainWindow::containerSummary()
 	dialog->printer()->setPageSize( QPageSize( QPageSize::A4 ) );
 	dialog->printer()->setPageOrientation( QPageLayout::Portrait );
 	dialog->setMinimumHeight( 700 );
-	connect(dialog, &QPrintPreviewDialog::paintRequested, digiDoc, [=](QPrinter *printer){
+	connect(dialog, &QPrintPreviewDialog::paintRequested, digiDoc, [this](QPrinter *printer) {
 		PrintSheet(digiDoc, printer);
 	});
 	dialog->exec();

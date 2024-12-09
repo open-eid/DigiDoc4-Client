@@ -54,7 +54,8 @@ enum Actions {
     SignatureMobile,
     SignatureSmartID,
     SignatureToken,
-    ClearSignatureWarning
+    ClearSignatureWarning,
+    ClearCryptoWarning,
 };
 
 enum ItemType {
@@ -88,6 +89,7 @@ enum WarningType {
     UnsupportedAsicSWarning,
     UnsupportedAsicCadesWarning,
     UnsupportedDDocWarning,
+    UnsupportedCDocWarning,
     EmptyFileWarning,
 };
 

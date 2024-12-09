@@ -100,7 +100,7 @@ QByteArray QCNG::derive(const QByteArray &publicKey, F &&func) const
 	});
 }
 
-QByteArray QCNG::deriveConcatKDF(const QByteArray &publicKey, QCryptographicHash::Algorithm digest, int keySize,
+QByteArray QCNG::deriveConcatKDF(const QByteArray &publicKey, QCryptographicHash::Algorithm digest,
 	const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) const
 {
 	return derive(publicKey, [&](NCRYPT_SECRET_HANDLE sharedSecret, QByteArray &derived) {
@@ -126,7 +126,7 @@ QByteArray QCNG::deriveConcatKDF(const QByteArray &publicKey, QCryptographicHash
 			return err;
 		derived.resize(int(size));
 		if(SUCCEEDED(err = NCryptDeriveKey(sharedSecret, BCRYPT_KDF_SP80056A_CONCAT, &params, PBYTE(derived.data()), size, &size, 0)))
-			derived.resize(keySize);
+			derived.resize(32);
 		return err;
 	});
 }

@@ -100,14 +100,6 @@
 <context>
     <name>AddressItem</name>
     <message>
-        <source>ADD</source>
-        <translation>ADD</translation>
-    </message>
-    <message>
-        <source>ADDED</source>
-        <translation>ADDED</translation>
-    </message>
-    <message>
         <source> (Yourself)</source>
         <translation> (Yourself)</translation>
     </message>
@@ -129,12 +121,10 @@
     </message>
     <message>
         <source>Added</source>
-        <extracomment>accessible</extracomment>
         <translation>Added</translation>
     </message>
     <message>
         <source>Add</source>
-        <extracomment>accessible</extracomment>
         <translation>Add</translation>
     </message>
     <message>
@@ -156,6 +146,22 @@
     <message>
         <source>Expired on</source>
         <translation>Expired on</translation>
+    </message>
+    <message>
+        <source>Unsupported cryptographic algorithm or recipient type</source>
+        <translation>Unsupported cryptographic algorithm or recipient type</translation>
+    </message>
+    <message>
+        <source>Decryption is possible until:</source>
+        <translation>Decryption is possible until:</translation>
+    </message>
+    <message>
+        <source>Decryption has expired</source>
+        <translation>Decryption has expired</translation>
+    </message>
+    <message>
+        <source>ID-CARD</source>
+        <translation>ID-CARD</translation>
     </message>
 </context>
 <context>
@@ -1292,18 +1298,6 @@
         <translation>SHOW CERTIFICATE</translation>
     </message>
     <message>
-        <source>Crypto method</source>
-        <translation>Crypto method</translation>
-    </message>
-    <message>
-        <source>Agreement method</source>
-        <translation>Agreement method</translation>
-    </message>
-    <message>
-        <source>Key derivation method</source>
-        <translation>Key derivation method</translation>
-    </message>
-    <message>
         <source>ConcatKDF digest method</source>
         <translation>ConcatKDF digest method</translation>
     </message>
@@ -1336,6 +1330,13 @@
     <message>
         <source>Transaction ID</source>
         <translation>Transaction ID</translation>
+    </message>
+</context>
+<context>
+    <name>LabelItem</name>
+    <message>
+        <source>The container must be decrypted in order to see the contents of an encrypted container.</source>
+        <translation>The container must be decrypted in order to see the contents of an encrypted container.</translation>
     </message>
 </context>
 <context>
@@ -3161,6 +3162,14 @@ Additional licenses and components</translation>
     <message>
         <source>This container contains CAdES signature. You are not allowed to add or remove signatures to this container.</source>
         <translation>This container contains CAdES signature. You are not allowed to add or remove signatures to this container.</translation>
+    </message>
+    <message>
+        <source>The encrypted container contains a cryptographic algorithm or recipient type that is not supported in this DigiDoc4 application version. Please make sure that you are using the latest DigiDoc4 application version.</source>
+        <translation>The encrypted container contains a cryptographic algorithm or recipient type that is not supported in this DigiDoc4 application version. Please make sure that you are using the latest DigiDoc4 application version.</translation>
+    </message>
+    <message>
+        <source>https://www.id.ee/en/article/install-id-software/</source>
+        <translation>https://www.id.ee/en/article/install-id-software/</translation>
     </message>
 </context>
 </TS>

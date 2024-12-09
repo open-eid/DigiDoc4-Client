@@ -37,7 +37,6 @@
 #include <QDir>
 #include <QFileInfo>
 #include <QFontMetrics>
-#include <QMessageBox>
 
 using namespace ria::qdigidoc4;
 
@@ -290,14 +289,20 @@ void ContainerPage::showSigningButton()
 void ContainerPage::transition(CryptoDoc *container, const QSslCertificate &cert)
 {
 	clear();
-	isSupported = container && (container->state() & UnencryptedContainer || container->canDecrypt(cert));
-	if(!container)
-		return;
+	emit action(ClearCryptoWarning);
+	isSupported = container->state() & UnencryptedContainer || container->canDecrypt(cert);
 	setHeader(container->fileName());
+	bool hasUnsupported = false;
+	ui->rightPane->clear();
 	for(const CKey &key: container->keys())
+	{
+		hasUnsupported = std::max(hasUnsupported, key.unsupported);
 		ui->rightPane->addWidget(new AddressItem(key, ui->rightPane, true));
-	ui->leftPane->setModel(container->documentModel());
+	}
+	if(hasUnsupported)
+		emit warning({UnsupportedCDocWarning});
 	updatePanes(container->state());
+	ui->leftPane->setModel(container->documentModel());
 }
 
 void ContainerPage::transition(DigiDoc* container)
@@ -358,19 +363,21 @@ void ContainerPage::transition(DigiDoc* container)
 	updatePanes(container->state());
 }
 
-void ContainerPage::update(bool canDecrypt, CryptoDoc* container)
+void ContainerPage::update(CryptoDoc* container, const QSslCertificate &cert)
 {
-	isSupported = canDecrypt || container->state() & UnencryptedContainer;
-	if(container && container->state() & EncryptedContainer)
-		updateDecryptionButton();
-
-	if(!container)
-		return;
-
+	isSupported = container->canDecrypt(cert) || container->state() & UnencryptedContainer;
 	hasEmptyFile = false;
+	bool hasUnsupported = false;
 	ui->rightPane->clear();
 	for(const CKey &key: container->keys())
+	{
+		hasUnsupported = std::max(hasUnsupported, key.unsupported);
 		ui->rightPane->addWidget(new AddressItem(key, ui->rightPane, true));
+	}
+	if(hasUnsupported)
+		emit warning({UnsupportedCDocWarning});
+	if(container->state() & EncryptedContainer)
+		updateDecryptionButton();
 	if(container->state() & UnencryptedContainer)
 		showMainAction({ EncryptContainer });
 }
