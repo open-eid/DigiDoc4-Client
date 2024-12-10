@@ -1,5 +1,16 @@
 {
     "name": "qdigidoc4",
     "dependencies": ["openssl", "flatbuffers", "zlib"],
-    "builtin-baseline": "bc38a15b0bee8bc48a49ea267cc32fbb49aedfc4"
+    "builtin-baseline": "bc38a15b0bee8bc48a49ea267cc32fbb49aedfc4",
+    "vcpkg-configuration": {
+      "registries": [
+        {
+          "kind": "git",
+          "repository": "https://github.com/open-eid/vcpkg-ports",
+          "reference": "vcpkg-registry",
+          "baseline": "316f4d642f489b7d23d97891ed73431e7394d749",
+          "packages": ["openssl"]
+        }
+      ]
+    }
 }

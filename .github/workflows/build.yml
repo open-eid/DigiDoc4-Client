@@ -42,13 +42,14 @@ jobs:
         key: vcpkg-macOS-${{ hashFiles('prepare_osx_build_environment.sh') }}
     - name: Build libraries
       run: |
-        mkdir -p ${LIBS_PATH}/Qt-6.10.1-OpenSSL
+        mkdir -p ${LIBS_PATH}/Qt-6.10.2-OpenSSL
         ./prepare_osx_build_environment.sh -p ${LIBS_PATH}
     - name: Install Qt
       uses: jurplel/install-qt-action@v4
       with:
-        version: 6.10.1
+        version: 6.10.2
         arch: clang_64
+        cache: true
     - name: Build
       run: |
         cmake "-GNinja" -B build -S . -DCMAKE_BUILD_TYPE=RelWithDebInfo \
@@ -140,10 +141,11 @@ jobs:
         path: build/qdigidoc4*.rpm
   windows:
     name: Build on Windows
-    runs-on: windows-2025
+    runs-on: ${{ matrix.platform == 'arm64' && 'windows-11-arm' || 'windows-2025' }}
     strategy:
       matrix:
         vcver: [143]
+        platform: [x64, arm64]
     env:
       VER_SUFFIX: .VS${{ matrix.vcver }}
     steps:
@@ -153,7 +155,7 @@ jobs:
       with:
         workflow: build.yml
         branch: master
-        name: msi_${{ matrix.vcver }}_x64
+        name: msi_${{ matrix.vcver }}_${{ matrix.platform }}
         path: ./
         repo: open-eid/libdigidocpp
     - name: Install artifact
@@ -164,39 +166,34 @@ jobs:
       uses: actions/cache@v5
       with:
         path: ${{ github.workspace }}/vcpkg_cache
-        key: vcpkg-${{ matrix.vcver }}-${{ hashFiles('vcpkg.json') }}
-    - name: Prepare vcpkg
-      uses: lukka/run-vcpkg@v11
-      with:
-        vcpkgJsonGlob: ./vcpkg.json
-        runVcpkgInstall: true
-      env:
-        VCPKG_BINARY_SOURCES: clear;files,${{ github.workspace }}/vcpkg_cache,readwrite
-        VCPKG_INSTALLED_DIR: ${{ github.workspace }}/build/vcpkg_installed
+        key: vcpkg-${{ matrix.vcver }}-${{ matrix.platform }}-${{ hashFiles('vcpkg.json') }}
     - name: Install Qt
       uses: jurplel/install-qt-action@v4
       with:
-        version: 6.10.1
-        arch: win64_msvc2022_64
+        version: 6.10.2
+        arch: ${{ matrix.platform == 'arm64' && 'win64_msvc2022_arm64' || 'win64_msvc2022_64' }}
+        cache: true
     - name: Setup dev env
       uses: ilammy/msvc-dev-cmd@v1
       with:
-        arch: x64
+        arch: ${{ matrix.platform }}
     - name: Install WiX
       run: |
         dotnet tool install -g wix --version 6.0.2
         wix extension -g add WixToolset.UI.wixext/6.0.2
     - name: Build
+      env:
+        VCPKG_BINARY_SOURCES: clear;files,${{ github.workspace }}/vcpkg_cache,readwrite
       run: |
         cmake "-GNinja" -B build -S . -DCMAKE_BUILD_TYPE=RelWithDebInfo `
-          -DCMAKE_TOOLCHAIN_FILE=${{ env.RUNVCPKG_VCPKG_ROOT }}/scripts/buildsystems/vcpkg.cmake
+          -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake
         cmake --build build --target msi
         cmake --build build --target msishellext
         cmake --build build --target appx
     - name: Archive artifacts
       uses: actions/upload-artifact@v6
       with:
-        name: msi_${{ matrix.vcver }}_x64
+        name: msi_${{ matrix.vcver }}_${{ matrix.platform }}
         path: |
           build/*.msi
           build/*.appx
