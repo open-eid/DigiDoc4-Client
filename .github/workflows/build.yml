@@ -70,7 +70,7 @@ jobs:
     container: ubuntu:${{ matrix.container }}
     strategy:
       matrix:
-        container: ['22.04', '24.04', '25.04', '25.10']
+        container: ['22.04', '24.04', '25.10']
         arch: ['amd64', 'arm64']
     env:
       DEBIAN_FRONTEND: noninteractive
@@ -140,10 +140,11 @@ jobs:
         path: build/qdigidoc4*.rpm
   windows:
     name: Build on Windows
-    runs-on: windows-2025
+    runs-on: ${{ matrix.platform == 'arm64' && 'windows-11-arm' || 'windows-2025' }}
     strategy:
       matrix:
         vcver: [143]
+        platform: [x64, arm64]
     env:
       VER_SUFFIX: .VS${{ matrix.vcver }}
     steps:
@@ -153,7 +154,7 @@ jobs:
       with:
         workflow: build.yml
         branch: master
-        name: msi_${{ matrix.vcver }}_x64
+        name: msi_${{ matrix.vcver }}_${{ matrix.platform }}
         path: ./
         repo: open-eid/libdigidocpp
     - name: Install artifact
@@ -164,7 +165,7 @@ jobs:
       uses: actions/cache@v4
       with:
         path: ${{ github.workspace }}/vcpkg_cache
-        key: vcpkg-${{ matrix.vcver }}-${{ hashFiles('vcpkg.json') }}
+        key: vcpkg-${{ matrix.vcver }}-${{ matrix.platform }}-${{ hashFiles('vcpkg.json') }}
     - name: Prepare vcpkg
       uses: lukka/run-vcpkg@v11
       with:
@@ -177,11 +178,11 @@ jobs:
       uses: jurplel/install-qt-action@v4
       with:
         version: 6.10.0
-        arch: win64_msvc2022_64
+        arch: ${{ matrix.platform == 'arm64' && 'win64_msvc2022_arm64' || 'win64_msvc2022_64' }}
     - name: Setup dev env
       uses: ilammy/msvc-dev-cmd@v1
       with:
-        arch: x64
+        arch: ${{ matrix.platform }}
     - name: Install WiX
       run: |
         dotnet tool install -g wix --version 6.0.2
@@ -196,7 +197,7 @@ jobs:
     - name: Archive artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: msi_${{ matrix.vcver }}_x64
+        name: msi_${{ matrix.vcver }}_${{ matrix.platform }}
         path: |
           build/*.msi
           build/*.appx
