@@ -20,7 +20,10 @@
    <string>DigiDoc4 Client</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">#logo, #navBar {
+   <string notr="true">   QLabel {
+color: #07142A;
+}
+#logo, #navBar {
 background-color: #003168;
 border-right: 1px solid #E7EAEF;
 }

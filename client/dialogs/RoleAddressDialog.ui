@@ -15,6 +15,7 @@
   </property>
   <property name="styleSheet">
    <string notr="true">QWidget {
+color: #07142A;
 font-family: Roboto, Helvetica;
 font-size: 14px;
 }
@@ -27,9 +28,6 @@ color: #003168;
 font-size: 20px;
 font-weight: 700;
 }
-#RoleLabel, #CityLabel, #StateLabel, #CountryLabel, #ZipLabel {
-color: #07142A;
-}
 #errorCode, #errorCountry {
 color: #AD2A45;
 }
@@ -37,7 +35,6 @@ QLineEdit {
 padding: 10px 14px;
 border: 1px solid #C4CBD8;
 border-radius: 4px;
-color: #07142A;
 background-color: white;
 placeholder-text-color: #607496;
 font-size: 16px;
