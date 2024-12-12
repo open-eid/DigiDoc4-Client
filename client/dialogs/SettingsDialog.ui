@@ -386,6 +386,7 @@ QComboBox QPushButton {
 margin: 3px;
 padding: 0px 12px 0px 4px;
 border: 0px;
+color: #07142A;
 text-align: left;
 font-weight: normal;
 font-size: 16px;
