@@ -381,7 +381,7 @@ bool CryptoDoc::decrypt()
 			"Second PIN entry is required to decrypt the CDOC2 container."), Application::mainWindow());
 		dlg->setCancelText(WarningDialog::Cancel);
 		dlg->addButton(WarningDialog::OK, QMessageBox::Ok);
-		dlg->addButton(tr("DON'T SHOW AGAIN"), QMessageBox::Ignore);
+		dlg->addButton(tr("Don't show again"), QMessageBox::Ignore);
 		switch (dlg->exec())
 		{
 		case QMessageBox::Ok: break;

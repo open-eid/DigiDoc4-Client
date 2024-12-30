@@ -67,8 +67,8 @@ SignatureItem::SignatureItem(DigiDocSignature s, ContainerState /*state*/, QWidg
 		auto *dlg = new WarningDialog(tr("Remove signature %1?")
 			.arg(c.toString(c.showCN() ? QStringLiteral("CN serialNumber") : QStringLiteral("GN SN serialNumber"))), this);
 		dlg->setCancelText(WarningDialog::Cancel);
-		dlg->resetCancelStyle();
-		dlg->addButton(WarningDialog::OK, QMessageBox::Ok, true);
+		dlg->resetCancelStyle(false);
+		dlg->addButton(WarningDialog::Remove, QMessageBox::Ok, true);
 		connect(dlg, &WarningDialog::finished, this, [this](int result) {
 			if(result == QMessageBox::Ok)
 				emit remove(this);
