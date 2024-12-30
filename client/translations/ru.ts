@@ -500,10 +500,6 @@
         <translation>Вы уже подписали этот документ.</translation>
     </message>
     <message>
-        <source>CONTINUE SIGNING</source>
-        <translation>ПОДПИСАТЬ</translation>
-    </message>
-    <message>
         <source>DigiDoc4 Client</source>
         <translation>DigiDoc4 клиент</translation>
     </message>
@@ -541,6 +537,10 @@
         <source>Save without signing</source>
         <extracomment>accessible</extracomment>
         <translation>Сохранить без подписи</translation>
+    </message>
+    <message>
+        <source>Continue signing</source>
+        <translation>Подписать</translation>
     </message>
 </context>
 <context>
@@ -606,12 +606,12 @@
         <translation>Не удалось зашифровать документ. Пожалуйста, проверьте подключение к Интернету и настройки сети.</translation>
     </message>
     <message>
-        <source>DON&apos;T SHOW AGAIN</source>
-        <translation>БОЛЬШЕ НЕ ПОКАЗЫВАТЬ</translation>
-    </message>
-    <message>
         <source>Failed to decrypt document. Please check your internet connection and network settings.</source>
         <translation>Не удалось расшифровать документ. Пожалуйста, проверьте подключение к Интернету и настройки сети.</translation>
+    </message>
+    <message>
+        <source>Don&apos;t show again</source>
+        <translation>Больше не показывать</translation>
     </message>
 </context>
 <context>
@@ -906,20 +906,20 @@
         <translation>Добавить файлы</translation>
     </message>
     <message>
-        <source>SAVE WITH OTHER NAME</source>
-        <translation>СОХРАНИТЬ ПОД ДРУГИМ ИМЕНЕМ</translation>
-    </message>
-    <message>
-        <source>REPLACE ALL</source>
-        <translation>ЗАМЕНИТЬ ВСЕ</translation>
-    </message>
-    <message>
         <source>Select folder where files will be stored</source>
         <translation>Выберите папку для сохранения файлов</translation>
     </message>
     <message>
         <source>%1 already exists.&lt;br /&gt;Do you want replace it?</source>
         <translation>%1 уже существует.&lt;br /&gt;Заменить?</translation>
+    </message>
+    <message>
+        <source>Save with other name</source>
+        <translation>Сохранить под другим именем</translation>
+    </message>
+    <message>
+        <source>Replace all</source>
+        <translation>Заменить все</translation>
     </message>
 </context>
 <context>
@@ -1444,22 +1444,6 @@ ID-КАРТОЙ</translation>
         <translation>Вы изменили открытый контейнер, но не сохранили никаких изменений. Сохранить контейнер или закрыть без изменений?</translation>
     </message>
     <message>
-        <source>REMOVE</source>
-        <translation>УДАЛИТЬ</translation>
-    </message>
-    <message>
-        <source>KEEP</source>
-        <translation>ОСТАВИТЬ</translation>
-    </message>
-    <message>
-        <source>DO NOT SAVE</source>
-        <translation>НЕ СОХРАНЯЙ</translation>
-    </message>
-    <message>
-        <source>SAVE</source>
-        <translation>СОХРАНИТЬ</translation>
-    </message>
-    <message>
         <source>Converted to signed document!</source>
         <translation>Переделан в контейнер для подписания!</translation>
     </message>
@@ -1486,10 +1470,6 @@ ID-КАРТОЙ</translation>
     <message>
         <source>Files can not be added to the cryptocontainer. The system will create a new container which shall contain the cypto-document and the files you wish to add.</source>
         <translation>Файлы не могут быть добавлены в криптоконтейнер. Система создаст новый контейнер, в который будет добавлен зашифрованный документ и выбранные вами файлы.</translation>
-    </message>
-    <message>
-        <source>CONTINUE</source>
-        <translation>ВПЕРЕД</translation>
     </message>
     <message>
         <source>Cannot add container to same container
@@ -1605,6 +1585,22 @@ ID-КАРТОЙ</translation>
     <message>
         <source>Crypto</source>
         <translation>Крипто</translation>
+    </message>
+    <message>
+        <source>Do not save</source>
+        <translation>Не сохраняй</translation>
+    </message>
+    <message>
+        <source>Keep</source>
+        <translation>Оставить</translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation>Сохранить</translation>
+    </message>
+    <message>
+        <source>Continue</source>
+        <translation>Продолжить</translation>
     </message>
 </context>
 <context>
@@ -3013,29 +3009,24 @@ Additional licenses and components</source>
 <context>
     <name>WarningDialog</name>
     <message>
-        <source>CLOSE</source>
-        <translation>ЗАКРЫТЬ</translation>
-    </message>
-    <message>
         <source>Details</source>
         <translation>Детали</translation>
     </message>
     <message>
-        <source>Close</source>
-        <extracomment>accessible</extracomment>
-        <translation>Закрыть</translation>
+        <source>No</source>
+        <translation>Нет</translation>
     </message>
     <message>
-        <source>NO</source>
-        <translation>НЕТ</translation>
+        <source>Cancel</source>
+        <translation>Отмена</translation>
     </message>
     <message>
-        <source>CANCEL</source>
-        <translation>ОТМЕНА</translation>
+        <source>Yes</source>
+        <translation>Да</translation>
     </message>
     <message>
-        <source>YES</source>
-        <translation>ДА</translation>
+        <source>Remove</source>
+        <translation>Удалить</translation>
     </message>
 </context>
 <context>
