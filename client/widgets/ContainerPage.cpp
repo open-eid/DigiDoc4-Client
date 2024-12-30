@@ -37,6 +37,7 @@
 #include <QDir>
 #include <QFileInfo>
 #include <QFontMetrics>
+#include <QMessageBox>
 
 using namespace ria::qdigidoc4;
 
@@ -134,8 +135,8 @@ bool ContainerPage::checkAction(int code, const QString& selectedCard, const QSt
 		))
 		{
 			auto *dlg = new WarningDialog(tr("The document has already been signed by you."), this);
-			dlg->addButton(tr("CONTINUE SIGNING"), SignatureAdd);
-			return dlg->exec() == SignatureAdd;
+			dlg->addButton(tr("Continue signing"), QMessageBox::Ok);
+			return dlg->exec() == QMessageBox::Ok;
 		}
 		break;
 	default: break;

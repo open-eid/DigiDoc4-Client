@@ -47,6 +47,7 @@
 #include <QtGui/QDesktopServices>
 #include <QtNetwork/QNetworkProxy>
 #include <QtWidgets/QInputDialog>
+#include <QtWidgets/QMessageBox>
 
 #include <algorithm>
 
@@ -326,9 +327,9 @@ SettingsDialog::SettingsDialog(int page, QWidget *parent)
 		auto *dlg = WarningDialog::show(this, tr("Restart DigiDoc4 Client to activate logging. Read more "
 			"<a href=\"https://www.id.ee/en/article/log-file-generation-in-digidoc4-client/\">here</a>. Restart now?"));
 		dlg->setCancelText(WarningDialog::NO);
-		dlg->addButton(WarningDialog::YES, 1);
+		dlg->addButton(WarningDialog::YES, QMessageBox::Yes);
 		connect(dlg, &WarningDialog::finished, qApp, [](int result) {
-			if(result == 1) {
+			if(result == QMessageBox::Yes) {
 				qApp->setProperty("restart", true);
 				QApplication::quit();
 			}
