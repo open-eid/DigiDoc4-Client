@@ -83,9 +83,8 @@ private:
 	void openFiles(const QStringList &files, bool addFile = false, bool forceCreate = false);
 	void pinUnblock(QSmartCardData::PinType type, bool isForgotPin);
 	void pinPukChange( QSmartCardData::PinType type );
-	void resetCryptoDoc(CryptoDoc *doc = nullptr);
+	void resetCryptoDoc(std::unique_ptr<CryptoDoc> &&doc = {});
 	void resetDigiDoc(DigiDoc *doc = nullptr, bool warnOnChange = true);
-	void removeAddress(int index);
 	void removeCryptoFile(int index);
 	bool removeFile(DocumentModel *model, int index);
 	void removeSignature(int index);
@@ -102,7 +101,6 @@ private:
 	void showPinBlockedWarning(const QSmartCardData& t);
 	void updateSelector();
 	void updateSelectorData(TokenData data);
-	void updateKeys(const QList<CKey> &keys);
 	void updateMyEID(const TokenData &t);
 	void updateMyEid(const QSmartCardData &data);
 	bool wrap(const QString& wrappedFile, bool enclose);
@@ -113,7 +111,7 @@ private:
 	static void containerToEmail(const QString &fileName);
 	static QStringList dropEventFiles(QDropEvent *event);
 
-	CryptoDoc* cryptoDoc = nullptr;
+	std::unique_ptr<CryptoDoc> cryptoDoc;
 	DigiDoc* digiDoc = nullptr;
 	Ui::MainWindow *ui;
 };

@@ -45,34 +45,29 @@ public:
 	~ContainerPage() final;
 
 	void cardChanged(const SslCertificate &cert, bool isBlocked = false);
-	void cardChanged(const QString &idCode);
 	void clear();
 	void clearPopups();
 	void setHeader(const QString &file);
 	void togglePrinting(bool enable);
 	void transition(CryptoDoc *container, const QSslCertificate &cert);
 	void transition(DigiDoc* container);
-	void update(CryptoDoc *container, const QSslCertificate &cert);
 
 signals:
 	void action(int code, const QString &info1 = {}, const QString &info2 = {});
 	void addFiles(const QStringList &files);
+	void certChanged(const SslCertificate &cert);
 	void fileRemoved(int row);
-	void keysSelected(const QList<CKey> &keys);
 	void moved(const QString &to);
 	void removed(int row);
 	void warning(const WarningText &warningText);
 
 private:
-	void addressSearch();
 	void changeEvent(QEvent* event) final;
 	bool checkAction(int code, const QString& selectedCard, const QString& selectedMobile);
 	void elideFileName();
 	bool eventFilter(QObject *o, QEvent *e) final;
 	void forward(int code);
-	void hideRightPane();
 	void showMainAction(const QList<ria::qdigidoc4::Actions> &actions);
-	void showRightPane(ria::qdigidoc4::ItemType itemType, const char *header);
 	void showSigningButton();
 	void updateDecryptionButton();
 	void updatePanes(ria::qdigidoc4::ContainerState state);
@@ -84,8 +79,8 @@ private:
 	QString fileName;
 	QString mobileCode;
 
-	const char *cancelText = QT_TR_NOOP("CANCEL");
-	const char *convertText = QT_TR_NOOP("ENCRYPT");
+	const char *cancelText = QT_TR_NOOP("Cancel");
+	const char *convertText = QT_TR_NOOP("Encrypt");
 	bool isSupported = false;
 	bool hasEmptyFile = false;
 	bool isSeal = false;

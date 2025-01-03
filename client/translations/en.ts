@@ -501,42 +501,6 @@
         <translation>Container:</translation>
     </message>
     <message>
-        <source>CHANGE</source>
-        <translation>CHANGE</translation>
-    </message>
-    <message>
-        <source>CANCEL</source>
-        <translation>← CANCEL</translation>
-    </message>
-    <message>
-        <source>SEND WITH E-MAIL</source>
-        <translation>SEND WITH E-MAIL</translation>
-    </message>
-    <message>
-        <source>PRINT SUMMARY</source>
-        <translation>PRINT SUMMARY</translation>
-    </message>
-    <message>
-        <source>ENCRYPT</source>
-        <translation>ENCRYPT</translation>
-    </message>
-    <message>
-        <source>SIGN</source>
-        <translation>SIGN</translation>
-    </message>
-    <message>
-        <source>SAVE AS</source>
-        <translation>SAVE AS</translation>
-    </message>
-    <message>
-        <source>SAVE WITHOUT SIGNING</source>
-        <translation>SAVE WITHOUT SIGNING</translation>
-    </message>
-    <message>
-        <source>STARTING</source>
-        <translation>← START</translation>
-    </message>
-    <message>
         <source>The document has already been signed by you.</source>
         <translation>The document has already been signed by you.</translation>
     </message>
@@ -550,38 +514,39 @@
     </message>
     <message>
         <source>Change</source>
-        <extracomment>accessible</extracomment>
         <translation>Change</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <extracomment>accessible</extracomment>
         <translation>Cancel</translation>
     </message>
     <message>
         <source>Encrypt</source>
-        <extracomment>accessible</extracomment>
         <translation>Encrypt</translation>
     </message>
     <message>
         <source>Save as</source>
-        <extracomment>accessible</extracomment>
         <translation>Save as</translation>
     </message>
     <message>
         <source>Send with e-mail</source>
-        <extracomment>accessible</extracomment>
         <translation>Send with e-mail</translation>
     </message>
     <message>
         <source>Print summary</source>
-        <extracomment>accessible</extracomment>
         <translation>Print summary</translation>
     </message>
     <message>
         <source>Save without signing</source>
-        <extracomment>accessible</extracomment>
         <translation>Save without signing</translation>
+    </message>
+    <message>
+        <source>Start</source>
+        <translation>Start</translation>
+    </message>
+    <message>
+        <source>Sign</source>
+        <translation>Sign</translation>
     </message>
 </context>
 <context>
