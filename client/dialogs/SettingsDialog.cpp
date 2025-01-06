@@ -406,11 +406,7 @@ SettingsDialog::SettingsDialog(int page, QWidget *parent)
 	ui->pageGroup->setId(ui->btnMenuProxy, NetworkSettings);
 	ui->pageGroup->setId(ui->btnMenuDiagnostics, DiagnosticsSettings);
 	ui->pageGroup->setId(ui->btnMenuInfo, LicenseSettings);
-#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
-	connect(ui->pageGroup, qOverload<int>(&QButtonGroup::buttonClicked), this, &SettingsDialog::showPage);
-#else
-	connect(ui->pageGroup, qOverload<int>(&QButtonGroup::idClicked), this, &SettingsDialog::showPage);
-#endif
+	connect(ui->pageGroup, &QButtonGroup::idClicked, this, &SettingsDialog::showPage);
 
 	updateVersion();
 	updateDiagnostics();

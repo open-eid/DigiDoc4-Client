@@ -43,7 +43,7 @@ public:
 	digidoc::X509Cert cert() const final;
 	QByteArray decrypt(std::function<QByteArray (QCryptoBackend *)> &&func);
 	QSslKey key() const;
-	void logout();
+	void logout() const;
 	void selectCard(const TokenData &token);
 	std::vector<unsigned char> sign( const std::string &method,
 		const std::vector<unsigned char> &digest) const final;
@@ -59,6 +59,7 @@ Q_SIGNALS:
 
 private:
 	static bool cardsOrder(const TokenData &s1, const TokenData &s2);
+	quint8 login(const TokenData &cert) const;
 	static QCryptographicHash::Algorithm methodToNID(const std::string &method);
 	void run() final;
 

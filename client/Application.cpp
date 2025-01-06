@@ -822,11 +822,7 @@ void Application::openHelp()
 void Application::parseArgs( const QString &msg )
 {
 	QStringList params;
-#if QT_VERSION > QT_VERSION_CHECK(5, 14, 0)
 	for(const QString &param: msg.split(QStringLiteral("\", \""), Qt::SkipEmptyParts))
-#else
-	for(const QString &param: msg.split(QStringLiteral("\", \""), QString::SkipEmptyParts))
-#endif
 	{
 		QUrl url( param, QUrl::StrictMode );
 		params.append(param != QLatin1String("-crypto") && !url.toLocalFile().isEmpty() ? url.toLocalFile() : param);

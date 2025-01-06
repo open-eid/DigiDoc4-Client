@@ -27,12 +27,6 @@
 #include <array>
 #include <cstring>
 
-#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
-namespace Qt {
-	using ::hex;
-}
-#endif
-
 Q_LOGGING_CATEGORY(APDU,"QPCSC.APDU")
 Q_LOGGING_CATEGORY(SCard,"QPCSC.SCard")
 
