@@ -20,7 +20,6 @@
 #include "QSigner.h"
 
 #include "Application.h"
-#include "QCardLock.h"
 #include "QSmartCard.h"
 #include "TokenData.h"
 #ifdef Q_OS_WIN
@@ -35,6 +34,7 @@
 #include <digidocpp/crypto/X509Cert.h>
 
 #include <QtCore/QLoggingCategory>
+#include <QtCore/QReadWriteLock>
 #include <QtCore/QRegularExpression>
 #include <QtNetwork/QSslKey>
 
@@ -53,6 +53,7 @@ public:
 	QSmartCard		*smartcard {};
 	TokenData		auth, sign;
 	QList<TokenData> cache;
+	QReadWriteLock	lock;
 
 	static ECDSA_SIG* ecdsa_do_sign(const unsigned char *dgst, int dgst_len,
 		const BIGNUM *inv, const BIGNUM *rp, EC_KEY *eckey);
@@ -165,7 +166,7 @@ bool QSigner::cardsOrder(const TokenData &s1, const TokenData &s2)
 		default: return 0;
 		}
 	};
-	QRegularExpression reg(QStringLiteral("(\\w{1,2})(\\d{7})"));
+	static const QRegularExpression reg(QStringLiteral("(\\w{1,2})(\\d{7})"));
 	QRegularExpressionMatch r1 = reg.match(s1.card());
 	QRegularExpressionMatch r2 = reg.match(s2.card());
 	if(r1.hasMatch() || r2.hasMatch())
@@ -197,7 +198,7 @@ X509Cert QSigner::cert() const
 
 QByteArray QSigner::decrypt(std::function<QByteArray (QCryptoBackend *)> &&func)
 {
-	if(!QCardLock::instance().exclusiveTryLock())
+	if(!d->lock.tryLockForWrite(10 * 1000))
 	{
 		Q_EMIT error( tr("Signing/decrypting is already in progress another window.") );
 		return {};
@@ -206,38 +207,23 @@ QByteArray QSigner::decrypt(std::function<QByteArray (QCryptoBackend *)> &&func)
 	if( d->auth.cert().isNull() )
 	{
 		Q_EMIT error( tr("Authentication certificate is not selected.") );
-		QCardLock::instance().exclusiveUnlock();
+		d->lock.unlock();
 		return {};
 	}
 
-	QCryptoBackend::PinStatus status = QCryptoBackend::UnknownError;
-	do
+	switch(auto status = QCryptoBackend::PinStatus(login(d->auth)))
 	{
-		switch(status = d->backend->login(d->auth))
-		{
-		case QCryptoBackend::PinOK: break;
-		case QCryptoBackend::PinCanceled:
-			QCardLock::instance().exclusiveUnlock();
-			return {};
-		case QCryptoBackend::PinIncorrect:
-			(new WarningDialog(QCryptoBackend::errorString(status), Application::mainWindow()))->exec();
-			continue;
-		case QCryptoBackend::PinLocked:
-			QCardLock::instance().exclusiveUnlock();
-			d->smartcard->reloadCounters(); // QSmartCard should also know that PIN1 is blocked.
-			Q_EMIT error(QCryptoBackend::errorString(status));
-			return {};
-		default:
-			QCardLock::instance().exclusiveUnlock();
-			d->smartcard->reloadCounters(); // QSmartCard should also know that PIN1 is blocked.
-			Q_EMIT error(tr("Failed to login token") + " " + QCryptoBackend::errorString(status));
-			return {};
-		}
-	} while(status != QCryptoBackend::PinOK);
+	case QCryptoBackend::PinOK: break;
+	case QCryptoBackend::PinCanceled: return {};
+	case QCryptoBackend::PinLocked:
+		Q_EMIT error(QCryptoBackend::errorString(status));
+		return {};
+	default:
+		Q_EMIT error(tr("Failed to login token") + ' ' + QCryptoBackend::errorString(status));
+		return {};
+	}
 	QByteArray result = waitFor(func, d->backend);
-	QCardLock::instance().exclusiveUnlock();
-	d->backend->logout();
-	d->smartcard->reloadCounters(); // QSmartCard should also know that PIN1 is blocked.
+	logout();
 	if(d->backend->lastError() == QCryptoBackend::PinCanceled)
 		return {};
 
@@ -251,26 +237,10 @@ QSslKey QSigner::key() const
 	QSslKey key = d->auth.cert().publicKey();
 	if(!key.handle())
 		return {};
-	if(!QCardLock::instance().exclusiveTryLock())
+	if(!d->lock.tryLockForWrite(10 * 1000))
 		return {};
-
-	QCryptoBackend::PinStatus status = QCryptoBackend::UnknownError;
-	do
-	{
-		switch(status = d->backend->login(d->auth))
-		{
-		case QCryptoBackend::PinOK: break;
-		case QCryptoBackend::PinIncorrect:
-			(new WarningDialog(QCryptoBackend::errorString(status), Application::mainWindow()))->exec();
-			continue;
-		case QCryptoBackend::PinLocked:
-		default:
-			QCardLock::instance().exclusiveUnlock();
-			d->smartcard->reloadCounters(); // QSmartCard should also know that PIN1 is blocked.
-			return {};
-		}
-	} while(status != QCryptoBackend::PinOK);
-
+	if(login(d->auth) != QCryptoBackend::PinOK)
+		return {};
 	if(key.algorithm() == QSsl::Ec)
 	{
 		auto *ec = (EC_KEY*)key.handle();
@@ -286,10 +256,25 @@ QSslKey QSigner::key() const
 	return key;
 }
 
-void QSigner::logout()
+quint8 QSigner::login(const TokenData &cert) const
+{
+	switch(auto status = d->backend->login(cert))
+	{
+	case QCryptoBackend::PinOK: return status;
+	case QCryptoBackend::PinIncorrect:
+		(new WarningDialog(QCryptoBackend::errorString(status), Application::mainWindow()))->exec();
+		return login(cert);
+	default:
+		d->lock.unlock();
+		d->smartcard->reloadCounters(); // QSmartCard should also know that PIN is blocked.
+		return status;
+	}
+}
+
+void QSigner::logout() const
 {
 	d->backend->logout();
-	QCardLock::instance().exclusiveUnlock();
+	d->lock.unlock();
 	d->smartcard->reloadCounters(); // QSmartCard should also know that PIN1 info is updated
 }
 
@@ -326,7 +311,7 @@ void QSigner::run()
 
 	while(!isInterruptionRequested())
 	{
-		if(QCardLock::instance().readTryLock())
+		if(d->lock.tryLockForRead())
 		{
 			auto *pkcs11 = qobject_cast<QPKCS11*>(d->backend);
 			if(pkcs11 && !pkcs11->reload())
@@ -382,7 +367,7 @@ void QSigner::run()
 				Q_EMIT signDataChanged(d->sign = update = st);
 			if(aold != at || sold != st)
 				d->smartcard->reloadCard(update);
-			QCardLock::instance().readUnlock();
+			d->lock.unlock();
 		}
 
 		if(!isInterruptionRequested())
@@ -420,43 +405,28 @@ std::vector<unsigned char> QSigner::sign(const std::string &method, const std::v
 		throw e; \
 	}
 
-	if(!QCardLock::instance().exclusiveTryLock())
+	if(!d->lock.tryLockForWrite(10 * 1000))
 		throwException(tr("Signing/decrypting is already in progress another window."), Exception::General)
 
 	if( d->sign.cert().isNull() )
 	{
-		QCardLock::instance().exclusiveUnlock();
+		d->lock.unlock();
 		throwException(tr("Signing certificate is not selected."), Exception::General)
 	}
 
-	QCryptoBackend::PinStatus status = QCryptoBackend::UnknownError;
-	do
+	switch(auto status = QCryptoBackend::PinStatus(login(d->sign)))
 	{
-		switch(status = d->backend->login(d->sign))
-		{
-		case QCryptoBackend::PinOK: break;
-		case QCryptoBackend::PinCanceled:
-			QCardLock::instance().exclusiveUnlock();
-			d->smartcard->reloadCounters(); // QSmartCard should also know that PIN2 info is updated
-			throwException((tr("Failed to login token") + " " + QCryptoBackend::errorString(status)), Exception::PINCanceled)
-		case QCryptoBackend::PinIncorrect:
-			(new WarningDialog(QCryptoBackend::errorString(status), Application::mainWindow()))->exec();
-			continue;
-		case QCryptoBackend::PinLocked:
-			QCardLock::instance().exclusiveUnlock();
-			d->smartcard->reloadCounters(); // QSmartCard should also know that PIN2 info is updated
-			throwException((tr("Failed to login token") + " " + QCryptoBackend::errorString(status)), Exception::PINLocked)
-		default:
-			QCardLock::instance().exclusiveUnlock();
-			d->smartcard->reloadCounters(); // QSmartCard should also know that PIN2 info is updated
-			throwException((tr("Failed to login token") + " " + QCryptoBackend::errorString(status)), Exception::PINFailed)
-		}
-	} while(status != QCryptoBackend::PinOK);
+	case QCryptoBackend::PinOK: break;
+	case QCryptoBackend::PinCanceled:
+		throwException((tr("Failed to login token") + ' ' + QCryptoBackend::errorString(status)), Exception::PINCanceled);
+	case QCryptoBackend::PinLocked:
+		throwException((tr("Failed to login token") + ' ' + QCryptoBackend::errorString(status)), Exception::PINLocked);
+	default:
+		throwException((tr("Failed to login token") + ' ' + QCryptoBackend::errorString(status)), Exception::PINFailed);
+	}
 	QByteArray sig = waitFor(&QCryptoBackend::sign, d->backend,
 		methodToNID(method), QByteArray::fromRawData((const char*)digest.data(), int(digest.size())));
-	QCardLock::instance().exclusiveUnlock();
-	d->backend->logout();
-	d->smartcard->reloadCounters(); // QSmartCard should also know that PIN2 info is updated
+	logout();
 	if(d->backend->lastError() == QCryptoBackend::PinCanceled)
 		throwException(tr("Failed to login token"), Exception::PINCanceled)
 

@@ -24,9 +24,7 @@
 #include <QtNetwork/QSslKey>
 
 #include <openssl/aes.h>
-#if OPENSSL_VERSION_NUMBER >= 0x30000000L
 #include <openssl/core_names.h>
-#endif
 #include <openssl/ec.h>
 #include <openssl/err.h>
 #include <openssl/evp.h>
@@ -168,9 +166,6 @@ QByteArray Crypto::concatKDF(QCryptographicHash::Algorithm hashAlg, const QByteA
 QByteArray Crypto::curve_oid(EVP_PKEY *key)
 {
 	QByteArray buf(50, 0);
-#if OPENSSL_VERSION_NUMBER < 0x30000000L
-	int nid = EC_GROUP_get_curve_name(EC_KEY_get0_group(EVP_PKEY_get0_EC_KEY(key)));
-#else
 	std::array<char, 64> group{};
 	size_t size = group.size();
 	if(EVP_PKEY_get_utf8_string_param(key, OSSL_PKEY_PARAM_GROUP_NAME, group.data(), group.size(), &size) != 1)
@@ -178,9 +173,7 @@ QByteArray Crypto::curve_oid(EVP_PKEY *key)
 		buf.clear();
 		return buf;
 	}
-	int nid = OBJ_sn2nid(group.data());
-#endif
-	ASN1_OBJECT *obj = OBJ_nid2obj(nid);
+	ASN1_OBJECT *obj = OBJ_nid2obj(OBJ_sn2nid(group.data()));
 	if(int size = OBJ_obj2txt(buf.data(), buf.size(), obj, 1); size != NID_undef)
 		buf.resize(size);
 	else
