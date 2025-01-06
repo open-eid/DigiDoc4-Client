@@ -90,12 +90,7 @@ MainWindow::MainWindow( QWidget *parent )
 	ui->pageButtonGroup->setId(ui->myEid, Pages::MyEid);
 
 	connect(ui->pageButtonGroup, QOverload<QAbstractButton *, bool>::of(&QButtonGroup::buttonToggled), this, &MainWindow::clearPopups);
-#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
 	connect(ui->pageButtonGroup, &QButtonGroup::idToggled, this, &MainWindow::pageSelected);
-#else
-	connect(ui->pageButtonGroup, QOverload<QAbstractButton *, bool>::of(&QButtonGroup::buttonToggled), this,
-		[=](QAbstractButton *button, bool checked){ pageSelected(ui->pageButtonGroup->id(button), checked); });
-#endif
 	ui->help->installEventFilter(new ButtonHoverFilter(QStringLiteral(":/images/icon_Abi.svg"), QStringLiteral(":/images/icon_Abi_hover.svg"), this));
 	ui->settings->installEventFilter(new ButtonHoverFilter(QStringLiteral(":/images/icon_Seaded.svg"), QStringLiteral(":/images/icon_Seaded_hover.svg"), this));
 	connect(ui->help, &QToolButton::clicked, qApp, &Application::openHelp);

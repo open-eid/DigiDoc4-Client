@@ -20,7 +20,6 @@
 #include "QSmartCard_p.h"
 
 #include "IKValidator.h"
-#include "QCardLock.h"
 #include "Settings.h"
 #include "Utils.h"
 #include "dialogs/PinPopup.h"
@@ -35,10 +34,10 @@ Q_LOGGING_CATEGORY(CLog, "qdigidoc4.QSmartCard")
 
 QSmartCardData::QSmartCardData(): d(new QSmartCardDataPrivate) {}
 QSmartCardData::QSmartCardData(const QSmartCardData &other) = default;
-QSmartCardData::QSmartCardData(QSmartCardData &&other) Q_DECL_NOEXCEPT = default;
+QSmartCardData::QSmartCardData(QSmartCardData &&other) noexcept = default;
 QSmartCardData::~QSmartCardData() = default;
 QSmartCardData& QSmartCardData::operator =(const QSmartCardData &other) = default;
-QSmartCardData& QSmartCardData::operator =(QSmartCardData &&other) Q_DECL_NOEXCEPT = default;
+QSmartCardData& QSmartCardData::operator =(QSmartCardData &&other) noexcept = default;
 bool QSmartCardData::operator ==(const QSmartCardData &other) const
 {
 	return d == other.d || (
@@ -46,7 +45,6 @@ bool QSmartCardData::operator ==(const QSmartCardData &other) const
 		d->authCert == other.d->authCert &&
 		d->signCert == other.d->signCert);
 }
-bool QSmartCardData::operator !=(const QSmartCardData &other) const { return !operator==(other); }
 
 QString QSmartCardData::card() const { return d->card; }
 
@@ -195,20 +193,13 @@ bool IDEMIACard::loadPerso(QPCSCReader *reader, QSmartCardDataPrivate *d) const
 		}
 	}
 
-	bool readFailed = false;
 	auto readCert = [&](const QByteArray &path) {
 		QPCSCReader::Result data = reader->transfer(path);
 		if(!data)
-		{
-			readFailed = true;
 			return QSslCertificate();
-		}
 		QHash<quint8,QByteArray> fci = parseFCI(data.data);
 		if(!fci.contains(0x80))
-		{
-			readFailed = true;
 			return QSslCertificate();
-		}
 		QByteArray cert;
 		QByteArray cmd = READBINARY;
 		for(int size = quint8(fci[0x80][0]) << 8 | quint8(fci[0x80][1]); cert.size() < size; )
@@ -217,10 +208,7 @@ bool IDEMIACard::loadPerso(QPCSCReader *reader, QSmartCardDataPrivate *d) const
 			cmd[3] = char(cert.size());
 			data = reader->transfer(cmd);
 			if(!data)
-			{
-				readFailed = true;
 				return QSslCertificate();
-			}
 			cert += data.data;
 		}
 		return QSslCertificate(cert, QSsl::Der);
@@ -229,11 +217,10 @@ bool IDEMIACard::loadPerso(QPCSCReader *reader, QSmartCardDataPrivate *d) const
 		d->authCert = readCert(APDU("00A40904 06 3F00 ADF1 3401 00"));
 	if(d->signCert.isNull())
 		d->signCert = readCert(APDU("00A40904 06 3F00 ADF2 341F 00"));
-	if(!d->data.contains(QSmartCardData::BirthDate) && !d->authCert.isNull())
-		d->data[QSmartCardData::BirthDate] = IKValidator::birthDate(d->authCert.personalCode());
-
-	if(readFailed)
+	if(d->authCert.isNull() || d->signCert.isNull())
 		return false;
+	if(!d->data.contains(QSmartCardData::BirthDate))
+		d->data[QSmartCardData::BirthDate] = IKValidator::birthDate(d->authCert.personalCode());
 	return updateCounters(reader, d);
 }
 
@@ -349,7 +336,6 @@ QSmartCard::ErrorType QSmartCard::change(QSmartCardData::PinType type, QWidget* 
 	case QSmartCardData::PukType: flags = PinPopup::PukType; break;
 	default: return UnknownError;
 	}
-	QCardLocker locker;
 	QSharedPointer<QPCSCReader> reader(d->connect(d->t.reader()));
 	if(!reader)
 		return UnknownError;
@@ -489,7 +475,6 @@ QSmartCard::ErrorType QSmartCard::unblock(QSmartCardData::PinType type, QWidget*
 	case QSmartCardData::Pin2Type: flags = PinPopup::Pin2Type;	break;
 	default: return UnknownError;
 	}
-	QCardLocker locker;
 	QSharedPointer<QPCSCReader> reader(d->connect(d->t.reader()));
 	if(!reader)
 		return UnknownError;

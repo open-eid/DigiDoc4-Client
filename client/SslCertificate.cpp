@@ -55,11 +55,7 @@ static QByteArray i2dDer(Func func, Arg arg)
 	return der;
 }
 
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
 size_t qHash(const SslCertificate &cert) { return qHash(cert.digest()); }
-#else
-uint qHash(const SslCertificate &cert) { return qHash(cert.digest()); }
-#endif
 
 SslCertificate::SslCertificate() = default;
 
@@ -95,18 +91,10 @@ QMultiHash<SslCertificate::AuthorityInfoAccess, QString> SslCertificate::authori
 		switch(OBJ_obj2nid(ad->method))
 		{
 		case NID_ad_OCSP:
-#if QT_VERSION > QT_VERSION_CHECK(5, 14, 0)
 			result.insert(ad_OCSP, toQByteArray(ad->location->d.uniformResourceIdentifier));
-#else
-			result.insertMulti(ad_OCSP, toQByteArray(ad->location->d.uniformResourceIdentifier));
-#endif
 			break;
 		case NID_ad_ca_issuers:
-#if QT_VERSION > QT_VERSION_CHECK(5, 14, 0)
 			result.insert(ad_CAIssuers, toQByteArray(ad->location->d.uniformResourceIdentifier));
-#else
-			result.insertMulti(ad_CAIssuers, toQByteArray(ad->location->d.uniformResourceIdentifier));
-#endif
 			break;
 		default: break;
 		}

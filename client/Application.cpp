@@ -154,7 +154,7 @@ public:
 	{
 		std::vector<digidoc::X509Cert> list = toCerts(QLatin1String("CERT-BUNDLE"));
 		if(digidoc::X509Cert cert = toCert(fromBase64(Settings::TSA_CERT)))
-			list.push_back(cert);
+			list.push_back(std::move(cert));
 		list.emplace_back(); // Make sure that TSA cert pinning is enabled
 		return list;
 	}
@@ -181,7 +181,7 @@ public:
 	{
 		std::vector<digidoc::X509Cert> list = toCerts(QLatin1String("CERT-BUNDLE"));
 		if(digidoc::X509Cert cert = verifyServiceCert())
-			list.push_back(cert);
+			list.push_back(std::move(cert));
 		list.emplace_back(); // Make sure that TSA cert pinning is enabled
 		return list;
 	}
@@ -312,7 +312,6 @@ Application::Application( int &argc, char **argv )
 	if(QFile::exists(QStringLiteral("%1/%2.log").arg(QDir::tempPath(), applicationName())))
 		qInstallMessageHandler(msgHandler);
 
-	Q_INIT_RESOURCE(common_tr);
 #if defined(Q_OS_WIN)
 	AllowSetForegroundWindow( ASFW_ANY );
 #ifdef NDEBUG
@@ -658,9 +657,9 @@ void Application::loadTranslation( const QString &lang )
 	else if(lang == QLatin1String("ru")) QLocale::setDefault(QLocale( QLocale::Russian, QLocale::RussianFederation));
 	else QLocale::setDefault(QLocale(QLocale::Estonian, QLocale::Estonia));
 
-	void(d->appTranslator.load(QStringLiteral(":/translations/") + lang));
-	void(d->commonTranslator.load(QStringLiteral(":/translations/common_") + lang));
-	void(d->qtTranslator.load(QStringLiteral(":/translations/qt_") + lang));
+	void(d->appTranslator.load(QLatin1String(":/translations/%1.qm").arg(lang)));
+	void(d->commonTranslator.load(QLatin1String(":/translations/common_%1.qm").arg(lang)));
+	void(d->qtTranslator.load(QLatin1String(":/translations/qt_%1.qm").arg(lang)));
 	if( d->closeAction ) d->closeAction->setText( tr("Close Window") );
 	if( d->newClientAction ) d->newClientAction->setText( tr("New Window") );
 	if(d->helpAction) d->helpAction->setText(tr("DigiDoc4 Client Help"));
@@ -822,11 +821,7 @@ void Application::openHelp()
 void Application::parseArgs( const QString &msg )
 {
 	QStringList params;
-#if QT_VERSION > QT_VERSION_CHECK(5, 14, 0)
 	for(const QString &param: msg.split(QStringLiteral("\", \""), Qt::SkipEmptyParts))
-#else
-	for(const QString &param: msg.split(QStringLiteral("\", \""), QString::SkipEmptyParts))
-#endif
 	{
 		QUrl url( param, QUrl::StrictMode );
 		params.append(param != QLatin1String("-crypto") && !url.toLocalFile().isEmpty() ? url.toLocalFile() : param);

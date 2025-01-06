@@ -109,8 +109,4 @@ private:
 	Qt::HANDLE extension( int nid ) const;
 };
 
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
 size_t qHash(const SslCertificate &cert);
-#else
-uint qHash(const SslCertificate &cert);
-#endif

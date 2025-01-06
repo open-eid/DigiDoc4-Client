@@ -22,20 +22,12 @@
 #include <QtCore/QDate>
 #include <QtCore/QStringList>
 
-inline int toInt(QStringView str) {
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-	return QLocale::system().toInt(str); // QLocale, workaround for Qt 5
-#else
-	return str.toInt();
-#endif
-}
-
 QDate IKValidator::birthDate(QStringView ik)
 {
 	if(ik.size() != 11) return {};
 
 	quint16 year = 0;
-	switch(toInt(ik.left(1)))
+	switch(ik.left(1).toInt())
 	{
 	case 1: case 2: year = 1800; break;
 	case 3: case 4: year = 1900; break;
@@ -45,9 +37,9 @@ QDate IKValidator::birthDate(QStringView ik)
 	}
 
 	QDate date(
-		toInt(ik.mid(1, 2)) + year,
-		toInt(ik.mid(3, 2)),
-		toInt(ik.mid(5, 2)));
+		ik.mid(1, 2).toInt() + year,
+		ik.mid(3, 2).toInt(),
+		ik.mid(5, 2).toInt());
 	return date.isValid() ? date : QDate();
 }
 
@@ -80,8 +72,8 @@ bool IKValidator::isValid(QStringView ik)
 	int sum1 = 0, sum2 = 0;
 	for(int i = 0, pos1 = 1, pos2 = 3; i < 10; ++i)
 	{
-		sum1 += toInt(ik.mid(i, 1)) * pos1;
-		sum2 += toInt(ik.mid(i, 1)) * pos2;
+		sum1 += ik.mid(i, 1).toInt() * pos1;
+		sum2 += ik.mid(i, 1).toInt() * pos2;
 		pos1 = pos1 == 9 ? 1 : pos1 + 1;
 		pos2 = pos2 == 9 ? 1 : pos2 + 1;
 	}
@@ -91,7 +83,7 @@ bool IKValidator::isValid(QStringView ik)
 		(result = sum2 % 11) >= 10)
 		result = 0;
 
-	return toInt(ik.right(1)) == result;
+	return ik.right(1).toInt() == result;
 }
 
 

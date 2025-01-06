@@ -36,15 +36,11 @@ public:
 
 	static QString toType(const SslCertificate &cert);
 
-	bool operator==(const HistoryCertData& other) const;
+	bool operator==(const HistoryCertData& other) const noexcept = default;
 	QString typeName() const;
 };
 
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-class HistoryList: public QVector<HistoryCertData>
-#else
 class HistoryList: public QList<HistoryCertData>
-#endif
 {
 public:
 	HistoryList();

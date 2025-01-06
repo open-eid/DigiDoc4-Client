@@ -51,12 +51,11 @@ public:
 
 	QSmartCardData();
 	QSmartCardData( const QSmartCardData &other );
-	QSmartCardData(QSmartCardData &&other) Q_DECL_NOEXCEPT;
+	QSmartCardData(QSmartCardData &&other) noexcept;
 	~QSmartCardData();
 	QSmartCardData& operator=( const QSmartCardData &other );
-	QSmartCardData& operator=(QSmartCardData &&other) Q_DECL_NOEXCEPT;
+	QSmartCardData& operator=(QSmartCardData &&other) noexcept;
 	bool operator ==(const QSmartCardData &other) const;
-	bool operator !=(const QSmartCardData &other) const;
 
 	QString card() const;
 	QString reader() const;

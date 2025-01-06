@@ -21,7 +21,6 @@
 #include <QtCore/QFile>
 #include <QtCore/QUrl>
 #include <QtCore/QXmlStreamReader>
-#include <QtCore/QXmlStreamWriter>
 #include <QtNetwork/QNetworkRequest>
 #include <QtNetwork/QNetworkReply>
 #include <QtNetwork/QNetworkAccessManager>
@@ -72,19 +71,6 @@ int main(int argc, char *argv[])
 				url.clear();
 				territory.clear();
 			}
-		}
-
-		if(QFile o(path + "/TSL.qrc"); o.open(QFile::WriteOnly))
-		{
-			QXmlStreamWriter w(&o);
-			w.writeStartElement(QStringLiteral("RCC"));
-			w.writeStartElement(QStringLiteral("qresource"));
-			w.writeAttribute(QStringLiteral("prefix"), QStringLiteral("TSL"));
-			w.writeTextElement(QStringLiteral("file"), r->request().url().fileName());
-			for(const QString &t: territories)
-				w.writeTextElement(QStringLiteral("file"), t + ".xml");
-			w.writeEndElement();
-			w.writeEndElement();
 		}
 
 		QCoreApplication::quit();
