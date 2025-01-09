@@ -1,11 +1,11 @@
+get_target_property(qtCore_install_prefix Qt${QT_VERSION_MAJOR}::qmake IMPORTED_LOCATION)
+get_filename_component(qtCore_install_prefix ${qtCore_install_prefix} DIRECTORY)
 if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/TSL.qrc)
 	set(TSL_QRC ${CMAKE_CURRENT_SOURCE_DIR}/TSL.qrc)
 else()
 	add_executable(TSLDownload TSLDownload.cpp)
 	target_link_libraries(TSLDownload Qt${QT_VERSION_MAJOR}::Network)
 	set_target_properties(TSLDownload PROPERTIES AUTOMOC OFF)
-	get_target_property(qtCore_install_prefix Qt${QT_VERSION_MAJOR}::qmake IMPORTED_LOCATION)
-	get_filename_component(qtCore_install_prefix ${qtCore_install_prefix} DIRECTORY)
 	add_custom_command(
 		OUTPUT TSL.qrc
 		DEPENDS TSLDownload
@@ -98,7 +98,7 @@ target_link_libraries(${PROJECT_NAME}
 	qdigidoccommon
 	Qt${QT_VERSION_MAJOR}::PrintSupport
 	Qt${QT_VERSION_MAJOR}::Svg
-	${LIBDIGIDOCPP_LIBRARY}
+	digidocpp::digidocpp
 	${LDAP_LIBRARIES}
 	$<TARGET_NAME_IF_EXISTS:flatbuffers::flatbuffers>
 	$<TARGET_NAME_IF_EXISTS:flatbuffers::flatbuffers_shared>
@@ -121,7 +121,6 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 	MACOSX_BUNDLE_BUNDLE_NAME ${PROJECT_NAME}
 	MACOSX_BUNDLE_GUI_IDENTIFIER "ee.ria.${PROJECT_NAME}"
 )
-target_include_directories(${PROJECT_NAME} PRIVATE ${LIBDIGIDOCPP_INCLUDE_DIR})
 target_compile_definitions(${PROJECT_NAME} PRIVATE
 	CDOC2_GET_URL="${CDOC2_GET_URL}"
 	CDOC2_POST_URL="${CDOC2_POST_URL}"
@@ -212,14 +211,8 @@ elseif(WIN32)
 	target_compile_options(${PROJECT_NAME} PRIVATE "/guard:cf")
 	target_link_options(${PROJECT_NAME} PRIVATE "/guard:cf" $<$<BOOL:${CROSSSIGNCERT}>:/INTEGRITYCHECK>)
 	target_link_libraries(${PROJECT_NAME} NCrypt Crypt32 Cryptui)
-	cmake_parse_arguments(GETLIB "" "optimized;debug" "" ${LIBDIGIDOCPP_LIBRARY})
-	if(GETLIB_debug AND CMAKE_BUILD_TYPE STREQUAL "Debug")
-		get_filename_component(LIBS_PATH ${GETLIB_debug} DIRECTORY)
-	elseif(GETLIB_optimized)
-		get_filename_component(LIBS_PATH ${GETLIB_optimized} DIRECTORY)
-	else()
-		get_filename_component(LIBS_PATH ${GETLIB_UNPARSED_ARGUMENTS} DIRECTORY)
-	endif()
+	get_filename_component(LIBS_PATH ${libdigidocpp_DIR} DIRECTORY)
+	get_filename_component(LIBS_PATH ${LIBS_PATH} DIRECTORY)
 	if(CMAKE_SIZEOF_VOID_P EQUAL 8)
 		set(PLATFORM x64)
 		set(OPENSSL_SUFFIX "-x64")
@@ -231,15 +224,15 @@ elseif(WIN32)
 	set(WIX_CMD wix.exe build -nologo
 		-arch ${PLATFORM}
 		-ext WixToolset.UI.wixext
-		-bv WixUIDialogBmp=${CMAKE_SOURCE_DIR}/cmake/modules/dlgbmp.bmp
-		-bv WixUIBannerBmp=${CMAKE_SOURCE_DIR}/cmake/modules/banner.bmp
+		-bv WixUIDialogBmp=${CMAKE_SOURCE_DIR}/common/dlgbmp.bmp
+		-bv WixUIBannerBmp=${CMAKE_SOURCE_DIR}/common/banner.bmp
 		-d ico_path=${CMAKE_CURRENT_SOURCE_DIR}/images/digidoc.ico
 		-d libs_path=${LIBS_PATH}
 		-d client_path=$<TARGET_FILE:${PROJECT_NAME}>
 		-d qt_suffix=$<$<CONFIG:Debug>:d>
 		${CMAKE_SOURCE_DIR}/${PROJECT_NAME}.wxs
-		${CMAKE_SOURCE_DIR}/cmake/modules/WelcomeDlg.wxs
-		${CMAKE_SOURCE_DIR}/cmake/modules/WixUI_Minimal.wxs
+		${CMAKE_SOURCE_DIR}/common/WelcomeDlg.wxs
+		${CMAKE_SOURCE_DIR}/common/WixUI_Minimal.wxs
 	)
 	add_custom_target(msi DEPENDS ${PROJECT_NAME}
 		COMMAND ${WIX_CMD} -o "${MSI_FILE}.msi"
