@@ -16,26 +16,6 @@
 <context>
     <name>AddRecipients</name>
     <message>
-        <source>CANCEL</source>
-        <translation>CANCEL</translation>
-    </message>
-    <message>
-        <source>CONFIRM</source>
-        <translation>CONFIRM</translation>
-    </message>
-    <message>
-        <source>CERTIFICATE FROM CARD</source>
-        <translation>CERTIFICATE FROM CARD</translation>
-    </message>
-    <message>
-        <source>CERTIFICATE FROM FILE</source>
-        <translation>CERTIFICATE FROM FILE</translation>
-    </message>
-    <message>
-        <source>LATEST USED CERTIFICATE</source>
-        <translation>LATEST USED CERTIFICATE</translation>
-    </message>
-    <message>
         <source>Failed to read certificate</source>
         <translation>Failed to read certificate</translation>
     </message>
@@ -65,27 +45,22 @@
     </message>
     <message>
         <source>Certificate from card</source>
-        <extracomment>accessible</extracomment>
         <translation>Certificate from card</translation>
     </message>
     <message>
         <source>Certificate from file</source>
-        <extracomment>accessible</extracomment>
         <translation>Certificate from file</translation>
     </message>
     <message>
         <source>Latest used certificate</source>
-        <extracomment>accessible</extracomment>
         <translation>Latest used certificate</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <extracomment>accessible</extracomment>
         <translation>Cancel</translation>
     </message>
     <message>
         <source>Confirm</source>
-        <extracomment>accessible</extracomment>
         <translation>Confirm</translation>
     </message>
     <message>
@@ -299,14 +274,6 @@
         <translation>Certificate details</translation>
     </message>
     <message>
-        <source>CLOSE</source>
-        <translation>CLOSE</translation>
-    </message>
-    <message>
-        <source>SAVE</source>
-        <translation>SAVE</translation>
-    </message>
-    <message>
         <source>This certificate is intended for following purpose(s):</source>
         <translation>This certificate is intended for following purpose(s):</translation>
     </message>
@@ -404,12 +371,10 @@
     </message>
     <message>
         <source>Close</source>
-        <extracomment>accessible</extracomment>
         <translation>Close</translation>
     </message>
     <message>
         <source>Save</source>
-        <extracomment>accessible</extracomment>
         <translation>Save</translation>
     </message>
 </context>
@@ -418,10 +383,6 @@
     <message>
         <source>CLOSE</source>
         <translation>CLOSE</translation>
-    </message>
-    <message>
-        <source>REMOVE</source>
-        <translation>REMOVE</translation>
     </message>
     <message>
         <source>Owner</source>
@@ -461,13 +422,7 @@
         <translation>Close</translation>
     </message>
     <message>
-        <source>Select</source>
-        <extracomment>accessible</extracomment>
-        <translation>Select</translation>
-    </message>
-    <message>
         <source>Remove</source>
-        <extracomment>accessible</extracomment>
         <translation>Remove</translation>
     </message>
     <message>
@@ -475,8 +430,12 @@
         <translation>Certificate for Encryption</translation>
     </message>
     <message>
-        <source>ADD</source>
-        <translation>ADD</translation>
+        <source>Last used certificates</source>
+        <translation>Last used certificates</translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation>Add</translation>
     </message>
 </context>
 <context>
@@ -1290,14 +1249,6 @@
         <translation>Value</translation>
     </message>
     <message>
-        <source>CLOSE</source>
-        <translation>CLOSE</translation>
-    </message>
-    <message>
-        <source>SHOW CERTIFICATE</source>
-        <translation>SHOW CERTIFICATE</translation>
-    </message>
-    <message>
         <source>ConcatKDF digest method</source>
         <translation>ConcatKDF digest method</translation>
     </message>
@@ -1307,12 +1258,10 @@
     </message>
     <message>
         <source>Close</source>
-        <extracomment>accessible</extracomment>
         <translation>Close</translation>
     </message>
     <message>
         <source>Show certificate</source>
-        <extracomment>accessible</extracomment>
         <translation>Show certificate</translation>
     </message>
     <message>
@@ -2624,10 +2573,6 @@ Additional licenses and components</translation>
         <translation>Signature</translation>
     </message>
     <message>
-        <source>CLOSE</source>
-        <translation>CLOSE</translation>
-    </message>
-    <message>
         <source>Attribute</source>
         <translation>Attribute</translation>
     </message>
@@ -2775,7 +2720,6 @@ Additional licenses and components</translation>
     </message>
     <message>
         <source>Close</source>
-        <extracomment>accessible</extracomment>
         <translation>Close</translation>
     </message>
     <message>
