@@ -31,14 +31,6 @@
 #include <QtCore/QXmlStreamReader>
 #include <QtCore/QXmlStreamWriter>
 
-bool HistoryCertData::operator==(const HistoryCertData& other) const
-{
-	return	CN == other.CN &&
-			type == other.type &&
-			issuer == other.issuer &&
-			expireDate == other.expireDate;
-}
-
 QString HistoryCertData::toType(const SslCertificate &cert)
 {
 	auto certType = cert.type();

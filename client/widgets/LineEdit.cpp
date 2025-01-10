@@ -28,7 +28,7 @@ LineEdit::LineEdit(QWidget *parent)
 
 void LineEdit::paintEvent(QPaintEvent *event)
 {
-#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+#if QT_VERSION < QT_VERSION_CHECK(6, 4, 1)
 	// Workaround QTBUG-92199
 	if(text().isEmpty() && (!placeholderText().isEmpty() || !placeholder.isEmpty()))
 	{
