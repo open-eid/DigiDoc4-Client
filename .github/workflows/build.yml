@@ -159,7 +159,7 @@ jobs:
     - name: Install artifact
       run: |
         Rename-Item "libdigidocpp*.msi" libdigidocpp.msi
-        msiexec /qn /a libdigidocpp.msi "TARGETDIR=$($pwd.Path)\\libs"
+        msiexec /qn /i libdigidocpp.msi
     - name: Prepare vcpkg
       uses: lukka/run-vcpkg@v7
       with:
@@ -181,12 +181,8 @@ jobs:
         wix extension -g add WixToolset.UI.wixext/5.0.2
     - name: Build
       run: |
-        if ($env:VCToolsRedistDir -eq $null) {
-          $env:VCToolsRedistDir = -join ($env:VCINSTALLDIR, "Redist\MSVC\", $env:VCToolsVersion, "\")
-        }
         cmake "-GNinja" -B build -S . -DCMAKE_BUILD_TYPE=RelWithDebInfo `
-          -DCMAKE_TOOLCHAIN_FILE=${{ env.RUNVCPKG_VCPKG_ROOT }}/scripts/buildsystems/vcpkg.cmake `
-          "-DLibDigiDocpp_ROOT=libs/PFiles64/libdigidocpp"
+          -DCMAKE_TOOLCHAIN_FILE=${{ env.RUNVCPKG_VCPKG_ROOT }}/scripts/buildsystems/vcpkg.cmake
         cmake --build build --target msi
         cmake --build build --target msishellext
         cmake --build build --target appx
