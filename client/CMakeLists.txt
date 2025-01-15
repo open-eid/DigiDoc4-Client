@@ -1,11 +1,11 @@
+get_target_property(qtCore_install_prefix Qt6::qmake IMPORTED_LOCATION)
+get_filename_component(qtCore_install_prefix ${qtCore_install_prefix} DIRECTORY)
 if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/TSL.qrc)
 	set(TSL_QRC ${CMAKE_CURRENT_SOURCE_DIR}/TSL.qrc)
 else()
 	add_executable(TSLDownload TSLDownload.cpp)
-	target_link_libraries(TSLDownload Qt${QT_VERSION_MAJOR}::Network)
+	target_link_libraries(TSLDownload Qt6::Network)
 	set_target_properties(TSLDownload PROPERTIES AUTOMOC OFF)
-	get_target_property(qtCore_install_prefix Qt${QT_VERSION_MAJOR}::qmake IMPORTED_LOCATION)
-	get_filename_component(qtCore_install_prefix ${qtCore_install_prefix} DIRECTORY)
 	add_custom_command(
 		OUTPUT TSL.qrc
 		DEPENDS TSLDownload
@@ -69,8 +69,6 @@ add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
 	MainWindow.ui
 	PrintSheet.cpp
 	PrintSheet.h
-	QCardLock.cpp
-	QCardLock.h
 	QCryptoBackend.cpp
 	QCryptoBackend.h
 	QPCSC.cpp
@@ -96,8 +94,8 @@ add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
 
 target_link_libraries(${PROJECT_NAME}
 	qdigidoccommon
-	Qt${QT_VERSION_MAJOR}::PrintSupport
-	Qt${QT_VERSION_MAJOR}::Svg
+	Qt6::PrintSupport
+	Qt6::SvgWidgets
 	${LIBDIGIDOCPP_LIBRARY}
 	${LDAP_LIBRARIES}
 	$<TARGET_NAME_IF_EXISTS:flatbuffers::flatbuffers>
@@ -107,11 +105,6 @@ target_link_libraries(${PROJECT_NAME}
 
 if(NOT BUILD_DATE)
 	string(TIMESTAMP BUILD_DATE "%d.%m.%Y")
-endif()
-
-if(${QT_VERSION_MAJOR} STREQUAL "6")
-	find_package(Qt6 COMPONENTS SvgWidgets REQUIRED)
-	target_link_libraries(${PROJECT_NAME} Qt6::SvgWidgets)
 endif()
 
 set_target_properties(${PROJECT_NAME} PROPERTIES

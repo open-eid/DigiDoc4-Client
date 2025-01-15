@@ -28,12 +28,6 @@
 #include <QtCore/QTextStream>
 #include <QtNetwork/QSslCertificate>
 
-#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
-namespace Qt {
-using ::hex;
-}
-#endif
-
 void Diagnostics::generalInfo(QTextStream &s)
 {
 	s << "<b>" << tr("Arguments:") << "</b> " << Application::arguments().join(' ') << "<br />"

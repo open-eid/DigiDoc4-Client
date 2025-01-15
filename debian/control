@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: RIA <info@ria.ee>
 Build-Depends:
  pkg-config,
- debhelper-compat (= 12),
+ debhelper-compat (= 13),
  cmake,
  libdigidocpp-dev (>=3.0),
  libldap2-dev,
@@ -13,21 +13,21 @@ Build-Depends:
  libflatbuffers-dev,
  flatbuffers-compiler-dev,
  zlib1g-dev,
- qt6-tools-dev | qttools5-dev,
- qt6-l10n-tools | qttools5-dev-tools,
- libqt6svg6-dev | libqt5svg5-dev
-Standards-Version: 4.5.1
+ qt6-tools-dev,
+ qt6-l10n-tools,
+ libqt6svg6-dev,
+Standards-Version: 4.6.1
 Homepage: https://github.com/open-eid/DigiDoc4-Client
 
 Package: qdigidoc4
 Architecture: any
 Depends:
  opensc-pkcs11,
- qt6-qpa-plugins | libqt5gui5,
+ qt6-qpa-plugins,
  ${shlibs:Depends},
  ${misc:Depends}
 Recommends:
- python3-nautilus:amd64 | python3-nautilus:arm64 | python-nautilus
+ python3-nautilus:amd64 | python3-nautilus:arm64
 Replaces:
  qdigidoc (<< 3.14)
 Description: Estonian digital signature application
