@@ -1,10 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 project(EsteidShellExtension VERSION 3.13.9)
 
-set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules)
-
-include(VersionInfo)
-
 if(CMAKE_SIZEOF_VOID_P EQUAL 8)
     set(PLATFORM "x64")
 else()
@@ -17,13 +13,20 @@ add_library(${PROJECT_NAME} SHARED
     EsteidShlExt.cpp
     EsteidShellExtension.rc
 )
+target_compile_definitions(${PROJECT_NAME} PRIVATE
+    _UNICODE
+    UNICODE
+    _WINDLL
+    WIN32_LEAN_AND_MEAN
+    VERSION=${PROJECT_VERSION_MAJOR},${PROJECT_VERSION_MINOR},${PROJECT_VERSION_PATCH},${BUILD_NUMBER}
+    VERSION_STR="${VERSION}"
+)
 set_target_properties(${PROJECT_NAME} PROPERTIES
     MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>"
-    COMPILE_DEFINITIONS "_UNICODE;UNICODE;_WINDLL;WIN32_LEAN_AND_MEAN"
     INTERPROCEDURAL_OPTIMIZATION YES
     COMPILE_OPTIONS "/guard:cf"
     LINK_OPTIONS "/guard:cf"
-    LINK_LIBRARIES "uxtheme.lib"
+    LINK_LIBRARIES uxtheme.lib
     SKIP_AUTOMOC ON
 )
 

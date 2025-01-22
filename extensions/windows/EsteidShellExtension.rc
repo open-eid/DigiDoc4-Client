@@ -54,12 +54,9 @@ END
 // Version
 //
 
-#define VER_STR_HELPER(x)	#x
-#define VER_STR(x)		VER_STR_HELPER(x)
-
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION MAJOR_VER,MINOR_VER,RELEASE_VER,BUILD_VER
- PRODUCTVERSION MAJOR_VER,MINOR_VER,RELEASE_VER,BUILD_VER
+ FILEVERSION VERSION
+ PRODUCTVERSION VERSION
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -76,12 +73,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "RIA"
             VALUE "FileDescription", "Estonian ID Card Software explorer integration"
-            VALUE "FileVersion", VER_STR(MAJOR_VER.MINOR_VER.RELEASE_VER.BUILD_VER)
+            VALUE "FileVersion", VERSION_STR
             VALUE "InternalName", "EsteidShellExtension.dll"
             VALUE "LegalCopyright", "(c) RIA.  All rights reserved."
             VALUE "OriginalFilename", "EsteidShellExtension.dll"
             VALUE "ProductName", "Estonian ID Card Software"
-            VALUE "ProductVersion", VER_STR(MAJOR_VER.MINOR_VER.RELEASE_VER.BUILD_VER)
+            VALUE "ProductVersion", VERSION_STR
         END
     END
     BLOCK "VarFileInfo"

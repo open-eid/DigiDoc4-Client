@@ -33,8 +33,7 @@ int main( int argc, char *argv[] )
 		{
 			QCoreApplication qtApp( argc, argv );
 			qtApp.setApplicationName(QStringLiteral("qdigidoc4"));
-			qtApp.setApplicationVersion(QStringLiteral("%1.%2.%3.%4")
-				.arg(MAJOR_VER).arg(MINOR_VER).arg(RELEASE_VER).arg(BUILD_VER));
+			qtApp.setApplicationVersion(QStringLiteral(VERSION_STR));
 			qtApp.setOrganizationDomain(QStringLiteral("ria.ee"));
 			qtApp.setOrganizationName(QStringLiteral("RIA"));
 
