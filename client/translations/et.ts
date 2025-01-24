@@ -2155,6 +2155,10 @@ ID-KAARDIGA</translation>
         <translation>Vale PIN</translation>
     </message>
     <message>
+        <source>User PIN is not set</source>
+        <translation>Kasutaja PIN-kood ei ole seadistatud</translation>
+    </message>
+    <message>
         <source>PKCS11 general error</source>
         <translation>PKCS11 üldine viga</translation>
     </message>

@@ -2156,6 +2156,10 @@ ID-КАРТОЙ</translation>
         <translation>Неверный PIN</translation>
     </message>
     <message>
+        <source>User PIN is not set</source>
+        <translation>PIN-код пользователя не установлен</translation>
+    </message>
+    <message>
         <source>PKCS11 general error</source>
         <translation>Ошибка PKCS11</translation>
     </message>
