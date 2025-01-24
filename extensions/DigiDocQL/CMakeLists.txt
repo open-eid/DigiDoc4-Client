@@ -15,10 +15,10 @@ set_target_properties( DigiDocQL PROPERTIES
 	XCODE_ATTRIBUTE_WRAPPER_EXTENSION qlgenerator
 	MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/Info.plist
 	AUTOMOC OFF
-	INCLUDE_DIRECTORIES "${LIBDIGIDOCPP_INCLUDE_DIR}"
 	COMPILE_FLAGS "-Wno-unused-parameter"
-	LINK_LIBRARIES "-framework QuickLook;-framework digidocpp;-framework Cocoa"
+	LINK_LIBRARIES "-framework QuickLook;-framework Cocoa"
 	LINK_FLAGS "-F/Library/Frameworks -fobjc-arc"
 	BUILD_WITH_INSTALL_RPATH YES
 	INSTALL_RPATH "@loader_path/../../../../../Frameworks"
 )
+target_link_libraries(DigiDocQL digidocpp::digidocpp)
