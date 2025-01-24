@@ -34,6 +34,7 @@ public:
 		PinCanceled,
 		PinIncorrect,
 		PinLocked,
+		PinNotInit,
 		DeviceError,
 		GeneralError,
 		UnknownError

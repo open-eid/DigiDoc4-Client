@@ -230,7 +230,7 @@ QByteArray QSigner::decrypt(std::function<QByteArray (QCryptoBackend *)> &&func)
 		default:
 			QCardLock::instance().exclusiveUnlock();
 			d->smartcard->reloadCounters(); // QSmartCard should also know that PIN1 is blocked.
-			Q_EMIT error(tr("Failed to login token") + " " + QCryptoBackend::errorString(status));
+			Q_EMIT error(tr("Failed to login token") + ' ' + QCryptoBackend::errorString(status));
 			return {};
 		}
 	} while(status != QCryptoBackend::PinOK);
