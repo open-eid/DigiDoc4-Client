@@ -56,7 +56,7 @@ jobs:
     container: ubuntu:${{ matrix.container }}
     strategy:
       matrix:
-        container: ['20.04', '22.04', '24.04', '24.10']
+        container: ['22.04', '24.04', '24.10']
     env:
       DEBIAN_FRONTEND: noninteractive
       DEBFULLNAME: github-actions
@@ -71,10 +71,6 @@ jobs:
         path: libdigidocpp-pkg
         repo: open-eid/libdigidocpp
     - name: Install dependencies
-      if: matrix.container == '20.04'
-      run: apt update -qq && apt install --no-install-recommends -y git lsb-release build-essential devscripts debhelper pkg-config lintian ./libdigidocpp-pkg/*.deb cmake libldap2-dev gettext libpcsclite-dev libssl-dev libqt5svg5-dev qttools5-dev-tools qttools5-dev libflatbuffers-dev zlib1g-dev
-    - name: Install dependencies
-      if: matrix.container != '20.04'
       run: apt update -qq && apt install --no-install-recommends -y git lsb-release build-essential devscripts debhelper pkg-config lintian ${UBUNTU_DEPS}
     - name: Checkout
       uses: actions/checkout@v4
@@ -137,10 +133,12 @@ jobs:
     runs-on: ${{ matrix.image }}
     strategy:
       matrix:
-        vcver: [143]
+        vcver: [143, 142]
         include:
         - vcver: 143
           image: windows-2022
+        - vcver: 142
+          image: windows-2019
     env:
       VER_SUFFIX: .VS${{ matrix.vcver }}
     steps:
@@ -164,7 +162,7 @@ jobs:
       uses: lukka/run-vcpkg@v7
       with:
         vcpkgArguments: openssl zlib flatbuffers
-        vcpkgGitCommitId: 18b028fe785e707265fa0e35590b7537ae1d12ea
+        vcpkgGitCommitId: e4644bd15436d406bba71928d086c809e5c9ca45
         vcpkgTriplet: x64-windows
     - name: Install Qt
       uses: jurplel/install-qt-action@v4

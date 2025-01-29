@@ -1,22 +1,24 @@
-get_target_property(qtCore_install_prefix Qt${QT_VERSION_MAJOR}::qmake IMPORTED_LOCATION)
+get_target_property(qtCore_install_prefix Qt6::qmake IMPORTED_LOCATION)
 get_filename_component(qtCore_install_prefix ${qtCore_install_prefix} DIRECTORY)
-if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/TSL.qrc)
-	set(TSL_QRC ${CMAKE_CURRENT_SOURCE_DIR}/TSL.qrc)
+get_filename_component(TSL_FILENAME ${TSL_URL} NAME_WLE)
+set(TSL_LIST ${TSL_FILENAME} ${TSL_INCLUDE})
+list(TRANSFORM TSL_LIST APPEND .xml)
+if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${TSL_FILENAME}.xml)
+	set(TSL_DIR ${CMAKE_CURRENT_SOURCE_DIR})
+	list(TRANSFORM TSL_LIST PREPEND ${TSL_DIR}/)
 else()
+	set(TSL_DIR ${CMAKE_CURRENT_BINARY_DIR})
+	list(TRANSFORM TSL_LIST PREPEND ${TSL_DIR}/)
 	add_executable(TSLDownload TSLDownload.cpp)
-	target_link_libraries(TSLDownload Qt${QT_VERSION_MAJOR}::Network)
+	target_link_libraries(TSLDownload Qt6::Network)
 	set_target_properties(TSLDownload PROPERTIES AUTOMOC OFF)
 	add_custom_command(
-		OUTPUT TSL.qrc
+		OUTPUT ${TSL_LIST}
 		DEPENDS TSLDownload
-		COMMAND $<TARGET_FILE:TSLDownload> "${CMAKE_CURRENT_BINARY_DIR}" ${TSL_URL} ${TSL_INCLUDE}
+		COMMAND $<TARGET_FILE:TSLDownload> ${CMAKE_CURRENT_BINARY_DIR} ${TSL_URL} ${TSL_INCLUDE}
 		WORKING_DIRECTORY ${qtCore_install_prefix}
 	)
-	set(TSL_QRC ${CMAKE_CURRENT_BINARY_DIR}/TSL.qrc)
 endif()
-
-configure_file( translations/tr.qrc tr.qrc COPYONLY )
-qt_add_translation(SOURCES translations/en.ts translations/et.ts translations/ru.ts)
 
 file(GLOB WIDGETS CONFIGURE_DEPENDS
 	"dialogs/*.cpp" "dialogs/*.h" "dialogs/*.ui"
@@ -33,8 +35,6 @@ add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
 	${WIDGETS}
 	images/images.qrc
 	fonts/fonts.qrc
-	${CMAKE_CURRENT_BINARY_DIR}/tr.qrc
-	${TSL_QRC}
 	common_enums.h
 	main.cpp
 	Application.cpp
@@ -69,8 +69,6 @@ add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
 	MainWindow.ui
 	PrintSheet.cpp
 	PrintSheet.h
-	QCardLock.cpp
-	QCardLock.h
 	QCryptoBackend.cpp
 	QCryptoBackend.h
 	QPCSC.cpp
@@ -93,11 +91,23 @@ add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
 	TokenData.h
 	Utils.h
 )
+qt_add_translations(${PROJECT_NAME} TS_FILES
+	translations/en.ts
+	translations/et.ts
+	translations/ru.ts
+	../common/translations/common_en.ts
+	../common/translations/common_et.ts
+	../common/translations/common_ru.ts
+	../common/translations/qtbase_et.ts
+	../common/translations/qtbase_ru.ts
+	RESOURCE_PREFIX /translations
+)
+qt_add_resources(${PROJECT_NAME} tsl BASE ${TSL_DIR} PREFIX /TSL FILES ${TSL_LIST})
 
 target_link_libraries(${PROJECT_NAME}
 	qdigidoccommon
-	Qt${QT_VERSION_MAJOR}::PrintSupport
-	Qt${QT_VERSION_MAJOR}::Svg
+	Qt6::PrintSupport
+	Qt6::SvgWidgets
 	digidocpp::digidocpp
 	${LDAP_LIBRARIES}
 	$<TARGET_NAME_IF_EXISTS:flatbuffers::flatbuffers>
@@ -107,11 +117,6 @@ target_link_libraries(${PROJECT_NAME}
 
 if(NOT BUILD_DATE)
 	string(TIMESTAMP BUILD_DATE "%d.%m.%Y")
-endif()
-
-if(${QT_VERSION_MAJOR} STREQUAL "6")
-	find_package(Qt6 COMPONENTS SvgWidgets REQUIRED)
-	target_link_libraries(${PROJECT_NAME} Qt6::SvgWidgets)
 endif()
 
 set_target_properties(${PROJECT_NAME} PROPERTIES

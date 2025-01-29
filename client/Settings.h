@@ -57,7 +57,7 @@ struct Settings
 			QSettings().remove(KEY);
 		}
 		bool isLocked() const {
-			return settings(QSettings::SystemScope).value(KEY + QLatin1String("_LOCK"), false).toBool();
+			return QSettings(QSettings::SystemScope).value(KEY + QLatin1String("_LOCK"), false).toBool();
 		}
 		bool isSet() const {
 			return QSettings().contains(KEY);
@@ -66,7 +66,7 @@ struct Settings
 			return settings().value(KEY, def).template value<T>();
 		}
 		void setValue(const QVariant &value, const QVariant &def = {}) const {
-			if(bool valueIsNullOrEmpty = value.type() == QVariant::String ? value.toString().isEmpty() : value.isNull();
+			if(bool valueIsNullOrEmpty = value.typeId() == QMetaType::QString ? value.toString().isEmpty() : value.isNull();
 				value == def || (def.isNull() && valueIsNullOrEmpty))
 				clear();
 			else
@@ -86,14 +86,7 @@ struct Settings
 			f = functor;
 		}
 		QSettings settings() const {
-			return settings(isLocked() ? QSettings::SystemScope : QSettings::UserScope);
-		}
-		static QSettings settings(QSettings::Scope scope) {
-#if QT_VERSION >= QT_VERSION_CHECK(5, 13, 0)
-			return QSettings(scope);
-#else
-			return QSettings(scope, QCoreApplication::organizationName(), QCoreApplication::applicationName());
-#endif
+			return QSettings(isLocked() ? QSettings::SystemScope : QSettings::UserScope);
 		}
 		const QString KEY;
 		const D DEFAULT {};
