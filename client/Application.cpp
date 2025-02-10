@@ -304,8 +304,7 @@ Application::Application( int &argc, char **argv )
 	, d(new Private)
 {
 	setApplicationName(QStringLiteral("qdigidoc4"));
-	setApplicationVersion(QStringLiteral("%1.%2.%3.%4")
-		.arg( MAJOR_VER ).arg( MINOR_VER ).arg( RELEASE_VER ).arg( BUILD_VER ) );
+	setApplicationVersion(QStringLiteral(VERSION_STR));
 	setOrganizationDomain(QStringLiteral("ria.ee"));
 	setOrganizationName(QStringLiteral("RIA"));
 	setWindowIcon(QIcon(QStringLiteral(":/images/Icon.svg")));

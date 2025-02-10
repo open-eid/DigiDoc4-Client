@@ -1,11 +1,8 @@
 #include <winver.h>
 
-#define VER_STR_HELPER(x)	#x
-#define VER_STR(x)		VER_STR_HELPER(x)
-
 VS_VERSION_INFO VERSIONINFO
-  FILEVERSION MAJOR_VER,MINOR_VER,RELEASE_VER,BUILD_VER
-  PRODUCTVERSION MAJOR_VER,MINOR_VER,RELEASE_VER,BUILD_VER
+  FILEVERSION VERSION
+  PRODUCTVERSION VERSION
   FILEFLAGSMASK VS_FFI_FILEFLAGSMASK
 #ifdef _DEBUG
   FILEFLAGS VS_FF_DEBUG
@@ -22,23 +19,23 @@ BEGIN
 		BEGIN
 			VALUE "CompanyName", "RIA"
 			VALUE "FileDescription", "DigiDoc4"
-			VALUE "FileVersion", VER_STR(MAJOR_VER.MINOR_VER.RELEASE_VER.BUILD_VER)
+			VALUE "FileVersion", VERSION_STR
 			VALUE "InternalName", "qdigidoc4"
-			VALUE "LegalCopyright", "Copyright (C) 2017-2024 Estonian Information System Authority"
+			VALUE "LegalCopyright", "Copyright (C) 2017-2025 Estonian Information System Authority"
 			VALUE "OriginalFilename", "qdigidoc4.exe"
 			VALUE "ProductName", "DigiDoc4"
-			VALUE "ProductVersion", VER_STR(MAJOR_VER.MINOR_VER.RELEASE_VER.BUILD_VER)
+			VALUE "ProductVersion", VERSION_STR
 		END
 		BLOCK "042504B0"
 		BEGIN
 			VALUE "CompanyName", "RIA"
 			VALUE "FileDescription", "DigiDoc4"
-			VALUE "FileVersion", VER_STR(MAJOR_VER.MINOR_VER.RELEASE_VER.BUILD_VER)
+			VALUE "FileVersion", VERSION_STR
 			VALUE "InternalName", "qdigidoc4"
-			VALUE "LegalCopyright", "Copyright (C) 2017-2024 Riigi Infosüsteemi Amet"
+			VALUE "LegalCopyright", "Copyright (C) 2017-2025 Riigi Infosüsteemi Amet"
 			VALUE "OriginalFilename", "qdigidoc4.exe"
 			VALUE "ProductName", "DigiDoc4"
-			VALUE "ProductVersion", VER_STR(MAJOR_VER.MINOR_VER.RELEASE_VER.BUILD_VER)
+			VALUE "ProductVersion", VERSION_STR
 		END
 	END
 	BLOCK "VarFileInfo"

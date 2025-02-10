@@ -1,6 +1,3 @@
-[submodule "cmake"]
-	path = cmake
-	url = ../cmake
 [submodule "common"]
 	path = common
 	url = ../qt-common
