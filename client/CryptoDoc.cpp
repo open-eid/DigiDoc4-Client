@@ -57,15 +57,6 @@ auto toHex = [](const std::vector<uint8_t>& data) -> QString {
 std::string
 CryptoDoc::labelFromCertificate(const std::vector<uint8_t>& cert)
 {
-	// Test
-	libcdoc::Certificate sslcert(cert);
-	std::string name = sslcert.getCommonName();
-	name = sslcert.getGivenName();
-	name = sslcert.getSurname();
-	name = sslcert.getSerialNumber();
-	std::vector<std::string> policies = sslcert.policies();
-
-
 	QSslCertificate kcert(QByteArray(reinterpret_cast<const char *>(cert.data()), cert.size()), QSsl::Der);
 	return [](const SslCertificate &c) {
 		QString cn = c.subjectInfo(QSslCertificate::CommonName);

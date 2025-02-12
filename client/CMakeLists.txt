@@ -22,6 +22,7 @@ else()
 	)
 endif()
 
+set(BUILD_SHARED_LIBS NO)
 add_subdirectory(libcdoc EXCLUDE_FROM_ALL)
 
 file(GLOB WIDGETS CONFIGURE_DEPENDS
@@ -112,7 +113,7 @@ target_link_libraries(${PROJECT_NAME}
 	Qt6::SvgWidgets
 	digidocpp::digidocpp
 	${LDAP_LIBRARIES}
-	cdoc_static
+	cdoc
 )
 
 if(NOT BUILD_DATE)
@@ -130,11 +131,7 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 	MACOSX_BUNDLE_ICON_FILE Icon.icns
 	MACOSX_BUNDLE_GUI_IDENTIFIER "ee.ria.${PROJECT_NAME}"
 )
-target_include_directories(${PROJECT_NAME} PRIVATE
-    ${CMAKE_SOURCE_DIR}
-    ${CMAKE_BUILD_RPATH}
-	${LIBDIGIDOCPP_INCLUDE_DIR}
-)
+target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR})
 
 target_compile_definitions(${PROJECT_NAME} PRIVATE
 	CDOC2_GET_URL="${CDOC2_GET_URL}"
