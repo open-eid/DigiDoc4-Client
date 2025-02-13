@@ -240,23 +240,23 @@ DDCDocLogger::LogMessage(libcdoc::LogLevel level, const char* file, int line, co
 {
     switch(level) {
     case libcdoc::LogLevel::LogLevelFatal:
-        qCFatal(LOG_CDOC) << message;
+        qFatal(LOG_CDOC) << message.c_str();
         break;
     case libcdoc::LogLevel::LogLevelError:
-        qCCritical(LOG_CDOC) << message;
+        qCCritical(LOG_CDOC) << message.c_str();
         break;
     case libcdoc::LogLevel::LogLevelWarning:
-        qCWarning(LOG_CDOC) << message;
+        qCWarning(LOG_CDOC) << message.c_str();
         break;
     case libcdoc::LogLevel::LogLevelInfo:
-        qCInfo(LOG_CDOC) << message;
+        qCInfo(LOG_CDOC) << message.c_str();
         break;
     case libcdoc::LogLevel::LogLevelDebug:
-        qCDebug(LOG_CDOC) << message;
+        qCDebug(LOG_CDOC) << message.c_str();
         break;
     default:
         // Trace, if present goes to debug categrory
-        qCDebug(LOG_CDOC) << message;
+        qCDebug(LOG_CDOC) << message.c_str();
         break;
     }
 }
