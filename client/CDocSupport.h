@@ -24,6 +24,7 @@
 
 #include <cdoc/Configuration.h>
 #include <cdoc/CryptoBackend.h>
+#include <cdoc/ILogger.h>
 #include <cdoc/NetworkBackend.h>
 #include <cdoc/Io.h>
 
@@ -59,6 +60,15 @@ struct DDNetworkBackend : public libcdoc::NetworkBackend, private QObject {
     explicit DDNetworkBackend() = default;
 
 	std::string last_error;
+};
+
+class DDCDocLogger : private libcdoc::ILogger {
+public:
+    static void setUpLogger();
+private:
+    DDCDocLogger() = default;
+    ~DDCDocLogger() = default;
+    void LogMessage(libcdoc::LogLevel level, const char* file, int line, const std::string& message) override final;
 };
 
 struct IOEntry

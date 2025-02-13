@@ -27,6 +27,7 @@
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QSslKey>
 #include <QtCore/QJsonDocument>
+#include <QLoggingCategory>
 
 #include "Application.h"
 #include "CheckConnection.h"
@@ -229,6 +230,46 @@ DDNetworkBackend::fetchKey(std::vector<uint8_t>& result, const std::string& keys
 	QByteArray key_material = QByteArray::fromBase64(json.value(QLatin1String("ephemeral_key_material")).toString().toLatin1());
 	result.assign(key_material.cbegin(), key_material.cend());
 	return OK;
+}
+
+Q_DECLARE_LOGGING_CATEGORY(LOG_CDOC)
+Q_LOGGING_CATEGORY(LOG_CDOC, "libcdoc")
+
+void
+DDCDocLogger::LogMessage(libcdoc::LogLevel level, const char* file, int line, const std::string& message)
+{
+    switch(level) {
+    case libcdoc::LogLevel::LogLevelFatal:
+        qCFatal(LOG_CDOC) << message;
+        break;
+    case libcdoc::LogLevel::LogLevelError:
+        qCCritical(LOG_CDOC) << message;
+        break;
+    case libcdoc::LogLevel::LogLevelWarning:
+        qCWarning(LOG_CDOC) << message;
+        break;
+    case libcdoc::LogLevel::LogLevelInfo:
+        qCInfo(LOG_CDOC) << message;
+        break;
+    case libcdoc::LogLevel::LogLevelDebug:
+        qCDebug(LOG_CDOC) << message;
+        break;
+    default:
+        // Trace, if present goes to debug categrory
+        qCDebug(LOG_CDOC) << message;
+        break;
+    }
+}
+
+void
+DDCDocLogger::setUpLogger()
+{
+    static DDCDocLogger *logger = nullptr;
+    if (logger) {
+        logger = new DDCDocLogger();
+        logger->SetMinLogLevel(libcdoc::LogLevel::LogLevelTrace);
+        libcdoc::add_logger(logger);
+    }
 }
 
 TempListConsumer::~TempListConsumer()
