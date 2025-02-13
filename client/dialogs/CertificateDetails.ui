@@ -13,34 +13,24 @@
     <height>570</height>
    </rect>
   </property>
-  <property name="sizePolicy">
-   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-    <horstretch>0</horstretch>
-    <verstretch>0</verstretch>
-   </sizepolicy>
-  </property>
-  <property name="minimumSize">
-   <size>
-    <width>994</width>
-    <height>570</height>
-   </size>
-  </property>
-  <property name="maximumSize">
-   <size>
-    <width>16777215</width>
-    <height>16777215</height>
-   </size>
-  </property>
   <property name="styleSheet">
    <string notr="true">QWidget {
-	color: #000000;
-	background-color: #FFFFFF
+font-family: Roboto, Helvetica;
+font-size: 14px;
+}
+#CertificateDetails {
+background-color: #FFFFFF;
+border-radius: 4px;
+}
+#leftPane {
+border-right: 1px solid #E7EAEF;
+}
+#lblCertHeader, #lblCertDetails {
+color: #003168;
+font-size: 22px;
 }</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
-   <property name="spacing">
-    <number>0</number>
-   </property>
+  <layout class="QGridLayout" name="CertificateDetailsLayout" columnstretch="0,1">
    <property name="leftMargin">
     <number>0</number>
    </property>
@@ -53,416 +43,263 @@
    <property name="bottomMargin">
     <number>0</number>
    </property>
-   <item>
-    <widget class="QWidget" name="containerLists" native="true">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-       <horstretch>1</horstretch>
-       <verstretch>1</verstretch>
-      </sizepolicy>
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <item row="0" column="0">
+    <layout class="QVBoxLayout" name="leftPaneLayout">
+     <property name="spacing">
+      <number>24</number>
      </property>
-     <property name="minimumSize">
-      <size>
-       <width>880</width>
-       <height>399</height>
-      </size>
+     <property name="leftMargin">
+      <number>24</number>
      </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: #ffffff;</string>
+     <property name="topMargin">
+      <number>32</number>
      </property>
-     <layout class="QHBoxLayout" name="horizontalLayout_3">
-      <property name="spacing">
-       <number>0</number>
-      </property>
-      <property name="leftMargin">
-       <number>0</number>
-      </property>
-      <property name="topMargin">
-       <number>0</number>
-      </property>
-      <property name="rightMargin">
-       <number>0</number>
-      </property>
-      <property name="bottomMargin">
-       <number>0</number>
-      </property>
-      <item>
-       <widget class="QWidget" name="leftPane" native="true">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>300</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>300</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">border-right: 1px solid #DEE4E9;</string>
-        </property>
-        <widget class="QLabel" name="lblCertHeader">
-         <property name="geometry">
-          <rect>
-           <x>21</x>
-           <y>20</y>
-           <width>278</width>
-           <height>21</height>
-          </rect>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>278</width>
-           <height>21</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>278</width>
-           <height>21</height>
-          </size>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">border: none;</string>
-         </property>
-         <property name="text">
-          <string>Certificate information</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-        <widget class="QTextEdit" name="lblCertInfo">
-         <property name="geometry">
-          <rect>
-           <x>21</x>
-           <y>53</y>
-           <width>250</width>
-           <height>470</height>
-          </rect>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>250</width>
-           <height>470</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>250</width>
-           <height>470</height>
-          </size>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">border: none;
-span {
-  line-height: 1.5;
-}</string>
-         </property>
-         <property name="readOnly">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </widget>
-      </item>
-      <item>
-       <widget class="QWidget" name="page" native="true">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout_2">
-         <property name="topMargin">
-          <number>3</number>
-         </property>
-         <property name="bottomMargin">
-          <number>3</number>
-         </property>
-         <item>
-          <widget class="QLabel" name="lblCertDetails">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>652</width>
-             <height>38</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>652</width>
-             <height>38</height>
-            </size>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">border: none;</string>
-           </property>
-           <property name="text">
-            <string>Certificate details</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignBottom|Qt::AlignHCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QTableWidget" name="tblDetails">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>0</width>
-             <height>320</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>16777215</width>
-             <height>360</height>
-            </size>
-           </property>
-           <property name="font">
-            <font>
-             <pointsize>13</pointsize>
-            </font>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">#tblDetails {
-	border:none;
-}
-QHeaderView::section {
-	border: 1px solid #D9D9D8;
-	border-width: 0px 1px 1px 0px;
-	text-align: center;
-	padding: 2px 0px 3px 0px;
-	background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #FFFFFF, stop:1 #FFFFFF);
-}
-</string>
-           </property>
-           <property name="editTriggers">
-            <set>QAbstractItemView::NoEditTriggers</set>
-           </property>
-           <property name="selectionMode">
-            <enum>QAbstractItemView::SingleSelection</enum>
-           </property>
-           <property name="selectionBehavior">
-            <enum>QAbstractItemView::SelectRows</enum>
-           </property>
-           <property name="showGrid">
-            <bool>false</bool>
-           </property>
-           <property name="wordWrap">
-            <bool>false</bool>
-           </property>
-           <property name="rowCount">
-            <number>0</number>
-           </property>
-           <property name="columnCount">
-            <number>2</number>
-           </property>
-           <attribute name="horizontalHeaderVisible">
-            <bool>true</bool>
-           </attribute>
-           <attribute name="horizontalHeaderMinimumSectionSize">
-            <number>19</number>
-           </attribute>
-           <attribute name="horizontalHeaderDefaultSectionSize">
-            <number>140</number>
-           </attribute>
-           <attribute name="horizontalHeaderStretchLastSection">
-            <bool>true</bool>
-           </attribute>
-           <attribute name="verticalHeaderVisible">
-            <bool>false</bool>
-           </attribute>
-           <attribute name="verticalHeaderMinimumSectionSize">
-            <number>14</number>
-           </attribute>
-           <attribute name="verticalHeaderDefaultSectionSize">
-            <number>23</number>
-           </attribute>
-           <column/>
-           <column/>
-          </widget>
-         </item>
-         <item>
-          <widget class="QTextEdit" name="detailedValue">
-           <property name="styleSheet">
-            <string notr="true">border: none;</string>
-           </property>
-           <property name="readOnly">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-      </item>
-     </layout>
-    </widget>
+     <property name="rightMargin">
+      <number>24</number>
+     </property>
+     <item>
+      <widget class="QLabel" name="lblCertHeader">
+       <property name="text">
+        <string>Certificate information</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QTextEdit" name="lblCertInfo">
+       <property name="frameShape">
+        <enum>QFrame::NoFrame</enum>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
-   <item>
-    <widget class="QWidget" name="navigationArea" native="true">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-       <horstretch>1</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
+   <item row="0" column="1">
+    <layout class="QVBoxLayout" name="pageLayout">
+     <property name="spacing">
+      <number>24</number>
      </property>
+     <property name="leftMargin">
+      <number>24</number>
+     </property>
+     <property name="topMargin">
+      <number>32</number>
+     </property>
+     <property name="rightMargin">
+      <number>24</number>
+     </property>
+     <item>
+      <widget class="QLabel" name="lblCertDetails">
+       <property name="text">
+        <string>Certificate details</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignBottom|Qt::AlignHCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QTableWidget" name="tblDetails">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>320</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QHeaderView::section {
+border: 1px solid #E7EAEF;
+border-width: 0px 0px 1px 0px;
+padding: 0px 0px 8px 5px;
+background-color: #FFFFFF;
+}</string>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::NoFrame</enum>
+       </property>
+       <property name="editTriggers">
+        <set>QAbstractItemView::NoEditTriggers</set>
+       </property>
+       <property name="selectionMode">
+        <enum>QAbstractItemView::SingleSelection</enum>
+       </property>
+       <property name="selectionBehavior">
+        <enum>QAbstractItemView::SelectRows</enum>
+       </property>
+       <property name="showGrid">
+        <bool>false</bool>
+       </property>
+       <property name="wordWrap">
+        <bool>false</bool>
+       </property>
+       <attribute name="horizontalHeaderVisible">
+        <bool>true</bool>
+       </attribute>
+       <attribute name="horizontalHeaderMinimumSectionSize">
+        <number>26</number>
+       </attribute>
+       <attribute name="horizontalHeaderDefaultSectionSize">
+        <number>140</number>
+       </attribute>
+       <attribute name="horizontalHeaderStretchLastSection">
+        <bool>true</bool>
+       </attribute>
+       <attribute name="verticalHeaderVisible">
+        <bool>false</bool>
+       </attribute>
+       <attribute name="verticalHeaderMinimumSectionSize">
+        <number>20</number>
+       </attribute>
+       <attribute name="verticalHeaderDefaultSectionSize">
+        <number>20</number>
+       </attribute>
+       <column>
+        <property name="text">
+         <string>Field</string>
+        </property>
+        <property name="textAlignment">
+         <set>AlignLeading|AlignVCenter</set>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Value</string>
+        </property>
+        <property name="textAlignment">
+         <set>AlignLeading|AlignVCenter</set>
+        </property>
+       </column>
+      </widget>
+     </item>
+     <item>
+      <widget class="QTextEdit" name="detailedValue">
+       <property name="frameShape">
+        <enum>QFrame::NoFrame</enum>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="1" column="0" colspan="2">
+    <widget class="QWidget" name="navigationArea" native="true">
      <property name="minimumSize">
       <size>
        <width>0</width>
-       <height>40</height>
+       <height>48</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
        <width>16777215</width>
-       <height>40</height>
+       <height>48</height>
       </size>
      </property>
      <property name="styleSheet">
-      <string notr="true">border-top: 1px solid #DEE4E9;
-background-color: #f7f7f7;</string>
+      <string notr="true">#navigationArea {
+border-top: 1px solid #E7EAEF;
+background-color: #F3F5F7;
+}
+QPushButton {
+padding: 10px 12px;
+border: 1px solid #2F70B6;
+border-radius: 4px;
+color: #ffffff;
+background-color: #2F70B6;
+font-size: 12px;
+font-weight: 700;
+}
+QPushButton:hover {
+border-color: #2B66A6;
+background-color: #2B66A6;
+}
+QPushButton:pressed {
+border-color: #215081;
+background-color: #215081;
+}
+QPushButton:disabled {
+border-color: #82A9D3;
+background-color: #82A9D3;
+}
+QPushButton:default {
+background-color: transparent;
+border-color: #AD2A45;
+color: #AD2A45;
+}
+QPushButton:default:hover {
+background-color: #F5EBED;
+}
+QPushButton:default:pressed {
+background-color: #E1C1C6;
+}</string>
      </property>
-     <widget class="QPushButton" name="close">
-      <property name="enabled">
-       <bool>true</bool>
+     <layout class="QHBoxLayout" name="navigationAreaLayout">
+      <property name="spacing">
+       <number>16</number>
       </property>
-      <property name="geometry">
-       <rect>
-        <x>720</x>
-        <y>8</y>
-        <width>120</width>
-        <height>25</height>
-       </rect>
+      <property name="leftMargin">
+       <number>24</number>
       </property>
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
+      <property name="topMargin">
+       <number>0</number>
       </property>
-      <property name="minimumSize">
-       <size>
-        <width>120</width>
-        <height>25</height>
-       </size>
+      <property name="rightMargin">
+       <number>24</number>
       </property>
-      <property name="maximumSize">
-       <size>
-        <width>120</width>
-        <height>20</height>
-       </size>
+      <property name="bottomMargin">
+       <number>0</number>
       </property>
-      <property name="accessibleName">
-       <string extracomment="accessible">Close</string>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QPushButton {
-	border-radius: 2px; 
-	border: none;
-	color: #ffffff;
-	background-color: #981E32;
-}
-QPushButton:pressed {
-	background-color: #F24A66;
-}
-QPushButton:hover:!pressed {
-	background-color: #CD2541;
-}
-QPushButton:disabled {
-	background-color: #BEDBED;
-}</string>
-      </property>
-      <property name="text">
-       <string>CLOSE</string>
-      </property>
-      <property name="autoDefault">
-       <bool>false</bool>
-      </property>
-      <property name="default">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="save">
-      <property name="geometry">
-       <rect>
-        <x>854</x>
-        <y>8</y>
-        <width>120</width>
-        <height>25</height>
-       </rect>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>120</width>
-        <height>25</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>120</width>
-        <height>25</height>
-       </size>
-      </property>
-      <property name="accessibleName">
-       <string extracomment="accessible">Save</string>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QPushButton {
-	border-radius: 2px; 
-	border: none;
-	color: #ffffff;
-	background-color: #006EB5;
-}
-QPushButton:pressed {
-	background-color: #41B6E6;
-}
-QPushButton:hover:!pressed {
-	background-color: #008DCF;
-}
-QPushButton:disabled {
-	background-color: #BEDBED;
-}</string>
-      </property>
-      <property name="text">
-       <string>SAVE</string>
-      </property>
-      <property name="autoDefault">
-       <bool>false</bool>
-      </property>
-     </widget>
+      <item>
+       <spacer name="navigationAreaSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="close">
+        <property name="text">
+         <string>Close</string>
+        </property>
+        <property name="default">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="save">
+        <property name="text">
+         <string>Save</string>
+        </property>
+        <property name="autoDefault">
+         <bool>false</bool>
+        </property>
+        <property name="default">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </item>
   </layout>
  </widget>
- <tabstops>
-  <tabstop>lblCertInfo</tabstop>
-  <tabstop>tblDetails</tabstop>
-  <tabstop>detailedValue</tabstop>
-  <tabstop>save</tabstop>
-  <tabstop>close</tabstop>
- </tabstops>
  <resources/>
  <connections/>
 </ui>
