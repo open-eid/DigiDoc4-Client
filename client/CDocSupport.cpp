@@ -240,7 +240,7 @@ DDCDocLogger::LogMessage(libcdoc::LogLevel level, const char* file, int line, co
 {
     switch(level) {
     case libcdoc::LogLevel::LogLevelFatal:
-        qFatal() << message.c_str();
+        qFatal("%s", message.c_str());
         break;
     case libcdoc::LogLevel::LogLevelError:
         qCCritical(LOG_CDOC) << message.c_str();
