@@ -186,8 +186,6 @@ SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *par
 	}
 	addItem(t, tr("Signed file count"), QString::number(s.container()->documentModel()->rowCount()));
 	addItem(t, QStringLiteral("SPUri"), QUrl(s.spuri()));
-	addTime(t, tr("Archive Timestamp"), s.tsaTime());
-	addCert(t, tr("Archive TS Certificate"), tr("Archive TS Certificate issuer"), s.tsaCert());
 	addTime(t, tr("Signature Timestamp"), s.tsTime());
 	addCert(t, tr("TS Certificate"), tr("TS Certificate issuer"), s.tsCert());
 	addItem(t, tr("Hash value of signature"), SslCertificate::toHex(s.messageImprint()));
@@ -195,6 +193,11 @@ SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *par
 	addTime(t, tr("OCSP time"), s.ocspTime());
 	addItem(t, tr("Signing time (UTC)"), s.trustedTime());
 	addItem(t, tr("Claimed signing time (UTC)"), s.claimedTime());
+	for(const auto &[cert, time]: s.archiveTimeStamps())
+	{
+		addTime(t, tr("Archive Timestamp"), time);
+		addCert(t, tr("Archive TS Certificate"), tr("Archive TS Certificate issuer"), cert);
+	}
 
 #ifdef Q_OS_MAC
 	t->setFont(Styles::font(Styles::Regular, 13));

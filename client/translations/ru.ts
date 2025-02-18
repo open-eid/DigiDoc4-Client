@@ -501,42 +501,6 @@
         <translation>Kонтейнер:</translation>
     </message>
     <message>
-        <source>CHANGE</source>
-        <translation>ПОМЕНЯТЬ</translation>
-    </message>
-    <message>
-        <source>CANCEL</source>
-        <translation>← ОТМЕНА</translation>
-    </message>
-    <message>
-        <source>SEND WITH E-MAIL</source>
-        <translation>ОТПРАВИТЬ С Е-ПOЧТOЙ</translation>
-    </message>
-    <message>
-        <source>PRINT SUMMARY</source>
-        <translation>ПОДТВЕРЖДАЮЩИЙ ЛИСТ</translation>
-    </message>
-    <message>
-        <source>ENCRYPT</source>
-        <translation>ШИФРОВАТЬ</translation>
-    </message>
-    <message>
-        <source>SIGN</source>
-        <translation>ПОДПИСАТЬ</translation>
-    </message>
-    <message>
-        <source>SAVE AS</source>
-        <translation>CОХРАНИТЬ</translation>
-    </message>
-    <message>
-        <source>SAVE WITHOUT SIGNING</source>
-        <translation>СОХРАНИТЬ БЕЗ ПОДПИСИ</translation>
-    </message>
-    <message>
-        <source>STARTING</source>
-        <translation>← В НАЧАЛО</translation>
-    </message>
-    <message>
         <source>The document has already been signed by you.</source>
         <translation>Вы уже подписали этот документ.</translation>
     </message>
@@ -550,38 +514,43 @@
     </message>
     <message>
         <source>Change</source>
-        <extracomment>accessible</extracomment>
         <translation>Поменять</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <extracomment>accessible</extracomment>
         <translation>Отмена</translation>
     </message>
     <message>
         <source>Encrypt</source>
-        <extracomment>accessible</extracomment>
         <translation>Зашифровать</translation>
     </message>
     <message>
         <source>Save as</source>
-        <extracomment>accessible</extracomment>
         <translation>Cохранить</translation>
     </message>
     <message>
         <source>Send with e-mail</source>
-        <extracomment>accessible</extracomment>
         <translation>Отправить с е-пoчтoй</translation>
     </message>
     <message>
         <source>Print summary</source>
-        <extracomment>accessible</extracomment>
         <translation>Подтверждающий лист</translation>
     </message>
     <message>
         <source>Save without signing</source>
-        <extracomment>accessible</extracomment>
         <translation>Сохранить без подписи</translation>
+    </message>
+    <message>
+        <source>Start</source>
+        <translation>В начало</translation>
+    </message>
+    <message>
+        <source>Sign</source>
+        <translation>Подписать</translation>
+    </message>
+    <message>
+        <source>Extend signature(s)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1656,6 +1625,14 @@ ID-КАРТОЙ</translation>
     <message>
         <source>Crypto</source>
         <translation>Крипто</translation>
+    </message>
+    <message>
+        <source>All signatures are extended in container.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Extend</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

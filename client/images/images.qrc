@@ -19,6 +19,7 @@
 		<file>icon_Allkiri_hover.svg</file>
 		<file>icon_Allkiri_small.svg</file>
 		<file>icon_Allkiri.svg</file>
+		<file>icon_arrow_left.svg</file>
 		<file>icon_check.svg</file>
 		<file>icon_checkbox.svg</file>
 		<file>icon_checkbox_active.svg</file>
@@ -30,8 +31,6 @@
 		<file>icon_checkbox_check_hover.svg</file>
 		<file>icon_digitempel.svg</file>
 		<file>icon_download.svg</file>
-		<file>icon_Edit_hover.svg</file>
-		<file>icon_Edit_pressed.svg</file>
 		<file>icon_Edit.svg</file>
 		<file>icon_help.svg</file>
 		<file>icon_IDkaart_disabled.svg</file>

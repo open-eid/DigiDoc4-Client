@@ -501,42 +501,6 @@
         <translation>Ümbrik:</translation>
     </message>
     <message>
-        <source>CHANGE</source>
-        <translation>MUUDA</translation>
-    </message>
-    <message>
-        <source>CANCEL</source>
-        <translation>← KATKESTA</translation>
-    </message>
-    <message>
-        <source>SEND WITH E-MAIL</source>
-        <translation>EDASTA E-POSTIGA</translation>
-    </message>
-    <message>
-        <source>PRINT SUMMARY</source>
-        <translation>TRÜKI KINNITUSLEHT</translation>
-    </message>
-    <message>
-        <source>ENCRYPT</source>
-        <translation>KRÜPTEERI</translation>
-    </message>
-    <message>
-        <source>SIGN</source>
-        <translation>ALLKIRJASTA</translation>
-    </message>
-    <message>
-        <source>SAVE AS</source>
-        <translation>SALVESTA</translation>
-    </message>
-    <message>
-        <source>SAVE WITHOUT SIGNING</source>
-        <translation>SALVESTA ALLKIRJASTAMATA</translation>
-    </message>
-    <message>
-        <source>STARTING</source>
-        <translation>← ALGUSESSE</translation>
-    </message>
-    <message>
         <source>The document has already been signed by you.</source>
         <translation>Dokument on Sinu poolt juba allkirjastatud.</translation>
     </message>
@@ -550,38 +514,43 @@
     </message>
     <message>
         <source>Change</source>
-        <extracomment>accessible</extracomment>
         <translation>Muuda</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <extracomment>accessible</extracomment>
         <translation>Katkesta</translation>
     </message>
     <message>
         <source>Encrypt</source>
-        <extracomment>accessible</extracomment>
         <translation>Krüpteeri</translation>
     </message>
     <message>
         <source>Save as</source>
-        <extracomment>accessible</extracomment>
         <translation>Salvesta</translation>
     </message>
     <message>
         <source>Send with e-mail</source>
-        <extracomment>accessible</extracomment>
         <translation>Edasta e-postiga</translation>
     </message>
     <message>
         <source>Print summary</source>
-        <extracomment>accessible</extracomment>
         <translation>Trüki kinnitusleht</translation>
     </message>
     <message>
         <source>Save without signing</source>
-        <extracomment>accessible</extracomment>
         <translation>Salvesta allkirjastamata</translation>
+    </message>
+    <message>
+        <source>Start</source>
+        <translation>Algusesse</translation>
+    </message>
+    <message>
+        <source>Sign</source>
+        <translation>Allkirjasta</translation>
+    </message>
+    <message>
+        <source>Extend signature(s)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1655,6 +1624,14 @@ ID-KAARDIGA</translation>
     <message>
         <source>Crypto</source>
         <translation>Krüpto</translation>
+    </message>
+    <message>
+        <source>All signatures are extended in container.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Extend</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
