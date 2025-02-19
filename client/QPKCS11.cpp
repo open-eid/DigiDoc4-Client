@@ -327,10 +327,9 @@ QList<TokenData> QPKCS11::tokens() const
 
 bool QPKCS11::reload()
 {
-	static QMultiHash<QString,QByteArray> drivers {
+	static const QMultiHash<QString,QByteArray> drivers {
 #ifdef Q_OS_MAC
 		{ QApplication::applicationDirPath() + "/opensc-pkcs11.so", {} },
-		{ "/Library/latvia-eid/lib/eidlv-pkcs11.bundle/Contents/MacOS/eidlv-pkcs11", "3BDD18008131FE45904C41545649412D65494490008C" }, // LV-G1
 		{ "/Library/latvia-eid/lib/eidlv-pkcs11.bundle/Contents/MacOS/eidlv-pkcs11", "3BDB960080B1FE451F830012428F536549440F900020" }, // LV-G2
 		{ "/Library/mCard/lib/mcard-pkcs11.so", "3B9D188131FC358031C0694D54434F5373020505D3" }, // LT-G3
 		{ "/Library/mCard/lib/mcard-pkcs11.so", "3B9D188131FC358031C0694D54434F5373020604D1" }, // LT-G3.1
@@ -347,7 +346,6 @@ bool QPKCS11::reload()
 #else
 		{ "opensc-pkcs11.so", {} },
 #if defined(Q_OS_LINUX)
-		{ "/opt/latvia-eid/lib/eidlv-pkcs11.so", "3BDD18008131FE45904C41545649412D65494490008C" }, // LV-G1
 		{ "/opt/latvia-eid/lib/eidlv-pkcs11.so", "3BDB960080B1FE451F830012428F536549440F900020" }, // LV-G2
 		{ "mcard-pkcs11.so", "3B9D188131FC358031C0694D54434F5373020505D3" }, // LT-G3
 		{ "mcard-pkcs11.so", "3B9D188131FC358031C0694D54434F5373020604D1" }, // LT-G3.1
