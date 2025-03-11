@@ -50,7 +50,7 @@ using namespace std::chrono;
 template<typename T>
 static constexpr auto TO_QSTR(const T *str)
 {
-	if constexpr (std::is_same<T,char>::value)
+	if constexpr (std::is_same_v<T,char>)
 		return QLatin1String(str);
 	else
 		return QStringView(str);
@@ -60,15 +60,15 @@ class LdapSearch::Private
 {
 public:
 	LDAP *ldap {};
-	QByteArray host;
+	QUrl url;
 	QTimer *timer {};
 };
 
-LdapSearch::LdapSearch(QByteArray host, QObject *parent)
+LdapSearch::LdapSearch(const QString &url, QObject *parent)
 :	QObject( parent )
 ,	d(new Private)
 {
-	d->host = std::move(host);
+	d->url = QUrl(url);
 	d->timer = new QTimer(this);
 	d->timer->setSingleShot(true);
 	connect(d->timer, &QTimer::timeout, this, [this]{
@@ -94,10 +94,9 @@ bool LdapSearch::init()
 	}
 
 #ifdef Q_OS_WIN
-	QUrl url(d->host);
-	int ssl = url.scheme() == QStringLiteral("ldaps") ? 1 : 0;
-	QString host = url.host();
-	ULONG port = ULONG(url.port(ssl ? LDAP_SSL_PORT : LDAP_PORT));
+	int ssl = d->url.scheme() == QLatin1String("ldaps") ? 1 : 0;
+	QString host = d->url.host();
+	ULONG port = ULONG(d->url.port(ssl ? LDAP_SSL_PORT : LDAP_PORT));
 	if(d->ldap = ldap_sslinit(TO_STR(host), port, ssl); !d->ldap)
 	{
 		setLastError(tr("Failed to init ldap"), int(LdapGetLastError()));
@@ -105,7 +104,8 @@ bool LdapSearch::init()
 	}
 	ULONG err = 0;
 #else
-	int err = ldap_initialize(&d->ldap, d->host.constData());
+	QByteArray host = d->url.toString(QUrl::RemovePath|QUrl::RemoveQuery|QUrl::RemoveFragment).toUtf8();
+	int err = ldap_initialize(&d->ldap, host.constData());
 	if(err)
 	{
 		setLastError(tr("Failed to init ldap"), err);
@@ -148,11 +148,6 @@ bool LdapSearch::init()
 	return !err;
 }
 
-bool LdapSearch::isSSL() const
-{
-	return QUrl(d->host).scheme() == QStringLiteral("ldaps");
-}
-
 void LdapSearch::search(const QString &search, const QVariantMap &userData)
 {
 	if(!init())
@@ -166,7 +161,8 @@ void LdapSearch::search(const QString &search, const QVariantMap &userData)
 	std::array<STR_T, 2> attrs { STR("userCertificate;binary"), nullptr };
 
 	ULONG msg_id = 0;
-	int err = ldap_search_ext(d->ldap, STR("c=EE"), LDAP_SCOPE_SUBTREE,
+	QString path = d->url.path();
+	int err = ldap_search_ext(d->ldap, TO_STR(path.isEmpty() ? "c=EE" : path.remove(0, 1)), LDAP_SCOPE_SUBTREE,
 		TO_STR(search), attrs.data(), 0, nullptr, nullptr, LDAP_NO_LIMIT, LDAP_NO_LIMIT, &msg_id);
 	if(err)
 		return setLastError( tr("Failed to init ldap search"), err );
@@ -175,8 +171,7 @@ void LdapSearch::search(const QString &search, const QVariantMap &userData)
 	connect(timer, &QTimer::timeout, this, [this, msg_id, timer, userData] {
 		LDAPMessage *result = nullptr;
 		LDAP_TIMEVAL t { 5, 0 };
-		int err = ldap_result(d->ldap, msg_id, LDAP_MSG_ALL, &t, &result);
-		switch(err)
+		switch(int err = ldap_result(d->ldap, msg_id, LDAP_MSG_ALL, &t, &result))
 		{
 		case LDAP_SUCCESS: //Timeout
 			return;
