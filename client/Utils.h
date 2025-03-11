@@ -31,8 +31,7 @@ namespace {
 		std::exception_ptr exception;
 		std::invoke_result_t<F,Args...> result{};
 		QEventLoop l;
-		// c++20 ... args == std::forward<Args>(args)
-		std::thread([&, function = std::forward<F>(function)]{
+		std::thread([&, function = std::forward<F>(function), ...args = std::forward<Args>(args)]{
 			try {
 				result = std::invoke(function, args...);
 			} catch(...) {
@@ -51,14 +50,14 @@ namespace {
 		QEventLoop l;
 		using result_t = typename std::invoke_result_t<F,Args...>;
 		if constexpr (std::is_void_v<result_t>) {
-			QMetaObject::invokeMethod(qApp, [&, function = std::forward<F>(function)] {
+			QMetaObject::invokeMethod(qApp, [&, function = std::forward<F>(function), ...args = std::forward<Args>(args)] {
 				std::invoke(function, args...);
 				l.exit();
 			}, Qt::QueuedConnection);
 			l.exec();
 		} else {
 			result_t result{};
-			QMetaObject::invokeMethod(qApp, [&, function = std::forward<F>(function)] {
+			QMetaObject::invokeMethod(qApp, [&, function = std::forward<F>(function), ...args = std::forward<Args>(args)] {
 				result = std::invoke(function, args...);
 				l.exit();
 			}, Qt::QueuedConnection);
