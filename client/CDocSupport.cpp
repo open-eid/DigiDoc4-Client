@@ -127,7 +127,7 @@ request(const QString &keyserver_id, const QString &transaction_id = {}) {
 }
 
 std::string
-DDConfiguration::getValue(const std::string_view& domain, const std::string_view& param)
+DDConfiguration::getValue(std::string_view domain, std::string_view param) const
 {
     std::string def = Settings::CDOC2_DEFAULT_KEYSERVER;
     if (domain == def) {
