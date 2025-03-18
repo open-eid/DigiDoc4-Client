@@ -32,6 +32,12 @@
 
 class QSslKey;
 
+//
+// A wrapper structure for UI that contains either:
+// - lock information for decryption
+// - recipient certificate for encryption
+//
+
 struct CDKey {
     libcdoc::Lock lock;
     QSslCertificate rcpt_cert;

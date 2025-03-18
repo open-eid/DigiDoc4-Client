@@ -28,11 +28,27 @@
 #include <cdoc/NetworkBackend.h>
 #include <cdoc/Io.h>
 
+//
+// libcdoc handler implementations
+//
+
+//
+// Configuration
+//
+// Provides KEYSERVER_SEND_URL and KEYSERVER_FETCH_URL
+//
+
 struct DDConfiguration : public libcdoc::Configuration {
     std::string getValue(std::string_view domain, std::string_view param) const final;
 
 	explicit DDConfiguration() = default;
 };
+
+//
+// CryptoBackend
+//
+// Bridges to qApp->signer()
+//
 
 struct DDCryptoBackend : public libcdoc::CryptoBackend {
     libcdoc::result_t decryptRSA(std::vector<uint8_t>& result, const std::vector<uint8_t> &data, bool oaep, unsigned int idx) override final;
@@ -46,6 +62,12 @@ struct DDCryptoBackend : public libcdoc::CryptoBackend {
 
 	explicit DDCryptoBackend() = default;
 };
+
+//
+// NetworkBackend
+//
+// Bridges to QNetworkAccessManager
+//
 
 struct DDNetworkBackend : public libcdoc::NetworkBackend, private QObject {
 	static constexpr int BACKEND_ERROR = -303;
@@ -62,6 +84,12 @@ struct DDNetworkBackend : public libcdoc::NetworkBackend, private QObject {
 	std::string last_error;
 };
 
+//
+// ILogger
+//
+// Bridges to Qt logging system
+//
+
 class DDCDocLogger : private libcdoc::ILogger {
 public:
     static void setUpLogger();
@@ -70,6 +98,10 @@ private:
     ~DDCDocLogger() = default;
     void LogMessage(libcdoc::LogLevel level, const char* file, int line, const std::string& message) override final;
 };
+
+//
+// DataSource and consumer that can share temporary files/buffwers
+//
 
 struct IOEntry
 {
