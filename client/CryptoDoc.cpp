@@ -111,7 +111,7 @@ public:
 	DDNetworkBackend network;
 
 	std::vector<IOEntry> files;
-    std::vector<CDKey> keys;
+	std::vector<CDKey> keys;
 
 	const std::vector<IOEntry> &getFiles() {
 		return files;
@@ -123,13 +123,13 @@ public:
 			return nullptr;
 		}
 		keys.clear();
-        for (auto& key : r->getLocks()) {
-            keys.push_back({key, QSslCertificate()});
+		for (auto& key : r->getLocks()) {
+			keys.push_back({key, QSslCertificate()});
 		}
 		return std::unique_ptr<libcdoc::CDocReader>(r);
 	}
 private:
-    bool encrypt();
+	bool encrypt();
 };
 
 bool CryptoDoc::Private::warnIfNotWritable() const
@@ -159,7 +159,7 @@ void CryptoDoc::Private::run()
 			reader.reset();
 		}
 	} else {
-        if (encrypt()) {
+		if (encrypt()) {
 			// Encryption successful, open new reader
 			reader = createCDocReader(fileName.toStdString());
 			if (!reader) return;
@@ -167,55 +167,60 @@ void CryptoDoc::Private::run()
 	}
 }
 
-bool
-CryptoDoc::Private::encrypt()
-{
-    qCDebug(CRYPTO) << "Encrypt" << fileName;
+bool CryptoDoc::Private::encrypt() {
+	qCDebug(CRYPTO) << "Encrypt" << fileName;
 
-    libcdoc::OStreamConsumer ofs(fileName.toStdString());
-    if (ofs.isError()) return false;
+	libcdoc::OStreamConsumer ofs(fileName.toStdString());
+	if (ofs.isError())
+		return false;
 
-    StreamListSource slsrc(files);
-    std::vector<libcdoc::Recipient> enc_keys;
+	StreamListSource slsrc(files);
+	std::vector<libcdoc::Recipient> enc_keys;
 
-    std::string keyserver_id;
-    if (Settings::CDOC2_DEFAULT && Settings::CDOC2_USE_KEYSERVER) {
-        keyserver_id = Settings::CDOC2_DEFAULT_KEYSERVER;
-    }
-    for (auto& key : keys) {
-        QByteArray ba = key.rcpt_cert.toDer();
-        std::vector<uint8_t> cert_der = std::vector<uint8_t>(ba.cbegin(), ba.cend());
-        QSslKey qkey = key.rcpt_cert.publicKey();
-        ba = Crypto::toPublicKeyDer(qkey);
-        std::vector<uint8_t> key_der(ba.cbegin(), ba.cend());
-        libcdoc::Recipient::PKType pk_type = (qkey.algorithm() == QSsl::KeyAlgorithm::Rsa) ? libcdoc::Recipient::PKType::RSA : libcdoc::Recipient::PKType::ECC;
-        if (!keyserver_id.empty()) {
-            std::string label = CryptoDoc::labelFromCertificate(cert_der);
-            enc_keys.push_back(libcdoc::Recipient::makeServer(label, key_der, pk_type, keyserver_id));
-        } else {
-            std::string label = CryptoDoc::labelFromCertificate(cert_der);
-            enc_keys.push_back(libcdoc::Recipient::makeCertificate(label, cert_der));
-        }
-    }
-    if (!crypto.secret.empty()) {
-        auto key = libcdoc::Recipient::makeSymmetric(label.toStdString(), kdf_iter);
-        enc_keys.push_back(key);
-    }
+	std::string keyserver_id;
+	if (Settings::CDOC2_DEFAULT && Settings::CDOC2_USE_KEYSERVER) {
+		keyserver_id = Settings::CDOC2_DEFAULT_KEYSERVER;
+	}
+	for (auto &key : keys) {
+		QByteArray ba = key.rcpt_cert.toDer();
+		std::vector<uint8_t> cert_der =
+			std::vector<uint8_t>(ba.cbegin(), ba.cend());
+		QSslKey qkey = key.rcpt_cert.publicKey();
+		ba = Crypto::toPublicKeyDer(qkey);
+		std::vector<uint8_t> key_der(ba.cbegin(), ba.cend());
+		libcdoc::Recipient::PKType pk_type =
+			(qkey.algorithm() == QSsl::KeyAlgorithm::Rsa)
+				? libcdoc::Recipient::PKType::RSA
+				: libcdoc::Recipient::PKType::ECC;
+		if (!keyserver_id.empty()) {
+			std::string label = CryptoDoc::labelFromCertificate(cert_der);
+			enc_keys.push_back(libcdoc::Recipient::makeServer(
+				label, key_der, pk_type, keyserver_id));
+		} else {
+			std::string label = CryptoDoc::labelFromCertificate(cert_der);
+			enc_keys.push_back(
+				libcdoc::Recipient::makeCertificate(label, cert_der));
+		}
+	}
+	if (!crypto.secret.empty()) {
+		auto key =
+			libcdoc::Recipient::makeSymmetric(label.toStdString(), kdf_iter);
+		enc_keys.push_back(key);
+	}
 
-    libcdoc::CDocWriter *writer = libcdoc::CDocWriter::createWriter(Settings::CDOC2_DEFAULT ? 2 : 1, &ofs, false, &conf, &crypto, &network);
-    int result = writer->encrypt(slsrc, enc_keys);
-    if (result != libcdoc::OK) {
-        writer_last_error = writer->getLastErrorStr();
-        std::filesystem::remove(std::filesystem::path(fileName.toStdString()));
-    }
-    delete writer;
-    ofs.close();
-    return (result == libcdoc::OK);
+	libcdoc::CDocWriter *writer = libcdoc::CDocWriter::createWriter(
+		Settings::CDOC2_DEFAULT ? 2 : 1, &ofs, false, &conf, &crypto, &network);
+	int result = writer->encrypt(slsrc, enc_keys);
+	if (result != libcdoc::OK) {
+		writer_last_error = writer->getLastErrorStr();
+		std::filesystem::remove(std::filesystem::path(fileName.toStdString()));
+	}
+	delete writer;
+	ofs.close();
+	return (result == libcdoc::OK);
 }
 
-CDocumentModel::CDocumentModel(CryptoDoc::Private *doc)
-: d( doc )
-{}
+CDocumentModel::CDocumentModel(CryptoDoc::Private *doc) : d(doc) {}
 
 bool CDocumentModel::addFile(const QString &file, const QString &mime)
 {
@@ -351,27 +356,28 @@ CryptoDoc::supportsSymmetricKeys() const
 	return !d->reader && Settings::CDOC2_DEFAULT;
 }
 
-bool CryptoDoc::addEncryptionKey(const QSslCertificate& cert )
-{
-    if(d->warnIfNotWritable()) {
+bool CryptoDoc::addEncryptionKey(const QSslCertificate &cert) {
+	if (d->warnIfNotWritable()) {
 		return false;
-    }
-	for (auto& k : d->keys) {
-        if (k.rcpt_cert == cert) {
-            WarningDialog::show(tr("Recipient with the same key already exists"));
+	}
+	for (auto &k : d->keys) {
+		if (k.rcpt_cert == cert) {
+			WarningDialog::show(
+				tr("Recipient with the same key already exists"));
 			return false;
 		}
 	}
-    d->keys.push_back({{}, cert});
+	d->keys.push_back({{}, cert});
 	return true;
 }
 
-bool CryptoDoc::canDecrypt(const QSslCertificate &cert)
-{
-	if (!d->reader) return false;
+bool CryptoDoc::canDecrypt(const QSslCertificate &cert) {
+	if (!d->reader)
+		return false;
 	QByteArray der = cert.toDer();
 	libcdoc::Lock lock;
-    return d->reader->getLockForCert(std::vector<uint8_t>(der.cbegin(), der.cend())) >= 0;
+	return d->reader->getLockForCert(
+			   std::vector<uint8_t>(der.cbegin(), der.cend())) >= 0;
 }
 
 void CryptoDoc::clear( const QString &file )
@@ -393,73 +399,85 @@ ContainerState CryptoDoc::state() const
 	return d->isEncrypted() ? EncryptedContainer : UnencryptedContainer;
 }
 
-bool
-CryptoDoc::decrypt(const libcdoc::Lock *lock, const QByteArray& secret)
-{
-	if(d->fileName.isEmpty()) {
+bool CryptoDoc::decrypt(const libcdoc::Lock *lock, const QByteArray &secret) {
+	if (d->fileName.isEmpty()) {
 		WarningDialog::show(tr("Container is not open"));
 		return false;
 	}
-    if(!d->reader) return true;
+	if (!d->reader)
+		return true;
 
-    int lock_idx = -1;
-    const std::vector<libcdoc::Lock> locks = d->reader->getLocks();
+	int lock_idx = -1;
+	const std::vector<libcdoc::Lock> locks = d->reader->getLocks();
 	if (lock == nullptr) {
 		QByteArray der = qApp->signer()->tokenauth().cert().toDer();
-        lock_idx = d->reader->getLockForCert(std::vector<uint8_t>(der.cbegin(), der.cend()));
-        if (lock_idx < 0) {
-			WarningDialog::show(tr("You do not have the key to decrypt this document"));
-            return false;
-        }
-        lock = &locks.at(lock_idx);
-    } else {
-        for (lock_idx = 0; lock_idx < locks.size(); lock_idx++) {
-            if (lock->label == locks[lock_idx].label) {
-                lock = &locks.at(lock_idx);
-                break;
-            }
-        }
-        if (lock_idx >= locks.size()) lock_idx = -1;
-    }
-    if(!lock || (lock->isSymmetric() && secret.isEmpty())) {
-		WarningDialog::show(tr("You do not have the key to decrypt this document"));
+		lock_idx = d->reader->getLockForCert(
+			std::vector<uint8_t>(der.cbegin(), der.cend()));
+		if (lock_idx < 0) {
+			WarningDialog::show(
+				tr("You do not have the key to decrypt this document"));
+			return false;
+		}
+		lock = &locks.at(lock_idx);
+	} else {
+		for (lock_idx = 0; lock_idx < locks.size(); lock_idx++) {
+			if (lock->label == locks[lock_idx].label) {
+				lock = &locks.at(lock_idx);
+				break;
+			}
+		}
+		if (lock_idx >= locks.size())
+			lock_idx = -1;
+	}
+	if (!lock || (lock->isSymmetric() && secret.isEmpty())) {
+		WarningDialog::show(
+			tr("You do not have the key to decrypt this document"));
 		return false;
 	}
 
-	if(d->reader->version == 2 && (lock->type == libcdoc::Lock::Type::SERVER) && !Settings::CDOC2_NOTIFICATION.isSet())
-	{
-		auto *dlg = new WarningDialog(tr("You must enter your PIN code twice in order to decrypt the CDOC2 container. "
-			"The first PIN entry is required for authentication to the key server referenced in the CDOC2 container. "
-			"Second PIN entry is required to decrypt the CDOC2 container."), Application::mainWindow());
+	if (d->reader->version == 2 &&
+		(lock->type == libcdoc::Lock::Type::SERVER) &&
+		!Settings::CDOC2_NOTIFICATION.isSet()) {
+		auto *dlg = new WarningDialog(
+			tr("You must enter your PIN code twice in order to decrypt the "
+			   "CDOC2 container. "
+			   "The first PIN entry is required for authentication to the key "
+			   "server referenced in the CDOC2 container. "
+			   "Second PIN entry is required to decrypt the CDOC2 container."),
+			Application::mainWindow());
 		dlg->setCancelText(WarningDialog::Cancel);
 		dlg->addButton(WarningDialog::OK, QMessageBox::Ok);
 		dlg->addButton(tr("DON'T SHOW AGAIN"), QMessageBox::Ignore);
-		switch (dlg->exec())
-		{
-		case QMessageBox::Ok: break;
+		switch (dlg->exec()) {
+		case QMessageBox::Ok:
+			break;
 		case QMessageBox::Ignore:
 			Settings::CDOC2_NOTIFICATION = true;
 			break;
-		default: return false;
+		default:
+			return false;
 		}
 	}
 
 	d->crypto.secret.assign(secret.cbegin(), secret.cend());
 	std::vector<uint8_t> fmk;
-    if (d->reader->getFMK(fmk, lock_idx) != libcdoc::OK) return false;
+	if (d->reader->getFMK(fmk, lock_idx) != libcdoc::OK)
+		return false;
 	d->fmk = QByteArray(reinterpret_cast<const char *>(fmk.data()), fmk.size());
 #ifndef NDEBUG
 	qDebug() << "FMK (Transport key)" << d->fmk.toHex();
 #endif
-	if(d->fmk.isEmpty()) {
-		const std::string& msg = d->reader->getLastErrorStr();
-		WarningDialog::show(tr("Failed to decrypt document. Please check your internet connection and network settings."), QString::fromStdString(msg));
+	if (d->fmk.isEmpty()) {
+		const std::string &msg = d->reader->getLastErrorStr();
+		WarningDialog::show(tr("Failed to decrypt document. Please check your "
+							   "internet connection and network settings."),
+							QString::fromStdString(msg));
 		return false;
 	}
 
 	d->waitForFinished();
-	if(d->reader) {
-		const std::string& msg = d->reader->getLastErrorStr();
+	if (d->reader) {
+		const std::string &msg = d->reader->getLastErrorStr();
 		if (msg.empty()) {
 			WarningDialog::show(tr("Error parsing document"));
 		} else {
@@ -469,7 +487,7 @@ CryptoDoc::decrypt(const libcdoc::Lock *lock, const QByteArray& secret)
 	return !d->isEncrypted();
 }
 
-DocumentModel* CryptoDoc::documentModel() const { return d->documents; }
+DocumentModel *CryptoDoc::documentModel() const { return d->documents; }
 
 bool CryptoDoc::encrypt( const QString &filename, const QString& label, const QByteArray& secret, uint32_t kdf_iter)
 {

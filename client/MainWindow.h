@@ -71,7 +71,7 @@ private:
 	void convertToBDoc();
 	void convertToCDoc();
 	ria::qdigidoc4::ContainerState currentState();
-    bool decrypt(const libcdoc::Lock *lock);
+	bool decrypt(const libcdoc::Lock *lock);
 	bool encrypt(bool askForKey = false);
 	void loadPicture();
 	void moveCryptoContainer();

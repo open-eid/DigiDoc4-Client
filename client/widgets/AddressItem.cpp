@@ -52,36 +52,40 @@ AddressItem::AddressItem(const CDKey& key, QWidget *parent, bool showIcon)
 	ui->expire->setAttribute(Qt::WA_TransparentForMouseEvents, true);
 	ui->idType->setAttribute(Qt::WA_TransparentForMouseEvents, true);
 
-    if (!ui->key.rcpt_cert.isNull()) {
-        // Recipient certificate
-        ui->code = SslCertificate(ui->key.rcpt_cert).personalCode();
-        ui->label = !ui->key.rcpt_cert.subjectInfo("GN").isEmpty() && !ui->key.rcpt_cert.subjectInfo("SN").isEmpty() ?
-                        ui->key.rcpt_cert.subjectInfo("GN").join(' ') + ' ' + ui->key.rcpt_cert.subjectInfo("SN").join(' ') :
-                        ui->key.rcpt_cert.subjectInfo("CN").join(' ');
-    } else if (ui->key.lock.isValid()) {
-        // Known lock type
-        ui->code.clear();
-        auto map = libcdoc::Recipient::parseLabel(ui->key.lock.label);
-        if (map.contains("cn")) {
-            ui->label = QString::fromStdString(map["cn"]);
-        } else {
-            ui->label = QString::fromStdString(ui->key.lock.label);
-        }
-        if (ui->key.lock.isSymmetric()) {
-            ui->decrypt->show();
-            connect(ui->decrypt, &QToolButton::clicked, this, [this]{ emit decrypt(&ui->key.lock);});
-        } else {
-            ui->decrypt->hide();
-        }
-    } else {
-        // No rcpt, lock is invalid = unsupported lock
-        setCursor(Qt::PointingHandCursor);
-        ui->code.clear();
-        ui->label = tr("Unsupported cryptographic algorithm or recipient type");
-    }
+	if (!ui->key.rcpt_cert.isNull()) {
+		// Recipient certificate
+		ui->code = SslCertificate(ui->key.rcpt_cert).personalCode();
+		ui->label = !ui->key.rcpt_cert.subjectInfo("GN").isEmpty() &&
+							!ui->key.rcpt_cert.subjectInfo("SN").isEmpty()
+						? ui->key.rcpt_cert.subjectInfo("GN").join(' ') + ' ' +
+							  ui->key.rcpt_cert.subjectInfo("SN").join(' ')
+						: ui->key.rcpt_cert.subjectInfo("CN").join(' ');
+	} else if (ui->key.lock.isValid()) {
+		// Known lock type
+		ui->code.clear();
+		auto map = libcdoc::Recipient::parseLabel(ui->key.lock.label);
+		if (map.contains("cn")) {
+			ui->label = QString::fromStdString(map["cn"]);
+		} else {
+			ui->label = QString::fromStdString(ui->key.lock.label);
+		}
+		if (ui->key.lock.isSymmetric()) {
+			ui->decrypt->show();
+			connect(ui->decrypt, &QToolButton::clicked, this,
+					[this] { emit decrypt(&ui->key.lock); });
+		} else {
+			ui->decrypt->hide();
+		}
+	} else {
+		// No rcpt, lock is invalid = unsupported lock
+		setCursor(Qt::PointingHandCursor);
+		ui->code.clear();
+		ui->label = tr("Unsupported cryptographic algorithm or recipient type");
+	}
 
-	connect(ui->add, &QToolButton::clicked, this, [this]{ emit add(this);});
-    connect(ui->remove, &QToolButton::clicked, this, [this]{ emit remove(this);});
+	connect(ui->add, &QToolButton::clicked, this, [this] { emit add(this); });
+	connect(ui->remove, &QToolButton::clicked, this,
+			[this] { emit remove(this); });
 
 	setIdType();
 	showButton(AddressItem::Remove);
@@ -108,15 +112,15 @@ const CDKey& AddressItem::getKey() const
 	return ui->key;
 }
 
-void AddressItem::idChanged(const SslCertificate &cert)
-{
+void AddressItem::idChanged(const SslCertificate &cert) {
 	QByteArray qder = cert.toDer();
 	std::vector<uint8_t> sder = std::vector<uint8_t>(qder.cbegin(), qder.cend());
 
-    if (ui->key.lock.isValid()) {
+	if (ui->key.lock.isValid()) {
 		QSslKey pkey = cert.publicKey();
 		QByteArray der = pkey.toDer();
-		ui->yourself = ui->key.lock.hasTheSameKey(std::vector<uint8_t>(der.cbegin(), der.cend()));
+		ui->yourself = ui->key.lock.hasTheSameKey(
+			std::vector<uint8_t>(der.cbegin(), der.cend()));
 	}
 	setName();
 }
@@ -136,10 +140,9 @@ QWidget* AddressItem::lastTabWidget()
 	return ui->add;
 }
 
-void AddressItem::mouseReleaseEvent(QMouseEvent * /*event*/)
-{
-    if(ui->key.rcpt_cert.isNull() && !ui->key.lock.isValid())
-        (new KeyDialog(ui->key))->open();
+void AddressItem::mouseReleaseEvent(QMouseEvent * /*event*/) {
+	if (ui->key.rcpt_cert.isNull() && !ui->key.lock.isValid())
+		(new KeyDialog(ui->key))->open();
 }
 
 void AddressItem::setName()
@@ -162,69 +165,71 @@ void AddressItem::stateChange(ContainerState state)
 	ui->remove->setVisible(state == UnencryptedContainer);
 }
 
-void
-AddressItem::setIdType(const SslCertificate& cert)
-{
-    SslCertificate::CertType type = cert.type();
-    if(type & SslCertificate::DigiIDType) {
-        ui->idType->setText(tr("digi-ID"));
-    } else if(type & SslCertificate::EstEidType) {
-        ui->idType->setText(tr("ID-card"));
-    } else if(type & SslCertificate::MobileIDType) {
-        ui->idType->setText(tr("mobile-ID"));
-    } else if(type & SslCertificate::TempelType) {
-        if(cert.keyUsage().contains(SslCertificate::NonRepudiation))
-            ui->idType->setText(tr("e-Seal"));
-        else if(cert.enhancedKeyUsage().contains(SslCertificate::ClientAuth))
-            ui->idType->setText(tr("Authentication certificate"));
-        else
-            ui->idType->setText(tr("Certificate for Encryption"));
-    }
-    ui->expire->setProperty("label", QStringLiteral("default"));
-    ui->expire->setText(QStringLiteral("%1 %2").arg(
-        cert.isValid() ? tr("Expires on") : tr("Expired on"),
-        cert.expiryDate().toLocalTime().toString(QStringLiteral("dd.MM.yyyy"))));
+void AddressItem::setIdType(const SslCertificate &cert) {
+	SslCertificate::CertType type = cert.type();
+	if (type & SslCertificate::DigiIDType) {
+		ui->idType->setText(tr("digi-ID"));
+	} else if (type & SslCertificate::EstEidType) {
+		ui->idType->setText(tr("ID-card"));
+	} else if (type & SslCertificate::MobileIDType) {
+		ui->idType->setText(tr("mobile-ID"));
+	} else if (type & SslCertificate::TempelType) {
+		if (cert.keyUsage().contains(SslCertificate::NonRepudiation))
+			ui->idType->setText(tr("e-Seal"));
+		else if (cert.enhancedKeyUsage().contains(SslCertificate::ClientAuth))
+			ui->idType->setText(tr("Authentication certificate"));
+		else
+			ui->idType->setText(tr("Certificate for Encryption"));
+	}
+	ui->expire->setProperty("label", QStringLiteral("default"));
+	ui->expire->setText(QStringLiteral("%1 %2").arg(
+		cert.isValid() ? tr("Expires on") : tr("Expired on"),
+		cert.expiryDate().toLocalTime().toString(
+			QStringLiteral("dd.MM.yyyy"))));
 }
 
-void AddressItem::setIdType()
-{
-    ui->expire->clear();
+void AddressItem::setIdType() {
+	ui->expire->clear();
 
-    if (!ui->key.rcpt_cert.isNull()) {
-        // Recipient certificate
-        SslCertificate cert(ui->key.rcpt_cert);
-        setIdType(cert);
-    } else if (ui->key.lock.isValid()) {
-        // Known lock type
-        // Needed to include translation for "ID-CARD"
-        void(QT_TR_NOOP("ID-CARD"));
-        auto items = libcdoc::Recipient::parseLabel(ui->key.lock.label);
-        if (ui->key.lock.isCertificate()) {
-            auto bytes = ui->key.lock.getBytes(libcdoc::Lock::CERT);
-            QByteArray qbytes((const char *) bytes.data(), bytes.size());
-            SslCertificate cert(qbytes, QSsl::Der);
-            setIdType(cert);
-        } else {
-            ui->idType->setText(tr(items["type"].data()));
-        }
-        if (ui->key.lock.type == libcdoc::Lock::SERVER) {
-            std::string server_exp = items["server_exp"];
-            if (!server_exp.empty()) {
-                uint64_t seconds = std::stoull(server_exp);
-                auto date = QDateTime::fromSecsSinceEpoch(seconds, Qt::UTC);
-                bool canDecrypt = QDateTime::currentDateTimeUtc() < date;
-                ui->expire->setProperty("label", canDecrypt ? QStringLiteral("good") : QStringLiteral("error"));
-                ui->expire->setText(canDecrypt ? QStringLiteral("%1 %2").arg(
-                                        tr("Decryption is possible until:"), date.toLocalTime().toString(QStringLiteral("dd.MM.yyyy"))) :
-                                        tr("Decryption has expired"));
-            }
-        }
-    } else {
-        // No rcpt, lock is invalid = unsupported lock
-        ui->idType->setText("Unsupported");
-        ui->expire->setHidden(true);
-    }
+	if (!ui->key.rcpt_cert.isNull()) {
+		// Recipient certificate
+		SslCertificate cert(ui->key.rcpt_cert);
+		setIdType(cert);
+	} else if (ui->key.lock.isValid()) {
+		// Known lock type
+		// Needed to include translation for "ID-CARD"
+		void(QT_TR_NOOP("ID-CARD"));
+		auto items = libcdoc::Recipient::parseLabel(ui->key.lock.label);
+		if (ui->key.lock.isCertificate()) {
+			auto bytes = ui->key.lock.getBytes(libcdoc::Lock::CERT);
+			QByteArray qbytes((const char *)bytes.data(), bytes.size());
+			SslCertificate cert(qbytes, QSsl::Der);
+			setIdType(cert);
+		} else {
+			ui->idType->setText(tr(items["type"].data()));
+		}
+		if (ui->key.lock.type == libcdoc::Lock::SERVER) {
+			std::string server_exp = items["server_exp"];
+			if (!server_exp.empty()) {
+				uint64_t seconds = std::stoull(server_exp);
+				auto date = QDateTime::fromSecsSinceEpoch(seconds, Qt::UTC);
+				bool canDecrypt = QDateTime::currentDateTimeUtc() < date;
+				ui->expire->setProperty("label", canDecrypt
+													 ? QStringLiteral("good")
+													 : QStringLiteral("error"));
+				ui->expire->setText(
+					canDecrypt ? QStringLiteral("%1 %2").arg(
+									 tr("Decryption is possible until:"),
+									 date.toLocalTime().toString(
+										 QStringLiteral("dd.MM.yyyy")))
+							   : tr("Decryption has expired"));
+			}
+		}
+	} else {
+		// No rcpt, lock is invalid = unsupported lock
+		ui->idType->setText("Unsupported");
+		ui->expire->setHidden(true);
+	}
 	ui->idType->setHidden(ui->idType->text().isEmpty());
 	ui->expire->setHidden(ui->expire->text().isEmpty());
 }
-

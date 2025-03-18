@@ -60,7 +60,7 @@ const QHash<QString, QCryptographicHash::Algorithm> SHA_MTH{
 
 libcdoc::result_t
 DDCryptoBackend::deriveConcatKDF(std::vector<uint8_t>& dst, const std::vector<uint8_t> &publicKey, const std::string &digest,
-                                 const std::vector<uint8_t> &algorithmID, const std::vector<uint8_t> &partyUInfo, const std::vector<uint8_t> &partyVInfo, unsigned int idx)
+								 const std::vector<uint8_t> &algorithmID, const std::vector<uint8_t> &partyUInfo, const std::vector<uint8_t> &partyVInfo, unsigned int idx)
 {
 	QByteArray decryptedKey = qApp->signer()->decrypt([&publicKey, &digest, &algorithmID, &partyUInfo, &partyVInfo](QCryptoBackend *backend) {
 			QByteArray ba(reinterpret_cast<const char *>(publicKey.data()), publicKey.size());
@@ -95,14 +95,14 @@ DDCryptoBackend::getSecret(std::vector<uint8_t>& _secret, unsigned int idx)
 bool
 checkConnection()
 {
-    if(CheckConnection().check()) {
-        return true;
-    }
-    return dispatchToMain([] {
-        FadeInNotification::error(Application::mainWindow()->findChild<QWidget*>(QStringLiteral("topBar")),
-                                  QCoreApplication::translate("MainWindow", "Check internet connection"));
-        return false;
-    });
+	if(CheckConnection().check()) {
+		return true;
+	}
+	return dispatchToMain([] {
+		FadeInNotification::error(Application::mainWindow()->findChild<QWidget*>(QStringLiteral("topBar")),
+								  QCoreApplication::translate("MainWindow", "Check internet connection"));
+		return false;
+	});
 }
 
 #undef CONFIG_URL
@@ -129,31 +129,31 @@ request(const QString &keyserver_id, const QString &transaction_id = {}) {
 std::string
 DDConfiguration::getValue(std::string_view domain, std::string_view param) const
 {
-    std::string def = Settings::CDOC2_DEFAULT_KEYSERVER;
-    if (domain == def) {
-        if (param == libcdoc::Configuration::KEYSERVER_SEND_URL) {
+	std::string def = Settings::CDOC2_DEFAULT_KEYSERVER;
+	if (domain == def) {
+		if (param == libcdoc::Configuration::KEYSERVER_SEND_URL) {
 #ifdef CONFIG_URL
-            QJsonObject list = Application::confValue(QLatin1String("CDOC2-CONF")).toObject();
-            QJsonObject data = list.value(domain).toObject();
-            QString url = data.value(QLatin1String("POST")).toString(Settings::CDOC2_POST);
-            return url.toStdString();
+			QJsonObject list = Application::confValue(QLatin1String("CDOC2-CONF")).toObject();
+			QJsonObject data = list.value(domain).toObject();
+			QString url = data.value(QLatin1String("POST")).toString(Settings::CDOC2_POST);
+			return url.toStdString();
 #else
-            QString url = Settings::CDOC2_POST;
-            return url.toStdString();
+			QString url = Settings::CDOC2_POST;
+			return url.toStdString();
 #endif
-        } else if (param == libcdoc::Configuration::KEYSERVER_FETCH_URL) {
+		} else if (param == libcdoc::Configuration::KEYSERVER_FETCH_URL) {
 #ifdef CONFIG_URL
-            QJsonObject list = Application::confValue(QLatin1String("CDOC2-CONF")).toObject();
-            QJsonObject data = list.value(domain).toObject();
-            QString url = data.value(QLatin1String("POST")).toString(Settings::CDOC2_GET);
-            return url.toStdString();
+			QJsonObject list = Application::confValue(QLatin1String("CDOC2-CONF")).toObject();
+			QJsonObject data = list.value(domain).toObject();
+			QString url = data.value(QLatin1String("POST")).toString(Settings::CDOC2_GET);
+			return url.toStdString();
 #else
-            QString url = Settings::CDOC2_GET;
-            return url.toStdString();
+			QString url = Settings::CDOC2_GET;
+			return url.toStdString();
 #endif
-        }
-    }
-    return {};
+		}
+	}
+	return {};
 }
 
 std::string
@@ -163,46 +163,59 @@ DDNetworkBackend::getLastErrorStr(int code) const
 	return libcdoc::NetworkBackend::getLastErrorStr(code);
 }
 
-libcdoc::result_t
-DDNetworkBackend::sendKey (libcdoc::NetworkBackend::CapsuleInfo& dst, const std::string& url, const std::vector<uint8_t>& rcpt_key, const std::vector<uint8_t> &key_material, const std::string &type)
-{
-    QNetworkRequest req(QString::fromStdString(url + "/key-capsules"));
-    req.setHeader(QNetworkRequest::ContentTypeHeader, QStringLiteral("application/json"));
-	if(!checkConnection()) {
+libcdoc::result_t DDNetworkBackend::sendKey(
+	libcdoc::NetworkBackend::CapsuleInfo &dst, const std::string &url,
+	const std::vector<uint8_t> &rcpt_key,
+	const std::vector<uint8_t> &key_material, const std::string &type) {
+	QNetworkRequest req(QString::fromStdString(url + "/key-capsules"));
+	req.setHeader(QNetworkRequest::ContentTypeHeader, QStringLiteral("application/json"));
+	if (!checkConnection()) {
 		last_error = "No connection";
 		return BACKEND_ERROR;
 	}
-	QScopedPointer<QNetworkAccessManager,QScopedPointerDeleteLater> nam(CheckConnection::setupNAM(req, Settings::CDOC2_POST_CERT));
+	QScopedPointer<QNetworkAccessManager, QScopedPointerDeleteLater> nam(CheckConnection::setupNAM(req, Settings::CDOC2_POST_CERT));
 	QEventLoop e;
-	QNetworkReply *reply = nam->post(req, QJsonDocument({
-        {QLatin1String("recipient_id"), QLatin1String(QByteArray(reinterpret_cast<const char *>(rcpt_key.data()), rcpt_key.size()).toBase64())},
-		{QLatin1String("ephemeral_key_material"), QLatin1String(QByteArray(reinterpret_cast<const char *>(key_material.data()), key_material.size()).toBase64())},
-        {QLatin1String("capsule_type"), QLatin1String(type.c_str())},
-	}).toJson());
+	QNetworkReply *reply = nam->post(req,
+		QJsonDocument({
+				{QLatin1String("recipient_id"),
+				 QLatin1String(
+					 QByteArray(reinterpret_cast<const char *>(rcpt_key.data()),
+								rcpt_key.size())
+						 .toBase64())},
+				{QLatin1String("ephemeral_key_material"),
+				 QLatin1String(QByteArray(reinterpret_cast<const char *>(
+											  key_material.data()),
+										  key_material.size())
+								   .toBase64())},
+				{QLatin1String("capsule_type"), QLatin1String(type.c_str())},
+			}).toJson());
 	connect(reply, &QNetworkReply::finished, &e, &QEventLoop::quit);
 	e.exec();
-    QString tr_id;
-	if(reply->error() == QNetworkReply::NoError &&
-		reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() == 201) {
-        tr_id = QString::fromLatin1(reply->rawHeader("Location")).remove(QLatin1String("/key-capsules/"));
+	QString tr_id;
+	if (reply->error() == QNetworkReply::NoError &&
+		reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() ==
+			201) {
+		tr_id = QString::fromLatin1(reply->rawHeader("Location"))
+					.remove(QLatin1String("/key-capsules/"));
 	} else {
 		last_error = reply->errorString().toStdString();
 		return BACKEND_ERROR;
 	}
-    if(tr_id.isEmpty()) {
+	if (tr_id.isEmpty()) {
 		last_error = "Failed to post key capsule";
 		return BACKEND_ERROR;
 	}
-    dst.transaction_id = tr_id.toStdString();
-    QDateTime dt = QDateTime::currentDateTimeUtc();
-    dt = dt.addMonths(6);
-    dst.expiry_time = dt.toSecsSinceEpoch();
+	dst.transaction_id = tr_id.toStdString();
+	QDateTime dt = QDateTime::currentDateTimeUtc();
+	dt = dt.addMonths(6);
+	dst.expiry_time = dt.toSecsSinceEpoch();
 	return OK;
 };
 
 libcdoc::result_t
-DDNetworkBackend::fetchKey(std::vector<uint8_t>& result, const std::string& keyserver_id, const std::string& transaction_id)
-{
+DDNetworkBackend::fetchKey(std::vector<uint8_t> &result,
+						   const std::string &keyserver_id,
+						   const std::string &transaction_id) {
 	QNetworkRequest req = request(QString::fromStdString(keyserver_id), QString::fromStdString(transaction_id));
 	if(req.url().isEmpty()) {
 		last_error = "No valid config found for keyserver_id:" + keyserver_id;
@@ -235,41 +248,38 @@ DDNetworkBackend::fetchKey(std::vector<uint8_t>& result, const std::string& keys
 Q_DECLARE_LOGGING_CATEGORY(LOG_CDOC)
 Q_LOGGING_CATEGORY(LOG_CDOC, "libcdoc")
 
-void
-DDCDocLogger::LogMessage(libcdoc::LogLevel level, const char* file, int line, const std::string& message)
-{
-    switch(level) {
-    case libcdoc::LogLevel::LogLevelFatal:
-        qFatal("%s", message.c_str());
-        break;
-    case libcdoc::LogLevel::LogLevelError:
-        qCCritical(LOG_CDOC) << message.c_str();
-        break;
-    case libcdoc::LogLevel::LogLevelWarning:
-        qCWarning(LOG_CDOC) << message.c_str();
-        break;
-    case libcdoc::LogLevel::LogLevelInfo:
-        qCInfo(LOG_CDOC) << message.c_str();
-        break;
-    case libcdoc::LogLevel::LogLevelDebug:
-        qCDebug(LOG_CDOC) << message.c_str();
-        break;
-    default:
-        // Trace, if present goes to debug categrory
-        qCDebug(LOG_CDOC) << message.c_str();
-        break;
-    }
+void DDCDocLogger::LogMessage(libcdoc::LogLevel level, const char *file,
+							  int line, const std::string &message) {
+	switch (level) {
+	case libcdoc::LogLevel::LogLevelFatal:
+		qFatal("%s", message.c_str());
+		break;
+	case libcdoc::LogLevel::LogLevelError:
+		qCCritical(LOG_CDOC) << message.c_str();
+		break;
+	case libcdoc::LogLevel::LogLevelWarning:
+		qCWarning(LOG_CDOC) << message.c_str();
+		break;
+	case libcdoc::LogLevel::LogLevelInfo:
+		qCInfo(LOG_CDOC) << message.c_str();
+		break;
+	case libcdoc::LogLevel::LogLevelDebug:
+		qCDebug(LOG_CDOC) << message.c_str();
+		break;
+	default:
+		// Trace, if present goes to debug categrory
+		qCDebug(LOG_CDOC) << message.c_str();
+		break;
+	}
 }
 
-void
-DDCDocLogger::setUpLogger()
-{
-    static DDCDocLogger *logger = nullptr;
-    if (logger) {
-        logger = new DDCDocLogger();
-        logger->SetMinLogLevel(libcdoc::LogLevel::LogLevelTrace);
-        libcdoc::add_logger(logger);
-    }
+void DDCDocLogger::setUpLogger() {
+	static DDCDocLogger *logger = nullptr;
+	if (logger) {
+		logger = new DDCDocLogger();
+		logger->SetMinLogLevel(libcdoc::LogLevel::LogLevelTrace);
+		libcdoc::add_logger(logger);
+	}
 }
 
 TempListConsumer::~TempListConsumer()
@@ -280,23 +290,24 @@ TempListConsumer::~TempListConsumer()
 	}
 }
 
-libcdoc::result_t
-TempListConsumer::write(const uint8_t *src, size_t size)
-{
-    if (files.empty()) return libcdoc::OUTPUT_ERROR;
-	IOEntry& file = files.back();
-    if (!file.data->isWritable()) return libcdoc::OUTPUT_ERROR;
-    if (file.data->write((const char *) src, size) != size) return libcdoc::OUTPUT_STREAM_ERROR;
+libcdoc::result_t TempListConsumer::write(const uint8_t *src, size_t size) {
+	if (files.empty())
+		return libcdoc::OUTPUT_ERROR;
+	IOEntry &file = files.back();
+	if (!file.data->isWritable())
+		return libcdoc::OUTPUT_ERROR;
+	if (file.data->write((const char *)src, size) != size)
+		return libcdoc::OUTPUT_STREAM_ERROR;
 	file.size += size;
 	return size;
 }
 
-libcdoc::result_t
-TempListConsumer::close()
-{
-    if (files.empty()) return libcdoc::OUTPUT_ERROR;
-	IOEntry& file = files.back();
-    if (!file.data->isWritable()) return libcdoc::OUTPUT_ERROR;
+libcdoc::result_t TempListConsumer::close() {
+	if (files.empty())
+		return libcdoc::OUTPUT_ERROR;
+	IOEntry &file = files.back();
+	if (!file.data->isWritable())
+		return libcdoc::OUTPUT_ERROR;
 	return libcdoc::OK;
 }
 

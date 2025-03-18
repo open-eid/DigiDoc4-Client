@@ -306,25 +306,27 @@ void ContainerPage::showSigningButton()
 		showMainAction({ SignatureAdd, SignatureMobile, SignatureSmartID });
 }
 
-void ContainerPage::transition(CryptoDoc *container, const QSslCertificate &cert)
-{
-    clear();
-    emit action(ClearCryptoWarning);
-    isSupported = container->state() & UnencryptedContainer || container->canDecrypt(cert);
-    setHeader(container->fileName());
-    bool hasUnsupported = false;
-    ui->rightPane->clear();
-    for(auto& key: container->keys())
-    {
-        hasUnsupported = hasUnsupported || (key.rcpt_cert.isNull() && !key.lock.isValid());
-        AddressItem *addr = new AddressItem(key, ui->rightPane, true);
-        ui->rightPane->addWidget(addr);
-        connect(addr, &AddressItem::decrypt, this, [this, key]{emit decryptReq(&key.lock);});
-    }
-    if(hasUnsupported)
-        emit warning({UnsupportedCDocWarning});
-    updatePanes(container->state(), container);
-    ui->leftPane->setModel(container->documentModel());
+void ContainerPage::transition(CryptoDoc *container,
+							   const QSslCertificate &cert) {
+	clear();
+	emit action(ClearCryptoWarning);
+	isSupported = container->state() & UnencryptedContainer ||
+				  container->canDecrypt(cert);
+	setHeader(container->fileName());
+	bool hasUnsupported = false;
+	ui->rightPane->clear();
+	for (auto &key : container->keys()) {
+		hasUnsupported =
+			hasUnsupported || (key.rcpt_cert.isNull() && !key.lock.isValid());
+		AddressItem *addr = new AddressItem(key, ui->rightPane, true);
+		ui->rightPane->addWidget(addr);
+		connect(addr, &AddressItem::decrypt, this,
+				[this, key] { emit decryptReq(&key.lock); });
+	}
+	if (hasUnsupported)
+		emit warning({UnsupportedCDocWarning});
+	updatePanes(container->state(), container);
+	ui->leftPane->setModel(container->documentModel());
 }
 
 void ContainerPage::transition(DigiDoc* container)
@@ -385,26 +387,27 @@ void ContainerPage::transition(DigiDoc* container)
 	updatePanes(container->state(), nullptr);
 }
 
-void ContainerPage::update(CryptoDoc* container, const QSslCertificate &cert)
-{
-    isSupported = container->canDecrypt(cert) || container->state() & UnencryptedContainer;
-    hasEmptyFile = false;
-    bool hasUnsupported = false;
-    ui->rightPane->clear();
-    for(auto& key: container->keys())
-    {
-        hasUnsupported = hasUnsupported || (key.rcpt_cert.isNull() && !key.lock.isValid());
-        AddressItem *addr = new AddressItem(key, ui->rightPane, true);
-        ui->rightPane->addWidget(addr);
-        connect(addr, &AddressItem::decrypt, this, [this, key]{emit decryptReq(&key.lock);});
-    }
-    if(hasUnsupported)
-        emit warning({UnsupportedCDocWarning});
-    if(container->state() & EncryptedContainer)
-        updateDecryptionButton();
-    if(container->state() & UnencryptedContainer)
-        showMainAction({ EncryptContainer });
-	if(container->state() & UnencryptedContainer)
+void ContainerPage::update(CryptoDoc *container, const QSslCertificate &cert) {
+	isSupported = container->canDecrypt(cert) ||
+				  container->state() & UnencryptedContainer;
+	hasEmptyFile = false;
+	bool hasUnsupported = false;
+	ui->rightPane->clear();
+	for (auto &key : container->keys()) {
+		hasUnsupported =
+			hasUnsupported || (key.rcpt_cert.isNull() && !key.lock.isValid());
+		AddressItem *addr = new AddressItem(key, ui->rightPane, true);
+		ui->rightPane->addWidget(addr);
+		connect(addr, &AddressItem::decrypt, this,
+				[this, key] { emit decryptReq(&key.lock); });
+	}
+	if (hasUnsupported)
+		emit warning({UnsupportedCDocWarning});
+	if (container->state() & EncryptedContainer)
+		updateDecryptionButton();
+	if (container->state() & UnencryptedContainer)
+		showMainAction({EncryptContainer});
+	if (container->state() & UnencryptedContainer)
 		showMainActionEncrypt(container->supportsSymmetricKeys());
 }
 
@@ -478,7 +481,7 @@ void ContainerPage::updatePanes(ria::qdigidoc4::ContainerState state, CryptoDoc 
 		ui->leftPane->init(fileName, QT_TRANSLATE_NOOP("ItemList", "Encrypted files"));
 		showRightPane(ItemAddress, QT_TRANSLATE_NOOP("ItemList", "Recipients"));
 		updateDecryptionButton();
-        setButtonsVisible({ ui->cancel, ui->convert, ui->saveAs, ui->email }, true);
+		setButtonsVisible({ ui->cancel, ui->convert, ui->saveAs, ui->email }, true);
 		break;
 	default:
 		// Uninitialized cannot be shown on container page

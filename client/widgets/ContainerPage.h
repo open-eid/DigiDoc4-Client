@@ -78,7 +78,7 @@ private:
 	void showRightPane(ria::qdigidoc4::ItemType itemType, const char *header);
 	void showSigningButton();
 	void updateDecryptionButton();
-    void updatePanes(ria::qdigidoc4::ContainerState state, CryptoDoc *crypto_container);
+	void updatePanes(ria::qdigidoc4::ContainerState state, CryptoDoc *crypto_container);
 	void translateLabels();
 
 	Ui::ContainerPage *ui;

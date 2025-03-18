@@ -461,7 +461,7 @@ Application::Application( int &argc, char **argv )
 		setQuitOnLastWindowClosed( true );
 		return;
 	}
-    DDCDocLogger::setUpLogger();
+	DDCDocLogger::setUpLogger();
 
 	QMetaObject::invokeMethod(this, [this] {
 #ifdef Q_OS_MAC

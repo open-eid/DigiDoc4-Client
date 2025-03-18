@@ -235,37 +235,41 @@ ContainerState MainWindow::currentState()
 	return ContainerState::Uninitialized;
 }
 
-bool MainWindow::decrypt(const libcdoc::Lock *lock)
-{
-    if(!cryptoDoc) return false;
+bool MainWindow::decrypt(const libcdoc::Lock *lock) {
+	if (!cryptoDoc)
+		return false;
 
 	QByteArray secret;
-	if (lock && (lock->type == libcdoc::Lock::Type::SYMMETRIC_KEY || lock->type == libcdoc::Lock::Type::PASSWORD)) {
+	if (lock && (lock->type == libcdoc::Lock::Type::SYMMETRIC_KEY ||
+				 lock->type == libcdoc::Lock::Type::PASSWORD)) {
 		PasswordDialog p;
 		p.setLabel(QString::fromStdString(lock->label));
 		if (lock->type == libcdoc::Lock::Type::PASSWORD) {
-			p.setMode(PasswordDialog::Mode::DECRYPT, PasswordDialog::Type::PASSWORD);
-            if(!p.exec()) return false;
+			p.setMode(PasswordDialog::Mode::DECRYPT,
+					  PasswordDialog::Type::PASSWORD);
+			if (!p.exec())
+				return false;
 			secret = p.secret();
 		} else {
 			p.setMode(PasswordDialog::Mode::DECRYPT, PasswordDialog::Type::KEY);
-            if(!p.exec()) return false;
+			if (!p.exec())
+				return false;
 			secret = p.secret();
 		}
 	}
 
 	WaitDialogHolder waitDialog(this, tr("Decrypting"));
 
-    if (cryptoDoc->decrypt(lock, secret)) {
-        ui->cryptoContainerPage->transition(cryptoDoc, qApp->signer()->tokenauth().cert());
-        FadeInNotification::success(ui->topBar, tr("Decryption succeeded!"));
-        return true;
-    }
-    return false;
+	if (cryptoDoc->decrypt(lock, secret)) {
+		ui->cryptoContainerPage->transition(cryptoDoc,
+											qApp->signer()->tokenauth().cert());
+		FadeInNotification::success(ui->topBar, tr("Decryption succeeded!"));
+		return true;
+	}
+	return false;
 }
 
-void MainWindow::dragEnterEvent(QDragEnterEvent *event)
-{
+void MainWindow::dragEnterEvent(QDragEnterEvent *event) {
 	if(!event->source() && !dropEventFiles(event).isEmpty())
 	{
 		event->acceptProposedAction();
@@ -495,35 +499,41 @@ void MainWindow::convertToBDoc()
 		FadeInNotification::success(ui->topBar, tr("Converted to signed document!"));
 }
 
-void MainWindow::convertToCDoc()
-{
-	QString filename = FileDialog::createNewFileName(digiDoc->fileName(), false, this);
-	if(filename.isNull())
+void MainWindow::convertToCDoc() {
+	QString filename =
+		FileDialog::createNewFileName(digiDoc->fileName(), false, this);
+	if (filename.isNull())
 		return;
 
 	std::unique_ptr<CryptoDoc> cryptoContainer(new CryptoDoc(this));
 	cryptoContainer->clear(filename);
 
-	// If signed, add whole signed document to cryptocontainer; otherwise content only
-	if(digiDoc->state() == SignedContainer)
+	// If signed, add whole signed document to cryptocontainer; otherwise
+	// content only
+	if (digiDoc->state() == SignedContainer)
 		cryptoContainer->documentModel()->addFile(digiDoc->fileName());
 	else
-		cryptoContainer->documentModel()->addTempFiles(digiDoc->documentModel()->tempFiles());
+		cryptoContainer->documentModel()->addTempFiles(
+			digiDoc->documentModel()->tempFiles());
 
 	auto cardData = qApp->signer()->tokenauth();
-	if(!cardData.cert().isNull()) {
-        //QByteArray qder = cardData.cert().toDer();
-        //st7d::vector<uint8_t> sder = std::vector<uint8_t>(qder.cbegin(), qder.cend());
-        //cryptoContainer->addEncryptionKey(libcdoc::Recipient::makeCertificate(CryptoDoc::labelFromCertificate(sder), sder));
-        cryptoContainer->addEncryptionKey(cardData.cert());
+	if (!cardData.cert().isNull()) {
+		// QByteArray qder = cardData.cert().toDer();
+		// st7d::vector<uint8_t> sder = std::vector<uint8_t>(qder.cbegin(),
+		// qder.cend());
+		// cryptoContainer->addEncryptionKey(libcdoc::Recipient::makeCertificate(CryptoDoc::labelFromCertificate(sder),
+		// sder));
+		cryptoContainer->addEncryptionKey(cardData.cert());
 	}
 
 	resetCryptoDoc(cryptoContainer.release());
 	resetDigiDoc(nullptr, false);
-	ui->cryptoContainerPage->transition(cryptoDoc,  qApp->signer()->tokenauth().cert());
+	ui->cryptoContainerPage->transition(cryptoDoc,
+										qApp->signer()->tokenauth().cert());
 	selectPage(CryptoDetails);
 
-	FadeInNotification::success(ui->topBar, tr("Converted to crypto container!"));
+	FadeInNotification::success(ui->topBar,
+								tr("Converted to crypto container!"));
 }
 
 void MainWindow::moveCryptoContainer()
@@ -554,7 +564,7 @@ void MainWindow::onCryptoAction(int action, const QString &/*id*/, const QString
 		break;
 	case DecryptContainer:
 	case DecryptToken:
-        decrypt(nullptr);
+		decrypt(nullptr);
 		break;
 	case EncryptContainer:
 		if(encrypt())
@@ -563,14 +573,13 @@ void MainWindow::onCryptoAction(int action, const QString &/*id*/, const QString
 			FadeInNotification::success(ui->topBar, tr("Encryption succeeded!"));
 		}
 		break;
-    case EncryptLT:
-        if(encrypt(true))
-        {
-            ui->cryptoContainerPage->transition(cryptoDoc, qApp->signer()->tokenauth().cert());
-            FadeInNotification::success(ui->topBar, tr("Encryption succeeded!"));
-        }
-        break;
-    case ContainerSaveAs:
+	case EncryptLT:
+		if(encrypt(true)) {
+			ui->cryptoContainerPage->transition(cryptoDoc, qApp->signer()->tokenauth().cert());
+			FadeInNotification::success(ui->topBar, tr("Encryption succeeded!"));
+		}
+		break;
+		case ContainerSaveAs:
 	{
 		if(!cryptoDoc)
 			break;
@@ -1116,18 +1125,18 @@ void MainWindow::updateSelectorData(TokenData data)
 		showCardMenu(false);
 }
 
-void MainWindow::updateKeys(const QList<CDKey> &keys)
-{
-	if(!cryptoDoc)
+void MainWindow::updateKeys(const QList<CDKey> &keys) {
+	if (!cryptoDoc)
 		return;
 
-	for(auto i = cryptoDoc->keys().size(); i != 0; i--)
+	for (auto i = cryptoDoc->keys().size(); i != 0; i--)
 		cryptoDoc->removeKey(i - 1);
-    for(const auto &key: keys) {
-        // fixme: Re-think how other recipient types are handled
-        cryptoDoc->addEncryptionKey(key.rcpt_cert);
-    }
-    ui->cryptoContainerPage->update(cryptoDoc, qApp->signer()->tokenauth().cert());
+	for (const auto &key : keys) {
+		// fixme: Re-think how other recipient types are handled
+		cryptoDoc->addEncryptionKey(key.rcpt_cert);
+	}
+	ui->cryptoContainerPage->update(cryptoDoc,
+									qApp->signer()->tokenauth().cert());
 }
 
 void MainWindow::containerSummary()
