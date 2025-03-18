@@ -38,22 +38,22 @@ static QString toQString(const Container &c)
 
 QByteArray QPKCS11::Private::attribute(CK_SESSION_HANDLE session, CK_OBJECT_HANDLE obj, CK_ATTRIBUTE_TYPE type) const
 {
-	if(!f)
-		return {};
+	QByteArray data;
 	CK_ATTRIBUTE attr { type, nullptr, 0 };
-	if( f->C_GetAttributeValue( session, obj, &attr, 1 ) != CKR_OK )
-		return {};
-	QByteArray data(int(attr.ulValueLen), 0);
+	if(!f || f->C_GetAttributeValue( session, obj, &attr, 1 ) != CKR_OK)
+		return data;
+	data.resize(qsizetype(attr.ulValueLen));
 	attr.pValue = data.data();
 	if( f->C_GetAttributeValue( session, obj, &attr, 1 ) != CKR_OK )
-		return {};
+		data.clear();
 	return data;
 }
 
 std::vector<CK_OBJECT_HANDLE> QPKCS11::Private::findObject(CK_SESSION_HANDLE session, CK_OBJECT_CLASS cls, const QByteArray &id) const
 {
+	std::vector<CK_OBJECT_HANDLE> result;
 	if(!f)
-		return {};
+		return result;
 	CK_BBOOL _true = CK_TRUE;
 	std::vector<CK_ATTRIBUTE> attr{
 		{ CKA_CLASS, &cls, sizeof(cls) },
@@ -62,10 +62,10 @@ std::vector<CK_OBJECT_HANDLE> QPKCS11::Private::findObject(CK_SESSION_HANDLE ses
 	if(!id.isEmpty())
 		attr.push_back({ CKA_ID, CK_VOID_PTR(id.data()), CK_ULONG(id.size()) });
 	if(f->C_FindObjectsInit(session, attr.data(), CK_ULONG(attr.size())) != CKR_OK)
-		return {};
+		return result;
 
 	CK_ULONG count = 32;
-	std::vector<CK_OBJECT_HANDLE> result(size_t(count), CK_INVALID_HANDLE);
+	result.resize(size_t(count), CK_INVALID_HANDLE);
 	if(f->C_FindObjects(session, result.data(), CK_ULONG(result.size()), &count) == CKR_OK)
 		result.resize(size_t(count));
 	else
@@ -125,12 +125,17 @@ QByteArray QPKCS11::derive(const QByteArray &publicKey) const
 	CK_ECDH1_DERIVE_PARAMS ecdh_parms { CKD_NULL, 0, nullptr, CK_ULONG(publicKey.size()), CK_BYTE_PTR(publicKey.data()) };
 	CK_MECHANISM mech { CKM_ECDH1_DERIVE, &ecdh_parms, sizeof(CK_ECDH1_DERIVE_PARAMS) };
 	CK_BBOOL _false = CK_FALSE;
+	CK_BBOOL _true = CK_TRUE;
 	CK_OBJECT_CLASS newkey_class = CKO_SECRET_KEY;
 	CK_KEY_TYPE newkey_type = CKK_GENERIC_SECRET;
+	CK_ULONG value_len = (publicKey.size() - 1) / 2;
 	std::array newkey_template{
 		CK_ATTRIBUTE{CKA_TOKEN, &_false, sizeof(_false)},
 		CK_ATTRIBUTE{CKA_CLASS, &newkey_class, sizeof(newkey_class)},
 		CK_ATTRIBUTE{CKA_KEY_TYPE, &newkey_type, sizeof(newkey_type)},
+		CK_ATTRIBUTE{CKA_SENSITIVE, &_false, sizeof(_false)},
+		CK_ATTRIBUTE{CKA_EXTRACTABLE, &_true, sizeof(_true)},
+		CK_ATTRIBUTE{CKA_VALUE_LEN, &value_len, sizeof(value_len)},
 	};
 	CK_OBJECT_HANDLE newkey = CK_INVALID_HANDLE;
 	if(d->f->C_DeriveKey(d->session, &mech, key.front(), newkey_template.data(), CK_ULONG(newkey_template.size()), &newkey) != CKR_OK)
@@ -165,7 +170,7 @@ bool QPKCS11::load( const QString &driver )
 	if(auto l = CK_C_GetFunctionList(d->lib.resolve("C_GetFunctionList"));
 		!l || l(&d->f) != CKR_OK)
 	{
-		qWarning() << "Failed to resolve symbols";
+		qWarning() << "Failed to resolve symbols" << d->lib.errorString();
 		return false;
 	}
 
@@ -322,10 +327,9 @@ QList<TokenData> QPKCS11::tokens() const
 
 bool QPKCS11::reload()
 {
-	static QMultiHash<QString,QByteArray> drivers {
+	static const QMultiHash<QString,QByteArray> drivers {
 #ifdef Q_OS_MAC
 		{ QApplication::applicationDirPath() + "/opensc-pkcs11.so", {} },
-		{ "/Library/latvia-eid/lib/eidlv-pkcs11.bundle/Contents/MacOS/eidlv-pkcs11", "3BDD18008131FE45904C41545649412D65494490008C" }, // LV-G1
 		{ "/Library/latvia-eid/lib/eidlv-pkcs11.bundle/Contents/MacOS/eidlv-pkcs11", "3BDB960080B1FE451F830012428F536549440F900020" }, // LV-G2
 		{ "/Library/mCard/lib/mcard-pkcs11.so", "3B9D188131FC358031C0694D54434F5373020505D3" }, // LT-G3
 		{ "/Library/mCard/lib/mcard-pkcs11.so", "3B9D188131FC358031C0694D54434F5373020604D1" }, // LT-G3.1
@@ -342,7 +346,6 @@ bool QPKCS11::reload()
 #else
 		{ "opensc-pkcs11.so", {} },
 #if defined(Q_OS_LINUX)
-		{ "/opt/latvia-eid/lib/eidlv-pkcs11.so", "3BDD18008131FE45904C41545649412D65494490008C" }, // LV-G1
 		{ "/opt/latvia-eid/lib/eidlv-pkcs11.so", "3BDB960080B1FE451F830012428F536549440F900020" }, // LV-G2
 		{ "mcard-pkcs11.so", "3B9D188131FC358031C0694D54434F5373020505D3" }, // LT-G3
 		{ "mcard-pkcs11.so", "3B9D188131FC358031C0694D54434F5373020604D1" }, // LT-G3.1
