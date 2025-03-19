@@ -335,7 +335,6 @@ bool MainWindow::encrypt(bool askForKey)
 		if(!p.exec()) return false;
 		QString label = p.label();
 		QByteArray secret = p.secret();
-		bool result;
 		if (p.type == PasswordDialog::Type::PASSWORD) {
 			WaitDialogHolder waitDialog(this, tr("Encrypting"));
 			return cryptoDoc->encrypt(cryptoDoc->fileName(), label, secret, 65536);
@@ -518,11 +517,6 @@ void MainWindow::convertToCDoc() {
 
 	auto cardData = qApp->signer()->tokenauth();
 	if (!cardData.cert().isNull()) {
-		// QByteArray qder = cardData.cert().toDer();
-		// st7d::vector<uint8_t> sder = std::vector<uint8_t>(qder.cbegin(),
-		// qder.cend());
-		// cryptoContainer->addEncryptionKey(libcdoc::Recipient::makeCertificate(CryptoDoc::labelFromCertificate(sder),
-		// sder));
 		cryptoContainer->addEncryptionKey(cardData.cert());
 	}
 

@@ -94,8 +94,6 @@ public:
 	std::string writer_last_error;
 
 	QString			fileName;
-	//bool			encrypted = false;
-	//bool isEncrypted() const { return encrypted; }
 	bool isEncrypted() const { return reader != nullptr; }
 	CDocumentModel	*documents = new CDocumentModel(this);
 	QStringList		tempFiles;
@@ -543,16 +541,12 @@ bool CryptoDoc::move(const QString &to)
 
 bool CryptoDoc::open( const QString &file )
 {
+	d->writer_last_error.clear();
 	clear(file);
 	d->reader = d->createCDocReader(file.toStdString());
-	if (!d->reader) return false;
-	d->writer_last_error.clear();
-	// fixme: This seems wrong
-	//if(!d->isEncrypted()) {
-	//	WarningDialog::show(tr("Failed to open document"),
-	//						QString::fromStdString(d->cdoc->lastError));
-	//	return false;
-	//}
+	if (!d->reader) {
+		return false;
+	}
 	Application::addRecent( file );
 	return true;
 }

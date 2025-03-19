@@ -86,7 +86,6 @@ KeyDialog::KeyDialog(const CDKey &k, QWidget *parent) : QDialog(parent) {
 		d->view->addTopLevelItem(i);
 	};
 
-	bool adjust_size = false;
 	if (k.lock.isCDoc1()) {
 		std::vector<uint8_t> cert =
 			k.lock.getBytes(libcdoc::Lock::Params::CERT);

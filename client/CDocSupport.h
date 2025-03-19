@@ -132,7 +132,6 @@ struct IOEntry
 {
 	std::string name, mime;
 	int64_t size;
-	//std::shared_ptr<std::istream> stream;
 	std::unique_ptr<QIODevice> data;
 };
 
