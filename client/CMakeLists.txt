@@ -221,19 +221,12 @@ elseif(WIN32)
 	target_sources(${PROJECT_NAME} PRIVATE QCNG.cpp QCNG.h CertStore.cpp CertStore.h Diagnostics_win.cpp)
 	target_compile_options(${PROJECT_NAME} PRIVATE "/guard:cf")
 	target_link_options(${PROJECT_NAME} PRIVATE "/guard:cf" $<$<BOOL:${CROSSSIGNCERT}>:/INTEGRITYCHECK>)
-	target_link_libraries(${PROJECT_NAME} NCrypt Crypt32 Cryptui)
+	target_link_libraries(${PROJECT_NAME} NCrypt Crypt32 Cryptui winscard)
 	get_filename_component(LIBS_PATH ${libdigidocpp_DIR} DIRECTORY)
 	get_filename_component(LIBS_PATH ${LIBS_PATH} DIRECTORY)
-	if(CMAKE_SIZEOF_VOID_P EQUAL 8)
-		set(PLATFORM x64)
-		set(OPENSSL_SUFFIX "-x64")
-	else()
-		set(PLATFORM x86)
-		set(OPENSSL_SUFFIX "")
-	endif()
-	set(MSI_FILE "Digidoc4-${VERSION}$ENV{VER_SUFFIX}.${PLATFORM}")
+	set(MSI_FILE "Digidoc4-${VERSION}$ENV{VER_SUFFIX}.$ENV{PLATFORM}")
 	set(WIX_CMD wix.exe build -nologo
-		-arch ${PLATFORM}
+		-arch $ENV{PLATFORM}
 		-ext WixToolset.UI.wixext
 		-bv WixUIDialogBmp=${CMAKE_SOURCE_DIR}/common/dlgbmp.bmp
 		-bv WixUIBannerBmp=${CMAKE_SOURCE_DIR}/common/banner.bmp
@@ -263,7 +256,13 @@ elseif(WIN32)
 			WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
 		)
 	endif()
+	set(PLATFORM $ENV{PLATFORM})
 	configure_file(${CMAKE_SOURCE_DIR}/AppxManifest.xml.cmake ${CMAKE_BINARY_DIR}/AppxManifest.xml)
+	if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+		set(OPENSSL_SUFFIX "-x64")
+	else()
+		set(OPENSSL_SUFFIX "")
+	endif()
 	add_custom_target(appx DEPENDS ${PROJECT_NAME}
 		COMMAND ${CMAKE_COMMAND} -E remove ${MSI_FILE}.appx
 		COMMAND ${CMAKE_COMMAND} -E remove_directory appx
