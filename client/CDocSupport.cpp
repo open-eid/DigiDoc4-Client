@@ -157,7 +157,7 @@ DDConfiguration::getValue(std::string_view domain, std::string_view param) const
 }
 
 std::string
-DDNetworkBackend::getLastErrorStr(int code) const
+DDNetworkBackend::getLastErrorStr(libcdoc::result_t code) const
 {
 	if (code == BACKEND_ERROR) return last_error;
 	return libcdoc::NetworkBackend::getLastErrorStr(code);

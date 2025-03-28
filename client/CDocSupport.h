@@ -83,7 +83,7 @@ struct DDCryptoBackend : public libcdoc::CryptoBackend {
 struct DDNetworkBackend : public libcdoc::NetworkBackend, private QObject {
 	static constexpr int BACKEND_ERROR = -303;
 
-	std::string getLastErrorStr(int code) const final;
+	std::string getLastErrorStr(libcdoc::result_t code) const final;
 	libcdoc::result_t sendKey(libcdoc::NetworkBackend::CapsuleInfo &dst,
 							  const std::string &url,
 							  const std::vector<uint8_t> &rcpt_key,
