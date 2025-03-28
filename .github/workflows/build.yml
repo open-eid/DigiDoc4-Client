@@ -100,7 +100,7 @@ jobs:
     container: fedora:${{ matrix.container }}
     strategy:
       matrix:
-        container: [40, 41]
+        container: [40, 41, 42]
     steps:
     - name: Install Deps
       run: |
