@@ -685,20 +685,20 @@ void MainWindow::resetDigiDoc(DigiDoc *doc, bool warnOnChange)
 		if(digiDoc->state() == UnsignedContainer)
 		{
 			warning = tr("You've added file(s) to container, but these are not signed yet. Keep the unsigned container or remove it?");
-			cancelTxt = tr("REMOVE");
-			saveTxt = tr("KEEP");
+			cancelTxt = WarningDialog::buttonLabel(WarningDialog::Remove);
+			saveTxt = tr("Keep");
 		}
 		else
 		{
 			warning = tr("You've changed the open container but have not saved any changes. Save the changes or close without saving?");
-			cancelTxt = tr("DO NOT SAVE");
-			saveTxt = tr("SAVE");
+			cancelTxt = tr("Do not save");
+			saveTxt = tr("Save");
 		}
 
 		auto *dlg = new WarningDialog(warning, this);
 		dlg->setCancelText(cancelTxt);
-		dlg->addButton(saveTxt, ContainerSave);
-		if(dlg->exec() == ContainerSave)
+		dlg->addButton(saveTxt, QMessageBox::Save);
+		if(dlg->exec() == QMessageBox::Save)
 			save();
 	}
 
@@ -892,9 +892,9 @@ bool MainWindow::removeFile(DocumentModel *model, int index)
 	{
 		auto *dlg = new WarningDialog(tr("You are about to delete the last file in the container, it is removed along with the container."), this);
 		dlg->setCancelText(WarningDialog::Cancel);
-		dlg->resetCancelStyle();
-		dlg->addButton(tr("REMOVE"), ContainerSave, true);
-		if (dlg->exec() == ContainerSave) {
+		dlg->resetCancelStyle(false);
+		dlg->addButton(WarningDialog::Remove, QMessageBox::Ok, true);
+		if (dlg->exec() == QMessageBox::Ok) {
 			window()->setWindowFilePath({});
 			window()->setWindowTitle(tr("DigiDoc4 Client"));
 			return true;
@@ -1004,8 +1004,8 @@ bool MainWindow::wrapContainer(bool signing)
 		tr("Files can not be added to the cryptocontainer. The system will create a new container which shall contain the cypto-document and the files you wish to add.");
 	auto *dlg = new WarningDialog(msg, this);
 	dlg->setCancelText(WarningDialog::Cancel);
-	dlg->addButton(tr("CONTINUE"), ContainerSave);
-	return dlg->exec() == ContainerSave;
+	dlg->addButton(tr("Continue"), QMessageBox::Ok);
+	return dlg->exec() == QMessageBox::Ok;
 }
 
 void MainWindow::updateSelector()

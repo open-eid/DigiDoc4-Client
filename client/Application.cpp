@@ -467,9 +467,9 @@ Application::Application( int &argc, char **argv )
 		{
 			auto *dlg = new WarningDialog(tr(
 				"In order to authenticate and sign in e-services with an ID-card you need to install the web browser components."), mainWindow());
-			dlg->setCancelText(tr("Ignore forever").toUpper());
-			dlg->addButton(tr("Remind later").toUpper(), QMessageBox::Ignore);
-			dlg->addButton(tr("Install").toUpper(), QMessageBox::Open);
+			dlg->setCancelText(tr("Ignore forever"));
+			dlg->addButton(tr("Remind later"), QMessageBox::Ignore);
+			dlg->addButton(tr("Install"), QMessageBox::Open);
 			connect(dlg, &WarningDialog::finished, this, [](int result) {
 				switch(result)
 				{
@@ -658,7 +658,7 @@ void Application::loadTranslation( const QString &lang )
 
 	void(d->appTranslator.load(QLatin1String(":/translations/%1.qm").arg(lang)));
 	void(d->commonTranslator.load(QLatin1String(":/translations/common_%1.qm").arg(lang)));
-	void(d->qtTranslator.load(QLatin1String(":/translations/qt_%1.qm").arg(lang)));
+	void(d->qtTranslator.load(QLatin1String(":/translations/qtbase_%1.qm").arg(lang)));
 	if( d->closeAction ) d->closeAction->setText( tr("Close Window") );
 	if( d->newClientAction ) d->newClientAction->setText( tr("New Window") );
 	if(d->helpAction) d->helpAction->setText(tr("DigiDoc4 Client Help"));

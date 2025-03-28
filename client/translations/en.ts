@@ -505,10 +505,6 @@
         <translation>The document has already been signed by you.</translation>
     </message>
     <message>
-        <source>CONTINUE SIGNING</source>
-        <translation>CONTINUE SIGNING</translation>
-    </message>
-    <message>
         <source>DigiDoc4 Client</source>
         <translation>DigiDoc4 Client</translation>
     </message>
@@ -547,6 +543,10 @@
     <message>
         <source>Sign</source>
         <translation>Sign</translation>
+    </message>
+    <message>
+        <source>Continue signing</source>
+        <translation>Continue signing</translation>
     </message>
 </context>
 <context>
@@ -612,12 +612,12 @@
         <translation>Failed to encrypt document. Please check your internet connection and network settings.</translation>
     </message>
     <message>
-        <source>DON&apos;T SHOW AGAIN</source>
-        <translation>DON&apos;T SHOW AGAIN</translation>
-    </message>
-    <message>
         <source>Failed to decrypt document. Please check your internet connection and network settings.</source>
         <translation>Failed to decrypt document. Please check your internet connection and network settings.</translation>
+    </message>
+    <message>
+        <source>Don&apos;t show again</source>
+        <translation>Don&apos;t show again</translation>
     </message>
 </context>
 <context>
@@ -912,20 +912,20 @@
         <translation>Add files</translation>
     </message>
     <message>
-        <source>SAVE WITH OTHER NAME</source>
-        <translation>SAVE WITH OTHER NAME</translation>
-    </message>
-    <message>
-        <source>REPLACE ALL</source>
-        <translation>REPLACE ALL</translation>
-    </message>
-    <message>
         <source>Select folder where files will be stored</source>
         <translation>Select folder where files will be stored</translation>
     </message>
     <message>
         <source>%1 already exists.&lt;br /&gt;Do you want replace it?</source>
         <translation>%1 already exists.&lt;br /&gt;Do you want replace it?</translation>
+    </message>
+    <message>
+        <source>Save with other name</source>
+        <translation>Save with other name</translation>
+    </message>
+    <message>
+        <source>Replace all</source>
+        <translation>Replace all</translation>
     </message>
 </context>
 <context>
@@ -1460,22 +1460,6 @@ ID-CARD</translation>
         <translation>You&apos;ve changed the open container but have not saved any changes. Save the changes or close without saving?</translation>
     </message>
     <message>
-        <source>REMOVE</source>
-        <translation>REMOVE</translation>
-    </message>
-    <message>
-        <source>KEEP</source>
-        <translation>KEEP</translation>
-    </message>
-    <message>
-        <source>DO NOT SAVE</source>
-        <translation>DO NOT SAVE</translation>
-    </message>
-    <message>
-        <source>SAVE</source>
-        <translation>SAVE</translation>
-    </message>
-    <message>
         <source>Converted to signed document!</source>
         <translation>Converted to signed document!</translation>
     </message>
@@ -1502,10 +1486,6 @@ ID-CARD</translation>
     <message>
         <source>Files can not be added to the cryptocontainer. The system will create a new container which shall contain the cypto-document and the files you wish to add.</source>
         <translation>Files can not be added to the cryptocontainer. The system will create a new container which shall contain the cypto-document and the files you wish to add.</translation>
-    </message>
-    <message>
-        <source>CONTINUE</source>
-        <translation>CONTINUE</translation>
     </message>
     <message>
         <source>Cannot add container to same container
@@ -1620,6 +1600,22 @@ ID-CARD</translation>
     <message>
         <source>Crypto</source>
         <translation>Crypto</translation>
+    </message>
+    <message>
+        <source>Do not save</source>
+        <translation>Do not save</translation>
+    </message>
+    <message>
+        <source>Keep</source>
+        <translation>Keep</translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation>Save</translation>
+    </message>
+    <message>
+        <source>Continue</source>
+        <translation>Continue</translation>
     </message>
 </context>
 <context>
@@ -3033,29 +3029,24 @@ Additional licenses and components</translation>
 <context>
     <name>WarningDialog</name>
     <message>
-        <source>CLOSE</source>
-        <translation>CLOSE</translation>
-    </message>
-    <message>
         <source>Details</source>
         <translation>Details</translation>
     </message>
     <message>
-        <source>Close</source>
-        <extracomment>accessible</extracomment>
-        <translation>Close</translation>
+        <source>No</source>
+        <translation>No</translation>
     </message>
     <message>
-        <source>NO</source>
-        <translation>NO</translation>
+        <source>Cancel</source>
+        <translation>Cancel</translation>
     </message>
     <message>
-        <source>CANCEL</source>
-        <translation>CANCEL</translation>
+        <source>Yes</source>
+        <translation>Yes</translation>
     </message>
     <message>
-        <source>YES</source>
-        <translation>YES</translation>
+        <source>Remove</source>
+        <translation>Remove</translation>
     </message>
 </context>
 <context>

@@ -505,10 +505,6 @@
         <translation>Dokument on Sinu poolt juba allkirjastatud.</translation>
     </message>
     <message>
-        <source>CONTINUE SIGNING</source>
-        <translation>JÄTKA ALLKIRJASTAMISEGA</translation>
-    </message>
-    <message>
         <source>DigiDoc4 Client</source>
         <translation>DigiDoc4 klient</translation>
     </message>
@@ -547,6 +543,10 @@
     <message>
         <source>Sign</source>
         <translation>Allkirjasta</translation>
+    </message>
+    <message>
+        <source>Continue signing</source>
+        <translation>Jätka allkirjastamisega</translation>
     </message>
 </context>
 <context>
@@ -612,12 +612,12 @@
         <translation>Dokumendi krüpteerimine ebaõnnestus. Palun kontrolli internetiühendust ja võrgu sätteid.</translation>
     </message>
     <message>
-        <source>DON&apos;T SHOW AGAIN</source>
-        <translation>ÄRA ROHKEM NÄITA</translation>
-    </message>
-    <message>
         <source>Failed to decrypt document. Please check your internet connection and network settings.</source>
         <translation>Dokumendi dekrüpteerimine ebaõnnestus. Palun kontrolli internetiühendust ja võrgu sätteid.</translation>
+    </message>
+    <message>
+        <source>Don&apos;t show again</source>
+        <translation>Ära rohkem näita</translation>
     </message>
 </context>
 <context>
@@ -912,20 +912,20 @@
         <translation>Lisa faile</translation>
     </message>
     <message>
-        <source>SAVE WITH OTHER NAME</source>
-        <translation>SALVESTA TEISE NIMEGA</translation>
-    </message>
-    <message>
-        <source>REPLACE ALL</source>
-        <translation>KIRJUTA KÕIK ÜLE</translation>
-    </message>
-    <message>
         <source>Select folder where files will be stored</source>
         <translation>Vali kataloog kuhu failid salvestatakse</translation>
     </message>
     <message>
         <source>%1 already exists.&lt;br /&gt;Do you want replace it?</source>
         <translation>%1 on juba olemas.&lt;br /&gt;Soovid asendada?</translation>
+    </message>
+    <message>
+        <source>Save with other name</source>
+        <translation>Salvesta teise nimega</translation>
+    </message>
+    <message>
+        <source>Replace all</source>
+        <translation>Kirjuta kõik üle</translation>
     </message>
 </context>
 <context>
@@ -1460,22 +1460,6 @@ ID-KAARDIGA</translation>
         <translation>Oled avatud ümbrikut muutnud, kuid ei ole muudatusi salvestanud. Kas salvestan muudatused või sulgen salvestamata?</translation>
     </message>
     <message>
-        <source>REMOVE</source>
-        <translation>EEMALDA</translation>
-    </message>
-    <message>
-        <source>KEEP</source>
-        <translation>JÄTA ALLES</translation>
-    </message>
-    <message>
-        <source>DO NOT SAVE</source>
-        <translation>ÄRA SALVESTA</translation>
-    </message>
-    <message>
-        <source>SAVE</source>
-        <translation>SALVESTA</translation>
-    </message>
-    <message>
         <source>Converted to signed document!</source>
         <translation>Konverteeritud allkirjadokumendiks!</translation>
     </message>
@@ -1502,10 +1486,6 @@ ID-KAARDIGA</translation>
     <message>
         <source>Files can not be added to the cryptocontainer. The system will create a new container which shall contain the cypto-document and the files you wish to add.</source>
         <translation>Krüpto-ümbrikusse ei saa faile lisada. Süsteem loob uue ümbriku, kuhu lisatakse krüpteeritud dokument ja Sinu valitud failid.</translation>
-    </message>
-    <message>
-        <source>CONTINUE</source>
-        <translation>EDASI</translation>
     </message>
     <message>
         <source>Cannot add container to same container
@@ -1620,6 +1600,22 @@ ID-KAARDIGA</translation>
     <message>
         <source>Crypto</source>
         <translation>Krüpto</translation>
+    </message>
+    <message>
+        <source>Do not save</source>
+        <translation>Ära salvesta</translation>
+    </message>
+    <message>
+        <source>Keep</source>
+        <translation>Jäta alles</translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation>Salvesta</translation>
+    </message>
+    <message>
+        <source>Continue</source>
+        <translation>Edasi</translation>
     </message>
 </context>
 <context>
@@ -3033,29 +3029,24 @@ Täiendavad litsentsid ja komponendid</translation>
 <context>
     <name>WarningDialog</name>
     <message>
-        <source>CLOSE</source>
-        <translation>SULGE</translation>
-    </message>
-    <message>
         <source>Details</source>
         <translation>Detailid</translation>
     </message>
     <message>
-        <source>Close</source>
-        <extracomment>accessible</extracomment>
-        <translation>Sulge</translation>
+        <source>No</source>
+        <translation>Ei</translation>
     </message>
     <message>
-        <source>NO</source>
-        <translation>EI</translation>
+        <source>Cancel</source>
+        <translation>Katkesta</translation>
     </message>
     <message>
-        <source>CANCEL</source>
-        <translation>KATKESTA</translation>
+        <source>Yes</source>
+        <translation>Jah</translation>
     </message>
     <message>
-        <source>YES</source>
-        <translation>JAH</translation>
+        <source>Remove</source>
+        <translation>Eemalda</translation>
     </message>
 </context>
 <context>

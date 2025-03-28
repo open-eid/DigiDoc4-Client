@@ -21,8 +21,8 @@
 #include "ui_WarningDialog.h"
 
 #include "Application.h"
-#include "Styles.h"
 
+#include <QPushButton>
 #include <QStyle>
 
 WarningDialog::WarningDialog(const QString &text, const QString &details, QWidget *parent)
@@ -36,16 +36,15 @@ WarningDialog::WarningDialog(const QString &text, const QString &details, QWidge
 	setParent(parent, Qt::Sheet);
 #endif
 
-	connect( ui->cancel, &QPushButton::clicked, this, &WarningDialog::reject );
-	connect( this, &WarningDialog::finished, this, &WarningDialog::close );
-
-	ui->cancel->setFont(Styles::font(Styles::Condensed, 14));
-	ui->text->setFont(Styles::font(Styles::Regular, 14));
+	ui->buttonBox->layout()->setSpacing(40);
 	ui->text->setText(text);
-	ui->details->setFont(ui->text->font());
 	ui->details->setText(details);
 	ui->details->setHidden(details.isEmpty());
 	ui->showDetails->setHidden(details.isEmpty());
+	cancel = ui->buttonBox->button(QDialogButtonBox::Close);
+	cancel->setCursor(Qt::PointingHandCursor);
+	connect(cancel, &QPushButton::clicked, this, &QDialog::reject);
+	resetCancelStyle(true);
 
 	if(!details.isEmpty())
 	{
@@ -72,52 +71,76 @@ void WarningDialog::addButton(ButtonText label, int ret, bool red)
 
 void WarningDialog::addButton(const QString& label, int ret, bool red)
 {
-	auto *button = new QPushButton(label, this);
-	button->setAccessibleName(label.toLower());
-	button->setCursor(ui->cancel->cursor());
-	button->setFont(ui->cancel->font());
-	button->setMinimumSize(
-		std::max<int>(ui->cancel->minimumWidth(), ui->cancel->fontMetrics().boundingRect(label).width() + 16),
-		ui->cancel->minimumHeight());
+	if(ui->buttonBox->buttons().size() > 3)
+		ui->buttonBox->layout()->setSpacing(5);
 
-	if(red) {
+	QDialogButtonBox::ButtonRole role = red ? QDialogButtonBox::RejectRole : [ret] {
+		switch (ret) {
+		case QDialogButtonBox::Ok:
+		case QDialogButtonBox::Save:
+		case QDialogButtonBox::Open:
+		case QDialogButtonBox::SaveAll:
+		case QDialogButtonBox::Retry:
+		case QDialogButtonBox::Ignore:
+			return QDialogButtonBox::AcceptRole;
+		case QDialogButtonBox::Cancel:
+		case QDialogButtonBox::Close:
+		case QDialogButtonBox::Abort:
+			return QDialogButtonBox::RejectRole;
+		case QDialogButtonBox::Discard:
+			return QDialogButtonBox::DestructiveRole;
+		case QDialogButtonBox::Help:
+			return QDialogButtonBox::HelpRole;
+		case QDialogButtonBox::Apply:
+			return QDialogButtonBox::ApplyRole;
+		case QDialogButtonBox::Yes:
+		case QDialogButtonBox::YesToAll:
+			return QDialogButtonBox::YesRole;
+		case QDialogButtonBox::No:
+		case QDialogButtonBox::NoToAll:
+			return QDialogButtonBox::NoRole;
+		case QDialogButtonBox::RestoreDefaults:
+		case QDialogButtonBox::Reset:
+			return QDialogButtonBox::ResetRole;
+		default:
+			return QDialogButtonBox::ActionRole;
+		}
+	}();
+
+	QPushButton *button = ui->buttonBox->addButton(label, role);
+	button->setCursor(Qt::PointingHandCursor);
+	switch(role) {
+	case QDialogButtonBox::NoRole:
+	case QDialogButtonBox::RejectRole:
+	case QDialogButtonBox::ResetRole:
+	case QDialogButtonBox::DestructiveRole:
+		style()->unpolish(button);
 		button->setProperty("warning", true);
-#ifdef Q_OS_WIN // For Windows this button should be on the left side of the dialog window
-		setLayoutDirection(Qt::RightToLeft);
-#endif
-	} else {
-#ifdef Q_OS_UNIX // For macOS, Linux and BSD all positive buttons should be on the right side of the dialog window
-		setLayoutDirection(Qt::RightToLeft);
-#endif
+		style()->polish(button);
+		break;
+	default:
+		break;
 	}
-
 	connect(button, &QPushButton::clicked, this, [this, ret] { done(ret); });
-	ui->buttonBarLayout->insertWidget(ui->buttonBarLayout->findChildren<QPushButton>().size() + 1, button);
 }
 
 QString WarningDialog::buttonLabel(ButtonText label)
 {
 	switch (label) {
-	case NO: return tr("NO");
+	case NO: return tr("No");
 	case OK: return QStringLiteral("OK");
-	case Cancel: return tr("CANCEL");
-	case YES: return tr("YES");
+	case Cancel: return tr("Cancel");
+	case YES: return tr("Yes");
+	case Remove: return tr("Remove");
 	default: return {};
 	}
 }
 
-void WarningDialog::resetCancelStyle()
+void WarningDialog::resetCancelStyle(bool warning)
 {
-	style()->unpolish(ui->cancel);
-	ui->cancel->setProperty("warning", false);
-	style()->polish(ui->cancel);
-}
-
-void WarningDialog::setButtonSize(int width, int margin)
-{
-	ui->buttonBarLayout->setSpacing(margin);
-	ui->cancel->setMinimumSize(width, ui->cancel->minimumHeight());
-	ui->cancel->setMaximumSize(width, ui->cancel->minimumHeight());
+	style()->unpolish(cancel);
+	cancel->setProperty("warning", warning);
+	style()->polish(cancel);
 }
 
 void WarningDialog::setCancelText(ButtonText label)
@@ -125,10 +148,9 @@ void WarningDialog::setCancelText(ButtonText label)
 	setCancelText(buttonLabel(label));
 }
 
-void WarningDialog::setCancelText(const QString& label)
+void WarningDialog::setCancelText(const QString &label)
 {
-	ui->cancel->setText(label);
-	ui->cancel->setAccessibleName(label.toLower());
+	cancel->setText(label);
 }
 
 WarningDialog* WarningDialog::show(const QString &text, const QString &details)
