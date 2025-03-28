@@ -162,7 +162,7 @@ jobs:
     - name: Prepare vcpkg
       uses: lukka/run-vcpkg@v11
       with:
-        vcpkgGitCommitId: e4644bd15436d406bba71928d086c809e5c9ca45
+        vcpkgGitCommitId: 5ee5eee0d3e9c6098b24d263e9099edcdcef6631
         vcpkgJsonGlob: ./client/libcdoc/vcpkg.json
         runVcpkgInstall: true
       env:
