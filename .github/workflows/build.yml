@@ -5,7 +5,7 @@ permissions:
 env:
   BUILD_NUMBER: ${{ github.run_number }}
   CMAKE_BUILD_PARALLEL_LEVEL: 4
-  UBUNTU_DEPS: ./libdigidocpp-pkg/*.deb cmake libldap2-dev gettext libpcsclite-dev libssl-dev libgl-dev libqt6svg6-dev qt6-tools-dev qt6-tools-dev-tools qt6-l10n-tools libflatbuffers-dev zlib1g-dev
+  UBUNTU_DEPS: ./libdigidocpp-pkg/*.deb cmake libldap2-dev gettext libpcsclite-dev libssl-dev libgl-dev libqt6svg6-dev qt6-tools-dev qt6-tools-dev-tools qt6-l10n-tools libflatbuffers-dev libxml2-dev zlib1g-dev
 jobs:
   macos:
     name: Build on macOS
@@ -160,11 +160,14 @@ jobs:
         Rename-Item "libdigidocpp*.msi" libdigidocpp.msi
         msiexec /qn /i libdigidocpp.msi
     - name: Prepare vcpkg
-      uses: lukka/run-vcpkg@v7
+      uses: lukka/run-vcpkg@v11
       with:
-        vcpkgArguments: openssl zlib flatbuffers
-        vcpkgGitCommitId: e4644bd15436d406bba71928d086c809e5c9ca45
-        vcpkgTriplet: x64-windows
+        vcpkgGitCommitId: 5ee5eee0d3e9c6098b24d263e9099edcdcef6631
+        vcpkgJsonGlob: ./client/libcdoc/vcpkg.json
+        runVcpkgInstall: true
+      env:
+        VCPKG_DEFAULT_TRIPLET: x64-windows
+        VCPKG_INSTALLED_DIR: ${{ github.workspace }}/build/vcpkg_installed
     - name: Install Qt
       uses: jurplel/install-qt-action@v4
       with:
@@ -179,9 +182,10 @@ jobs:
         dotnet tool install -g wix --version 5.0.2
         wix extension -g add WixToolset.UI.wixext/5.0.2
     - name: Build
+      env:
+        VCPKG_MANIFEST_DIR: ${{ github.workspace }}/client/libcdoc
       run: |
-        cmake "-GNinja" -B build -S . -DCMAKE_BUILD_TYPE=RelWithDebInfo `
-          -DCMAKE_TOOLCHAIN_FILE=${{ env.RUNVCPKG_VCPKG_ROOT }}/scripts/buildsystems/vcpkg.cmake
+        cmake "-GNinja" -B build -S . -DCMAKE_BUILD_TYPE=RelWithDebInfo "-DCMAKE_TOOLCHAIN_FILE=${{ env.VCPKG_ROOT }}/scripts/buildsystems/vcpkg.cmake" -DVCPKG_MANIFEST_DIR=${{ github.workspace }}/client/libcdoc
         cmake --build build --target msi
         cmake --build build --target msishellext
         cmake --build build --target appx

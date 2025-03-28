@@ -28,15 +28,13 @@
 
 #include <memory>
 
-KeyDialog::KeyDialog( const CKey &k, QWidget *parent )
-	: QDialog( parent )
-{
+KeyDialog::KeyDialog(const CDKey &k, QWidget *parent) : QDialog(parent) {
 	auto d = std::make_unique<Ui::KeyDialog>();
 	d->setupUi(this);
-#if defined (Q_OS_WIN)
+#if defined(Q_OS_WIN)
 	d->buttonLayout->setDirection(QBoxLayout::RightToLeft);
 #endif
-	setWindowFlags(Qt::Dialog|Qt::CustomizeWindowHint);
+	setWindowFlags(Qt::Dialog | Qt::CustomizeWindowHint);
 	setAttribute(Qt::WA_DeleteOnClose);
 	new Overlay(this);
 
@@ -49,13 +47,29 @@ KeyDialog::KeyDialog( const CKey &k, QWidget *parent )
 	d->view->setHeaderLabels({tr("Attribute"), tr("Value")});
 
 	connect(d->close, &QPushButton::clicked, this, &KeyDialog::accept);
-	connect(d->showCert, &QPushButton::clicked, this, [this, cert=k.cert] {
-		CertificateDetails::showCertificate(cert, this);
-	});
-	d->showCert->setHidden(k.cert.isNull());
+	if (!k.rcpt_cert.isNull()) {
+		connect(d->showCert, &QPushButton::clicked, this,
+				[this, cert = k.rcpt_cert] {
+					CertificateDetails::showCertificate(cert, this);
+				});
+		d->showCert->setHidden(false);
+	} else if (k.lock.isCertificate()) {
+		std::vector<uint8_t> cert =
+			k.lock.getBytes(libcdoc::Lock::Params::CERT);
+		QSslCertificate kcert(
+			QByteArray(reinterpret_cast<const char *>(cert.data()),
+					   cert.size()),
+			QSsl::Der);
+		connect(d->showCert, &QPushButton::clicked, this, [this, c = kcert] {
+			CertificateDetails::showCertificate(c, this);
+		});
+		d->showCert->setHidden(kcert.isNull());
+	} else {
+		d->showCert->setHidden(true);
+	}
 
 	auto addItem = [&](const QString &parameter, const QString &value) {
-		if(value.isEmpty())
+		if (value.isEmpty())
 			return;
 		auto *i = new QTreeWidgetItem(d->view);
 		i->setText(0, parameter);
@@ -63,12 +77,38 @@ KeyDialog::KeyDialog( const CKey &k, QWidget *parent )
 		d->view->addTopLevelItem(i);
 	};
 
-	addItem(tr("Recipient"), k.recipient);
-	addItem(tr("ConcatKDF digest method"), k.concatDigest);
-	addItem(tr("Key server ID"), k.keyserver_id);
-	addItem(tr("Transaction ID"), k.transaction_id);
-	addItem(tr("Expiry date"), k.cert.expiryDate().toLocalTime().toString(QStringLiteral("dd.MM.yyyy hh:mm:ss")));
-	addItem(tr("Issuer"), SslCertificate(k.cert).issuerInfo(QSslCertificate::CommonName));
-	d->view->resizeColumnToContents( 0 );
+	auto addItemStr = [&](const QString &parameter, const std::string &value) {
+		if (value.empty())
+			return;
+		auto *i = new QTreeWidgetItem(d->view);
+		i->setText(0, parameter);
+		i->setText(1, QString::fromStdString(value));
+		d->view->addTopLevelItem(i);
+	};
+
+	if (k.lock.isCDoc1()) {
+		std::vector<uint8_t> cert =
+			k.lock.getBytes(libcdoc::Lock::Params::CERT);
+		std::string cdigest =
+			k.lock.getString(libcdoc::Lock::Params::CONCAT_DIGEST);
+		QSslCertificate kcert(
+			QByteArray(reinterpret_cast<const char *>(cert.data()),
+					   cert.size()),
+			QSsl::Der);
+		addItem(tr("Recipient"), QString::fromStdString(k.lock.label));
+		addItem(tr("ConcatKDF digest method"), QString::fromStdString(cdigest));
+		addItem(tr("Expiry date"), kcert.expiryDate().toLocalTime().toString(
+									   QStringLiteral("dd.MM.yyyy hh:mm:ss")));
+		addItem(tr("Issuer"),
+				SslCertificate(kcert).issuerInfo(QSslCertificate::CommonName));
+		d->view->resizeColumnToContents(0);
+	} else if (k.lock.type == libcdoc::Lock::SERVER) {
+		addItem(tr("Key server ID"), QString::fromUtf8(k.lock.getString(
+										 libcdoc::Lock::Params::KEYSERVER_ID)));
+		addItem(tr("Transaction ID"),
+				QString::fromUtf8(
+					k.lock.getString(libcdoc::Lock::Params::TRANSACTION_ID)));
+	}
+	d->view->resizeColumnToContents(0);
 	adjustSize();
 }

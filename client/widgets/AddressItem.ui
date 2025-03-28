@@ -64,7 +64,15 @@ color: #006EB5;
 }
 QToolButton:disabled {
 color: #727679;
-}</string>
+}
+#decrypt {
+color: white;
+background-color: #006EB5;
+}
+#decrypt:hover {
+background-color: #00AEE5;
+}
+</string>
   </property>
   <layout class="QGridLayout" name="AddressItemLayout">
    <property name="leftMargin">
@@ -85,72 +93,7 @@ color: #727679;
    <property name="verticalSpacing">
     <number>2</number>
    </property>
-   <item row="0" column="0" rowspan="2">
-    <widget class="QSvgWidget" name="icon" native="true">
-     <property name="minimumSize">
-      <size>
-       <width>32</width>
-       <height>32</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>32</width>
-       <height>32</height>
-      </size>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="1" colspan="3">
-    <widget class="QLabel" name="name">
-     <property name="focusPolicy">
-      <enum>Qt::TabFocus</enum>
-     </property>
-     <property name="text">
-      <string notr="true">MARI MAASIKAS MUSTIKAS 48405050123 (Sina ise)</string>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="1">
-    <widget class="QLabel" name="idType">
-     <property name="focusPolicy">
-      <enum>Qt::TabFocus</enum>
-     </property>
-     <property name="text">
-      <string notr="true">ID-card</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="2">
-    <widget class="QLabel" name="expire">
-     <property name="focusPolicy">
-      <enum>Qt::TabFocus</enum>
-     </property>
-     <property name="text">
-      <string notr="true">Expire</string>
-     </property>
-     <property name="label" stdset="0">
-      <string notr="true">default</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="3">
-    <spacer name="horizontalSpacer">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>40</width>
-       <height>0</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item row="0" column="4" rowspan="2">
+   <item row="0" column="5" rowspan="2">
     <widget class="QToolButton" name="remove">
      <property name="maximumSize">
       <size>
@@ -179,7 +122,17 @@ color: #727679;
      </property>
     </widget>
    </item>
-   <item row="0" column="5" rowspan="2">
+   <item row="1" column="1">
+    <widget class="QLabel" name="idType">
+     <property name="focusPolicy">
+      <enum>Qt::TabFocus</enum>
+     </property>
+     <property name="text">
+      <string notr="true">ID-card</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="6" rowspan="2">
     <widget class="QToolButton" name="added">
      <property name="enabled">
       <bool>false</bool>
@@ -201,7 +154,7 @@ color: #727679;
      </property>
     </widget>
    </item>
-   <item row="0" column="6" rowspan="2">
+   <item row="0" column="7" rowspan="2">
     <widget class="QToolButton" name="add">
      <property name="minimumSize">
       <size>
@@ -209,17 +162,73 @@ color: #727679;
        <height>25</height>
       </size>
      </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>25</height>
-      </size>
-     </property>
      <property name="cursor">
       <cursorShape>PointingHandCursor</cursorShape>
      </property>
+     <property name="focusPolicy">
+      <enum>Qt::TabFocus</enum>
+     </property>
      <property name="text">
       <string>Add</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="2">
+    <widget class="QLabel" name="expire">
+     <property name="focusPolicy">
+      <enum>Qt::TabFocus</enum>
+     </property>
+     <property name="text">
+      <string notr="true">Expire</string>
+     </property>
+     <property name="label" stdset="0">
+      <string notr="true">default</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0" rowspan="2">
+    <widget class="QSvgWidget" name="icon" native="true">
+     <property name="minimumSize">
+      <size>
+       <width>32</width>
+       <height>32</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>32</width>
+       <height>32</height>
+      </size>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="3">
+    <spacer name="horizontalSpacer">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>40</width>
+       <height>0</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="0" column="1" colspan="3">
+    <widget class="QLabel" name="name">
+     <property name="focusPolicy">
+      <enum>Qt::TabFocus</enum>
+     </property>
+     <property name="text">
+      <string>ADD</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="4">
+    <widget class="QToolButton" name="decrypt">
+     <property name="text">
+      <string>DECRYPT</string>
      </property>
     </widget>
    </item>

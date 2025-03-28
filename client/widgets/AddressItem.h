@@ -19,9 +19,10 @@
 
 #pragma once
 
-#include "widgets/Item.h"
+#include <memory>
 
-class CKey;
+#include "CryptoDoc.h"
+#include "widgets/Item.h"
 
 class AddressItem final : public Item
 {
@@ -35,21 +36,25 @@ public:
 		Added,
 	};
 
-	explicit AddressItem(CKey k, QWidget *parent = {}, bool showIcon = false);
+	explicit AddressItem(const CDKey &k, QWidget *parent = {}, bool showIcon = false);
 	~AddressItem() final;
 
-	const CKey& getKey() const;
+	const CDKey& getKey() const;
 	void idChanged(const SslCertificate &cert) final;
 	void initTabOrder(QWidget *item) final;
 	QWidget* lastTabWidget() final;
 	void showButton(ShowToolButton show);
 	void stateChange(ria::qdigidoc4::ContainerState state) final;
 
+signals:
+	void decrypt(const libcdoc::Lock *lock);
+
 private:
 	void changeEvent(QEvent *event) final;
 	void mouseReleaseEvent(QMouseEvent *event) final;
 	void setName();
 	void setIdType();
+	void setIdType(const SslCertificate& cert);
 
 	class Private;
 	Private *ui;

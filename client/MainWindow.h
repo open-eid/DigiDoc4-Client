@@ -23,12 +23,12 @@
 
 #include "common_enums.h"
 #include "QSmartCard.h"
+#include "CryptoDoc.h"
 
 namespace Ui {
 class MainWindow;
 }
 
-class CKey;
 class CryptoDoc;
 class DigiDoc;
 class DocumentModel;
@@ -71,8 +71,8 @@ private:
 	void convertToBDoc();
 	void convertToCDoc();
 	ria::qdigidoc4::ContainerState currentState();
-	bool decrypt();
-	bool encrypt();
+	bool decrypt(const libcdoc::Lock *lock);
+	bool encrypt(bool askForKey = false);
 	void loadPicture();
 	void moveCryptoContainer();
 	void moveSignatureContainer();
@@ -102,7 +102,7 @@ private:
 	void showPinBlockedWarning(const QSmartCardData& t);
 	void updateSelector();
 	void updateSelectorData(TokenData data);
-	void updateKeys(const QList<CKey> &keys);
+	void updateKeys(const QList<CDKey> &keys);
 	void updateMyEID(const TokenData &t);
 	void updateMyEid(const QSmartCardData &data);
 	bool wrap(const QString& wrappedFile, bool enclose);
@@ -116,4 +116,6 @@ private:
 	CryptoDoc* cryptoDoc = nullptr;
 	DigiDoc* digiDoc = nullptr;
 	Ui::MainWindow *ui;
+
+	void decryptClicked(const libcdoc::Lock *lock);
 };
