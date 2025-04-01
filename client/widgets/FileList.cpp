@@ -161,19 +161,18 @@ void FileList::saveAll()
 					continue;
 			}
 			auto *dlg = new WarningDialog(tr("%1 already exists.<br />Do you want replace it?").arg( dest ), this);
-			dlg->setButtonSize(60, 5);
-			dlg->setCancelText(WarningDialog::NO);
+			dlg->setCancelText(WarningDialog::Cancel);
 			dlg->addButton(WarningDialog::YES, QMessageBox::Yes);
-			dlg->addButton(tr("SAVE WITH OTHER NAME"), QMessageBox::No);
-			dlg->addButton(tr("REPLACE ALL"), QMessageBox::YesToAll);
-			dlg->addButton(WarningDialog::Cancel, QMessageBox::NoToAll);
+			dlg->addButton(WarningDialog::NO, QMessageBox::No);
+			dlg->addButton(tr("Save with other name"), QMessageBox::Save);
+			dlg->addButton(tr("Replace all"), QMessageBox::YesToAll);
 			b = dlg->exec();
 
 			if(b == QDialog::Rejected)
-				continue;
-			if(b == QMessageBox::NoToAll)
 				break;
-			if( b == QMessageBox::No )
+			if(b == QMessageBox::No)
+				continue;
+			if(b == QMessageBox::Save)
 			{
 				dest = FileDialog::getSaveFileName( this, tr("Save file"), dest );
 				if( dest.isEmpty() )

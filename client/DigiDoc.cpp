@@ -39,6 +39,7 @@
 #include <QtCore/QStringList>
 #include <QtCore/QUrl>
 #include <QtGui/QDesktopServices>
+#include <QtWidgets/QMessageBox>
 
 #include <algorithm>
 
@@ -65,8 +66,8 @@ struct ServiceConfirmation final: public ContainerOpenCB
 				"<a href=\"https://www.id.ee/en/article/data-protection-conditions-for-the-id-software-of-the-national-information-system-authority/\">here</a>.<br />"
 				"Do you want to continue?"), parent);
 			dlg->setCancelText(WarningDialog::Cancel);
-			dlg->addButton(WarningDialog::YES, 1);
-			return dlg->exec() == 1;
+			dlg->addButton(WarningDialog::YES, QMessageBox::Yes);
+			return dlg->exec() == QMessageBox::Yes;
 		});
 	}
 	Q_DISABLE_COPY(ServiceConfirmation)

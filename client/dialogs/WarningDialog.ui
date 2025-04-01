@@ -6,55 +6,71 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>550</width>
-    <height>260</height>
+    <width>568</width>
+    <height>247</height>
    </rect>
   </property>
   <property name="styleSheet">
    <string notr="true">#WarningDialog &gt; QLabel {
-color: #000000;
+color: #07142A;
+font-family: Roboto, Helvetica;
+font-size: 14px;
 }
 #WarningDialog {
-border-radius: 2px;
+border-radius: 4px;
 background-color: #FFFFFF;
 }
 QPushButton {
-border-radius: 2px;
-border: none;
-color: #FFFFFF;
-background-color: #006EB5;
+background-color: #2F70B6;
+border: 1px solid #2F70B6;
+border-radius: 4px;
+padding: 12px 12px;
+color: #ffffff;
+font-size: 14px;
+font-weight: 700;
+}
+QPushButton:hover {
+background-color: #2B66A6;
+border-color: #2B66A6;
 }
 QPushButton:pressed {
-background-color: #41B6E6;
+background-color: #215081;
+border-color: #215081;
 }
-QPushButton:hover:!pressed {
-background-color: #008DCF;
-}
-QPushButton:disabled {
-background-color: #BEDBED;
+QPushButton:default:disabled {
+background-color: #82A9D3;
+border-color: #82A9D3;
 }
 QPushButton[warning=&quot;true&quot;] {
-background-color: #981E32;
+background-color: transparent;
+border-color: #AD2A45;
+color: #AD2A45;
+}
+QPushButton[warning=&quot;true&quot;]:hover {
+background-color: #F5EBED;
+border-color: #F5EBED;
 }
 QPushButton[warning=&quot;true&quot;]:pressed {
-background-color: #F24A66;
+background-color: #E1C1C6;
+border-color: #E1C1C6;
 }
-QPushButton:hover[warning=&quot;true&quot;]:!pressed {
-background-color: #CD2541;
-}</string>
+</string>
   </property>
   <layout class="QVBoxLayout" name="WarningDialogLayout">
+   <property name="spacing">
+    <number>24</number>
+   </property>
    <property name="leftMargin">
-    <number>15</number>
+    <number>24</number>
    </property>
    <property name="topMargin">
-    <number>25</number>
+    <number>24</number>
    </property>
    <property name="rightMargin">
-    <number>15</number>
+    <number>24</number>
    </property>
    <property name="bottomMargin">
-    <number>25</number>
+    <number>24</number>
    </property>
    <item>
     <widget class="QLabel" name="text">
@@ -67,7 +83,7 @@ background-color: #CD2541;
      <property name="font">
       <font>
        <family>Roboto</family>
-       <pointsize>14</pointsize>
+       <pointsize>-1</pointsize>
       </font>
      </property>
      <property name="cursor">
@@ -144,68 +160,14 @@ border: none;
     </widget>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="buttonBarLayout">
-     <property name="spacing">
-      <number>35</number>
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Close</set>
      </property>
-     <item>
-      <spacer name="buttonBarSpacerLeft">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>137</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QPushButton" name="cancel">
-       <property name="minimumSize">
-        <size>
-         <width>120</width>
-         <height>34</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <family>Roboto Condensed</family>
-         <pointsize>14</pointsize>
-        </font>
-       </property>
-       <property name="cursor">
-        <cursorShape>PointingHandCursor</cursorShape>
-       </property>
-       <property name="accessibleName">
-        <string extracomment="accessible">Close</string>
-       </property>
-       <property name="text">
-        <string>CLOSE</string>
-       </property>
-       <property name="autoDefault">
-        <bool>false</bool>
-       </property>
-       <property name="warning" stdset="0">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <spacer name="buttonBarSpacerRight">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>137</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-    </layout>
+     <property name="centerButtons">
+      <bool>true</bool>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>
@@ -217,9 +179,6 @@ border: none;
    <container>1</container>
   </customwidget>
  </customwidgets>
- <tabstops>
-  <tabstop>cancel</tabstop>
- </tabstops>
  <resources/>
  <connections/>
 </ui>
