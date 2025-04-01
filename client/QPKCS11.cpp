@@ -333,6 +333,9 @@ bool QPKCS11::reload()
 		{ "/Library/latvia-eid/lib/eidlv-pkcs11.bundle/Contents/MacOS/eidlv-pkcs11", "3BDB960080B1FE451F830012428F536549440F900020" }, // LV-G2
 		{ "/Library/mCard/lib/mcard-pkcs11.so", "3B9D188131FC358031C0694D54434F5373020505D3" }, // LT-G3
 		{ "/Library/mCard/lib/mcard-pkcs11.so", "3B9D188131FC358031C0694D54434F5373020604D1" }, // LT-G3.1
+		{ "/Library/Atostek ID/Atostek-ID-PKCS11.dylib", "3B7F9600008031B865B0850300EF1200F6829000" }, // FI-G3
+		{ "/Library/Atostek ID/Atostek-ID-PKCS11.dylib", "3B7F9600008031B865B08504021B1200F6829000" }, // FI-G3.1
+		{ "/Library/Atostek ID/Atostek-ID-PKCS11.dylib", "3B7F9600008031B865B085050011122460829000" }, // FI-G4
 		{ "/Library/mPolluxDigiSign/libcryptoki.dylib", "3B7F9600008031B865B0850300EF1200F6829000" }, // FI-G3
 		{ "/Library/mPolluxDigiSign/libcryptoki.dylib", "3B7F9600008031B865B08504021B1200F6829000" }, // FI-G3.1
 		{ "/Library/mPolluxDigiSign/libcryptoki.dylib", "3B7F9600008031B865B085050011122460829000" }, // FI-G4
@@ -350,6 +353,9 @@ bool QPKCS11::reload()
 		{ "mcard-pkcs11.so", "3B9D188131FC358031C0694D54434F5373020505D3" }, // LT-G3
 		{ "mcard-pkcs11.so", "3B9D188131FC358031C0694D54434F5373020604D1" }, // LT-G3.1
 #if Q_PROCESSOR_WORDSIZE == 8
+		{ "/usr/lib/Atostek-ID-PKCS11.so", "3B7F9600008031B865B0850300EF1200F6829000" }, // FI-G3
+		{ "/usr/lib/Atostek-ID-PKCS11.so", "3B7F9600008031B865B08504021B1200F6829000" }, // FI-G3.1
+		{ "/usr/lib/Atostek-ID-PKCS11.so", "3B7F9600008031B865B085050011122460829000" }, // FI-G4
 		{ "/usr/lib64/libcryptoki.so", "3B7F9600008031B865B0850300EF1200F6829000" }, // FI-G3
 		{ "/usr/lib64/libcryptoki.so", "3B7F9600008031B865B08504021B1200F6829000" }, // FI-G3.1
 		{ "/usr/lib64/libcryptoki.so", "3B7F9600008031B865B085050011122460829000" }, // FI-G4
@@ -371,10 +377,12 @@ bool QPKCS11::reload()
 		QPCSCReader r(reader, &QPCSC::instance());
 		if(!r.isPresent())
 			continue;
-		qDebug() << r.atr();
-		QString driver = drivers.key(r.atr());
-		if(!driver.isEmpty() && load(driver))
-			return true;
+		QByteArray atr = r.atr();
+		qDebug() << atr;
+		for(auto i = drivers.cbegin(); i != drivers.cend(); ++i) {
+			if(i.value() == atr && load(i.key()))
+				return true;
+		}
 	}
 	return load(drivers.key({}));
 }
