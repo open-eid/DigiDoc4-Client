@@ -265,7 +265,7 @@ QPushButton:default:pressed {
 background-color: #215081;
 }
 QPushButton:default:disabled {
-background-color: #2F70B6;
+background-color: #82A9D3;
 }</string>
      </property>
      <layout class="QHBoxLayout" name="navigationAreaLayout" stretch="1,0,0,0,0,0,0,0,0">

@@ -47,13 +47,16 @@ border-color: #2F70B6;
 background-color: #2F70B6;
 }
 QPushButton:default:hover {
+border-color: #2B66A6;
 background-color: #2B66A6;
 }
 QPushButton:default:pressed {
+border-color: #215081;
 background-color: #215081;
 }
 QPushButton:default:disabled {
-background-color: #2F70B6;
+border-color: #82A9D3;
+background-color: #82A9D3;
 }</string>
   </property>
   <layout class="QVBoxLayout" name="MobileProgressLayout">

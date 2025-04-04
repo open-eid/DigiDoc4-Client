@@ -258,7 +258,7 @@ void ContainerPage::transition(CryptoDoc *container, const QSslCertificate &cert
 		for(const auto &key: dlg.keys())
 		{
 			container->addKey(key);
-			ui->rightPane->addWidget(new AddressItem(key, ui->rightPane, true));
+			ui->rightPane->addWidget(new AddressItem(key, AddressItem::Icon, ui->rightPane));
 		}
 		showMainAction({ EncryptContainer });
 	});
@@ -285,7 +285,7 @@ void ContainerPage::transition(CryptoDoc *container, const QSslCertificate &cert
 	for(const CKey &key: container->keys())
 	{
 		hasUnsupported = std::max(hasUnsupported, key.unsupported);
-		ui->rightPane->addWidget(new AddressItem(key, ui->rightPane, true));
+		ui->rightPane->addWidget(new AddressItem(key, AddressItem::Icon, ui->rightPane));
 	}
 	if(hasUnsupported)
 		emit warning({UnsupportedCDocWarning});

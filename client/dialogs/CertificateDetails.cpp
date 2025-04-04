@@ -23,7 +23,6 @@
 
 #include "Application.h"
 #include "DateTime.h"
-#include "Styles.h"
 #include "SslCertificate.h"
 #include "effects/Overlay.h"
 #include "dialogs/WarningDialog.h"
@@ -34,36 +33,18 @@
 #include <QtGui/QDesktopServices>
 #include <QtNetwork/QSslKey>
 #include <QtWidgets/QFileDialog>
-#include <QtWidgets/QMessageBox>
 
 CertificateDetails::CertificateDetails(const SslCertificate &cert, QWidget *parent)
 	: QDialog(parent)
-	, ui(new Ui::CertificateDetails)
 {
-	ui->setupUi(this);
+	Ui::CertificateDetails ui;
+	ui.setupUi(this);
 #ifdef Q_OS_MAC
 	setWindowFlags(Qt::Dialog | Qt::FramelessWindowHint | Qt::Sheet);
 #else
 	setWindowFlags(Qt::Dialog | Qt::CustomizeWindowHint);
 #endif
 	new Overlay(this);
-
-	QFont headerFont = Styles::font( Styles::Regular, 18 );
-	QFont regularFont = Styles::font( Styles::Regular, 14 );
-	QFont smallFont = Styles::font(Styles::Regular, 13);
-
-	ui->lblCertHeader->setFont(headerFont);
-	ui->lblCertDetails->setFont(headerFont);
-
-	ui->lblCertInfo->setFont(regularFont);
-	ui->tblDetails->setFont(smallFont);
-	ui->detailedValue->setFont(smallFont);
-
-	QFont condensed14 = Styles::font(Styles::Condensed, 14);
-	ui->close->setFont(condensed14);
-	ui->save->setFont(condensed14);
-
-	ui->lblCertHeader->setText(tr("Certificate information"));
 
 	QString i;
 	QTextStream s( &i );
@@ -80,10 +61,9 @@ CertificateDetails::CertificateDetails(const SslCertificate &cert, QWidget *pare
 	s << "<b>" << tr("Valid:") << "</b><br />";
 	s << "<b>" << tr("From") << "</b> " << cert.effectiveDate().toLocalTime().toString(QStringLiteral("dd.MM.yyyy")) << "<br />";
 	s << "<b>" << tr("To") << "</b> " << cert.expiryDate().toLocalTime().toString(QStringLiteral("dd.MM.yyyy"));
-	ui->lblCertInfo->setHtml( i );
+	ui.lblCertInfo->setHtml( i );
 
-
-	connect(ui->save, &QPushButton::clicked, this, [this, cert] {
+	connect(ui.save, &QPushButton::clicked, this, [this, cert] {
 		QString file = QFileDialog::getSaveFileName(this, tr("Save certificate"), QStringLiteral("%1%2%3.cer")
 				.arg(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation))
 				.arg(QDir::separator())
@@ -97,26 +77,25 @@ CertificateDetails::CertificateDetails(const SslCertificate &cert, QWidget *pare
 		else
 			WarningDialog::show(this, tr("Failed to save file"));
 	});
-	connect( ui->close, &QPushButton::clicked, this, &CertificateDetails::accept );
+	connect(ui.close, &QPushButton::clicked, this, &CertificateDetails::accept);
 	connect( this, &CertificateDetails::finished, this, &CertificateDetails::close );
-	connect(ui->tblDetails, &QTableWidget::itemSelectionChanged, this, [this] {
-		const QList<QTableWidgetItem*> &list = ui->tblDetails->selectedItems();
+	connect(ui.tblDetails, &QTableWidget::itemSelectionChanged, this, [detailedValue = ui.detailedValue, tblDetails = ui.tblDetails] {
+		const QList<QTableWidgetItem*> &list = tblDetails->selectedItems();
 		if(list.isEmpty())
 			return;
 		auto *contentItem = list.last();
 		auto userData = contentItem->data(Qt::UserRole);
-		ui->detailedValue->setPlainText(userData.isNull() ?
+		detailedValue->setPlainText(userData.isNull() ?
 			contentItem->data(Qt::DisplayRole).toString() : userData.toString());
 	});
 
-	ui->tblDetails->setHorizontalHeaderLabels({ tr("Field"), tr("Value") });
-	auto addItem = [this](const QString &variable, const QString &value, const QVariant &valueext = {}) {
-		int row = ui->tblDetails->model()->rowCount();
-		ui->tblDetails->setRowCount(row + 1);
+	auto addItem = [tblDetails = ui.tblDetails](const QString &variable, const QString &value, const QVariant &valueext = {}) {
+		int row = tblDetails->model()->rowCount();
+		tblDetails->setRowCount(row + 1);
 		auto *item = new QTableWidgetItem(value);
 		item->setData(Qt::UserRole, valueext);
-		ui->tblDetails->setItem(row, 0, new QTableWidgetItem(variable));
-		ui->tblDetails->setItem(row, 1, item);
+		tblDetails->setItem(row, 0, new QTableWidgetItem(variable));
+		tblDetails->setItem(row, 1, item);
 	};
 
 	addItem(tr("Version"), QString("V" + cert.version()));
@@ -150,36 +129,31 @@ CertificateDetails::CertificateDetails(const SslCertificate &cert, QWidget *pare
 		textExt << QStringLiteral("%1 = %2").arg(obj.constData(), data);
 	}
 	addItem(tr("Subject"), text.join(QStringLiteral(", ")), textExt.join('\n'));
-	addItem(tr("Public key"), cert.keyName(), cert.toHex(cert.publicKey().toDer()));
+	addItem(tr("Public key"), cert.keyName(), cert.publicKey().toDer().toHex(' ').toUpper());
 	QStringList enhancedKeyUsage = cert.enhancedKeyUsage().values();
 	if( !enhancedKeyUsage.isEmpty() )
 		addItem(tr("Enhanced key usage"), enhancedKeyUsage.join(QStringLiteral(", ")), enhancedKeyUsage.join('\n'));
 	QStringList policies = cert.policies();
 	if( !policies.isEmpty() )
 		addItem(tr("Certificate policies"), policies.join(QStringLiteral(", ")));
-	addItem(tr("Authority key identifier"), cert.toHex(cert.authorityKeyIdentifier()));
-	addItem(tr("Subject key identifier"), cert.toHex(cert.subjectKeyIdentifier()));
+	addItem(tr("Authority key identifier"), cert.authorityKeyIdentifier().toHex(' ').toUpper());
+	addItem(tr("Subject key identifier"), cert.subjectKeyIdentifier().toHex(' ').toUpper());
 	QStringList keyUsage = cert.keyUsage().values();
 	if( !keyUsage.isEmpty() )
 		addItem(tr("Key usage"), keyUsage.join(QStringLiteral(", ")), keyUsage.join('\n'));
 
 	// Disable resizing
-	ui->tblDetails->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
-}
-
-CertificateDetails::~CertificateDetails()
-{
-	delete ui;
+	ui.tblDetails->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 }
 
 #ifndef Q_OS_MAC
-void CertificateDetails::showCertificate(const SslCertificate &cert, QWidget *parent, const QString &suffix)
+void CertificateDetails::showCertificate(const QSslCertificate &cert, QWidget *parent, const QString &suffix)
 {
 #ifdef Q_OS_UNIX
 	CertificateDetails(cert, parent).exec();
 #else
 	Q_UNUSED(parent);
-	QString name = cert.subjectInfo("serialNumber");
+	QString name = cert.subjectInfo("serialNumber").join('_');
 	if(name.isEmpty())
 		name = cert.serialNumber().replace(':', "");
 	QString path = QStringLiteral("%1/%2%3.cer").arg(QDir::tempPath(), name, suffix);

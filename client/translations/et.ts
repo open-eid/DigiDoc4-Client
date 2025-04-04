@@ -16,26 +16,6 @@
 <context>
     <name>AddRecipients</name>
     <message>
-        <source>CANCEL</source>
-        <translation>KATKESTA</translation>
-    </message>
-    <message>
-        <source>CONFIRM</source>
-        <translation>KINNITA</translation>
-    </message>
-    <message>
-        <source>CERTIFICATE FROM CARD</source>
-        <translation>LISA SERTIFIKAAT KAARDILT</translation>
-    </message>
-    <message>
-        <source>CERTIFICATE FROM FILE</source>
-        <translation>LISA SERTIFIKAAT FAILIST</translation>
-    </message>
-    <message>
-        <source>LATEST USED CERTIFICATE</source>
-        <translation>VIIMATI LISATUD</translation>
-    </message>
-    <message>
         <source>Failed to read certificate</source>
         <translation>Sertifikaadi lugemine ebaõnnestus</translation>
     </message>
@@ -65,27 +45,22 @@
     </message>
     <message>
         <source>Certificate from card</source>
-        <extracomment>accessible</extracomment>
         <translation>Lisa sertifikaat kaardilt</translation>
     </message>
     <message>
         <source>Certificate from file</source>
-        <extracomment>accessible</extracomment>
         <translation>Lisa sertifikaat failist</translation>
     </message>
     <message>
         <source>Latest used certificate</source>
-        <extracomment>accessible</extracomment>
         <translation>Viimati lisatud</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <extracomment>accessible</extracomment>
         <translation>Katkesta</translation>
     </message>
     <message>
         <source>Confirm</source>
-        <extracomment>accessible</extracomment>
         <translation>Kinnita</translation>
     </message>
     <message>
@@ -299,14 +274,6 @@
         <translation>Sertifikaadi detailid</translation>
     </message>
     <message>
-        <source>CLOSE</source>
-        <translation>SULGE</translation>
-    </message>
-    <message>
-        <source>SAVE</source>
-        <translation>SALVESTA</translation>
-    </message>
-    <message>
         <source>This certificate is intended for following purpose(s):</source>
         <translation>Selle sertifikaadi otstarve on:</translation>
     </message>
@@ -404,25 +371,15 @@
     </message>
     <message>
         <source>Close</source>
-        <extracomment>accessible</extracomment>
         <translation>Sulge</translation>
     </message>
     <message>
         <source>Save</source>
-        <extracomment>accessible</extracomment>
         <translation>Salvesta</translation>
     </message>
 </context>
 <context>
     <name>CertificateHistory</name>
-    <message>
-        <source>CLOSE</source>
-        <translation>SULGE</translation>
-    </message>
-    <message>
-        <source>REMOVE</source>
-        <translation>EEMALDA</translation>
-    </message>
     <message>
         <source>Owner</source>
         <translation>Omanik</translation>
@@ -457,17 +414,10 @@
     </message>
     <message>
         <source>Close</source>
-        <extracomment>accessible</extracomment>
         <translation>Sulge</translation>
     </message>
     <message>
-        <source>Select</source>
-        <extracomment>accessible</extracomment>
-        <translation>Lisa</translation>
-    </message>
-    <message>
         <source>Remove</source>
-        <extracomment>accessible</extracomment>
         <translation>Eemalda</translation>
     </message>
     <message>
@@ -475,8 +425,12 @@
         <translation>Krüpteerimissertifikaat</translation>
     </message>
     <message>
-        <source>ADD</source>
-        <translation>LISA</translation>
+        <source>Last used certificates</source>
+        <translation>Viimati lisatud sertifikaadid</translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation>Lisa</translation>
     </message>
 </context>
 <context>
@@ -1255,14 +1209,6 @@
         <translation>Väärtus</translation>
     </message>
     <message>
-        <source>CLOSE</source>
-        <translation>SULGE</translation>
-    </message>
-    <message>
-        <source>SHOW CERTIFICATE</source>
-        <translation>NÄITA SERTIFIKAATI</translation>
-    </message>
-    <message>
         <source>ConcatKDF digest method</source>
         <translation>ConcatKDF referaatmeetod</translation>
     </message>
@@ -1272,12 +1218,10 @@
     </message>
     <message>
         <source>Close</source>
-        <extracomment>accessible</extracomment>
         <translation>Sulge</translation>
     </message>
     <message>
         <source>Show certificate</source>
-        <extracomment>accessible</extracomment>
         <translation>Näita sertifikaati</translation>
     </message>
     <message>

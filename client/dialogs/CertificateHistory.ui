@@ -18,30 +18,60 @@
   </property>
   <property name="styleSheet">
    <string notr="true">QWidget {
-color: #000000;
+color: #07142A;
+font-family: Roboto, Helvetica;
+font-size: 14px;
+}
+#label {
+color: #003168;
+font-size: 20px;
+font-weight: 700;
+}
+#CertificateHistory {
 background-color: #FFFFFF;
-}
-QPushButton {
-border-radius: 2px;
-border: none;
-color: #FFFFFF;
-background-color: #006EB5;
-}
-QPushButton:pressed {
-background-color: #41B6E6;
-}
-QPushButton:hover:!pressed {
-background-color: #008DCF;
-}
-QPushButton:disabled {
-background-color: #BEDBED;
 }</string>
   </property>
-  <layout class="QGridLayout" name="CertificateHistoryLayout">
-   <item row="0" column="0" colspan="4">
-    <widget class="QTreeWidget" name="view">
-     <property name="styleSheet">
-      <string notr="true">#view {
+  <layout class="QVBoxLayout" name="CertificateHistoryLayout">
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item>
+    <layout class="QVBoxLayout" name="bodyLayout">
+     <property name="spacing">
+      <number>24</number>
+     </property>
+     <property name="leftMargin">
+      <number>24</number>
+     </property>
+     <property name="topMargin">
+      <number>24</number>
+     </property>
+     <property name="rightMargin">
+      <number>24</number>
+     </property>
+     <item>
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>Last used certificates</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QTreeWidget" name="view">
+       <property name="styleSheet">
+        <string notr="true">#view {
 	border:none;
 }
 QHeaderView::section {
@@ -60,159 +90,176 @@ QHeaderView::down-arrow {
 	width: 7px;
 	padding-right: 5px;
 }</string>
-     </property>
-     <property name="horizontalScrollBarPolicy">
-      <enum>Qt::ScrollBarAlwaysOff</enum>
-     </property>
-     <property name="editTriggers">
-      <set>QAbstractItemView::CurrentChanged|QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed</set>
-     </property>
-     <property name="selectionMode">
-      <enum>QAbstractItemView::MultiSelection</enum>
-     </property>
-     <property name="rootIsDecorated">
-      <bool>false</bool>
-     </property>
-     <property name="sortingEnabled">
-      <bool>true</bool>
-     </property>
-     <property name="columnCount">
-      <number>4</number>
-     </property>
-     <attribute name="headerShowSortIndicator" stdset="0">
-      <bool>true</bool>
-     </attribute>
-     <attribute name="headerStretchLastSection">
-      <bool>false</bool>
-     </attribute>
-     <column>
-      <property name="text">
-       <string>Owner</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Type</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Issuer</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Expiry date</string>
-      </property>
-     </column>
-    </widget>
+       </property>
+       <property name="horizontalScrollBarPolicy">
+        <enum>Qt::ScrollBarAlwaysOff</enum>
+       </property>
+       <property name="editTriggers">
+        <set>QAbstractItemView::CurrentChanged|QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed</set>
+       </property>
+       <property name="selectionMode">
+        <enum>QAbstractItemView::MultiSelection</enum>
+       </property>
+       <property name="rootIsDecorated">
+        <bool>false</bool>
+       </property>
+       <property name="sortingEnabled">
+        <bool>true</bool>
+       </property>
+       <property name="columnCount">
+        <number>4</number>
+       </property>
+       <attribute name="headerShowSortIndicator" stdset="0">
+        <bool>true</bool>
+       </attribute>
+       <attribute name="headerStretchLastSection">
+        <bool>false</bool>
+       </attribute>
+       <column>
+        <property name="text">
+         <string>Owner</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Type</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Issuer</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Expiry date</string>
+        </property>
+        <property name="textAlignment">
+         <set>AlignCenter</set>
+        </property>
+       </column>
+      </widget>
+     </item>
+    </layout>
    </item>
-   <item row="1" column="0">
-    <spacer name="horizontalSpacer">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>25</width>
-       <height>18</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item row="1" column="1">
-    <widget class="QPushButton" name="close">
-     <property name="enabled">
-      <bool>true</bool>
-     </property>
+   <item>
+    <widget class="QWidget" name="navigationArea" native="true">
      <property name="minimumSize">
       <size>
-       <width>120</width>
-       <height>30</height>
+       <width>0</width>
+       <height>48</height>
       </size>
      </property>
-     <property name="font">
-      <font>
-       <pointsize>14</pointsize>
-      </font>
-     </property>
-     <property name="accessibleName">
-      <string extracomment="accessible">Close</string>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>48</height>
+      </size>
      </property>
      <property name="styleSheet">
-      <string notr="true">QPushButton {
-	border-radius: 2px; 
-	border: none;
-	color: #ffffff;
-	background-color: #981E32;
+      <string notr="true">#navigationArea {
+border-top: 1px solid #E7EAEF;
+background-color: #F3F5F7;
+}
+QPushButton {
+padding: 10px 12px;
+border: 1px solid #2F70B6;
+border-radius: 4px;
+color: #ffffff;
+background-color: #2F70B6;
+font-size: 12px;
+font-weight: 700;
+}
+QPushButton:hover {
+border-color: #2B66A6;
+background-color: #2B66A6;
 }
 QPushButton:pressed {
-	background-color: #F24A66;
-}
-QPushButton:hover:!pressed {
-	background-color: #CD2541;
+border-color: #215081;
+background-color: #215081;
 }
 QPushButton:disabled {
-	background-color: #BEDBED;
+border-color: #82A9D3;
+background-color: #82A9D3;
 }
-QPushButton:disabled {
-	background-color: #BEDBED;
+QPushButton:default {
+background-color: transparent;
+border-color: #AD2A45;
+color: #AD2A45;
+}
+QPushButton:default:hover {
+background-color: #F5EBED;
+}
+QPushButton:default:pressed {
+background-color: #E1C1C6;
 }</string>
      </property>
-     <property name="text">
-      <string>CLOSE</string>
-     </property>
-     <property name="default">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="2">
-    <widget class="QPushButton" name="select">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>120</width>
-       <height>30</height>
-      </size>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>14</pointsize>
-      </font>
-     </property>
-     <property name="accessibleName">
-      <string extracomment="accessible">Select</string>
-     </property>
-     <property name="text">
-      <string>ADD</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="3">
-    <widget class="QPushButton" name="remove">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>120</width>
-       <height>30</height>
-      </size>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>14</pointsize>
-      </font>
-     </property>
-     <property name="accessibleName">
-      <string extracomment="accessible">Remove</string>
-     </property>
-     <property name="text">
-      <string>REMOVE</string>
-     </property>
+     <layout class="QHBoxLayout" name="navigationAreaLayout">
+      <property name="spacing">
+       <number>16</number>
+      </property>
+      <property name="leftMargin">
+       <number>24</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>24</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>590</width>
+          <height>15</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="close">
+        <property name="text">
+         <string>Close</string>
+        </property>
+        <property name="default">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="select">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>Add</string>
+        </property>
+        <property name="autoDefault">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="remove">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>Remove</string>
+        </property>
+        <property name="autoDefault">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </item>
   </layout>

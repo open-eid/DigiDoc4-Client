@@ -47,22 +47,21 @@ QLabel[label=&quot;good&quot;] {
 color: #1A641B;
 background: #EAF8EA;
 }
-QToolButton {
+#add {
+padding: 9px 8px;
 font-size: 12px;
 font-weight: 700;
-border-radius: 2px;
+border-radius: 4px;
 border: none;
-color: #006EB5;
+color: #2F70B6;
 }
-QToolButton:pressed {
-color: #FFFFFF;
-background-color: #006EB5;
+#add:hover {
+background-color: #EAF1F8;
 }
-QToolButton:hover:!pressed {
-border: 1px solid #006EB5;
-color: #006EB5;
+#add:pressed {
+background-color: #BFD3E8;
 }
-QToolButton:disabled {
+#add:disabled {
 color: #727679;
 }</string>
   </property>
@@ -180,41 +179,7 @@ color: #727679;
     </widget>
    </item>
    <item row="0" column="5" rowspan="2">
-    <widget class="QToolButton" name="added">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>25</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>25</height>
-      </size>
-     </property>
-     <property name="text">
-      <string>Added</string>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="6" rowspan="2">
     <widget class="QToolButton" name="add">
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>25</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>25</height>
-      </size>
-     </property>
      <property name="cursor">
       <cursorShape>PointingHandCursor</cursorShape>
      </property>

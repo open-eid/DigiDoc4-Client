@@ -45,17 +45,12 @@ public:
 	bool isUpdated() const;
 
 private:
-	void addAllRecipientToRightPane();
-	void addRecipientFromCard();
 	void addRecipientFromFile();
 	void addRecipientFromHistory();
-	AddressItem * addRecipientToLeftPane(const QSslCertificate& cert);
-	bool addRecipientToRightPane(const CKey &key, bool update = true);
-	void addRecipientToRightPane(AddressItem *leftItem, bool update = true);
-	void addSelectedCerts(const QList<HistoryCertData>& selectedCertData);
-	void enableRecipientFromCard();
-	void removeRecipientFromRightPane(Item *toRemove);
+	void addRecipient(const QSslCertificate& cert, bool select = true);
+	void addRecipientToRightPane(Item *item, bool update = true);
 
+	AddressItem* itemListValue(ItemList *list, const CKey &cert);
 	void search(const QString &term, bool select = false, const QString &type = {});
 	void showError(const QString &msg, const QString &details = {});
 	void showResult(const QList<QSslCertificate> &result, int resultCount, const QVariantMap &userData);
@@ -63,7 +58,6 @@ private:
 	static QString defaultUrl(QLatin1String key, const QString &defaultValue);
 
 	Ui::AddRecipients *ui;
-	QHash<QSslCertificate, AddressItem *> leftList;
 	QList<CKey> rightList;
 	LdapSearch *ldap_person, *ldap_corp;
 	bool updated = false;

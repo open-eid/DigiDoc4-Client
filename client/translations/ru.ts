@@ -16,26 +16,6 @@
 <context>
     <name>AddRecipients</name>
     <message>
-        <source>CANCEL</source>
-        <translation>ОТМЕНА</translation>
-    </message>
-    <message>
-        <source>CONFIRM</source>
-        <translation>ПОДТВЕРДИТЬ</translation>
-    </message>
-    <message>
-        <source>CERTIFICATE FROM CARD</source>
-        <translation>СЕРТИФИКАТ С КАРТЫ</translation>
-    </message>
-    <message>
-        <source>CERTIFICATE FROM FILE</source>
-        <translation>СЕРТИФИКАТ ИЗ ФАЙЛА</translation>
-    </message>
-    <message>
-        <source>LATEST USED CERTIFICATE</source>
-        <translation>ПОСЛЕДНИЙ СЕРТИФИКАТ</translation>
-    </message>
-    <message>
         <source>Failed to read certificate</source>
         <translation>Не удалось прочитать сертификат</translation>
     </message>
@@ -49,7 +29,7 @@
     </message>
     <message>
         <source>Person or company does not own a valid certificate.&lt;br /&gt;It is necessary to have a valid certificate for encryption.&lt;br /&gt;&lt;a href=&apos;https://www.id.ee/en/article/encryption-and-decryption-of-documents/&apos;&gt;Read more about it&lt;/a&gt;.</source>
-        <translation>У человека или предприятия отсутствует действующий сертификат.&lt;br /&gt;Для шифрования нужен действующий сертификат.&lt;br /&gt;&lt;a href=&apos;https://www.id.ee/ru/artikkel/shifrovanie-i-deshifrovka-dokumentov/&apos;&gt;Точнее можно прочитать&lt;/a&gt;</translation>
+        <translation>У человека или предприятия отсутствует действующий сертификат.&lt;br /&gt;Для шифрования нужен действующий сертификат.&lt;br /&gt;&lt;a href=&apos;https://www.id.ee/ru/artikkel/shifrovanie-i-deshifrovka-dokumentov/&apos;&gt;Точнее можно прочитать&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>Certificates (*.cer *.crt *.pem)</source>
@@ -65,27 +45,22 @@
     </message>
     <message>
         <source>Certificate from card</source>
-        <extracomment>accessible</extracomment>
         <translation>Сертификат с карты</translation>
     </message>
     <message>
         <source>Certificate from file</source>
-        <extracomment>accessible</extracomment>
         <translation>Сертификат из файла</translation>
     </message>
     <message>
         <source>Latest used certificate</source>
-        <extracomment>accessible</extracomment>
         <translation>Последний сертификат</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <extracomment>accessible</extracomment>
         <translation>Отмена</translation>
     </message>
     <message>
         <source>Confirm</source>
-        <extracomment>accessible</extracomment>
         <translation>Подтвердить</translation>
     </message>
     <message>
@@ -299,14 +274,6 @@
         <translation>Сведения о сертификате</translation>
     </message>
     <message>
-        <source>CLOSE</source>
-        <translation>ЗАКРЫТЬ</translation>
-    </message>
-    <message>
-        <source>SAVE</source>
-        <translation>СОХРАНИТЬ</translation>
-    </message>
-    <message>
         <source>This certificate is intended for following purpose(s):</source>
         <translation>Этот сертификат предназначен для следующих целей:</translation>
     </message>
@@ -404,25 +371,15 @@
     </message>
     <message>
         <source>Close</source>
-        <extracomment>accessible</extracomment>
         <translation>Закрыть</translation>
     </message>
     <message>
         <source>Save</source>
-        <extracomment>accessible</extracomment>
         <translation>Сохранить</translation>
     </message>
 </context>
 <context>
     <name>CertificateHistory</name>
-    <message>
-        <source>CLOSE</source>
-        <translation>ЗАКРЫТЬ</translation>
-    </message>
-    <message>
-        <source>REMOVE</source>
-        <translation>УДАЛИТЬ</translation>
-    </message>
     <message>
         <source>Owner</source>
         <translation>Владелец</translation>
@@ -457,17 +414,10 @@
     </message>
     <message>
         <source>Close</source>
-        <extracomment>accessible</extracomment>
         <translation>Закрыть</translation>
     </message>
     <message>
-        <source>Select</source>
-        <extracomment>accessible</extracomment>
-        <translation>Выбрать</translation>
-    </message>
-    <message>
         <source>Remove</source>
-        <extracomment>accessible</extracomment>
         <translation>Удалить</translation>
     </message>
     <message>
@@ -475,8 +425,12 @@
         <translation>Сертификат шифрования</translation>
     </message>
     <message>
-        <source>ADD</source>
-        <translation>ДОБАВИТЬ</translation>
+        <source>Last used certificates</source>
+        <translation>Последний сертификат</translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation>Добавить</translation>
     </message>
 </context>
 <context>
@@ -1255,14 +1209,6 @@
         <translation>Значение</translation>
     </message>
     <message>
-        <source>CLOSE</source>
-        <translation>ЗАКРЫТЬ</translation>
-    </message>
-    <message>
-        <source>SHOW CERTIFICATE</source>
-        <translation>ПОКАЗАТЬ СЕРТИФИКАТ</translation>
-    </message>
-    <message>
         <source>ConcatKDF digest method</source>
         <translation>Метод подсчета ConcatKDF</translation>
     </message>
@@ -1272,12 +1218,10 @@
     </message>
     <message>
         <source>Close</source>
-        <extracomment>accessible</extracomment>
         <translation>Закрыть</translation>
     </message>
     <message>
         <source>Show certificate</source>
-        <extracomment>accessible</extracomment>
         <translation>Показать сертификат</translation>
     </message>
     <message>
