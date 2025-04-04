@@ -29,7 +29,7 @@ jobs:
       env:
         HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK: YES
       run: |
-        brew install ninja flatbuffers
+        brew install flatbuffers
         HASH=($(shasum prepare_osx_build_environment.sh))
         curl -O -L -s https://installer.id.ee/media/github/opensc_0.23.0.pkg
         curl -O -L -s https://installer.id.ee/media/github/${HASH}.zip
@@ -100,16 +100,8 @@ jobs:
     container: fedora:${{ matrix.container }}
     strategy:
       matrix:
-        container: [40, 41, 42]
+        container: [41, 42]
     steps:
-    - name: Install Deps
-      run: |
-        dnf install -y --setopt=install_weak_deps=False \
-        git gcc-c++ cmake rpm-build gettext openssl-devel openldap-devel pcsc-lite-devel qt6-qtsvg-devel qt6-qttools-devel flatbuffers-devel flatbuffers-compiler zlib-devel
-    - name: Checkout
-      uses: actions/checkout@v4
-      with:
-        submodules: recursive
     - name: Download artifact
       uses: dawidd6/action-download-artifact@v6
       with:
@@ -118,8 +110,12 @@ jobs:
         name: fedora_${{ matrix.container }}
         path: libdigidocpp-pkg
         repo: open-eid/libdigidocpp
-    - name: Install artifact
-      run: dnf install -y ./libdigidocpp-pkg/*.rpm
+    - name: Install Deps
+      run: dnf install -y ./libdigidocpp-pkg/*.rpm git gcc-c++ cmake rpm-build gettext openssl-devel openldap-devel pcsc-lite-devel qt6-qtsvg-devel qt6-qttools-devel flatbuffers-devel flatbuffers-compiler zlib-devel
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
     - name: Build
       run: |
         cmake -DCMAKE_INSTALL_PREFIX=/usr -B build -S .
