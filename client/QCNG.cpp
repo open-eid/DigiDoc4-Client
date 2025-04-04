@@ -30,13 +30,13 @@ using namespace Qt::Literals::StringLiterals;
 
 Q_LOGGING_CATEGORY(CNG, "qdigidoc4.QCNG")
 
-template<typename T, typename D = decltype(NCryptFreeObject)>
+template<typename T, auto D = NCryptFreeObject>
 struct SCOPE
 {
 	T d {};
-	~SCOPE() { if(d) D(d); }
-	constexpr operator T() const { return d; }
-	constexpr T* operator&() { return &d; }
+	~SCOPE() noexcept { if(d) D(d); }
+	constexpr operator T() const noexcept { return d; }
+	constexpr T* operator&() noexcept { return &d; }
 };
 
 class QCNG::Private
@@ -203,12 +203,12 @@ QList<TokenData> QCNG::tokens() const
 		SCOPE<NCRYPT_PROV_HANDLE> h;
 		SECURITY_STATUS err = NCryptOpenStorageProvider(&h, LPCWSTR(provider.utf16()), 0);
 		NCryptKeyName *keyname{};
-		PVOID pos {};
+		SCOPE<PVOID,NCryptFreeBuffer> pos{};
 		BCRYPT_PSS_PADDING_INFO rsaPSS { NCRYPT_SHA256_ALGORITHM, 32 };
 		DWORD size {};
-		while(SUCCEEDED(NCryptEnumKeys(h, reader.isEmpty() ? nullptr : LPCWSTR(scope.utf16()), &keyname, &pos, NCRYPT_SILENT_FLAG)))
+		while(NCryptEnumKeys(h, reader.isEmpty() ? nullptr : LPCWSTR(scope.utf16()), &keyname, &pos, NCRYPT_SILENT_FLAG) == ERROR_SUCCESS)
 		{
-			SCOPE<NCryptKeyName*,decltype(NCryptFreeBuffer)> keyname_scope{keyname};
+			SCOPE<NCryptKeyName*,NCryptFreeBuffer> keyname_scope{keyname};
 			SCOPE<NCRYPT_KEY_HANDLE> key;
 			err = NCryptOpenKey(h, &key, keyname->pszName, keyname->dwLegacyKeySpec, NCRYPT_SILENT_FLAG);
 			SslCertificate cert(prop(key, NCRYPT_CERTIFICATE_PROPERTY), QSsl::Der);
@@ -248,7 +248,7 @@ QList<TokenData> QCNG::tokens() const
 
 	qCWarning(CNG) << "Start enumerationg providers";
 	DWORD count {};
-	SCOPE<NCryptProviderName*,decltype(NCryptFreeBuffer)> providers {};
+	SCOPE<NCryptProviderName*,NCryptFreeBuffer> providers {};
 	NCryptEnumStorageProviders(&count, &providers, NCRYPT_SILENT_FLAG);
 	for(DWORD i {}; i < count; ++i)
 	{
