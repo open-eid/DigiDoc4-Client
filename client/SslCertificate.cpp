@@ -262,8 +262,10 @@ QString SslCertificate::toString( const QString &format ) const
 
 SslCertificate::CertType SslCertificate::type() const
 {
-	for(const QString &p: policies())
+	// https://www.id.ee/wp-content/uploads/2022/02/cp_esteid_01.10.2018_version1.0.pdf
+	for(QString p: policies())
 	{
+		p.remove(QLatin1String("2.999."));
 		if(p.startsWith(QLatin1String("1.3.6.1.4.1.10015.1.1")) ||
 			p.startsWith(QLatin1String("1.3.6.1.4.1.10015.3.1")) ||
 			p.startsWith(QLatin1String("1.3.6.1.4.1.10015.1.2")) ||
@@ -286,9 +288,11 @@ SslCertificate::CertType SslCertificate::type() const
 			p.startsWith(QLatin1String("1.3.6.1.4.1.51361.1.2.4")))
 			return EResidentType;
 		if(p.startsWith(QLatin1String("1.3.6.1.4.1.51361.1.1")) ||
-			p.startsWith(QLatin1String("1.3.6.1.4.1.51455.1.1")) ||
 			p.startsWith(QLatin1String("1.3.6.1.4.1.51361.1.2")) ||
-			p.startsWith(QLatin1String("1.3.6.1.4.1.51455.1.2")))
+			p.startsWith(QLatin1String("1.3.6.1.4.1.51361.2.1")) ||
+			p.startsWith(QLatin1String("1.3.6.1.4.1.51455.1.1")) ||
+			p.startsWith(QLatin1String("1.3.6.1.4.1.51455.1.2")) ||
+			p.startsWith(QLatin1String("1.3.6.1.4.1.51455.2.1")))
 			return EstEidType;
 	}
 
