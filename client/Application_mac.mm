@@ -25,6 +25,8 @@
 #include <QtCore/QUrlQuery>
 #include <QtGui/QDesktopServices>
 
+using namespace Qt::StringLiterals;
+
 @implementation NSApplication (ApplicationObjC)
 
 - (void)appReopen:(NSAppleEventDescriptor *)event withReplyEvent:(NSAppleEventDescriptor *)replyEvent
@@ -96,7 +98,7 @@ void Application::deinitMacEvents()
 void Application::mailTo( const QUrl &url )
 {
 	QUrlQuery q(url);
-	if(NSURL *appUrl = CFBridgingRelease(LSCopyDefaultApplicationURLForURL((__bridge CFURLRef)url.toNSURL(), kLSRolesAll, nil)))
+	if(NSURL *appUrl = [NSWorkspace.sharedWorkspace URLForApplicationToOpenURL:url.toNSURL()])
 	{
 		QString p;
 		QTextStream s( &p );
@@ -112,24 +114,11 @@ void Application::mailTo( const QUrl &url )
 			<< "end tell" << Qt::endl
 			<< "end run" << Qt::endl;
 		}
-		else if([appUrl.path rangeOfString:@"Entourage"].location != NSNotFound)
-		{
-			s << "on run" << Qt::endl
-			<< "set vattachment to \"" << q.queryItemValue(QStringLiteral("attachment")) << "\"" << Qt::endl
-			<< "set vsubject to \"" << q.queryItemValue(QStringLiteral("subject")) << "\"" << Qt::endl
-			<< "tell application \"Microsoft Entourage\"" << Qt::endl
-			<< "set vmessage to make new outgoing message with properties" << Qt::endl
-			<< "{subject:vsubject, attachments:vattachment}" << Qt::endl
-			<< "open vmessage" << Qt::endl
-			<< "activate" << Qt::endl
-			<< "end tell" << Qt::endl
-			<< "end run" << Qt::endl;
-		}
 		else if([appUrl.path rangeOfString:@"Outlook"].location != NSNotFound)
 		{
 			s << "on run" << Qt::endl
-			<< "set vattachment to \"" << q.queryItemValue(QStringLiteral("attachment")) << "\" as POSIX file" << Qt::endl
-			<< "set vsubject to \"" << q.queryItemValue(QStringLiteral("subject")) << "\"" << Qt::endl
+			<< "set vattachment to \"" << q.queryItemValue(u"attachment"_s) << "\" as POSIX file" << Qt::endl
+			<< "set vsubject to \"" << q.queryItemValue(u"subject"_s) << "\"" << Qt::endl
 			<< "tell application \"Microsoft Outlook\"" << Qt::endl
 			<< "activate" << Qt::endl
 			<< "set vmessage to make new outgoing message with properties {subject:vsubject}" << Qt::endl
@@ -153,3 +142,10 @@ void Application::mailTo( const QUrl &url )
 	}
 	QDesktopServices::openUrl( url );
 }
+
+QString Application::groupContainerPath()
+{
+	return QString::fromNSString([NSFileManager.defaultManager
+		containerURLForSecurityApplicationGroupIdentifier:@"group.ee.ria.qdigidoc4.tsl"].path);
+}
+
