@@ -22,8 +22,6 @@
 
 #include "Styles.h"
 
-#include <QLabel>
-#include <QSvgWidget>
 #include <QKeyEvent>
 
 using namespace ria::qdigidoc4;
@@ -77,9 +75,9 @@ QString ItemList::addLabel()
 {
 	switch(itemType)
 	{
-	case ItemFile: return tr("+ ADD MORE FILES");
-	case ItemAddress: return tr("+ ADD RECIPIENT");
-	case ToAddAdresses: return tr("ADD ALL");
+	case ItemFile: return tr("+ Add more files");
+	case ItemAddress: return tr("+ Add recipient");
+	case ToAddAdresses: return tr("Add all");
 	default: return {};
 	}
 }
@@ -211,14 +209,9 @@ void ItemList::init(ItemType item, const char *header)
 	}
 
 	if (itemType == ItemSignature || item == AddedAdresses || this->state == SignedContainer)
-	{
 		ui->add->hide();
-	}
 	else
-	{
-		ui->add->init(LabelButton::DeepCeruleanWithLochmara, addLabel());
-		ui->add->setFont(Styles::font(Styles::Condensed, 12));
-	}
+		ui->add->setText(addLabel());
 
 	if(itemType == ItemAddress)
 	{

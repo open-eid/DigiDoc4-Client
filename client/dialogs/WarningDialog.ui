@@ -60,6 +60,9 @@ border-color: #E1C1C6;
    <property name="spacing">
     <number>24</number>
    </property>
+   <property name="sizeConstraint">
+    <enum>QLayout::SetFixedSize</enum>
+   </property>
    <property name="leftMargin">
     <number>24</number>
    </property>

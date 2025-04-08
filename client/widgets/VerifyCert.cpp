@@ -34,17 +34,17 @@ VerifyCert::VerifyCert(QWidget *parent)
 {
 	ui->setupUi( this );
 
-	connect(ui->changePIN, &QPushButton::clicked, this, [=] {
+	connect(ui->changePIN, &QPushButton::clicked, this, [this] {
 		emit changePinClicked( false, isBlockedPin );
 	});
-	connect(ui->forgotPinLink, &QPushButton::clicked, this, [=] {
+	connect(ui->forgotPinLink, &QPushButton::clicked, this, [this] {
 		emit changePinClicked( true, false );	// Change PIN with PUK code
 	});
-	connect(ui->details, &QPushButton::clicked, this, [=] {
+	connect(ui->details, &QPushButton::clicked, this, [this] {
 		CertificateDetails::showCertificate(c, this,
 			pinType == QSmartCardData::Pin1Type ? QStringLiteral("-auth") : QStringLiteral("-sign"));
 	});
-	connect(ui->checkCert, &QPushButton::clicked, this, [=]{
+	connect(ui->checkCert, &QPushButton::clicked, this, [this]{
 		QString msg = tr("Read more <a href=\"https://www.id.ee/en/article/validity-of-id-card-certificates/\">here</a>.");
 		switch(c.validateOnline())
 		{
@@ -57,7 +57,7 @@ VerifyCert::VerifyCert(QWidget *parent)
 		default:
 			msg = tr("Certificate status check failed. Please check your internet connection.");
 		}
-		WarningDialog::show(this, msg);
+		WarningDialog::show(msg);
 	});
 
 	ui->nameIcon->hide();
@@ -138,7 +138,7 @@ void VerifyCert::update()
 		else
 			ui->name->setText(tr("Certificate for Encryption"));
 		ui->validUntil->setText(txt);
-		ui->changePIN->setText(isBlockedPin ? tr("UNBLOCK") : tr("CHANGE PIN%1").arg(pinType));
+		ui->changePIN->setText(isBlockedPin ? tr("Unblock") : tr("Change PIN%1").arg(pinType));
 		ui->changePIN->setHidden((isBlockedPin && isBlockedPuk) || isTempelType);
 		ui->forgotPinLink->setText(tr("Forgot PIN%1?").arg(pinType));
 		ui->forgotPinLink->setHidden(isBlockedPin || isBlockedPuk || isTempelType);
@@ -154,7 +154,7 @@ void VerifyCert::update()
 		ui->name->setText(tr("PUK code"));
 		ui->validUntil->setText(tr("The PUK code is located in your envelope"));
 		ui->validUntil->setHidden(isBlockedPuk);
-		ui->changePIN->setText(tr("CHANGE PUK"));
+		ui->changePIN->setText(tr("Change PUK"));
 		ui->changePIN->setHidden(isBlockedPuk);
 		ui->forgotPinLink->hide();
 		ui->details->hide();
