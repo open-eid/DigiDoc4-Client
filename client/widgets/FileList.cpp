@@ -38,7 +38,7 @@ using namespace ria::qdigidoc4;
 FileList::FileList(QWidget *parent)
 : ItemList(parent)
 {
-	connect(ui->add, &LabelButton::clicked, this, &FileList::selectFile);
+	connect(ui->add, &QToolButton::clicked, this, &FileList::selectFile);
 	connect(ui->download, &QToolButton::clicked, this, &FileList::saveAll);
 }
 

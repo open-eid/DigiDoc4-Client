@@ -1124,24 +1124,8 @@
 <context>
     <name>ItemList</name>
     <message>
-        <source>SEARCH</source>
-        <translation>OTSI</translation>
-    </message>
-    <message>
         <source>Enter the personal code, institution or registry code</source>
         <translation>Sisesta isikukood, asutus või registrikood</translation>
-    </message>
-    <message>
-        <source>+ ADD MORE FILES</source>
-        <translation>+ LISA VEEL FAILE</translation>
-    </message>
-    <message>
-        <source>+ ADD RECIPIENT</source>
-        <translation>+ LISA ADRESSAAT</translation>
-    </message>
-    <message>
-        <source>ADD ALL</source>
-        <translation>LISA KÕIK</translation>
     </message>
     <message>
         <source>Container is not signed</source>
@@ -1186,12 +1170,23 @@
     </message>
     <message>
         <source>Search</source>
-        <extracomment>accessible</extracomment>
         <translation>Otsi</translation>
     </message>
     <message>
         <source>Download all files</source>
         <translation>Laadi kõik failid alla</translation>
+    </message>
+    <message>
+        <source>+ Add more files</source>
+        <translation>+ Lisa veel faile</translation>
+    </message>
+    <message>
+        <source>+ Add recipient</source>
+        <translation>+ Lisa adressaat</translation>
+    </message>
+    <message>
+        <source>Add all</source>
+        <translation>Lisa kõik</translation>
     </message>
 </context>
 <context>
@@ -1295,42 +1290,47 @@ LDAP serveriga ei saa ühendust.</translation>
 <context>
     <name>MainAction</name>
     <message>
-        <source>SignatureMobile</source>
-        <translation>ALLKIRJASTA
-MOBIIL-ID’GA</translation>
-    </message>
-    <message>
-        <source>SignatureSmartID</source>
-        <translation>ALLKIRJASTA
-SMART-ID’GA</translation>
-    </message>
-    <message>
-        <source>SignatureAdd</source>
-        <translation>ALLKIRJASTA
-ID-KAARDIGA</translation>
-    </message>
-    <message>
-        <source>SignatureToken</source>
-        <translation>ALLKIRJASTA
-E-TEMPLIGA</translation>
-    </message>
-    <message>
-        <source>EncryptContainer</source>
-        <translation>KRÜPTEERI</translation>
-    </message>
-    <message>
-        <source>DecryptContainer</source>
-        <translation>DEKRÜPTEERI
-ID-KAARDIGA</translation>
-    </message>
-    <message>
-        <source>DECRYPT</source>
-        <translation>DEKRÜPTEERI</translation>
-    </message>
-    <message>
         <source>Token selection</source>
         <comment>accessible</comment>
         <translation>Vali vahend</translation>
+    </message>
+    <message>
+        <source>Sign with
+Mobile-ID</source>
+        <translation>Allkirjasta
+Mobiil-ID’ga</translation>
+    </message>
+    <message>
+        <source>Sign with
+Smart-ID</source>
+        <translation>Allkirjasta
+Smart-ID’ga</translation>
+    </message>
+    <message>
+        <source>Sign with
+E-Seal</source>
+        <translation>Allkirjasta
+E-templiga</translation>
+    </message>
+    <message>
+        <source>Encrypt</source>
+        <translation>Krüpteeri</translation>
+    </message>
+    <message>
+        <source>Decrypt</source>
+        <translation>Dekrüpteeri</translation>
+    </message>
+    <message>
+        <source>Decrypt with
+ID-Card</source>
+        <translation>Dekrüpteeri
+ID-kaardiga</translation>
+    </message>
+    <message>
+        <source>Sign with
+ID-Card</source>
+        <translation>Allkirjasta
+ID-kaardiga</translation>
     </message>
 </context>
 <context>
@@ -1348,16 +1348,12 @@ ID-KAARDIGA</translation>
         <translation>Allkirjastamiseks või kontrollimiseks lohista fail siia ...</translation>
     </message>
     <message>
-        <source>Open file for signing or verifying</source>
-        <translation>... VÕI VALI FAIL KETTALT</translation>
+        <source>... or load file from disk</source>
+        <translation>... või vali fail kettalt</translation>
     </message>
     <message>
         <source>Drag file here for encryption ...</source>
         <translation>Krüpteerimiseks või dekrüpteerimiseks lohista fail siia ...</translation>
-    </message>
-    <message>
-        <source>Open file for encryption or decryption</source>
-        <translation>... VÕI VALI FAIL KETTALT</translation>
     </message>
     <message>
         <source>Decryption succeeded!</source>
@@ -2529,10 +2525,6 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>Allkiri</translation>
     </message>
     <message>
-        <source>CLOSE</source>
-        <translation>SULGE</translation>
-    </message>
-    <message>
         <source>Attribute</source>
         <translation>Atribuut</translation>
     </message>
@@ -2680,7 +2672,6 @@ Täiendavad litsentsid ja komponendid</translation>
     </message>
     <message>
         <source>Close</source>
-        <extracomment>accessible</extracomment>
         <translation>Sulge</translation>
     </message>
     <message>
@@ -2878,12 +2869,12 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>Isikutuvastamise sertifikaat</translation>
     </message>
     <message>
-        <source>UNBLOCK</source>
-        <translation>TÜHISTA BLOKEERING</translation>
+        <source>Unblock</source>
+        <translation>Tühista blokeering</translation>
     </message>
     <message>
-        <source>CHANGE PIN%1</source>
-        <translation>MUUDA PIN%1</translation>
+        <source>Change PIN%1</source>
+        <translation>Muuda PIN%1</translation>
     </message>
     <message>
         <source>Forgot PIN%1?</source>
@@ -2910,8 +2901,8 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>PUK-kood asub Sinu koodiümbrikus</translation>
     </message>
     <message>
-        <source>CHANGE PUK</source>
-        <translation>MUUDA PUK</translation>
+        <source>Change PUK</source>
+        <translation>Muuda PUK</translation>
     </message>
     <message>
         <source>PUK code is blocked because the PUK code has been entered 3 times incorrectly. You can not unblock the PUK code yourself. As long as the PUK code is blocked, all eID options can be used, except PUK code. Please visit the service center to obtain new codes. &lt;a href=&quot;https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult/reminders-for-id-card-holders/&quot;&gt;Additional information&lt;/a&gt;.</source>

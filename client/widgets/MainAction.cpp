@@ -131,13 +131,13 @@ QString MainAction::label(Actions action)
 {
 	switch(action)
 	{
-	case SignatureMobile: return tr("SignatureMobile");
-	case SignatureSmartID: return tr("SignatureSmartID");
-	case SignatureToken: return tr("SignatureToken");
-	case EncryptContainer: return tr("EncryptContainer");
-	case DecryptContainer: return tr("DecryptContainer");
-	case DecryptToken: return tr("DECRYPT");
-	default: return tr("SignatureAdd");
+	case SignatureMobile: return tr("Sign with\nMobile-ID");
+	case SignatureSmartID: return tr("Sign with\nSmart-ID");
+	case SignatureToken: return tr("Sign with\nE-Seal");
+	case EncryptContainer: return tr("Encrypt");
+	case DecryptContainer: return tr("Decrypt with\nID-Card");
+	case DecryptToken: return tr("Decrypt");
+	default: return tr("Sign with\nID-Card");
 	}
 }
 
@@ -170,7 +170,6 @@ void MainAction::showDropdown()
 		for(QList<Actions>::const_iterator i = ui->actions.cbegin() + 1; i != ui->actions.cend(); ++i)
 		{
 			auto *other = new QPushButton(label(*i), parentWidget());
-			other->setAccessibleName(label(*i).toLower());
 			other->setCursor(ui->mainAction->cursor());
 			other->setFont(ui->mainAction->font());
 			other->resize(size());
@@ -196,5 +195,4 @@ void MainAction::update()
 {
 	hideDropdown();
 	ui->mainAction->setText(label(ui->actions[0]));
-	ui->mainAction->setAccessibleName(label(ui->actions[0]).toLower());
 }
