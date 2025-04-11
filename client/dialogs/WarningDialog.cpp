@@ -47,12 +47,7 @@ WarningDialog::WarningDialog(const QString &text, const QString &details, QWidge
 	resetCancelStyle(true);
 
 	if(!details.isEmpty())
-	{
 		ui->showDetails->init(false, tr("Details"), ui->details);
-		connect(ui->showDetails, &AccordionTitle::closed, this, &WarningDialog::adjustSize);
-		connect(ui->showDetails, &AccordionTitle::opened, this, &WarningDialog::adjustSize);
-	}
-	adjustSize();
 }
 
 WarningDialog::WarningDialog(const QString &text, QWidget *parent)
@@ -151,6 +146,7 @@ void WarningDialog::setCancelText(ButtonText label)
 void WarningDialog::setCancelText(const QString &label)
 {
 	cancel->setText(label);
+	ui->buttonBox->addButton(cancel, QDialogButtonBox::RejectRole);
 }
 
 WarningDialog* WarningDialog::show(const QString &text, const QString &details)

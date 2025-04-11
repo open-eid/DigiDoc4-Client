@@ -37,6 +37,21 @@ border-top: 1px solid #E7EAEF;
 background-image: url(:/images/bg_lovid.svg);
 background-repeat: repeat-x;
 background-position: bottom;
+}
+#signIntroButton, #cryptoIntroButton {
+padding: 14px 26px;
+border-radius: 4px;
+font-family: Roboto, Helvetica;
+font-size: 16px;
+font-weight: 700;
+color: #ffffff;
+background-color: #2F70B6;
+}
+#signIntroButton:hover, #cryptoIntroButton:hover {
+background-color: #2B66A6;
+}
+#signIntroButton:pressed, #cryptoIntroButton:pressed {
+background-color: #215081;
 }</string>
   </property>
   <layout class="QGridLayout" name="MainWindowLayout">
@@ -554,52 +569,14 @@ QToolButton:hover {
        </item>
        <item alignment="Qt::AlignHCenter">
         <widget class="QPushButton" name="signIntroButton">
-         <property name="minimumSize">
-          <size>
-           <width>240</width>
-           <height>45</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>240</width>
-           <height>45</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>14</pointsize>
-           <underline>false</underline>
-           <strikeout>false</strikeout>
-          </font>
-         </property>
          <property name="cursor">
           <cursorShape>PointingHandCursor</cursorShape>
          </property>
          <property name="accessibleName">
           <string comment="accessible">Load file from disk for signing or verifying</string>
          </property>
-         <property name="styleSheet">
-          <string notr="true">QPushButton {
-padding: 6px 10px;
-border-radius: 2px;
-background-color: #006eb5;
-color: #ffffff;
-text-decoration: none solid rgb(255, 255, 255);
-text-align: center;
-}
-QPushButton:pressed {
-background-color: #41B6E6;
-}
-QPushButton:hover:!pressed {
-background-color: #008DCF;
-}
-QPushButton:disabled {
-background-color: #BEDBED;
-}</string>
-         </property>
          <property name="text">
-          <string>Open file for signing or verifying</string>
+          <string>... or load file from disk</string>
          </property>
         </widget>
        </item>
@@ -664,52 +641,14 @@ background-color: #BEDBED;
        </item>
        <item alignment="Qt::AlignHCenter">
         <widget class="QPushButton" name="cryptoIntroButton">
-         <property name="minimumSize">
-          <size>
-           <width>240</width>
-           <height>45</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>240</width>
-           <height>45</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>14</pointsize>
-           <underline>false</underline>
-           <strikeout>false</strikeout>
-          </font>
-         </property>
          <property name="cursor">
           <cursorShape>PointingHandCursor</cursorShape>
          </property>
          <property name="accessibleName">
           <string comment="accessible">Load file from disk for encryption or decryption</string>
          </property>
-         <property name="styleSheet">
-          <string notr="true">QPushButton {
-padding: 6px 10px;
-border-radius: 2px;
-background-color: #006eb5;
-color: #ffffff;
-text-decoration: none solid rgb(255, 255, 255);
-text-align: center;
-}
-QPushButton:pressed {
-background-color: #41B6E6;
-}
-QPushButton:hover:!pressed {
-background-color: #008DCF;
-}
-QPushButton:disabled {
-background-color: #BEDBED;
-}</string>
-         </property>
          <property name="text">
-          <string>Open file for encryption or decryption</string>
+          <string>... or load file from disk</string>
          </property>
         </widget>
        </item>

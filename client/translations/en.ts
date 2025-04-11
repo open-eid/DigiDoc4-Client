@@ -1124,24 +1124,8 @@
 <context>
     <name>ItemList</name>
     <message>
-        <source>SEARCH</source>
-        <translation>SEARCH</translation>
-    </message>
-    <message>
         <source>Enter the personal code, institution or registry code</source>
         <translation>Enter the personal code, institution or registry code</translation>
-    </message>
-    <message>
-        <source>+ ADD MORE FILES</source>
-        <translation>+ ADD MORE FILES</translation>
-    </message>
-    <message>
-        <source>+ ADD RECIPIENT</source>
-        <translation>+ ADD RECIPIENT</translation>
-    </message>
-    <message>
-        <source>ADD ALL</source>
-        <translation>ADD ALL</translation>
     </message>
     <message>
         <source>Container is not signed</source>
@@ -1186,12 +1170,23 @@
     </message>
     <message>
         <source>Search</source>
-        <extracomment>accessible</extracomment>
         <translation>Search</translation>
     </message>
     <message>
         <source>Download all files</source>
         <translation>Download all files</translation>
+    </message>
+    <message>
+        <source>+ Add more files</source>
+        <translation>+ Add more files</translation>
+    </message>
+    <message>
+        <source>+ Add recipient</source>
+        <translation>+ Add recipient</translation>
+    </message>
+    <message>
+        <source>Add all</source>
+        <translation>Add all</translation>
     </message>
 </context>
 <context>
@@ -1295,42 +1290,47 @@ LDAP server is unavailable.</translation>
 <context>
     <name>MainAction</name>
     <message>
-        <source>SignatureMobile</source>
-        <translation>SIGN WITH
-MOBILE-ID</translation>
-    </message>
-    <message>
-        <source>SignatureSmartID</source>
-        <translation>SIGN WITH
-SMART-ID</translation>
-    </message>
-    <message>
-        <source>SignatureAdd</source>
-        <translation>SIGN WITH
-ID-CARD</translation>
-    </message>
-    <message>
-        <source>SignatureToken</source>
-        <translation>SIGN WITH
-E-SEAL</translation>
-    </message>
-    <message>
-        <source>EncryptContainer</source>
-        <translation>ENCRYPT</translation>
-    </message>
-    <message>
-        <source>DecryptContainer</source>
-        <translation>DECRYPT WITH
-ID-CARD</translation>
-    </message>
-    <message>
-        <source>DECRYPT</source>
-        <translation>DECRYPT</translation>
-    </message>
-    <message>
         <source>Token selection</source>
         <comment>accessible</comment>
         <translation>Token selection</translation>
+    </message>
+    <message>
+        <source>Sign with
+Mobile-ID</source>
+        <translation>Sign with
+Mobile-ID</translation>
+    </message>
+    <message>
+        <source>Sign with
+Smart-ID</source>
+        <translation>Sign with
+Smart-ID</translation>
+    </message>
+    <message>
+        <source>Sign with
+E-Seal</source>
+        <translation>Sign with
+E-Seal</translation>
+    </message>
+    <message>
+        <source>Encrypt</source>
+        <translation>Encrypt</translation>
+    </message>
+    <message>
+        <source>Decrypt</source>
+        <translation>Decrypt</translation>
+    </message>
+    <message>
+        <source>Decrypt with
+ID-Card</source>
+        <translation>Decrypt with
+ID-Card</translation>
+    </message>
+    <message>
+        <source>Sign with
+ID-Card</source>
+        <translation>Sign with
+ID-Card</translation>
     </message>
 </context>
 <context>
@@ -1348,16 +1348,12 @@ ID-CARD</translation>
         <translation>Drag file here for signing or verification ...</translation>
     </message>
     <message>
-        <source>Open file for signing or verifying</source>
-        <translation>... OR LOAD FILE FROM DISK</translation>
+        <source>... or load file from disk</source>
+        <translation>... or load file from disk</translation>
     </message>
     <message>
         <source>Drag file here for encryption ...</source>
         <translation>Drag file here for encryption or decryption ...</translation>
-    </message>
-    <message>
-        <source>Open file for encryption or decryption</source>
-        <translation>... OR LOAD FILE FROM DISK</translation>
     </message>
     <message>
         <source>Decryption succeeded!</source>
@@ -2529,10 +2525,6 @@ Additional licenses and components</translation>
         <translation>Signature</translation>
     </message>
     <message>
-        <source>CLOSE</source>
-        <translation>CLOSE</translation>
-    </message>
-    <message>
         <source>Attribute</source>
         <translation>Attribute</translation>
     </message>
@@ -2680,7 +2672,6 @@ Additional licenses and components</translation>
     </message>
     <message>
         <source>Close</source>
-        <extracomment>accessible</extracomment>
         <translation>Close</translation>
     </message>
     <message>
@@ -2878,12 +2869,12 @@ Additional licenses and components</translation>
         <translation>Authentication certificate</translation>
     </message>
     <message>
-        <source>UNBLOCK</source>
-        <translation>UNBLOCK</translation>
+        <source>Unblock</source>
+        <translation>Unblock</translation>
     </message>
     <message>
-        <source>CHANGE PIN%1</source>
-        <translation>CHANGE PIN%1</translation>
+        <source>Change PIN%1</source>
+        <translation>Change PIN%1</translation>
     </message>
     <message>
         <source>Forgot PIN%1?</source>
@@ -2906,8 +2897,8 @@ Additional licenses and components</translation>
         <translation>The PUK code is located in your envelope</translation>
     </message>
     <message>
-        <source>CHANGE PUK</source>
-        <translation>CHANGE PUK</translation>
+        <source>Change PUK</source>
+        <translation>Change PUK</translation>
     </message>
     <message>
         <source>PUK code is blocked because the PUK code has been entered 3 times incorrectly. You can not unblock the PUK code yourself. As long as the PUK code is blocked, all eID options can be used, except PUK code. Please visit the service center to obtain new codes. &lt;a href=&quot;https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult/reminders-for-id-card-holders/&quot;&gt;Additional information&lt;/a&gt;.</source>

@@ -31,6 +31,22 @@ QScrollBar::sub-line:vertical {
 }
 #items {
 	background-color: #ffffff;
+}
+#add {
+font-family: Roboto, Helvetica;
+margin: 6px 0px;
+padding: 9px 8px;
+font-size: 12px;
+font-weight: 700;
+border-radius: 4px;
+border: none;
+color: #2F70B6;
+}
+#add:hover {
+background-color: #EAF1F8;
+}
+#add:pressed {
+background-color: #BFD3E8;
 }</string>
   </property>
   <property name="frameShape">
@@ -90,7 +106,7 @@ border-width: 0px 0px 1px 0px;
       <property name="styleSheet">
        <string notr="true">color: #041E42;</string>
       </property>
-      <layout class="QHBoxLayout" name="headerLayout">
+      <layout class="QHBoxLayout" name="headerLayout" stretch="1,0,1">
        <property name="leftMargin">
         <number>0</number>
        </property>
@@ -104,23 +120,7 @@ border-width: 0px 0px 1px 0px;
         <number>1</number>
        </property>
        <item>
-        <spacer name="headerLeft">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Preferred</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>38</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item>
-        <spacer name="leftCenter">
+        <spacer name="headerLeftSpacer">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
          </property>
@@ -146,45 +146,32 @@ border-width: 0px 0px 1px 0px;
          <property name="styleSheet">
           <string notr="true">color: #041E42;</string>
          </property>
-         <property name="lineWidth">
-          <number>0</number>
-         </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QWidget" name="rightCenter" native="true">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
+        <layout class="QHBoxLayout" name="headerRightLayout">
+         <property name="spacing">
+          <number>4</number>
          </property>
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>60</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>60</height>
-          </size>
-         </property>
-         <widget class="QSvgWidget" name="infoIcon" native="true">
-          <property name="geometry">
-           <rect>
-            <x>1</x>
-            <y>22</y>
-            <width>15</width>
-            <height>15</height>
-           </rect>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">QToolTip { 
+         <item>
+          <widget class="QSvgWidget" name="infoIcon" native="true">
+           <property name="minimumSize">
+            <size>
+             <width>15</width>
+             <height>15</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>15</width>
+             <height>15</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QToolTip { 
 	color: #fcfcfc; 
 	background-color: #474747;
 	border-radius: 2px;
@@ -193,15 +180,22 @@ border-width: 0px 0px 1px 0px;
 	text-decoration: none solid rgb(252, 252, 252);
 	padding: 5px; font-size: 13px;
 }</string>
-          </property>
-         </widget>
-        </widget>
-       </item>
-       <item>
-        <layout class="QHBoxLayout" name="headerRightLayout">
-         <property name="spacing">
-          <number>4</number>
-         </property>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="headerRightSpacer">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
          <item>
           <widget class="QLabel" name="count">
            <property name="minimumSize">
@@ -326,9 +320,6 @@ padding: 0px 10px;
          <property name="cursor">
           <cursorShape>PointingHandCursor</cursorShape>
          </property>
-         <property name="accessibleName">
-          <string extracomment="accessible">Search</string>
-         </property>
          <property name="styleSheet">
           <string notr="true">QPushButton {
 	border-radius: 2px; 
@@ -347,44 +338,20 @@ QPushButton:disabled {
 }</string>
          </property>
          <property name="text">
-          <string>SEARCH</string>
+          <string>Search</string>
          </property>
         </widget>
        </item>
       </layout>
      </widget>
     </item>
-    <item>
-     <widget class="LabelButton" name="add">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>35</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>16777215</width>
-        <height>35</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <family>Roboto Condensed</family>
-        <pointsize>12</pointsize>
-       </font>
-      </property>
+    <item alignment="Qt::AlignHCenter">
+     <widget class="QToolButton" name="add">
       <property name="cursor">
        <cursorShape>PointingHandCursor</cursorShape>
       </property>
       <property name="text">
-       <string>+ ADD MORE FILES</string>
+       <string>+ Add more files</string>
       </property>
      </widget>
     </item>
@@ -417,11 +384,6 @@ background-position: left bottom; }</string>
    <extends>QWidget</extends>
    <header location="global">QSvgWidget</header>
    <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>LabelButton</class>
-   <extends>QToolButton</extends>
-   <header>widgets/LabelButton.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
