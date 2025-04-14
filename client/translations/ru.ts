@@ -1124,24 +1124,8 @@
 <context>
     <name>ItemList</name>
     <message>
-        <source>SEARCH</source>
-        <translation>НАЙТИ</translation>
-    </message>
-    <message>
         <source>Enter the personal code, institution or registry code</source>
         <translation>Введите личный код, учреждение или код реестра</translation>
-    </message>
-    <message>
-        <source>+ ADD MORE FILES</source>
-        <translation>+ ДОБАВИТЬ ФАЙЛЫ</translation>
-    </message>
-    <message>
-        <source>+ ADD RECIPIENT</source>
-        <translation>+ ДОБАВИТЬ ПОЛУЧАТЕЛЕЙ</translation>
-    </message>
-    <message>
-        <source>ADD ALL</source>
-        <translation>ДОБАВИТЬ ВСЕ</translation>
     </message>
     <message>
         <source>Container is not signed</source>
@@ -1186,12 +1170,23 @@
     </message>
     <message>
         <source>Search</source>
-        <extracomment>accessible</extracomment>
         <translation>Найти</translation>
     </message>
     <message>
         <source>Download all files</source>
         <translation>Скачайте все файлы</translation>
+    </message>
+    <message>
+        <source>+ Add more files</source>
+        <translation>+ Добавить файлы</translation>
+    </message>
+    <message>
+        <source>+ Add recipient</source>
+        <translation>+ Добавить получателей</translation>
+    </message>
+    <message>
+        <source>Add all</source>
+        <translation>Добавить все</translation>
     </message>
 </context>
 <context>
@@ -1295,42 +1290,47 @@ LDAP сервер недоступен.</translation>
 <context>
     <name>MainAction</name>
     <message>
-        <source>SignatureMobile</source>
-        <translation>ПОДПИСАТЬ С
-MOBIIL-ID</translation>
-    </message>
-    <message>
-        <source>SignatureSmartID</source>
-        <translation>ПОДПИСАТЬ С
-SMART-ID</translation>
-    </message>
-    <message>
-        <source>SignatureAdd</source>
-        <translation>ПОДПИСАТЬ С
-ID-КАРТОЙ</translation>
-    </message>
-    <message>
-        <source>SignatureToken</source>
-        <translation>ПОДПИСАТЬ С
-Э-ПЕЧАТЬЮ</translation>
-    </message>
-    <message>
-        <source>EncryptContainer</source>
-        <translation>ЗАШИФРОВАТЬ</translation>
-    </message>
-    <message>
-        <source>DecryptContainer</source>
-        <translation>РАСШИФРОВАТЬ
-С ID-КАРТОЙ</translation>
-    </message>
-    <message>
-        <source>DECRYPT</source>
-        <translation>РАСШИФРОВАТЬ</translation>
-    </message>
-    <message>
         <source>Token selection</source>
         <comment>accessible</comment>
         <translation>Выбрать средство</translation>
+    </message>
+    <message>
+        <source>Sign with
+Mobile-ID</source>
+        <translation>Подписать с
+Mobiil-ID</translation>
+    </message>
+    <message>
+        <source>Sign with
+Smart-ID</source>
+        <translation>Подписать с
+Smart-ID</translation>
+    </message>
+    <message>
+        <source>Sign with
+E-Seal</source>
+        <translation>Подписать с
+Э-печатью</translation>
+    </message>
+    <message>
+        <source>Encrypt</source>
+        <translation>Зашифровать</translation>
+    </message>
+    <message>
+        <source>Decrypt</source>
+        <translation>Расшифровать</translation>
+    </message>
+    <message>
+        <source>Decrypt with
+ID-Card</source>
+        <translation>Расшифровать
+с ID-картой</translation>
+    </message>
+    <message>
+        <source>Sign with
+ID-Card</source>
+        <translation>Подписать с
+ID-картой</translation>
     </message>
 </context>
 <context>
@@ -1348,16 +1348,12 @@ ID-КАРТОЙ</translation>
         <translation>Перетащите файл сюда для подписи или проверки ...</translation>
     </message>
     <message>
-        <source>Open file for signing or verifying</source>
-        <translation>... ИЛИ ЗАГРУЗИТЕ ФАЙЛ С ДИСКА</translation>
+        <source>... or load file from disk</source>
+        <translation>... или загрузите файл с диска</translation>
     </message>
     <message>
         <source>Drag file here for encryption ...</source>
         <translation>Перетащите файл сюда для (рас/за)шифровывания ...</translation>
-    </message>
-    <message>
-        <source>Open file for encryption or decryption</source>
-        <translation>... ИЛИ ЗАГРУЗИТЕ ФАЙЛ С ДИСКА</translation>
     </message>
     <message>
         <source>Decryption succeeded!</source>
@@ -2530,10 +2526,6 @@ Additional licenses and components</source>
         <translation>Подпись</translation>
     </message>
     <message>
-        <source>CLOSE</source>
-        <translation>ЗАКРЫТЬ</translation>
-    </message>
-    <message>
         <source>Attribute</source>
         <translation>Атрибут</translation>
     </message>
@@ -2681,7 +2673,6 @@ Additional licenses and components</source>
     </message>
     <message>
         <source>Close</source>
-        <extracomment>accessible</extracomment>
         <translation>Закрыть</translation>
     </message>
     <message>
@@ -2879,12 +2870,12 @@ Additional licenses and components</source>
         <translation>Сертификат идентификации</translation>
     </message>
     <message>
-        <source>UNBLOCK</source>
-        <translation>РАЗБЛОКИРОВАТЬ</translation>
+        <source>Unblock</source>
+        <translation>Разблокировать</translation>
     </message>
     <message>
-        <source>CHANGE PIN%1</source>
-        <translation>ИЗМЕНИТЬ PIN%1</translation>
+        <source>Change PIN%1</source>
+        <translation>Изменить PIN%1</translation>
     </message>
     <message>
         <source>Forgot PIN%1?</source>
@@ -2905,10 +2896,6 @@ Additional licenses and components</source>
     <message>
         <source>The PUK code is located in your envelope</source>
         <translation>PUK-код находится в конверте</translation>
-    </message>
-    <message>
-        <source>CHANGE PUK</source>
-        <translation>ИЗМЕНИТЬ PUK</translation>
     </message>
     <message>
         <source>PUK code is blocked because the PUK code has been entered 3 times incorrectly. You can not unblock the PUK code yourself. As long as the PUK code is blocked, all eID options can be used, except PUK code. Please visit the service center to obtain new codes. &lt;a href=&quot;https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult/reminders-for-id-card-holders/&quot;&gt;Additional information&lt;/a&gt;.</source>
@@ -2969,6 +2956,10 @@ Additional licenses and components</source>
     <message>
         <source>Certificate status check failed. Please check your internet connection.</source>
         <translation>Проверка статуса сертификата не удалась. Пожалуйста проверьте подключение к интернету.</translation>
+    </message>
+    <message>
+        <source>Change PUK</source>
+        <translation>Изменить PUK</translation>
     </message>
 </context>
 <context>

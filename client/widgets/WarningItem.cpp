@@ -86,7 +86,7 @@ void WarningItem::lookupWarning()
 			VerifyCert::tr("PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times.").arg(1),
 			VerifyCert::tr("Unblock to reuse PIN%1.").arg(1)));
 		url = QStringLiteral("#unblock-PIN1");
-		ui->warningAction->setText(VerifyCert::tr("UNBLOCK"));
+		ui->warningAction->setText(VerifyCert::tr("Unblock"));
 		ui->warningAction->setAccessibleName(ui->warningAction->text().toLower());
 		break;
 	case UnblockPin2Warning:
@@ -94,7 +94,7 @@ void WarningItem::lookupWarning()
 			VerifyCert::tr("PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times.").arg(2),
 			VerifyCert::tr("Unblock to reuse PIN%1.").arg(2)));
 		url = QStringLiteral("#unblock-PIN2");
-		ui->warningAction->setText(VerifyCert::tr("UNBLOCK"));
+		ui->warningAction->setText(VerifyCert::tr("Unblock"));
 		ui->warningAction->setAccessibleName(ui->warningAction->text().toLower());
 		break;
 	// SignDetails
