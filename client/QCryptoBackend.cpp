@@ -27,6 +27,7 @@ QString QCryptoBackend::errorString(PinStatus error)
 	case PinCanceled: return tr("PIN Canceled");
 	case PinLocked: return tr("PIN locked");
 	case PinIncorrect: return tr("PIN Incorrect");
+	case PinNotInit: return tr("User PIN is not set");
 	case GeneralError: return tr("PKCS11 general error");
 	case DeviceError: return tr("PKCS11 device error");
 	default: return tr("Unknown error");
