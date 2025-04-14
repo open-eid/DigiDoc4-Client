@@ -147,7 +147,9 @@ public:
 
 #ifdef Q_OS_MAC
 	std::string TSLCache() const final
-	{ return QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation).toStdString(); }
+	{
+		return Application::groupContainerPath().toStdString();
+	}
 #endif
 
 	std::vector<digidoc::X509Cert> TSCerts() const final
