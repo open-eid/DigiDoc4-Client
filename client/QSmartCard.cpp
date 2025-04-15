@@ -153,7 +153,8 @@ QPCSCReader::Result IDEMIACard::change(QPCSCReader *reader, QSmartCardData::PinT
 
 bool IDEMIACard::isSupported(const QByteArray &atr)
 {
-	return atr == "3BDB960080B1FE451F830012233F536549440F9000F1";
+	return atr == "3BDB960080B1FE451F830012233F536549440F9000F1" ||
+		atr == "3BDC960080B1FE451F830012233F54654944320F9000C3";
 }
 
 bool IDEMIACard::loadPerso(QPCSCReader *reader, QSmartCardDataPrivate *d) const
@@ -319,8 +320,8 @@ QSmartCard::ErrorType QSmartCard::Private::handlePinResult(QPCSCReader *reader, 
 
 
 QSmartCard::QSmartCard(QObject *parent)
-:	QObject(parent)
-,	d(new Private)
+	: QObject(parent)
+	, d(new Private)
 {
 }
 
@@ -471,8 +472,8 @@ QSmartCard::ErrorType QSmartCard::unblock(QSmartCardData::PinType type, QWidget*
 	PinPopup::PinFlags flags = {};
 	switch(type)
 	{
-	case QSmartCardData::Pin1Type: flags = PinPopup::Pin1Type;	break;
-	case QSmartCardData::Pin2Type: flags = PinPopup::Pin2Type;	break;
+	case QSmartCardData::Pin1Type: flags = PinPopup::Pin1Type; break;
+	case QSmartCardData::Pin2Type: flags = PinPopup::Pin2Type; break;
 	default: return UnknownError;
 	}
 	QSharedPointer<QPCSCReader> reader(d->connect(d->t.reader()));
