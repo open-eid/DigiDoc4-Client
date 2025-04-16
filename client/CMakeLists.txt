@@ -31,7 +31,6 @@ set(SCHEMAS
 )
 add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
 	${PROJECT_NAME}.rc
-	${SOURCES}
 	${WIDGETS}
 	images/images.qrc
 	fonts/fonts.qrc
