@@ -24,8 +24,7 @@
   </property>
   <property name="styleSheet">
    <string notr="true">#FileItem { 
-border: solid rgba(217, 217, 216, 0.45);
-border-width: 0px 0px 1px 0px; 
+border-bottom: 1px solid #E7EAEF;
 background-color: #ffffff;
 }</string>
   </property>

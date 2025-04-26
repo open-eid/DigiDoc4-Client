@@ -38,7 +38,7 @@ font-family: Roboto, Helvetica;
 font-size: 14px;
 }
 #LabelItem {
-border-bottom: 1px solid rgba(217, 217, 216, 0.45);
+border-bottom: 1px solid #E7EAEF;
 }
 #label {
 color: #07142A;

@@ -11,10 +11,7 @@
    </rect>
   </property>
   <property name="styleSheet">
-   <string notr="true">QWidget {
-color: #000000;
-}
-QScrollBar{
+   <string notr="true">QScrollBar{
 	width: 10px;
 	padding: 5px 5px 5px 0;
 }
@@ -30,7 +27,10 @@ QScrollBar::sub-line:vertical {
       background: none;
 }
 #items {
-	background-color: #ffffff;
+background-color: #ffffff;
+}
+#header {
+border-bottom: 1px solid #E7EAEF;
 }
 #add {
 font-family: Roboto, Helvetica;
@@ -69,12 +69,6 @@ background-color: #BFD3E8;
      <width>559</width>
      <height>502</height>
     </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">#header {
-border: solid rgba(217, 217, 216, 0.45);
-border-width: 0px 0px 1px 0px;
-}</string>
    </property>
    <layout class="QVBoxLayout" name="itemLayout">
     <property name="spacing">
@@ -144,7 +138,7 @@ border-width: 0px 0px 1px 0px;
           <enum>Qt::TabFocus</enum>
          </property>
          <property name="styleSheet">
-          <string notr="true">color: #041E42;</string>
+          <string notr="true">color: #003168;</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -160,14 +154,14 @@ border-width: 0px 0px 1px 0px;
           <widget class="QSvgWidget" name="infoIcon" native="true">
            <property name="minimumSize">
             <size>
-             <width>15</width>
-             <height>15</height>
+             <width>20</width>
+             <height>20</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>15</width>
-             <height>15</height>
+             <width>20</width>
+             <height>20</height>
             </size>
            </property>
            <property name="styleSheet">

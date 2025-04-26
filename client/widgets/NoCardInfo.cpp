@@ -19,14 +19,12 @@
 
 #include "NoCardInfo.h"
 #include "ui_NoCardInfo.h"
-#include "Styles.h"
 
 NoCardInfo::NoCardInfo( QWidget *parent )
 	: QWidget(parent)
 	, ui(new Ui::NoCardInfo)
 {
 	ui->setupUi( this );
-	ui->cardStatus->setFont( Styles::font( Styles::Condensed, 16 ) );
 	ui->cardIcon->load(QStringLiteral(":/images/icon_IDkaart_red.svg"));
 }
 
