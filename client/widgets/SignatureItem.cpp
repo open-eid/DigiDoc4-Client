@@ -22,7 +22,6 @@
 
 #include "Application.h"
 #include "DateTime.h"
-#include "Styles.h"
 #include "SslCertificate.h"
 #include "dialogs/SignatureDialog.h"
 #include "dialogs/WarningDialog.h"
@@ -55,11 +54,8 @@ SignatureItem::SignatureItem(DigiDocSignature s, ContainerState /*state*/, QWidg
 {
 	ui->setupUi(this);
 	ui->icon->installEventFilter(this);
-	ui->name->setFont(Styles::font(Styles::Regular, 14, QFont::DemiBold));
 	ui->name->installEventFilter(this);
-	ui->idSignTime->setFont(Styles::font(Styles::Regular, 11));
 	ui->idSignTime->installEventFilter(this);
-	ui->role->setFont(Styles::font(Styles::Regular, 11));
 	ui->role->installEventFilter(this);
 	ui->remove->setVisible(ui->signature.container()->isSupported());
 	connect(ui->remove, &QToolButton::clicked, this, [this]{

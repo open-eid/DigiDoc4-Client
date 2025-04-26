@@ -12,7 +12,7 @@
   </property>
   <property name="styleSheet">
    <string notr="true">#AddressItem {
-border-bottom: 1px solid rgba(217, 217, 216, 0.45);
+border-bottom: 1px solid #E7EAEF;
 background-color: #FFFFFF;
 }
 #AddressItem:disabled {

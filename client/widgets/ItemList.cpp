@@ -58,8 +58,7 @@ void ItemList::addHeader(const char *label)
 	header->resize(415, 64);
 	header->setFixedHeight(64);
 	header->setFont( Styles::font(Styles::Regular, 20));
-	header->setStyleSheet(QStringLiteral("border: solid rgba(217, 217, 216, 0.45);"
-			"border-width: 0px 0px 1px 0px; color: #041E42;"));
+	header->setStyleSheet(QStringLiteral("border-bottom: 1px solid #E7EAEF; color: #041E42;"));
 	ui->itemLayout->insertWidget(0, header);
 	setTabOrder(this, header);
 	setTabOrder(header, ui->header);
@@ -153,18 +152,7 @@ bool ItemList::eventFilter(QObject *o, QEvent *e)
 			return true;
 		}
 	}
-
-	if(o != ui->infoIcon)
-		return QScrollArea::eventFilter(o, e);
-	switch(e->type())
-	{
-	case QEvent::Enter:
-	case QEvent::Leave:
-		ui->infoIcon->load(e->type() == QEvent::Enter ?
-			QStringLiteral(":/images/icon_info_hover.svg") : QStringLiteral(":/images/icon_info.svg"));
-		return true;
-	default: return QScrollArea::eventFilter(o, e);
-	}
+	return QScrollArea::eventFilter(o, e);
 }
 
 ContainerState ItemList::getState() const { return state; }
@@ -218,7 +206,6 @@ void ItemList::init(ItemType item, const char *header)
 		ui->add->disconnect();
 		ui->infoIcon->load(QStringLiteral(":/images/icon_info.svg"));
 		ui->infoIcon->show();
-		ui->infoIcon->installEventFilter(this);
 		setRecipientTooltip();
 
 		connect(ui->add, &QToolButton::clicked, this, &ItemList::addressSearch);

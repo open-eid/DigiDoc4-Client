@@ -60,6 +60,7 @@ VerifyCert::VerifyCert(QWidget *parent)
 		WarningDialog::show(msg);
 	});
 
+	ui->nameIcon->load(QStringLiteral(":/images/icon_alert_red.svg"));
 	ui->nameIcon->hide();
 	ui->name->setFont( Styles::font( Styles::Regular, 18, QFont::Bold  ) );
 	ui->validUntil->setFont( Styles::font( Styles::Regular, 14 ) );
@@ -185,7 +186,6 @@ void VerifyCert::update()
 			"border-radius: 2px;"
 			"background-color: #e09797;"
 			"color: #5c1c1c;"));
-		ui->nameIcon->load(QStringLiteral(":/images/icon_alert_red.svg"));
 		ui->nameIcon->show();
 	}
 	else if( isBlockedPin )
@@ -202,15 +202,13 @@ void VerifyCert::update()
 			"border: 1px solid #e89c30;"
 			"border-radius: 2px;"
 			"background-color: #F8DDA7;"));
-		ui->nameIcon->load(QStringLiteral(":/images/icon_alert_orange.svg"));
 		ui->nameIcon->show();
 	}
 	else
 	{
 		setStyleSheet(QStringLiteral("background-color: #ffffff;"));
 		changePinStyle(QStringLiteral("#FFFFFF"));
-		ui->nameIcon->load(QStringLiteral(":/images/icon_check.svg"));
-		ui->nameIcon->setHidden(pinType == QSmartCardData::PukType);
+		ui->nameIcon->hide();
 	}
 	ui->error->setHidden(ui->error->text().isEmpty());
 	ui->tempelText->setVisible(isTempelType);

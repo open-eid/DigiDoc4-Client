@@ -46,17 +46,6 @@ public:
 
 	void showSettings(int page);
 
-signals:
-	void clearPopups();
-
-private Q_SLOTS:
-	void changePin1Clicked( bool isForgotPin, bool isBlockedPin );
-	void changePin2Clicked( bool isForgotPin, bool isBlockedPin );
-	void changePukClicked();
-	void open(const QStringList &params, bool crypto, bool sign);
-	void pageSelected(int page, bool checked = true);
-	void warningClicked(const QString &link);
-
 protected:
 	void changeEvent(QEvent* event) final;
 	void closeEvent(QCloseEvent *event) final;
@@ -68,6 +57,9 @@ protected:
 
 private:
 	void adjustDrops();
+	void changePin1Clicked( bool isForgotPin, bool isBlockedPin );
+	void changePin2Clicked( bool isForgotPin, bool isBlockedPin );
+	void changePukClicked();
 	void convertToBDoc();
 	void convertToCDoc();
 	ria::qdigidoc4::ContainerState currentState();
@@ -79,8 +71,10 @@ private:
 	void navigateToPage( ria::qdigidoc4::Pages page, const QStringList &files = QStringList(), bool create = true );
 	void onCryptoAction(int action, const QString &id, const QString &phone);
 	void onSignAction(int action, const QString &info1, const QString &info2);
+	void open(const QStringList &params, bool crypto, bool sign);
 	void openContainer(bool signature);
 	void openFiles(const QStringList &files, bool addFile = false, bool forceCreate = false);
+	void pageSelected(int page, bool checked = true);
 	void pinUnblock(QSmartCardData::PinType type, bool isForgotPin);
 	void pinPukChange( QSmartCardData::PinType type );
 	void resetCryptoDoc(std::unique_ptr<CryptoDoc> &&doc = {});
@@ -92,7 +86,6 @@ private:
 	bool save(bool saveAs = false);
 	QString selectFile( const QString &title, const QString &filename, bool fixedExt );
 	void selectPage(ria::qdigidoc4::Pages page);
-	void showCardMenu( bool show );
 	template <typename F>
 	void sign(F &&sign);
 	void updateCardWarnings(const QSmartCardData &data);
@@ -103,6 +96,7 @@ private:
 	void updateSelectorData(TokenData data);
 	void updateMyEID(const TokenData &t);
 	void updateMyEid(const QSmartCardData &data);
+	void warningClicked(const QString &link);
 	bool wrap(const QString& wrappedFile, bool enclose);
 	bool wrapContainer(bool signing);
 	void containerSummary();
