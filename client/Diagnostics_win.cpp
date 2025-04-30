@@ -148,8 +148,8 @@ void Diagnostics::run()
 		+ ";C:\\Program Files (x86)\\EstIDMinidriver Minidriver");
 	SetDllDirectory(LPCWSTR(QCoreApplication::applicationDirPath().utf16()));
 	static const QStringList dlls{
-		"digidocpp", "qdigidoc4.exe", "EsteidShellExtension", "id-updater.exe",
-		"EstIDMinidriver", "EstIDMinidriver64", "web-eid.exe",
+		"digidocpp", "qdigidoc4.exe", "EsteidShellExtension", "id-updater.exe", "web-eid.exe",
+		"EstIDMinidriver", "EstIDMinidriver64", "EestiMinidriver", "EestiMinidriver64",
 		"zlib1", "libxml2", "libxmlsec1", "libxmlsec1-openssl",
 		"msvcp140", "msvcp140_1", "msvcp140_2", "vcruntime140", "vcruntime140_1"};
 	for(const QString &lib: dlls)
