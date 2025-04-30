@@ -70,8 +70,8 @@ VerifyCert::VerifyCert(QWidget *parent)
 	ui->details->setFont( regular12 );
 	ui->checkCert->setFont(regular12);
 	ui->changePIN->setFont( Styles::font( Styles::Condensed, 14 ) );
-	ui->tempelText->setFont( Styles::font( Styles::Regular, 14 ) );
-	ui->tempelText->hide();
+	ui->infoText->setFont( Styles::font( Styles::Regular, 14 ) );
+	ui->infoText->hide();
 }
 
 VerifyCert::~VerifyCert()
@@ -109,6 +109,7 @@ void VerifyCert::update()
 	bool isBlockedPuk = !cardData.isNull() && cardData.retryCount( QSmartCardData::PukType ) == 0;
 	bool isTempelType = c.type() & SslCertificate::TempelType;
 	isValidCert = c.isNull() || c.isValid();
+	ui->infoText->setVisible(isTempelType);
 
 	QString txt;
 	QTextStream cert( &txt );
@@ -155,7 +156,9 @@ void VerifyCert::update()
 		ui->validUntil->setText(tr("The PUK code is located in your envelope"));
 		ui->validUntil->setHidden(isBlockedPuk);
 		ui->changePIN->setText(tr("Change PUK"));
-		ui->changePIN->setHidden(isBlockedPuk);
+		ui->changePIN->setHidden(isBlockedPuk || !cardData.isPUKReplacable());
+		ui->infoText->setVisible(!cardData.isPUKReplacable());
+		ui->infoText->setText(tr("The PUK-code cannot be changed on the ID-card in the reader"));
 		ui->forgotPinLink->hide();
 		ui->details->hide();
 		ui->checkCert->hide();
@@ -213,7 +216,6 @@ void VerifyCert::update()
 		ui->nameIcon->setHidden(pinType == QSmartCardData::PukType);
 	}
 	ui->error->setHidden(ui->error->text().isEmpty());
-	ui->tempelText->setVisible(isTempelType);
 	ui->changePIN->setAccessibleName(ui->changePIN->text().toLower());
 
 	if(pinType == QSmartCardData::Pin1Type)
