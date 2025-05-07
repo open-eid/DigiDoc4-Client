@@ -10,17 +10,14 @@
 		<file>digidoc_128.png</file>
 		<file>Icon.svg</file>
 		<file>icon_Abi.svg</file>
-		<file>icon_Abi_hover.svg</file>
 		<file>icon_ajatempel.svg</file>
 		<file>icon_alert_error.svg</file>
 		<file>icon_alert_warning.svg</file>
-		<file>icon_alert_orange.svg</file>
 		<file>icon_alert_red.svg</file>
 		<file>icon_Allkiri_hover.svg</file>
 		<file>icon_Allkiri_small.svg</file>
 		<file>icon_Allkiri.svg</file>
 		<file>icon_arrow_left.svg</file>
-		<file>icon_check.svg</file>
 		<file>icon_checkbox.svg</file>
 		<file>icon_checkbox_active.svg</file>
 		<file>icon_checkbox_disabled.svg</file>
@@ -33,11 +30,9 @@
 		<file>icon_download.svg</file>
 		<file>icon_Edit.svg</file>
 		<file>icon_help.svg</file>
-		<file>icon_IDkaart_disabled.svg</file>
 		<file>icon_IDkaart_red.svg</file>
 		<file>icon_IDkaart_green.svg</file>
 		<file>icon_info.svg</file>
-		<file>icon_info_hover.svg</file>
 		<file>icon_Krypto_hover.svg</file>
 		<file>icon_Krypto_small.svg</file>
 		<file>icon_Krypto.svg</file>
@@ -54,7 +49,6 @@
 		<file>icon_radio_check_hover.svg</file>
 		<file>icon_remove.svg</file>
 		<file>icon_Seaded.svg</file>
-		<file>icon_Seaded_hover.svg</file>
 		<file>intro_crypto-select_en.png</file>
 		<file>intro_crypto-select_et.png</file>
 		<file>intro_crypto-select_ru.png</file>

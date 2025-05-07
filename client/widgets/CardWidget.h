@@ -44,7 +44,6 @@ signals:
 
 private:
 	bool event(QEvent *ev) final;
-	bool eventFilter(QObject *o, QEvent *e) final;
 
 	Ui::CardWidget *ui;
 	TokenData t;
