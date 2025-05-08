@@ -121,7 +121,6 @@ void Diagnostics::generalInfo(QTextStream &s)
 		constexpr auto APDU = &QByteArray::fromHex;
 		auto printAID = [&](const QString &label, const QByteArray &apdu)
 		{
-			constexpr auto APDU = &QByteArray::fromHex;
 			QPCSCReader::Result r = reader.transfer(apdu);
 			s << label << ": " << Qt::hex << r.SW;
 			if (r.SW == 0x9000) s << " (OK)";
@@ -130,15 +129,10 @@ void Diagnostics::generalInfo(QTextStream &s)
 			s << "<br />";
 			return r;
 		};
-		if(printAID(QStringLiteral("AID_IDEMIA"), APDU("00A40400 10 A000000077010800070000FE00000100")) ||
-			printAID(QStringLiteral("AID_OT"), APDU("00A4040C 0D E828BD080FF2504F5420415750")) ||
-			printAID(QStringLiteral("AID_QSCD"), APDU("00A4040C 10 51534344204170706C69636174696F6E")))
-		{
-			reader.transfer(APDU("00A4000C"));
-			reader.transfer(APDU("00A4010C025000"));
-			reader.transfer(APDU("00A4010C025006"));
+		if(printAID(QStringLiteral("AID_IDEMIA"), APDU("00A4040C 10 A000000077010800070000FE00000100")) &&
+			reader.transfer(APDU("00A4010C 02 5000")) &&
+			reader.transfer(APDU("00A4020C 02 5006")))
 			s << "ID - " << reader.transfer(APDU("00B00000 00")).data << "<br />";
-		}
 		reader.endTransaction();
 	}
 

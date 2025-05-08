@@ -16,26 +16,6 @@
 <context>
     <name>AddRecipients</name>
     <message>
-        <source>CANCEL</source>
-        <translation>KATKESTA</translation>
-    </message>
-    <message>
-        <source>CONFIRM</source>
-        <translation>KINNITA</translation>
-    </message>
-    <message>
-        <source>CERTIFICATE FROM CARD</source>
-        <translation>LISA SERTIFIKAAT KAARDILT</translation>
-    </message>
-    <message>
-        <source>CERTIFICATE FROM FILE</source>
-        <translation>LISA SERTIFIKAAT FAILIST</translation>
-    </message>
-    <message>
-        <source>LATEST USED CERTIFICATE</source>
-        <translation>VIIMATI LISATUD</translation>
-    </message>
-    <message>
         <source>Failed to read certificate</source>
         <translation>Sertifikaadi lugemine ebaõnnestus</translation>
     </message>
@@ -65,27 +45,22 @@
     </message>
     <message>
         <source>Certificate from card</source>
-        <extracomment>accessible</extracomment>
         <translation>Lisa sertifikaat kaardilt</translation>
     </message>
     <message>
         <source>Certificate from file</source>
-        <extracomment>accessible</extracomment>
         <translation>Lisa sertifikaat failist</translation>
     </message>
     <message>
         <source>Latest used certificate</source>
-        <extracomment>accessible</extracomment>
         <translation>Viimati lisatud</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <extracomment>accessible</extracomment>
         <translation>Katkesta</translation>
     </message>
     <message>
         <source>Confirm</source>
-        <extracomment>accessible</extracomment>
         <translation>Kinnita</translation>
     </message>
     <message>
@@ -299,14 +274,6 @@
         <translation>Sertifikaadi detailid</translation>
     </message>
     <message>
-        <source>CLOSE</source>
-        <translation>SULGE</translation>
-    </message>
-    <message>
-        <source>SAVE</source>
-        <translation>SALVESTA</translation>
-    </message>
-    <message>
         <source>This certificate is intended for following purpose(s):</source>
         <translation>Selle sertifikaadi otstarve on:</translation>
     </message>
@@ -404,25 +371,15 @@
     </message>
     <message>
         <source>Close</source>
-        <extracomment>accessible</extracomment>
         <translation>Sulge</translation>
     </message>
     <message>
         <source>Save</source>
-        <extracomment>accessible</extracomment>
         <translation>Salvesta</translation>
     </message>
 </context>
 <context>
     <name>CertificateHistory</name>
-    <message>
-        <source>CLOSE</source>
-        <translation>SULGE</translation>
-    </message>
-    <message>
-        <source>REMOVE</source>
-        <translation>EEMALDA</translation>
-    </message>
     <message>
         <source>Owner</source>
         <translation>Omanik</translation>
@@ -457,17 +414,10 @@
     </message>
     <message>
         <source>Close</source>
-        <extracomment>accessible</extracomment>
         <translation>Sulge</translation>
     </message>
     <message>
-        <source>Select</source>
-        <extracomment>accessible</extracomment>
-        <translation>Lisa</translation>
-    </message>
-    <message>
         <source>Remove</source>
-        <extracomment>accessible</extracomment>
         <translation>Eemalda</translation>
     </message>
     <message>
@@ -475,8 +425,12 @@
         <translation>Krüpteerimissertifikaat</translation>
     </message>
     <message>
-        <source>ADD</source>
-        <translation>LISA</translation>
+        <source>Last used certificates</source>
+        <translation>Viimati lisatud sertifikaadid</translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation>Lisa</translation>
     </message>
 </context>
 <context>
@@ -501,48 +455,8 @@
         <translation>Ümbrik:</translation>
     </message>
     <message>
-        <source>CHANGE</source>
-        <translation>MUUDA</translation>
-    </message>
-    <message>
-        <source>CANCEL</source>
-        <translation>← KATKESTA</translation>
-    </message>
-    <message>
-        <source>SEND WITH E-MAIL</source>
-        <translation>EDASTA E-POSTIGA</translation>
-    </message>
-    <message>
-        <source>PRINT SUMMARY</source>
-        <translation>TRÜKI KINNITUSLEHT</translation>
-    </message>
-    <message>
-        <source>ENCRYPT</source>
-        <translation>KRÜPTEERI</translation>
-    </message>
-    <message>
-        <source>SIGN</source>
-        <translation>ALLKIRJASTA</translation>
-    </message>
-    <message>
-        <source>SAVE AS</source>
-        <translation>SALVESTA</translation>
-    </message>
-    <message>
-        <source>SAVE WITHOUT SIGNING</source>
-        <translation>SALVESTA ALLKIRJASTAMATA</translation>
-    </message>
-    <message>
-        <source>STARTING</source>
-        <translation>← ALGUSESSE</translation>
-    </message>
-    <message>
         <source>The document has already been signed by you.</source>
         <translation>Dokument on Sinu poolt juba allkirjastatud.</translation>
-    </message>
-    <message>
-        <source>CONTINUE SIGNING</source>
-        <translation>JÄTKA ALLKIRJASTAMISEGA</translation>
     </message>
     <message>
         <source>DigiDoc4 Client</source>
@@ -550,38 +464,43 @@
     </message>
     <message>
         <source>Change</source>
-        <extracomment>accessible</extracomment>
         <translation>Muuda</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <extracomment>accessible</extracomment>
         <translation>Katkesta</translation>
     </message>
     <message>
         <source>Encrypt</source>
-        <extracomment>accessible</extracomment>
         <translation>Krüpteeri</translation>
     </message>
     <message>
         <source>Save as</source>
-        <extracomment>accessible</extracomment>
         <translation>Salvesta</translation>
     </message>
     <message>
         <source>Send with e-mail</source>
-        <extracomment>accessible</extracomment>
         <translation>Edasta e-postiga</translation>
     </message>
     <message>
         <source>Print summary</source>
-        <extracomment>accessible</extracomment>
         <translation>Trüki kinnitusleht</translation>
     </message>
     <message>
         <source>Save without signing</source>
-        <extracomment>accessible</extracomment>
         <translation>Salvesta allkirjastamata</translation>
+    </message>
+    <message>
+        <source>Start</source>
+        <translation>Algusesse</translation>
+    </message>
+    <message>
+        <source>Sign</source>
+        <translation>Allkirjasta</translation>
+    </message>
+    <message>
+        <source>Continue signing</source>
+        <translation>Jätka allkirjastamisega</translation>
     </message>
 </context>
 <context>
@@ -647,12 +566,12 @@
         <translation>Dokumendi krüpteerimine ebaõnnestus. Palun kontrolli internetiühendust ja võrgu sätteid.</translation>
     </message>
     <message>
-        <source>DON&apos;T SHOW AGAIN</source>
-        <translation>ÄRA ROHKEM NÄITA</translation>
-    </message>
-    <message>
         <source>Failed to decrypt document. Please check your internet connection and network settings.</source>
         <translation>Dokumendi dekrüpteerimine ebaõnnestus. Palun kontrolli internetiühendust ja võrgu sätteid.</translation>
+    </message>
+    <message>
+        <source>Don&apos;t show again</source>
+        <translation>Ära rohkem näita</translation>
     </message>
 </context>
 <context>
@@ -947,20 +866,20 @@
         <translation>Lisa faile</translation>
     </message>
     <message>
-        <source>SAVE WITH OTHER NAME</source>
-        <translation>SALVESTA TEISE NIMEGA</translation>
-    </message>
-    <message>
-        <source>REPLACE ALL</source>
-        <translation>KIRJUTA KÕIK ÜLE</translation>
-    </message>
-    <message>
         <source>Select folder where files will be stored</source>
         <translation>Vali kataloog kuhu failid salvestatakse</translation>
     </message>
     <message>
         <source>%1 already exists.&lt;br /&gt;Do you want replace it?</source>
         <translation>%1 on juba olemas.&lt;br /&gt;Soovid asendada?</translation>
+    </message>
+    <message>
+        <source>Save with other name</source>
+        <translation>Salvesta teise nimega</translation>
+    </message>
+    <message>
+        <source>Replace all</source>
+        <translation>Kirjuta kõik üle</translation>
     </message>
 </context>
 <context>
@@ -1205,24 +1124,8 @@
 <context>
     <name>ItemList</name>
     <message>
-        <source>SEARCH</source>
-        <translation>OTSI</translation>
-    </message>
-    <message>
         <source>Enter the personal code, institution or registry code</source>
         <translation>Sisesta isikukood, asutus või registrikood</translation>
-    </message>
-    <message>
-        <source>+ ADD MORE FILES</source>
-        <translation>+ LISA VEEL FAILE</translation>
-    </message>
-    <message>
-        <source>+ ADD RECIPIENT</source>
-        <translation>+ LISA ADRESSAAT</translation>
-    </message>
-    <message>
-        <source>ADD ALL</source>
-        <translation>LISA KÕIK</translation>
     </message>
     <message>
         <source>Container is not signed</source>
@@ -1267,12 +1170,23 @@
     </message>
     <message>
         <source>Search</source>
-        <extracomment>accessible</extracomment>
         <translation>Otsi</translation>
     </message>
     <message>
         <source>Download all files</source>
         <translation>Laadi kõik failid alla</translation>
+    </message>
+    <message>
+        <source>+ Add more files</source>
+        <translation>+ Lisa veel faile</translation>
+    </message>
+    <message>
+        <source>+ Add recipient</source>
+        <translation>+ Lisa adressaat</translation>
+    </message>
+    <message>
+        <source>Add all</source>
+        <translation>Lisa kõik</translation>
     </message>
 </context>
 <context>
@@ -1290,14 +1204,6 @@
         <translation>Väärtus</translation>
     </message>
     <message>
-        <source>CLOSE</source>
-        <translation>SULGE</translation>
-    </message>
-    <message>
-        <source>SHOW CERTIFICATE</source>
-        <translation>NÄITA SERTIFIKAATI</translation>
-    </message>
-    <message>
         <source>ConcatKDF digest method</source>
         <translation>ConcatKDF referaatmeetod</translation>
     </message>
@@ -1307,12 +1213,10 @@
     </message>
     <message>
         <source>Close</source>
-        <extracomment>accessible</extracomment>
         <translation>Sulge</translation>
     </message>
     <message>
         <source>Show certificate</source>
-        <extracomment>accessible</extracomment>
         <translation>Näita sertifikaati</translation>
     </message>
     <message>
@@ -1386,42 +1290,47 @@ LDAP serveriga ei saa ühendust.</translation>
 <context>
     <name>MainAction</name>
     <message>
-        <source>SignatureMobile</source>
-        <translation>ALLKIRJASTA
-MOBIIL-ID’GA</translation>
-    </message>
-    <message>
-        <source>SignatureSmartID</source>
-        <translation>ALLKIRJASTA
-SMART-ID’GA</translation>
-    </message>
-    <message>
-        <source>SignatureAdd</source>
-        <translation>ALLKIRJASTA
-ID-KAARDIGA</translation>
-    </message>
-    <message>
-        <source>SignatureToken</source>
-        <translation>ALLKIRJASTA
-E-TEMPLIGA</translation>
-    </message>
-    <message>
-        <source>EncryptContainer</source>
-        <translation>KRÜPTEERI</translation>
-    </message>
-    <message>
-        <source>DecryptContainer</source>
-        <translation>DEKRÜPTEERI
-ID-KAARDIGA</translation>
-    </message>
-    <message>
-        <source>DECRYPT</source>
-        <translation>DEKRÜPTEERI</translation>
-    </message>
-    <message>
         <source>Token selection</source>
         <comment>accessible</comment>
         <translation>Vali vahend</translation>
+    </message>
+    <message>
+        <source>Sign with
+Mobile-ID</source>
+        <translation>Allkirjasta
+Mobiil-ID’ga</translation>
+    </message>
+    <message>
+        <source>Sign with
+Smart-ID</source>
+        <translation>Allkirjasta
+Smart-ID’ga</translation>
+    </message>
+    <message>
+        <source>Sign with
+E-Seal</source>
+        <translation>Allkirjasta
+E-templiga</translation>
+    </message>
+    <message>
+        <source>Encrypt</source>
+        <translation>Krüpteeri</translation>
+    </message>
+    <message>
+        <source>Decrypt</source>
+        <translation>Dekrüpteeri</translation>
+    </message>
+    <message>
+        <source>Decrypt with
+ID-Card</source>
+        <translation>Dekrüpteeri
+ID-kaardiga</translation>
+    </message>
+    <message>
+        <source>Sign with
+ID-Card</source>
+        <translation>Allkirjasta
+ID-kaardiga</translation>
     </message>
 </context>
 <context>
@@ -1439,16 +1348,12 @@ ID-KAARDIGA</translation>
         <translation>Allkirjastamiseks või kontrollimiseks lohista fail siia ...</translation>
     </message>
     <message>
-        <source>Open file for signing or verifying</source>
-        <translation>... VÕI VALI FAIL KETTALT</translation>
+        <source>... or load file from disk</source>
+        <translation>... või vali fail kettalt</translation>
     </message>
     <message>
         <source>Drag file here for encryption ...</source>
         <translation>Krüpteerimiseks või dekrüpteerimiseks lohista fail siia ...</translation>
-    </message>
-    <message>
-        <source>Open file for encryption or decryption</source>
-        <translation>... VÕI VALI FAIL KETTALT</translation>
     </message>
     <message>
         <source>Decryption succeeded!</source>
@@ -1495,22 +1400,6 @@ ID-KAARDIGA</translation>
         <translation>Oled avatud ümbrikut muutnud, kuid ei ole muudatusi salvestanud. Kas salvestan muudatused või sulgen salvestamata?</translation>
     </message>
     <message>
-        <source>REMOVE</source>
-        <translation>EEMALDA</translation>
-    </message>
-    <message>
-        <source>KEEP</source>
-        <translation>JÄTA ALLES</translation>
-    </message>
-    <message>
-        <source>DO NOT SAVE</source>
-        <translation>ÄRA SALVESTA</translation>
-    </message>
-    <message>
-        <source>SAVE</source>
-        <translation>SALVESTA</translation>
-    </message>
-    <message>
         <source>Converted to signed document!</source>
         <translation>Konverteeritud allkirjadokumendiks!</translation>
     </message>
@@ -1537,10 +1426,6 @@ ID-KAARDIGA</translation>
     <message>
         <source>Files can not be added to the cryptocontainer. The system will create a new container which shall contain the cypto-document and the files you wish to add.</source>
         <translation>Krüpto-ümbrikusse ei saa faile lisada. Süsteem loob uue ümbriku, kuhu lisatakse krüpteeritud dokument ja Sinu valitud failid.</translation>
-    </message>
-    <message>
-        <source>CONTINUE</source>
-        <translation>EDASI</translation>
     </message>
     <message>
         <source>Cannot add container to same container
@@ -1655,6 +1540,22 @@ ID-KAARDIGA</translation>
     <message>
         <source>Crypto</source>
         <translation>Krüpto</translation>
+    </message>
+    <message>
+        <source>Do not save</source>
+        <translation>Ära salvesta</translation>
+    </message>
+    <message>
+        <source>Keep</source>
+        <translation>Jäta alles</translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation>Salvesta</translation>
+    </message>
+    <message>
+        <source>Continue</source>
+        <translation>Edasi</translation>
     </message>
 </context>
 <context>
@@ -2624,10 +2525,6 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>Allkiri</translation>
     </message>
     <message>
-        <source>CLOSE</source>
-        <translation>SULGE</translation>
-    </message>
-    <message>
         <source>Attribute</source>
         <translation>Atribuut</translation>
     </message>
@@ -2775,7 +2672,6 @@ Täiendavad litsentsid ja komponendid</translation>
     </message>
     <message>
         <source>Close</source>
-        <extracomment>accessible</extracomment>
         <translation>Sulge</translation>
     </message>
     <message>
@@ -2973,12 +2869,12 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>Isikutuvastamise sertifikaat</translation>
     </message>
     <message>
-        <source>UNBLOCK</source>
-        <translation>TÜHISTA BLOKEERING</translation>
+        <source>Unblock</source>
+        <translation>Tühista blokeering</translation>
     </message>
     <message>
-        <source>CHANGE PIN%1</source>
-        <translation>MUUDA PIN%1</translation>
+        <source>Change PIN%1</source>
+        <translation>Muuda PIN%1</translation>
     </message>
     <message>
         <source>Forgot PIN%1?</source>
@@ -3005,8 +2901,8 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>PUK-kood asub Sinu koodiümbrikus</translation>
     </message>
     <message>
-        <source>CHANGE PUK</source>
-        <translation>MUUDA PUK</translation>
+        <source>Change PUK</source>
+        <translation>Muuda PUK</translation>
     </message>
     <message>
         <source>PUK code is blocked because the PUK code has been entered 3 times incorrectly. You can not unblock the PUK code yourself. As long as the PUK code is blocked, all eID options can be used, except PUK code. Please visit the service center to obtain new codes. &lt;a href=&quot;https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult/reminders-for-id-card-holders/&quot;&gt;Additional information&lt;/a&gt;.</source>
@@ -3068,29 +2964,24 @@ Täiendavad litsentsid ja komponendid</translation>
 <context>
     <name>WarningDialog</name>
     <message>
-        <source>CLOSE</source>
-        <translation>SULGE</translation>
-    </message>
-    <message>
         <source>Details</source>
         <translation>Detailid</translation>
     </message>
     <message>
-        <source>Close</source>
-        <extracomment>accessible</extracomment>
-        <translation>Sulge</translation>
+        <source>No</source>
+        <translation>Ei</translation>
     </message>
     <message>
-        <source>NO</source>
-        <translation>EI</translation>
+        <source>Cancel</source>
+        <translation>Katkesta</translation>
     </message>
     <message>
-        <source>CANCEL</source>
-        <translation>KATKESTA</translation>
+        <source>Yes</source>
+        <translation>Jah</translation>
     </message>
     <message>
-        <source>YES</source>
-        <translation>JAH</translation>
+        <source>Remove</source>
+        <translation>Eemalda</translation>
     </message>
 </context>
 <context>

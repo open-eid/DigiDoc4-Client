@@ -445,10 +445,10 @@ bool CryptoDoc::decrypt(const libcdoc::Lock *lock, const QByteArray &secret) {
 			Application::mainWindow());
 		dlg->setCancelText(WarningDialog::Cancel);
 		dlg->addButton(WarningDialog::OK, QMessageBox::Ok);
-		dlg->addButton(tr("DON'T SHOW AGAIN"), QMessageBox::Ignore);
-		switch (dlg->exec()) {
-		case QMessageBox::Ok:
-			break;
+		dlg->addButton(tr("Don't show again"), QMessageBox::Ignore);
+		switch (dlg->exec())
+		{
+		case QMessageBox::Ok: break;
 		case QMessageBox::Ignore:
 			Settings::CDOC2_NOTIFICATION = true;
 			break;

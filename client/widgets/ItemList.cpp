@@ -22,8 +22,7 @@
 
 #include "Styles.h"
 
-#include <QLabel>
-#include <QSvgWidget>
+#include <QKeyEvent>
 
 using namespace ria::qdigidoc4;
 
@@ -40,6 +39,7 @@ ItemList::ItemList(QWidget *parent)
 	ui->infoIcon->hide();
 	ui->txtFind->setAttribute(Qt::WA_MacShowFocusRect, false);
 	connect(this, &ItemList::idChanged, this, [this](const SslCertificate &cert){ this->cert = cert; });
+	ui->txtFind->installEventFilter(this);
 }
 
 ItemList::~ItemList()
@@ -75,9 +75,9 @@ QString ItemList::addLabel()
 {
 	switch(itemType)
 	{
-	case ItemFile: return tr("+ ADD MORE FILES");
-	case ItemAddress: return tr("+ ADD RECIPIENT");
-	case ToAddAdresses: return tr("ADD ALL");
+	case ItemFile: return tr("+ Add more files");
+	case ItemAddress: return tr("+ Add recipient");
+	case ToAddAdresses: return tr("Add all");
 	default: return {};
 	}
 }
@@ -143,6 +143,17 @@ void ItemList::clear()
 
 bool ItemList::eventFilter(QObject *o, QEvent *e)
 {
+	if (o == ui->txtFind && e->type() == QEvent::KeyPress)
+	{
+		QKeyEvent *keyEvent = static_cast<QKeyEvent *>(e);
+		// To avoid dialog default button trigger
+		if (keyEvent->key() == Qt::Key_Return || keyEvent->key() == Qt::Key_Enter)
+		{
+			ui->btnFind->click();
+			return true;
+		}
+	}
+
 	if(o != ui->infoIcon)
 		return QScrollArea::eventFilter(o, e);
 	switch(e->type())
@@ -198,14 +209,9 @@ void ItemList::init(ItemType item, const char *header)
 	}
 
 	if (itemType == ItemSignature || item == AddedAdresses || this->state == SignedContainer)
-	{
 		ui->add->hide();
-	}
 	else
-	{
-		ui->add->init(LabelButton::DeepCeruleanWithLochmara, addLabel());
-		ui->add->setFont(Styles::font(Styles::Condensed, 12));
-	}
+		ui->add->setText(addLabel());
 
 	if(itemType == ItemAddress)
 	{

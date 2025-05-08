@@ -16,26 +16,6 @@
 <context>
     <name>AddRecipients</name>
     <message>
-        <source>CANCEL</source>
-        <translation>ОТМЕНА</translation>
-    </message>
-    <message>
-        <source>CONFIRM</source>
-        <translation>ПОДТВЕРДИТЬ</translation>
-    </message>
-    <message>
-        <source>CERTIFICATE FROM CARD</source>
-        <translation>СЕРТИФИКАТ С КАРТЫ</translation>
-    </message>
-    <message>
-        <source>CERTIFICATE FROM FILE</source>
-        <translation>СЕРТИФИКАТ ИЗ ФАЙЛА</translation>
-    </message>
-    <message>
-        <source>LATEST USED CERTIFICATE</source>
-        <translation>ПОСЛЕДНИЙ СЕРТИФИКАТ</translation>
-    </message>
-    <message>
         <source>Failed to read certificate</source>
         <translation>Не удалось прочитать сертификат</translation>
     </message>
@@ -49,7 +29,7 @@
     </message>
     <message>
         <source>Person or company does not own a valid certificate.&lt;br /&gt;It is necessary to have a valid certificate for encryption.&lt;br /&gt;&lt;a href=&apos;https://www.id.ee/en/article/encryption-and-decryption-of-documents/&apos;&gt;Read more about it&lt;/a&gt;.</source>
-        <translation>У человека или предприятия отсутствует действующий сертификат.&lt;br /&gt;Для шифрования нужен действующий сертификат.&lt;br /&gt;&lt;a href=&apos;https://www.id.ee/ru/artikkel/shifrovanie-i-deshifrovka-dokumentov/&apos;&gt;Точнее можно прочитать&lt;/a&gt;</translation>
+        <translation>У человека или предприятия отсутствует действующий сертификат.&lt;br /&gt;Для шифрования нужен действующий сертификат.&lt;br /&gt;&lt;a href=&apos;https://www.id.ee/ru/artikkel/shifrovanie-i-deshifrovka-dokumentov/&apos;&gt;Точнее можно прочитать&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>Certificates (*.cer *.crt *.pem)</source>
@@ -65,27 +45,22 @@
     </message>
     <message>
         <source>Certificate from card</source>
-        <extracomment>accessible</extracomment>
         <translation>Сертификат с карты</translation>
     </message>
     <message>
         <source>Certificate from file</source>
-        <extracomment>accessible</extracomment>
         <translation>Сертификат из файла</translation>
     </message>
     <message>
         <source>Latest used certificate</source>
-        <extracomment>accessible</extracomment>
         <translation>Последний сертификат</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <extracomment>accessible</extracomment>
         <translation>Отмена</translation>
     </message>
     <message>
         <source>Confirm</source>
-        <extracomment>accessible</extracomment>
         <translation>Подтвердить</translation>
     </message>
     <message>
@@ -299,14 +274,6 @@
         <translation>Сведения о сертификате</translation>
     </message>
     <message>
-        <source>CLOSE</source>
-        <translation>ЗАКРЫТЬ</translation>
-    </message>
-    <message>
-        <source>SAVE</source>
-        <translation>СОХРАНИТЬ</translation>
-    </message>
-    <message>
         <source>This certificate is intended for following purpose(s):</source>
         <translation>Этот сертификат предназначен для следующих целей:</translation>
     </message>
@@ -404,25 +371,15 @@
     </message>
     <message>
         <source>Close</source>
-        <extracomment>accessible</extracomment>
         <translation>Закрыть</translation>
     </message>
     <message>
         <source>Save</source>
-        <extracomment>accessible</extracomment>
         <translation>Сохранить</translation>
     </message>
 </context>
 <context>
     <name>CertificateHistory</name>
-    <message>
-        <source>CLOSE</source>
-        <translation>ЗАКРЫТЬ</translation>
-    </message>
-    <message>
-        <source>REMOVE</source>
-        <translation>УДАЛИТЬ</translation>
-    </message>
     <message>
         <source>Owner</source>
         <translation>Владелец</translation>
@@ -457,17 +414,10 @@
     </message>
     <message>
         <source>Close</source>
-        <extracomment>accessible</extracomment>
         <translation>Закрыть</translation>
     </message>
     <message>
-        <source>Select</source>
-        <extracomment>accessible</extracomment>
-        <translation>Выбрать</translation>
-    </message>
-    <message>
         <source>Remove</source>
-        <extracomment>accessible</extracomment>
         <translation>Удалить</translation>
     </message>
     <message>
@@ -475,8 +425,12 @@
         <translation>Сертификат шифрования</translation>
     </message>
     <message>
-        <source>ADD</source>
-        <translation>ДОБАВИТЬ</translation>
+        <source>Last used certificates</source>
+        <translation>Последний сертификат</translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation>Добавить</translation>
     </message>
 </context>
 <context>
@@ -501,48 +455,8 @@
         <translation>Kонтейнер:</translation>
     </message>
     <message>
-        <source>CHANGE</source>
-        <translation>ПОМЕНЯТЬ</translation>
-    </message>
-    <message>
-        <source>CANCEL</source>
-        <translation>← ОТМЕНА</translation>
-    </message>
-    <message>
-        <source>SEND WITH E-MAIL</source>
-        <translation>ОТПРАВИТЬ С Е-ПOЧТOЙ</translation>
-    </message>
-    <message>
-        <source>PRINT SUMMARY</source>
-        <translation>ПОДТВЕРЖДАЮЩИЙ ЛИСТ</translation>
-    </message>
-    <message>
-        <source>ENCRYPT</source>
-        <translation>ШИФРОВАТЬ</translation>
-    </message>
-    <message>
-        <source>SIGN</source>
-        <translation>ПОДПИСАТЬ</translation>
-    </message>
-    <message>
-        <source>SAVE AS</source>
-        <translation>CОХРАНИТЬ</translation>
-    </message>
-    <message>
-        <source>SAVE WITHOUT SIGNING</source>
-        <translation>СОХРАНИТЬ БЕЗ ПОДПИСИ</translation>
-    </message>
-    <message>
-        <source>STARTING</source>
-        <translation>← В НАЧАЛО</translation>
-    </message>
-    <message>
         <source>The document has already been signed by you.</source>
         <translation>Вы уже подписали этот документ.</translation>
-    </message>
-    <message>
-        <source>CONTINUE SIGNING</source>
-        <translation>ПОДПИСАТЬ</translation>
     </message>
     <message>
         <source>DigiDoc4 Client</source>
@@ -550,38 +464,43 @@
     </message>
     <message>
         <source>Change</source>
-        <extracomment>accessible</extracomment>
         <translation>Поменять</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <extracomment>accessible</extracomment>
         <translation>Отмена</translation>
     </message>
     <message>
         <source>Encrypt</source>
-        <extracomment>accessible</extracomment>
         <translation>Зашифровать</translation>
     </message>
     <message>
         <source>Save as</source>
-        <extracomment>accessible</extracomment>
         <translation>Cохранить</translation>
     </message>
     <message>
         <source>Send with e-mail</source>
-        <extracomment>accessible</extracomment>
         <translation>Отправить с е-пoчтoй</translation>
     </message>
     <message>
         <source>Print summary</source>
-        <extracomment>accessible</extracomment>
         <translation>Подтверждающий лист</translation>
     </message>
     <message>
         <source>Save without signing</source>
-        <extracomment>accessible</extracomment>
         <translation>Сохранить без подписи</translation>
+    </message>
+    <message>
+        <source>Start</source>
+        <translation>В начало</translation>
+    </message>
+    <message>
+        <source>Sign</source>
+        <translation>Подписать</translation>
+    </message>
+    <message>
+        <source>Continue signing</source>
+        <translation>Подписать</translation>
     </message>
 </context>
 <context>
@@ -647,12 +566,12 @@
         <translation>Не удалось зашифровать документ. Пожалуйста, проверьте подключение к Интернету и настройки сети.</translation>
     </message>
     <message>
-        <source>DON&apos;T SHOW AGAIN</source>
-        <translation>БОЛЬШЕ НЕ ПОКАЗЫВАТЬ</translation>
-    </message>
-    <message>
         <source>Failed to decrypt document. Please check your internet connection and network settings.</source>
         <translation>Не удалось расшифровать документ. Пожалуйста, проверьте подключение к Интернету и настройки сети.</translation>
+    </message>
+    <message>
+        <source>Don&apos;t show again</source>
+        <translation>Больше не показывать</translation>
     </message>
 </context>
 <context>
@@ -947,20 +866,20 @@
         <translation>Добавить файлы</translation>
     </message>
     <message>
-        <source>SAVE WITH OTHER NAME</source>
-        <translation>СОХРАНИТЬ ПОД ДРУГИМ ИМЕНЕМ</translation>
-    </message>
-    <message>
-        <source>REPLACE ALL</source>
-        <translation>ЗАМЕНИТЬ ВСЕ</translation>
-    </message>
-    <message>
         <source>Select folder where files will be stored</source>
         <translation>Выберите папку для сохранения файлов</translation>
     </message>
     <message>
         <source>%1 already exists.&lt;br /&gt;Do you want replace it?</source>
         <translation>%1 уже существует.&lt;br /&gt;Заменить?</translation>
+    </message>
+    <message>
+        <source>Save with other name</source>
+        <translation>Сохранить под другим именем</translation>
+    </message>
+    <message>
+        <source>Replace all</source>
+        <translation>Заменить все</translation>
     </message>
 </context>
 <context>
@@ -1205,24 +1124,8 @@
 <context>
     <name>ItemList</name>
     <message>
-        <source>SEARCH</source>
-        <translation>НАЙТИ</translation>
-    </message>
-    <message>
         <source>Enter the personal code, institution or registry code</source>
         <translation>Введите личный код, учреждение или код реестра</translation>
-    </message>
-    <message>
-        <source>+ ADD MORE FILES</source>
-        <translation>+ ДОБАВИТЬ ФАЙЛЫ</translation>
-    </message>
-    <message>
-        <source>+ ADD RECIPIENT</source>
-        <translation>+ ДОБАВИТЬ ПОЛУЧАТЕЛЕЙ</translation>
-    </message>
-    <message>
-        <source>ADD ALL</source>
-        <translation>ДОБАВИТЬ ВСЕ</translation>
     </message>
     <message>
         <source>Container is not signed</source>
@@ -1267,12 +1170,23 @@
     </message>
     <message>
         <source>Search</source>
-        <extracomment>accessible</extracomment>
         <translation>Найти</translation>
     </message>
     <message>
         <source>Download all files</source>
         <translation>Скачайте все файлы</translation>
+    </message>
+    <message>
+        <source>+ Add more files</source>
+        <translation>+ Добавить файлы</translation>
+    </message>
+    <message>
+        <source>+ Add recipient</source>
+        <translation>+ Добавить получателей</translation>
+    </message>
+    <message>
+        <source>Add all</source>
+        <translation>Добавить все</translation>
     </message>
 </context>
 <context>
@@ -1290,14 +1204,6 @@
         <translation>Значение</translation>
     </message>
     <message>
-        <source>CLOSE</source>
-        <translation>ЗАКРЫТЬ</translation>
-    </message>
-    <message>
-        <source>SHOW CERTIFICATE</source>
-        <translation>ПОКАЗАТЬ СЕРТИФИКАТ</translation>
-    </message>
-    <message>
         <source>ConcatKDF digest method</source>
         <translation>Метод подсчета ConcatKDF</translation>
     </message>
@@ -1307,12 +1213,10 @@
     </message>
     <message>
         <source>Close</source>
-        <extracomment>accessible</extracomment>
         <translation>Закрыть</translation>
     </message>
     <message>
         <source>Show certificate</source>
-        <extracomment>accessible</extracomment>
         <translation>Показать сертификат</translation>
     </message>
     <message>
@@ -1386,42 +1290,47 @@ LDAP сервер недоступен.</translation>
 <context>
     <name>MainAction</name>
     <message>
-        <source>SignatureMobile</source>
-        <translation>ПОДПИСАТЬ С
-MOBIIL-ID</translation>
-    </message>
-    <message>
-        <source>SignatureSmartID</source>
-        <translation>ПОДПИСАТЬ С
-SMART-ID</translation>
-    </message>
-    <message>
-        <source>SignatureAdd</source>
-        <translation>ПОДПИСАТЬ С
-ID-КАРТОЙ</translation>
-    </message>
-    <message>
-        <source>SignatureToken</source>
-        <translation>ПОДПИСАТЬ С
-Э-ПЕЧАТЬЮ</translation>
-    </message>
-    <message>
-        <source>EncryptContainer</source>
-        <translation>ЗАШИФРОВАТЬ</translation>
-    </message>
-    <message>
-        <source>DecryptContainer</source>
-        <translation>РАСШИФРОВАТЬ
-С ID-КАРТОЙ</translation>
-    </message>
-    <message>
-        <source>DECRYPT</source>
-        <translation>РАСШИФРОВАТЬ</translation>
-    </message>
-    <message>
         <source>Token selection</source>
         <comment>accessible</comment>
         <translation>Выбрать средство</translation>
+    </message>
+    <message>
+        <source>Sign with
+Mobile-ID</source>
+        <translation>Подписать с
+Mobiil-ID</translation>
+    </message>
+    <message>
+        <source>Sign with
+Smart-ID</source>
+        <translation>Подписать с
+Smart-ID</translation>
+    </message>
+    <message>
+        <source>Sign with
+E-Seal</source>
+        <translation>Подписать с
+Э-печатью</translation>
+    </message>
+    <message>
+        <source>Encrypt</source>
+        <translation>Зашифровать</translation>
+    </message>
+    <message>
+        <source>Decrypt</source>
+        <translation>Расшифровать</translation>
+    </message>
+    <message>
+        <source>Decrypt with
+ID-Card</source>
+        <translation>Расшифровать
+с ID-картой</translation>
+    </message>
+    <message>
+        <source>Sign with
+ID-Card</source>
+        <translation>Подписать с
+ID-картой</translation>
     </message>
 </context>
 <context>
@@ -1439,16 +1348,12 @@ ID-КАРТОЙ</translation>
         <translation>Перетащите файл сюда для подписи или проверки ...</translation>
     </message>
     <message>
-        <source>Open file for signing or verifying</source>
-        <translation>... ИЛИ ЗАГРУЗИТЕ ФАЙЛ С ДИСКА</translation>
+        <source>... or load file from disk</source>
+        <translation>... или загрузите файл с диска</translation>
     </message>
     <message>
         <source>Drag file here for encryption ...</source>
         <translation>Перетащите файл сюда для (рас/за)шифровывания ...</translation>
-    </message>
-    <message>
-        <source>Open file for encryption or decryption</source>
-        <translation>... ИЛИ ЗАГРУЗИТЕ ФАЙЛ С ДИСКА</translation>
     </message>
     <message>
         <source>Decryption succeeded!</source>
@@ -1495,22 +1400,6 @@ ID-КАРТОЙ</translation>
         <translation>Вы изменили открытый контейнер, но не сохранили никаких изменений. Сохранить контейнер или закрыть без изменений?</translation>
     </message>
     <message>
-        <source>REMOVE</source>
-        <translation>УДАЛИТЬ</translation>
-    </message>
-    <message>
-        <source>KEEP</source>
-        <translation>ОСТАВИТЬ</translation>
-    </message>
-    <message>
-        <source>DO NOT SAVE</source>
-        <translation>НЕ СОХРАНЯЙ</translation>
-    </message>
-    <message>
-        <source>SAVE</source>
-        <translation>СОХРАНИТЬ</translation>
-    </message>
-    <message>
         <source>Converted to signed document!</source>
         <translation>Переделан в контейнер для подписания!</translation>
     </message>
@@ -1537,10 +1426,6 @@ ID-КАРТОЙ</translation>
     <message>
         <source>Files can not be added to the cryptocontainer. The system will create a new container which shall contain the cypto-document and the files you wish to add.</source>
         <translation>Файлы не могут быть добавлены в криптоконтейнер. Система создаст новый контейнер, в который будет добавлен зашифрованный документ и выбранные вами файлы.</translation>
-    </message>
-    <message>
-        <source>CONTINUE</source>
-        <translation>ВПЕРЕД</translation>
     </message>
     <message>
         <source>Cannot add container to same container
@@ -1656,6 +1541,22 @@ ID-КАРТОЙ</translation>
     <message>
         <source>Crypto</source>
         <translation>Крипто</translation>
+    </message>
+    <message>
+        <source>Do not save</source>
+        <translation>Не сохраняй</translation>
+    </message>
+    <message>
+        <source>Keep</source>
+        <translation>Оставить</translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation>Сохранить</translation>
+    </message>
+    <message>
+        <source>Continue</source>
+        <translation>Продолжить</translation>
     </message>
 </context>
 <context>
@@ -2625,10 +2526,6 @@ Additional licenses and components</source>
         <translation>Подпись</translation>
     </message>
     <message>
-        <source>CLOSE</source>
-        <translation>ЗАКРЫТЬ</translation>
-    </message>
-    <message>
         <source>Attribute</source>
         <translation>Атрибут</translation>
     </message>
@@ -2776,7 +2673,6 @@ Additional licenses and components</source>
     </message>
     <message>
         <source>Close</source>
-        <extracomment>accessible</extracomment>
         <translation>Закрыть</translation>
     </message>
     <message>
@@ -2974,12 +2870,12 @@ Additional licenses and components</source>
         <translation>Сертификат идентификации</translation>
     </message>
     <message>
-        <source>UNBLOCK</source>
-        <translation>РАЗБЛОКИРОВАТЬ</translation>
+        <source>Unblock</source>
+        <translation>Разблокировать</translation>
     </message>
     <message>
-        <source>CHANGE PIN%1</source>
-        <translation>ИЗМЕНИТЬ PIN%1</translation>
+        <source>Change PIN%1</source>
+        <translation>Изменить PIN%1</translation>
     </message>
     <message>
         <source>Forgot PIN%1?</source>
@@ -3000,10 +2896,6 @@ Additional licenses and components</source>
     <message>
         <source>The PUK code is located in your envelope</source>
         <translation>PUK-код находится в конверте</translation>
-    </message>
-    <message>
-        <source>CHANGE PUK</source>
-        <translation>ИЗМЕНИТЬ PUK</translation>
     </message>
     <message>
         <source>PUK code is blocked because the PUK code has been entered 3 times incorrectly. You can not unblock the PUK code yourself. As long as the PUK code is blocked, all eID options can be used, except PUK code. Please visit the service center to obtain new codes. &lt;a href=&quot;https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult/reminders-for-id-card-holders/&quot;&gt;Additional information&lt;/a&gt;.</source>
@@ -3065,33 +2957,32 @@ Additional licenses and components</source>
         <source>Certificate status check failed. Please check your internet connection.</source>
         <translation>Проверка статуса сертификата не удалась. Пожалуйста проверьте подключение к интернету.</translation>
     </message>
+    <message>
+        <source>Change PUK</source>
+        <translation>Изменить PUK</translation>
+    </message>
 </context>
 <context>
     <name>WarningDialog</name>
-    <message>
-        <source>CLOSE</source>
-        <translation>ЗАКРЫТЬ</translation>
-    </message>
     <message>
         <source>Details</source>
         <translation>Детали</translation>
     </message>
     <message>
-        <source>Close</source>
-        <extracomment>accessible</extracomment>
-        <translation>Закрыть</translation>
+        <source>No</source>
+        <translation>Нет</translation>
     </message>
     <message>
-        <source>NO</source>
-        <translation>НЕТ</translation>
+        <source>Cancel</source>
+        <translation>Отмена</translation>
     </message>
     <message>
-        <source>CANCEL</source>
-        <translation>ОТМЕНА</translation>
+        <source>Yes</source>
+        <translation>Да</translation>
     </message>
     <message>
-        <source>YES</source>
-        <translation>ДА</translation>
+        <source>Remove</source>
+        <translation>Удалить</translation>
     </message>
 </context>
 <context>

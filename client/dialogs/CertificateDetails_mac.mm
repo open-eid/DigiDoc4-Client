@@ -24,43 +24,14 @@
 #include <QtCore/QDir>
 #include <QtCore/QFile>
 #include <QtCore/QUrl>
-#include <QtWidgets/QWidget>
 
-#import <objc/runtime.h>
-#import <Quartz/Quartz.h>
+#import <QuickLookUI/QuickLookUI.h>
 
-@interface CertPreview : NSResponder <QLPreviewPanelDataSource, QLPreviewPanelDelegate>
+@interface CertPreview : NSResponder <QLPreviewPanelDataSource>
 @property (nonatomic, copy) NSURL *certUrl;
 @end
 
 @implementation CertPreview
-
-- (BOOL)acceptsFirstResponder
-{
-	return YES;
-}
-
-- (BOOL)acceptsPreviewPanelControl:(QLPreviewPanel *)panel
-{
-	Q_UNUSED(panel)
-	return YES;
-}
-
-- (void)beginPreviewPanelControl:(QLPreviewPanel *)panel
-{
-	Q_UNUSED(panel)
-	panel.dataSource = self;
-	panel.delegate = self;
-}
-
-- (void)endPreviewPanelControl:(QLPreviewPanel *)panel
-{
-	Q_UNUSED(panel)
-	QFile::remove(QUrl::fromNSURL(self.certUrl).toLocalFile());
-	panel.dataSource = nil;
-	panel.delegate = nil;
-	self.certUrl = nil;
-}
 
 - (NSInteger)numberOfPreviewItemsInPreviewPanel:(QLPreviewPanel *)panel
 {
@@ -76,32 +47,31 @@
 @end
 
 
-void CertificateDetails::showCertificate(const SslCertificate &cert, QWidget *parent, const QString &suffix)
+void CertificateDetails::showCertificate(const QSslCertificate &cert, QWidget *parent, const QString &suffix)
 {
-	QString name = cert.subjectInfo("serialNumber");
+	QString name = cert.subjectInfo("serialNumber").join('_');
 	if(name.isNull() || name.isEmpty())
 		name = QString::fromUtf8(cert.serialNumber());
 	QString path = QStringLiteral("%1/%2%3.cer").arg(QDir::tempPath(), name, suffix);
-	QFile f(path);
-	if(f.open(QIODevice::WriteOnly))
-		f.write(cert.toPem());
-	f.close();
 
 	static CertPreview *cp;
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
 		cp = [CertPreview new];
 	});
-	
+
 	if(cp.certUrl != nullptr)
 		QFile::remove(QUrl::fromNSURL(cp.certUrl).toLocalFile());
-
+	if(QFile f(path); f.open(QIODevice::WriteOnly))
+		f.write(cert.toPem());
 	cp.certUrl = [NSURL fileURLWithPath:path.toNSString()];
-	[[(__bridge NSView *)reinterpret_cast<void *>(parent->winId()) window] makeFirstResponder:cp];
-	
+
 	auto qlPanel = QLPreviewPanel.sharedPreviewPanel;
 	if (qlPanel.isVisible)
 		[qlPanel reloadData];
 	else
-		[qlPanel makeKeyAndOrderFront:cp];
+	{
+		qlPanel.dataSource = cp;
+		[qlPanel makeKeyAndOrderFront:nil];
+	}
 }

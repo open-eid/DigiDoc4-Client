@@ -29,21 +29,20 @@ class AddressItem final : public Item
 	Q_OBJECT
 
 public:
-	enum ShowToolButton
+	enum Type
 	{
-		Remove,
 		Add,
-		Added,
+		Remove,
+		Icon,
 	};
 
-	explicit AddressItem(const CDKey &k, QWidget *parent = {}, bool showIcon = false);
+	explicit AddressItem(const CDKey &k, Type type, QWidget *parent = {});
 	~AddressItem() final;
 
 	const CDKey& getKey() const;
 	void idChanged(const SslCertificate &cert) final;
 	void initTabOrder(QWidget *item) final;
 	QWidget* lastTabWidget() final;
-	void showButton(ShowToolButton show);
 	void stateChange(ria::qdigidoc4::ContainerState state) final;
 
 signals:

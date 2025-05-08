@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop-application">
   <id>ee.ria.qdigidoc4</id>
-  <name>DigiDoc4 Client</name>
-  <name xml:lang="ee">DigiDoc4 Klient</name>
+  <name>DigiDoc4</name>
 
   <summary>Estonian ID-card desktop application</summary>
   <summary xml:lang="ee">Eesti ID-tarkvara</summary>
@@ -53,6 +52,13 @@
     <binary>qdigidoc4</binary>
   </provides>
   <releases>
+    <release version="4.8.0" date="2025-04-30">
+      <description>
+        <ul>
+          <li>Code, Text and translation improvements and updates</li>
+        </ul>
+      </description>
+    </release>
     <release version="4.7.0" date="2025-01-02">
       <description>
         <ul>

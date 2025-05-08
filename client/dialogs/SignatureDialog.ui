@@ -524,9 +524,6 @@ background-color: #f7f7f7;</string>
         <property name="cursor">
          <cursorShape>PointingHandCursor</cursorShape>
         </property>
-        <property name="accessibleName">
-         <string extracomment="accessible">Close</string>
-        </property>
         <property name="styleSheet">
          <string notr="true">QPushButton {
 	border-radius: 2px; 
@@ -545,7 +542,7 @@ QPushButton:disabled {
 }</string>
         </property>
         <property name="text">
-         <string>CLOSE</string>
+         <string>Close</string>
         </property>
        </widget>
       </item>

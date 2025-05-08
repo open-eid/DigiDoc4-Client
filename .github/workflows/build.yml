@@ -29,9 +29,9 @@ jobs:
       env:
         HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK: YES
       run: |
-        brew install ninja flatbuffers
+        brew install flatbuffers
         HASH=($(shasum prepare_osx_build_environment.sh))
-        curl -O -L -s https://installer.id.ee/media/github/opensc_0.23.0.pkg
+        curl -O -L -s https://installer.id.ee/media/github/opensc_0.26.1.pkg
         curl -O -L -s https://installer.id.ee/media/github/${HASH}.zip
         sudo installer -verboseR -pkg libdigidocpp-pkg/build/macos/libdigidocpp*.pkg -target /
         sudo installer -verboseR -pkg opensc_*.pkg -target /
@@ -56,7 +56,7 @@ jobs:
     container: ubuntu:${{ matrix.container }}
     strategy:
       matrix:
-        container: ['22.04', '24.04', '24.10']
+        container: ['22.04', '24.04', '24.10', '25.04']
         arch: ['amd64', 'arm64']
     env:
       DEBIAN_FRONTEND: noninteractive
@@ -100,16 +100,8 @@ jobs:
     container: fedora:${{ matrix.container }}
     strategy:
       matrix:
-        container: [40, 41]
+        container: [41, 42]
     steps:
-    - name: Install Deps
-      run: |
-        dnf install -y --setopt=install_weak_deps=False \
-        git gcc-c++ cmake rpm-build gettext openssl-devel openldap-devel pcsc-lite-devel qt6-qtsvg-devel qt6-qttools-devel flatbuffers-devel flatbuffers-compiler zlib-devel
-    - name: Checkout
-      uses: actions/checkout@v4
-      with:
-        submodules: recursive
     - name: Download artifact
       uses: dawidd6/action-download-artifact@v6
       with:
@@ -118,8 +110,12 @@ jobs:
         name: fedora_${{ matrix.container }}
         path: libdigidocpp-pkg
         repo: open-eid/libdigidocpp
-    - name: Install artifact
-      run: dnf install -y ./libdigidocpp-pkg/*.rpm
+    - name: Install Deps
+      run: dnf install -y ./libdigidocpp-pkg/*.rpm git gcc-c++ cmake rpm-build gettext openssl-devel openldap-devel pcsc-lite-devel qt6-qtsvg-devel qt6-qttools-devel flatbuffers-devel flatbuffers-compiler zlib-devel
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
     - name: Build
       run: |
         cmake -DCMAKE_INSTALL_PREFIX=/usr -B build -S .
@@ -171,7 +167,7 @@ jobs:
     - name: Install Qt
       uses: jurplel/install-qt-action@v4
       with:
-        version: 6.8.2
+        version: 6.8.3
         arch: win64_msvc2022_64
     - name: Setup dev env
       uses: ilammy/msvc-dev-cmd@v1

@@ -16,26 +16,6 @@
 <context>
     <name>AddRecipients</name>
     <message>
-        <source>CANCEL</source>
-        <translation>CANCEL</translation>
-    </message>
-    <message>
-        <source>CONFIRM</source>
-        <translation>CONFIRM</translation>
-    </message>
-    <message>
-        <source>CERTIFICATE FROM CARD</source>
-        <translation>CERTIFICATE FROM CARD</translation>
-    </message>
-    <message>
-        <source>CERTIFICATE FROM FILE</source>
-        <translation>CERTIFICATE FROM FILE</translation>
-    </message>
-    <message>
-        <source>LATEST USED CERTIFICATE</source>
-        <translation>LATEST USED CERTIFICATE</translation>
-    </message>
-    <message>
         <source>Failed to read certificate</source>
         <translation>Failed to read certificate</translation>
     </message>
@@ -65,27 +45,22 @@
     </message>
     <message>
         <source>Certificate from card</source>
-        <extracomment>accessible</extracomment>
         <translation>Certificate from card</translation>
     </message>
     <message>
         <source>Certificate from file</source>
-        <extracomment>accessible</extracomment>
         <translation>Certificate from file</translation>
     </message>
     <message>
         <source>Latest used certificate</source>
-        <extracomment>accessible</extracomment>
         <translation>Latest used certificate</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <extracomment>accessible</extracomment>
         <translation>Cancel</translation>
     </message>
     <message>
         <source>Confirm</source>
-        <extracomment>accessible</extracomment>
         <translation>Confirm</translation>
     </message>
     <message>
@@ -299,14 +274,6 @@
         <translation>Certificate details</translation>
     </message>
     <message>
-        <source>CLOSE</source>
-        <translation>CLOSE</translation>
-    </message>
-    <message>
-        <source>SAVE</source>
-        <translation>SAVE</translation>
-    </message>
-    <message>
         <source>This certificate is intended for following purpose(s):</source>
         <translation>This certificate is intended for following purpose(s):</translation>
     </message>
@@ -404,25 +371,15 @@
     </message>
     <message>
         <source>Close</source>
-        <extracomment>accessible</extracomment>
         <translation>Close</translation>
     </message>
     <message>
         <source>Save</source>
-        <extracomment>accessible</extracomment>
         <translation>Save</translation>
     </message>
 </context>
 <context>
     <name>CertificateHistory</name>
-    <message>
-        <source>CLOSE</source>
-        <translation>CLOSE</translation>
-    </message>
-    <message>
-        <source>REMOVE</source>
-        <translation>REMOVE</translation>
-    </message>
     <message>
         <source>Owner</source>
         <translation>Owner</translation>
@@ -457,17 +414,10 @@
     </message>
     <message>
         <source>Close</source>
-        <extracomment>accessible</extracomment>
         <translation>Close</translation>
     </message>
     <message>
-        <source>Select</source>
-        <extracomment>accessible</extracomment>
-        <translation>Select</translation>
-    </message>
-    <message>
         <source>Remove</source>
-        <extracomment>accessible</extracomment>
         <translation>Remove</translation>
     </message>
     <message>
@@ -475,8 +425,12 @@
         <translation>Certificate for Encryption</translation>
     </message>
     <message>
-        <source>ADD</source>
-        <translation>ADD</translation>
+        <source>Last used certificates</source>
+        <translation>Last used certificates</translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation>Add</translation>
     </message>
 </context>
 <context>
@@ -501,48 +455,8 @@
         <translation>Container:</translation>
     </message>
     <message>
-        <source>CHANGE</source>
-        <translation>CHANGE</translation>
-    </message>
-    <message>
-        <source>CANCEL</source>
-        <translation>← CANCEL</translation>
-    </message>
-    <message>
-        <source>SEND WITH E-MAIL</source>
-        <translation>SEND WITH E-MAIL</translation>
-    </message>
-    <message>
-        <source>PRINT SUMMARY</source>
-        <translation>PRINT SUMMARY</translation>
-    </message>
-    <message>
-        <source>ENCRYPT</source>
-        <translation>ENCRYPT</translation>
-    </message>
-    <message>
-        <source>SIGN</source>
-        <translation>SIGN</translation>
-    </message>
-    <message>
-        <source>SAVE AS</source>
-        <translation>SAVE AS</translation>
-    </message>
-    <message>
-        <source>SAVE WITHOUT SIGNING</source>
-        <translation>SAVE WITHOUT SIGNING</translation>
-    </message>
-    <message>
-        <source>STARTING</source>
-        <translation>← START</translation>
-    </message>
-    <message>
         <source>The document has already been signed by you.</source>
         <translation>The document has already been signed by you.</translation>
-    </message>
-    <message>
-        <source>CONTINUE SIGNING</source>
-        <translation>CONTINUE SIGNING</translation>
     </message>
     <message>
         <source>DigiDoc4 Client</source>
@@ -550,38 +464,43 @@
     </message>
     <message>
         <source>Change</source>
-        <extracomment>accessible</extracomment>
         <translation>Change</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <extracomment>accessible</extracomment>
         <translation>Cancel</translation>
     </message>
     <message>
         <source>Encrypt</source>
-        <extracomment>accessible</extracomment>
         <translation>Encrypt</translation>
     </message>
     <message>
         <source>Save as</source>
-        <extracomment>accessible</extracomment>
         <translation>Save as</translation>
     </message>
     <message>
         <source>Send with e-mail</source>
-        <extracomment>accessible</extracomment>
         <translation>Send with e-mail</translation>
     </message>
     <message>
         <source>Print summary</source>
-        <extracomment>accessible</extracomment>
         <translation>Print summary</translation>
     </message>
     <message>
         <source>Save without signing</source>
-        <extracomment>accessible</extracomment>
         <translation>Save without signing</translation>
+    </message>
+    <message>
+        <source>Start</source>
+        <translation>Start</translation>
+    </message>
+    <message>
+        <source>Sign</source>
+        <translation>Sign</translation>
+    </message>
+    <message>
+        <source>Continue signing</source>
+        <translation>Continue signing</translation>
     </message>
 </context>
 <context>
@@ -647,12 +566,12 @@
         <translation>Failed to encrypt document. Please check your internet connection and network settings.</translation>
     </message>
     <message>
-        <source>DON&apos;T SHOW AGAIN</source>
-        <translation>DON&apos;T SHOW AGAIN</translation>
-    </message>
-    <message>
         <source>Failed to decrypt document. Please check your internet connection and network settings.</source>
         <translation>Failed to decrypt document. Please check your internet connection and network settings.</translation>
+    </message>
+    <message>
+        <source>Don&apos;t show again</source>
+        <translation>Don&apos;t show again</translation>
     </message>
 </context>
 <context>
@@ -947,20 +866,20 @@
         <translation>Add files</translation>
     </message>
     <message>
-        <source>SAVE WITH OTHER NAME</source>
-        <translation>SAVE WITH OTHER NAME</translation>
-    </message>
-    <message>
-        <source>REPLACE ALL</source>
-        <translation>REPLACE ALL</translation>
-    </message>
-    <message>
         <source>Select folder where files will be stored</source>
         <translation>Select folder where files will be stored</translation>
     </message>
     <message>
         <source>%1 already exists.&lt;br /&gt;Do you want replace it?</source>
         <translation>%1 already exists.&lt;br /&gt;Do you want replace it?</translation>
+    </message>
+    <message>
+        <source>Save with other name</source>
+        <translation>Save with other name</translation>
+    </message>
+    <message>
+        <source>Replace all</source>
+        <translation>Replace all</translation>
     </message>
 </context>
 <context>
@@ -1205,24 +1124,8 @@
 <context>
     <name>ItemList</name>
     <message>
-        <source>SEARCH</source>
-        <translation>SEARCH</translation>
-    </message>
-    <message>
         <source>Enter the personal code, institution or registry code</source>
         <translation>Enter the personal code, institution or registry code</translation>
-    </message>
-    <message>
-        <source>+ ADD MORE FILES</source>
-        <translation>+ ADD MORE FILES</translation>
-    </message>
-    <message>
-        <source>+ ADD RECIPIENT</source>
-        <translation>+ ADD RECIPIENT</translation>
-    </message>
-    <message>
-        <source>ADD ALL</source>
-        <translation>ADD ALL</translation>
     </message>
     <message>
         <source>Container is not signed</source>
@@ -1267,12 +1170,23 @@
     </message>
     <message>
         <source>Search</source>
-        <extracomment>accessible</extracomment>
         <translation>Search</translation>
     </message>
     <message>
         <source>Download all files</source>
         <translation>Download all files</translation>
+    </message>
+    <message>
+        <source>+ Add more files</source>
+        <translation>+ Add more files</translation>
+    </message>
+    <message>
+        <source>+ Add recipient</source>
+        <translation>+ Add recipient</translation>
+    </message>
+    <message>
+        <source>Add all</source>
+        <translation>Add all</translation>
     </message>
 </context>
 <context>
@@ -1290,14 +1204,6 @@
         <translation>Value</translation>
     </message>
     <message>
-        <source>CLOSE</source>
-        <translation>CLOSE</translation>
-    </message>
-    <message>
-        <source>SHOW CERTIFICATE</source>
-        <translation>SHOW CERTIFICATE</translation>
-    </message>
-    <message>
         <source>ConcatKDF digest method</source>
         <translation>ConcatKDF digest method</translation>
     </message>
@@ -1307,12 +1213,10 @@
     </message>
     <message>
         <source>Close</source>
-        <extracomment>accessible</extracomment>
         <translation>Close</translation>
     </message>
     <message>
         <source>Show certificate</source>
-        <extracomment>accessible</extracomment>
         <translation>Show certificate</translation>
     </message>
     <message>
@@ -1386,42 +1290,47 @@ LDAP server is unavailable.</translation>
 <context>
     <name>MainAction</name>
     <message>
-        <source>SignatureMobile</source>
-        <translation>SIGN WITH
-MOBILE-ID</translation>
-    </message>
-    <message>
-        <source>SignatureSmartID</source>
-        <translation>SIGN WITH
-SMART-ID</translation>
-    </message>
-    <message>
-        <source>SignatureAdd</source>
-        <translation>SIGN WITH
-ID-CARD</translation>
-    </message>
-    <message>
-        <source>SignatureToken</source>
-        <translation>SIGN WITH
-E-SEAL</translation>
-    </message>
-    <message>
-        <source>EncryptContainer</source>
-        <translation>ENCRYPT</translation>
-    </message>
-    <message>
-        <source>DecryptContainer</source>
-        <translation>DECRYPT WITH
-ID-CARD</translation>
-    </message>
-    <message>
-        <source>DECRYPT</source>
-        <translation>DECRYPT</translation>
-    </message>
-    <message>
         <source>Token selection</source>
         <comment>accessible</comment>
         <translation>Token selection</translation>
+    </message>
+    <message>
+        <source>Sign with
+Mobile-ID</source>
+        <translation>Sign with
+Mobile-ID</translation>
+    </message>
+    <message>
+        <source>Sign with
+Smart-ID</source>
+        <translation>Sign with
+Smart-ID</translation>
+    </message>
+    <message>
+        <source>Sign with
+E-Seal</source>
+        <translation>Sign with
+E-Seal</translation>
+    </message>
+    <message>
+        <source>Encrypt</source>
+        <translation>Encrypt</translation>
+    </message>
+    <message>
+        <source>Decrypt</source>
+        <translation>Decrypt</translation>
+    </message>
+    <message>
+        <source>Decrypt with
+ID-Card</source>
+        <translation>Decrypt with
+ID-Card</translation>
+    </message>
+    <message>
+        <source>Sign with
+ID-Card</source>
+        <translation>Sign with
+ID-Card</translation>
     </message>
 </context>
 <context>
@@ -1439,16 +1348,12 @@ ID-CARD</translation>
         <translation>Drag file here for signing or verification ...</translation>
     </message>
     <message>
-        <source>Open file for signing or verifying</source>
-        <translation>... OR LOAD FILE FROM DISK</translation>
+        <source>... or load file from disk</source>
+        <translation>... or load file from disk</translation>
     </message>
     <message>
         <source>Drag file here for encryption ...</source>
         <translation>Drag file here for encryption or decryption ...</translation>
-    </message>
-    <message>
-        <source>Open file for encryption or decryption</source>
-        <translation>... OR LOAD FILE FROM DISK</translation>
     </message>
     <message>
         <source>Decryption succeeded!</source>
@@ -1495,22 +1400,6 @@ ID-CARD</translation>
         <translation>You&apos;ve changed the open container but have not saved any changes. Save the changes or close without saving?</translation>
     </message>
     <message>
-        <source>REMOVE</source>
-        <translation>REMOVE</translation>
-    </message>
-    <message>
-        <source>KEEP</source>
-        <translation>KEEP</translation>
-    </message>
-    <message>
-        <source>DO NOT SAVE</source>
-        <translation>DO NOT SAVE</translation>
-    </message>
-    <message>
-        <source>SAVE</source>
-        <translation>SAVE</translation>
-    </message>
-    <message>
         <source>Converted to signed document!</source>
         <translation>Converted to signed document!</translation>
     </message>
@@ -1537,10 +1426,6 @@ ID-CARD</translation>
     <message>
         <source>Files can not be added to the cryptocontainer. The system will create a new container which shall contain the cypto-document and the files you wish to add.</source>
         <translation>Files can not be added to the cryptocontainer. The system will create a new container which shall contain the cypto-document and the files you wish to add.</translation>
-    </message>
-    <message>
-        <source>CONTINUE</source>
-        <translation>CONTINUE</translation>
     </message>
     <message>
         <source>Cannot add container to same container
@@ -1655,6 +1540,22 @@ ID-CARD</translation>
     <message>
         <source>Crypto</source>
         <translation>Crypto</translation>
+    </message>
+    <message>
+        <source>Do not save</source>
+        <translation>Do not save</translation>
+    </message>
+    <message>
+        <source>Keep</source>
+        <translation>Keep</translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation>Save</translation>
+    </message>
+    <message>
+        <source>Continue</source>
+        <translation>Continue</translation>
     </message>
 </context>
 <context>
@@ -2624,10 +2525,6 @@ Additional licenses and components</translation>
         <translation>Signature</translation>
     </message>
     <message>
-        <source>CLOSE</source>
-        <translation>CLOSE</translation>
-    </message>
-    <message>
         <source>Attribute</source>
         <translation>Attribute</translation>
     </message>
@@ -2775,7 +2672,6 @@ Additional licenses and components</translation>
     </message>
     <message>
         <source>Close</source>
-        <extracomment>accessible</extracomment>
         <translation>Close</translation>
     </message>
     <message>
@@ -2973,12 +2869,12 @@ Additional licenses and components</translation>
         <translation>Authentication certificate</translation>
     </message>
     <message>
-        <source>UNBLOCK</source>
-        <translation>UNBLOCK</translation>
+        <source>Unblock</source>
+        <translation>Unblock</translation>
     </message>
     <message>
-        <source>CHANGE PIN%1</source>
-        <translation>CHANGE PIN%1</translation>
+        <source>Change PIN%1</source>
+        <translation>Change PIN%1</translation>
     </message>
     <message>
         <source>Forgot PIN%1?</source>
@@ -3001,8 +2897,8 @@ Additional licenses and components</translation>
         <translation>The PUK code is located in your envelope</translation>
     </message>
     <message>
-        <source>CHANGE PUK</source>
-        <translation>CHANGE PUK</translation>
+        <source>Change PUK</source>
+        <translation>Change PUK</translation>
     </message>
     <message>
         <source>PUK code is blocked because the PUK code has been entered 3 times incorrectly. You can not unblock the PUK code yourself. As long as the PUK code is blocked, all eID options can be used, except PUK code. Please visit the service center to obtain new codes. &lt;a href=&quot;https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult/reminders-for-id-card-holders/&quot;&gt;Additional information&lt;/a&gt;.</source>
@@ -3068,29 +2964,24 @@ Additional licenses and components</translation>
 <context>
     <name>WarningDialog</name>
     <message>
-        <source>CLOSE</source>
-        <translation>CLOSE</translation>
-    </message>
-    <message>
         <source>Details</source>
         <translation>Details</translation>
     </message>
     <message>
-        <source>Close</source>
-        <extracomment>accessible</extracomment>
-        <translation>Close</translation>
+        <source>No</source>
+        <translation>No</translation>
     </message>
     <message>
-        <source>NO</source>
-        <translation>NO</translation>
+        <source>Cancel</source>
+        <translation>Cancel</translation>
     </message>
     <message>
-        <source>CANCEL</source>
-        <translation>CANCEL</translation>
+        <source>Yes</source>
+        <translation>Yes</translation>
     </message>
     <message>
-        <source>YES</source>
-        <translation>YES</translation>
+        <source>Remove</source>
+        <translation>Remove</translation>
     </message>
 </context>
 <context>
