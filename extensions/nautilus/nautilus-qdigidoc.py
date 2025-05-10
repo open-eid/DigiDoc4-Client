@@ -32,12 +32,6 @@ from gi.repository import Nautilus, GObject, Gio
 if hasattr(Nautilus, "LocationWidgetProvider"):
      gi.require_version('Nautilus', '3.0')
 
-APP = 'nautilus-qdigidoc'
-
-locale.setlocale(locale.LC_ALL, '')
-gettext.bindtextdomain(APP)
-gettext.textdomain(APP)
-
 class OpenDigidocExtension(GObject.GObject, Nautilus.MenuProvider):
     def __init__(self):
         super().__init__()
@@ -62,6 +56,11 @@ class OpenDigidocExtension(GObject.GObject, Nautilus.MenuProvider):
 
         if len(paths) < 1:
             return []
+
+        APP = 'nautilus-qdigidoc'
+        locale.setlocale(locale.LC_ALL, '')
+        gettext.bindtextdomain(APP)
+        gettext.textdomain(APP)
 
         item = Nautilus.MenuItem(
             name="OpenDigidocExtension::DigidocSigner",
@@ -101,6 +100,11 @@ class OpenCryptoExtension(GObject.GObject, Nautilus.MenuProvider):
 
         if len(paths) < 1:
             return []
+
+        APP = 'nautilus-qdigidoc'
+        locale.setlocale(locale.LC_ALL, '')
+        gettext.bindtextdomain(APP)
+        gettext.textdomain(APP)
 
         item = Nautilus.MenuItem(
             name="OpenCryptoExtension::DigidocEncrypter",
