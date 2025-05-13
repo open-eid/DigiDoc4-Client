@@ -21,8 +21,10 @@
 
 #include <memory>
 
-#include "CryptoDoc.h"
 #include "widgets/Item.h"
+#include "cdoc/Lock.h"
+
+struct CDKey;
 
 class AddressItem final : public Item
 {

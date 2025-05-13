@@ -329,11 +329,6 @@ background-color: #E1C1C6;
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>LabelButton</class>
-   <extends>QToolButton</extends>
-   <header>widgets/LabelButton.h</header>
-  </customwidget>
-  <customwidget>
    <class>FileList</class>
    <extends>QScrollArea</extends>
    <header>widgets/FileList.h</header>

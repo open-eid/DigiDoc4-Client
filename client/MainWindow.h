@@ -23,12 +23,13 @@
 
 #include "common_enums.h"
 #include "QSmartCard.h"
-#include "CryptoDoc.h"
+#include "cdoc/Lock.h"
 
 namespace Ui {
 class MainWindow;
 }
 
+struct CDKey;
 class CryptoDoc;
 class DigiDoc;
 class DocumentModel;

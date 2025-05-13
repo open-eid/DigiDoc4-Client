@@ -52,6 +52,7 @@ AddressItem::AddressItem(const CDKey &key, Type type, QWidget *parent)
 	ui->expire->setAttribute(Qt::WA_TransparentForMouseEvents, true);
 	ui->idType->setAttribute(Qt::WA_TransparentForMouseEvents, true);
 
+	bool unsupported = false;
 	if (!ui->key.rcpt_cert.isNull()) {
 		// Recipient certificate
 		ui->code = SslCertificate(ui->key.rcpt_cert).personalCode();
@@ -78,14 +79,16 @@ AddressItem::AddressItem(const CDKey &key, Type type, QWidget *parent)
 		}
 	} else {
 		// No rcpt, lock is invalid = unsupported lock
-		setCursor(Qt::PointingHandCursor);
+		unsupported = true;
 		ui->code.clear();
 		ui->label = tr("Unsupported cryptographic algorithm or recipient type");
 	}
 
-	connect(ui->add, &QToolButton::clicked, this, [this] { emit add(this); });
-	connect(ui->remove, &QToolButton::clicked, this,
-			[this] { emit remove(this); });
+	if(!unsupported)
+		setCursor(Qt::PointingHandCursor);
+
+	connect(ui->add, &QToolButton::clicked, this, [this]{ emit add(this);});
+	connect(ui->remove, &QToolButton::clicked, this, [this]{ emit remove(this);});
 
 	setIdType();
 	ui->add->setVisible(type == Add);
@@ -163,16 +166,17 @@ void AddressItem::stateChange(ContainerState state)
 
 void AddressItem::setIdType(const SslCertificate &cert) {
 	SslCertificate::CertType type = cert.type();
-	if (type & SslCertificate::DigiIDType) {
+	if(type & SslCertificate::DigiIDType)
 		ui->idType->setText(tr("digi-ID"));
-	} else if (type & SslCertificate::EstEidType) {
+	else if(type & SslCertificate::EstEidType)
 		ui->idType->setText(tr("ID-card"));
-	} else if (type & SslCertificate::MobileIDType) {
+	else if(type & SslCertificate::MobileIDType)
 		ui->idType->setText(tr("mobile-ID"));
-	} else if (type & SslCertificate::TempelType) {
-		if (cert.keyUsage().contains(SslCertificate::NonRepudiation))
+	else if(type & SslCertificate::TempelType)
+	{
+		if(cert.keyUsage().contains(SslCertificate::NonRepudiation))
 			ui->idType->setText(tr("e-Seal"));
-		else if (cert.enhancedKeyUsage().contains(SslCertificate::ClientAuth))
+		else if(cert.enhancedKeyUsage().contains(SslCertificate::ClientAuth))
 			ui->idType->setText(tr("Authentication certificate"));
 		else
 			ui->idType->setText(tr("Certificate for Encryption"));

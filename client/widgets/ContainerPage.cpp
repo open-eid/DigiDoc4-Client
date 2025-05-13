@@ -221,30 +221,10 @@ void ContainerPage::showMainAction(const QList<Actions> &actions)
 	bool isSignCard = actions.contains(SignatureAdd) || actions.contains(SignatureToken);
 	bool isSignMobile = !isSignCard && (actions.contains(SignatureMobile) || actions.contains(SignatureSmartID));
 	bool isEncrypt = actions.contains(EncryptContainer) && !ui->rightPane->findChildren<AddressItem*>().isEmpty();
-	bool isEncryptLT = crypto_container && crypto_container->supportsSymmetricKeys();
+	bool isEncryptLT = actions.contains(EncryptLT);
 	bool isDecrypt = !isBlocked && (actions.contains(DecryptContainer) || actions.contains(DecryptToken));
 	mainAction->setButtonEnabled(isSupported && !hasEmptyFile &&
 		(isEncrypt || isEncryptLT || isDecrypt || isSignMobile || (isSignCard && !isBlocked && !isExpired)));
-	ui->mainActionSpacer->changeSize(198, 20, QSizePolicy::Fixed);
-	ui->navigationArea->layout()->invalidate();
-}
-
-void ContainerPage::showMainActionEncrypt(bool showLT)
-{
-	if(!mainAction) {
-		mainAction = std::make_unique<MainAction>(this);
-		connect(mainAction.get(), &MainAction::action, this, &ContainerPage::forward);
-	}
-	if (showLT) {
-		if (ui->rightPane->findChildren<AddressItem*>().isEmpty()) {
-			mainAction->showActions({ EncryptLT });
-		} else {
-			mainAction->showActions({ EncryptContainer, EncryptLT });
-		}
-	} else {
-		mainAction->showActions({ EncryptContainer });
-	}
-	mainAction->setButtonEnabled(isSupported && !hasEmptyFile);
 	ui->mainActionSpacer->changeSize(198, 20, QSizePolicy::Fixed);
 	ui->navigationArea->layout()->invalidate();
 }
@@ -278,7 +258,7 @@ void ContainerPage::transition(CryptoDoc *container, const QSslCertificate &cert
 		ui->rightPane->clear();
 		for(const auto &key: dlg.keys())
 		{
-			container->addKey(key);
+			container->addEncryptionKey(key.rcpt_cert);
 			ui->rightPane->addWidget(new AddressItem(key, AddressItem::Icon, ui->rightPane));
 		}
 		showMainAction({ EncryptContainer });
@@ -426,7 +406,11 @@ void ContainerPage::updatePanes(ria::qdigidoc4::ContainerState state, CryptoDoc 
 		ui->changeLocation->show();
 		ui->leftPane->init(fileName, QT_TRANSLATE_NOOP("ItemList", "Encrypted files"));
 		ui->rightPane->init(ItemAddress, QT_TRANSLATE_NOOP("ItemList", "Recipients"));
-		showMainAction({ EncryptContainer, EncryptLT });
+		if (crypto_container && crypto_container->supportsSymmetricKeys()) {
+			showMainAction({ EncryptContainer, EncryptLT });
+		} else {
+			showMainAction({ EncryptContainer });
+		}
 		setButtonsVisible({ ui->saveAs, ui->email }, false);
 		break;
 	case EncryptedContainer:

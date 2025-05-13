@@ -50,7 +50,7 @@ private:
 	void addRecipient(const QSslCertificate& cert, bool select = true);
 	void addRecipientToRightPane(Item *item, bool update = true);
 
-	AddressItem* itemListValue(ItemList *list, const CKey &cert);
+	AddressItem* itemListValue(ItemList *list, const CDKey &key);
 	void search(const QString &term, bool select = false, const QString &type = {});
 	void showError(const QString &msg, const QString &details = {});
 	void showResult(const QList<QSslCertificate> &result, int resultCount, const QVariantMap &userData);

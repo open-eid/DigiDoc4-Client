@@ -150,15 +150,12 @@ void AddRecipients::addRecipientFromHistory()
 
 void AddRecipients::addRecipient(const QSslCertificate& cert, bool select)
 {
-	AddressItem *leftItem = itemListValue(ui->leftPane, cert);
+	CDKey key = { {}, cert };
+	AddressItem *leftItem = itemListValue(ui->leftPane, key);
 	if(!leftItem)
 	{
 		QByteArray qder = cert.toDer();
 		std::vector<uint8_t> sder = std::vector<uint8_t>(qder.cbegin(), qder.cend());
-		CDKey key = { {}, cert };
-		leftItem = new AddressItem(key, ui->leftPane);
-		leftList.insert(cert, leftItem);
-		ui->leftPane->addWidget(leftItem);
 
 		leftItem = new AddressItem(key, AddressItem::Add, ui->leftPane);
 		ui->leftPane->addWidget(leftItem);
@@ -187,43 +184,34 @@ void AddRecipients::addRecipientToRightPane(Item *item, bool update)
 	if(!address) return;
 	for (auto &rhs : rightList) {
 		if (key.rcpt_cert == rhs.rcpt_cert)
-			return false;
+			return;
 	}
 
 	if(update)
 	{
-		if(auto expiryDate = key.cert.expiryDate(); expiryDate <= QDateTime::currentDateTime())
+		if(auto expiryDate = key.rcpt_cert.expiryDate(); expiryDate <= QDateTime::currentDateTime())
 		{
 			if(Settings::CDOC2_DEFAULT && Settings::CDOC2_USE_KEYSERVER)
 			{
 				WarningDialog::show(this, tr("Failed to add certificate. An expired certificate cannot be used for encryption."));
 				return;
 			}
-			auto *dlg = new WarningDialog(
-				tr("Are you sure that you want use certificate for encrypting, "
-				   "which expired on %1?<br />"
-				   "When decrypter has updated certificates then decrypting is "
-				   "impossible.")
-					.arg(expiryDate.toString(
-						QStringLiteral("dd.MM.yyyy hh:mm:ss"))),
-				this);
+			auto *dlg = new WarningDialog(tr("Are you sure that you want use certificate for encrypting, which expired on %1?<br />"
+				"When decrypter has updated certificates then decrypting is impossible.")
+				.arg(expiryDate.toString(QStringLiteral("dd.MM.yyyy hh:mm:ss"))), this);
 			dlg->setCancelText(WarningDialog::NO);
 			dlg->addButton(WarningDialog::YES, QMessageBox::Yes);
 			if(dlg->exec() != QMessageBox::Yes)
 				return;
 		}
 		QSslConfiguration backup = QSslConfiguration::defaultConfiguration();
-		QSslConfiguration::setDefaultConfiguration(
-			CheckConnection::sslConfiguration());
+		QSslConfiguration::setDefaultConfiguration(CheckConnection::sslConfiguration());
 		QList<QSslError> errors = QSslCertificate::verify({key.rcpt_cert});
 		QSslConfiguration::setDefaultConfiguration(backup);
-		errors.removeAll(
-			QSslError(QSslError::CertificateExpired, key.rcpt_cert));
-		if (!errors.isEmpty()) {
-			auto *dlg = new WarningDialog(
-				tr("Recipient’s certification chain contains certificates that "
-				   "are not trusted. Continue with encryption?"),
-				this);
+		errors.removeAll(QSslError(QSslError::CertificateExpired, key.rcpt_cert));
+		if(!errors.isEmpty())
+		{
+			auto *dlg = new WarningDialog(tr("Recipient’s certification chain contains certificates that are not trusted. Continue with encryption?"), this);
 			dlg->setCancelText(WarningDialog::NO);
 			dlg->addButton(WarningDialog::YES, QMessageBox::Yes);
 			if(dlg->exec() != QMessageBox::Yes)
@@ -237,7 +225,7 @@ void AddRecipients::addRecipientToRightPane(Item *item, bool update)
 	auto *rightItem = new AddressItem(key, AddressItem::Remove, ui->rightPane);
 	connect(rightItem, &AddressItem::remove, this, [this](Item *item) {
 		auto *rightItem = qobject_cast<AddressItem*>(item);
-		if(auto *leftItem = itemListValue(ui->leftPane, rightItem->getKey().cert))
+		if(auto *leftItem = itemListValue(ui->leftPane, rightItem->getKey()))
 			leftItem->setDisabled(false);
 		rightList.removeAll(rightItem->getKey());
 		updated = true;
@@ -260,11 +248,11 @@ bool AddRecipients::isUpdated() const
 	return updated;
 }
 
-AddressItem* AddRecipients::itemListValue(ItemList *list, const CKey &cert)
+AddressItem* AddRecipients::itemListValue(ItemList *list, const CDKey &key)
 {
 	for(auto *item: list->items)
 	{
-		if(auto *address = qobject_cast<AddressItem*>(item); address && address->getKey() == cert)
+		if(auto *address = qobject_cast<AddressItem*>(item); address && address->getKey() == key)
 			return address;
 	}
 	return nullptr;

@@ -21,7 +21,7 @@
 
 #include <QDialog>
 
-#include "CryptoDoc.h"
+struct CDKey;
 
 class KeyDialog final: public QDialog
 {

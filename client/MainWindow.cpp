@@ -257,7 +257,7 @@ bool MainWindow::decrypt(const libcdoc::Lock *lock) {
 	WaitDialogHolder waitDialog(this, tr("Decrypting"));
 
 	if (cryptoDoc->decrypt(lock, secret)) {
-		ui->cryptoContainerPage->transition(cryptoDoc,
+		ui->cryptoContainerPage->transition(cryptoDoc.get(),
 											qApp->signer()->tokenauth().cert());
 		FadeInNotification::success(ui->topBar, tr("Decryption succeeded!"));
 		return true;
@@ -265,7 +265,8 @@ bool MainWindow::decrypt(const libcdoc::Lock *lock) {
 	return false;
 }
 
-void MainWindow::dragEnterEvent(QDragEnterEvent *event) {
+void MainWindow::dragEnterEvent(QDragEnterEvent *event)
+{
 	if(!event->source() && !dropEventFiles(event).isEmpty())
 	{
 		event->acceptProposedAction();
@@ -486,10 +487,10 @@ void MainWindow::convertToBDoc()
 		FadeInNotification::success(ui->topBar, tr("Converted to signed document!"));
 }
 
-void MainWindow::convertToCDoc() {
-	QString filename =
-		FileDialog::createNewFileName(digiDoc->fileName(), false, this);
-	if (filename.isNull())
+void MainWindow::convertToCDoc()
+{
+	QString filename = FileDialog::createNewFileName(digiDoc->fileName(), false, this);
+	if(filename.isNull())
 		return;
 
 	auto cryptoContainer = std::make_unique<CryptoDoc>(this);
@@ -500,8 +501,7 @@ void MainWindow::convertToCDoc() {
 	if (digiDoc->state() == SignedContainer)
 		cryptoContainer->documentModel()->addFile(digiDoc->fileName());
 	else
-		cryptoContainer->documentModel()->addTempFiles(
-			digiDoc->documentModel()->tempFiles());
+		cryptoContainer->documentModel()->addTempFiles(digiDoc->documentModel()->tempFiles());
 
 	auto cardData = qApp->signer()->tokenauth();
 	if (!cardData.cert().isNull()) {
@@ -513,8 +513,7 @@ void MainWindow::convertToCDoc() {
 	ui->cryptoContainerPage->transition(cryptoDoc.get(),  qApp->signer()->tokenauth().cert());
 	selectPage(CryptoDetails);
 
-	FadeInNotification::success(ui->topBar,
-								tr("Converted to crypto container!"));
+	FadeInNotification::success(ui->topBar, tr("Converted to crypto container!"));
 }
 
 void MainWindow::moveCryptoContainer()
@@ -560,7 +559,7 @@ void MainWindow::onCryptoAction(int action, const QString &/*id*/, const QString
 		break;
 	case EncryptLT:
 		if(encrypt(true)) {
-			ui->cryptoContainerPage->transition(cryptoDoc, qApp->signer()->tokenauth().cert());
+			ui->cryptoContainerPage->transition(cryptoDoc.get(), qApp->signer()->tokenauth().cert());
 			FadeInNotification::success(ui->topBar, tr("Encryption succeeded!"));
 		}
 		break;
@@ -1009,7 +1008,7 @@ bool MainWindow::validateFiles(const QString &container, const QStringList &file
 			[containerInfo] (const QString &file) { return containerInfo == QFileInfo(file); }))
 		return true;
 	auto *dlg = new WarningDialog(tr("Cannot add container to same container\n%1")
-								  .arg(FileDialog::normalized(container)), this);
+		.arg(FileDialog::normalized(container)), this);
 	dlg->setCancelText(WarningDialog::Cancel);
 	dlg->open();
 	return false;

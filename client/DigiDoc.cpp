@@ -695,7 +695,7 @@ bool DigiDoc::sign(const QString &city, const QString &state, const QString &zip
 			 QCoreApplication::applicationName(),
 			 QCoreApplication::applicationVersion(),
 			 Common::applicationOs(),
-			 /* fixme: Common::drivers().join(',')*/ "").toUtf8().constData());
+			 Common::drivers().join(',')).toUtf8().constData());
 		qApp->waitForTSL( fileName() );
 		digidoc::Signature *s = b->sign(signer);
 		return modified = waitFor([&] {

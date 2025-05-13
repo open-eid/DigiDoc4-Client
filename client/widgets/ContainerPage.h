@@ -57,10 +57,6 @@ signals:
 	void addFiles(const QStringList &files);
 	void certChanged(const SslCertificate &cert);
 	void fileRemoved(int row);
-<<<<<<< HEAD
-	void keysSelected(const QList<CDKey> &keys);
-=======
->>>>>>> 0ca994ba1e3ad398a7ae65fdaffc8e225504e86a
 	void moved(const QString &to);
 	void removed(int row);
 	void warning(const WarningText &warningText);
@@ -74,11 +70,6 @@ private:
 	bool eventFilter(QObject *o, QEvent *e) final;
 	void forward(int code);
 	void showMainAction(const QList<ria::qdigidoc4::Actions> &actions);
-<<<<<<< HEAD
-	void showMainActionEncrypt(bool showLT);
-	void showRightPane(ria::qdigidoc4::ItemType itemType, const char *header);
-=======
->>>>>>> 0ca994ba1e3ad398a7ae65fdaffc8e225504e86a
 	void showSigningButton();
 	void updateDecryptionButton();
 	void updatePanes(ria::qdigidoc4::ContainerState state, CryptoDoc *crypto_container);
