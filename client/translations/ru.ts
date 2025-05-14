@@ -2961,6 +2961,10 @@ Additional licenses and components</source>
         <source>Change PUK</source>
         <translation>Изменить PUK</translation>
     </message>
+    <message>
+        <source>The PUK-code cannot be changed on the ID-card in the reader</source>
+        <translation>Невозможно изменить PUK-код ID-карты, находящейся в считывателе</translation>
+    </message>
 </context>
 <context>
     <name>WarningDialog</name>
