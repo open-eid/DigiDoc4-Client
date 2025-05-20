@@ -103,13 +103,13 @@ QPCSCReader::Result Card::transfer(QPCSCReader *reader, bool verify, const QByte
 }
 
 
-QHash<quint8,QByteArray> Card::parseFCI(const QByteArray &data)
+QByteArrayView Card::parseFCI(const QByteArray &data, quint8 expectedTag)
 {
-	QHash<quint8,QByteArray> result;
 	for(auto i = data.constBegin(); i != data.constEnd(); ++i)
 	{
 		quint8 tag(*i), size(*++i);
-		result[tag] = QByteArray(i + 1, size);
+		if(tag == expectedTag)
+			return QByteArrayView(i + 1, size);
 		switch(tag)
 		{
 		case 0x6F:
@@ -119,7 +119,7 @@ QHash<quint8,QByteArray> Card::parseFCI(const QByteArray &data)
 		default: i += size; break;
 		}
 	}
-	return result;
+	return QByteArrayView();
 }
 
 
@@ -127,6 +127,8 @@ QHash<quint8,QByteArray> Card::parseFCI(const QByteArray &data)
 const QByteArray IDEMIACard::AID = APDU("00A4040C 10 A000000077010800070000FE00000100");
 const QByteArray IDEMIACard::AID_OT = APDU("00A4040C 0D E828BD080FF2504F5420415750");
 const QByteArray IDEMIACard::AID_QSCD = APDU("00A4040C 10 51534344204170706C69636174696F6E");
+const QByteArray IDEMIACard::ATR_COSMO8 = QByteArrayLiteral("3BDB960080B1FE451F830012233F536549440F9000F1");
+const QByteArray IDEMIACard::ATR_COSMOX = QByteArrayLiteral("3BDC960080B1FE451F830012233F54654944320F9000C3");
 
 QPCSCReader::Result IDEMIACard::change(QPCSCReader *reader, QSmartCardData::PinType type, const QString &pin_, const QString &newpin_) const
 {
@@ -153,8 +155,7 @@ QPCSCReader::Result IDEMIACard::change(QPCSCReader *reader, QSmartCardData::PinT
 
 bool IDEMIACard::isSupported(const QByteArray &atr)
 {
-	return atr == "3BDB960080B1FE451F830012233F536549440F9000F1" ||
-		atr == "3BDC960080B1FE451F830012233F54654944320F9000C3";
+	return atr == ATR_COSMO8 || atr == ATR_COSMOX;
 }
 
 bool IDEMIACard::loadPerso(QPCSCReader *reader, QSmartCardDataPrivate *d) const
@@ -198,15 +199,19 @@ bool IDEMIACard::loadPerso(QPCSCReader *reader, QSmartCardDataPrivate *d) const
 		QPCSCReader::Result data = reader->transfer(path);
 		if(!data)
 			return QSslCertificate();
-		QHash<quint8,QByteArray> fci = parseFCI(data.data);
-		if(!fci.contains(0x80))
+		auto sizeTag = parseFCI(data.data, 0x80);
+		if(sizeTag.isEmpty())
 			return QSslCertificate();
 		QByteArray cert;
 		QByteArray cmd = READBINARY;
-		for(int size = quint8(fci[0x80][0]) << 8 | quint8(fci[0x80][1]); cert.size() < size; )
+		qsizetype maxLe = 0;
+		if(reader->atr() == ATR_COSMOX)
+			maxLe = 0xC0;
+		for(qsizetype size = quint8(sizeTag[0]) << 8 | quint8(sizeTag[1]); cert.size() < size; )
 		{
 			cmd[2] = char(cert.size() >> 8);
 			cmd[3] = char(cert.size());
+			cmd[4] = char(std::min(size - cert.size(), maxLe));
 			data = reader->transfer(cmd);
 			if(!data)
 				return QSslCertificate();

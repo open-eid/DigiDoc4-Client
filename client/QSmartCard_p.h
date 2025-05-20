@@ -41,7 +41,7 @@ public:
 		QSmartCardData::PinType type, quint8 newPINOffset, bool requestCurrentPIN);
 	virtual bool updateCounters(QPCSCReader *reader, QSmartCardDataPrivate *d) const = 0;
 
-	static QHash<quint8,QByteArray> parseFCI(const QByteArray &data);
+	static QByteArrayView parseFCI(const QByteArray &data, quint8 expectedTag);
 
 	static const QByteArray CHANGE;
 	static const QByteArray READBINARY;
@@ -61,7 +61,7 @@ public:
 	static bool isSupported(const QByteArray &atr);
 	static QByteArray pinTemplate(const QString &pin);
 
-	static const QByteArray AID, AID_OT, AID_QSCD;
+	static const QByteArray AID, AID_OT, AID_QSCD, ATR_COSMO8, ATR_COSMOX;
 };
 
 class QSmartCard::Private
