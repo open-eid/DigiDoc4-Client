@@ -19,101 +19,27 @@
 
 
 #include "AccordionTitle.h"
-#include "ui_AccordionTitle.h"
-
-#include "Styles.h"
-
-#include <QtGui/QKeyEvent>
 
 AccordionTitle::AccordionTitle(QWidget *parent)
-    : QLabel(parent)
-    , ui(new Ui::AccordionTitle)
+	: QCheckBox(parent)
 {
-    ui->setupUi(this);
-    setFont(Styles::font(Styles::Condensed, 16));
-    ui->icon->load(QStringLiteral(":/images/accordion_arrow_down.svg"));
+	setStyleSheet(QStringLiteral(R"(
+QCheckBox {
+border-right: none; /*Workaround for right padding*/
+color: #2F70B6;
+font-family: Roboto, Helvetica;
+font-size: 16px;
+font-weight: 700;
 }
-
-AccordionTitle::~AccordionTitle()
-{
-    delete ui;
+QCheckBox::indicator {
+width: 24px;
+height: 24px;
 }
-
-bool AccordionTitle::event(QEvent *e)
-{
-    switch(e->type())
-    {
-    case QEvent::MouseButtonRelease:
-        setSectionOpen(!isOpen());
-        return true;
-    case QEvent::KeyRelease:
-        if(QKeyEvent *ke = static_cast<QKeyEvent*>(e))
-            if(ke->key() == Qt::Key_Enter || ke->key() == Qt::Key_Space)
-                setSectionOpen(!isOpen());
-        break;
-    default: break;
-    }
-    return QLabel::event(e);
+QCheckBox::indicator:checked {
+image: url(:/images/accordion_arrow_down.svg);
 }
-
-void AccordionTitle::init(bool open, const QString &caption, QWidget *content)
-{
-    init(open, caption, caption.toLower(), content);
+QCheckBox::indicator:unchecked {
+image: url(:/images/accordion_arrow_right.svg);
 }
-
-void AccordionTitle::init(bool open, const QString &caption, const QString &accessible, QWidget *content)
-{
-    setText(caption, accessible);
-    this->content = content;
-    style = styleSheet();
-    setStyleSheet(style + QStringLiteral("color: #006EB5;"));
-    setSectionOpen(open);
-}
-
-bool AccordionTitle::isOpen() const
-{
-    return _isOpen;
-}
-
-void AccordionTitle::openSection(AccordionTitle *opened)
-{
-    setSectionOpen(this == opened);
-}
-
-void AccordionTitle::setSectionOpen(bool open)
-{
-    if(_isOpen == open)
-        return;
-    _isOpen = open;
-    if(content)
-        content->setVisible(open && !isHidden());
-    if(open)
-    {
-        setStyleSheet(style + QStringLiteral("color: #006EB5;"));
-        ui->icon->resize( 12, 6 );
-        ui->icon->move(15, 17);
-        ui->icon->load(QStringLiteral(":/images/accordion_arrow_down.svg"));
-        emit opened(this);
-    }
-    else
-    {
-        setStyleSheet(style + QStringLiteral("color: #353739;"));
-        ui->icon->resize( 6, 12 );
-        ui->icon->move(18, 14);
-        ui->icon->load(QStringLiteral(":/images/accordion_arrow_right.svg"));
-        emit closed(this);
-    }
-}
-
-void AccordionTitle::setText(const QString &caption, const QString &accessible)
-{
-    QLabel::setText(caption);
-    setAccessibleName(accessible);
-}
-
-void AccordionTitle::setVisible(bool visible)
-{
-    QLabel::setVisible(visible);
-    if(content)
-        content->setVisible(visible && isOpen());
+)"));
 }

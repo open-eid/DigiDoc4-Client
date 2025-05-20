@@ -644,7 +644,7 @@ background-color: #BFD3E8;
      <widget class="QWidget" name="eidPage">
       <layout class="QVBoxLayout" name="eidPageLayout">
        <property name="spacing">
-        <number>3</number>
+        <number>0</number>
        </property>
        <property name="leftMargin">
         <number>0</number>
@@ -659,20 +659,7 @@ background-color: #BFD3E8;
         <number>0</number>
        </property>
        <item>
-        <widget class="InfoStack" name="infoStack" native="true">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>172</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>186</height>
-          </size>
-         </property>
-        </widget>
+        <widget class="InfoStack" name="infoStack" native="true"/>
        </item>
        <item>
         <widget class="Accordion" name="accordion" native="true"/>
