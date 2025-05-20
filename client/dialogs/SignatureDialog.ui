@@ -46,18 +46,17 @@ QTextEdit, #signerCity, #signerCountry, #signerState, #signerZip, #signerRoles {
 border: 1px solid #8E969D;
 border-radius: 2px;
 background-color: #FFFFFF;
-}
-#lblNotice, #info, #error { margin: 0px 12px 0px 12px; }</string>
+}</string>
      </property>
      <layout class="QVBoxLayout" name="leftPaneLayout" stretch="0,0,0,0,1,0,0,0">
       <property name="leftMargin">
-       <number>0</number>
+       <number>12</number>
       </property>
       <property name="topMargin">
        <number>12</number>
       </property>
       <property name="rightMargin">
-       <number>1</number>
+       <number>12</number>
       </property>
       <property name="bottomMargin">
        <number>0</number>
@@ -95,9 +94,6 @@ background-color: #FFFFFF;
         <property name="focusPolicy">
          <enum>Qt::TabFocus</enum>
         </property>
-        <property name="styleSheet">
-         <string notr="true">border: none;</string>
-        </property>
         <property name="text">
          <string>Notice</string>
         </property>
@@ -108,9 +104,6 @@ background-color: #FFFFFF;
         <property name="focusPolicy">
          <enum>Qt::TabFocus</enum>
         </property>
-        <property name="styleSheet">
-         <string notr="true">border: none;</string>
-        </property>
         <property name="wordWrap">
          <bool>true</bool>
         </property>
@@ -120,10 +113,19 @@ background-color: #FFFFFF;
        </widget>
       </item>
       <item>
-       <widget class="AccordionTitle" name="showErrors" native="true">
+         <widget class="AccordionTitle" name="showErrors">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>40</height>
+           </size>
+          </property>
         <property name="cursor">
          <cursorShape>PointingHandCursor</cursorShape>
         </property>
+          <property name="text">
+           <string>Technical information</string>
+          </property>
        </widget>
       </item>
       <item>
@@ -157,9 +159,21 @@ QScrollBar::sub-line:vertical {
        </widget>
       </item>
       <item>
-       <widget class="AccordionTitle" name="showRole" native="true">
+         <widget class="AccordionTitle" name="showRole">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>40</height>
+           </size>
+          </property>
         <property name="cursor">
          <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+          <property name="text">
+           <string>Role and address</string>
+          </property>
+        <property name="checked">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
@@ -167,13 +181,13 @@ QScrollBar::sub-line:vertical {
        <widget class="QWidget" name="role" native="true">
         <layout class="QVBoxLayout" name="roleLayout">
          <property name="leftMargin">
-          <number>12</number>
+          <number>0</number>
          </property>
          <property name="topMargin">
           <number>0</number>
          </property>
          <property name="rightMargin">
-          <number>12</number>
+          <number>0</number>
          </property>
          <property name="bottomMargin">
           <number>0</number>
@@ -554,7 +568,7 @@ QPushButton:disabled {
  <customwidgets>
   <customwidget>
    <class>AccordionTitle</class>
-   <extends>QWidget</extends>
+   <extends>QCheckBox</extends>
    <header>widgets/AccordionTitle.h</header>
    <container>1</container>
   </customwidget>

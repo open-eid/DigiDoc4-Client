@@ -39,15 +39,14 @@ WarningDialog::WarningDialog(const QString &text, const QString &details, QWidge
 	ui->buttonBox->layout()->setSpacing(40);
 	ui->text->setText(text);
 	ui->details->setText(details);
-	ui->details->setHidden(details.isEmpty());
+	ui->details->hide();
 	ui->showDetails->setHidden(details.isEmpty());
+	connect(ui->showDetails, &AccordionTitle::toggled, ui->details, &QLabel::setVisible);
 	cancel = ui->buttonBox->button(QDialogButtonBox::Close);
 	cancel->setCursor(Qt::PointingHandCursor);
 	connect(cancel, &QPushButton::clicked, this, &QDialog::reject);
 	resetCancelStyle(true);
 
-	if(!details.isEmpty())
-		ui->showDetails->init(false, tr("Details"), ui->details);
 }
 
 WarningDialog::WarningDialog(const QString &text, QWidget *parent)

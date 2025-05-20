@@ -4,12 +4,7 @@
 <context>
     <name>Accordion</name>
     <message>
-        <source>PIN/PUK CODES AND CERTIFICATES</source>
-        <translation>PIN/PUK И СЕРТИФИКАТЫ</translation>
-    </message>
-    <message>
         <source>PIN/PUK codes and certificates</source>
-        <comment>accessible</comment>
         <translation>PIN/PUK и сертификаты</translation>
     </message>
 </context>
@@ -1048,76 +1043,47 @@
 <context>
     <name>InfoStack</name>
     <message>
-        <source>CITIZENSHIP</source>
-        <translation>ГРАЖДАНСТВО</translation>
-    </message>
-    <message>
-        <source>GIVEN NAMES</source>
-        <translation>ИМЕНА</translation>
-    </message>
-    <message>
-        <source>PERSONAL CODE</source>
-        <translation>ЛИЧНЫЙ КОД</translation>
-    </message>
-    <message>
-        <source>DOCUMENT</source>
-        <translation>ДОКУМЕНТ</translation>
-    </message>
-    <message>
-        <source>SURNAME</source>
-        <translation>ФАМИЛИЯ</translation>
-    </message>
-    <message>
-        <source>NAME</source>
-        <translation>ИМЯ</translation>
-    </message>
-    <message>
-        <source>SERIAL</source>
-        <translation>СЕРИЙНЫЙ НОМЕР</translation>
-    </message>
-    <message>
-        <source>COUNTRY</source>
-        <translation>КОД СТРАНЫ</translation>
-    </message>
-    <message>
         <source>You&apos;re using digital identity card</source>
         <translation>Вы используете дигитальное удостоверение личности</translation>
     </message>
     <message>
-        <source>Valid</source>
-        <translation>Действителен</translation>
+        <source>Name</source>
+        <translation>Имя</translation>
     </message>
     <message>
-        <source> until </source>
-        <translation> до </translation>
+        <source>Organization</source>
+        <translation>Организация</translation>
     </message>
     <message>
-        <source>Expired</source>
-        <translation>Истекший</translation>
+        <source>Serial</source>
+        <translation>Серийный номер</translation>
+    </message>
+    <message>
+        <source>Country</source>
+        <translation>Страна</translation>
     </message>
     <message>
         <source>Given names</source>
-        <extracomment>accessible</extracomment>
         <translation>Имена</translation>
     </message>
     <message>
         <source>Surname</source>
-        <extracomment>accessible</extracomment>
         <translation>Фамилия</translation>
     </message>
     <message>
         <source>Personal code</source>
-        <extracomment>accessible</extracomment>
         <translation>Личный код</translation>
     </message>
     <message>
         <source>Citizenship</source>
-        <extracomment>accessible</extracomment>
         <translation>Гражданство</translation>
     </message>
     <message>
+        <source>Expiry date</source>
+        <translation>Дата окончания</translation>
+    </message>
+    <message>
         <source>Document</source>
-        <extracomment>accessible</extracomment>
         <translation>Документ</translation>
     </message>
 </context>
@@ -2480,7 +2446,7 @@ Additional licenses and components</source>
     </message>
     <message>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Имя</translation>
     </message>
     <message>
         <source>Fetch URL</source>
@@ -2504,6 +2470,14 @@ Additional licenses and components</source>
     <message>
         <source>Signer</source>
         <translation>Подписавшаяся сторона</translation>
+    </message>
+    <message>
+        <source>Technical information</source>
+        <translation>Техническая информация</translation>
+    </message>
+    <message>
+        <source>Role and address</source>
+        <translation>Роль и адрес</translation>
     </message>
     <message>
         <source>City</source>
@@ -2532,10 +2506,6 @@ Additional licenses and components</source>
     <message>
         <source>Value</source>
         <translation>Значение</translation>
-    </message>
-    <message>
-        <source>TECHNICAL INFORMATION</source>
-        <translation>ТЕХНИЧЕСКАЯ ИНФОРМАЦИЯ</translation>
     </message>
     <message>
         <source>Timestamp</source>
@@ -2678,10 +2648,6 @@ Additional licenses and components</source>
     <message>
         <source>Signing time (UTC)</source>
         <translation>Время подписания (UTC)</translation>
-    </message>
-    <message>
-        <source>ROLE AND ADDRESS</source>
-        <translation>РОЛЬ И АДРЕС</translation>
     </message>
     <message>
         <source>The signature is technically correct, but it is based on the currently weak hash algorithm SHA-1, therefore it is not protected against forgery or alteration.</source>

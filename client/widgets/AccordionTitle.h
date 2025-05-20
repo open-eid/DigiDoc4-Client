@@ -19,37 +19,12 @@
 
 #pragma once
 
-#include <QLabel>
+#include <QCheckBox>
 
-namespace Ui {
-class AccordionTitle;
-}
-
-class AccordionTitle final : public QLabel
+class AccordionTitle final : public QCheckBox
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    explicit AccordionTitle(QWidget *parent = nullptr);
-    ~AccordionTitle() final;
-
-    void init(bool open, const QString &caption, QWidget *content);
-    void init(bool open, const QString &caption, const QString &accessible, QWidget *content);
-    bool isOpen() const;
-    void openSection(AccordionTitle *opened);
-    void setText(const QString &caption, const QString &accessible);
-    void setSectionOpen(bool open = true);
-    void setVisible(bool visible) final;
-
-Q_SIGNALS:
-    void closed(AccordionTitle* opened);
-    void opened(AccordionTitle* opened);
-
-private:
-    bool event(QEvent *e) final;
-
-    Ui::AccordionTitle *ui;
-    bool _isOpen = true;
-    QWidget* content = nullptr;
-    QString style;
+	explicit AccordionTitle(QWidget *parent = nullptr);
 };
