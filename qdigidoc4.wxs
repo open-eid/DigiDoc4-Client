@@ -44,56 +44,29 @@
             <Shortcut Id="ClientStartMenu4" Advertise="yes" Name="DigiDoc4" Icon="qdigidoc4.ico"
               Directory="ProgramMenuFolder" WorkingDirectory="INSTALLFOLDER" />
           </File>
-          <ProgId Id="qdigidoc4.adoc" Description="DigiDoc signed document" Icon="qdigidoc4.exe" IconIndex="1">
-            <Extension Id="adoc" ContentType="application/vnd.lt.archyvai.adoc-2008">
-              <Verb Id="open" TargetFile="qdigidoc4.exe" Command="Open" Argument="&quot;%1&quot;" />
-            </Extension>
-          </ProgId>
-          <ProgId Id="qdigidoc4.bdoc" Description="DigiDoc signed document" Icon="qdigidoc4.exe" IconIndex="1">
-            <Extension Id="bdoc" ContentType="application/vnd.etsi.asic-e+zip">
-              <Verb Id="open" TargetFile="qdigidoc4.exe" Command="Open" Argument="&quot;%1&quot;" />
-            </Extension>
-          </ProgId>
-          <ProgId Id="qdigidoc4.edoc" Description="DigiDoc signed document" Icon="qdigidoc4.exe" IconIndex="1">
-            <Extension Id="edoc" ContentType="application/vnd.etsi.asic-e+zip">
-              <Verb Id="open" TargetFile="qdigidoc4.exe" Command="Open" Argument="&quot;%1&quot;" />
-            </Extension>
-          </ProgId>
-          <ProgId Id="qdigidoc4.asice" Description="DigiDoc signed document" Icon="qdigidoc4.exe" IconIndex="1">
+          <ProgId Id="qdigidoc4.document" Description="DigiDoc signed document" Icon="qdigidoc4.exe" IconIndex="1">
             <Extension Id="asice" ContentType="application/vnd.etsi.asic-e+zip">
               <Verb Id="open" TargetFile="qdigidoc4.exe" Command="Open" Argument="&quot;%1&quot;" />
             </Extension>
+            <Extension Id="adoc" ContentType="application/vnd.lt.archyvai.adoc-2008" />
+            <Extension Id="bdoc" ContentType="application/vnd.etsi.asic-e+zip" />
+            <Extension Id="edoc" ContentType="application/vnd.etsi.asic-e+zip" />
+            <Extension Id="sce" ContentType="application/vnd.etsi.asic-e+zip" />
+            <Extension Id="ddoc" ContentType="application/x-ddoc" />
           </ProgId>
-          <ProgId Id="qdigidoc4.sce" Description="DigiDoc signed document" Icon="qdigidoc4.exe" IconIndex="1">
-            <Extension Id="sce" ContentType="application/vnd.etsi.asic-e+zip">
-              <Verb Id="open" TargetFile="qdigidoc4.exe" Command="Open" Argument="&quot;%1&quot;" />
-            </Extension>
-          </ProgId>
-          <ProgId Id="qdigidoc4.ddoc" Description="DigiDoc signed document" Icon="qdigidoc4.exe" IconIndex="1">
-            <Extension Id="ddoc" ContentType="application/x-ddoc">
-              <Verb Id="open" TargetFile="qdigidoc4.exe" Command="Open" Argument="&quot;%1&quot;" />
-            </Extension>
-          </ProgId>
-          <ProgId Id="qdigidoc4.cdoc" Description="DigiDoc encrypted container" Icon="qdigidoc4.exe" IconIndex="2">
+          <ProgId Id="qdigidoc4.crypto" Description="DigiDoc encrypted container" Icon="qdigidoc4.exe" IconIndex="2">
             <Extension Id="cdoc" ContentType="application/x-cdoc">
               <Verb Id="open" TargetFile="qdigidoc4.exe" Command="Open" Argument="-crypto &quot;%1&quot;" />
             </Extension>
+            <Extension Id="cdoc2" ContentType="application/x-cdoc2" />
           </ProgId>
-          <ProgId Id="qdigidoc4.cdoc2" Description="DigiDoc encrypted container" Icon="qdigidoc4.exe" IconIndex="2">
-            <Extension Id="cdoc2" ContentType="application/x-cdoc2">
-              <Verb Id="open" TargetFile="qdigidoc4.exe" Command="Open" Argument="-crypto &quot;%1&quot;" />
-            </Extension>
-          </ProgId>
-          <ProgId Id="qdigidoc4.asics" Description="DigiDoc timestamped document" Icon="qdigidoc4.exe" IconIndex="1">
+          <ProgId Id="qdigidoc4.timestamp" Description="DigiDoc timestamped document" Icon="qdigidoc4.exe" IconIndex="1">
             <Extension Id="asics" ContentType="application/vnd.etsi.asic-s+zip">
               <Verb Id="open" TargetFile="qdigidoc4.exe" Command="Open" Argument="&quot;%1&quot;" />
             </Extension>
+            <Extension Id="scs" ContentType="application/vnd.etsi.asic-s+zip" />
           </ProgId>
-          <ProgId Id="qdigidoc4.scs" Description="DigiDoc timestamped document" Icon="qdigidoc4.exe" IconIndex="1">
-            <Extension Id="scs" ContentType="application/vnd.etsi.asic-s+zip">
-              <Verb Id="open" TargetFile="qdigidoc4.exe" Command="Open" Argument="&quot;%1&quot;" />
-            </Extension>
-          </ProgId>
+          <RegistryValue Root="HKCR" Key=".pdf\OpenWithProgids" Name="qdigidoc4.document" Value="" Type="string" />
         </Component>
         <File Name="zlib$(var.qt_suffix)1.dll" />
         <File Name="libxml2.dll" />
@@ -102,9 +75,7 @@
         <File Name="digidocpp$(var.qt_suffix).dll" />
         <File Name="digidoc-tool.exe" />
         <File Name="digidocpp.conf" />
-        <Directory Name="schema">
-          <Files Include="$(var.libs_path)\schema\*.xsd" />
-        </Directory>
+        <Files Subdirectory="schema" Include="$(var.libs_path)\schema\*.xsd" />
 <?ifdef var.qt_path ?>
         <File Name="libcrypto-3$(var.OpenSSLSuffix).dll" />
         <File Name="libssl-3$(var.OpenSSLSuffix).dll" />
@@ -124,18 +95,10 @@
         <File Source="$(var.qt_path)\D3DCompiler_47.dll" />
         <File Source="$(var.qt_path)\opengl32sw.dll" />
         <File Source="$(var.qt_path)\Qt6SvgWidgets$(var.qt_suffix).dll" />
-        <Directory Name="platforms">
-          <File Source="$(var.qt_path)\..\plugins\platforms\qwindows$(var.qt_suffix).dll" />
-        </Directory>
-        <Directory Name="tls">
-          <File Source="$(var.qt_path)\..\plugins\tls\qopensslbackend$(var.qt_suffix).dll" />
-        </Directory>
-        <Directory Name="styles">
-          <File Source="$(var.qt_path)\..\plugins\styles\qmodernwindowsstyle$(var.qt_suffix).dll" />
-        </Directory>
-        <Directory Name="imageformats">
-          <File Source="$(var.qt_path)\..\plugins\imageformats\qsvg$(var.qt_suffix).dll" />
-        </Directory>
+        <File Subdirectory="platforms" Source="$(var.qt_path)\..\plugins\platforms\qwindows$(var.qt_suffix).dll" />
+        <File Subdirectory="tls" Source="$(var.qt_path)\..\plugins\tls\qopensslbackend$(var.qt_suffix).dll" />
+        <File Subdirectory="styles" Source="$(var.qt_path)\..\plugins\styles\qmodernwindowsstyle$(var.qt_suffix).dll" />
+        <File Subdirectory="imageformats" Source="$(var.qt_path)\..\plugins\imageformats\qsvg$(var.qt_suffix).dll" />
 <?endif?>
       </Directory>
     </StandardDirectory>
