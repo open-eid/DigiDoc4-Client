@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.22)
 if(NOT EXISTS ${CMAKE_SOURCE_DIR}/common/CMakeLists.txt)
     message(FATAL_ERROR "common submodule directory empty, did you 'git clone --recursive'?")
 endif()
-project(qdigidoc4 VERSION 4.8.0)
+project(qdigidoc4 VERSION 4.8.1)
 
 macro(SET_ENV NAME DEF)
     if(DEFINED ENV{${NAME}})
