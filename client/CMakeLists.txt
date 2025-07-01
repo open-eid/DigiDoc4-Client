@@ -175,8 +175,8 @@ if( APPLE )
 	find_library(PKCS11_MODULE NAMES opensc-pkcs11.so HINTS /Library/OpenSC/lib)
 	add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
 		COMMAND cp -a ${PKCS11_MODULE} $<TARGET_FILE_DIR:${PROJECT_NAME}>
-		COMMAND mkdir -p $<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/Library/QuickLook
-		COMMAND cp -a $<TARGET_BUNDLE_DIR:DigiDocQL> $<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/Library/QuickLook
+		COMMAND mkdir -p $<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/PlugIns
+		COMMAND cp -a $<TARGET_BUNDLE_DIR:DigiDocQL> $<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/PlugIns
 	)
 	add_custom_target(macdeployqt DEPENDS ${PROJECT_NAME}
 		COMMAND ${qtCore_install_prefix}/macdeployqt $<TARGET_BUNDLE_DIR:${PROJECT_NAME}>
@@ -196,11 +196,12 @@ if( APPLE )
 			$<TARGET_FILE_DIR:${PROJECT_NAME}>/*.*
 			$<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/Frameworks/digidocpp.framework/Libraries/*
 			$<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/Frameworks/*.framework
-			$<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/PlugIns/*/*
-			$<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/Library/QuickLook/DigiDocQL.qlgenerator
+			$<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/PlugIns/*/*.dylib
 		COMMAND if echo \"$$SIGNCERT\" | grep -q "Developer ID" \; then
+				codesign -f --options runtime -s \"$$SIGNCERT\" $<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/PlugIns/DigiDocQL.appex --entitlements ${CMAKE_SOURCE_DIR}/extensions/DigiDocQL/DigiDocQL.entitlements\;
 				codesign -f --options runtime -s \"$$SIGNCERT\" $<TARGET_BUNDLE_DIR:${PROJECT_NAME}> --entitlements ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}.eToken.entitlements\;
 			else
+				codesign -f -s \"$$SIGNCERT\" $<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/PlugIns/DigiDocQL.appex --entitlements ${CMAKE_SOURCE_DIR}/extensions/DigiDocQL/DigiDocQL.entitlements\;
 				codesign -f -s \"$$SIGNCERT\" $<TARGET_BUNDLE_DIR:${PROJECT_NAME}> --entitlements ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}.entitlements\;
 			fi
 	)

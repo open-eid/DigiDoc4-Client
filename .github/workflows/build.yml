@@ -56,7 +56,7 @@ jobs:
     container: ubuntu:${{ matrix.container }}
     strategy:
       matrix:
-        container: ['22.04', '24.04', '24.10', '25.04']
+        container: ['22.04', '24.04', '25.04']
         arch: ['amd64', 'arm64']
     env:
       DEBIAN_FRONTEND: noninteractive
@@ -130,12 +130,10 @@ jobs:
     runs-on: ${{ matrix.image }}
     strategy:
       matrix:
-        vcver: [143, 142]
+        vcver: [143]
         include:
         - vcver: 143
           image: windows-2022
-        - vcver: 142
-          image: windows-2019
     env:
       VER_SUFFIX: .VS${{ matrix.vcver }}
     steps:
@@ -159,7 +157,7 @@ jobs:
       uses: lukka/run-vcpkg@v7
       with:
         vcpkgArguments: openssl zlib flatbuffers
-        vcpkgGitCommitId: e4644bd15436d406bba71928d086c809e5c9ca45
+        vcpkgGitCommitId: 4008642a50a01a7115c2406b04d5273898e7fe1c
         vcpkgTriplet: x64-windows
     - name: Install Qt
       uses: jurplel/install-qt-action@v4
