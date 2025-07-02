@@ -11,14 +11,14 @@ jobs:
     name: Build on macOS
     runs-on: macos-latest
     env:
-      MACOSX_DEPLOYMENT_TARGET: 12.0
+      MACOSX_DEPLOYMENT_TARGET: 13.0
     steps:
     - name: Checkout
       uses: actions/checkout@v4
       with:
         submodules: recursive
     - name: Download artifact
-      uses: dawidd6/action-download-artifact@v6
+      uses: dawidd6/action-download-artifact@v11
       with:
         workflow: build.yml
         branch: master
@@ -36,6 +36,7 @@ jobs:
         sudo installer -verboseR -pkg libdigidocpp-pkg/build/macos/libdigidocpp*.pkg -target /
         sudo installer -verboseR -pkg opensc_*.pkg -target /
         sudo unzip -qq -d /Library/Developer ${HASH}.zip
+        rm -rf libdigidocpp-pkg
     - name: Build
       run: |
         QT_DIR=$(ls -d /Library/Developer/Qt-*-OpenSSL | tail -n 1)
@@ -64,7 +65,7 @@ jobs:
       DEBEMAIL: github-actions@github.com
     steps:
     - name: Download artifact
-      uses: dawidd6/action-download-artifact@v6
+      uses: dawidd6/action-download-artifact@v11
       with:
         workflow: build.yml
         branch: master
@@ -79,7 +80,6 @@ jobs:
         submodules: recursive
     - name: Setup changelog
       run: |
-        rm -rf libdigidocpp-pkg
         export VERSION=$(grep project CMakeLists.txt | egrep -o "([0-9]{1,}\.)+[0-9]{1,}")
         export VERSIONEX=${VERSION}.${BUILD_NUMBER}.$(lsb_release -rs)
         dch --distribution $(lsb_release -cs) -v ${VERSIONEX} "Release ${VERSIONEX}."
@@ -103,7 +103,7 @@ jobs:
         container: [41, 42]
     steps:
     - name: Download artifact
-      uses: dawidd6/action-download-artifact@v6
+      uses: dawidd6/action-download-artifact@v11
       with:
         workflow: build.yml
         branch: master
@@ -127,13 +127,10 @@ jobs:
         path: build/qdigidoc4*.rpm
   windows:
     name: Build on Windows
-    runs-on: ${{ matrix.image }}
+    runs-on: windows-2022
     strategy:
       matrix:
         vcver: [143]
-        include:
-        - vcver: 143
-          image: windows-2022
     env:
       VER_SUFFIX: .VS${{ matrix.vcver }}
     steps:
@@ -142,7 +139,7 @@ jobs:
       with:
         submodules: recursive
     - name: Download artifact
-      uses: dawidd6/action-download-artifact@v6
+      uses: dawidd6/action-download-artifact@v11
       with:
         workflow: build.yml
         branch: master
@@ -157,12 +154,12 @@ jobs:
       uses: lukka/run-vcpkg@v7
       with:
         vcpkgArguments: openssl zlib flatbuffers
-        vcpkgGitCommitId: 4008642a50a01a7115c2406b04d5273898e7fe1c
+        vcpkgGitCommitId: 031ad89ce6c575df35a8e58707ad2c898446c63e
         vcpkgTriplet: x64-windows
     - name: Install Qt
       uses: jurplel/install-qt-action@v4
       with:
-        version: 6.8.3
+        version: 6.9.1
         arch: win64_msvc2022_64
     - name: Setup dev env
       uses: ilammy/msvc-dev-cmd@v1
@@ -170,8 +167,8 @@ jobs:
         arch: x64
     - name: Install WiX
       run: |
-        dotnet tool install -g wix --version 5.0.2
-        wix extension -g add WixToolset.UI.wixext/5.0.2
+        dotnet tool install -g wix --version 6.0.1
+        wix extension -g add WixToolset.UI.wixext/6.0.1
     - name: Build
       run: |
         cmake "-GNinja" -B build -S . -DCMAKE_BUILD_TYPE=RelWithDebInfo `
@@ -199,7 +196,7 @@ jobs:
       with:
         submodules: recursive
     - name: Download artifact
-      uses: dawidd6/action-download-artifact@v6
+      uses: dawidd6/action-download-artifact@v11
       with:
         workflow: build.yml
         branch: master
@@ -241,7 +238,7 @@ jobs:
       with:
         submodules: recursive
     - name: Download artifact
-      uses: dawidd6/action-download-artifact@v6
+      uses: dawidd6/action-download-artifact@v11
       with:
         workflow: build.yml
         branch: master
