@@ -82,6 +82,8 @@ class MacMenuBar {};
 #include <MAPI.h>
 #endif
 
+#include <optional>
+
 using namespace std::chrono;
 
 const QStringList Application::CONTAINER_EXT {
