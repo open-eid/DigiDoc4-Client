@@ -42,6 +42,12 @@
 
 #include "CDocSupport.h"
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 5, 0)
+#define SV2S(m) QUtf8StringView(m)
+#else
+#define SV2S(m) (m)
+#endif
+
 std::vector<libcdoc::FileInfo>
 CDocSupport::getCDocFileList(QString filename)
 {
@@ -269,23 +275,23 @@ Q_LOGGING_CATEGORY(LOG_CDOC, "libcdoc")
 void DDCDocLogger::LogMessage(libcdoc::ILogger::LogLevel level, std::string_view file, int line, std::string_view message) {
 	switch (level) {
 	case libcdoc::ILogger::LogLevel::LEVEL_FATAL:
-		qCFatal(LOG_CDOC) << message;
+		qFatal(LOG_CDOC, "%s", std::string(message).c_str());
 		break;
 	case libcdoc::ILogger::LogLevel::LEVEL_ERROR:
-		qCCritical(LOG_CDOC) << message;
+		qCCritical(LOG_CDOC) << SV2S(message);
 		break;
 	case libcdoc::ILogger::LogLevel::LEVEL_WARNING:
-		qCWarning(LOG_CDOC) << message;
+		qCWarning(LOG_CDOC) << SV2S(message);
 		break;
 	case libcdoc::ILogger::LogLevel::LEVEL_INFO:
-		qCInfo(LOG_CDOC) << message;
+		qCInfo(LOG_CDOC) << SV2S(message);
 		break;
 	case libcdoc::ILogger::LogLevel::LEVEL_DEBUG:
-		qCDebug(LOG_CDOC) << message;
+		qCDebug(LOG_CDOC) << SV2S(message);
 		break;
 	default:
 		// Trace, if present goes to debug categrory
-		qCDebug(LOG_CDOC) << message;
+		qCDebug(LOG_CDOC) << SV2S(message);
 		break;
 	}
 }
