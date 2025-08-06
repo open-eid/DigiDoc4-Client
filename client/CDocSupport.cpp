@@ -44,8 +44,10 @@
 
 #if QT_VERSION < QT_VERSION_CHECK(6, 5, 0)
 #define SV2S(m) QUtf8StringView(m)
+#define Q_FATAL(m) QFatal("%s", std::string(m).c_str())
 #else
 #define SV2S(m) (m)
+#define Q_FATAL(m) qCFatal(LOG_CDOC) << (m)
 #endif
 
 std::vector<libcdoc::FileInfo>
@@ -275,7 +277,7 @@ Q_LOGGING_CATEGORY(LOG_CDOC, "libcdoc")
 void DDCDocLogger::LogMessage(libcdoc::ILogger::LogLevel level, std::string_view file, int line, std::string_view message) {
 	switch (level) {
 	case libcdoc::ILogger::LogLevel::LEVEL_FATAL:
-		qFatal(LOG_CDOC, "%s", std::string(message).c_str());
+		Q_FATAL(message);
 		break;
 	case libcdoc::ILogger::LogLevel::LEVEL_ERROR:
 		qCCritical(LOG_CDOC) << SV2S(message);
