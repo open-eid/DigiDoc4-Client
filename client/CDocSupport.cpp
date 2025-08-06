@@ -44,7 +44,7 @@
 
 #if QT_VERSION < QT_VERSION_CHECK(6, 5, 0)
 #define SV2S(m) QUtf8StringView(m)
-#define Q_FATAL(m) QFatal("%s", std::string(m).c_str())
+#define Q_FATAL(m) qFatal("%s", std::string(m).c_str())
 #else
 #define SV2S(m) (m)
 #define Q_FATAL(m) qCFatal(LOG_CDOC) << (m)
