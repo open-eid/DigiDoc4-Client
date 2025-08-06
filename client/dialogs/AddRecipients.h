@@ -41,7 +41,7 @@ public:
 	explicit AddRecipients(ItemList* itemList, QWidget *parent = nullptr);
 	~AddRecipients() final;
 
-	QList<CKey> keys();
+	QList<CDKey> keys();
 	bool isUpdated() const;
 
 private:
@@ -50,7 +50,7 @@ private:
 	void addRecipient(const QSslCertificate& cert, bool select = true);
 	void addRecipientToRightPane(Item *item, bool update = true);
 
-	AddressItem* itemListValue(ItemList *list, const CKey &cert);
+	AddressItem* itemListValue(ItemList *list, const CDKey &key);
 	void search(const QString &term, bool select = false, const QString &type = {});
 	void showError(const QString &msg, const QString &details = {});
 	void showResult(const QList<QSslCertificate> &result, int resultCount, const QVariantMap &userData);
@@ -58,7 +58,7 @@ private:
 	static QString defaultUrl(QLatin1String key, const QString &defaultValue);
 
 	Ui::AddRecipients *ui;
-	QList<CKey> rightList;
+	QList<CDKey> rightList;
 	LdapSearch *ldap_person, *ldap_corp;
 	bool updated = false;
 

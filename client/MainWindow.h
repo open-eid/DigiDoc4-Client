@@ -23,12 +23,13 @@
 
 #include "common_enums.h"
 #include "QSmartCard.h"
+#include "cdoc/Lock.h"
 
 namespace Ui {
 class MainWindow;
 }
 
-class CKey;
+struct CDKey;
 class CryptoDoc;
 class DigiDoc;
 class DocumentModel;
@@ -71,8 +72,8 @@ private:
 	void convertToBDoc();
 	void convertToCDoc();
 	ria::qdigidoc4::ContainerState currentState();
-	bool decrypt();
-	bool encrypt();
+	bool decrypt(const libcdoc::Lock *lock);
+	bool encrypt(bool askForKey = false);
 	void loadPicture();
 	void moveCryptoContainer();
 	void moveSignatureContainer();
@@ -114,4 +115,6 @@ private:
 	std::unique_ptr<CryptoDoc> cryptoDoc;
 	DigiDoc* digiDoc = nullptr;
 	Ui::MainWindow *ui;
+
+	void decryptClicked(const libcdoc::Lock *lock);
 };

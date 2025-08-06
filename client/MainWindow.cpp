@@ -35,6 +35,7 @@
 #include "effects/Overlay.h"
 #include "dialogs/FileDialog.h"
 #include "dialogs/MobileProgress.h"
+#include "dialogs/PasswordDialog.h"
 #include "dialogs/RoleAddressDialog.h"
 #include "dialogs/SettingsDialog.h"
 #include "dialogs/SmartIDProgress.h"
@@ -149,6 +150,8 @@ MainWindow::MainWindow( QWidget *parent )
 		ui->crypto->warningIcon(true);
 	});
 
+	connect(ui->cryptoContainerPage, &ContainerPage::decryptReq, this, &MainWindow::decryptClicked);
+
 	connect(ui->accordion, &Accordion::changePin1Clicked, this, &MainWindow::changePin1Clicked);
 	connect(ui->accordion, &Accordion::changePin2Clicked, this, &MainWindow::changePin2Clicked);
 	connect(ui->accordion, &Accordion::changePukClicked, this, &MainWindow::changePukClicked);
@@ -228,14 +231,38 @@ ContainerState MainWindow::currentState()
 	return ContainerState::Uninitialized;
 }
 
-bool MainWindow::decrypt()
-{
-	if(!cryptoDoc)
+bool MainWindow::decrypt(const libcdoc::Lock *lock) {
+	if (!cryptoDoc)
 		return false;
+
+	QByteArray secret;
+	if (lock && (lock->type == libcdoc::Lock::Type::SYMMETRIC_KEY ||
+				 lock->type == libcdoc::Lock::Type::PASSWORD)) {
+		PasswordDialog p;
+		p.setLabel(QString::fromStdString(lock->label));
+		if (lock->type == libcdoc::Lock::Type::PASSWORD) {
+			p.setMode(PasswordDialog::Mode::DECRYPT,
+					  PasswordDialog::Type::PASSWORD);
+			if (!p.exec())
+				return false;
+			secret = p.secret();
+		} else {
+			p.setMode(PasswordDialog::Mode::DECRYPT, PasswordDialog::Type::KEY);
+			if (!p.exec())
+				return false;
+			secret = p.secret();
+		}
+	}
 
 	WaitDialogHolder waitDialog(this, tr("Decrypting"));
 
-	return cryptoDoc->decrypt();
+	if (cryptoDoc->decrypt(lock, secret)) {
+		ui->cryptoContainerPage->transition(cryptoDoc.get(),
+											qApp->signer()->tokenauth().cert());
+		FadeInNotification::success(ui->topBar, tr("Decryption succeeded!"));
+		return true;
+	}
+	return false;
 }
 
 void MainWindow::dragEnterEvent(QDragEnterEvent *event)
@@ -283,7 +310,7 @@ QStringList MainWindow::dropEventFiles(QDropEvent *event)
 	return files;
 }
 
-bool MainWindow::encrypt()
+bool MainWindow::encrypt(bool askForKey)
 {
 	if(!cryptoDoc)
 		return false;
@@ -294,14 +321,28 @@ bool MainWindow::encrypt()
 		dlg->addButton(WarningDialog::YES, QMessageBox::Yes);
 		if(dlg->exec() == QMessageBox::Yes) {
 			moveCryptoContainer();
-			return encrypt();
+			return encrypt(askForKey);
 		}
 		return false;
 	}
 
-	WaitDialogHolder waitDialog(this, tr("Encrypting"));
-
-	return cryptoDoc->encrypt();
+	if (askForKey) {
+		PasswordDialog p;
+		p.setMode(PasswordDialog::Mode::ENCRYPT, PasswordDialog::Type::PASSWORD);
+		if(!p.exec()) return false;
+		QString label = p.label();
+		QByteArray secret = p.secret();
+		if (p.type == PasswordDialog::Type::PASSWORD) {
+			WaitDialogHolder waitDialog(this, tr("Encrypting"));
+			return cryptoDoc->encrypt(cryptoDoc->fileName(), label, secret, 65536);
+		} else {
+			WaitDialogHolder waitDialog(this, tr("Encrypting"));
+			return cryptoDoc->encrypt(cryptoDoc->fileName(), label, secret, 0);
+		}
+	} else {
+		WaitDialogHolder waitDialog(this, tr("Encrypting"));
+		return cryptoDoc->encrypt();
+	}
 }
 
 void MainWindow::mouseReleaseEvent(QMouseEvent *event)
@@ -455,15 +496,17 @@ void MainWindow::convertToCDoc()
 	auto cryptoContainer = std::make_unique<CryptoDoc>(this);
 	cryptoContainer->clear(filename);
 
-	// If signed, add whole signed document to cryptocontainer; otherwise content only
-	if(digiDoc->state() == SignedContainer)
+	// If signed, add whole signed document to cryptocontainer; otherwise
+	// content only
+	if (digiDoc->state() == SignedContainer)
 		cryptoContainer->documentModel()->addFile(digiDoc->fileName());
 	else
 		cryptoContainer->documentModel()->addTempFiles(digiDoc->documentModel()->tempFiles());
 
 	auto cardData = qApp->signer()->tokenauth();
-	if(!cardData.cert().isNull())
-		cryptoContainer->addKey(CKey(cardData.cert()));
+	if (!cardData.cert().isNull()) {
+		cryptoContainer->addEncryptionKey(cardData.cert());
+	}
 
 	resetCryptoDoc(std::move(cryptoContainer));
 	resetDigiDoc(nullptr, false);
@@ -501,7 +544,7 @@ void MainWindow::onCryptoAction(int action, const QString &/*id*/, const QString
 		break;
 	case DecryptContainer:
 	case DecryptToken:
-		if(decrypt())
+		if(decrypt(nullptr))
 		{
 			ui->cryptoContainerPage->transition(cryptoDoc.get(), qApp->signer()->tokenauth().cert());
 			FadeInNotification::success(ui->topBar, tr("Decryption succeeded!"));
@@ -514,7 +557,13 @@ void MainWindow::onCryptoAction(int action, const QString &/*id*/, const QString
 			FadeInNotification::success(ui->topBar, tr("Encryption succeeded!"));
 		}
 		break;
-	case ContainerSaveAs:
+	case EncryptLT:
+		if(encrypt(true)) {
+			ui->cryptoContainerPage->transition(cryptoDoc.get(), qApp->signer()->tokenauth().cert());
+			FadeInNotification::success(ui->topBar, tr("Encryption succeeded!"));
+		}
+		break;
+		case ContainerSaveAs:
 	{
 		if(!cryptoDoc)
 			break;
@@ -1069,3 +1118,11 @@ void MainWindow::containerSummary()
 	dialog->exec();
 	dialog->deleteLater();
 }
+
+void
+MainWindow::decryptClicked(const libcdoc::Lock *lock)
+{
+	qDebug() << "Decrypt clicked:";
+	decrypt(lock);
+}
+

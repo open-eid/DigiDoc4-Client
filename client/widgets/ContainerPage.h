@@ -21,6 +21,7 @@
 
 #include "common_enums.h"
 #include "widgets/MainAction.h"
+#include "CryptoDoc.h"
 
 #include <memory>
 
@@ -28,7 +29,6 @@ namespace Ui {
 class ContainerPage;
 }
 
-class CKey;
 class CryptoDoc;
 class DigiDoc;
 class QSslCertificate;
@@ -61,6 +61,8 @@ signals:
 	void removed(int row);
 	void warning(const WarningText &warningText);
 
+	void decryptReq(const libcdoc::Lock *key);
+
 private:
 	void changeEvent(QEvent* event) final;
 	bool checkAction(int code, const QString& selectedCard, const QString& selectedMobile);
@@ -70,7 +72,7 @@ private:
 	void showMainAction(const QList<ria::qdigidoc4::Actions> &actions);
 	void showSigningButton();
 	void updateDecryptionButton();
-	void updatePanes(ria::qdigidoc4::ContainerState state);
+	void updatePanes(ria::qdigidoc4::ContainerState state, CryptoDoc *crypto_container);
 	void translateLabels();
 
 	Ui::ContainerPage *ui;

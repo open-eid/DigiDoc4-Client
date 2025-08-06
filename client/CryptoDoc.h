@@ -25,62 +25,23 @@
 #include <QtCore/QIODevice>
 #include <QtNetwork/QSslCertificate>
 
-#include <memory>
+#include <cdoc/CDoc.h>
+#include <cdoc/Certificate.h>
+#include <cdoc/Lock.h>
+#include <cdoc/Recipient.h>
 
 class QSslKey;
 
-class CKey
-{
-public:
-	enum Tag
-	{
-		Unsupported,
-	};
-	CKey() = default;
-	CKey(Tag);
-	CKey(QByteArray _key, bool _isRSA): key(std::move(_key)), isRSA(_isRSA) {}
-	CKey(const QSslCertificate &cert);
-	bool operator==(const CKey &other) const { return other.key == key; }
+//
+// A wrapper structure for UI that contains either:
+// - lock information for decryption
+// - recipient certificate for encryption
+//
 
-	void setCert(const QSslCertificate &c);
-	QHash<QString, QString> fromKeyLabel() const;
-	QString toKeyLabel() const;
-
-	QByteArray key, cipher, publicKey;
-	QSslCertificate cert;
-	bool isRSA = false, unsupported = false;
-	QString recipient;
-	// CDoc1
-	QString concatDigest;
-	QByteArray AlgorithmID, PartyUInfo, PartyVInfo;
-	// CDoc2
-	QByteArray encrypted_kek;
-	QString keyserver_id, transaction_id;
-};
-
-
-
-class CDoc
-{
-public:
-	struct File
-	{
-		QString name, id, mime;
-		qint64 size;
-		std::unique_ptr<QIODevice> data;
-	};
-
-	virtual ~CDoc() = default;
-	virtual CKey canDecrypt(const QSslCertificate &cert) const = 0;
-	virtual bool decryptPayload(const QByteArray &key) = 0;
-	virtual bool save(const QString &path) = 0;
-	bool setLastError(const QString &msg) { return (lastError = msg).isEmpty(); }
-	virtual QByteArray transportKey(const CKey &key) = 0;
-	virtual int version() = 0;
-
-	QList<CKey> keys;
-	std::vector<File> files;
-	QString lastError;
+struct CDKey {
+    libcdoc::Lock lock;
+    QSslCertificate rcpt_cert;
+	bool operator== (const CDKey& rhs) const = default;
 };
 
 class CryptoDoc final: public QObject
@@ -90,20 +51,23 @@ public:
 	CryptoDoc(QObject *parent = nullptr);
 	~CryptoDoc() final;
 
-	bool addKey( const CKey &key );
+	bool supportsSymmetricKeys() const;
+    bool addEncryptionKey(const QSslCertificate& cert);
 	bool canDecrypt(const QSslCertificate &cert);
 	void clear(const QString &file = {});
-	bool decrypt();
+	bool decrypt(const libcdoc::Lock *lock, const QByteArray& secret);
+	bool encrypt(const QString &filename = {}, const QString& label = {}, const QByteArray& secret = {}, uint32_t kdf_iter = 0);
 	DocumentModel* documentModel() const;
-	bool encrypt(const QString &filename = {});
 	QString fileName() const;
-	QList<CKey> keys() const;
+	const std::vector<CDKey>& keys() const;
 	bool move(const QString &to);
-	bool open( const QString &file );
-	void removeKey( int id );
+	bool open(const QString &file);
+	void removeKey(unsigned int id);
+	void clearKeys();
 	bool saveCopy(const QString &filename);
 	ria::qdigidoc4::ContainerState state() const;
 
+	static std::string labelFromCertificate(const std::vector<uint8_t>& cert);
 private:
 	class Private;
 	Private *d;
