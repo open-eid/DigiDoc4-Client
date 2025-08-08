@@ -14,58 +14,60 @@
    <cursorShape>PointingHandCursor</cursorShape>
   </property>
   <property name="styleSheet">
-   <string notr="true">QWidget {
-color: #000000;
+   <string notr="true">#SignatureItem {
+border-bottom: 1px solid #E7EAEF;
+background-color: #FFFFFF; 
 }
-#SignatureItem {
-border: solid rgba(217, 217, 216, 0.45);
-border-width: 0px 0px 1px 0px; 
-background-color: #ffffff; 
+#SignatureItem &gt; QWidget {
+font-family: Roboto, Helvetica;
+}
+#name {
+color: #07142A;
+font-size: 14px;
+font-weight: 700;
+}
+#role, #idSignTime {
+color: #07142A;
+font-size: 12px;
 }</string>
   </property>
   <layout class="QGridLayout" name="SignatureItemLayout" columnstretch="0,1,0">
    <property name="leftMargin">
-    <number>0</number>
+    <number>8</number>
    </property>
    <property name="topMargin">
-    <number>5</number>
+    <number>8</number>
    </property>
    <property name="rightMargin">
-    <number>0</number>
+    <number>8</number>
    </property>
    <property name="bottomMargin">
-    <number>7</number>
+    <number>8</number>
    </property>
    <property name="horizontalSpacing">
-    <number>5</number>
+    <number>8</number>
    </property>
    <property name="verticalSpacing">
-    <number>0</number>
+    <number>2</number>
    </property>
    <item row="0" column="0" rowspan="3">
     <widget class="QSvgWidget" name="icon" native="true">
      <property name="minimumSize">
       <size>
-       <width>20</width>
-       <height>20</height>
+       <width>32</width>
+       <height>32</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>20</width>
-       <height>20</height>
+       <width>32</width>
+       <height>32</height>
       </size>
      </property>
     </widget>
    </item>
    <item row="0" column="1">
     <widget class="QLabel" name="name">
-     <property name="font">
-      <font>
-       <family>Roboto</family>
-       <pointsize>14</pointsize>
-      </font>
-     </property>
      <property name="focusPolicy">
       <enum>Qt::TabFocus</enum>
      </property>
@@ -82,12 +84,6 @@ background-color: #ffffff;
    </item>
    <item row="1" column="1">
     <widget class="QLabel" name="role">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
      <property name="text">
       <string notr="true">Role / Resolution</string>
      </property>
@@ -98,12 +94,6 @@ background-color: #ffffff;
    </item>
    <item row="2" column="1">
     <widget class="QLabel" name="idSignTime">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
      <property name="text">
       <string notr="true">48403123367 - Allkirjastatud 12. september 2017, kell 13:22</string>
      </property>

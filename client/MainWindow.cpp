@@ -28,9 +28,7 @@
 #include "QPCSC.h"
 #include "QSigner.h"
 #include "SslCertificate.h"
-#include "Styles.h"
 #include "TokenData.h"
-#include "effects/ButtonHoverFilter.h"
 #include "effects/FadeInNotification.h"
 #include "effects/Overlay.h"
 #include "dialogs/FileDialog.h"
@@ -40,7 +38,6 @@
 #include "dialogs/SmartIDProgress.h"
 #include "dialogs/WaitDialog.h"
 #include "dialogs/WarningDialog.h"
-#include "widgets/DropdownButton.h"
 #include "widgets/CardPopup.h"
 #include "widgets/WarningItem.h"
 #include "widgets/WarningList.h"
@@ -49,6 +46,7 @@
 #include <QtCore/QStandardPaths>
 #include <QtCore/QUrlQuery>
 #include <QtGui/QDesktopServices>
+#include <QtGui/QDragEnterEvent>
 #include <QtNetwork/QSslKey>
 #include <QtPrintSupport/QPrinterInfo>
 #include <QtPrintSupport/QPrintPreviewDialog>
@@ -65,19 +63,8 @@ MainWindow::MainWindow( QWidget *parent )
 	setAcceptDrops( true );
 	ui->setupUi(this);
 
-	QFont condensed11 = Styles::font( Styles::Condensed, 11 );
-	QFont condensed14 = Styles::font( Styles::Condensed, 14 );
-	QFont regular20 = Styles::font( Styles::Regular, 20 );
-	ui->signIntroLabel->setFont( regular20 );
-	ui->signIntroButton->setFont( condensed14 );
 	ui->signIntroButton->setFocus();
-	ui->cryptoIntroLabel->setFont( regular20 );
-	ui->cryptoIntroButton->setFont( condensed14 );
-	ui->noCardInfo->setFont(condensed14);
-	ui->noReaderInfoText->setFont(regular20);
 	ui->noReaderInfoText->setProperty("currenttext", ui->noReaderInfoText->text());
-	ui->help->setFont( condensed11 );
-	ui->settings->setFont( condensed11 );
 
 	connect(ui->warnings, &WarningList::warningClicked, this, &MainWindow::warningClicked);
 
@@ -89,10 +76,7 @@ MainWindow::MainWindow( QWidget *parent )
 	ui->pageButtonGroup->setId(ui->crypto, Pages::CryptoIntro);
 	ui->pageButtonGroup->setId(ui->myEid, Pages::MyEid);
 
-	connect(ui->pageButtonGroup, QOverload<QAbstractButton *, bool>::of(&QButtonGroup::buttonToggled), this, &MainWindow::clearPopups);
 	connect(ui->pageButtonGroup, &QButtonGroup::idToggled, this, &MainWindow::pageSelected);
-	ui->help->installEventFilter(new ButtonHoverFilter(QStringLiteral(":/images/icon_Abi.svg"), QStringLiteral(":/images/icon_Abi_hover.svg"), this));
-	ui->settings->installEventFilter(new ButtonHoverFilter(QStringLiteral(":/images/icon_Seaded.svg"), QStringLiteral(":/images/icon_Seaded_hover.svg"), this));
 	connect(ui->help, &QToolButton::clicked, qApp, &Application::openHelp);
 	connect(ui->settings, &QToolButton::clicked, this, [this] { showSettings(SettingsDialog::GeneralSettings); });
 
@@ -124,11 +108,6 @@ MainWindow::MainWindow( QWidget *parent )
 
 	// Refresh card info on "My EID" page
 	connect(qApp->signer()->smartcard(), &QSmartCard::dataChanged, this, &MainWindow::updateMyEid);
-	// Show card pop-up menu
-	connect(ui->selector->selector, &DropdownButton::dropdown, this, &MainWindow::showCardMenu);
-
-	connect(this, &MainWindow::clearPopups, ui->signContainerPage, &ContainerPage::clearPopups);
-	connect(this, &MainWindow::clearPopups, this, [this] { showCardMenu(false); });
 
 	connect(ui->signIntroButton, &QPushButton::clicked, this, [this] { openContainer(true); });
 	connect(ui->cryptoIntroButton, &QPushButton::clicked, this, [this] { openContainer(false); });
@@ -152,7 +131,7 @@ MainWindow::MainWindow( QWidget *parent )
 	connect(ui->accordion, &Accordion::changePin1Clicked, this, &MainWindow::changePin1Clicked);
 	connect(ui->accordion, &Accordion::changePin2Clicked, this, &MainWindow::changePin2Clicked);
 	connect(ui->accordion, &Accordion::changePukClicked, this, &MainWindow::changePukClicked);
-	connect(ui->cardInfo, &CardWidget::selected, ui->selector->selector, &DropdownButton::press);
+	connect(ui->cardInfo, &CardWidget::selected, ui->selector, &QToolButton::toggle);
 
 	updateSelectorData(qApp->signer()->tokensign());
 	updateMyEID(qApp->signer()->tokensign());
@@ -199,7 +178,7 @@ void MainWindow::changeEvent(QEvent* event)
 		ui->noReaderInfoText->setText(tr(ui->noReaderInfoText->property("currenttext").toByteArray()));
 		ui->version->setText(QStringLiteral("%1%2").arg(tr("Ver. "), Application::applicationVersion()));
 		setWindowTitle(windowFilePath().isEmpty() ? tr("DigiDoc4 Client") : FileDialog::normalized(QFileInfo(windowFilePath()).fileName()));
-		showCardMenu(false);
+		ui->selector->setChecked(false);
 	}
 	QWidget::changeEvent(event);
 }
@@ -306,15 +285,10 @@ bool MainWindow::encrypt()
 
 void MainWindow::mouseReleaseEvent(QMouseEvent *event)
 {
-	emit clearPopups();
-	if(ui->logo->underMouse())
-	{
-		resetCryptoDoc();
-		resetDigiDoc();
-		selectPage(Pages::SignIntro);
-	}
-	else
-		QWidget::mouseReleaseEvent(event);
+	if(auto *cardPopup = findChild<CardPopup*>())
+		cardPopup->deleteLater();
+	ui->signContainerPage->clearPopups();
+	QWidget::mouseReleaseEvent(event);
 }
 
 void MainWindow::navigateToPage( Pages page, const QStringList &files, bool create )
@@ -778,23 +752,6 @@ void MainWindow::selectPage(Pages page)
 	updateSelector();
 }
 
-void MainWindow::showCardMenu(bool show)
-{
-	if(show)
-	{
-		if(ui->selector->list.isEmpty())
-			return;
-		auto *cardPopup = new CardPopup(ui->selector->list, this);
-		connect(cardPopup, &CardPopup::activated, qApp->signer(), &QSigner::selectCard, Qt::QueuedConnection);
-		connect(cardPopup, &CardPopup::activated, this, [this] { showCardMenu(false); }); // .. and hide card popup menu
-		cardPopup->show();
-	}
-	else if(auto *cardPopup = findChild<CardPopup*>()) {
-		ui->selector->selector->init();
-		cardPopup->deleteLater();
-	}
-}
-
 void MainWindow::showEvent(QShowEvent * /*event*/)
 {
 	static bool isShown = false;
@@ -1015,38 +972,72 @@ void MainWindow::updateSelector()
 
 void MainWindow::updateSelectorData(TokenData data)
 {
+	enum Filter: uint8_t {
+		Signing,
+		Decrypting,
+		MyEID,
+	} filter = Signing;
 	switch(ui->startScreen->currentIndex())
 	{
 	case SignIntro:
 	case SignDetails:
 		if(data.isNull()) data = qApp->signer()->tokensign();
-		ui->cardInfo->update(data, ui->selector->list.size() > 1);
-		ui->selector->setList(data.card(), IDSelector::Signing);
+		filter = Signing;
 		break;
 	case CryptoIntro:
 	case CryptoDetails:
 		if(data.isNull()) data = qApp->signer()->tokenauth();
-		ui->cardInfo->update(data, ui->selector->list.size() > 1);
-		ui->selector->setList(data.card(), IDSelector::Decrypting);
+		filter = Decrypting;
 		break;
 	case MyEid:
+	default:
 		if(data.isNull()) data = qApp->signer()->smartcard()->tokenData();
-		ui->cardInfo->update(data, ui->selector->list.size() > 1);
-		ui->selector->setList(data.card(), IDSelector::MyEID);
+		filter = MyEID;
 		break;
-	default: break;
 	}
-	ui->idSelector->setHidden(ui->cardInfo->token().isNull());
-	ui->noCardInfo->setVisible(ui->idSelector->isHidden());
+	QVector<TokenData> list;
+	for(const TokenData &token: qApp->signer()->cache())
+	{
+		if(token.card() == data.card())
+			continue;
+		if(std::any_of(list.cbegin(), list.cend(), [token](const TokenData &item) { return token.card() == item.card(); }))
+			continue;
+		SslCertificate cert(token.cert());
+		if(filter == Signing && !cert.keyUsage().contains(SslCertificate::NonRepudiation))
+			continue;
+		if(filter == Decrypting && cert.keyUsage().contains(SslCertificate::NonRepudiation))
+			continue;
+		if(filter == MyEID &&
+			!(cert.type() & SslCertificate::EstEidType || cert.type() & SslCertificate::DigiIDType || cert.type() & SslCertificate::TempelType))
+			continue;
+		list.append(token);
+	}
+	ui->noCardInfo->setVisible(ui->cardInfo->token().isNull());
+	ui->selector->setHidden(list.isEmpty());
+	ui->selector->setChecked(false);
+	ui->cardInfo->setHidden(ui->noCardInfo->isVisible());
+	ui->cardInfo->setCursor(ui->selector->isVisible() ? Qt::PointingHandCursor : Qt::ArrowCursor);
+	ui->cardInfo->update(data, list.size() > 1);
 	if (!QPCSC::instance().serviceRunning())
 		ui->noCardInfo->update(NoCardInfo::NoPCSC);
 	else if(QPCSC::instance().readers().isEmpty())
 		ui->noCardInfo->update(NoCardInfo::NoReader);
 	else
 		ui->noCardInfo->update(NoCardInfo::NoCard);
-	ui->cardInfo->setCursor(ui->selector->selector->isVisible() ? Qt::PointingHandCursor : Qt::ArrowCursor);
-	if(ui->selector->selector->isHidden())
-		showCardMenu(false);
+	disconnect(ui->selector, &QToolButton::toggled, this, nullptr);
+	if(list.isEmpty())
+		return;
+	connect(ui->selector, &QToolButton::toggled, this, [this, list](bool show) {
+		if(show)
+		{
+			auto *cardPopup = new CardPopup(list, this);
+			connect(cardPopup, &CardPopup::activated, qApp->signer(), &QSigner::selectCard, Qt::QueuedConnection);
+			connect(cardPopup, &CardPopup::activated, this, [this] { ui->selector->setChecked(false); });
+			cardPopup->show();
+		}
+		else if(auto *cardPopup = findChild<CardPopup*>())
+			cardPopup->deleteLater();
+	});
 }
 
 void MainWindow::containerSummary()

@@ -20,9 +20,7 @@
 #include "CardWidget.h"
 #include "ui_CardWidget.h"
 
-#include "Styles.h"
 #include "SslCertificate.h"
-#include "common_enums.h"
 
 using namespace ria::qdigidoc4;
 
@@ -32,14 +30,6 @@ CardWidget::CardWidget(bool popup, QWidget *parent)
 	, isPopup(popup)
 {
 	ui->setupUi( this );
-	QFont font = Styles::font( Styles::Condensed, 16 );
-
-	ui->cardName->setFont( Styles::font( Styles::Condensed, 20, QFont::DemiBold ) );
-	ui->cardName->installEventFilter(this);
-	ui->cardCode->setFont( font );
-	ui->cardCode->installEventFilter(this);
-	ui->cardStatus->setFont( font );
-	ui->cardStatus->installEventFilter(this);
 	ui->cardIcon->load(QStringLiteral(":/images/icon_IDkaart_green.svg"));
 	ui->CardWidgetLayout->setAlignment(ui->cardIcon, Qt::AlignBaseline);
 }
@@ -74,17 +64,6 @@ bool CardWidget::event( QEvent *ev )
 	return QWidget::event( ev );
 }
 
-bool CardWidget::eventFilter(QObject *o, QEvent *e)
-{
-	if(e->type() == QEvent::MouseButtonRelease &&
-		(o == ui->cardName || o == ui->cardStatus || o == ui->cardCode))
-	{
-		emit selected(t);
-		return true;
-	}
-	return StyledWidget::eventFilter(o, e);
-}
-
 void CardWidget::update(const TokenData &token, bool multiple)
 {
 	t = token;
@@ -115,5 +94,4 @@ void CardWidget::update(const TokenData &token, bool multiple)
 		typeString = ((isMultiple = multiple) ? tr("%1 is selected") : tr("%1 in reader")).arg(typeString);
 
 	ui->cardStatus->setText(typeString);
-	ui->cardIcon->load(QStringLiteral(":/images/icon_IDkaart_green.svg"));
 }
