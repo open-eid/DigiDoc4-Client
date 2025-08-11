@@ -2960,6 +2960,10 @@ Täiendavad litsentsid ja komponendid</translation>
         <source>Certificate status check failed. Please check your internet connection.</source>
         <translation>Sertifikaadi staatuse kontrollimine ebaõnnestus. Palun kontrolli internetiühendust.</translation>
     </message>
+    <message>
+        <source>The PUK-code cannot be changed on the ID-card in the reader</source>
+        <translation>Lugejas oleval ID-kaardil ei saa PUK-koodi muuta</translation>
+    </message>
 </context>
 <context>
     <name>WarningDialog</name>

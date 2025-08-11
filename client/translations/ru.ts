@@ -2898,6 +2898,10 @@ Additional licenses and components</source>
         <translation>PUK-код находится в конверте</translation>
     </message>
     <message>
+        <source>Change PUK</source>
+        <translation>Изменить PUK</translation>
+    </message>
+    <message>
         <source>PUK code is blocked because the PUK code has been entered 3 times incorrectly. You can not unblock the PUK code yourself. As long as the PUK code is blocked, all eID options can be used, except PUK code. Please visit the service center to obtain new codes. &lt;a href=&quot;https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult/reminders-for-id-card-holders/&quot;&gt;Additional information&lt;/a&gt;.</source>
         <translation>PUK заблокирован, потому что PUK введен неверно 3 раза. PUK невозможно разблокировать самому. &lt;br&gt;&lt;br&gt;Пока PUK-код заблокирован, можно использовать все возможности eID, кроме тех которые требуют PUK. &lt;br&gt;&lt;br&gt;Для получения нового PUK-кода для своей ID-карты, посетите центр обслуживания, где вы сможете получить конверт с кодами. &lt;a href=&quot;https://www.politsei.ee/ru/instruktsii/hodataystvo-o-vydache-id-karty-vzroslomu/pamyatka-dlya-polzovatelya-id-karti/&quot;&gt;Дополнительная информация&lt;/a&gt;.</translation>
     </message>
@@ -2958,8 +2962,8 @@ Additional licenses and components</source>
         <translation>Проверка статуса сертификата не удалась. Пожалуйста проверьте подключение к интернету.</translation>
     </message>
     <message>
-        <source>Change PUK</source>
-        <translation>Изменить PUK</translation>
+        <source>The PUK-code cannot be changed on the ID-card in the reader</source>
+        <translation>Невозможно изменить PUK-код ID-карты, находящейся в считывателе</translation>
     </message>
 </context>
 <context>

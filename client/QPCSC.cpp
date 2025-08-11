@@ -53,9 +53,9 @@ static QStringList stateToString(DWORD state)
 }
 
 template<auto Func, typename... Args>
-static auto SCCall(const char *file, int line, const char *function, Args... args)
+static auto SCCall(const char *file, int line, const char *function, Args&& ...args)
 {
-	auto err = Func(args...);
+	auto err = Func(std::forward<Args>(args)...);
 	if(SCard().isDebugEnabled())
 		QMessageLogger(file, line, function, SCard().categoryName()).debug()
 			<< function << Qt::hex << (unsigned long)err;

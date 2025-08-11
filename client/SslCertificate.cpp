@@ -37,8 +37,36 @@
 
 #include <memory>
 
+template<auto D>
+struct free_deleter
+{
+	template<class T>
+	void operator()(T *p) const noexcept
+	{
+		D(p);
+	}
+};
+
+template<typename> struct free_argument;
+template<class T, class R>
+struct free_argument<R (*)(T *)>
+{
+	using type = T;
+};
+template<class T, class R>
+struct free_argument<R (&)(T *)>
+{
+	using type = T;
+};
+
+template<auto F, typename T>
+constexpr auto make_unique_ptr(T *t)
+{
+	return std::unique_ptr<T, free_deleter<F>>(t);
+}
+
 template<class T>
-auto toQByteArray(T &x)
+static auto toQByteArray(T &x)
 {
 	return QByteArray((const char*)x->data, x->length);
 }
@@ -77,12 +105,19 @@ QString SslCertificate::subjectInfo( const QByteArray &tag ) const
 QString SslCertificate::subjectInfo( QSslCertificate::SubjectInfo subject ) const
 { return QSslCertificate::subjectInfo(subject).join(' '); }
 
+template<auto D>
+auto SslCertificate::extension(int nid) const
+{
+	using T = typename free_argument<decltype(D)>::type;
+	return std::unique_ptr<T, free_deleter<D>>(static_cast<T*>(handle() ? X509_get_ext_d2i((X509*)handle(), nid, nullptr, nullptr) : nullptr));
+}
+
 QMultiHash<SslCertificate::AuthorityInfoAccess, QString> SslCertificate::authorityInfoAccess() const
 {
-	auto info = SCOPE(AUTHORITY_INFO_ACCESS, extension(NID_info_access));
-	if(!info)
-		return {};
 	QMultiHash<AuthorityInfoAccess, QString> result;
+	auto info = extension<AUTHORITY_INFO_ACCESS_free>(NID_info_access);
+	if(!info)
+		return result;
 	for(int i = 0; i < sk_ACCESS_DESCRIPTION_num(info.get()); ++i)
 	{
 		ACCESS_DESCRIPTION *ad = sk_ACCESS_DESCRIPTION_value(info.get(), i);
@@ -104,13 +139,13 @@ QMultiHash<SslCertificate::AuthorityInfoAccess, QString> SslCertificate::authori
 
 QByteArray SslCertificate::authorityKeyIdentifier() const
 {
-	auto id = SCOPE(AUTHORITY_KEYID, extension(NID_authority_key_identifier));
+	auto id = extension<AUTHORITY_KEYID_free>(NID_authority_key_identifier);
 	return id && id->keyid ? toQByteArray(id->keyid) : QByteArray();
 }
 
 QHash<SslCertificate::EnhancedKeyUsage,QString> SslCertificate::enhancedKeyUsage() const
 {
-	auto usage = SCOPE(EXTENDED_KEY_USAGE, extension(NID_ext_key_usage));
+	auto usage = extension<EXTENDED_KEY_USAGE_free>(NID_ext_key_usage);
 	if(!usage)
 		return { {All, tr("All application policies")} };
 
@@ -138,7 +173,7 @@ QHash<SslCertificate::EnhancedKeyUsage,QString> SslCertificate::enhancedKeyUsage
 
 bool SslCertificate::isCA() const
 {
-	auto cons = SCOPE(BASIC_CONSTRAINTS, extension(NID_basic_constraints));
+	auto cons = extension<BASIC_CONSTRAINTS_free>(NID_basic_constraints);
 	return cons && cons->ca > 0;
 }
 
@@ -159,17 +194,12 @@ QString SslCertificate::keyName() const
 	return tr("Unknown");
 }
 
-Qt::HANDLE SslCertificate::extension( int nid ) const
-{
-	return handle() ? Qt::HANDLE(X509_get_ext_d2i((X509*)handle(), nid, nullptr, nullptr)) : nullptr;
-}
-
 QHash<SslCertificate::KeyUsage,QString> SslCertificate::keyUsage() const
 {
-	auto keyusage = SCOPE(ASN1_BIT_STRING, extension(NID_key_usage));
-	if(!keyusage)
-		return {};
 	QHash<KeyUsage,QString> list;
+	auto keyusage = extension<ASN1_BIT_STRING_free>(NID_key_usage);
+	if(!keyusage)
+		return list;
 	for( int n = 0; n < 9; ++n )
 	{
 		if(!ASN1_BIT_STRING_get_bit(keyusage.get(), n))
@@ -205,18 +235,18 @@ QString SslCertificate::personalCode() const
 
 QStringList SslCertificate::policies() const
 {
-	auto cp = SCOPE(CERTIFICATEPOLICIES, extension(NID_certificate_policies));
-	if( !cp )
-		return {};
-
 	QStringList list;
+	auto cp = extension<CERTIFICATEPOLICIES_free>(NID_certificate_policies);
+	if( !cp )
+		return list;
+
 	for(int i = 0; i < sk_POLICYINFO_num(cp.get()); ++i)
 	{
 		POLICYINFO *pi = sk_POLICYINFO_value(cp.get(), i);
 		QByteArray buf(50, 0);
 		int len = OBJ_obj2txt(buf.data(), buf.size(), pi->policyid, 1);
 		if( len != NID_undef )
-			list << buf;
+			list.append(buf);
 	}
 	return list;
 }
@@ -237,7 +267,7 @@ QString SslCertificate::signatureAlgorithm() const
 
 QByteArray SslCertificate::subjectKeyIdentifier() const
 {
-	auto id = SCOPE(ASN1_OCTET_STRING, extension(NID_subject_key_identifier));
+	auto id = extension<ASN1_OCTET_STRING_free>(NID_subject_key_identifier);
 	return !id ? QByteArray() : toQByteArray(id);
 }
 
@@ -262,8 +292,10 @@ QString SslCertificate::toString( const QString &format ) const
 
 SslCertificate::CertType SslCertificate::type() const
 {
-	for(const QString &p: policies())
+	// https://www.id.ee/wp-content/uploads/2022/02/cp_esteid_01.10.2018_version1.0.pdf
+	for(QString p: policies())
 	{
+		p.remove(QLatin1String("2.999."));
 		if(p.startsWith(QLatin1String("1.3.6.1.4.1.10015.1.1")) ||
 			p.startsWith(QLatin1String("1.3.6.1.4.1.10015.3.1")) ||
 			p.startsWith(QLatin1String("1.3.6.1.4.1.10015.1.2")) ||
@@ -283,12 +315,15 @@ SslCertificate::CertType SslCertificate::type() const
 			p.startsWith(QLatin1String("1.3.6.1.4.1.51361.1.2.3")))
 			return DigiIDType;
 		if(p.startsWith(QLatin1String("1.3.6.1.4.1.51361.1.1.4")) ||
-			p.startsWith(QLatin1String("1.3.6.1.4.1.51361.1.2.4")))
+			p.startsWith(QLatin1String("1.3.6.1.4.1.51361.1.2.4")) ||
+			p.startsWith(QLatin1String("1.3.6.1.4.1.51361.2.1.6")))
 			return EResidentType;
 		if(p.startsWith(QLatin1String("1.3.6.1.4.1.51361.1.1")) ||
-			p.startsWith(QLatin1String("1.3.6.1.4.1.51455.1.1")) ||
 			p.startsWith(QLatin1String("1.3.6.1.4.1.51361.1.2")) ||
-			p.startsWith(QLatin1String("1.3.6.1.4.1.51455.1.2")))
+			p.startsWith(QLatin1String("1.3.6.1.4.1.51361.2.1")) ||
+			p.startsWith(QLatin1String("1.3.6.1.4.1.51455.1.1")) ||
+			p.startsWith(QLatin1String("1.3.6.1.4.1.51455.1.2")) ||
+			p.startsWith(QLatin1String("1.3.6.1.4.1.51455.2.1")))
 			return EstEidType;
 	}
 
@@ -336,7 +371,7 @@ SslCertificate::Validity SslCertificate::validateOnline() const
 		return Unknown;
 
 	// Build request
-	auto ocspReq = SCOPE(OCSP_REQUEST, OCSP_REQUEST_new());
+	auto ocspReq = make_unique_ptr<OCSP_REQUEST_free>(OCSP_REQUEST_new());
 	if(!ocspReq)
 		return Unknown;
 	OCSP_CERTID *certId = OCSP_cert_to_id(nullptr, (X509*)handle(), (X509*)issuer.handle());
@@ -353,12 +388,12 @@ SslCertificate::Validity SslCertificate::validateOnline() const
 	QByteArray respData = repl->readAll();
 	repl->deleteLater();
 	const unsigned char *p = (const unsigned char*)respData.constData();
-	auto resp = SCOPE(OCSP_RESPONSE, d2i_OCSP_RESPONSE(nullptr, &p, respData.size()));
+	auto resp = make_unique_ptr<OCSP_RESPONSE_free>(d2i_OCSP_RESPONSE(nullptr, &p, respData.size()));
 	if(!resp || OCSP_response_status(resp.get()) != OCSP_RESPONSE_STATUS_SUCCESSFUL)
 		return Unknown;
 
 	// Validate response
-	auto basic = SCOPE(OCSP_BASICRESP, OCSP_response_get1_basic(resp.get()));
+	auto basic = make_unique_ptr<OCSP_BASICRESP_free>(OCSP_response_get1_basic(resp.get()));
 	if(!basic)
 		return Unknown;
 	if(OCSP_basic_verify(basic.get(), nullptr, nullptr, OCSP_NOVERIFY) <= 0)

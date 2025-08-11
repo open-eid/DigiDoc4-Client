@@ -31,6 +31,8 @@
 
 #include <qt_windows.h>
 
+#include <span>
+
 using namespace Qt::StringLiterals;
 
 static QString getUserRights()
@@ -52,24 +54,19 @@ static QString getUserRights()
 	}
 
 	QByteArray tokenGroupsBuffer(dwLength, 0);
-	PTOKEN_GROUPS pGroup = PTOKEN_GROUPS(tokenGroupsBuffer.data());
+	auto *pGroup = PTOKEN_GROUPS(tokenGroupsBuffer.data());
 	if ( !GetTokenInformation( hToken, TokenGroups, pGroup, dwLength, &dwLength ) )
 		return Diagnostics::tr("Unknown - error %1").arg(GetLastError());
 
 	QString rights = Diagnostics::tr( "User" );
 	SID_IDENTIFIER_AUTHORITY NtAuthority = SECURITY_NT_AUTHORITY;
-	PSID AdministratorsGroup {};
-	if( AllocateAndInitializeSid( &NtAuthority, 2, SECURITY_BUILTIN_DOMAIN_RID,
+	if(PSID AdministratorsGroup {};
+		AllocateAndInitializeSid(&NtAuthority, 2, SECURITY_BUILTIN_DOMAIN_RID,
 			DOMAIN_ALIAS_RID_ADMINS, 0, 0, 0, 0, 0, 0, &AdministratorsGroup ) )
 	{
-		for ( DWORD dwIndex = 0; dwIndex < pGroup->GroupCount; dwIndex++ )
-		{
-			if ( EqualSid( AdministratorsGroup, pGroup->Groups[dwIndex].Sid ) )
-			{
-				rights = Diagnostics::tr( "Administrator" );
-				break;
-			}
-		}
+		if(auto list = std::span<SID_AND_ATTRIBUTES>(pGroup->Groups, pGroup->GroupCount);
+			std::any_of(list.begin(), list.end(), [&](const auto &group) { return EqualSid(AdministratorsGroup, group.Sid); }))
+			rights = Diagnostics::tr("Administrator");
 		FreeSid(AdministratorsGroup);
 	}
 
@@ -88,8 +85,8 @@ QStringList Diagnostics::packages(const QStringList &names, bool withName)
 		}();
 		for(QSettings::Format format: formats)
 		{
-			QSettings s(u"%1\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall"_s.arg(group), format);
-			for(const QString &key: s.childGroups())
+			QSettings s("%1\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall"_L1.arg(group), format);
+			for(const auto groups = s.childGroups(); const QString &key: groups)
 			{
 				s.beginGroup(key);
 				QString name = s.value("/DisplayName"_L1).toString();
@@ -149,7 +146,7 @@ void Diagnostics::run()
 	SetDllDirectory(LPCWSTR(QCoreApplication::applicationDirPath().utf16()));
 	static const QStringList dlls{
 		"digidocpp", "qdigidoc4.exe", "EsteidShellExtension", "id-updater.exe", "web-eid.exe",
-		"EstIDMinidriver", "EstIDMinidriver64", "EestiMinidriver", "EestiMinidriver64",
+		"EstIDMinidriver", "EstIDMinidriver64", "EestiMinidriver", "EestiMinidriver64", "estgsv4md", "estgsv4md64",
 		"zlib1", "libxml2", "libxmlsec1", "libxmlsec1-openssl",
 		"msvcp140", "msvcp140_1", "msvcp140_2", "vcruntime140", "vcruntime140_1"};
 	for(const QString &lib: dlls)

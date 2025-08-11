@@ -106,7 +106,8 @@ public:
 	Validity	validateOnline() const;
 
 private:
-	Qt::HANDLE extension( int nid ) const;
+	template<auto D>
+	auto extension(int nid) const;
 };
 
 size_t qHash(const SslCertificate &cert);

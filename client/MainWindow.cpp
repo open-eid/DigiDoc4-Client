@@ -1015,7 +1015,7 @@ void MainWindow::updateSelectorData(TokenData data)
 	ui->noCardInfo->setVisible(ui->cardInfo->token().isNull());
 	ui->selector->setHidden(list.isEmpty());
 	ui->selector->setChecked(false);
-	ui->cardInfo->setHidden(ui->noCardInfo->isVisible());
+	ui->cardInfo->setVisible(ui->noCardInfo->isHidden());
 	ui->cardInfo->setCursor(ui->selector->isVisible() ? Qt::PointingHandCursor : Qt::ArrowCursor);
 	ui->cardInfo->update(data, list.size() > 1);
 	if (!QPCSC::instance().serviceRunning())

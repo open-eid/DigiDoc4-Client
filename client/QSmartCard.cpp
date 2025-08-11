@@ -51,6 +51,7 @@ QString QSmartCardData::card() const { return d->card; }
 bool QSmartCardData::isNull() const
 { return d->data.isEmpty() && d->authCert.isNull() && d->signCert.isNull(); }
 bool QSmartCardData::isPinpad() const { return d->pinpad; }
+bool QSmartCardData::isPUKReplacable() const { return d->pukReplacable; }
 bool QSmartCardData::isValid() const
 { return d->data.value(Expiry).toDateTime() >= QDateTime::currentDateTime(); }
 
@@ -103,23 +104,17 @@ QPCSCReader::Result Card::transfer(QPCSCReader *reader, bool verify, const QByte
 }
 
 
-QByteArrayView Card::parseFCI(const QByteArray &data, quint8 expectedTag)
+QByteArrayView Card::parseFCI(QByteArrayView data, quint8 expectedTag)
 {
-	for(auto i = data.constBegin(); i != data.constEnd(); ++i)
+	for(auto i = data.begin(); i != data.end();)
 	{
-		quint8 tag(*i), size(*++i);
+		quint8 tag(*i++), size(*i++);
 		if(tag == expectedTag)
-			return QByteArrayView(i + 1, size);
-		switch(tag)
-		{
-		case 0x6F:
-		case 0x62:
-		case 0x64:
-		case 0xA1: continue;
-		default: i += size; break;
-		}
+			return {i, size};
+		if((tag & 0x20) == 0)
+			i += size;
 	}
-	return QByteArrayView();
+	return {};
 }
 
 
@@ -291,6 +286,144 @@ bool IDEMIACard::updateCounters(QPCSCReader *reader, QSmartCardDataPrivate *d) c
 
 
 
+const QByteArray THALESCard::AID = APDU("00A4040C 0C A000000063504B43532D3135");
+
+QPCSCReader::Result THALESCard::change(QPCSCReader *reader, QSmartCardData::PinType type, const QString &pin_, const QString &newpin_) const
+{
+	QByteArray cmd = CHANGE;
+	QByteArray newpin = pinTemplate(newpin_);
+	QByteArray pin = pinTemplate(pin_);
+	cmd[3] = char(0x80 | type);
+	cmd[4] = char(pin.size() + newpin.size());
+	return transfer(reader, false, cmd + pin + newpin, type, quint8(pin.size()), true);
+}
+
+bool THALESCard::isSupported(const QByteArray &atr)
+{
+	return atr == "3BFF9600008031FE438031B85365494464B085051012233F1D";
+}
+
+bool THALESCard::loadPerso(QPCSCReader *reader, QSmartCardDataPrivate *d) const
+{
+	d->pukReplacable = false;
+	if(d->data.isEmpty() && reader->transfer(APDU("00A4080C 02 DFDD")))
+	{
+		QByteArray cmd = APDU("00A4020C 02 5001");
+		for(char data = 1; data <= 8; ++data)
+		{
+			cmd[6] = data;
+			if(!reader->transfer(cmd))
+				return false;
+			QPCSCReader::Result result = reader->transfer(READBINARY);
+			if(!result)
+				return false;
+			QString record = QString::fromUtf8(result.data.trimmed());
+			if(record == QChar(0))
+				record.clear();
+			switch(data)
+			{
+			case QSmartCardData::SurName:
+			case QSmartCardData::FirstName:
+			case QSmartCardData::Citizen:
+			case QSmartCardData::Id:
+			case QSmartCardData::DocumentId:
+				d->data[QSmartCardData::PersonalDataType(data)] = record;
+				break;
+			case QSmartCardData::BirthDate:
+				if(!record.isEmpty())
+					d->data[QSmartCardData::BirthDate] = QDate::fromString(record.left(10), QStringLiteral("dd MM yyyy"));
+				break;
+			case QSmartCardData::Expiry:
+				d->data[QSmartCardData::Expiry] = QDateTime::fromString(record, QStringLiteral("dd MM yyyy")).addDays(1).addSecs(-1);
+				break;
+			default: break;
+			}
+		}
+	}
+
+	bool readFailed = false;
+	auto readCert = [&](const QByteArray &path) {
+		QPCSCReader::Result data = reader->transfer(path);
+		if(!data)
+		{
+			readFailed = true;
+			return QSslCertificate();
+		}
+		auto sizeTag = parseFCI(data.data, 0x81);
+		if(sizeTag.isEmpty())
+			return QSslCertificate();
+		QByteArray cert;
+		QByteArray cmd = READBINARY;
+		for(int size = quint8(sizeTag[0]) << 8 | quint8(sizeTag[1]); cert.size() < size;)
+		{
+			cmd[2] = char(cert.size() >> 8);
+			cmd[3] = char(cert.size());
+			data = reader->transfer(cmd);
+			if(!data)
+			{
+				readFailed = true;
+				return QSslCertificate();
+			}
+			cert += data.data;
+		}
+		return QSslCertificate(cert, QSsl::Der);
+	};
+	if(d->authCert.isNull())
+		d->authCert = readCert(APDU("00A40804 04 ADF1 3411 00"));
+	if(d->signCert.isNull())
+		d->signCert = readCert(APDU("00A40804 04 ADF2 3421 00"));
+
+	if(readFailed)
+		return false;
+	return updateCounters(reader, d);
+}
+
+QByteArray THALESCard::pinTemplate(const QString &pin)
+{
+	QByteArray result = pin.toUtf8();
+	result += QByteArray(12 - result.size(), char(0x00));
+	return result;
+}
+
+QPCSCReader::Result THALESCard::replace(QPCSCReader *reader, QSmartCardData::PinType type, const QString &puk_, const QString &pin_) const
+{
+	QByteArray puk = pinTemplate(puk_);
+	QByteArray pin = pinTemplate(pin_);
+	QByteArray cmd = REPLACE;
+	cmd[3] = char(0x80 | type);
+	cmd[4] = char(puk.size() + pin.size());
+	return transfer(reader, false, cmd + puk + pin, type, quint8(puk.size()), true);
+}
+
+QByteArray THALESCard::sign(QPCSCReader *reader, const QByteArray &dgst) const
+{
+	if(!reader->transfer(APDU("002241B6 09 800154840101")))
+		return {};
+
+	QByteArray send {0x90, char(dgst.size())};
+	send.append(dgst);
+	send.insert(0, char(send.size()));
+	send.insert(0, APDU("002A90A0"));
+
+	if(!reader->transfer(send))
+		return {};
+
+	return reader->transfer(APDU("002A9E9A 00")).data;
+}
+
+bool THALESCard::updateCounters(QPCSCReader *reader, QSmartCardDataPrivate *d) const
+{
+	if(auto data = reader->transfer(APDU("00CB00FF 05 A003830181 00")))
+		d->retry[QSmartCardData::Pin1Type] = quint8(data.data[14]);
+	if(auto data = reader->transfer(APDU("00CB00FF 05 A003830183 00")))
+		d->retry[QSmartCardData::PukType] = quint8(data.data[14]);
+	if(auto data = reader->transfer(APDU("00CB00FF 05 A003830182 00")))
+		d->retry[QSmartCardData::Pin2Type] = quint8(data.data[14]);
+	return true;
+}
+
+
+
 QSharedPointer<QPCSCReader> QSmartCard::Private::connect(const QString &reader)
 {
 	qCDebug(CLog) << "Connecting to reader" << reader;
@@ -315,7 +448,8 @@ QSmartCard::ErrorType QSmartCard::Private::handlePinResult(QPCSCReader *reader, 
 	case 0x6401: return QSmartCard::CancelError; // Cancel (OK, SCM)
 	case 0x6402: return QSmartCard::DifferentError;
 	case 0x6403: return QSmartCard::LenghtError;
-	case 0x6983: return QSmartCard::BlockedError;
+	case 0x6983:
+	case 0x6984: return QSmartCard::BlockedError;
 	case 0x6985:
 	case 0x6A80: return QSmartCard::OldNewPinSameError;
 	default: return QSmartCard::UnknownError;
@@ -450,7 +584,12 @@ void QSmartCard::reloadCard(const TokenData &token, bool reloadCounters)
 	if(!selectedReader->connect() || !selectedReader->beginTransaction())
 		return;
 
-	if(!IDEMIACard::isSupported(selectedReader->atr())) {
+	std::unique_ptr<Card> card;
+	if(IDEMIACard::isSupported(selectedReader->atr()))
+		card = std::make_unique<IDEMIACard>();
+	else if(THALESCard::isSupported(selectedReader->atr()))
+		card = std::make_unique<THALESCard>();
+	else {
 		qDebug() << "Unsupported card";
 		return;
 	}
@@ -460,7 +599,7 @@ void QSmartCard::reloadCard(const TokenData &token, bool reloadCounters)
 	t = d->t.d;
 	t->reader = selectedReader->name();
 	t->pinpad = selectedReader->isPinPad();
-	d->card = std::make_unique<IDEMIACard>();
+	d->card = std::move(card);
 	if(d->card->loadPerso(selectedReader.data(), t))
 	{
 		d->t.d = std::move(t);

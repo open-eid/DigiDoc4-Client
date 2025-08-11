@@ -2960,6 +2960,10 @@ Additional licenses and components</translation>
         <source>Certificate status check failed. Please check your internet connection.</source>
         <translation>Certificate status check failed. Please check your internet connection.</translation>
     </message>
+    <message>
+        <source>The PUK-code cannot be changed on the ID-card in the reader</source>
+        <translation>The PUK-code cannot be changed on the ID-card in the reader</translation>
+    </message>
 </context>
 <context>
     <name>WarningDialog</name>
