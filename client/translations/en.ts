@@ -4,12 +4,7 @@
 <context>
     <name>Accordion</name>
     <message>
-        <source>PIN/PUK CODES AND CERTIFICATES</source>
-        <translation>PIN/PUK CODES AND CERTIFICATES</translation>
-    </message>
-    <message>
         <source>PIN/PUK codes and certificates</source>
-        <comment>accessible</comment>
         <translation>PIN/PUK codes and certificates</translation>
     </message>
 </context>
@@ -1048,76 +1043,47 @@
 <context>
     <name>InfoStack</name>
     <message>
-        <source>CITIZENSHIP</source>
-        <translation>CITIZENSHIP</translation>
-    </message>
-    <message>
-        <source>GIVEN NAMES</source>
-        <translation>GIVEN NAMES</translation>
-    </message>
-    <message>
-        <source>PERSONAL CODE</source>
-        <translation>PERSONAL CODE</translation>
-    </message>
-    <message>
-        <source>DOCUMENT</source>
-        <translation>DOCUMENT</translation>
-    </message>
-    <message>
-        <source>SURNAME</source>
-        <translation>SURNAME</translation>
-    </message>
-    <message>
-        <source>NAME</source>
-        <translation>NAME</translation>
-    </message>
-    <message>
-        <source>SERIAL</source>
-        <translation>SERIAL</translation>
-    </message>
-    <message>
-        <source>COUNTRY</source>
-        <translation>COUNTRY</translation>
-    </message>
-    <message>
         <source>You&apos;re using digital identity card</source>
         <translation>You&apos;re using digital identity card</translation>
     </message>
     <message>
-        <source>Valid</source>
-        <translation>Valid</translation>
+        <source>Name</source>
+        <translation>Name</translation>
     </message>
     <message>
-        <source> until </source>
-        <translation> until </translation>
+        <source>Organization</source>
+        <translation>Organization</translation>
     </message>
     <message>
-        <source>Expired</source>
-        <translation>Expired</translation>
+        <source>Serial</source>
+        <translation>Serial</translation>
+    </message>
+    <message>
+        <source>Country</source>
+        <translation>Country</translation>
     </message>
     <message>
         <source>Given names</source>
-        <extracomment>accessible</extracomment>
         <translation>Given names</translation>
     </message>
     <message>
         <source>Surname</source>
-        <extracomment>accessible</extracomment>
         <translation>Surname</translation>
     </message>
     <message>
         <source>Personal code</source>
-        <extracomment>accessible</extracomment>
         <translation>Personal code</translation>
     </message>
     <message>
         <source>Citizenship</source>
-        <extracomment>accessible</extracomment>
         <translation>Citizenship</translation>
     </message>
     <message>
+        <source>Expiry date</source>
+        <translation>Expiry date</translation>
+    </message>
+    <message>
         <source>Document</source>
-        <extracomment>accessible</extracomment>
         <translation>Document</translation>
     </message>
 </context>
@@ -2479,7 +2445,7 @@ Additional licenses and components</translation>
     </message>
     <message>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Name</translation>
     </message>
     <message>
         <source>Fetch URL</source>
@@ -2503,6 +2469,14 @@ Additional licenses and components</translation>
     <message>
         <source>Signer</source>
         <translation>Signer</translation>
+    </message>
+    <message>
+        <source>Technical information</source>
+        <translation>Technical information</translation>
+    </message>
+    <message>
+        <source>Role and address</source>
+        <translation>Role and address</translation>
     </message>
     <message>
         <source>City</source>
@@ -2531,10 +2505,6 @@ Additional licenses and components</translation>
     <message>
         <source>Value</source>
         <translation>Value</translation>
-    </message>
-    <message>
-        <source>TECHNICAL INFORMATION</source>
-        <translation>TECHNICAL INFORMATION</translation>
     </message>
     <message>
         <source>Timestamp</source>
@@ -2677,10 +2647,6 @@ Additional licenses and components</translation>
     <message>
         <source>Signing time (UTC)</source>
         <translation>Signing time (UTC)</translation>
-    </message>
-    <message>
-        <source>ROLE AND ADDRESS</source>
-        <translation>ROLE AND ADDRESS</translation>
     </message>
     <message>
         <source>The signature is technically correct, but it is based on the currently weak hash algorithm SHA-1, therefore it is not protected against forgery or alteration.</source>

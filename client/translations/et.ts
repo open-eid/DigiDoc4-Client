@@ -4,12 +4,7 @@
 <context>
     <name>Accordion</name>
     <message>
-        <source>PIN/PUK CODES AND CERTIFICATES</source>
-        <translation>PIN-/PUK-KOODID JA SERTIFIKAATIDE KONTROLL</translation>
-    </message>
-    <message>
         <source>PIN/PUK codes and certificates</source>
-        <comment>accessible</comment>
         <translation>PIN/PUK koodid ja sertifikaatide kontroll</translation>
     </message>
 </context>
@@ -1048,76 +1043,47 @@
 <context>
     <name>InfoStack</name>
     <message>
-        <source>CITIZENSHIP</source>
-        <translation>KODAKONDSUS</translation>
-    </message>
-    <message>
-        <source>GIVEN NAMES</source>
-        <translation>EESNIMI</translation>
-    </message>
-    <message>
-        <source>PERSONAL CODE</source>
-        <translation>ISIKUKOOD</translation>
-    </message>
-    <message>
-        <source>DOCUMENT</source>
-        <translation>DOKUMENT</translation>
-    </message>
-    <message>
-        <source>SURNAME</source>
-        <translation>PEREKONNANIMI</translation>
-    </message>
-    <message>
-        <source>NAME</source>
-        <translation>NIMI</translation>
-    </message>
-    <message>
-        <source>SERIAL</source>
-        <translation>SEERIANUMBER</translation>
-    </message>
-    <message>
-        <source>COUNTRY</source>
-        <translation>RIIK</translation>
-    </message>
-    <message>
         <source>You&apos;re using digital identity card</source>
         <translation>Kasutate digitaalset isikutunnistust</translation>
     </message>
     <message>
-        <source>Valid</source>
-        <translation>Kehtiv</translation>
+        <source>Name</source>
+        <translation>Nimi</translation>
     </message>
     <message>
-        <source> until </source>
-        <translation> kuni </translation>
+        <source>Organization</source>
+        <translation>Organisatsioon</translation>
     </message>
     <message>
-        <source>Expired</source>
-        <translation>Aegunud</translation>
+        <source>Serial</source>
+        <translation>Seerianumber</translation>
+    </message>
+    <message>
+        <source>Country</source>
+        <translation>Riik</translation>
     </message>
     <message>
         <source>Given names</source>
-        <extracomment>accessible</extracomment>
         <translation>Eesnimi</translation>
     </message>
     <message>
         <source>Surname</source>
-        <extracomment>accessible</extracomment>
         <translation>Perekonnanimi</translation>
     </message>
     <message>
         <source>Personal code</source>
-        <extracomment>accessible</extracomment>
         <translation>Isikukood</translation>
     </message>
     <message>
         <source>Citizenship</source>
-        <extracomment>accessible</extracomment>
         <translation>Kodakondsus</translation>
     </message>
     <message>
+        <source>Expiry date</source>
+        <translation>Aegumiskuupäev</translation>
+    </message>
+    <message>
         <source>Document</source>
-        <extracomment>accessible</extracomment>
         <translation>Dokument</translation>
     </message>
 </context>
@@ -2479,7 +2445,7 @@ Täiendavad litsentsid ja komponendid</translation>
     </message>
     <message>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nimi</translation>
     </message>
     <message>
         <source>Fetch URL</source>
@@ -2503,6 +2469,14 @@ Täiendavad litsentsid ja komponendid</translation>
     <message>
         <source>Signer</source>
         <translation>Allkirjastaja</translation>
+    </message>
+    <message>
+        <source>Technical information</source>
+        <translation>Tehniline informatsioon</translation>
+    </message>
+    <message>
+        <source>Role and address</source>
+        <translation>Roll ja aadress&lt;</translation>
     </message>
     <message>
         <source>City</source>
@@ -2531,10 +2505,6 @@ Täiendavad litsentsid ja komponendid</translation>
     <message>
         <source>Value</source>
         <translation>Väärtus</translation>
-    </message>
-    <message>
-        <source>TECHNICAL INFORMATION</source>
-        <translation>TEHNILINE INFORMATSIOON</translation>
     </message>
     <message>
         <source>Timestamp</source>
@@ -2677,10 +2647,6 @@ Täiendavad litsentsid ja komponendid</translation>
     <message>
         <source>Signing time (UTC)</source>
         <translation>Allkirjastamise aeg (UTC)</translation>
-    </message>
-    <message>
-        <source>ROLE AND ADDRESS</source>
-        <translation>ROLL JA AADRESS</translation>
     </message>
     <message>
         <source>The signature is technically correct, but it is based on the currently weak hash algorithm SHA-1, therefore it is not protected against forgery or alteration.</source>
