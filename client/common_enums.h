@@ -56,6 +56,7 @@ enum Actions {
     SignatureToken,
     ClearSignatureWarning,
     ClearCryptoWarning,
+    EncryptLT
 };
 
 enum ItemType {

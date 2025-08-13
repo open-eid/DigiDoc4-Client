@@ -221,9 +221,10 @@ void ContainerPage::showMainAction(const QList<Actions> &actions)
 	bool isSignCard = actions.contains(SignatureAdd) || actions.contains(SignatureToken);
 	bool isSignMobile = !isSignCard && (actions.contains(SignatureMobile) || actions.contains(SignatureSmartID));
 	bool isEncrypt = actions.contains(EncryptContainer) && !ui->rightPane->findChildren<AddressItem*>().isEmpty();
+	bool isEncryptLT = actions.contains(EncryptLT);
 	bool isDecrypt = !isBlocked && (actions.contains(DecryptContainer) || actions.contains(DecryptToken));
 	mainAction->setButtonEnabled(isSupported && !hasEmptyFile &&
-		(isEncrypt || isDecrypt || isSignMobile || (isSignCard && !isBlocked && !isExpired)));
+		(isEncrypt || isEncryptLT || isDecrypt || isSignMobile || (isSignCard && !isBlocked && !isExpired)));
 	ui->mainActionSpacer->changeSize(198, 20, QSizePolicy::Fixed);
 	ui->navigationArea->layout()->invalidate();
 }
@@ -252,12 +253,11 @@ void ContainerPage::transition(CryptoDoc *container, const QSslCertificate &cert
 		AddRecipients dlg(ui->rightPane, this);
 		if(!dlg.exec() || !dlg.isUpdated())
 			return;
-		for(auto i = container->keys().size() - 1; i >= 0; i--)
-			container->removeKey(i);
+		container->clearKeys();
 		ui->rightPane->clear();
 		for(const auto &key: dlg.keys())
 		{
-			container->addKey(key);
+			container->addEncryptionKey(key.rcpt_cert);
 			ui->rightPane->addWidget(new AddressItem(key, AddressItem::Icon, ui->rightPane));
 		}
 		showMainAction({ EncryptContainer });
@@ -279,17 +279,19 @@ void ContainerPage::transition(CryptoDoc *container, const QSslCertificate &cert
 
 	clear();
 	emit action(ClearCryptoWarning);
-	isSupported = container->state() & UnencryptedContainer || container->canDecrypt(cert);
+	isSupported = container->state() & UnencryptedContainer ||
+				  container->canDecrypt(cert);
 	setHeader(container->fileName());
 	bool hasUnsupported = false;
-	for(const CKey &key: container->keys())
-	{
-		hasUnsupported = std::max(hasUnsupported, key.unsupported);
-		ui->rightPane->addWidget(new AddressItem(key, AddressItem::Icon, ui->rightPane));
+	for (auto &key : container->keys()) {
+		hasUnsupported = hasUnsupported || (key.rcpt_cert.isNull() && !key.lock.isValid());
+		AddressItem *addr = new AddressItem(key, AddressItem::Icon, ui->rightPane);
+		ui->rightPane->addWidget(addr);
+		connect(addr, &AddressItem::decrypt, this, [this, key] { emit decryptReq(&key.lock); });
 	}
-	if(hasUnsupported)
+	if (hasUnsupported)
 		emit warning({UnsupportedCDocWarning});
-	updatePanes(container->state());
+	updatePanes(container->state(), container);
 	ui->leftPane->setModel(container->documentModel());
 }
 
@@ -349,7 +351,7 @@ void ContainerPage::transition(DigiDoc* container)
 	showSigningButton();
 
 	ui->leftPane->setModel(container->documentModel());
-	updatePanes(container->state());
+	updatePanes(container->state(), nullptr);
 }
 
 void ContainerPage::updateDecryptionButton()
@@ -357,7 +359,7 @@ void ContainerPage::updateDecryptionButton()
 	showMainAction({ isSeal ? DecryptToken : DecryptContainer });
 }
 
-void ContainerPage::updatePanes(ContainerState state)
+void ContainerPage::updatePanes(ria::qdigidoc4::ContainerState state, CryptoDoc *crypto_container)
 {
 	ui->leftPane->stateChange(state);
 	ui->rightPane->stateChange(state);
@@ -367,7 +369,7 @@ void ContainerPage::updatePanes(ContainerState state)
 		for(QWidget *button: buttons) button->setVisible(visible);
 	};
 
-	switch( state )
+	switch(state)
 	{
 	case UnsignedContainer:
 		cancelText = QT_TR_NOOP("Cancel");
@@ -403,7 +405,11 @@ void ContainerPage::updatePanes(ContainerState state)
 		ui->changeLocation->show();
 		ui->leftPane->init(fileName, QT_TRANSLATE_NOOP("ItemList", "Encrypted files"));
 		ui->rightPane->init(ItemAddress, QT_TRANSLATE_NOOP("ItemList", "Recipients"));
-		showMainAction({ EncryptContainer });
+		if (crypto_container && crypto_container->supportsSymmetricKeys()) {
+			showMainAction({ EncryptContainer, EncryptLT });
+		} else {
+			showMainAction({ EncryptContainer });
+		}
 		setButtonsVisible({ ui->saveAs, ui->email }, false);
 		break;
 	case EncryptedContainer:
@@ -434,3 +440,4 @@ void ContainerPage::translateLabels()
 	ui->cancel->setText(tr(cancelText));
 	ui->convert->setText(tr(convertText));
 }
+
