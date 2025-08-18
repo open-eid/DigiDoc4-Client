@@ -628,9 +628,11 @@ bool Application::event(QEvent *event)
 	case QEvent::FileOpen:
 	{
 		QString fileName = static_cast<QFileOpenEvent*>(event)->file().normalized(QString::NormalizationForm_C);
-		QMetaObject::invokeMethod(this, [fileName = std::move(fileName)] {
-			parseArgs({ fileName });
-		});
+#if QT_VERSION < QT_VERSION_CHECK(6, 5, 0)
+		QMetaObject::invokeMethod(this, [&fileName] { parseArgs({fileName}); });
+#else
+		QMetaObject::invokeMethod(this, qOverload<QStringList>(&Application::parseArgs), QStringList(fileName));
+#endif
 		return true;
 	}
 #ifdef Q_OS_MAC
@@ -871,7 +873,7 @@ void Application::showClient(const QStringList &params, bool crypto, bool sign, 
 {
 	if(sign)
 		sign = params.size() != 1 || !CONTAINER_EXT.contains(QFileInfo(params.value(0)).suffix(), Qt::CaseInsensitive);
-	QWidget *w = nullptr;
+	MainWindow *w = nullptr;
 	if(!newWindow && params.isEmpty())
 	{
 		// If no files selected (e.g. restoring minimized window), select first
@@ -921,8 +923,12 @@ void Application::showClient(const QStringList &params, bool crypto, bool sign, 
 	w->show();
 	w->activateWindow();
 	w->raise();
-	if( !params.isEmpty() )
-		QMetaObject::invokeMethod(w, "open", Q_ARG(QStringList,params), Q_ARG(bool,crypto), Q_ARG(bool,sign));
+	if(!params.isEmpty())
+#if QT_VERSION < QT_VERSION_CHECK(6, 5, 0)
+		QMetaObject::invokeMethod(w, [&] { w->open(params, crypto, sign); });
+#else
+		QMetaObject::invokeMethod(w, &MainWindow::open, params, crypto, sign);
+#endif
 }
 
 void Application::showWarning( const QString &msg, const digidoc::Exception &e )

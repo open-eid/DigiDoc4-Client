@@ -614,20 +614,12 @@ void MainWindow::openFiles(const QStringList &files, bool addFile, bool forceCre
 		navigateToPage(page, content, create);
 }
 
-void MainWindow::open(const QStringList &params, bool crypto, bool sign)
+void MainWindow::open(const QStringList &files, bool crypto, bool sign)
 {
 	if (crypto && !sign)
 		selectPage(Pages::CryptoIntro);
 	else
 		selectPage(Pages::SignIntro);
-
-	QStringList files;
-	for(const auto &param: params)
-	{
-		if(QFileInfo(param).isFile())
-			files << param;
-	}
-
 	if(!files.isEmpty())
 		openFiles(files, false, sign);
 }
