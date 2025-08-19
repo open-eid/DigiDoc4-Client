@@ -26,7 +26,6 @@
 #include <QtCore/QTemporaryFile>
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QSslKey>
-#include <QtCore/QJsonDocument>
 #include <QLoggingCategory>
 #include <QXmlStreamReader>
 
@@ -43,10 +42,11 @@
 #include "CDocSupport.h"
 
 #if QT_VERSION < QT_VERSION_CHECK(6, 5, 0)
-#define SV2S(m) QUtf8StringView(m)
+QDebug operator<<(QDebug d, std::string_view str) {
+	return d << QUtf8StringView(str);
+}
 #define Q_FATAL(m) qFatal("%s", std::string(m).c_str())
 #else
-#define SV2S(m) (m)
 #define Q_FATAL(m) qCFatal(LOG_CDOC) << (m)
 #endif
 
@@ -283,27 +283,27 @@ void DDCDocLogger::LogMessage(libcdoc::ILogger::LogLevel level, std::string_view
 		Q_FATAL(message);
 		break;
 	case libcdoc::ILogger::LogLevel::LEVEL_ERROR:
-		qCCritical(LOG_CDOC) << SV2S(message);
+		qCCritical(LOG_CDOC) << message;
 		break;
 	case libcdoc::ILogger::LogLevel::LEVEL_WARNING:
-		qCWarning(LOG_CDOC) << SV2S(message);
+		qCWarning(LOG_CDOC) << message;
 		break;
 	case libcdoc::ILogger::LogLevel::LEVEL_INFO:
-		qCInfo(LOG_CDOC) << SV2S(message);
+		qCInfo(LOG_CDOC) << message;
 		break;
 	case libcdoc::ILogger::LogLevel::LEVEL_DEBUG:
-		qCDebug(LOG_CDOC) << SV2S(message);
+		qCDebug(LOG_CDOC) << message;
 		break;
 	default:
 		// Trace, if present goes to debug categrory
-		qCDebug(LOG_CDOC) << SV2S(message);
+		qCDebug(LOG_CDOC) << message;
 		break;
 	}
 }
 
 void DDCDocLogger::setUpLogger() {
 	static DDCDocLogger *logger = nullptr;
-	if (logger) {
+	if (!logger) {
 		logger = new DDCDocLogger();
 		logger->SetMinLogLevel(libcdoc::ILogger::LogLevel::LEVEL_TRACE);
 		libcdoc::ILogger::addLogger(logger);
