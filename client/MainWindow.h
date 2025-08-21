@@ -44,6 +44,7 @@ public:
 	explicit MainWindow(QWidget *parent = nullptr);
 	~MainWindow() final;
 
+	void open(const QStringList &files, bool crypto, bool sign);
 	void showSettings(int page);
 
 protected:
@@ -71,7 +72,6 @@ private:
 	void navigateToPage( ria::qdigidoc4::Pages page, const QStringList &files = QStringList(), bool create = true );
 	void onCryptoAction(int action, const QString &id, const QString &phone);
 	void onSignAction(int action, const QString &info1, const QString &info2);
-	void open(const QStringList &params, bool crypto, bool sign);
 	void openContainer(bool signature);
 	void openFiles(const QStringList &files, bool addFile = false, bool forceCreate = false);
 	void pageSelected(int page, bool checked = true);
