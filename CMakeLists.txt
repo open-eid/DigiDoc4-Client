@@ -12,6 +12,11 @@ macro(SET_ENV NAME DEF)
     endif()
 endmacro()
 
+add_custom_target(update_tsl_files
+    curl https://ec.europa.eu/tools/lotl/eu-lotl.xml > ${CMAKE_SOURCE_DIR}/client/eu-lotl.xml
+    COMMAND curl https://sr.riik.ee/tsl/estonian-tsl.xml > ${CMAKE_SOURCE_DIR}/client/EE.xml
+)
+
 set_env(BUILD_NUMBER 0)
 set_env( TSL_URL "https://ec.europa.eu/tools/lotl/eu-lotl.xml" CACHE STRING "TSL trust list primary URL" )
 set_env( TSL_INCLUDE "EE" CACHE STRING "TSL list include in binary" )
