@@ -19,7 +19,7 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
     INTERPROCEDURAL_OPTIMIZATION YES
     COMPILE_OPTIONS "/guard:cf"
     LINK_OPTIONS "/guard:cf"
-    LINK_LIBRARIES uxtheme.lib
+    LINK_LIBRARIES "uxtheme;RuntimeObject"
     SKIP_AUTOMOC ON
 )
 
