@@ -614,16 +614,6 @@ void MainWindow::openFiles(const QStringList &files, bool addFile, bool forceCre
 		navigateToPage(page, content, create);
 }
 
-void MainWindow::open(const QStringList &files, bool crypto, bool sign)
-{
-	if (crypto && !sign)
-		selectPage(Pages::CryptoIntro);
-	else
-		selectPage(Pages::SignIntro);
-	if(!files.isEmpty())
-		openFiles(files, false, sign);
-}
-
 void MainWindow::openContainer(bool signature)
 {
 	QString filter = QFileDialog::tr("All Files (*)") + QStringLiteral(";;") + tr("Documents (%1)");

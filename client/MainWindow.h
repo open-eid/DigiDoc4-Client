@@ -44,7 +44,8 @@ public:
 	explicit MainWindow(QWidget *parent = nullptr);
 	~MainWindow() final;
 
-	void open(const QStringList &files, bool crypto, bool sign);
+	void openFiles(const QStringList &files, bool addFile = false, bool forceCreate = false);
+	void selectPage(ria::qdigidoc4::Pages page);
 	void showSettings(int page);
 
 protected:
@@ -73,7 +74,6 @@ private:
 	void onCryptoAction(int action, const QString &id, const QString &phone);
 	void onSignAction(int action, const QString &info1, const QString &info2);
 	void openContainer(bool signature);
-	void openFiles(const QStringList &files, bool addFile = false, bool forceCreate = false);
 	void pageSelected(int page, bool checked = true);
 	void pinUnblock(QSmartCardData::PinType type, bool isForgotPin);
 	void pinPukChange( QSmartCardData::PinType type );
@@ -85,7 +85,6 @@ private:
 	void removeSignatureFile(int index);
 	bool save(bool saveAs = false);
 	QString selectFile( const QString &title, const QString &filename, bool fixedExt );
-	void selectPage(ria::qdigidoc4::Pages page);
 	template <typename F>
 	void sign(F &&sign);
 	void updateCardWarnings(const QSmartCardData &data);

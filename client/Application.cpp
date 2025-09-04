@@ -87,7 +87,7 @@ using namespace std::chrono;
 const QStringList Application::CONTAINER_EXT {
 	QStringLiteral("asice"), QStringLiteral("sce"),
 	QStringLiteral("asics"), QStringLiteral("scs"),
-	QStringLiteral("bdoc"), QStringLiteral("edoc"),
+	QStringLiteral("bdoc"), QStringLiteral("edoc"), QStringLiteral("adoc"),
 };
 
 class DigidocConf final: public digidoc::XmlConfCurrent
@@ -623,7 +623,7 @@ bool Application::event(QEvent *event)
 	{
 	case REOpenEvent::Type:
 		if( !activeWindow() )
-			parseArgs();
+			showClient();
 		return true;
 	case QEvent::FileOpen:
 	{
@@ -841,7 +841,7 @@ void Application::parseArgs(QStringList args)
 		suffix.endsWith(QLatin1String(".cdoc"), Qt::CaseInsensitive) ||
 		suffix.endsWith(QLatin1String(".cdoc2"), Qt::CaseInsensitive))
 		crypto = true;
-	showClient(args, crypto, sign, newWindow);
+	showClient(std::move(args), crypto, sign, newWindow);
 }
 
 uint Application::readTSLVersion(const QString &path)
@@ -869,19 +869,28 @@ int Application::run()
 	return exec();
 }
 
-void Application::showClient(const QStringList &params, bool crypto, bool sign, bool newWindow)
+void Application::showClient(QStringList files, bool crypto, bool sign, bool newWindow)
 {
-	if(sign)
-		sign = params.size() != 1 || !CONTAINER_EXT.contains(QFileInfo(params.value(0)).suffix(), Qt::CaseInsensitive);
-	MainWindow *w = nullptr;
-	if(!newWindow && params.isEmpty())
+	// Make sure all parameters are files
+	for(auto i = files.begin(); i != files.end(); )
 	{
-		// If no files selected (e.g. restoring minimized window), select first
-		w = qobject_cast<MainWindow*>(mainWindow());
+		if(QFileInfo(*i).isFile())
+			++i;
+		else
+			i = files.erase(i);
 	}
-	else if(!newWindow)
+
+	if(sign)
+		sign = files.size() != 1 || !CONTAINER_EXT.contains(QFileInfo(files.value(0)).suffix(), Qt::CaseInsensitive);
+
+	MainWindow *w = nullptr;
+	if(newWindow)
+		w = nullptr;
+	else if(files.isEmpty()) // If no files selected (e.g. restoring minimized window), select first
+		w = qobject_cast<MainWindow*>(mainWindow());
+	else
 	{
-		// else select first window with no open files
+		// select first window with no open files
 		for(auto *widget : topLevelWidgets())
 		{
 			if(auto *main = qobject_cast<MainWindow*>(widget);
@@ -923,12 +932,13 @@ void Application::showClient(const QStringList &params, bool crypto, bool sign, 
 	w->show();
 	w->activateWindow();
 	w->raise();
-	if(!params.isEmpty())
-#if QT_VERSION < QT_VERSION_CHECK(6, 5, 0)
-		QMetaObject::invokeMethod(w, [&] { w->open(params, crypto, sign); });
-#else
-		QMetaObject::invokeMethod(w, &MainWindow::open, params, crypto, sign);
-#endif
+	if(files.isEmpty())
+		return;
+	QMetaObject::invokeMethod(w, [&] {
+		using enum ria::qdigidoc4::Pages;
+		w->selectPage(crypto && !sign ? CryptoIntro : SignIntro);
+		w->openFiles(files, false, sign);
+	});
 }
 
 void Application::showWarning( const QString &msg, const digidoc::Exception &e )
