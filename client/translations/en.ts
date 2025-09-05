@@ -1883,6 +1883,10 @@ ID-Card</translation>
         <translation>If you have forgotten the PUK code for your ID-card, please visit &lt;a href=&quot;https://www.politsei.ee/en/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;the Police and Border Guard Board service center&lt;/span&gt;&lt;/a&gt; to obtain new PIN codes.</translation>
     </message>
     <message>
+        <source>If you have forgotten the PUK code of your ID-card then you can view it from the Police and Border Guard Board portal. &lt;a href=&quot;https://www.id.ee/en/article/my-pin-is-blocked-locked/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;Additional information&lt;/span&gt;&lt;/a&gt;</source>
+        <translation>If you have forgotten the PUK code of your ID-card then you can view it from the Police and Border Guard Board portal. &lt;a href=&quot;https://www.id.ee/en/article/my-pin-is-blocked-locked/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;Additional information&lt;/span&gt;&lt;/a&gt;</translation>
+    </message>
+    <message>
         <source>PUK code is written in the envelope, that is given with the ID-card.</source>
         <translation>PUK code is written in the envelope, that is given with the ID-card.</translation>
     </message>
@@ -2847,6 +2851,18 @@ Additional licenses and components</translation>
         <translation>Forgot PIN%1?</translation>
     </message>
     <message>
+        <source>PUK code is blocked because the PUK code has been entered 3 times incorrectly.&lt;br/&gt;You can not unblock the PUK code yourself.&lt;br/&gt;As long as the PUK code is blocked, all eID options can be used, except PUK-code.&lt;br/&gt;</source>
+        <translation>PUK code is blocked because the PUK code has been entered 3 times incorrectly.&lt;br/&gt;You can not unblock the PUK code yourself.&lt;br/&gt;As long as the PUK code is blocked, all eID options can be used, except PUK-code.&lt;br/&gt;</translation>
+    </message>
+    <message>
+        <source>Please visit the service center to obtain new codes.&lt;br/&gt;&lt;a href=&quot;https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult/reminders-for-id-card-holders/&quot;&gt;Additional information&lt;/a&gt;.</source>
+        <translation>Please visit the service center to obtain new codes.&lt;br/&gt;&lt;a href=&quot;https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult/reminders-for-id-card-holders/&quot;&gt;Additional information&lt;/a&gt;.</translation>
+    </message>
+    <message>
+        <source>A new document must be requested to receive the new PUK code.&lt;br/&gt;&lt;a href=&quot;https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult&quot;&gt;Additional information&lt;/a&gt;.</source>
+        <translation>A new document must be requested to receive the new PUK code.&lt;br/&gt;&lt;a href=&quot;https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult&quot;&gt;Additional information&lt;/a&gt;.</translation>
+    </message>
+    <message>
         <source>Signing certificate</source>
         <translation>Signing certificate</translation>
     </message>
@@ -2865,10 +2881,6 @@ Additional licenses and components</translation>
     <message>
         <source>Change PUK</source>
         <translation>Change PUK</translation>
-    </message>
-    <message>
-        <source>PUK code is blocked because the PUK code has been entered 3 times incorrectly. You can not unblock the PUK code yourself. As long as the PUK code is blocked, all eID options can be used, except PUK code. Please visit the service center to obtain new codes. &lt;a href=&quot;https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult/reminders-for-id-card-holders/&quot;&gt;Additional information&lt;/a&gt;.</source>
-        <translation>PUK code is blocked because the PUK code has been entered 3 times incorrectly. You can not unblock the PUK code yourself. &lt;br&gt;&lt;br&gt;As long as the PUK code is blocked, all eID options can be used, except PUK code. &lt;br&gt;&lt;br&gt;Please visit the service center to obtain new codes. &lt;a href=&quot;https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult/reminders-for-id-card-holders/&quot;&gt;Additional information&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>PIN can be changed only using eToken utility</source>
@@ -2927,8 +2939,8 @@ Additional licenses and components</translation>
         <translation>Certificate status check failed. Please check your internet connection.</translation>
     </message>
     <message>
-        <source>The PUK-code cannot be changed on the ID-card in the reader</source>
-        <translation>The PUK-code cannot be changed on the ID-card in the reader</translation>
+        <source>The PUK code cannot be changed on the ID-card in the reader. If you have forgotten the PUK code of your ID-card then you can view it from the Police and Border Guard Board portal. &lt;a href=&quot;https://www.id.ee/en/article/pin-and-puk-codes-security-recommendations/&quot;&gt;Additional information&lt;/a&gt;.</source>
+        <translation>The PUK code cannot be changed on the ID-card in the reader. If you have forgotten the PUK code of your ID-card then you can view it from the Police and Border Guard Board portal. &lt;a href=&quot;https://www.id.ee/en/article/pin-and-puk-codes-security-recommendations/&quot;&gt;Additional information&lt;/a&gt;.</translation>
     </message>
 </context>
 <context>

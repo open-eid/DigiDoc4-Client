@@ -21,7 +21,6 @@
 
 #include "QSmartCard.h"
 
-#include <QtCore/QRegularExpression>
 #include <QDate>
 #include <QDialog>
 
@@ -39,7 +38,7 @@ public:
 		PinChange,
 	};
 	PinUnblock(WorkMode mode, QWidget *parent, QSmartCardData::PinType type,
-		 short leftAttempts, QDate birthDate, const QString &personalCode);
+		 short leftAttempts, QDate birthDate, const QString &personalCode, bool isPUKReplacable);
 	~PinUnblock() final;
 
 	QString firstCodeText() const;
