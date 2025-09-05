@@ -25,7 +25,7 @@
 #include <QtGui/QRegularExpressionValidator>
 
 PinUnblock::PinUnblock(WorkMode mode, QWidget *parent, QSmartCardData::PinType type,
-	short leftAttempts, QDate birthDate, const QString &personalCode)
+	short leftAttempts, QDate birthDate, const QString &personalCode, bool isPUKReplacable)
 	: QDialog(parent)
 	, ui(new Ui::PinUnblock)
 {
@@ -58,9 +58,11 @@ PinUnblock::PinUnblock(WorkMode mode, QWidget *parent, QSmartCardData::PinType t
 		regexpValidateCode = pattern(QSmartCardData::PukType);
 		ui->line1_text->setText(tr("To unblock the certificate you have to enter the PUK code."));
 		ui->line2_text->setText(tr("You can find your PUK code inside the ID-card codes envelope."));
-		ui->line3_text->setText(tr("If you have forgotten the PUK code for your ID card, please visit "
-								   "<a href=\"https://www.politsei.ee/en/\"><span style=\"color: #006EB5; text-decoration: none;\">"
-								   "the Police and Border Guard Board service center</span></a> to obtain new PIN codes."));
+		ui->line3_text->setText(isPUKReplacable ? tr("If you have forgotten the PUK code for your ID card, please visit "
+			"<a href=\"https://www.politsei.ee/en/\"><span style=\"color: #006EB5; text-decoration: none;\">"
+			"the Police and Border Guard Board service center</span></a> to obtain new PIN codes.") :
+			tr("If you have forgotten the PUK code of your ID-card then you can view it from the Police and Border Guard Board portal. "
+			"<a href=\"https://www.id.ee/en/article/my-pin-is-blocked-locked/\"><span style=\"color: #006EB5; text-decoration: none;\">Additional information</span></a>"));
 		break;
 	case PinUnblock::ChangePinWithPuk:
 		ui->label->setText(tr("%1 code change").arg(QSmartCardData::typeString(type)));
@@ -132,7 +134,7 @@ PinUnblock::PinUnblock(WorkMode mode, QWidget *parent, QSmartCardData::PinType t
 	connect(ui->puk, &QLineEdit::textEdited, ui->errorPuk, [this, setError] {
 		setError(ui->puk, ui->errorPuk, {});
 	});
-	connect(ui->change, &QPushButton::clicked, this, [=,
+	connect(ui->change, &QPushButton::clicked, this, [=, this,
 			regexpNewCode = std::move(regexpNewCode),
 			regexpValidateCode = std::move(regexpValidateCode)] {
 		const static QString SEQUENCE_ASCENDING = QStringLiteral("1234567890123456789012");
