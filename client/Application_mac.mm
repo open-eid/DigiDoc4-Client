@@ -27,6 +27,17 @@
 
 using namespace Qt::StringLiterals;
 
+static auto fetchPaths(NSPasteboard *pboard)
+{
+	QStringList result;
+	NSArray<NSURL *> *urls = [pboard readObjectsForClasses:@[[NSURL class]]
+		options:@{ NSPasteboardURLReadingFileURLsOnlyKey : @YES }];
+	for (NSURL *url in urls) {
+		result.append(QString::fromNSString(url.path).normalized(QString::NormalizationForm_C));
+	}
+	return result;
+}
+
 @implementation NSApplication (ApplicationObjC)
 
 - (void)appReopen:(NSAppleEventDescriptor *)event withReplyEvent:(NSAppleEventDescriptor *)replyEvent
@@ -40,30 +51,21 @@ using namespace Qt::StringLiterals;
 {
 	Q_UNUSED(data)
 	Q_UNUSED(error)
-	QStringList result;
-	for( NSString *filename in [pboard propertyListForType:NSFilenamesPboardType] )
-		result.append(QString::fromNSString(filename).normalized(QString::NormalizationForm_C));
-	Application::showClient(result);
+	Application::showClient(fetchPaths(pboard));
 }
 
 - (void)signClient:(NSPasteboard *)pboard userData:(NSString *)data error:(NSString **)error
 {
 	Q_UNUSED(data)
 	Q_UNUSED(error)
-	QStringList result;
-	for(NSString *filename in [pboard propertyListForType:NSFilenamesPboardType])
-		result.append(QString::fromNSString(filename).normalized(QString::NormalizationForm_C));
-	Application::showClient(result, false, true);
+	Application::showClient(fetchPaths(pboard), false, true);
 }
 
 - (void)openCrypto:(NSPasteboard *)pboard userData:(NSString *)data error:(NSString **)error
 {
 	Q_UNUSED(data)
 	Q_UNUSED(error)
-	QStringList result;
-	for( NSString *filename in [pboard propertyListForType:NSFilenamesPboardType] )
-		result.append(QString::fromNSString(filename).normalized(QString::NormalizationForm_C));
-	Application::showClient(result, true);
+	Application::showClient(fetchPaths(pboard), true);
 }
 @end
 
