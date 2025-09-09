@@ -41,7 +41,7 @@ public:
 	explicit AddRecipients(ItemList* itemList, QWidget *parent = nullptr);
 	~AddRecipients() final;
 
-	QList<CKey> keys();
+	QList<CKey> keys() const;
 	bool isUpdated() const;
 
 private:

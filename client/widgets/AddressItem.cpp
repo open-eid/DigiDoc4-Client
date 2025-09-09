@@ -35,7 +35,7 @@ public:
 	bool yourself = false;
 };
 
-AddressItem::AddressItem(CKey k, Type type, QWidget *parent)
+AddressItem::AddressItem(CKey &&k, Type type, QWidget *parent)
 	: Item(parent)
 	, ui(new Private)
 {
