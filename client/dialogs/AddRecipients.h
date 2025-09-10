@@ -20,16 +20,16 @@
 #pragma once
 
 #include "CertificateHistory.h"
-#include "widgets/AddressItem.h"
-#include "widgets/ItemList.h"
 
 #include <QDialog>
-#include <QHash>
 
 namespace Ui {
 class AddRecipients;
 }
 
+class AddressItem;
+class Item;
+class ItemList;
 class LdapSearch;
 class QSslCertificate;
 
@@ -50,17 +50,17 @@ private:
 	void addRecipient(const QSslCertificate& cert, bool select = true);
 	void addRecipientToRightPane(Item *item, bool update = true);
 
-	AddressItem* itemListValue(ItemList *list, const CKey &cert);
 	void search(const QString &term, bool select = false, const QString &type = {});
 	void showError(const QString &msg, const QString &details = {});
 	void showResult(const QList<QSslCertificate> &result, int resultCount, const QVariantMap &userData);
 
-	static QString defaultUrl(QLatin1String key, const QString &defaultValue);
+	static AddressItem* itemListValue(ItemList *list, const CKey &cert);
 
 	Ui::AddRecipients *ui;
 	QList<CKey> rightList;
-	LdapSearch *ldap_person, *ldap_corp;
-	bool updated = false;
+	QList<LdapSearch*> ldap_person;
+	LdapSearch *ldap_corp;
+	int multiSearch = 0;
 
 	HistoryList historyCertData;
 };

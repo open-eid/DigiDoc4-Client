@@ -171,7 +171,6 @@ void ItemList::init(ItemType item, const char *header)
 {
 	itemType = item;
 	ui->listHeader->setText(tr(header));
-	ui->listHeader->setAccessibleName(tr(header));
 	listText = header;
 	ui->listHeader->setFont( Styles::font(Styles::Regular, 20));
 
