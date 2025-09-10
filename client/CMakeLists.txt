@@ -34,6 +34,7 @@ add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
 	${WIDGETS}
 	images/images.qrc
 	fonts/fonts.qrc
+	mac/Info.plist.cmake
 	common_enums.h
 	main.cpp
 	Application.cpp
@@ -111,7 +112,6 @@ target_link_libraries(${PROJECT_NAME}
 	digidocpp::digidocpp
 	${LDAP_LIBRARIES}
 	$<TARGET_NAME_IF_EXISTS:flatbuffers::flatbuffers>
-	$<TARGET_NAME_IF_EXISTS:flatbuffers::flatbuffers_shared>
 	ZLIB::ZLIB
 )
 
@@ -160,16 +160,9 @@ foreach(SCHEMA ${SCHEMAS})
 endforeach()
 
 if( APPLE )
-	file(GLOB_RECURSE RESOURCE_FILES
-		${CMAKE_CURRENT_SOURCE_DIR}/mac/Resources/*.icns
-		${CMAKE_CURRENT_SOURCE_DIR}/mac/Resources/*.strings)
-	foreach(_file ${RESOURCE_FILES})
-		get_filename_component(_file_dir ${_file} PATH)
-		file(RELATIVE_PATH _file_dir ${CMAKE_CURRENT_SOURCE_DIR}/mac ${_file_dir})
-		set_source_files_properties( ${_file} PROPERTIES MACOSX_PACKAGE_LOCATION ${_file_dir})
-	endforeach(_file)
-
+	file(GLOB RESOURCE_FILES mac/*.icns mac/*.lproj)
 	target_sources(${PROJECT_NAME} PRIVATE ${RESOURCE_FILES} Application_mac.mm MacMenuBar.cpp MacMenuBar.h dialogs/CertificateDetails_mac.mm)
+	set_source_files_properties(${RESOURCE_FILES} PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
 	set_source_files_properties( Application_mac.mm dialogs/CertificateDetails_mac.mm PROPERTIES COMPILE_FLAGS "-fobjc-arc" )
 	set_source_files_properties( LdapSearch.cpp PROPERTIES COMPILE_FLAGS "-Wno-deprecated-declarations" )
 	target_link_libraries(${PROJECT_NAME} "-framework QuickLookUI" "-fobjc-arc")
@@ -180,7 +173,7 @@ if( APPLE )
 		COMMAND cp -a $<TARGET_BUNDLE_DIR:DigiDocQL> $<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/PlugIns
 	)
 	add_custom_target(macdeployqt DEPENDS ${PROJECT_NAME}
-		COMMAND ${qtCore_install_prefix}/macdeployqt $<TARGET_BUNDLE_DIR:${PROJECT_NAME}>
+		COMMAND Qt::macdeployqt $<TARGET_BUNDLE_DIR:${PROJECT_NAME}>
 		COMMAND rm -rf $<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/PlugIns/bearer
 		COMMAND cp -a /Library/Frameworks/digidocpp.framework $<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/Frameworks
 		COMMAND rm $<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/Frameworks/digidocpp.framework/Resources/digidoc-tool
@@ -289,7 +282,7 @@ elseif(WIN32)
 		COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/digidocpp.conf appx
 		COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/Assets appx/Assets
 		COMMAND ${CMAKE_COMMAND} -E copy_directory ${LIBS_PATH}/schema appx/schema
-		COMMAND ${qtCore_install_prefix}/windeployqt --no-translations --no-compiler-runtime --no-patchqt --force-openssl
+		COMMAND Qt::windeployqt --no-translations --no-compiler-runtime --no-patchqt --force-openssl
 			--skip-plugin-types generic,networkinformation,iconengines --exclude-plugins qjpeg,qico,qgif,qcertonlybackend,qschannelbackend appx
 		COMMAND makeappx.exe pack -d appx -p ${MSI_FILE}.appx
 		# https://msdn.microsoft.com/en-us/library/windows/desktop/jj835832(v=vs.85).aspx

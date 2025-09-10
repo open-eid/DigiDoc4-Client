@@ -1,7 +1,8 @@
-set(RESOURCES ../../client/mac/Resources/asic.icns)
+set(RESOURCES ../../client/mac/asic.icns)
 add_executable(DigiDocQL MACOSX_BUNDLE
     ${RESOURCES}
     PreviewViewController.mm
+    Info.plist.cmake
 )
 set_target_properties(DigiDocQL PROPERTIES
     BUNDLE YES
