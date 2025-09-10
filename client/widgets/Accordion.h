@@ -19,7 +19,7 @@
 
 #pragma once
 
-#include "widgets/StyledWidget.h"
+#include <QWidget>
 
 class QSmartCardData;
 class SslCertificate;
@@ -30,7 +30,7 @@ class Accordion;
 
 class AccordionTitle;
 
-class Accordion final : public StyledWidget
+class Accordion final : public QWidget
 {
 	Q_OBJECT
 

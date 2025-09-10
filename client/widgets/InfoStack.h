@@ -19,17 +19,18 @@
 
 #pragma once
 
-#include "widgets/StyledWidget.h"
+#include <QWidget>
 
-#include "QSmartCard.h"
+#include <QDateTime>
 
 namespace Ui {
 class InfoStack;
 }
 
 class SslCertificate;
+class QSmartCardData;
 
-class InfoStack final: public StyledWidget
+class InfoStack final: public QWidget
 {
 	Q_OBJECT
 
@@ -47,11 +48,6 @@ private:
 
 	Ui::InfoStack *ui;
 
-	QSmartCardData data;
+	QDateTime expiry;
 	int certType = 0;
-	QString citizenshipText;
-	QString givenNamesText;
-	QString personalCodeText;
-	QString serialNumberText;
-	QString surnameText;
 };
