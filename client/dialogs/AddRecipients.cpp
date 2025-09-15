@@ -212,7 +212,7 @@ void AddRecipients::addRecipientToRightPane(Item *item, bool update)
 
 	rightList.append(key);
 
-	auto *rightItem = new AddressItem(key, AddressItem::Remove, ui->rightPane);
+	auto *rightItem = new AddressItem(CKey(key), AddressItem::Remove, ui->rightPane);
 	connect(rightItem, &AddressItem::remove, this, [this](Item *item) {
 		auto *rightItem = qobject_cast<AddressItem*>(item);
 		if(auto *leftItem = itemListValue(ui->leftPane, rightItem->getKey().cert))
@@ -242,7 +242,7 @@ AddressItem* AddRecipients::itemListValue(ItemList *list, const CKey &cert)
 	return nullptr;
 }
 
-QList<CKey> AddRecipients::keys()
+QList<CKey> AddRecipients::keys() const
 {
 	QList<CKey> recipients;
 	for(auto *item: ui->rightPane->items)

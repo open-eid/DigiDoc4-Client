@@ -35,7 +35,7 @@ public:
 		Icon,
 	};
 
-	explicit AddressItem(CKey k, Type type, QWidget *parent = {});
+	explicit AddressItem(CKey &&k, Type type, QWidget *parent = {});
 	~AddressItem() final;
 
 	const CKey& getKey() const;
