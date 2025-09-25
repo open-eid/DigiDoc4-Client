@@ -89,17 +89,14 @@
      </item>
      <item>
       <widget class="QLabel" name="name">
-       <property name="font">
-        <font>
-         <family>Roboto</family>
-         <pointsize>18</pointsize>
-        </font>
-       </property>
        <property name="focusPolicy">
         <enum>Qt::TabFocus</enum>
        </property>
        <property name="styleSheet">
-        <string notr="true">border: none; color: #041E42;</string>
+        <string notr="true">color: #003168;
+font-family: Roboto, Helvetica;
+font-size: 18px;
+font-weight: 700;</string>
        </property>
        <property name="text">
         <string notr="true">name</string>
@@ -138,17 +135,13 @@
        <height>35</height>
       </size>
      </property>
-     <property name="font">
-      <font>
-       <family>Roboto</family>
-       <pointsize>14</pointsize>
-      </font>
-     </property>
      <property name="focusPolicy">
       <enum>Qt::TabFocus</enum>
      </property>
      <property name="styleSheet">
-      <string notr="true">color: #353739; border: none;</string>
+      <string notr="true">color: #091A36;
+font-family: Roboto, Helvetica;
+font-size: 14px;</string>
      </property>
      <property name="text">
       <string notr="true">Certificate %1is valid%2 until %3</string>
@@ -176,21 +169,17 @@
    </item>
    <item>
     <widget class="QLabel" name="error">
-     <property name="font">
-      <font>
-       <family>Roboto</family>
-       <pointsize>12</pointsize>
-      </font>
-     </property>
      <property name="focusPolicy">
       <enum>Qt::TabFocus</enum>
      </property>
      <property name="styleSheet">
       <string notr="true">padding: 6px 6px 6px 6px;
-line-height: 14px;
 border: 1px solid #E9CB8F;
 border-radius: 2px;
-background-color: #F8DDA7;</string>
+background-color: #F8DDA7;
+color: #091A36;
+font-family: Roboto, Helvetica;
+font-size: 14px;</string>
      </property>
      <property name="text">
       <string notr="true">PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times.</string>
@@ -217,17 +206,13 @@ background-color: #F8DDA7;</string>
        <height>30</height>
       </size>
      </property>
-     <property name="font">
-      <font>
-       <family>Roboto</family>
-       <pointsize>14</pointsize>
-      </font>
-     </property>
      <property name="focusPolicy">
       <enum>Qt::TabFocus</enum>
      </property>
      <property name="styleSheet">
-      <string notr="true">color: #353739; border: none;</string>
+      <string notr="true">color: #091A36;
+font-family: Roboto, Helvetica;
+font-size: 14px;</string>
      </property>
      <property name="text">
       <string>PIN can be changed only using eToken utility</string>
@@ -238,27 +223,42 @@ background-color: #F8DDA7;</string>
      <property name="wordWrap">
       <bool>true</bool>
      </property>
+     <property name="openExternalLinks">
+      <bool>true</bool>
+     </property>
     </widget>
    </item>
    <item alignment="Qt::AlignHCenter|Qt::AlignVCenter">
     <widget class="QPushButton" name="changePIN">
-     <property name="minimumSize">
-      <size>
-       <width>157</width>
-       <height>30</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>157</width>
-       <height>30</height>
-      </size>
-     </property>
      <property name="cursor">
       <cursorShape>PointingHandCursor</cursorShape>
      </property>
+     <property name="styleSheet">
+      <string notr="true">#changePIN {
+color: #2F70B6;
+border: 1px solid #2F70B6;
+border-radius: 4px;
+padding: 11px 12px;
+font-family: Roboto, Helvetica;
+font-size: 14px;
+font-weight: 700;
+}
+#changePIN:default {
+color: #ffffff;
+border-color: #2F70B6;
+background-color: #2F70B6;
+}
+#changePIN:default:hover {
+border-color: #2B66A6;
+background-color: #2B66A6;
+}
+#changePIN:default:pressed {
+border-color: #215081;
+background-color: #215081;
+}</string>
+     </property>
      <property name="text">
-      <string notr="true">changePIN</string>
+      <string notr="true">Change PUK</string>
      </property>
     </widget>
    </item>
@@ -290,13 +290,18 @@ background-color: #F8DDA7;</string>
       </size>
      </property>
      <property name="styleSheet">
-      <string notr="true">#widget { border: none; }
-QPushButton {
-color: #727679;
-line-height: 19px;
-text-align: center;
+      <string notr="true">QToolButton {
+color: #2F70B6;
 border: none;
-background-color: transparent;
+font-family: Roboto, Helvetica;
+font-size: 14px;
+text-decoration: underline solid;
+}
+QToolButton:hover {
+background-color: #EAF1F8;
+}
+QToolButton:pressed {
+background-color: #BFD3E8;
 }</string>
      </property>
      <layout class="QVBoxLayout" name="widgetLayout">
@@ -316,107 +321,83 @@ background-color: transparent;
        <number>0</number>
       </property>
       <item alignment="Qt::AlignHCenter">
-       <widget class="QPushButton" name="forgotPinLink">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>19</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>19</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>Roboto</family>
-          <pointsize>12</pointsize>
-          <underline>true</underline>
-         </font>
-        </property>
+       <widget class="QToolButton" name="forgotPinLink">
         <property name="cursor">
          <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::RightToLeft</enum>
         </property>
         <property name="text">
          <string notr="true">Forgot PIN?</string>
         </property>
+        <property name="icon">
+         <iconset>
+          <normalon>:/images/icon_Abi.svg</normalon>
+         </iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>14</width>
+          <height>14</height>
+         </size>
+        </property>
+        <property name="toolButtonStyle">
+         <enum>Qt::ToolButtonTextBesideIcon</enum>
+        </property>
        </widget>
       </item>
       <item alignment="Qt::AlignHCenter">
-       <widget class="QPushButton" name="details">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>19</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>19</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>Roboto</family>
-          <pointsize>12</pointsize>
-          <underline>true</underline>
-         </font>
-        </property>
+       <widget class="QToolButton" name="details">
         <property name="cursor">
          <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::RightToLeft</enum>
         </property>
         <property name="text">
          <string>Check the details of the certificate</string>
         </property>
+        <property name="icon">
+         <iconset>
+          <normalon>:/images/icon_Abi.svg</normalon>
+         </iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>14</width>
+          <height>14</height>
+         </size>
+        </property>
+        <property name="toolButtonStyle">
+         <enum>Qt::ToolButtonTextBesideIcon</enum>
+        </property>
        </widget>
       </item>
       <item alignment="Qt::AlignHCenter">
-       <widget class="QPushButton" name="checkCert">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>19</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>19</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>Roboto</family>
-          <pointsize>12</pointsize>
-          <underline>true</underline>
-         </font>
-        </property>
+       <widget class="QToolButton" name="checkCert">
         <property name="cursor">
          <cursorShape>PointingHandCursor</cursorShape>
         </property>
+        <property name="layoutDirection">
+         <enum>Qt::RightToLeft</enum>
+        </property>
         <property name="text">
          <string>Check certificate status</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normalon>:/images/icon_Abi.svg</normalon>
+         </iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>14</width>
+          <height>14</height>
+         </size>
+        </property>
+        <property name="toolButtonStyle">
+         <enum>Qt::ToolButtonTextBesideIcon</enum>
         </property>
        </widget>
       </item>

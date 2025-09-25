@@ -193,6 +193,12 @@ font-weight: 400;
    </item>
    <item row="5" column="0">
     <widget class="QLabel" name="valueExpiryDate">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <property name="focusPolicy">
       <enum>Qt::TabFocus</enum>
      </property>

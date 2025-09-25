@@ -41,7 +41,7 @@ SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *par
 	d->error->hide();
 	connect(d->showErrors, &AccordionTitle::toggled, d->showRole, [this](bool open) {
 		d->showRole->setChecked(!open);
-		d->error->setVisible(open);
+		d->error->setVisible(open && !d->showErrors->isHidden());
 	});
 	connect(d->showRole, &AccordionTitle::toggled, d->showErrors, [this](bool open) {
 		d->showErrors->setChecked(!open);

@@ -312,6 +312,10 @@ Application::Application( int &argc, char **argv )
 	setWindowIcon(QIcon(QStringLiteral(":/images/Icon.svg")));
 	if(QFile::exists(QStringLiteral("%1/%2.log").arg(QDir::tempPath(), applicationName())))
 		qInstallMessageHandler(msgHandler);
+	QPalette p = palette();
+	p.setBrush(QPalette::Link, QBrush("#2F70B6"));
+	p.setBrush(QPalette::LinkVisited, QBrush("#2F70B6"));
+	setPalette(p);
 
 #if defined(Q_OS_WIN)
 	AllowSetForegroundWindow( ASFW_ANY );
