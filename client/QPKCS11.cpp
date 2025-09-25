@@ -207,6 +207,9 @@ QPKCS11::PinStatus QPKCS11::login(const TokenData &t)
 		d->f->C_OpenSession(currentSlot, CKF_SERIAL_SESSION, nullptr, nullptr, &d->session) != CKR_OK)
 		return UnknownError;
 
+	if(!(token.flags & CKF_USER_PIN_INITIALIZED))
+		return PinNotInit;
+
 	std::vector<CK_OBJECT_HANDLE> list = d->findObject(d->session, CKO_CERTIFICATE, d->id);
 	if(list.size() != 1 || QSslCertificate(d->attribute(d->session, list.front(), CKA_VALUE), QSsl::Der) != t.cert())
 		return UnknownError;

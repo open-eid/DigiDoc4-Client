@@ -2061,6 +2061,10 @@ ID-Card</translation>
         <translation>PIN Incorrect</translation>
     </message>
     <message>
+        <source>User PIN is not set</source>
+        <translation>User PIN is not set</translation>
+    </message>
+    <message>
         <source>PKCS11 general error</source>
         <translation>PKCS11 general error</translation>
     </message>
