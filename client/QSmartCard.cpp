@@ -500,7 +500,7 @@ QSmartCard::ErrorType QSmartCard::pinChange(QSmartCardData::PinType type, QWidge
 	if (!d->t.isPinpad())
 	{
 		p.reset(new PinUnblock(PinUnblock::PinChange, parent, type, d->t.retryCount(type), d->t.data(QSmartCardData::BirthDate).toDate(),
-			d->t.data(QSmartCardData::Id).toString()));
+			d->t.data(QSmartCardData::Id).toString(), d->t.isPUKReplacable()));
 		if (!p->exec())
 			return CancelError;
 		oldPin = p->firstCodeText().toUtf8();
@@ -524,7 +524,7 @@ QSmartCard::ErrorType QSmartCard::pinUnblock(QSmartCardData::PinType type, bool 
 	if (!d->t.isPinpad())
 	{
 		p.reset(new PinUnblock(isForgotPin ? PinUnblock::ChangePinWithPuk : PinUnblock::UnBlockPinWithPuk, parent, type,
-			d->t.retryCount(QSmartCardData::PukType), d->t.data(QSmartCardData::BirthDate).toDate(), d->t.data(QSmartCardData::Id).toString()));
+			d->t.retryCount(QSmartCardData::PukType), d->t.data(QSmartCardData::BirthDate).toDate(), d->t.data(QSmartCardData::Id).toString(), d->t.isPUKReplacable()));
 		if (!p->exec())
 			return CancelError;
 		puk = p->firstCodeText().toUtf8();

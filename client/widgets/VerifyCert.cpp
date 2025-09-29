@@ -21,7 +21,6 @@
 #include "ui_VerifyCert.h"
 
 #include "DateTime.h"
-#include "Styles.h"
 #include "dialogs/CertificateDetails.h"
 #include "dialogs/WarningDialog.h"
 
@@ -49,29 +48,29 @@ VerifyCert::VerifyCert(QWidget *parent)
 		switch(c.validateOnline())
 		{
 		case SslCertificate::Good:
-			msg.prepend(getGoodCertMessage(c));
+			if(SslCertificate::CertType::TempelType == c.type())
+				msg.prepend(tr("Certificate is valid. "));
+			else if(c.keyUsage().contains(SslCertificate::NonRepudiation))
+				msg.prepend(tr("Your ID-card signing certificate is valid. "));
+			else
+				msg.prepend(tr("Your ID-card authentication certificate is valid. "));
 			break;
 		case SslCertificate::Revoked:
-			msg.prepend(getRevokedCertMessage(c));
+			if(SslCertificate::CertType::TempelType == c.type())
+				msg.prepend(tr("Certificate is not valid. A valid certificate is required for electronic use. "));
+			else if(c.keyUsage().contains(SslCertificate::NonRepudiation))
+				msg.prepend(tr("Your ID-card signing certificate is not valid. You need valid certificates to use your ID-card electronically. "));
+			else
+				msg.prepend(tr("Your ID-card authentication certificate is not valid. You need valid certificates to use your ID-card electronically. "));
 			break;
 		default:
 			msg = tr("Certificate status check failed. Please check your internet connection.");
 		}
-		WarningDialog::show(msg);
+		WarningDialog::show(this, msg);
 	});
 
 	ui->nameIcon->load(QStringLiteral(":/images/icon_alert_red.svg"));
 	ui->nameIcon->hide();
-	ui->name->setFont( Styles::font( Styles::Regular, 18, QFont::Bold  ) );
-	ui->validUntil->setFont( Styles::font( Styles::Regular, 14 ) );
-	ui->error->setFont( Styles::font( Styles::Regular, 12, QFont::DemiBold ) );
-	QFont regular12 = Styles::font( Styles::Regular, 12 );
-	regular12.setUnderline(true);
-	ui->forgotPinLink->setFont( regular12 );
-	ui->details->setFont( regular12 );
-	ui->checkCert->setFont(regular12);
-	ui->changePIN->setFont( Styles::font( Styles::Condensed, 14 ) );
-	ui->infoText->setFont( Styles::font( Styles::Regular, 14 ) );
 	ui->infoText->hide();
 }
 
@@ -110,7 +109,8 @@ void VerifyCert::update()
 	bool isBlockedPuk = !cardData.isNull() && cardData.retryCount( QSmartCardData::PukType ) == 0;
 	bool isTempelType = c.type() & SslCertificate::TempelType;
 	isValidCert = c.isNull() || c.isValid();
-	ui->infoText->setVisible(isTempelType);
+	ui->error->clear();
+	setStyleSheet(QStringLiteral("background-color: #ffffff;")); // Fixes layout issue when PIN change is clicked
 
 	QString txt;
 	QTextStream cert( &txt );
@@ -142,15 +142,14 @@ void VerifyCert::update()
 		ui->validUntil->setText(txt);
 		ui->changePIN->setText(isBlockedPin ? tr("Unblock") : tr("Change PIN%1").arg(pinType));
 		ui->changePIN->setHidden((isBlockedPin && isBlockedPuk) || isTempelType);
+		ui->infoText->setVisible(isTempelType);
 		ui->forgotPinLink->setText(tr("Forgot PIN%1?").arg(pinType));
-		ui->forgotPinLink->setHidden(isBlockedPin || isBlockedPuk || isTempelType);
 		ui->checkCert->setVisible(isValidCert);
-		ui->error->setText(
-			!isValidCert ? tr("PIN%1 can not be used because the certificate has expired.").arg(pinType) :
-			(isBlockedPin && isBlockedPuk) ? tr("PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times.").arg(pinType) :
-			isBlockedPin ? QStringLiteral("%1 %2").arg(tr("PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times.").arg(pinType), tr("Unblock to reuse PIN%1.").arg(pinType)) :
-			QString()
-		);
+		if(!isValidCert)
+			ui->error->setText(tr("PIN%1 can not be used because the certificate has expired.").arg(pinType));
+		else if(isBlockedPin)
+			ui->error->setText(tr("PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times.").arg(pinType) +
+				(isBlockedPuk ? ' ' + tr("Unblock to reuse PIN%1.").arg(pinType) : QString()));
 		break;
 	case QSmartCardData::PukType:
 		ui->name->setText(tr("PUK code"));
@@ -158,30 +157,28 @@ void VerifyCert::update()
 		ui->validUntil->setHidden(isBlockedPuk);
 		ui->changePIN->setText(tr("Change PUK"));
 		ui->changePIN->setHidden(isBlockedPuk || !cardData.isPUKReplacable());
+		ui->infoText->setText(tr("The PUK code cannot be changed on the ID-card in the reader.<br />"
+			"If you have forgotten the PUK code of your ID-card then you can view it from the Police and Border Guard Board portal.<br />"
+			"<a href=\"https://www.id.ee/en/article/pin-and-puk-codes-security-recommendations/\">Additional information</a>."));
 		ui->infoText->setVisible(!cardData.isPUKReplacable());
-		ui->infoText->setText(tr("The PUK-code cannot be changed on the ID-card in the reader"));
-		ui->forgotPinLink->hide();
 		ui->details->hide();
 		ui->checkCert->hide();
-		ui->error->setText(
-			isBlockedPuk ? tr("PUK code is blocked because the PUK code has been entered 3 times incorrectly. "
-				"You can not unblock the PUK code yourself. As long as the PUK code is blocked, all eID options can be used, except PUK code. "
-				"Please visit the service center to obtain new codes. "
-				"<a href=\"https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult/reminders-for-id-card-holders/\">Additional information</a>.") :
-			QString()
-		);
+		if(isBlockedPuk)
+			ui->error->setText(tr("PUK code is blocked because the PUK code has been entered 3 times incorrectly.<br/>"
+				"You can not unblock the PUK code yourself.<br/>As long as the PUK code is blocked, all eID options can be used, except PUK-code.<br/>") +
+				(cardData.isPUKReplacable() ?
+				tr("Please visit the service center to obtain new codes.<br/>"
+					"<a href=\"https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult/reminders-for-id-card-holders/\">Additional information</a>.") :
+				tr("A new document must be requested to receive the new PUK code.<br/>"
+					"<a href=\"https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult\">Additional information</a>."))
+			);
+
 		ui->widget->setHidden(isBlockedPuk);
 		break;
 	}
 
 	if( !isValidCert && pinType != QSmartCardData::PukType )
 	{
-		setStyleSheet(QStringLiteral("opacity: 0.25; background-color: #F9EBEB;"));
-		ui->changePIN->setStyleSheet(QStringLiteral(
-			"QPushButton { border-radius: 2px; border: none; color: #ffffff; background-color: #006EB5;}"
-			"QPushButton:pressed { background-color: #41B6E6;}"
-			"QPushButton:hover:!pressed { background-color: #008DCF;}"
-			"QPushButton:disabled { background-color: #BEDBED;};"));
 		ui->error->setStyleSheet(QStringLiteral(
 			"padding: 6px 6px 6px 6px;"
 			"line-height: 14px;"
@@ -193,12 +190,6 @@ void VerifyCert::update()
 	}
 	else if( isBlockedPin )
 	{
-		setStyleSheet(QStringLiteral("opacity: 0.25; background-color: #fcf5ea;"));
-		ui->changePIN->setStyleSheet(QStringLiteral(
-			"QPushButton { border-radius: 2px; border: none; color: #ffffff; background-color: #006EB5;}"
-			"QPushButton:pressed { background-color: #41B6E6;}"
-			"QPushButton:hover:!pressed { background-color: #008DCF;}"
-			"QPushButton:disabled { background-color: #BEDBED;};"));
 		ui->error->setStyleSheet(QStringLiteral(
 			"padding: 6px 6px 6px 6px;"
 			"line-height: 14px;"
@@ -208,13 +199,11 @@ void VerifyCert::update()
 		ui->nameIcon->show();
 	}
 	else
-	{
-		setStyleSheet(QStringLiteral("background-color: #ffffff;"));
-		changePinStyle(QStringLiteral("#FFFFFF"));
 		ui->nameIcon->hide();
-	}
 	ui->error->setHidden(ui->error->text().isEmpty());
+	ui->changePIN->setDefault(isBlockedPin);
 	ui->changePIN->setAccessibleName(ui->changePIN->text().toLower());
+	ui->forgotPinLink->setHidden(isBlockedPin || isBlockedPuk || isTempelType || pinType == QSmartCardData::PukType);
 
 	if(pinType == QSmartCardData::Pin1Type)
 	{
@@ -224,67 +213,12 @@ void VerifyCert::update()
 	}
 }
 
-bool VerifyCert::event(QEvent *event)
+void VerifyCert::changeEvent(QEvent *event)
 {
-	switch(event->type())
+	if(event->type() == QEvent::LanguageChange)
 	{
-	case QEvent::Enter:
-		if( !isValidCert && pinType != QSmartCardData::PukType )
-			setStyleSheet(QStringLiteral("background-color: #f3d8d8;"));
-		else if( isBlockedPin )
-			setStyleSheet(QStringLiteral("background-color: #fbecd0;"));
-		else
-		{
-			setStyleSheet(QStringLiteral("background-color: #f7f7f7;"));
-			changePinStyle(QStringLiteral("#f7f7f7"));
-		}
-		break;
-	case QEvent::Leave:
-		if( !isValidCert && pinType != QSmartCardData::PukType )
-			setStyleSheet(QStringLiteral("background-color: #F9EBEB;"));
-		else if( isBlockedPin )
-			setStyleSheet(QStringLiteral("background-color: #fcf5ea;"));
-		else
-		{
-			setStyleSheet(QStringLiteral("background-color: white;"));
-			changePinStyle(QStringLiteral("white"));
-		}
-		break;
-	case QEvent::LanguageChange:
 		ui->retranslateUi(this);
 		update();
-		break;
-	default: break;
 	}
-	return StyledWidget::event(event);
+	StyledWidget::changeEvent(event);
 }
-
-void VerifyCert::changePinStyle( const QString &background )  
-{
-	ui->changePIN->setStyleSheet(QStringLiteral(
-		"QPushButton { border-radius: 2px; border: 1px solid #006EB5; color: #006EB5; background-color: %1;}"
-		"QPushButton:pressed { border: none; background-color: #006EB5; color: %1;}"
-		"QPushButton:hover:!pressed { border-radius: 2px; border: 1px solid #008DCF; color: #008DCF;}"
-		"QPushButton:disabled { border: 1px solid #BEDBED; color: #BEDBED;};").arg( background )
-	);
-}
-
-QString VerifyCert::getGoodCertMessage(const SslCertificate& cert) {
-	if (SslCertificate::CertType::TempelType == cert.type()) {
-		return tr("Certificate is valid. ");
-	}
-
-	return cert.keyUsage().contains(SslCertificate::NonRepudiation) ?
-		tr("Your ID-card signing certificate is valid. ") :
-		tr("Your ID-card authentication certificate is valid. ");
-}
-QString VerifyCert::getRevokedCertMessage(const SslCertificate& cert) {
-	if (SslCertificate::CertType::TempelType == cert.type()) {
-		return tr("Certificate is not valid. A valid certificate is required for electronic use. ");
-	}
-
-	return cert.keyUsage().contains(SslCertificate::NonRepudiation) ?
-		tr("Your ID-card signing certificate is not valid. You need valid certificates to use your ID-card electronically. ") :
-		tr("Your ID-card authentication certificate is not valid. You need valid certificates to use your ID-card electronically. ");
-}
-
