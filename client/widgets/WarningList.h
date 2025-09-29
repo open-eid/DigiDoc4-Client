@@ -35,6 +35,4 @@ public:
 	void showWarning(WarningText warningText);
 	void updateWarnings(int page);
 
-signals:
-	void warningClicked(const QString &link);
 };

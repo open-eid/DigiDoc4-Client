@@ -63,7 +63,6 @@ public:
 		DigiIDType = 1 << 0,
 		EstEidType = 1 << 1,
 		MobileIDType = 1 << 2,
-		OldEstEidType = 1 << 3,
 		TempelType = 1 << 4,
 		EResidentSubType = 1 << 6,
 		EResidentType = DigiIDType|EResidentSubType,
@@ -72,6 +71,8 @@ public:
 		Good = 0,
 		Revoked = 1,
 		Unknown = 2,
+		Invalid = 3,
+		Error = 4,
 	};
 
 	SslCertificate();

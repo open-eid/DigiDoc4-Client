@@ -12,7 +12,11 @@ WarningList::WarningList(QWidget *parent)
 
 void WarningList::clearMyEIDWarnings()
 {
-	static const QList<int> warningTypes {CertExpiredError, CertExpiryWarning, UnblockPin1Warning, UnblockPin2Warning};
+	static const QList<int> warningTypes {
+		CertExpiredError, CertExpiryWarning,
+		UnblockPin1Warning, UnblockPin2Warning,
+		ActivatePin2Warning,
+	};
 	for(auto *warning: findChildren<WarningItem*>())
 	{
 		if(warningTypes.contains(warning->warningType()))
@@ -45,9 +49,7 @@ void WarningList::showWarning(WarningText warningText)
 	for(auto *warning: findChildren<WarningItem*>())
 		if(warning->warningType() == warningText.type)
 			return;
-	auto *warning = new WarningItem(warningText, this);
-	connect(warning, &WarningItem::linkActivated, this, &WarningList::warningClicked);
-	layout()->addWidget(warning);
+	layout()->addWidget(new WarningItem(std::move(warningText), this));
 }
 
 

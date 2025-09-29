@@ -213,7 +213,7 @@
     <name>CDoc2</name>
     <message>
         <source>CDoc contains additional payload data that is not part of content</source>
-        <translation type="unfinished"></translation>
+        <translation>CDoc sisaldab lisanduvat andmehulka, mis ei ole osa sisust</translation>
     </message>
 </context>
 <context>
@@ -1416,10 +1416,6 @@ ID-kaardiga</translation>
         <translation>%1-kood muudetud!</translation>
     </message>
     <message>
-        <source>The ID-card in the card reader has expired and is no longer supported in the DigiDoc4 Client.&lt;br /&gt;You can apply for a new ID-card from the Estonian Police and Border Guard Board.&lt;br /&gt;&lt;a href=&quot;https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult&quot;&gt;Additional information&lt;/a&gt;.</source>
-        <translation>Lugejas olev ID-kaart on aegunud ning ei ole enam DigiDoc4 kliendis toetatud.&lt;br /&gt;Uue ID-kaardi saad taotleda Politsei- ja Piirivalveametist.&lt;br /&gt;&lt;a href=&quot;https://www.politsei.ee/et/juhend/id-kaardi-taotlemine-taeiskasvanule&quot;&gt;Loe täpsemalt siit&lt;/a&gt;.</translation>
-    </message>
-    <message>
         <source>Encrypting</source>
         <translation>Krüpteerin</translation>
     </message>
@@ -2401,11 +2397,11 @@ Täiendavad litsentsid ja komponendid</translation>
     </message>
     <message>
         <source>Select SiVa server certificate</source>
-        <translation type="unfinished"></translation>
+        <translation>Vali Valideerimisteenuse serveri sertifikaat</translation>
     </message>
     <message>
         <source>Select Time-Stamping server certificate</source>
-        <translation type="unfinished"></translation>
+        <translation>Vali ajatempliteenuse serveri sertifikaat</translation>
     </message>
     <message>
         <source>Time-Stamping service SSL certificate</source>
@@ -2831,10 +2827,6 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>Sertifikaat on aegunud!</translation>
     </message>
     <message>
-        <source>Certificate %1is valid%2 until %3</source>
-        <translation>Sertifikaat %1kehtib%2 kuni %3</translation>
-    </message>
-    <message>
         <source>Authentication certificate</source>
         <translation>Isikutuvastamise sertifikaat</translation>
     </message>
@@ -2847,16 +2839,24 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>Muuda PIN%1</translation>
     </message>
     <message>
-        <source>Forgot PIN%1?</source>
-        <translation>Unustasid PIN%1-koodi?</translation>
-    </message>
-    <message>
         <source>The PUK code cannot be changed on the ID-card in the reader.&lt;br /&gt;If you have forgotten the PUK code of your ID-card then you can view it from the Police and Border Guard Board portal.&lt;br /&gt;&lt;a href=&quot;https://www.id.ee/en/article/pin-and-puk-codes-security-recommendations/&quot;&gt;Additional information&lt;/a&gt;.</source>
         <translation>Lugejas oleval ID-kaardil ei ole võimalik PUK-koodi muuta.&lt;br /&gt;Kui oled unustanud enda ID-kaardi PUK-koodi, siis saad sa seda vaadata Politsei- ja Piirivalveameti iseteenindusest.&lt;br /&gt;&lt;a href=&quot;https://www.id.ee/artikkel/pin-ja-puk-koodid-soovitused-turvalisuse-tagamiseks/&quot;&gt;Lisainfo&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>PUK code is blocked because the PUK code has been entered 3 times incorrectly.&lt;br/&gt;You can not unblock the PUK code yourself.&lt;br/&gt;As long as the PUK code is blocked, all eID options can be used, except PUK-code.&lt;br/&gt;</source>
         <translation>PUK-kood on blokeeritud, kuna PUK-koodi on sisestatud 3 korda valesti.&lt;br/&gt;PUK-koodi ei saa ise lahti blokeerida.&lt;br/&gt;Kuigi PUK-kood on blokeeritud, saab kõiki eID võimalusi kasutada, välja arvatud PUK-koodi vajavaid.&lt;br/&gt;</translation>
+    </message>
+    <message>
+        <source>Certificate status is unknown. A valid certificate is required for electronic use. </source>
+        <translation>Sertifikaadi staatus on teadmata. Elektrooniliseks kasutamiseks on vaja kehtivat sertifikaati. </translation>
+    </message>
+    <message>
+        <source>Your ID-card signing certificate status is unknown. You need valid certificates to use your ID-card electronically. </source>
+        <translation>Sinu ID-kaardi allkirjastamise sertifikaadi staatus on teadmata. Elektrooniliseks kasutamiseks on vaja kehtivat sertifikaati. </translation>
+    </message>
+    <message>
+        <source>Your ID-card authentication certificate status is unknown. You need valid certificates to use your ID-card electronically. </source>
+        <translation>Sinu ID-kaardi isikutuvastamise sertifikaadi staatus on teadmata. Elektrooniliseks kasutamiseks on vaja kehtivat sertifikaati. </translation>
     </message>
     <message>
         <source>Please visit the service center to obtain new codes.&lt;br/&gt;&lt;a href=&quot;https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult/reminders-for-id-card-holders/&quot;&gt;Additional information&lt;/a&gt;.</source>
@@ -2869,6 +2869,22 @@ Täiendavad litsentsid ja komponendid</translation>
     <message>
         <source>Signing certificate</source>
         <translation>Allkirjastamise sertifikaat</translation>
+    </message>
+    <message>
+        <source>Certificate is valid until %1</source>
+        <translation>Sertifikaat kehtib kuni %1</translation>
+    </message>
+    <message>
+        <source>Change with PUK code</source>
+        <translation>Muuda PUK-koodiga</translation>
+    </message>
+    <message>
+        <source>PIN%1 code must be changed in order to authenticate</source>
+        <translation>Autentimiseks tuleb PIN%1-koodi muuta</translation>
+    </message>
+    <message>
+        <source>PIN%1 code must be changed in order to sign</source>
+        <translation>Allkirjastamiseks tuleb PIN%1-koodi muuta</translation>
     </message>
     <message>
         <source>Check the details of the certificate</source>
@@ -2968,6 +2984,10 @@ Täiendavad litsentsid ja komponendid</translation>
 </context>
 <context>
     <name>WarningItem</name>
+    <message>
+        <source>Signing with an ID-card isn&apos;t possible yet. PIN%1 code must be changed in order to sign.</source>
+        <translation>ID-kaardiga allkirjastamine ei ole veel võimalik. Allkirjastamiseks tuleb PIN%1-koodi muuta.</translation>
+    </message>
     <message numerus="yes">
         <source>%n signatures are not valid!</source>
         <translation>
@@ -3027,6 +3047,14 @@ Täiendavad litsentsid ja komponendid</translation>
     <message>
         <source>Certificates have expired!</source>
         <translation>Sertifikaadid on aegunud!</translation>
+    </message>
+    <message>
+        <source>Additional information</source>
+        <translation>Lisainfo</translation>
+    </message>
+    <message>
+        <source>https://www.id.ee/en/article/changing-id-card-pin-codes-and-puk-code/</source>
+        <translation>https://www.id.ee/artikkel/id-kaardi-pin-ja-puk-koodide-muutmine/</translation>
     </message>
     <message>
         <source>This ASiC-S container contains XAdES signature. You are not allowed to add or remove signatures to this container.</source>

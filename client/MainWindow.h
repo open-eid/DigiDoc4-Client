@@ -59,9 +59,7 @@ protected:
 
 private:
 	void adjustDrops();
-	void changePin1Clicked( bool isForgotPin, bool isBlockedPin );
-	void changePin2Clicked( bool isForgotPin, bool isBlockedPin );
-	void changePukClicked();
+	void changePinClicked(QSmartCardData::PinType type, QSmartCard::PinAction action);
 	void convertToBDoc();
 	void convertToCDoc();
 	ria::qdigidoc4::ContainerState currentState();
@@ -75,8 +73,6 @@ private:
 	void onSignAction(int action, const QString &info1, const QString &info2);
 	void openContainer(bool signature);
 	void pageSelected(int page, bool checked = true);
-	void pinUnblock(QSmartCardData::PinType type, bool isForgotPin);
-	void pinPukChange( QSmartCardData::PinType type );
 	void resetCryptoDoc(std::unique_ptr<CryptoDoc> &&doc = {});
 	void resetDigiDoc(DigiDoc *doc = nullptr, bool warnOnChange = true);
 	void removeCryptoFile(int index);
@@ -87,15 +83,12 @@ private:
 	QString selectFile( const QString &title, const QString &filename, bool fixedExt );
 	template <typename F>
 	void sign(F &&sign);
-	void updateCardWarnings(const QSmartCardData &data);
-	bool validateCardError(QSmartCardData::PinType type, QSmartCardData::PinType src, QSmartCard::ErrorType err);
 	bool validateFiles(const QString &container, const QStringList &files);
-	void showPinBlockedWarning(const QSmartCardData& t);
+	void showPinBlockedWarning(const QSmartCardData &data);
 	void updateSelector();
 	void updateSelectorData(TokenData data);
 	void updateMyEID(const TokenData &t);
 	void updateMyEid(const QSmartCardData &data);
-	void warningClicked(const QString &link);
 	bool wrap(const QString& wrappedFile, bool enclose);
 	bool wrapContainer(bool signing);
 	void containerSummary();

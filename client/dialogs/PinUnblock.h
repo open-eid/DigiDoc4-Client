@@ -31,14 +31,8 @@ class PinUnblock final : public QDialog
 	Q_OBJECT
 
 public:
-	enum WorkMode
-	{
-		UnBlockPinWithPuk,
-		ChangePinWithPuk,
-		PinChange,
-	};
-	PinUnblock(WorkMode mode, QWidget *parent, QSmartCardData::PinType type,
-		 short leftAttempts, QDate birthDate, const QString &personalCode, bool isPUKReplacable);
+	PinUnblock(QSmartCardData::PinType type, QSmartCard::PinAction action,
+		 short leftAttempts, QDate birthDate, const QString &personalCode, bool isPUKReplacable, QWidget *parent);
 	~PinUnblock() final;
 
 	QString firstCodeText() const;

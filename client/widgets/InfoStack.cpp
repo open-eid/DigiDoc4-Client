@@ -64,18 +64,18 @@ void InfoStack::changeEvent(QEvent* event)
 void InfoStack::update()
 {
 	ui->valueExpiryDate->setText(expiry.toString(QStringLiteral("dd.MM.yyyy")));
-	style()->unpolish(ui->valueExpiryDate);
 	if(certType & SslCertificate::DigiIDType)
 	{
-		ui->valueExpiryDate->setProperty("label", QVariant());
+		ui->valueExpiryDate->setLabel({});
 		ui->valueExpiryDate->setText(tr("You're using digital identity card"));
 	} else if(expiry < QDateTime::currentDateTime())
-		ui->valueExpiryDate->setProperty("label", QStringLiteral("error"));
+		ui->valueExpiryDate->setLabel(QStringLiteral("error"));
 	else
-		ui->valueExpiryDate->setProperty("label", QStringLiteral("good"));
-	style()->polish(ui->valueExpiryDate);
+		ui->valueExpiryDate->setLabel(QStringLiteral("good"));
 
 	ui->labelDocument->setHidden(certType & SslCertificate::TempelType);
+	ui->valueCitizenship->setHidden(ui->valueCitizenship->text().isEmpty());
+	ui->labelCitizenship->setHidden(ui->valueCitizenship->text().isEmpty());
 	if(certType & SslCertificate::TempelType)
 	{
 		ui->labelGivenNames->setText(tr("Name"));
@@ -106,6 +106,8 @@ void InfoStack::update(const SslCertificate &cert)
 
 void InfoStack::update(const QSmartCardData &t)
 {
+	if(t.isNull())
+		return clearData();
 	certType = t.authCert().type();
 	expiry = t.data(QSmartCardData::Expiry).toDateTime();
 	ui->valueGivenNames->setText(t.data(QSmartCardData::FirstName).toString());

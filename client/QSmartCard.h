@@ -69,6 +69,7 @@ public:
 	SslCertificate authCert() const;
 	SslCertificate signCert() const;
 	quint8 retryCount( PinType type ) const;
+	bool pinLocked(PinType type) const;
 
 	static quint8 minPinLen(QSmartCardData::PinType type);
 	static QString typeString( PinType type );
@@ -97,6 +98,15 @@ public:
 		OldNewPinSameError
 	};
 
+	enum PinAction : quint8
+	{
+		ActivateWithPuk,
+		ActivateWithPin,
+		ChangeWithPin,
+		ChangeWithPuk,
+		UnblockWithPuk,
+	};
+
 	explicit QSmartCard(QObject *parent = nullptr);
 	~QSmartCard() final;
 
@@ -107,8 +117,8 @@ public:
 	void reloadCounters();
 	ErrorType unblock( QSmartCardData::PinType type, QWidget* parent, const QString &pin, const QString &puk, const QString &title, const QString &bodyText );
 
-	ErrorType pinUnblock( QSmartCardData::PinType type, bool isForgotPin = false, QWidget* parent = nullptr );
-	ErrorType pinChange( QSmartCardData::PinType type, QWidget* parent = nullptr );
+	ErrorType pinUnblock(QSmartCardData::PinType type, PinAction action = UnblockWithPuk, QWidget* parent = nullptr);
+	ErrorType pinChange(QSmartCardData::PinType type, PinAction action = ChangeWithPin, QWidget* parent = nullptr);
 
 signals:
 	void dataChanged(const QSmartCardData &data);

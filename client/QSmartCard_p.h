@@ -98,6 +98,7 @@ public:
 	QHash<QSmartCardData::PersonalDataType,QVariant> data;
 	SslCertificate authCert, signCert;
 	QHash<QSmartCardData::PinType,quint8> retry;
+	QHash<QSmartCardData::PinType,bool> locked;
 	bool pinpad = false;
 	bool pukReplacable = true;
 };

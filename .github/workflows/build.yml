@@ -15,7 +15,7 @@ jobs:
       LIBS_PATH: ${{ github.workspace }}/cache
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         submodules: recursive
     - name: Download artifact
@@ -69,7 +69,7 @@ jobs:
     container: ubuntu:${{ matrix.container }}
     strategy:
       matrix:
-        container: ['22.04', '24.04', '25.04']
+        container: ['22.04', '24.04', '25.04', '25.10']
         arch: ['amd64', 'arm64']
     env:
       DEBIAN_FRONTEND: noninteractive
@@ -87,7 +87,7 @@ jobs:
     - name: Install dependencies
       run: apt update -qq && apt install --no-install-recommends -y git lsb-release build-essential devscripts debhelper pkg-config lintian ${UBUNTU_DEPS}
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         submodules: recursive
     - name: Setup changelog
@@ -112,7 +112,7 @@ jobs:
     container: fedora:${{ matrix.container }}
     strategy:
       matrix:
-        container: [41, 42]
+        container: [41, 42, 43]
     steps:
     - name: Download artifact
       uses: dawidd6/action-download-artifact@v11
@@ -125,7 +125,7 @@ jobs:
     - name: Install Deps
       run: dnf install -y ./libdigidocpp-pkg/*.rpm git gcc-c++ cmake rpm-build gettext openssl-devel openldap-devel pcsc-lite-devel qt6-qtsvg-devel qt6-qttools-devel flatbuffers-devel flatbuffers-compiler zlib-devel
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         submodules: recursive
     - name: Build
@@ -147,7 +147,7 @@ jobs:
       VER_SUFFIX: .VS${{ matrix.vcver }}
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         submodules: recursive
     - name: Download artifact
@@ -211,7 +211,7 @@ jobs:
       PROJECTNAME: open-eid/DigiDoc4-Client
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         submodules: recursive
     - name: Download artifact
@@ -253,7 +253,7 @@ jobs:
       security-events: write
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         submodules: recursive
     - name: Download artifact
