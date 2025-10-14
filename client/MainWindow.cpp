@@ -681,11 +681,6 @@ void MainWindow::showSettings(int page)
 		return;
 	}
 	SettingsDialog dlg(page, this);
-
-	connect(&dlg, &SettingsDialog::langChanged, this, [this](const QString& lang ) {
-		qApp->loadTranslation( lang );
-		ui->retranslateUi(this);
-	});
 	connect(&dlg, &SettingsDialog::togglePrinting, ui->signContainerPage, &ContainerPage::togglePrinting);
 	dlg.exec();
 }

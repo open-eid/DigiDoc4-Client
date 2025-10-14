@@ -683,14 +683,6 @@
         <source>TSL cache</source>
         <translation>TSL cache</translation>
     </message>
-    <message>
-        <source>true</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>false</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>DigiDoc</name>

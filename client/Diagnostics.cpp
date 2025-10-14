@@ -28,6 +28,15 @@
 #include <QtCore/QTextStream>
 #include <QtNetwork/QSslCertificate>
 
+#include <digidocpp/Conf.h>
+
+using namespace digidoc;
+
+static QTextStream &operator<<(QTextStream &s, bool result)
+{
+	return s << (result ? "true" : "false");
+}
+
 void Diagnostics::generalInfo(QTextStream &s)
 {
 	s << "<b>" << tr("Arguments:") << "</b> " << Application::arguments().join(' ') << "<br />"
@@ -45,18 +54,21 @@ void Diagnostics::generalInfo(QTextStream &s)
 		<< "<br />TSA_URL: " << Application::confValue(Application::TSAUrl).toString()
 		<< "<br />SIVA_URL: " << Application::confValue(Application::SiVaUrl).toString()
 		<< "<br /><b>CDOC2:</b>"
-		<< "<br />" << Settings::CDOC2_DEFAULT.KEY << ": " << (Settings::CDOC2_DEFAULT ? tr("true") : tr("false"))
-		<< "<br />" << Settings::CDOC2_USE_KEYSERVER.KEY << ": " << (Settings::CDOC2_USE_KEYSERVER ? tr("true") : tr("false"))
+		<< "<br />" << Settings::CDOC2_DEFAULT.KEY << ": " << Settings::CDOC2_DEFAULT
+		<< "<br />" << Settings::CDOC2_USE_KEYSERVER.KEY << ": " << Settings::CDOC2_USE_KEYSERVER
 		<< "<br />" << Settings::CDOC2_DEFAULT_KEYSERVER.KEY << ": " << Settings::CDOC2_DEFAULT_KEYSERVER
+		<< "<br /><b>Settings:</b>"
+		<< "<br />Proxy config: " << Settings::PROXY_CONFIG
+		<< "<br />Proxy auth: " << !CONF(proxyUser).empty()
 		<< "<br /><br /><b>" << tr("TSL signing certs") << ":</b>";
 	for(const QSslCertificate &cert: Application::confValue(Application::TSLCerts).value<QList<QSslCertificate>>())
-		s << "<br />" << cert.subjectInfo("CN").value(0);
-	s << "<br /><br /><b>" << tr("TSL cache") << ":</b>";
+		s << "<br />" << cert.subjectInfo("CN").value(0) << " (Exp: " << cert.expiryDate().toString(QStringLiteral("dd.MM.yyyy hh:mm:ss)"));
 	QString cache = Application::confValue(Application::TSLCache).toString();
+	s << "<br /><br /><b>" << tr("TSL cache") << "</b> (" << cache << "):";
 	const QStringList tsllist = QDir(cache).entryList({QStringLiteral("*.xml")});
 	for(const QString &file: tsllist)
 	{
-		if(uint ver = Application::readTSLVersion(cache + "/" + file); ver > 0)
+		if(uint ver = Application::readTSLVersion(cache + '/' + file); ver > 0)
 			s << "<br />" << file << " (" << ver << ")";
 	}
 	s << "<br /><br />";
@@ -77,10 +89,10 @@ void Diagnostics::generalInfo(QTextStream &s)
 	s << "<b>" << tr("Smart Card service status: ") << "</b>" << " "
 		<< (QPCSC::instance().serviceRunning() ? tr("Running") : tr("Not running"));
 
-	s << "<br /><b>" << tr("Smart Card readers") << ":</b><br />";
+	s << "<br /><b>" << tr("Smart Card readers") << ":</b>";
 	for( const QString &readername: QPCSC::instance().readers() )
 	{
-		s << readername;
+		s << "<br />" << readername;
 		QPCSCReader reader( readername, &QPCSC::instance() );
 		if( !reader.isPresent() )
 		{
@@ -109,17 +121,10 @@ void Diagnostics::generalInfo(QTextStream &s)
 		if( !reader.isPresent() )
 			continue;
 
-		reader.reconnect( QPCSCReader::UnpowerCard );
-		QString cold = reader.atr();
-		reader.reconnect( QPCSCReader::ResetCard );
-		QString warm = reader.atr();
-
-		s << "ATR cold - " << cold << "<br />"
-		  << "ATR warm - " << warm << "<br />";
-
+		s << "ATR - " << reader.atr() << "<br />";
 		reader.beginTransaction();
 		constexpr auto APDU = &QByteArray::fromHex;
-		auto printAID = [&](const QLatin1String &label, const QByteArray &apdu)
+		auto printAID = [&](QLatin1String label, const QByteArray &apdu)
 		{
 			QPCSCReader::Result r = reader.transfer(apdu);
 			s << label << ": " << Qt::hex << r.SW;
@@ -135,7 +140,6 @@ void Diagnostics::generalInfo(QTextStream &s)
 		if(printAID(QLatin1String("AID_THALES"), APDU("00A4040C 0C A000000063504B43532D3135")) &&
 			reader.transfer(APDU("00A4080C 04 DFDD 5006")))
 			s << "ID - " << reader.transfer(APDU("00B00000 00")).data << "<br />";
-		reader.endTransaction();
 	}
 
 #ifdef Q_OS_WIN
