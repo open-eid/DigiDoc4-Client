@@ -249,7 +249,10 @@ SettingsDialog::SettingsDialog(int page, QWidget *parent)
 		setCDoc2Values(key);
 	});
 	setCDoc2Values(cdoc2Service);
-	connect(ui->txtCdoc2UUID, &QLineEdit::textEdited, this, Settings::CDOC2_UUID);
+	connect(ui->txtCdoc2UUID, &QLineEdit::textEdited, this, [](const QString &uuid) {
+		Settings::CDOC2_UUID = uuid;
+		Settings::CDOC2_DEFAULT_KEYSERVER = uuid;
+	});
 	connect(ui->txtCdoc2Fetch, &QLineEdit::textEdited, this, [this](const QString &url) {
 		Settings::CDOC2_GET = url;
 		if(url.isEmpty())
@@ -424,7 +427,6 @@ SettingsDialog::SettingsDialog(int page, QWidget *parent)
 	ui->pageGroup->setId(ui->btnMenuInfo, LicenseSettings);
 	connect(ui->pageGroup, &QButtonGroup::idClicked, this, &SettingsDialog::showPage);
 
-	updateVersion();
 	updateDiagnostics();
 	showPage(page);
 }
@@ -467,11 +469,8 @@ void SettingsDialog::checkConnection()
 
 void SettingsDialog::retranslate(const QString& lang)
 {
-	emit langChanged(lang);
-
 	qApp->loadTranslation( lang );
 	ui->retranslateUi(this);
-	updateVersion();
 	updateDiagnostics();
 	ui->cmbCdoc2Name->setItemText(ui->cmbCdoc2Name->count() - 1,
 		tr("Use a manually specified key transfer server for encryption"));
@@ -523,12 +522,6 @@ void SettingsDialog::selectLanguage()
 		button->setChecked(button->property("lang").toString() == Settings::LANGUAGE);
 }
 
-void SettingsDialog::updateVersion()
-{
-	ui->txtNavVersion->setText(tr("DigiDoc4 version %1, released %2")
-		.arg(QApplication::applicationVersion(), QStringLiteral(BUILD_DATE)));
-}
-
 void SettingsDialog::saveProxy()
 {
 	Settings::PROXY_CONFIG = ui->proxyGroup->checkedId();
@@ -568,6 +561,8 @@ void SettingsDialog::loadProxy( const digidoc::Conf *conf )
 
 void SettingsDialog::updateDiagnostics()
 {
+	ui->txtNavVersion->setText(tr("DigiDoc4 version %1, released %2")
+		.arg(QApplication::applicationVersion(), QStringLiteral(BUILD_DATE)));
 	ui->txtDiagnostics->setEnabled(false);
 	ui->txtDiagnostics->clear();
 	ui->btnNavSaveReport->setDisabled(true);
