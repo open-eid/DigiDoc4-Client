@@ -112,7 +112,7 @@ jobs:
     container: fedora:${{ matrix.container }}
     strategy:
       matrix:
-        container: [41, 42, 43]
+        container: [42, 43]
     steps:
     - name: Download artifact
       uses: dawidd6/action-download-artifact@v11
