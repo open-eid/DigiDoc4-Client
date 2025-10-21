@@ -21,7 +21,8 @@
 
 #include <QWidget>
 
-class QSmartCardData;
+#include "QSmartCard.h"
+
 class SslCertificate;
 
 namespace Ui {
@@ -43,9 +44,7 @@ public:
 	void updateInfo(const QSmartCardData &data);
 
 Q_SIGNALS:
-	void changePin1Clicked(bool isForgotPin, bool isBlockedPin);
-	void changePin2Clicked(bool isForgotPin, bool isBlockedPin);
-	void changePukClicked();
+	void changePinClicked(QSmartCardData::PinType, QSmartCard::PinAction);
 
 private:
 	void changeEvent(QEvent* event) override;

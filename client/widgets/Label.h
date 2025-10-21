@@ -19,36 +19,18 @@
 
 #pragma once
 
-#include "StyledWidget.h"
+#include <QLabel>
 
-namespace Ui { class WarningItem; }
-
-struct WarningText {
-	ria::qdigidoc4::WarningType type = ria::qdigidoc4::NoWarning;
-	int counter = 0;
-	std::function<void()> cb;
-};
-
-
-class WarningItem final: public StyledWidget
-{
+class Label : public QLabel {
 	Q_OBJECT
+ public:
+	Q_PROPERTY(QString label READ label WRITE setLabel FINAL)
 
-public:
-	WarningItem(WarningText warningText, QWidget *parent = nullptr);
-	~WarningItem() final;
-	
-	int page() const;
-	ria::qdigidoc4::WarningType warningType() const;
+	explicit Label(QWidget *parent = {});
+
+	QString label() const;
+	void setLabel(QString _label);
 
 private:
-	Q_DISABLE_COPY(WarningItem)
-	void changeEvent(QEvent *event) final;
-	void mousePressEvent(QMouseEvent *event) final;
-	void lookupWarning();
-
-	Ui::WarningItem *ui;
-	WarningText warnText;
-	QString url;
-	int _page = -1;
+	QString _label;
 };

@@ -39,16 +39,13 @@ public:
 	void update(QSmartCardData::PinType type, const SslCertificate &cert);
 
 signals:
-	void changePinClicked( bool isForgotPin, bool isBlockedPin );
+	void changePinClicked(QSmartCard::PinAction);
 
 private:
 	void changeEvent(QEvent *event) final;
 	void update();
 
 	Ui::VerifyCert *ui;
-
-	bool isValidCert = false;
-	bool isBlockedPin = false;
 
 	QSmartCardData::PinType pinType = QSmartCardData::Pin1Type;
 	QSmartCardData cardData;

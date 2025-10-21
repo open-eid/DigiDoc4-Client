@@ -26,9 +26,15 @@ Accordion::Accordion(QWidget *parent)
 {
 	ui->setupUi( this );
 	connect(ui->titleVerifyCert, &AccordionTitle::toggled, ui->contentVerifyCert, &QWidget::setVisible);
-	connect(ui->authBox, &VerifyCert::changePinClicked, this, &Accordion::changePin1Clicked);
-	connect(ui->signBox, &VerifyCert::changePinClicked, this, &Accordion::changePin2Clicked);
-	connect(ui->pukBox, &VerifyCert::changePinClicked, this, &Accordion::changePukClicked);
+	connect(ui->authBox, &VerifyCert::changePinClicked, this, [this](QSmartCard::PinAction action) {
+		emit changePinClicked(QSmartCardData::Pin1Type, action);
+	});
+	connect(ui->signBox, &VerifyCert::changePinClicked, this,[this](QSmartCard::PinAction action) {
+		emit changePinClicked(QSmartCardData::Pin2Type, action);
+	});
+	connect(ui->pukBox, &VerifyCert::changePinClicked, this, [this](QSmartCard::PinAction action) {
+		emit changePinClicked(QSmartCardData::PukType, action);
+	});
 	clear();
 }
 
@@ -61,6 +67,8 @@ void Accordion::updateInfo(const SslCertificate &c)
 
 void Accordion::updateInfo(const QSmartCardData &data)
 {
+	if(data.isNull())
+		return clear();
 	ui->authBox->setVisible(!data.authCert().isNull());
 	if (!data.authCert().isNull())
 		ui->authBox->update(QSmartCardData::Pin1Type, data);

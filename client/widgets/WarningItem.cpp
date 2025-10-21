@@ -30,15 +30,15 @@ using namespace ria::qdigidoc4;
 WarningItem::WarningItem(WarningText warningText, QWidget *parent)
 	: StyledWidget(parent)
 	, ui(new Ui::WarningItem)
-	, warnText(warningText)
+	, warnText(std::move(warningText))
 {
 	ui->setupUi(this);
 	lookupWarning();
 	connect(ui->warningAction, &QToolButton::clicked, this, [this] {
 		if(url.startsWith(QLatin1String("http")))
 			QDesktopServices::openUrl(QUrl(url));
-		else
-			Q_EMIT linkActivated(url);
+		else if(warnText.cb)
+			warnText.cb();
 	});
 }
 
@@ -81,21 +81,24 @@ void WarningItem::lookupWarning()
 		ui->warningText->setText(tr("Certificates expire soon!"));
 		url = tr("https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult/");
 		break;
+	case ActivatePin1WithPUKWarning:
 	case UnblockPin1Warning:
 		ui->warningText->setText(QStringLiteral("%1 %2").arg(
 			VerifyCert::tr("PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times.").arg(1),
 			VerifyCert::tr("Unblock to reuse PIN%1.").arg(1)));
-		url = QStringLiteral("#unblock-PIN1");
 		ui->warningAction->setText(VerifyCert::tr("Unblock"));
-		ui->warningAction->setAccessibleName(ui->warningAction->text().toLower());
 		break;
+	case ActivatePin2WithPUKWarning:
 	case UnblockPin2Warning:
 		ui->warningText->setText(QStringLiteral("%1 %2").arg(
 			VerifyCert::tr("PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times.").arg(2),
 			VerifyCert::tr("Unblock to reuse PIN%1.").arg(2)));
-		url = QStringLiteral("#unblock-PIN2");
 		ui->warningAction->setText(VerifyCert::tr("Unblock"));
-		ui->warningAction->setAccessibleName(ui->warningAction->text().toLower());
+		break;
+	case ActivatePin2Warning:
+		ui->warningText->setText(tr("Signing with an ID-card isn't possible yet. PIN%1 code must be changed in order to sign.").arg(2));
+		ui->warningAction->setText(tr("Additional information"));
+		url = tr("https://www.id.ee/en/article/changing-id-card-pin-codes-and-puk-code/");
 		break;
 	// SignDetails
 	case InvalidSignatureError:

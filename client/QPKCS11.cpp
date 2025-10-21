@@ -305,6 +305,7 @@ QList<TokenData> QPKCS11::tokens() const
 			t.setReader(toQString(slotInfo.slotDescription).trimmed());
 			t.setData(QStringLiteral("slot"), QVariant::fromValue(slot));
 			t.setData(QStringLiteral("id"), id);
+			t.setData(QStringLiteral("blocked"), (token.flags & CKF_USER_PIN_LOCKED) > 0);
 
 			CK_KEY_TYPE keyType = CKK_RSA;
 			CK_ATTRIBUTE attribute { CKA_KEY_TYPE, &keyType, sizeof(keyType) };

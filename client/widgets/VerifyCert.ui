@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>305</width>
-    <height>249</height>
+    <height>264</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -16,21 +16,71 @@
     <height>0</height>
    </size>
   </property>
+  <property name="styleSheet">
+   <string notr="true">#name {
+color: #003168;
+font-family: Roboto, Helvetica;
+font-size: 18px;
+font-weight: 700;
+}
+#info, #validUntil {
+color: #091A36;
+font-family: Roboto, Helvetica;
+font-size: 12px;
+padding: 2px 10px;
+border-radius: 8px;
+background-color: #F3F5F7;
+}
+#info[label=&quot;error&quot;], #validUntil[label=&quot;error&quot;] {
+color: #AD2A45;
+background-color: #F5EBED;
+}
+#info[label=&quot;warning&quot;], #validUntil[label=&quot;warning&quot;] {
+color: #83612D;
+background-color: #FDF7EE;
+}
+#info[label=&quot;good&quot;], #validUntil[label=&quot;good&quot;] {
+color: #1A641B;
+background-color: #EAF8EA;
+}
+#changePIN {
+color: #2F70B6;
+border: 1px solid #2F70B6;
+border-radius: 4px;
+padding: 11px 12px;
+font-family: Roboto, Helvetica;
+font-size: 14px;
+font-weight: 700;
+}
+#changePIN:default {
+color: #ffffff;
+border-color: #2F70B6;
+background-color: #2F70B6;
+}
+#changePIN:default:hover {
+border-color: #2B66A6;
+background-color: #2B66A6;
+}
+#changePIN:default:pressed {
+border-color: #215081;
+background-color: #215081;
+}</string>
+  </property>
   <layout class="QVBoxLayout" name="VerifyCertLayout">
    <property name="spacing">
-    <number>2</number>
+    <number>5</number>
    </property>
    <property name="leftMargin">
     <number>5</number>
    </property>
    <property name="topMargin">
-    <number>22</number>
+    <number>20</number>
    </property>
    <property name="rightMargin">
     <number>5</number>
    </property>
    <property name="bottomMargin">
-    <number>2</number>
+    <number>20</number>
    </property>
    <item>
     <layout class="QHBoxLayout" name="nameLayout" stretch="1,0,1">
@@ -38,22 +88,22 @@
       <number>0</number>
      </property>
      <item>
-      <widget class="QWidget" name="nameRight" native="true">
-       <property name="styleSheet">
-        <string notr="true">border: none;</string>
-       </property>
+      <widget class="QWidget" name="nameLeft" native="true">
        <layout class="QHBoxLayout" name="nameRightLayout">
+        <property name="spacing">
+         <number>0</number>
+        </property>
         <property name="leftMargin">
-         <number>5</number>
+         <number>0</number>
         </property>
         <property name="topMargin">
-         <number>5</number>
+         <number>0</number>
         </property>
         <property name="rightMargin">
-         <number>5</number>
+         <number>0</number>
         </property>
         <property name="bottomMargin">
-         <number>5</number>
+         <number>0</number>
         </property>
         <item>
          <spacer name="nameRightSpacer">
@@ -92,12 +142,6 @@
        <property name="focusPolicy">
         <enum>Qt::TabFocus</enum>
        </property>
-       <property name="styleSheet">
-        <string notr="true">color: #003168;
-font-family: Roboto, Helvetica;
-font-size: 18px;
-font-weight: 700;</string>
-       </property>
        <property name="text">
         <string notr="true">name</string>
        </property>
@@ -110,7 +154,7 @@ font-weight: 700;</string>
       </widget>
      </item>
      <item>
-      <spacer name="nameLeft">
+      <spacer name="nameRight">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
@@ -127,30 +171,16 @@ font-weight: 700;</string>
      </item>
     </layout>
    </item>
-   <item>
-    <widget class="QLabel" name="validUntil">
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>35</height>
-      </size>
-     </property>
+   <item alignment="Qt::AlignHCenter">
+    <widget class="Label" name="validUntil">
      <property name="focusPolicy">
       <enum>Qt::TabFocus</enum>
      </property>
-     <property name="styleSheet">
-      <string notr="true">color: #091A36;
-font-family: Roboto, Helvetica;
-font-size: 14px;</string>
-     </property>
      <property name="text">
-      <string notr="true">Certificate %1is valid%2 until %3</string>
+      <string notr="true">Certificate is valid until %1</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
      </property>
     </widget>
    </item>
@@ -168,18 +198,9 @@ font-size: 14px;</string>
     </spacer>
    </item>
    <item>
-    <widget class="QLabel" name="error">
+    <widget class="Label" name="info">
      <property name="focusPolicy">
       <enum>Qt::TabFocus</enum>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">padding: 6px 6px 6px 6px;
-border: 1px solid #E9CB8F;
-border-radius: 2px;
-background-color: #F8DDA7;
-color: #091A36;
-font-family: Roboto, Helvetica;
-font-size: 14px;</string>
      </property>
      <property name="text">
       <string notr="true">PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times.</string>
@@ -198,64 +219,10 @@ font-size: 14px;</string>
      </property>
     </widget>
    </item>
-   <item>
-    <widget class="QLabel" name="infoText">
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>30</height>
-      </size>
-     </property>
-     <property name="focusPolicy">
-      <enum>Qt::TabFocus</enum>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color: #091A36;
-font-family: Roboto, Helvetica;
-font-size: 14px;</string>
-     </property>
-     <property name="text">
-      <string>PIN can be changed only using eToken utility</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
-     </property>
-     <property name="openExternalLinks">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
    <item alignment="Qt::AlignHCenter|Qt::AlignVCenter">
     <widget class="QPushButton" name="changePIN">
      <property name="cursor">
       <cursorShape>PointingHandCursor</cursorShape>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">#changePIN {
-color: #2F70B6;
-border: 1px solid #2F70B6;
-border-radius: 4px;
-padding: 11px 12px;
-font-family: Roboto, Helvetica;
-font-size: 14px;
-font-weight: 700;
-}
-#changePIN:default {
-color: #ffffff;
-border-color: #2F70B6;
-background-color: #2F70B6;
-}
-#changePIN:default:hover {
-border-color: #2B66A6;
-background-color: #2B66A6;
-}
-#changePIN:default:pressed {
-border-color: #215081;
-background-color: #215081;
-}</string>
      </property>
      <property name="text">
       <string notr="true">Change PUK</string>
@@ -276,7 +243,7 @@ background-color: #215081;
     </spacer>
    </item>
    <item>
-    <widget class="QWidget" name="widget" native="true">
+    <widget class="QWidget" name="links" native="true">
      <property name="minimumSize">
       <size>
        <width>0</width>
@@ -329,7 +296,7 @@ background-color: #BFD3E8;
          <enum>Qt::RightToLeft</enum>
         </property>
         <property name="text">
-         <string notr="true">Forgot PIN?</string>
+         <string notr="true">Change with PUK code</string>
         </property>
         <property name="icon">
          <iconset>
@@ -404,22 +371,6 @@ background-color: #BFD3E8;
      </layout>
     </widget>
    </item>
-   <item>
-    <spacer name="bottomSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeType">
-      <enum>QSizePolicy::Preferred</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>0</width>
-       <height>20</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
   </layout>
  </widget>
  <customwidgets>
@@ -428,6 +379,11 @@ background-color: #BFD3E8;
    <extends>QWidget</extends>
    <header location="global">QtSvg/QSvgWidget</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>Label</class>
+   <extends>QLabel</extends>
+   <header>widgets/Label.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

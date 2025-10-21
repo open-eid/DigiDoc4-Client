@@ -213,7 +213,7 @@
     <name>CDoc2</name>
     <message>
         <source>CDoc contains additional payload data that is not part of content</source>
-        <translation type="unfinished"></translation>
+        <translation>CDoc содержит дополнительные данные, которые не являются частью содержимого</translation>
     </message>
 </context>
 <context>
@@ -1416,10 +1416,6 @@ ID-картой</translation>
         <translation>%1-код изменён!</translation>
     </message>
     <message>
-        <source>The ID-card in the card reader has expired and is no longer supported in the DigiDoc4 Client.&lt;br /&gt;You can apply for a new ID-card from the Estonian Police and Border Guard Board.&lt;br /&gt;&lt;a href=&quot;https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult&quot;&gt;Additional information&lt;/a&gt;.</source>
-        <translation>Срок действия ID-карты подключенной к считывателю карт истек, и больше не поддерживается программой DigiDoc4 клиент.&lt;br /&gt;Вы можете ходатайствовать о новой ID-карте в Департаменте полиции и погранохраны.&lt;br /&gt;&lt;a href=&quot;https://www.politsei.ee/ru/instruktsii/hodataystvo-o-vydache-id-karty-vzroslomu&quot;&gt;Подробнее читайте здесь&lt;/a&gt;.</translation>
-    </message>
-    <message>
         <source>Encrypting</source>
         <translation>Зашифровывание</translation>
     </message>
@@ -2402,11 +2398,11 @@ Additional licenses and components</source>
     </message>
     <message>
         <source>Select SiVa server certificate</source>
-        <translation type="unfinished"></translation>
+        <translation>Выберите сертификат сервера валидации</translation>
     </message>
     <message>
         <source>Select Time-Stamping server certificate</source>
-        <translation type="unfinished"></translation>
+        <translation>Выберите сертификат сервера отметки времени</translation>
     </message>
     <message>
         <source>Time-Stamping service SSL certificate</source>
@@ -2832,10 +2828,6 @@ Additional licenses and components</source>
         <translation>Срок действия сертификата истек!</translation>
     </message>
     <message>
-        <source>Certificate %1is valid%2 until %3</source>
-        <translation>Сертификат %1действителен%2 до %3</translation>
-    </message>
-    <message>
         <source>Authentication certificate</source>
         <translation>Сертификат идентификации</translation>
     </message>
@@ -2848,16 +2840,24 @@ Additional licenses and components</source>
         <translation>Изменить PIN%1</translation>
     </message>
     <message>
-        <source>Forgot PIN%1?</source>
-        <translation>Забыли PIN%1?</translation>
-    </message>
-    <message>
         <source>The PUK code cannot be changed on the ID-card in the reader.&lt;br /&gt;If you have forgotten the PUK code of your ID-card then you can view it from the Police and Border Guard Board portal.&lt;br /&gt;&lt;a href=&quot;https://www.id.ee/en/article/pin-and-puk-codes-security-recommendations/&quot;&gt;Additional information&lt;/a&gt;.</source>
         <translation>На ID-карте, находящейся в считывателе, невозможно изменить PUK-код.&lt;br /&gt;Если вы забыли PUK-код своей ID-карты, вы можете посмотреть его в самообслуживании Департамента полиции и погранохраны.&lt;br /&gt;&lt;a href=&quot;https://www.id.ee/ru/artikkel/pin-i-puk-kody-rekomendaczii-po-obespecheniyu-bezopasnosti/&quot;&gt;Дополнительная информация&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>PUK code is blocked because the PUK code has been entered 3 times incorrectly.&lt;br/&gt;You can not unblock the PUK code yourself.&lt;br/&gt;As long as the PUK code is blocked, all eID options can be used, except PUK-code.&lt;br/&gt;</source>
         <translation>PUK заблокирован, потому что PUK введен неверно 3 раза.&lt;br/&gt;PUK невозможно разблокировать самому.&lt;br/&gt;Пока PUK-код заблокирован, можно использовать все возможности eID, кроме тех которые требуют PUK.&lt;br/&gt;</translation>
+    </message>
+    <message>
+        <source>Certificate status is unknown. A valid certificate is required for electronic use. </source>
+        <translation>Статус сертификата неизвестен. Для электронного использования требуется действующий сертификат. </translation>
+    </message>
+    <message>
+        <source>Your ID-card signing certificate status is unknown. You need valid certificates to use your ID-card electronically. </source>
+        <translation>Статус сертификата подписи вашей ID-карты неизвестен. Для электронного использования вашей ID-карты необходимы действующие сертификаты. </translation>
+    </message>
+    <message>
+        <source>Your ID-card authentication certificate status is unknown. You need valid certificates to use your ID-card electronically. </source>
+        <translation>Статус сертификата идентификации вашей ID-карты неизвестен. Для электронного использования вашей ID-карты необходимы действующие сертификаты. </translation>
     </message>
     <message>
         <source>Please visit the service center to obtain new codes.&lt;br/&gt;&lt;a href=&quot;https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult/reminders-for-id-card-holders/&quot;&gt;Additional information&lt;/a&gt;.</source>
@@ -2870,6 +2870,22 @@ Additional licenses and components</source>
     <message>
         <source>Signing certificate</source>
         <translation>Сертификат подписи</translation>
+    </message>
+    <message>
+        <source>Certificate is valid until %1</source>
+        <translation>Сертификат действителен до %1</translation>
+    </message>
+    <message>
+        <source>Change with PUK code</source>
+        <translation>Изменить с помощью PUK-кода</translation>
+    </message>
+    <message>
+        <source>PIN%1 code must be changed in order to authenticate</source>
+        <translation>Чтобы аутентифицироваться, необходимо изменить PIN%1.</translation>
+    </message>
+    <message>
+        <source>PIN%1 code must be changed in order to sign</source>
+        <translation>Чтобы подписывать, необходимо изменить PIN%1</translation>
     </message>
     <message>
         <source>Check the details of the certificate</source>
@@ -2969,6 +2985,10 @@ Additional licenses and components</source>
 </context>
 <context>
     <name>WarningItem</name>
+    <message>
+        <source>Signing with an ID-card isn&apos;t possible yet. PIN%1 code must be changed in order to sign.</source>
+        <translation>Подписание с помощью ID-карты ещё невозможно. Чтобы подписывать, необходимо изменить PIN%1.</translation>
+    </message>
     <message numerus="yes">
         <source>%n signatures are not valid!</source>
         <translation>
@@ -3032,6 +3052,14 @@ Additional licenses and components</source>
     <message>
         <source>Certificates expire soon!</source>
         <translation>Срок действия сертификатов скоро истекает!</translation>
+    </message>
+    <message>
+        <source>Additional information</source>
+        <translation>Дополнительная информация</translation>
+    </message>
+    <message>
+        <source>https://www.id.ee/en/article/changing-id-card-pin-codes-and-puk-code/</source>
+        <translation>https://www.id.ee/ru/artikkel/poryadok-izmeneniya-pin-kodov-i-puk-koda-id-karty/</translation>
     </message>
     <message>
         <source>This ASiC-S container contains XAdES signature. You are not allowed to add or remove signatures to this container.</source>

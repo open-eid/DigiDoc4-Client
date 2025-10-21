@@ -66,8 +66,6 @@ MainWindow::MainWindow( QWidget *parent )
 	ui->signIntroButton->setFocus();
 	ui->noReaderInfoText->setProperty("currenttext", ui->noReaderInfoText->text());
 
-	connect(ui->warnings, &WarningList::warningClicked, this, &MainWindow::warningClicked);
-
 	ui->version->setText(QStringLiteral("%1%2").arg(tr("Ver. "), Application::applicationVersion()));
 	connect(ui->version, &QPushButton::clicked, this, [this] {showSettings(SettingsDialog::DiagnosticsSettings);});
 
@@ -97,12 +95,12 @@ MainWindow::MainWindow( QWidget *parent )
 	connect(qApp->signer(), &QSigner::signDataChanged, this, [this](const TokenData &token) {
 		updateSelectorData(token);
 		updateMyEID(token);
-		ui->signContainerPage->cardChanged(token.cert());
+		ui->signContainerPage->cardChanged(token.cert(), token.data(QStringLiteral("blocked")).toBool());
 	});
 	connect(qApp->signer(), &QSigner::authDataChanged, this, [this](const TokenData &token) {
 		updateSelectorData(token);
 		updateMyEID(token);
-		ui->cryptoContainerPage->cardChanged(token.cert());
+		ui->cryptoContainerPage->cardChanged(token.cert(), token.data(QStringLiteral("blocked")).toBool());
 	});
 	QPCSC::instance().start();
 
@@ -116,7 +114,7 @@ MainWindow::MainWindow( QWidget *parent )
 	connect(ui->signContainerPage, &ContainerPage::fileRemoved, this, &MainWindow::removeSignatureFile);
 	connect(ui->signContainerPage, &ContainerPage::removed, this, &MainWindow::removeSignature);
 	connect(ui->signContainerPage, &ContainerPage::warning, this, [this](WarningText warningText) {
-		ui->warnings->showWarning(warningText);
+		ui->warnings->showWarning(std::move(warningText));
 		ui->signature->warningIcon(true);
 	});
 
@@ -124,20 +122,18 @@ MainWindow::MainWindow( QWidget *parent )
 	connect(ui->cryptoContainerPage, &ContainerPage::addFiles, this, [this](const QStringList &files) { openFiles(files, true); } );
 	connect(ui->cryptoContainerPage, &ContainerPage::fileRemoved, this, &MainWindow::removeCryptoFile);
 	connect(ui->cryptoContainerPage, &ContainerPage::warning, this, [this](WarningText warningText) {
-		ui->warnings->showWarning(warningText);
+		ui->warnings->showWarning(std::move(warningText));
 		ui->crypto->warningIcon(true);
 	});
 
-	connect(ui->accordion, &Accordion::changePin1Clicked, this, &MainWindow::changePin1Clicked);
-	connect(ui->accordion, &Accordion::changePin2Clicked, this, &MainWindow::changePin2Clicked);
-	connect(ui->accordion, &Accordion::changePukClicked, this, &MainWindow::changePukClicked);
+	connect(ui->accordion, &Accordion::changePinClicked, this, &MainWindow::changePinClicked);
 	connect(ui->cardInfo, &CardWidget::selected, ui->selector, &QToolButton::toggle);
 
 	updateSelectorData(qApp->signer()->tokensign());
 	updateMyEID(qApp->signer()->tokensign());
-	updateMyEid(qApp->signer()->smartcard()->data());
 	ui->signContainerPage->cardChanged(qApp->signer()->tokensign().cert());
 	ui->cryptoContainerPage->cardChanged(qApp->signer()->tokenauth().cert());
+	updateMyEid(qApp->signer()->smartcard()->data());
 }
 
 MainWindow::~MainWindow()
@@ -902,14 +898,6 @@ bool MainWindow::validateFiles(const QString &container, const QStringList &file
 	dlg->setCancelText(WarningDialog::Cancel);
 	dlg->open();
 	return false;
-}
-
-void MainWindow::warningClicked(const QString &link)
-{
-	if(link == QLatin1String("#unblock-PIN1"))
-		changePin1Clicked(false, true);
-	else if(link == QLatin1String("#unblock-PIN2"))
-		changePin2Clicked(false, true);
 }
 
 bool MainWindow::wrap(const QString& wrappedFile, bool enclose)

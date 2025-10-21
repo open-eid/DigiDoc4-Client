@@ -17,38 +17,22 @@
  *
  */
 
-#pragma once
+#include "Label.h"
 
-#include "StyledWidget.h"
+#include <QStyle>
 
-namespace Ui { class WarningItem; }
+Label::Label(QWidget *parent)
+	: QLabel(parent)
+{}
 
-struct WarningText {
-	ria::qdigidoc4::WarningType type = ria::qdigidoc4::NoWarning;
-	int counter = 0;
-	std::function<void()> cb;
-};
-
-
-class WarningItem final: public StyledWidget
+QString Label::label() const
 {
-	Q_OBJECT
+	return _label;
+}
 
-public:
-	WarningItem(WarningText warningText, QWidget *parent = nullptr);
-	~WarningItem() final;
-	
-	int page() const;
-	ria::qdigidoc4::WarningType warningType() const;
-
-private:
-	Q_DISABLE_COPY(WarningItem)
-	void changeEvent(QEvent *event) final;
-	void mousePressEvent(QMouseEvent *event) final;
-	void lookupWarning();
-
-	Ui::WarningItem *ui;
-	WarningText warnText;
-	QString url;
-	int _page = -1;
-};
+void Label::setLabel(QString label)
+{
+	_label = std::move(label);
+	parentWidget()->style()->unpolish(this);
+	parentWidget()->style()->polish(this);
+}

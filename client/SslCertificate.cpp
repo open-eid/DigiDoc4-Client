@@ -296,11 +296,6 @@ SslCertificate::CertType SslCertificate::type() const
 	for(QString p: policies())
 	{
 		p.remove(QLatin1String("2.999."));
-		if(p.startsWith(QLatin1String("1.3.6.1.4.1.10015.1.1")) ||
-			p.startsWith(QLatin1String("1.3.6.1.4.1.10015.3.1")) ||
-			p.startsWith(QLatin1String("1.3.6.1.4.1.10015.1.2")) ||
-			p.startsWith(QLatin1String("1.3.6.1.4.1.10015.3.2")))
-			return OldEstEidType;
 		if(p.startsWith(QLatin1String("1.3.6.1.4.1.10015.1.3")) ||
 			p.startsWith(QLatin1String("1.3.6.1.4.1.10015.11.1")) ||
 			p.startsWith(QLatin1String("1.3.6.1.4.1.10015.3.3")) ||
@@ -349,7 +344,7 @@ SslCertificate::Validity SslCertificate::validateOnline() const
 {
 	QMultiHash<SslCertificate::AuthorityInfoAccess,QString> urls = authorityInfoAccess();
 	if(urls.isEmpty())
-		return Unknown;
+		return Error;
 
 	QEventLoop e;
 	QNetworkAccessManager m;
@@ -368,15 +363,15 @@ SslCertificate::Validity SslCertificate::validateOnline() const
 	QSslCertificate issuer(repl->readAll(), QSsl::Der);
 	repl->deleteLater();
 	if(issuer.isNull())
-		return Unknown;
+		return Error;
 
 	// Build request
 	auto ocspReq = make_unique_ptr<OCSP_REQUEST_free>(OCSP_REQUEST_new());
 	if(!ocspReq)
-		return Unknown;
+		return Error;
 	OCSP_CERTID *certId = OCSP_cert_to_id(nullptr, (X509*)handle(), (X509*)issuer.handle());
 	if(!OCSP_request_add0_id(ocspReq.get(), certId))
-		return Unknown;
+		return Error;
 
 	// Send request
 	r.setUrl(urls.values(SslCertificate::ad_OCSP).first());
@@ -390,14 +385,14 @@ SslCertificate::Validity SslCertificate::validateOnline() const
 	const unsigned char *p = (const unsigned char*)respData.constData();
 	auto resp = make_unique_ptr<OCSP_RESPONSE_free>(d2i_OCSP_RESPONSE(nullptr, &p, respData.size()));
 	if(!resp || OCSP_response_status(resp.get()) != OCSP_RESPONSE_STATUS_SUCCESSFUL)
-		return Unknown;
+		return Error;
 
 	// Validate response
 	auto basic = make_unique_ptr<OCSP_BASICRESP_free>(OCSP_response_get1_basic(resp.get()));
 	if(!basic)
-		return Unknown;
+		return Error;
 	if(OCSP_basic_verify(basic.get(), nullptr, nullptr, OCSP_NOVERIFY) <= 0)
-		return Unknown;
+		return Invalid;
 	int status = -1;
 	if(OCSP_resp_find_status(basic.get(), certId, &status, nullptr, nullptr, nullptr, nullptr) <= 0)
 		return Unknown;

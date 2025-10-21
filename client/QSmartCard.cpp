@@ -62,6 +62,7 @@ QVariant QSmartCardData::data(PersonalDataType type) const
 SslCertificate QSmartCardData::authCert() const { return d->authCert; }
 SslCertificate QSmartCardData::signCert() const { return d->signCert; }
 quint8 QSmartCardData::retryCount(PinType type) const { return d->retry.value(type); }
+bool QSmartCardData::pinLocked(PinType type) const { return d->locked.value(type, false); }
 
 quint8 QSmartCardData::minPinLen(QSmartCardData::PinType type)
 {
@@ -116,6 +117,70 @@ QByteArrayView Card::parseFCI(QByteArrayView data, quint8 expectedTag)
 	}
 	return {};
 }
+
+struct TLV
+{
+	quint32 tag {};
+	quint32 length {};
+	QByteArrayView data;
+
+	constexpr TLV(QByteArrayView _data)
+	{
+		if (_data.isEmpty())
+			return;
+
+		auto begin = _data.cbegin();
+		tag = quint8(*begin++);
+		if((tag & 0x1F) == 0x1F) { // Multi-byte tag
+			constexpr quint8 MAX_TAG_BYTES = sizeof(tag);
+			quint8 tag_bytes = 1;
+			do {
+				if(tag_bytes >= MAX_TAG_BYTES || begin == _data.cend())
+					return;
+				tag = (tag << 8) | quint8(*begin++);
+				++tag_bytes;
+			} while ((tag & 0x80) != 0x00);
+		}
+
+		if (begin == _data.cend())
+			return;
+
+		length = quint8(*begin++);
+		if (length & 0x80) { // Extended length encoding
+			constexpr quint8 MAX_LEN_BYTES = sizeof(length);
+			auto len_bytes = quint8(length & 0x7F);
+			if (len_bytes == 0 || len_bytes > MAX_LEN_BYTES
+				|| std::distance(begin, _data.cbegin()) < len_bytes) {
+				return;
+			}
+
+			length = 0;
+			for (quint8 i = 0; i < len_bytes; ++i) {
+				length = (length << 8) | quint8(*begin++);
+			}
+		}
+
+		if (std::distance(begin, _data.cend()) >= length) {
+			data = QByteArrayView(begin, _data.cend());
+		}
+	}
+
+	TLV operator[](quint32 find) const
+	{
+		return TLV({data.cbegin(), data.cbegin() + length}).find(find);
+	}
+	TLV& operator++() { return *this = TLV({data.cbegin() + length, data.cend()}); }
+
+	TLV find(quint32 find) const
+	{
+		TLV tlv = *this;
+		for (; tlv && tlv.tag != find; ++tlv) {}
+		// Return the found TLV or an empty one if not found
+		return tlv;
+	}
+
+	operator bool() const { return !data.isEmpty(); }
+};
 
 
 
@@ -274,13 +339,22 @@ QByteArray IDEMIACard::sign(QPCSCReader *reader, const QByteArray &dgst) const
 bool IDEMIACard::updateCounters(QPCSCReader *reader, QSmartCardDataPrivate *d) const
 {
 	reader->transfer(AID);
-	if(auto data = reader->transfer(APDU("00CB3FFF 0A 4D087006BF810102A080 00")))
-		d->retry[QSmartCardData::Pin1Type] = quint8(data.data[13]);
-	if(auto data = reader->transfer(APDU("00CB3FFF 0A 4D087006BF810202A080 00")))
-		d->retry[QSmartCardData::PukType] = quint8(data.data[13]);
+	if(auto data = reader->transfer(APDU("00CB3FFF 0A 4D087006 BF8101 02A080 00")))
+	{
+		if(auto info = TLV(data.data)[0xBF8101][0xA0]; auto retry = info[0x9B])
+			d->retry[QSmartCardData::Pin1Type] = quint8(retry.data[0]);
+	}
+	if(auto data = reader->transfer(APDU("00CB3FFF 0A 4D087006 BF8102 02A080 00")))
+	{
+		if(auto info = TLV(data.data)[0xBF8102][0xA0]; auto retry = info[0x9B])
+			d->retry[QSmartCardData::PukType] = quint8(retry.data[0]);
+	}
 	reader->transfer(AID_QSCD);
-	if(auto data = reader->transfer(APDU("00CB3FFF 0A 4D087006BF810502A080 00")))
-		d->retry[QSmartCardData::Pin2Type] = quint8(data.data[13]);
+	if(auto data = reader->transfer(APDU("00CB3FFF 0A 4D087006 BF8105 02A080 00")))
+	{
+		if(auto info = TLV(data.data)[0xBF8105][0xA0]; auto retry = info[0x9B])
+			d->retry[QSmartCardData::Pin2Type] = quint8(retry.data[0]);
+	}
 	return true;
 }
 
@@ -413,12 +487,20 @@ QByteArray THALESCard::sign(QPCSCReader *reader, const QByteArray &dgst) const
 
 bool THALESCard::updateCounters(QPCSCReader *reader, QSmartCardDataPrivate *d) const
 {
-	if(auto data = reader->transfer(APDU("00CB00FF 05 A003830181 00")))
-		d->retry[QSmartCardData::Pin1Type] = quint8(data.data[14]);
-	if(auto data = reader->transfer(APDU("00CB00FF 05 A003830183 00")))
-		d->retry[QSmartCardData::PukType] = quint8(data.data[14]);
-	if(auto data = reader->transfer(APDU("00CB00FF 05 A003830182 00")))
-		d->retry[QSmartCardData::Pin2Type] = quint8(data.data[14]);
+	auto apdu = APDU("00CB00FF 05 A003830180 00");
+	for(quint8 type = QSmartCardData::Pin1Type; type <= QSmartCardData::PukType; ++type)
+	{
+		apdu[9] = char(0x80 | type);
+		auto data = reader->transfer(apdu);
+		if(!data)
+			return false;
+		if(auto info = TLV(data.data); auto retry = info[0xDF21])
+		{
+			d->retry[QSmartCardData::PinType(type)] = quint8(retry.data[0]);
+			auto changed = info[0xDF2F];
+			d->locked[QSmartCardData::PinType(type)] = changed && changed.data[0] == 0;
+		}
+	}
 	return true;
 }
 
@@ -491,7 +573,7 @@ QSmartCard::ErrorType QSmartCard::change(QSmartCardData::PinType type, QWidget* 
 
 QSmartCardData QSmartCard::data() const { return d->t; }
 
-QSmartCard::ErrorType QSmartCard::pinChange(QSmartCardData::PinType type, QWidget* parent)
+QSmartCard::ErrorType QSmartCard::pinChange(QSmartCardData::PinType type, QSmartCard::PinAction action, QWidget* parent)
 {
 	QScopedPointer<PinUnblock> p;
 	QByteArray oldPin, newPin;
@@ -499,8 +581,8 @@ QSmartCard::ErrorType QSmartCard::pinChange(QSmartCardData::PinType type, QWidge
 
 	if (!d->t.isPinpad())
 	{
-		p.reset(new PinUnblock(PinUnblock::PinChange, parent, type, d->t.retryCount(type), d->t.data(QSmartCardData::BirthDate).toDate(),
-			d->t.data(QSmartCardData::Id).toString(), d->t.isPUKReplacable()));
+		p.reset(new PinUnblock(type, action, d->t.retryCount(type), d->t.data(QSmartCardData::BirthDate).toDate(),
+			d->t.data(QSmartCardData::Id).toString(), d->t.isPUKReplacable(), parent));
 		if (!p->exec())
 			return CancelError;
 		oldPin = p->firstCodeText().toUtf8();
@@ -515,7 +597,7 @@ QSmartCard::ErrorType QSmartCard::pinChange(QSmartCardData::PinType type, QWidge
 	return change(type, parent, newPin, oldPin, title, textBody);
 }
 
-QSmartCard::ErrorType QSmartCard::pinUnblock(QSmartCardData::PinType type, bool isForgotPin, QWidget* parent)
+QSmartCard::ErrorType QSmartCard::pinUnblock(QSmartCardData::PinType type, QSmartCard::PinAction action, QWidget* parent)
 {
 	QScopedPointer<PinUnblock> p;
 	QByteArray puk, newPin;
@@ -523,8 +605,8 @@ QSmartCard::ErrorType QSmartCard::pinUnblock(QSmartCardData::PinType type, bool 
 
 	if (!d->t.isPinpad())
 	{
-		p.reset(new PinUnblock(isForgotPin ? PinUnblock::ChangePinWithPuk : PinUnblock::UnBlockPinWithPuk, parent, type,
-			d->t.retryCount(QSmartCardData::PukType), d->t.data(QSmartCardData::BirthDate).toDate(), d->t.data(QSmartCardData::Id).toString(), d->t.isPUKReplacable()));
+		p.reset(new PinUnblock(type, action,
+			d->t.retryCount(QSmartCardData::PukType), d->t.data(QSmartCardData::BirthDate).toDate(), d->t.data(QSmartCardData::Id).toString(), d->t.isPUKReplacable(), parent));
 		if (!p->exec())
 			return CancelError;
 		puk = p->firstCodeText().toUtf8();
@@ -534,9 +616,18 @@ QSmartCard::ErrorType QSmartCard::pinUnblock(QSmartCardData::PinType type, bool 
 	{
 		SslCertificate cert = d->t.authCert();
 		title = cert.toString(cert.showCN() ? QStringLiteral("CN, serialNumber") : QStringLiteral("GN SN, serialNumber"));
-		textBody = isForgotPin ?
-			tr("To change %1 code with the PUK code on a PinPad reader the PUK code has to be entered first and then the %1 code twice.").arg(QSmartCardData::typeString(type)) :
-			tr("To unblock the %1 code on a PinPad reader the PUK code has to be entered first and then the %1 code twice.").arg(QSmartCardData::typeString(type));
+		switch(action)
+		{
+		case QSmartCard::ActivateWithPuk:
+		case QSmartCard::ChangeWithPuk:
+			textBody = tr("To change %1 code with the PUK code on a PinPad reader the PUK code has to be entered first and then the %1 code twice.").arg(QSmartCardData::typeString(type));
+			break;
+		case QSmartCard::UnblockWithPuk:
+			textBody = tr("To unblock the %1 code on a PinPad reader the PUK code has to be entered first and then the %1 code twice.").arg(QSmartCardData::typeString(type));
+			break;
+		default:
+			break;
+		}
 	}
 	return unblock(type, parent, newPin, puk, title, textBody);
 }

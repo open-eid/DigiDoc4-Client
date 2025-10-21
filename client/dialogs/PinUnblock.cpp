@@ -24,8 +24,8 @@
 
 #include <QtGui/QRegularExpressionValidator>
 
-PinUnblock::PinUnblock(WorkMode mode, QWidget *parent, QSmartCardData::PinType type,
-	short leftAttempts, QDate birthDate, const QString &personalCode, bool isPUKReplacable)
+PinUnblock::PinUnblock(QSmartCardData::PinType type, QSmartCard::PinAction action,
+		short leftAttempts, QDate birthDate, const QString &personalCode, bool isPUKReplacable, QWidget *parent)
 	: QDialog(parent)
 	, ui(new Ui::PinUnblock)
 {
@@ -50,9 +50,9 @@ PinUnblock::PinUnblock(WorkMode mode, QWidget *parent, QSmartCardData::PinType t
 
 	QRegularExpression regexpValidateCode;
 	QRegularExpression regexpNewCode = pattern(type);
-	switch(mode)
+	switch(action)
 	{
-	case PinUnblock::UnBlockPinWithPuk:
+	case QSmartCard::UnblockWithPuk:
 		ui->label->setText(tr("%1 unblocking").arg(QSmartCardData::typeString(type)));
 		ui->change->setText(tr("Unblock"));
 		regexpValidateCode = pattern(QSmartCardData::PukType);
@@ -63,7 +63,8 @@ PinUnblock::PinUnblock(WorkMode mode, QWidget *parent, QSmartCardData::PinType t
 			tr("If you have forgotten the PUK code of your ID-card then you can view it from the Police and Border Guard Board portal. "
 			"<a href=\"https://www.id.ee/en/article/my-pin-is-blocked-locked/\">Additional information</a>"));
 		break;
-	case PinUnblock::ChangePinWithPuk:
+	case QSmartCard::ActivateWithPuk:
+	case QSmartCard::ChangeWithPuk:
 		ui->label->setText(tr("%1 code change").arg(QSmartCardData::typeString(type)));
 		regexpValidateCode = pattern(QSmartCardData::PukType);
 		ui->line1_text->setText(type == QSmartCardData::Pin2Type
@@ -72,7 +73,8 @@ PinUnblock::PinUnblock(WorkMode mode, QWidget *parent, QSmartCardData::PinType t
 		ui->line2_text->setText(tr("If you have forgotten PIN%1, but know PUK, then here you can enter new PIN%1.").arg(type));
 		ui->line3_text->setText(tr("PUK code is written in the envelope, that is given with the ID-card."));
 		break;
-	case PinUnblock::PinChange:
+	case QSmartCard::ActivateWithPin:
+	case QSmartCard::ChangeWithPin:
 		ui->label->setText(tr("%1 code change").arg(QSmartCardData::typeString(type)));
 		ui->labelPuk->setText(tr("Valid %1 code").arg(QSmartCardData::typeString(type)));
 		regexpValidateCode = pattern(type);
@@ -107,7 +109,7 @@ PinUnblock::PinUnblock(WorkMode mode, QWidget *parent, QSmartCardData::PinType t
 		error->setHidden(msg.isEmpty());
 	};
 	if(leftAttempts < 3)
-		setError(ui->puk, ui->errorPuk, mode == PinUnblock::PinChange ?
+		setError(ui->puk, ui->errorPuk, action == QSmartCard::ChangeWithPin || action == QSmartCard::ActivateWithPin ?
 			tr("Remaining attempts: %1").arg(leftAttempts) :
 			tr("PUK remaining attempts: %1").arg(leftAttempts));
 
@@ -152,7 +154,7 @@ PinUnblock::PinUnblock(WorkMode mode, QWidget *parent, QSmartCardData::PinType t
 
 		// Verify checks
 		if(!regexpValidateCode.match(ui->puk->text()).hasMatch())
-			setError(ui->puk, ui->errorPuk, pinError(mode == PinUnblock::PinChange ? type : QSmartCardData::PukType));
+			return setError(ui->puk, ui->errorPuk, pinError(action == QSmartCard::ChangeWithPin || action == QSmartCard::ActivateWithPin ? type : QSmartCardData::PukType));
 
 		// PIN checks
 		QString pin = ui->pin->text();
@@ -177,7 +179,7 @@ PinUnblock::PinUnblock(WorkMode mode, QWidget *parent, QSmartCardData::PinType t
 			pin == birthDate.toString(QStringLiteral("ddMMyyyy")))
 			return setError(ui->pin, ui->errorPin,
 				tr("New %1 code can't be your date of birth").arg(QSmartCardData::typeString(type)));
-		if(mode == PinUnblock::PinChange && pin == ui->puk->text())
+		if(action == QSmartCard::ChangeWithPin && pin == ui->puk->text())
 			return setError(ui->pin, ui->errorPin,
 				tr("Current %1 code and new %1 code must be different").arg(QSmartCardData::typeString(type)));
 
