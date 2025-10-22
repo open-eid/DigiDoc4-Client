@@ -289,25 +289,13 @@ SDocumentModel::SDocumentModel(DigiDoc *container)
 bool SDocumentModel::addFile(const QString &file, const QString &mime)
 {
 	QFileInfo info(file);
-	if(info.size() == 0)
-	{
-		WarningDialog::show(DocumentModel::tr("Cannot add empty file to the container."));
+	if(!addFileCheck(doc->fileName(), info))
 		return false;
-	}
 	QString fileName(info.fileName());
 	if(fileName == QStringLiteral("mimetype"))
 	{
 		WarningDialog::show(DocumentModel::tr("Cannot add file with name 'mimetype' to the envelope."));
 		return false;
-	}
-	for(int row = 0; row < rowCount(); row++)
-	{
-		if(fileName == from(doc->b->dataFiles().at(size_t(row))->fileName()))
-		{
-			WarningDialog::show(DocumentModel::tr("Cannot add the file to the envelope. File '%1' is already in container.")
-				.arg(FileDialog::normalized(fileName)));
-			return false;
-		}
 	}
 	if(doc->addFile(file, mime))
 	{
@@ -372,7 +360,6 @@ bool SDocumentModel::removeRow(int row)
 	{
 		doc->b->removeDataFile(unsigned(row));
 		doc->modified = true;
-		emit removed(row);
 		return true;
 	}
 	catch( const Exception &e ) { DigiDoc::setLastError(tr("Failed remove document from container"), e); }

@@ -462,6 +462,10 @@
         <translation>Для отображения листа подтверждения действительности цифровой подписи на компьютере должен быть установлен как минимум один принтер!</translation>
     </message>
     <message>
+        <source>You are about to delete the last file in the container, it is removed along with the container.</source>
+        <translation>Вы собираетесь удалить последний файл в контейнере, он удаляется вместе с контейнером.</translation>
+    </message>
+    <message>
         <source>Change</source>
         <translation>Поменять</translation>
     </message>
@@ -1364,10 +1368,6 @@ ID-картой</translation>
     <message>
         <source>Converted to crypto container!</source>
         <translation>Переделан в контейнер для зашифровывания!</translation>
-    </message>
-    <message>
-        <source>You are about to delete the last file in the container, it is removed along with the container.</source>
-        <translation>Вы собираетесь удалить последний файл в контейнере, он удаляется вместе с контейнером.</translation>
     </message>
     <message>
         <source>Removing signature</source>
@@ -2807,7 +2807,7 @@ Additional licenses and components</source>
     </message>
     <message>
         <source>PIN%1 code must be changed in order to authenticate</source>
-        <translation>Чтобы аутентифицироваться, необходимо изменить PIN%1.</translation>
+        <translation>Чтобы аутентифицироваться, необходимо изменить PIN%1</translation>
     </message>
     <message>
         <source>PIN%1 code must be changed in order to sign</source>
