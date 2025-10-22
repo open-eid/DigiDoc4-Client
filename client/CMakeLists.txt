@@ -65,7 +65,6 @@ add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
 	LdapSearch.cpp
 	LdapSearch.h
 	MainWindow.cpp
-	MainWindow_MyEID.cpp
 	MainWindow.h
 	MainWindow.ui
 	PrintSheet.cpp

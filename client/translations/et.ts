@@ -462,6 +462,10 @@
         <translation>Digitaalallkirjade kinnituslehe kuvamiseks peab olema arvutis vähemalt üks printer seadistatud!</translation>
     </message>
     <message>
+        <source>You are about to delete the last file in the container, it is removed along with the container.</source>
+        <translation>Oled kustutamas viimast faili ümbrikus, koos sellega eemaldatakse ka ümbrik.</translation>
+    </message>
+    <message>
         <source>Change</source>
         <translation>Muuda</translation>
     </message>
@@ -1364,10 +1368,6 @@ ID-kaardiga</translation>
     <message>
         <source>Converted to crypto container!</source>
         <translation>Konverteeritud turvaümbrikuks!</translation>
-    </message>
-    <message>
-        <source>You are about to delete the last file in the container, it is removed along with the container.</source>
-        <translation>Oled kustutamas viimast faili ümbrikus, koos sellega eemaldatakse ka ümbrik.</translation>
     </message>
     <message>
         <source>Removing signature</source>
