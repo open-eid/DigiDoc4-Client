@@ -51,8 +51,8 @@ void Diagnostics::generalInfo(QTextStream &s)
 		<< "<br /><br /><b>" << tr("TSL signing certs") << ":</b>";
 	for(const QSslCertificate &cert: Application::confValue(Application::TSLCerts).value<QList<QSslCertificate>>())
 		s << "<br />" << cert.subjectInfo("CN").value(0);
-	s << "<br /><br /><b>" << tr("TSL cache") << ":</b>";
 	QString cache = Application::confValue(Application::TSLCache).toString();
+	s << "<br /><br /><b>" << tr("TSL cache") << "</b> (" << cache << "):";
 	const QStringList tsllist = QDir(cache).entryList({QStringLiteral("*.xml")});
 	for(const QString &file: tsllist)
 	{
@@ -80,7 +80,7 @@ void Diagnostics::generalInfo(QTextStream &s)
 	s << "<br /><b>" << tr("Smart Card readers") << ":</b><br />";
 	for( const QString &readername: QPCSC::instance().readers() )
 	{
-		s << readername;
+		s << "<br />" << readername;
 		QPCSCReader reader( readername, &QPCSC::instance() );
 		if( !reader.isPresent() )
 		{
