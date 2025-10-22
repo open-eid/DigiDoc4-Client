@@ -462,6 +462,10 @@
         <translation>In order to view Validity Confirmation Sheet there has to be at least one printer installed!</translation>
     </message>
     <message>
+        <source>You are about to delete the last file in the container, it is removed along with the container.</source>
+        <translation>You are about to delete the last file in the container, it is removed along with the container.</translation>
+    </message>
+    <message>
         <source>Change</source>
         <translation>Change</translation>
     </message>
@@ -1364,10 +1368,6 @@ ID-Card</translation>
     <message>
         <source>Converted to crypto container!</source>
         <translation>Converted to crypto container!</translation>
-    </message>
-    <message>
-        <source>You are about to delete the last file in the container, it is removed along with the container.</source>
-        <translation>You are about to delete the last file in the container, it is removed along with the container.</translation>
     </message>
     <message>
         <source>Removing signature</source>
