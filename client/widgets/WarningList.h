@@ -29,10 +29,7 @@ class WarningList: public StyledWidget
 public:
 	explicit WarningList(QWidget *parent = nullptr);
 
-	void clearMyEIDWarnings();
-	void closeWarning(int warningType);
 	void closeWarnings(int page);
 	void showWarning(WarningText warningText);
 	void updateWarnings(int page);
-
 };
