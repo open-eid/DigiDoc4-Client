@@ -462,6 +462,10 @@
         <translation>In order to view Validity Confirmation Sheet there has to be at least one printer installed!</translation>
     </message>
     <message>
+        <source>You are about to delete the last file in the container, it is removed along with the container.</source>
+        <translation>You are about to delete the last file in the container, it is removed along with the container.</translation>
+    </message>
+    <message>
         <source>Change</source>
         <translation>Change</translation>
     </message>
@@ -789,6 +793,12 @@
 </context>
 <context>
     <name>DocumentModel</name>
+    <message>
+        <source>Cannot add container to same container
+%1</source>
+        <translation>Cannot add container to same container
+%1</translation>
+    </message>
     <message>
         <source>A file with this extension cannot be opened in the DigiDoc4 Client. Download the file to view it.</source>
         <translation>A file with this extension cannot be opened in the DigiDoc4 Client. Download the file to view it.</translation>
@@ -1366,10 +1376,6 @@ ID-Card</translation>
         <translation>Converted to crypto container!</translation>
     </message>
     <message>
-        <source>You are about to delete the last file in the container, it is removed along with the container.</source>
-        <translation>You are about to delete the last file in the container, it is removed along with the container.</translation>
-    </message>
-    <message>
         <source>Removing signature</source>
         <translation>Removing signature</translation>
     </message>
@@ -1380,12 +1386,6 @@ ID-Card</translation>
     <message>
         <source>Files can not be added to the cryptocontainer. The system will create a new container which shall contain the cypto-document and the files you wish to add.</source>
         <translation>Files can not be added to the cryptocontainer. The system will create a new container which shall contain the cypto-document and the files you wish to add.</translation>
-    </message>
-    <message>
-        <source>Cannot add container to same container
-%1</source>
-        <translation>Cannot add container to same container
-%1</translation>
     </message>
     <message>
         <source>Connect the card reader to your computer and insert your ID card into the reader</source>

@@ -34,6 +34,7 @@ class DigiDoc;
 class QSslCertificate;
 class SignatureItem;
 class SslCertificate;
+class TokenData;
 struct WarningText;
 
 class ContainerPage final : public QWidget
@@ -45,6 +46,7 @@ public:
 	~ContainerPage() final;
 
 	void cardChanged(const SslCertificate &cert, bool isBlocked = false);
+	void tokenChanged(const TokenData &token);
 	void clearPopups();
 	void setHeader(const QString &file);
 	void togglePrinting(bool enable);
@@ -55,13 +57,14 @@ Q_SIGNALS:
 	void action(int code, const QString &idCode = {}, const QString &info2 = {});
 	void addFiles(const QStringList &files);
 	void certChanged(const SslCertificate &cert);
-	void fileRemoved(int row);
 	void removed(int row);
 	void warning(const WarningText &warningText);
 
 private:
 	void changeEvent(QEvent* event) final;
 	void clear(int code);
+	template<class C>
+	void deleteConfirm(C *c, int index);
 	void elideFileName();
 	bool eventFilter(QObject *o, QEvent *e) final;
 	void showMainAction(const QList<ria::qdigidoc4::Actions> &actions);
@@ -79,7 +82,6 @@ private:
 	const char *cancelText = QT_TR_NOOP("Cancel");
 	const char *convertText = QT_TR_NOOP("Encrypt");
 	bool isSupported = false;
-	bool hasEmptyFile = false;
 	bool isSeal = false;
 	bool isExpired = false;
 	bool isBlocked = false;
