@@ -104,6 +104,7 @@ public:
 	bool pinChange(QSmartCardData::PinType type, PinAction action = ChangeWithPin, QWidget* parent = nullptr);
 
 Q_SIGNALS:
+	void tokenChanged(const TokenData &data);
 	void dataChanged(const QSmartCardData &data);
 
 private:

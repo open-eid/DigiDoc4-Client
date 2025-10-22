@@ -117,8 +117,9 @@ void FileList::open(FileItem *item) const
 
 void FileList::removeItem(int row)
 {
+	if(!documentModel->removeRow(row))
+		return;
 	ItemList::removeItem(row);
-
 	updateDownload();
 }
 
@@ -203,9 +204,8 @@ void FileList::setModel(DocumentModel *documentModel)
 {
 	this->documentModel = documentModel;
 	disconnect(documentModel, &DocumentModel::added, nullptr, nullptr);
-	disconnect(documentModel, &DocumentModel::removed, nullptr, nullptr);
 	connect(documentModel, &DocumentModel::added, this, &FileList::addFile);
-	connect(documentModel, &DocumentModel::removed, this, &FileList::removeItem);
+
 	auto count = documentModel->rowCount();
 	for(int i = 0; i < count; i++)
 		addFile(documentModel->data(i));

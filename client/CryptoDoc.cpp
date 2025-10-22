@@ -100,24 +100,13 @@ bool CDocumentModel::addFile(const QString &file, const QString &mime)
 		return false;
 
 	QFileInfo info(file);
-	if(info.size() == 0)
-	{
-		WarningDialog::show(DocumentModel::tr("Cannot add empty file to the container."));
+	if(!addFileCheck(d->fileName, info))
 		return false;
-	}
+
 	if(d->cdoc->version() == 1 && info.size() > 120*1024*1024)
 	{
 		WarningDialog::show(tr("Added file(s) exceeds the maximum size limit of the container (∼120MB). "
 			"<a href='https://www.id.ee/en/article/encrypting-large-120-mb-files/'>Read more about it</a>"));
-		return false;
-	}
-
-	QString fileName(info.fileName());
-	if(std::any_of(d->cdoc->files.cbegin(), d->cdoc->files.cend(),
-			[&fileName](const auto &containerFile) { return containerFile.name == fileName; }))
-	{
-		WarningDialog::show(DocumentModel::tr("Cannot add the file to the envelope. File '%1' is already in container.")
-			 .arg(FileDialog::normalized(fileName)));
 		return false;
 	}
 
@@ -196,7 +185,6 @@ bool CDocumentModel::removeRow(int row)
 	}
 
 	d->cdoc->files.erase(d->cdoc->files.cbegin() + row);
-	emit removed(row);
 	return true;
 }
 

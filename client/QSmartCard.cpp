@@ -613,63 +613,62 @@ void QSmartCard::reloadCard(const TokenData &token, bool reloadCounters)
 {
 	qCDebug(CLog) << "Polling";
 	d->token = token;
+	Q_EMIT tokenChanged(token);
 	if(!reloadCounters && !d->t.isNull() && !d->t.card().isEmpty() && d->t.card() == d->token.card())
 		return;
 
-	std::thread([&] {
-		// check if selected card is same as signer
-		if(!d->t.card().isEmpty() && d->token.card() != d->t.card())
-			d->t.d = new QSmartCardDataPrivate();
+	// check if selected card is same as signer
+	if(!d->t.card().isEmpty() && d->token.card() != d->t.card())
+		d->t.d = new QSmartCardDataPrivate();
 
-		// select signer card
-		if(d->t.card().isEmpty() || d->t.card() != d->token.card())
-		{
-			QSharedDataPointer<QSmartCardDataPrivate> t = d->t.d;
-			t->card = d->token.card();
-			t->data.clear();
-			t->authCert.clear();
-			t->signCert.clear();
-			d->t.d = std::move(t);
-		}
-
-		if(!reloadCounters && (!d->t.isNull() || d->token.reader().isEmpty()))
-			return;
-
-		QString reader = d->token.reader();
-		if(d->token.reader().endsWith(QLatin1String("..."))) {
-			for(const QString &test: QPCSC::instance().readers()) {
-				if(test.startsWith(d->token.reader().left(d->token.reader().size() - 3)))
-					reader = test;
-			}
-		}
-
-		qCDebug(CLog) << "Read" << reader;
-		QPCSCReader selectedReader(reader, &QPCSC::instance());
-		if(!selectedReader.connect())
-			return;
-
-		if(auto atr = selectedReader.atr();
-			IDEMIACard::isSupported(atr))
-			d->card = std::make_unique<IDEMIACard>();
-		else if(THALESCard::isSupported(atr))
-			d->card = std::make_unique<THALESCard>();
-		else {
-			qCDebug(CLog) << "Unsupported card";
-			return;
-		}
-
-		qCDebug(CLog) << "Read card" << d->token.card() << "info";
+	// select signer card
+	if(d->t.card().isEmpty() || d->t.card() != d->token.card())
+	{
 		QSharedDataPointer<QSmartCardDataPrivate> t = d->t.d;
-		t->reader = selectedReader.name();
-		t->pinpad = selectedReader.isPinPad();
-		if(d->card->loadPerso(&selectedReader, t))
-		{
-			d->t.d = std::move(t);
-			emit dataChanged(d->t);
+		t->card = d->token.card();
+		t->data.clear();
+		t->authCert.clear();
+		t->signCert.clear();
+		d->t.d = std::move(t);
+	}
+
+	if(!reloadCounters && (!d->t.isNull() || d->token.reader().isEmpty()))
+		return;
+
+	QString reader = d->token.reader();
+	if(d->token.reader().endsWith(QLatin1String("..."))) {
+		for(const QString &test: QPCSC::instance().readers()) {
+			if(test.startsWith(d->token.reader().left(d->token.reader().size() - 3)))
+				reader = test;
 		}
-		else
-			qCDebug(CLog) << "Failed to read card info, try again next round";
-	}).detach();
+	}
+
+	qCDebug(CLog) << "Read" << reader;
+	QPCSCReader selectedReader(reader, &QPCSC::instance());
+	if(auto atr = selectedReader.atr();
+		IDEMIACard::isSupported(atr))
+		d->card = std::make_unique<IDEMIACard>();
+	else if(THALESCard::isSupported(atr))
+		d->card = std::make_unique<THALESCard>();
+	else {
+		qCDebug(CLog) << "Unsupported card";
+		d->card.reset();
+		return;
+	}
+
+	if(!selectedReader.connect())
+		return;
+	qCDebug(CLog) << "Read card" << d->token.card() << "info";
+	QSharedDataPointer<QSmartCardDataPrivate> t = d->t.d;
+	t->reader = selectedReader.name();
+	t->pinpad = selectedReader.isPinPad();
+	if(d->card->loadPerso(&selectedReader, t))
+	{
+		d->t.d = std::move(t);
+		emit dataChanged(d->t);
+	}
+	else
+		qCDebug(CLog) << "Failed to read card info, try again next round";
 }
 
 TokenData QSmartCard::tokenData() const { return d->token; }

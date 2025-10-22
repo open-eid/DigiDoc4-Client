@@ -27,6 +27,37 @@
 #include <QtCore/QFileInfo>
 #include <QtCore/QProcessEnvironment>
 
+bool DocumentModel::addFileCheck(const QString &container, QFileInfo file)
+{
+	// Check that container is not dropped into itself
+	if(QFileInfo(container) == file)
+	{
+		auto *dlg = new WarningDialog(tr("Cannot add container to same container\n%1")
+			.arg(FileDialog::normalized(container)));
+		dlg->setCancelText(WarningDialog::Cancel);
+		dlg->open();
+		return false;
+	}
+
+	if(file.size() == 0)
+	{
+		WarningDialog::show(tr("Cannot add empty file to the container."));
+		return false;
+	}
+	QString fileName = file.fileName();
+	for(int row = 0; row < rowCount(); row++)
+	{
+		if(fileName == data(row))
+		{
+			WarningDialog::show(tr("Cannot add the file to the envelope. File '%1' is already in container.")
+				.arg(FileDialog::normalized(fileName)));
+			return false;
+		}
+	}
+
+	return true;
+}
+
 void DocumentModel::addTempFiles(const QStringList &files)
 {
 	for(const QString &file: files)

@@ -352,7 +352,6 @@ void QSigner::run()
 
 void QSigner::selectCard(const TokenData &token)
 {
-	d->smartcard->reloadCard(token, false);
 	bool isSign = SslCertificate(token.cert()).keyUsage().contains(SslCertificate::NonRepudiation);
 	if(isSign)
 		Q_EMIT signDataChanged(d->sign = token);
@@ -370,6 +369,7 @@ void QSigner::selectCard(const TokenData &token)
 			Q_EMIT signDataChanged(d->sign = other);
 		break;
 	}
+	d->smartcard->reloadCard(token, false);
 }
 
 std::vector<unsigned char> QSigner::sign(const std::string &method, const std::vector<unsigned char> &digest ) const
