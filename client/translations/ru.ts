@@ -462,6 +462,10 @@
         <translation>Для отображения листа подтверждения действительности цифровой подписи на компьютере должен быть установлен как минимум один принтер!</translation>
     </message>
     <message>
+        <source>You are about to delete the last file in the container, it is removed along with the container.</source>
+        <translation>Вы собираетесь удалить последний файл в контейнере, он удаляется вместе с контейнером.</translation>
+    </message>
+    <message>
         <source>Change</source>
         <translation>Поменять</translation>
     </message>
@@ -789,6 +793,12 @@
 </context>
 <context>
     <name>DocumentModel</name>
+    <message>
+        <source>Cannot add container to same container
+%1</source>
+        <translation>Невозможно добавить контейнер в тот же контейнер
+%1</translation>
+    </message>
     <message>
         <source>A file with this extension cannot be opened in the DigiDoc4 Client. Download the file to view it.</source>
         <translation>Файл с таким расширением не может быть открыт в клиенте DigiDoc4. Загрузите файл, чтобы просмотреть его.</translation>
@@ -1366,10 +1376,6 @@ ID-картой</translation>
         <translation>Переделан в контейнер для зашифровывания!</translation>
     </message>
     <message>
-        <source>You are about to delete the last file in the container, it is removed along with the container.</source>
-        <translation>Вы собираетесь удалить последний файл в контейнере, он удаляется вместе с контейнером.</translation>
-    </message>
-    <message>
         <source>Removing signature</source>
         <translation>Удаление подписи</translation>
     </message>
@@ -1380,12 +1386,6 @@ ID-картой</translation>
     <message>
         <source>Files can not be added to the cryptocontainer. The system will create a new container which shall contain the cypto-document and the files you wish to add.</source>
         <translation>Файлы не могут быть добавлены в криптоконтейнер. Система создаст новый контейнер, в который будет добавлен зашифрованный документ и выбранные вами файлы.</translation>
-    </message>
-    <message>
-        <source>Cannot add container to same container
-%1</source>
-        <translation>Невозможно добавить контейнер в тот же контейнер
-%1</translation>
     </message>
     <message>
         <source>Connect the card reader to your computer and insert your ID card into the reader</source>
@@ -2807,7 +2807,7 @@ Additional licenses and components</source>
     </message>
     <message>
         <source>PIN%1 code must be changed in order to authenticate</source>
-        <translation>Чтобы аутентифицироваться, необходимо изменить PIN%1.</translation>
+        <translation>Чтобы аутентифицироваться, необходимо изменить PIN%1</translation>
     </message>
     <message>
         <source>PIN%1 code must be changed in order to sign</source>

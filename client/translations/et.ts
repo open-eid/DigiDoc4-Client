@@ -462,6 +462,10 @@
         <translation>Digitaalallkirjade kinnituslehe kuvamiseks peab olema arvutis vähemalt üks printer seadistatud!</translation>
     </message>
     <message>
+        <source>You are about to delete the last file in the container, it is removed along with the container.</source>
+        <translation>Oled kustutamas viimast faili ümbrikus, koos sellega eemaldatakse ka ümbrik.</translation>
+    </message>
+    <message>
         <source>Change</source>
         <translation>Muuda</translation>
     </message>
@@ -789,6 +793,12 @@
 </context>
 <context>
     <name>DocumentModel</name>
+    <message>
+        <source>Cannot add container to same container
+%1</source>
+        <translation>Ümbriku lisamine samasse ümbrikusse ebaõnnestus
+%1</translation>
+    </message>
     <message>
         <source>A file with this extension cannot be opened in the DigiDoc4 Client. Download the file to view it.</source>
         <translation>Sellise laiendiga faili ei ole võimalik avada DigiDoc4 kliendis. Faili vaatamiseks laadi see alla.</translation>
@@ -1366,10 +1376,6 @@ ID-kaardiga</translation>
         <translation>Konverteeritud turvaümbrikuks!</translation>
     </message>
     <message>
-        <source>You are about to delete the last file in the container, it is removed along with the container.</source>
-        <translation>Oled kustutamas viimast faili ümbrikus, koos sellega eemaldatakse ka ümbrik.</translation>
-    </message>
-    <message>
         <source>Removing signature</source>
         <translation>Allkirja eemaldamine</translation>
     </message>
@@ -1380,12 +1386,6 @@ ID-kaardiga</translation>
     <message>
         <source>Files can not be added to the cryptocontainer. The system will create a new container which shall contain the cypto-document and the files you wish to add.</source>
         <translation>Krüpto-ümbrikusse ei saa faile lisada. Süsteem loob uue ümbriku, kuhu lisatakse krüpteeritud dokument ja Sinu valitud failid.</translation>
-    </message>
-    <message>
-        <source>Cannot add container to same container
-%1</source>
-        <translation>Ümbriku lisamine samasse ümbrikusse ebaõnnestus
-%1</translation>
     </message>
     <message>
         <source>Connect the card reader to your computer and insert your ID card into the reader</source>
