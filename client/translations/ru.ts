@@ -2452,7 +2452,7 @@ Additional licenses and components</source>
 <context>
     <name>SignatureDialog</name>
     <message>
-        <source>Notice</source>
+        <source>Warnings</source>
         <translation>Предупреждение</translation>
     </message>
     <message>
@@ -2500,54 +2500,16 @@ Additional licenses and components</source>
         <translation>Значение</translation>
     </message>
     <message>
-        <source>Timestamp</source>
-        <translation>Временной штамп</translation>
-    </message>
-    <message>
-        <source>is valid</source>
-        <comment>Signature</comment>
-        <translation>действительна</translation>
-    </message>
-    <message>
-        <source>is valid</source>
-        <comment>Timestamp</comment>
-        <translation>действителен</translation>
-    </message>
-    <message>
-        <source>Warnings</source>
-        <translation>Предупреждения</translation>
-    </message>
-    <message>
-        <source>Restrictions</source>
-        <translation>Ограничения</translation>
-    </message>
-    <message>
         <source>This e-Signature is not equivalent with handwritten signature and therefore can be used only in transactions where Qualified e-Signature is not required.</source>
         <translation>Эта электронная подпись не эквивалентна рукописной подписи и поэтому может использоваться только в тех случаях, когда не требуется квалифицированная электронная подпись.</translation>
     </message>
     <message>
-        <source>is unknown</source>
-        <comment>Signature</comment>
-        <translation>неизвестная</translation>
-    </message>
-    <message>
-        <source>is unknown</source>
-        <comment>Timestamp</comment>
-        <translation>неизвестный</translation>
+        <source>The signature is valid, but the container has a specific feature. Usually, this feature has arisen accidentally when containers were created. However, as it is not possible to edit a container without invalidating the signature, &lt;a href=&apos;https://www.id.ee/en/article/digital-signing-and-electronic-signatures/&apos;&gt;a warning&lt;/a&gt; is displayed.</source>
+        <translation>Подпись действительна, но у контейнера имеется какая-то особенность. Чаще всего, такая особенность возникает при изготовлении контейнеров случайно. Однако поскольку контейнер невозможно изменить без потери действительности подписи, то отображается &lt;a href=&apos;https://www.id.ee/ru/artikkel/czifrovoe-podpisanie-i-elektronnye-podpisi/&apos;&gt;предупреждение&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>Unknown error</source>
         <translation>Неизвестная ошибка</translation>
-    </message>
-    <message>
-        <source>is not valid</source>
-        <comment>Signature</comment>
-        <translation>недействительна</translation>
-    </message>
-    <message>
-        <source>is not valid</source>
-        <comment>Timestamp</comment>
-        <translation>недействителен</translation>
     </message>
     <message>
         <source>This is an invalid signature or malformed digitally signed file. The signature is not valid.</source>
@@ -2628,10 +2590,6 @@ Additional licenses and components</source>
     <message>
         <source>Claimed signing time (UTC)</source>
         <translation>Заявленное время подписания (UTC)</translation>
-    </message>
-    <message>
-        <source>SIGNATURE_WARNING</source>
-        <translation>Подпись действительна, но у контейнера имеется какая-то особенность. Чаще всего, такая особенность возникает при изготовлении контейнеров случайно. Однако поскольку контейнер невозможно изменить без потери действительности подписи, то отображается &lt;a href=&apos;https://www.id.ee/ru/artikkel/czifrovoe-podpisanie-i-elektronnye-podpisi/&apos;&gt;&lt;span style=&apos;text-decoration: underline; font-weight: 900;&apos;&gt;предупреждение&lt;/span&gt;&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>Close</source>
