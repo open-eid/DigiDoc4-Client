@@ -723,7 +723,7 @@ bool DigiDoc::sign(const QString &city, const QString &state, const QString &zip
 	return false;
 }
 
-QList<DigiDocSignature> DigiDoc::signatures() const
+const QList<DigiDocSignature>& DigiDoc::signatures() const
 {
 	return m_signatures;
 }
@@ -733,7 +733,7 @@ ContainerState DigiDoc::state()
 	return containerState;
 }
 
-QList<DigiDocSignature> DigiDoc::timestamps() const
+const QList<DigiDocSignature>& DigiDoc::timestamps() const
 {
 	return m_timestamps;
 }

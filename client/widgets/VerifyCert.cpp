@@ -30,7 +30,6 @@ VerifyCert::VerifyCert(QWidget *parent)
 	, ui(new Ui::VerifyCert)
 {
 	ui->setupUi( this );
-	ui->nameIcon->load(QStringLiteral(":/images/icon_alert_red.svg"));
 
 	connect(ui->changePIN, &QPushButton::clicked, this, [this] {
 		if(cardData.retryCount(pinType) == 0 && cardData.pinLocked(pinType))
@@ -128,6 +127,7 @@ void VerifyCert::update()
 	bool isTempelType = c.type() & SslCertificate::TempelType;
 	bool isInvalidCert = !c.isNull() && !c.isValid();
 	bool isPUKReplacable = cardData.isPUKReplacable();
+	QString icon;
 	ui->info->clear();
 	ui->validUntil->show();
 
@@ -143,7 +143,8 @@ void VerifyCert::update()
 		ui->changePIN->setHidden(isBlockedPuk || !isPUKReplacable);
 		if(isBlockedPuk)
 		{
-			ui->info->setLabel("error");
+			icon = QStringLiteral(":/images/icon_alert_large_error.svg");
+			ui->info->setLabel(QStringLiteral("error"));
 			ui->info->setText(tr("PUK code is blocked because the PUK code has been entered 3 times incorrectly.<br/>"
 				"You can not unblock the PUK code yourself.<br/>As long as the PUK code is blocked, all eID options can be used, except PUK-code.<br/>") +
 				(isPUKReplacable ?
@@ -173,12 +174,15 @@ void VerifyCert::update()
 		if(isInvalidCert)
 		{
 			ui->validUntil->setText(tr("Certificate has expired!"));
-			ui->validUntil->setLabel("error");
+			ui->validUntil->setLabel(QStringLiteral("error"));
 		}
 		else if(qint64 leftDays = std::max<qint64>(0, QDateTime::currentDateTime().daysTo(c.expiryDate().toLocalTime())); leftDays <= 105 && !c.isNull())
-			ui->validUntil->setLabel("warning");
+		{
+			icon = QStringLiteral(":/images/icon_alert_large_warning.svg");
+			ui->validUntil->setLabel(QStringLiteral("warning"));
+		}
 		else
-			ui->validUntil->setLabel("good");
+			ui->validUntil->setLabel(QStringLiteral("good"));
 
 		ui->changePIN->setText(tr("Change PIN%1").arg(pinType));
 		ui->forgotPinLink->setText(tr("Change with PUK code"));
@@ -191,19 +195,22 @@ void VerifyCert::update()
 		}
 		else if(isInvalidCert)
 		{
-			ui->info->setLabel("error");
+			icon = QStringLiteral(":/images/icon_alert_large_error.svg");
+			ui->info->setLabel(QStringLiteral("error"));
 			ui->info->setText(tr("PIN%1 can not be used because the certificate has expired.").arg(pinType));
 		}
 		else if(isBlockedPin)
 		{
 			ui->changePIN->setText(tr("Unblock"));
-			ui->info->setLabel(isBlockedPuk ? "error" : "warning");
+			icon = isBlockedPuk ? QStringLiteral(":/images/icon_alert_large_error.svg") : QStringLiteral(":/images/icon_alert_large_warning.svg");
+			ui->info->setLabel(isBlockedPuk ? QStringLiteral("error") : QStringLiteral("warning"));
 			ui->info->setText(tr("PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times.").arg(pinType) +
-							  (isBlockedPuk ? QString() : ' ' + tr("Unblock to reuse PIN%1.").arg(pinType)));
+				(isBlockedPuk ? QString() : ' ' + tr("Unblock to reuse PIN%1.").arg(pinType)));
 		}
 		else if(isLockedPin)
 		{
-			ui->info->setLabel("warning");
+			icon = QStringLiteral(":/images/icon_alert_large_warning.svg");
+			ui->info->setLabel(QStringLiteral("warning"));
 			ui->info->setText((pinType == QSmartCardData::Pin1Type ?
 				tr("PIN%1 code must be changed in order to authenticate") :
 				tr("PIN%1 code must be changed in order to sign")).arg(pinType));
@@ -213,7 +220,8 @@ void VerifyCert::update()
 
 	ui->info->setHidden(ui->info->text().isEmpty());
 	ui->changePIN->setDefault(isBlockedPin);
-	ui->nameIcon->setVisible(isInvalidCert || isBlockedPin || isLockedPin);
+	ui->nameIcon->setHidden(icon.isEmpty());
+	ui->nameIcon->load(icon);
 
 	ui->links->setHidden(pinType == QSmartCardData::PukType && (isBlockedPuk || !isPUKReplacable)); // Keep visible in PUK to align fields equaly
 	ui->details->setHidden(pinType == QSmartCardData::PukType);
