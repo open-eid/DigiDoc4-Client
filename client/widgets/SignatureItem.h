@@ -41,7 +41,7 @@ private:
 	bool event(QEvent *event) final;
 	bool eventFilter(QObject *o, QEvent *e) final;
 	void init();
-	void updateNameField();
+	void elideRole();
 
 	class Private;
 	Private *ui;

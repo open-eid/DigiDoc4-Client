@@ -1610,7 +1610,7 @@ max-height: 22px;
           <string notr="true">QTextEdit {
 	color: #363739;
 	background: #FFFFFF;
-	border-bottom: 1px solid #DEE4E9;
+	border-bottom: 1px solid #E7EAEF;
 }
 QScrollBar {
 	width: 10px;
