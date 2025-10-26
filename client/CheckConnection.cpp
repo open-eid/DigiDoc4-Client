@@ -73,8 +73,10 @@ QNetworkAccessManager* CheckConnection::setupNAM(QNetworkRequest &req, const QBy
 		{
 			switch(error.error())
 			{
-			case QSslError::UnableToVerifyFirstCertificate:
-			case QSslError::UnableToGetLocalIssuerCertificate:
+            case QSslError::UnableToGetLocalIssuerCertificate:
+                ignore.append(error);
+                break;
+            case QSslError::UnableToVerifyFirstCertificate:
 			case QSslError::CertificateUntrusted:
 			case QSslError::SelfSignedCertificateInChain:
 				if(reply->sslConfiguration().caCertificates().contains(reply->sslConfiguration().peerCertificate())) {

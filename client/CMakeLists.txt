@@ -77,6 +77,8 @@ add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
 	QPCSC.h
 	QPKCS11.cpp
 	QPKCS11.h
+	qrcodegen.cpp qrcodegen.h
+	QrCodeGenerator.cpp QrCodeGenerator.h
 	QSigner.cpp
 	QSigner.h
 	QSmartCard.cpp

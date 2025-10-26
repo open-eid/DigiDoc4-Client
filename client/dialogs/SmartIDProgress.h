@@ -22,12 +22,13 @@
 #include <digidocpp/crypto/Signer.h>
 
 #include <QCoreApplication>
+#include <QtNetwork/QNetworkReply>
 
 class QWidget;
 
 class SmartIDProgress final: public digidoc::Signer
 {
-	Q_DECLARE_TR_FUNCTIONS(MobileProgress)
+	Q_DECLARE_TR_FUNCTIONS(SmartIDProgress)
 public:
 	explicit SmartIDProgress(QWidget *parent = nullptr);
 	~SmartIDProgress() final;
