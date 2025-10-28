@@ -365,7 +365,7 @@ void MainWindow::onSignAction(int action, const QString &info1, const QString &i
 		break;
 	case SignatureSmartID:
 		sign([this, info1, info2](const QString &city, const QString &state, const QString &zip, const QString &country, const QString &role) {
-			SmartIDProgress s(this);
+			SmartIDProgress s(ui->signContainerPage, this);
 			return s.init(info1, info2, digiDoc->fileName()) &&
 				digiDoc->sign(city, state, zip, country, role, &s);
 		});

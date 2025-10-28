@@ -25,7 +25,7 @@ border-radius: 4px;
 }
 #code {
 color: #003168;
-font-size: 32px;
+font-size: 16px;
 font-weight: 700;
 }
 QPushButton {
@@ -92,7 +92,7 @@ background-color: #82A9D3;
         </size>
        </property>
        <property name="text">
-        <string>Control code:</string>
+        <string>DeviceLink code</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignmentFlag::AlignCenter</set>
@@ -103,7 +103,7 @@ background-color: #82A9D3;
       <widget class="QLabel" name="code">
        <property name="minimumSize">
         <size>
-         <width>0</width>
+         <width>256</width>
          <height>256</height>
         </size>
        </property>
@@ -115,6 +115,9 @@ background-color: #82A9D3;
        </property>
        <property name="alignment">
         <set>Qt::AlignmentFlag::AlignCenter</set>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
        </property>
       </widget>
      </item>

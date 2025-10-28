@@ -19,6 +19,8 @@
 
 #pragma once
 
+#include "../widgets/ContainerPage.h"
+
 #include <digidocpp/crypto/Signer.h>
 
 #include <QCoreApplication>
@@ -30,7 +32,7 @@ class SmartIDProgress final: public digidoc::Signer
 {
 	Q_DECLARE_TR_FUNCTIONS(SmartIDProgress)
 public:
-	explicit SmartIDProgress(QWidget *parent = nullptr);
+    explicit SmartIDProgress(ContainerPage *container, QWidget *parent = nullptr);
 	~SmartIDProgress() final;
 	digidoc::X509Cert cert() const final;
 	bool init(const QString &country, const QString &idCode, const QString &fileName);
