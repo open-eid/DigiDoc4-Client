@@ -71,7 +71,6 @@ public:
 	std::vector<unsigned char> signature;
 	QEventLoop l;
 	bool useCustomUUID = Settings::SID_UUID_CUSTOM;
-    //QTimer *elapsedSecondsTimer {};
 #ifdef SIDV3TEST
 	QString UUID = "00000000-0000-4000-8000-000000000000";
 	QString NAME = "DEMO";
@@ -154,7 +153,6 @@ SmartIDProgress::Private::timeSlice()
         qCDebug(SIDLog).noquote() << "deviceLink: " << deviceLink;
         QrCodeGenerator gen;
         QImage img = gen.generateQr(deviceLink.toUtf8(), 256);
-        //code->clear();
         code->setPixmap(QPixmap::fromImage(img));
     }
 }
@@ -330,7 +328,6 @@ SmartIDProgress::SmartIDProgress(QWidget *parent)
 	d->setupUi(d);
 	d->signProgressBar->setMaximum(100);
 	d->code->setBuddy(d->signProgressBar);
-    //d->code->clear();
 #if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
 const auto styleSheet = R"(QProgressBar {
 background-color: #d3d3d3;;
