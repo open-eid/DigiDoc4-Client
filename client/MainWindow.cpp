@@ -52,6 +52,8 @@
 #include <QtPrintSupport/QPrintPreviewDialog>
 #include <QtWidgets/QMessageBox>
 
+#include <digidocpp/crypto/X509Cert.h>
+
 using namespace ria::qdigidoc4;
 using namespace std::chrono;
 
@@ -365,9 +367,12 @@ void MainWindow::onSignAction(int action, const QString &info1, const QString &i
 		break;
 	case SignatureSmartID:
 		sign([this, info1, info2](const QString &city, const QString &state, const QString &zip, const QString &country, const QString &role) {
-			SmartIDProgress s(ui->signContainerPage, this);
-			return s.init(info1, info2, digiDoc->fileName()) &&
-				digiDoc->sign(city, state, zip, country, role, &s);
+            SmartIDProgress s(this);
+            if (!s.init(info1, info2, digiDoc->fileName())) return false;
+            std::string subj_name = s.cert().subjectName("serialNumber");
+            if (subj_name.starts_with("PNOEE-")) subj_name = subj_name.substr(6, subj_name.size() - 6);
+            return ui->signContainerPage->checkIfAlreadySigned(SignatureMobile, QString::fromStdString(subj_name), {}) &&
+                digiDoc->sign(city, state, zip, country, role, &s);
 		});
 		break;
 	case ClearSignatureWarning:

@@ -49,56 +49,11 @@ Q_LOGGING_CATEGORY(SIDLog,"RIA.SmartID")
 
 using namespace digidoc;
 
-#ifdef SIDV3DEMO
-static constexpr std::string_view demo_cert(
-"MIIGxjCCBa6gAwIBAgIQA4Y3b5+iF/PA/Jog/YdMiTANBgkqhkiG9w0BAQsFADBZ"
-"MQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMTMwMQYDVQQDEypE"
-"aWdpQ2VydCBHbG9iYWwgRzIgVExTIFJTQSBTSEEyNTYgMjAyMCBDQTEwHhcNMjUw"
-"OTI5MDAwMDAwWhcNMjYxMDEwMjM1OTU5WjBVMQswCQYDVQQGEwJFRTEQMA4GA1UE"
-"BxMHVGFsbGlubjEbMBkGA1UEChMSU0sgSUQgU29sdXRpb25zIEFTMRcwFQYDVQQD"
-"Ew5zaWQuZGVtby5zay5lZTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEB"
-"AKAyy0yvjRCrATznThIwCu/wPCU5mV5UZIzNWl9KXx+gQiBp92SXfTOokkfiikBH"
-"09HI+yVr3zI2U6FR8Tj21GiFE3bttmpCw8tJLmTe/P0Xah1D6vVkymbBt69N24ur"
-"RqhW9in84WdkPc30vGJ+TdIj3jIePAbK3hHbpm+BfeyUhM48xXRgW+cBA//6R1C9"
-"lUaF9Ycylf+g/P7FpmzHRk2HF3bPyWziBVOhIADtqMyVEJk20dl0SWGsCmAJuAhM"
-"mOPc87zpXYzlAlY24XgsTyQdDnqmJn8ZukDahIt9ybKH/WPLkZfw6xBnsQKXdG0J"
-"HBqBsgQdPDFsrsY45o4ek0kCAwEAAaOCA4wwggOIMB8GA1UdIwQYMBaAFHSFgMBm"
-"x9833s+9KTeqAx2+7c0XMB0GA1UdDgQWBBSK7cmy40mto6zFVpcvnOyggb6YnzAZ"
-"BgNVHREEEjAQgg5zaWQuZGVtby5zay5lZTA+BgNVHSAENzA1MDMGBmeBDAECAjAp"
-"MCcGCCsGAQUFBwIBFhtodHRwOi8vd3d3LmRpZ2ljZXJ0LmNvbS9DUFMwDgYDVR0P"
-"AQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjCBnwYDVR0f"
-"BIGXMIGUMEigRqBEhkJodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vRGlnaUNlcnRH"
-"bG9iYWxHMlRMU1JTQVNIQTI1NjIwMjBDQTEtMS5jcmwwSKBGoESGQmh0dHA6Ly9j"
-"cmw0LmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEdsb2JhbEcyVExTUlNBU0hBMjU2MjAy"
-"MENBMS0xLmNybDCBhwYIKwYBBQUHAQEEezB5MCQGCCsGAQUFBzABhhhodHRwOi8v"
-"b2NzcC5kaWdpY2VydC5jb20wUQYIKwYBBQUHMAKGRWh0dHA6Ly9jYWNlcnRzLmRp"
-"Z2ljZXJ0LmNvbS9EaWdpQ2VydEdsb2JhbEcyVExTUlNBU0hBMjU2MjAyMENBMS0x"
-"LmNydDAMBgNVHRMBAf8EAjAAMIIBgAYKKwYBBAHWeQIEAgSCAXAEggFsAWoAdgDX"
-"bX0Q0af1d8LH6V/XAL/5gskzWmXh0LMBcxfAyMVpdwAAAZmUn22IAAAEAwBHMEUC"
-"IAanrRi7HrSbyOqc6s3QsP+S8ibPGe+g2pUuzEGb57EAAiEAi0496oVaL4EKdy1x"
-"3g0gEivDSKVPKfn56YdyQ52GhbYAdwDCMX5XRRmjRe5/ON6ykEHrx8IhWiK/f9W1"
-"rXaa2Q5SzQAAAZmUn20+AAAEAwBIMEYCIQCgHI7+yoKhNz7CZ9/5LezV38zyg/AD"
-"2AwiQrrEfa9MSgIhAJ07CbJzN6TxII1Ow+NypN7aAlLw/p86gfafmgvKS+2BAHcA"
-"lE5Dh/rswe+B8xkkJqgYZQHH0184AgE/cmd9VTcuGdgAAAGZlJ9tUwAABAMASDBG"
-"AiEAuW7FVE3L1aNS83JHCFWaE0TgeaeOO7uYOw2hp4Hh1xsCIQC2iXVffo69rRnt"
-"gnWvYZlXb/lIIawbcXXtXT0BPyFRbjANBgkqhkiG9w0BAQsFAAOCAQEAii5sJkW/"
-"8qFlivqRf8L6HCxb0Q8wTeiFl/NGYuMkBL0RdRkLm14jGyCcFaQe6A3KLjDaLPa/"
-"lSbBMRexH6r3oEzJeS8iuNMjEUKngyQh5PPOToO4Oi0rcHG2HjIMeOUAi7bHviu3"
-"LOWMOmpoEtf1TRNQ7SBjOAj4qNbrVZCUoGdE2A9a/XOQZAyXaDwR89pEf898qMKY"
-"mvht16vVX0g7FWkZ4X1ZQ/gqSjLyRwL/2B7mrgvsEeEU9nU0ZeM9Zsi/kKCJlmJF"
-"G7nAniMUckeqRHX/RRGLQTCvE0RhnWcWbP54pi7XsyBDB3L9Uhw7szL9BE8Jtbuu"
-"nnzTrMS+J2MQbQ==");
-#endif
-
 class SmartIDProgress::Private final: public QDialog, public Ui::SmartIDProgress
 {
 	Q_OBJECT
 public:
 	using QDialog::QDialog;
-
-    ContainerPage *container;
-
-    Private(ContainerPage *_container, QWidget *_parent) : QDialog(_parent), container(_container) {}
 
     void reject() final { l.exit(QDialog::Rejected); }
 	void setVisible(bool visible) final {
@@ -280,7 +235,8 @@ SmartIDProgress::Private::endResultError(QString& endResult)
         returnError(tr("Error: an incorrect control code was chosen"));
     else if(endResult == QLatin1String("DOCUMENT_UNUSABLE"))
         returnError(tr("Your Smart-ID transaction has failed. Please check your Smart-ID application or contact Smart-ID customer support."));
-    returnError(tr("Service result: ") + endResult);
+	else
+    	returnError(tr("Service result: ") + endResult);
 }
 
 void
@@ -316,7 +272,7 @@ SmartIDProgress::Private::httpFinished(QNetworkReply *reply) {
         deviceLinkBase = result.value(QLatin1String("deviceLinkBase")).toString();
         qCDebug(SIDLog).noquote() << "deviceLinkBase: " << deviceLinkBase;
 		if (!sessionToken.isEmpty()) {
-			// Certificate selection session
+			// Certificate selection session (as opposed to signing)
 			qCDebug(SIDLog).noquote() << "Starting QR timer";
 			startTimeStamp = QDateTime::currentSecsSinceEpoch();
 			timeSlice();
@@ -361,15 +317,14 @@ SmartIDProgress::Private::httpFinished(QNetworkReply *reply) {
 	manager->get(req);
 }
 
-SmartIDProgress::SmartIDProgress(ContainerPage *container, QWidget *parent)
-    : d(new Private(container, parent))
+SmartIDProgress::SmartIDProgress(QWidget *parent)
+    : d(new Private(parent))
 {
-#if 0
+#ifdef SIDV3DEMO
+	const_cast<QLoggingCategory&>(SIDLog()).setEnabled(QtDebugMsg, true);
+#else
 	const_cast<QLoggingCategory&>(SIDLog()).setEnabled(QtDebugMsg,
 		QFile::exists(QStringLiteral("%1/%2.log").arg(QDir::tempPath(), QApplication::applicationName())));
-#else
-	const_cast<QLoggingCategory&>(SIDLog()).setEnabled(QtDebugMsg, true);
-	qCDebug(SIDLog).noquote() << "Tere Talv!";
 #endif
 	d->setWindowFlags(Qt::Dialog|Qt::CustomizeWindowHint);
 	d->setupUi(d);
@@ -400,12 +355,7 @@ background-color: #007aff;
 	QObject::connect(d->statusTimer, &QTimeLine::frameChanged, d->signProgressBar, &QProgressBar::setValue);
 
 	d->req.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-#ifdef SIDV3DEMO
-	QByteArray cba = QByteArray::fromBase64(demo_cert.data());
-	d->manager = CheckConnection::setupNAM(d->req, cba);
-#else
 	d->manager = CheckConnection::setupNAM(d->req);
-#endif
 	d->manager->setParent(d);
     QNetworkAccessManager::connect(d->manager, &QNetworkAccessManager::finished, d, &SmartIDProgress::Private::httpFinished);
 }
@@ -457,11 +407,11 @@ bool SmartIDProgress::init(const QString &country, const QString &idCode, const 
 std::vector<unsigned char> SmartIDProgress::sign(const std::string &method, const std::vector<unsigned char> &digest) const
 {
 	QString digestMethod;
-	if(method == "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256")
+	if((method == "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256") || (method == "http://www.w3.org/2007/05/xmldsig-more#sha256-rsa-MGF1"))
 		digestMethod = QStringLiteral("SHA-256");
-	else if(method == "http://www.w3.org/2001/04/xmldsig-more#rsa-sha384")
+	else if((method == "http://www.w3.org/2001/04/xmldsig-more#rsa-sha384") || (method == "http://www.w3.org/2007/05/xmldsig-more#sha384-rsa-MGF1"))
 		digestMethod = QStringLiteral("SHA-384");
-	else if(method == "http://www.w3.org/2001/04/xmldsig-more#rsa-sha512")
+	else if((method == "http://www.w3.org/2001/04/xmldsig-more#rsa-sha512") || (method == "http://www.w3.org/2007/05/xmldsig-more#sha512-rsa-MGF1"))
 		digestMethod = QStringLiteral("SHA-512");
 	else
 		throw Exception(__FILE__, __LINE__, "Unsupported digest method");
@@ -503,9 +453,9 @@ std::vector<unsigned char> SmartIDProgress::sign(const std::string &method, cons
 
 	d->manager->post(d->req, data);
 	d->statusTimer->start();
-    d->code->setText(tr("Please confirm signing on your smart device"));
+    d->info->setText(tr("Please confirm signing on your smart device"));
 	d->label->hide();
-	d->info->hide();
+	d->code->hide();
 	d->adjustSize();
 	d->show();
 	switch(d->l.exec())
@@ -520,6 +470,12 @@ std::vector<unsigned char> SmartIDProgress::sign(const std::string &method, cons
 	default:
 		throw Exception(__FILE__, __LINE__, "Failed to sign container");
 	}
+}
+
+std::string
+SmartIDProgress::method() const
+{
+	return "http://www.w3.org/2007/05/xmldsig-more#sha256-rsa-MGF1";
 }
 
 #include "SmartIDProgress.moc"
