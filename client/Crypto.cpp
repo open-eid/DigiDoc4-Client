@@ -28,6 +28,7 @@
 #include <openssl/ec.h>
 #include <openssl/err.h>
 #include <openssl/evp.h>
+#include <openssl/hmac.h>
 #include <openssl/kdf.h>
 #include <openssl/rand.h>
 #include <openssl/rsa.h>
@@ -329,6 +330,15 @@ QByteArray Crypto::sign_hmac(const QByteArray &key, const QByteArray &data)
 	if(isError(EVP_DigestSignFinal(ctx.get(), puchar(sig.data()), &req)))
 		sig.clear();
 	return sig;
+}
+
+QByteArray
+Crypto::hmacSha256(const QByteArray& key, const QByteArray& data)
+{
+	uint8_t b[32];
+	unsigned int len = 32;
+	HMAC(EVP_sha256(), key.data(), (int) key.size(), (const uint8_t *) data.data(), (int) data.size(), b, &len);
+	return QByteArray((const char *) b, len);
 }
 
 QByteArray Crypto::toPublicKeyDer(EVP_PKEY *key)

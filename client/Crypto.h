@@ -65,6 +65,7 @@ public:
 	static QByteArray genKey(const EVP_CIPHER *cipher);
 	static QByteArray hkdf(const QByteArray &key, const QByteArray &salt, const QByteArray &info, int len = 32, int mode = 0);
 	static QByteArray sign_hmac(const QByteArray &key, const QByteArray &data);
+	static QByteArray hmacSha256(const QByteArray& key, const QByteArray& data);
 	static QByteArray toPublicKeyDer(EVP_PKEY *key);
 	static QByteArray toPublicKeyDer(const QSslKey &key);
 	static QByteArray random(int len = 32);

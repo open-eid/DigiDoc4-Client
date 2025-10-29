@@ -284,6 +284,7 @@ jobs:
         patterns: |
           -**/*autogen*/**
           -**/common/qtsingleapplication/**
+          -**/client/qrcodegen/**
           -**:cpp/loop-variable-changed
           -**:cpp/poorly-documented-function
         input: sarif-results/cpp.sarif
