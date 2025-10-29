@@ -166,21 +166,7 @@ void ContainerPage::forward(int code)
 	}
 	case SignatureSmartID:
 	{
-#if 1
         emit action(SignatureSmartID);
-#else
-        if(SmartIDDialog dlg(this); dlg.exec() == QDialog::Accepted)
-		{
-			if(checkAction(SignatureMobile, dlg.idCode(), {}))
-				emit action(SignatureSmartID, dlg.country(), dlg.idCode());
-		}
-
-		if(QString newCode = Settings::SMARTID_CODE; newCode != mobileCode)
-		{
-			mobileCode = std::move(newCode);
-			showSigningButton();
-		}
-#endif
 		break;
 	}
 	case ContainerCancel:

@@ -28,7 +28,6 @@
 #include <QtCore/QJsonValue>
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkRequest>
-#include <QFile>
 
 bool CheckConnection::check(const QUrl &url)
 {
