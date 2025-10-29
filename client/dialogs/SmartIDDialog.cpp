@@ -55,8 +55,8 @@ SmartIDDialog::SmartIDDialog(QWidget *parent)
 		Settings::SMARTID_CODE = checked ? idCode() : QString();
 		Settings::SMARTID_COUNTRY = checked ? country() : EE;
 	};
-	auto setError = [](QLineEdit *input, QLabel *error, const QString &msg) {
-		input->setStyleSheet(msg.isEmpty() ? QString() : QStringLiteral("border-color: #BE7884"));
+	auto setError = [](LineEdit *input, QLabel *error, const QString &msg) {
+		input->setLabel(msg.isEmpty() ? QString() : QStringLiteral("error"));
 		error->setText(msg);
 		error->setHidden(msg.isEmpty());
 	};

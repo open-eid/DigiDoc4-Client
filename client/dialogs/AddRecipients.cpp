@@ -77,7 +77,7 @@ AddRecipients::AddRecipients(ItemList* itemList, QWidget *parent)
 	connect(ldap_corp, &LdapSearch::error, this, &AddRecipients::showError);
 	connect(this, &AddRecipients::finished, this, &AddRecipients::close);
 
-	connect(ui->leftPane, &ItemList::addAll, this, [this] {
+	connect(ui->leftPane, &ItemList::add, this, [this] {
 		for(Item *item: ui->leftPane->items)
 			addRecipientToRightPane(item);
 	});

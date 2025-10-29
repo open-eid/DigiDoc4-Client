@@ -221,7 +221,8 @@ void VerifyCert::update()
 	ui->info->setHidden(ui->info->text().isEmpty());
 	ui->changePIN->setDefault(isBlockedPin);
 	ui->nameIcon->setHidden(icon.isEmpty());
-	ui->nameIcon->load(icon);
+	if(!icon.isEmpty())
+		ui->nameIcon->load(icon);
 
 	ui->links->setHidden(pinType == QSmartCardData::PukType && (isBlockedPuk || !isPUKReplacable)); // Keep visible in PUK to align fields equaly
 	ui->details->setHidden(pinType == QSmartCardData::PukType);

@@ -70,7 +70,7 @@ private:
 	void moveSignatureContainer();
 	void navigateToPage( ria::qdigidoc4::Pages page, const QStringList &files = QStringList(), bool create = true );
 	void onCryptoAction(int action, const QString &id, const QString &phone);
-	void onSignAction(int action, const QString &info1, const QString &info2);
+	void onSignAction(int action, const QString &idCode, const QString &info2);
 	void openContainer(bool signature);
 	void pageSelected(int page, bool checked = true);
 	void resetDigiDoc(DigiDoc *doc = nullptr, bool warnOnChange = true);

@@ -39,6 +39,9 @@ background-color: white;
 placeholder-text-color: #607496;
 font-size: 16px;
 }
+QLineEdit[label=&quot;error&quot;] {
+border-color: #BE7884;
+}
 QPushButton {
 padding: 12px 12px;
 border-radius: 4px;
@@ -148,9 +151,12 @@ background-color: #82A9D3;
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="pin">
+        <widget class="LineEdit" name="pin">
          <property name="echoMode">
           <enum>QLineEdit::Password</enum>
+         </property>
+         <property name="label" stdset="0">
+          <string notr="true"/>
          </property>
         </widget>
        </item>
@@ -234,6 +240,13 @@ background-color: #82A9D3;
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>LineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>widgets/LineEdit.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

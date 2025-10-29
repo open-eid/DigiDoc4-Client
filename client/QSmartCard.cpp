@@ -191,11 +191,11 @@ const QByteArray IDEMIACard::AID_QSCD = APDU("00A4040C 10 51534344204170706C6963
 const QByteArray IDEMIACard::ATR_COSMO8 = QByteArrayLiteral("3BDB960080B1FE451F830012233F536549440F9000F1");
 const QByteArray IDEMIACard::ATR_COSMOX = QByteArrayLiteral("3BDC960080B1FE451F830012233F54654944320F9000C3");
 
-QPCSCReader::Result IDEMIACard::change(QPCSCReader *reader, QSmartCardData::PinType type, const QString &pin_, const QString &newpin_) const
+QPCSCReader::Result IDEMIACard::change(QPCSCReader *reader, QSmartCardData::PinType type, QByteArray &&pin, QByteArray &&newpin) const
 {
 	QByteArray cmd = CHANGE;
-	QByteArray newpin = pinTemplate(newpin_);
-	QByteArray pin = pinTemplate(pin_);
+	newpin = pinTemplate(std::move(newpin));
+	pin = pinTemplate(std::move(pin));
 	switch (type) {
 	case QSmartCardData::Pin1Type:
 		cmd[3] = 1;
@@ -291,20 +291,19 @@ bool IDEMIACard::loadPerso(QPCSCReader *reader, QSmartCardDataPrivate *d) const
 	return updateCounters(reader, d);
 }
 
-QByteArray IDEMIACard::pinTemplate(const QString &pin)
+QByteArray IDEMIACard::pinTemplate(QByteArray &&pin)
 {
-	QByteArray result = pin.toUtf8();
 #if QT_VERSION >= QT_VERSION_CHECK(6, 4, 0)
-	result.resize(12, char(0xFF));
+	pin.resize(12, char(0xFF));
 #else
-	result += QByteArray(12 - result.size(), char(0xFF));
+	pin += QByteArray(12 - pin.size(), char(0xFF));
 #endif
-	return result;
+	return std::move(pin);
 }
 
-QPCSCReader::Result IDEMIACard::replace(QPCSCReader *reader, QSmartCardData::PinType type, const QString &puk_, const QString &pin_) const
+QPCSCReader::Result IDEMIACard::replace(QPCSCReader *reader, QSmartCardData::PinType type, QByteArray &&puk, QByteArray &&pin) const
 {
-	QByteArray puk = pinTemplate(puk_);
+	puk = pinTemplate(std::move(puk));
 	QByteArray cmd = VERIFY;
 	cmd[3] = 2;
 	cmd[4] = char(puk.size());
@@ -321,7 +320,7 @@ QPCSCReader::Result IDEMIACard::replace(QPCSCReader *reader, QSmartCardData::Pin
 	}
 	else
 		cmd[3] = char(type);
-	QByteArray pin = pinTemplate(pin_);
+	pin = pinTemplate(std::move(pin));
 	cmd[4] = char(pin.size());
 	return transfer(reader, false, cmd + pin, type, 0, false);
 }
@@ -352,11 +351,11 @@ bool IDEMIACard::updateCounters(QPCSCReader *reader, QSmartCardDataPrivate *d) c
 
 const QByteArray THALESCard::AID = APDU("00A4040C 0C A000000063504B43532D3135");
 
-QPCSCReader::Result THALESCard::change(QPCSCReader *reader, QSmartCardData::PinType type, const QString &pin_, const QString &newpin_) const
+QPCSCReader::Result THALESCard::change(QPCSCReader *reader, QSmartCardData::PinType type, QByteArray &&pin, QByteArray &&newpin) const
 {
 	QByteArray cmd = CHANGE;
-	QByteArray newpin = pinTemplate(newpin_);
-	QByteArray pin = pinTemplate(pin_);
+	newpin = pinTemplate(std::move(newpin));
+	pin = pinTemplate(std::move(pin));
 	cmd[3] = char(0x80 | type);
 	cmd[4] = char(pin.size() + newpin.size());
 	return transfer(reader, false, cmd + pin + newpin, type, quint8(pin.size()), true);
@@ -453,10 +452,10 @@ QByteArray THALESCard::pinTemplate(const QString &pin)
 	return result;
 }
 
-QPCSCReader::Result THALESCard::replace(QPCSCReader *reader, QSmartCardData::PinType type, const QString &puk_, const QString &pin_) const
+QPCSCReader::Result THALESCard::replace(QPCSCReader *reader, QSmartCardData::PinType type, QByteArray &&puk, QByteArray &&pin) const
 {
-	QByteArray puk = pinTemplate(puk_);
-	QByteArray pin = pinTemplate(pin_);
+	puk = pinTemplate(std::move(puk));
+	pin = pinTemplate(std::move(pin));
 	QByteArray cmd = REPLACE;
 	cmd[3] = char(0x80 | type);
 	cmd[4] = char(puk.size() + pin.size());
@@ -551,9 +550,9 @@ bool QSmartCard::pinChange(QSmartCardData::PinType type, QSmartCard::PinAction a
 		FadeInNotification::warning(parent, tr("Changing %1 failed").arg(QSmartCardData::typeString(type)));
 		return false;
 	}
-	QPCSCReader::Result	response = src == QSmartCardData::PukType ?
-		d->card->replace(&reader, type, oldPin, newPin) :
-		d->card->change(&reader, type, oldPin, newPin);
+	auto response = action == QSmartCard::ChangeWithPin || action == QSmartCard::ActivateWithPin ?
+		d->card->change(&reader, type, std::move(oldPin), std::move(newPin)) :
+		d->card->replace(&reader, type, std::move(oldPin), std::move(newPin));
 	switch(response.SW)
 	{
 	case 0x9000:

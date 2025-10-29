@@ -60,9 +60,6 @@ background-color: #EAF1F8;
 }
 #add:pressed {
 background-color: #BFD3E8;
-}
-#add:disabled {
-color: #727679;
 }</string>
   </property>
   <layout class="QGridLayout" name="AddressItemLayout">
