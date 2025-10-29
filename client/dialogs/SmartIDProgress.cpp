@@ -17,7 +17,7 @@
  *
  */
 
-#define SIDV3DEMO
+#define noSIDV3TEST
 
 #include "SmartIDProgress.h"
 #include "ui_SmartIDProgress.h"
@@ -43,7 +43,7 @@
 #include <QtNetwork/QNetworkRequest>
 #include <QtNetwork/QNetworkReply>
 
-#include "../QrCodeGenerator.h"
+#include "../qrcodegen/QrCodeGenerator.h"
 
 Q_LOGGING_CATEGORY(SIDLog,"RIA.SmartID")
 
@@ -72,7 +72,7 @@ public:
 	QEventLoop l;
 	bool useCustomUUID = Settings::SID_UUID_CUSTOM;
     //QTimer *elapsedSecondsTimer {};
-#ifdef SIDV3DEMO
+#ifdef SIDV3TEST
 	QString UUID = "00000000-0000-4000-8000-000000000000";
 	QString NAME = "DEMO";
 	QString URL = "https://sid.demo.sk.ee/smart-id-rp/v3";
@@ -320,7 +320,7 @@ SmartIDProgress::Private::httpFinished(QNetworkReply *reply) {
 SmartIDProgress::SmartIDProgress(QWidget *parent)
     : d(new Private(parent))
 {
-#ifdef SIDV3DEMO
+#ifdef SIDV3TEST
 	const_cast<QLoggingCategory&>(SIDLog()).setEnabled(QtDebugMsg, true);
 #else
 	const_cast<QLoggingCategory&>(SIDLog()).setEnabled(QtDebugMsg,
