@@ -331,7 +331,7 @@ void MainWindow::navigateToPage( Pages page, const QStringList &files, bool crea
 		selectPage(page);
 }
 
-void MainWindow::onSignAction(int action, const QString &info1, const QString &info2)
+void MainWindow::onSignAction(int action, const QString &idCode, const QString &info2)
 {
 	switch(action)
 	{
@@ -342,16 +342,16 @@ void MainWindow::onSignAction(int action, const QString &info1, const QString &i
 		});
 		break;
 	case SignatureMobile:
-		sign([this, info1, info2](const QString &city, const QString &state, const QString &zip, const QString &country, const QString &role) {
+		sign([this, idCode, info2](const QString &city, const QString &state, const QString &zip, const QString &country, const QString &role) {
 			MobileProgress m(this);
-			return m.init(info1, info2) &&
+			return m.init(idCode, info2) &&
 				digiDoc->sign(city, state, zip, country, role, &m);
 		});
 		break;
 	case SignatureSmartID:
-		sign([this, info1, info2](const QString &city, const QString &state, const QString &zip, const QString &country, const QString &role) {
+		sign([this, idCode, info2](const QString &city, const QString &state, const QString &zip, const QString &country, const QString &role) {
 			SmartIDProgress s(this);
-			return s.init(info1, info2, digiDoc->fileName()) &&
+			return s.init(info2, idCode, digiDoc->fileName()) &&
 				digiDoc->sign(city, state, zip, country, role, &s);
 		});
 		break;

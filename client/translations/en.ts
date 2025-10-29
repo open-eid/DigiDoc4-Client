@@ -1123,10 +1123,6 @@
         &lt;p align=center&gt;The recipient is a physical person or legal entity for whom the document can be encrypted. If the document is encrypted, only the specified recipient can see its content.&lt;/p&gt;</translation>
     </message>
     <message>
-        <source>Enter personal code, company or registry code</source>
-        <translation>Enter personal code, company or registry code</translation>
-    </message>
-    <message>
         <source>Add recipients</source>
         <translation>Add recipients</translation>
     </message>

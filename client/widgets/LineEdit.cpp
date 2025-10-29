@@ -51,7 +51,31 @@ void LineEdit::paintEvent(QPaintEvent *event)
 		p.drawText(lineRect, Qt::AlignVCenter,
 			fontMetrics().elidedText(placeholder, Qt::ElideRight, lineRect.width()));
 		return;
-	}
+	} else
 #endif
 	QLineEdit::paintEvent(event);
+	if(_label == QStringLiteral("error"))
+	{
+		QStyleOptionFrame opt;
+		initStyleOption(&opt);
+		QRect rect = style()->subElementRect(QStyle::SE_LineEditContents, &opt, this);
+		auto adjust = (rect.height() - 17) / 2;
+		rect.adjust(rect.width() - adjust - 17, adjust, -adjust, -adjust);
+		QPainter p(this);
+		p.drawImage(rect, QImage(QStringLiteral(":/images/icon_error.svg")));
+	}
+}
+
+QString LineEdit::label() const
+{
+	return _label;
+}
+
+void LineEdit::setLabel(QString label)
+{
+	if (label == _label)
+		return;
+	_label = std::move(label);
+	parentWidget()->style()->unpolish(this);
+	parentWidget()->style()->polish(this);
 }

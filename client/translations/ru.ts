@@ -1123,10 +1123,6 @@
         &lt;p align=center&gt;Получатель - физическое или юридическое лицо, для которого документ может быть зашифрован. Если документ зашифрован, только указанный получатель может видеть его содержимое.&lt;/p&gt;</translation>
     </message>
     <message>
-        <source>Enter personal code, company or registry code</source>
-        <translation>Введите личный код, учреждение или код регистра</translation>
-    </message>
-    <message>
         <source>Add recipients</source>
         <translation>Добавьте получателей</translation>
     </message>

@@ -58,18 +58,19 @@ PinUnblock::PinUnblock(QSmartCardData::PinType type, QSmartCard::PinAction actio
 		regexpValidateCode = pattern(QSmartCardData::PukType);
 		ui->line1_text->setText(tr("To unblock the certificate you have to enter the PUK code."));
 		ui->line2_text->setText(tr("You can find your PUK code inside the ID-card codes envelope."));
-		ui->line3_text->setText(isPUKReplacable ? tr("If you have forgotten the PUK code for your ID card, please visit "
-			"<a href=\"https://www.politsei.ee/en/\">the Police and Border Guard Board service center</a> to obtain new PIN codes.") :
-			tr("If you have forgotten the PUK code of your ID-card then you can view it from the Police and Border Guard Board portal. "
-			"<a href=\"https://www.id.ee/en/article/my-pin-is-blocked-locked/\">Additional information</a>"));
+		ui->line3_text->setText(isPUKReplacable
+			? tr("If you have forgotten the PUK code for your ID card, please visit "
+				"<a href=\"https://www.politsei.ee/en/\">the Police and Border Guard Board service center</a> to obtain new PIN codes.")
+			: tr("If you have forgotten the PUK code of your ID-card then you can view it from the Police and Border Guard Board portal. "
+				"<a href=\"https://www.id.ee/en/article/my-pin-is-blocked-locked/\">Additional information</a>"));
 		break;
 	case QSmartCard::ActivateWithPuk:
 	case QSmartCard::ChangeWithPuk:
 		ui->label->setText(tr("%1 code change").arg(QSmartCardData::typeString(type)));
 		regexpValidateCode = pattern(QSmartCardData::PukType);
 		ui->line1_text->setText(type == QSmartCardData::Pin2Type
-									? tr("PIN2 code is used to digitally sign documents.")
-									: tr("PIN1 code is used for confirming the identity of a person."));
+			? tr("PIN2 code is used to digitally sign documents.")
+			: tr("PIN1 code is used for confirming the identity of a person."));
 		ui->line2_text->setText(tr("If you have forgotten PIN%1, but know PUK, then here you can enter new PIN%1.").arg(type));
 		ui->line3_text->setText(tr("PUK code is written in the envelope, that is given with the ID-card."));
 		break;
@@ -86,8 +87,8 @@ PinUnblock::PinUnblock(QSmartCardData::PinType type, QSmartCard::PinAction actio
 			break;
 		}
 		ui->line1_text->setText(type == QSmartCardData::Pin2Type
-									? tr("PIN2 code is used to digitally sign documents.")
-									: tr("PIN1 code is used for confirming the identity of a person."));
+			? tr("PIN2 code is used to digitally sign documents.")
+			: tr("PIN1 code is used for confirming the identity of a person."));
 		ui->line2_text->setText(
 			tr("If %1 is inserted incorrectly 3 times the %2 certificate will be blocked and it will be impossible to use ID-card to %3, until it is unblocked via the PUK code.").arg(
 				QSmartCardData::typeString(type),
@@ -102,16 +103,16 @@ PinUnblock::PinUnblock(QSmartCardData::PinType type, QSmartCard::PinAction actio
 	ui->repeat->setValidator(new QRegularExpressionValidator(regexpNewCode, ui->repeat));
 	ui->puk->setValidator(new QRegularExpressionValidator(regexpValidateCode, ui->puk));
 
-	auto setError = [](QLineEdit *input, QLabel *error, const QString &msg) {
-		input->setStyleSheet(msg.isEmpty() ? QString() : QStringLiteral("border-color: #BE7884"));
+	auto setError = [this](LineEdit *input, QLabel *error, const QString &msg) {
+		input->setLabel(msg.isEmpty() ? QString() : QStringLiteral("error"));
 		error->setFocusPolicy(msg.isEmpty() ? Qt::NoFocus : Qt::TabFocus);
 		error->setText(msg);
 		error->setHidden(msg.isEmpty());
 	};
 	if(leftAttempts < 3)
-		setError(ui->puk, ui->errorPuk, action == QSmartCard::ChangeWithPin || action == QSmartCard::ActivateWithPin ?
-			tr("Remaining attempts: %1").arg(leftAttempts) :
-			tr("PUK remaining attempts: %1").arg(leftAttempts));
+		setError(ui->puk, ui->errorPuk, action == QSmartCard::ChangeWithPin || action == QSmartCard::ActivateWithPin
+			? tr("Remaining attempts: %1").arg(leftAttempts)
+			: tr("PUK remaining attempts: %1").arg(leftAttempts));
 
 	for(int i = 1; i < 4; i++)
 	{
