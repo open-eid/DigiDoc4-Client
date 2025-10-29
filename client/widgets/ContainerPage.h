@@ -47,13 +47,12 @@ public:
 	void cardChanged(const SslCertificate &cert, bool isBlocked = false);
 	void clear();
 	void clearPopups();
-	void setHeader(const QString &file);
 	void togglePrinting(bool enable);
 	void transition(CryptoDoc *container, const QSslCertificate &cert);
 	void transition(DigiDoc* container);
 
 signals:
-	void action(int code, const QString &info1 = {}, const QString &info2 = {});
+	void action(int code, const QString &idCode = {}, const QString &info2 = {});
 	void addFiles(const QStringList &files);
 	void certChanged(const SslCertificate &cert);
 	void fileRemoved(int row);
@@ -63,21 +62,20 @@ signals:
 
 private:
 	void changeEvent(QEvent* event) final;
-	bool checkAction(int code, const QString& selectedCard, const QString& selectedMobile);
 	void elideFileName();
 	bool eventFilter(QObject *o, QEvent *e) final;
-	void forward(int code);
+	void setHeader(const QString &file);
 	void showMainAction(const QList<ria::qdigidoc4::Actions> &actions);
 	void showSigningButton();
+	void handleAction(int type);
 	void updateDecryptionButton();
 	void updatePanes(ria::qdigidoc4::ContainerState state);
 	void translateLabels();
 
 	Ui::ContainerPage *ui;
 	std::unique_ptr<MainAction> mainAction;
-	QString cardInReader;
+	QString idCode;
 	QString fileName;
-	QString mobileCode;
 
 	const char *cancelText = QT_TR_NOOP("Cancel");
 	const char *convertText = QT_TR_NOOP("Encrypt");

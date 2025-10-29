@@ -42,6 +42,9 @@ background-color: white;
 placeholder-text-color: #607496;
 font-size: 16px;
 }
+QLineEdit[label=&quot;error&quot;] {
+border-color: #BE7884;
+}
 QComboBox QWidget#popup {
 background-color: transparent;
 }
@@ -251,6 +254,9 @@ background-color: #82A9D3;
         <widget class="LineEdit" name="idCode">
          <property name="placeholderText">
           <string notr="true">47101010033</string>
+         </property>
+         <property name="label" stdset="0">
+          <string notr="true"/>
          </property>
         </widget>
        </item>

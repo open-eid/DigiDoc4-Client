@@ -33,7 +33,7 @@ public:
 
 	ria::qdigidoc4::WarningType getError() const;
 	void initTabOrder(QWidget *item) final;
-	bool isSelfSigned(const QString& cardCode, const QString& mobileCode) const;
+	bool isSelfSigned(const QString& cardCode) const;
 	QWidget* lastTabWidget() final;
 
 private:
