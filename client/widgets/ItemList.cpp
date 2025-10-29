@@ -20,7 +20,7 @@
 #include "ItemList.h"
 #include "ui_ItemList.h"
 
-#include "Styles.h"
+#include "Item.h"
 
 #include <QKeyEvent>
 
@@ -34,10 +34,11 @@ ItemList::ItemList(QWidget *parent)
 	ui->setupUi(this);
 	ui->findGroup->hide();
 	ui->download->hide();
-	ui->count->setFont(Styles::font(Styles::Condensed, 12));
 	ui->count->hide();
 	ui->infoIcon->hide();
+	ui->add->hide();
 	ui->txtFind->setAttribute(Qt::WA_MacShowFocusRect, false);
+	connect(ui->add, &QToolButton::clicked, this, &ItemList::add);
 	connect(this, &ItemList::idChanged, this, [this](const SslCertificate &cert){ this->cert = cert; });
 	ui->txtFind->installEventFilter(this);
 }
@@ -57,8 +58,7 @@ void ItemList::addHeader(const char *label)
 	header->setFocusPolicy(Qt::TabFocus);
 	header->resize(415, 64);
 	header->setFixedHeight(64);
-	header->setFont( Styles::font(Styles::Regular, 20));
-	header->setStyleSheet(QStringLiteral("border-bottom: 1px solid #E7EAEF; color: #041E42;"));
+	header->setStyleSheet(QStringLiteral("border-bottom: 1px solid #E7EAEF; color: #003168;"));
 	ui->itemLayout->insertWidget(0, header);
 	setTabOrder(this, header);
 	setTabOrder(header, ui->header);
@@ -68,17 +68,6 @@ void ItemList::addHeaderWidget(Item *widget)
 {
 	addWidget(widget, ui->itemLayout->indexOf(ui->header), header);
 	setTabOrder(widget->lastTabWidget(), ui->header);
-}
-
-QString ItemList::addLabel()
-{
-	switch(itemType)
-	{
-	case ItemFile: return tr("+ Add more files");
-	case ItemAddress: return tr("+ Add recipient");
-	case ToAddAdresses: return tr("Add all");
-	default: return {};
-	}
 }
 
 void ItemList::addWidget(Item *widget, int index, QWidget *tabIndex)
@@ -110,17 +99,11 @@ void ItemList::changeEvent(QEvent* event)
 	if (event->type() == QEvent::LanguageChange)
 	{
 		ui->retranslateUi(this);
-
-		ui->listHeader->setText(tr(listText));
-		ui->txtFind->setPlaceholderText(tr("Enter the personal code, institution or registry code"));
-		ui->txtFind->setAccessibleName(ui->txtFind->placeholderText());
-
+		ui->listHeader->setText(tr(title));
+		ui->add->setText(tr(addTitle));
 		if(header)
 			header->setText(tr(headerText));
-
-		ui->add->setText(addLabel());
-
-		if(itemType == ItemAddress)
+		if(!ui->infoIcon->toolTip().isEmpty())
 			setRecipientTooltip();
 	}
 
@@ -137,7 +120,7 @@ void ItemList::clear()
 	header = nullptr;
 
 	for(auto it = items.begin(); it != items.end(); it = items.erase(it))
-		delete *it;
+		(*it)->deleteLater();
 }
 
 bool ItemList::eventFilter(QObject *o, QEvent *e)
@@ -155,36 +138,24 @@ bool ItemList::eventFilter(QObject *o, QEvent *e)
 	return QScrollArea::eventFilter(o, e);
 }
 
-ContainerState ItemList::getState() const { return state; }
-
 int ItemList::index(Item *item) const
 {
 	return items.indexOf(item);
 }
 
-bool ItemList::hasItem(const std::function<bool(Item* const)> &cb)
-{
-	return std::any_of(items.cbegin(), items.cend(), cb);
-}
-
 void ItemList::init(ItemType item, const char *header)
 {
-	itemType = item;
-	ui->listHeader->setText(tr(header));
-	listText = header;
-	ui->listHeader->setFont( Styles::font(Styles::Regular, 20));
+	ui->listHeader->setText(tr(title = header));
 
-	if(item != ToAddAdresses)
+	switch(item)
 	{
-		ui->findGroup->hide();
-	}
-	else
-	{
-		ui->btnFind->setFont(Styles::font(Styles::Condensed, 14));
-		ui->txtFind->setFont(Styles::font(Styles::Regular, 12));
+	case ToAddAdresses:
+		addTitle = QT_TR_NOOP("Add all");
 		ui->findGroup->show();
-		ui->txtFind->setPlaceholderText(tr("Enter personal code, company or registry code"));
-		connect(ui->txtFind, &QLineEdit::returnPressed, this, [this]{ if(!ui->txtFind->text().trimmed().isEmpty()) emit search(ui->txtFind->text()); });
+		connect(ui->txtFind, &QLineEdit::returnPressed, this, [this]{
+			if(!ui->txtFind->text().trimmed().isEmpty())
+				emit search(ui->txtFind->text());
+		});
 		connect(ui->btnFind, &QPushButton::clicked, this, [this]{ emit search(ui->txtFind->text()); });
 		ui->btnFind->setDisabled(ui->txtFind->text().trimmed().isEmpty());
 		connect(ui->txtFind, &QLineEdit::textChanged, this, [this](const QString &text){
@@ -193,27 +164,23 @@ void ItemList::init(ItemType item, const char *header)
 			ui->btnFind->setDefault(isEmpty);
 			ui->btnFind->setAutoDefault(isEmpty);
 		});
-	}
-
-	if (itemType == ItemSignature || item == AddedAdresses || this->state == SignedContainer)
-		ui->add->hide();
-	else
-		ui->add->setText(addLabel());
-
-	if(itemType == ItemAddress)
-	{
-		ui->add->disconnect();
+		break;
+	case ItemAddress:
+		addTitle = QT_TR_NOOP("+ Add recipient");
 		ui->infoIcon->load(QStringLiteral(":/images/icon_info.svg"));
 		ui->infoIcon->show();
 		setRecipientTooltip();
-
-		connect(ui->add, &QToolButton::clicked, this, &ItemList::addressSearch);
-	}
-	else if(itemType == ToAddAdresses)
-	{
+		break;
+	case ItemFile:
+		addTitle = QT_TR_NOOP("+ Add more files");
+		break;
+	case ItemSignature:
 		ui->add->hide();
-		connect(ui->add, &QToolButton::clicked, this, &ItemList::addAll);
+		break;
+	default:
+		break;
 	}
+	ui->add->setText(tr(addTitle));
 }
 
 void ItemList::remove(Item *item)
@@ -225,7 +192,7 @@ void ItemList::remove(Item *item)
 void ItemList::removeItem(int row)
 {
 	if(row < items.size())
-		delete items.takeAt(row);
+		items.takeAt(row)->deleteLater();
 }
 
 void ItemList::setRecipientTooltip()

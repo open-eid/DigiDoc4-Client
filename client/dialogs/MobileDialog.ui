@@ -44,7 +44,7 @@ font-size: 16px;
 }
 QCheckBox {
 spacing: 8px;
-border: none; /*Workaround for right padding*/
+border-right: none; /*Workaround for right padding*/
 }
 QCheckBox:disabled {
 color: #C4CBD8;
