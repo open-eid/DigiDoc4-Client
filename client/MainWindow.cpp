@@ -86,18 +86,16 @@ MainWindow::MainWindow( QWidget *parent )
 
 	// Refresh ID card info in card widget
 	connect(qApp->signer(), &QSigner::cacheChanged, this, &MainWindow::updateSelector);
-	connect(&QPCSC::instance(), &QPCSC::statusChanged, this, &MainWindow::updateSelector);
 	connect(qApp->signer(), &QSigner::signDataChanged, this, [this](const TokenData &token) {
-		updateSelectorData(token);
+		updateSelector();
 		updateMyEID(token);
 		ui->signContainerPage->cardChanged(token.cert(), token.data(QStringLiteral("blocked")).toBool());
 	});
 	connect(qApp->signer(), &QSigner::authDataChanged, this, [this](const TokenData &token) {
-		updateSelectorData(token);
+		updateSelector();
 		updateMyEID(token);
 		ui->cryptoContainerPage->cardChanged(token.cert(), token.data(QStringLiteral("blocked")).toBool());
 	});
-	QPCSC::instance().start();
 
 	// Refresh card info on "My EID" page
 	connect(qApp->signer()->smartcard(), &QSmartCard::dataChanged, this, &MainWindow::updateMyEid);
@@ -124,7 +122,7 @@ MainWindow::MainWindow( QWidget *parent )
 	connect(ui->accordion, &Accordion::changePinClicked, this, &MainWindow::changePinClicked);
 	connect(ui->cardInfo, &CardWidget::selected, ui->selector, &QToolButton::toggle);
 
-	updateSelectorData(qApp->signer()->tokensign());
+	updateSelector();
 	updateMyEID(qApp->signer()->tokensign());
 	ui->signContainerPage->cardChanged(qApp->signer()->tokensign().cert());
 	ui->cryptoContainerPage->cardChanged(qApp->signer()->tokenauth().cert());
@@ -846,11 +844,7 @@ bool MainWindow::wrapContainer(bool signing)
 
 void MainWindow::updateSelector()
 {
-	updateSelectorData({});
-}
-
-void MainWindow::updateSelectorData(TokenData data)
-{
+	TokenData selected;
 	enum Filter: uint8_t {
 		Signing,
 		Decrypting,
@@ -860,24 +854,24 @@ void MainWindow::updateSelectorData(TokenData data)
 	{
 	case SignIntro:
 	case SignDetails:
-		if(data.isNull()) data = qApp->signer()->tokensign();
+		selected = qApp->signer()->tokensign();
 		filter = Signing;
 		break;
 	case CryptoIntro:
 	case CryptoDetails:
-		if(data.isNull()) data = qApp->signer()->tokenauth();
+		selected = qApp->signer()->tokenauth();
 		filter = Decrypting;
 		break;
 	case MyEid:
 	default:
-		if(data.isNull()) data = qApp->signer()->smartcard()->tokenData();
+		selected = qApp->signer()->smartcard()->tokenData();
 		filter = MyEID;
 		break;
 	}
 	QVector<TokenData> list;
 	for(const TokenData &token: qApp->signer()->cache())
 	{
-		if(token.card() == data.card())
+		if(token.card() == selected.card())
 			continue;
 		if(std::any_of(list.cbegin(), list.cend(), [token](const TokenData &item) { return token.card() == item.card(); }))
 			continue;
@@ -891,12 +885,12 @@ void MainWindow::updateSelectorData(TokenData data)
 			continue;
 		list.append(token);
 	}
-	ui->noCardInfo->setVisible(ui->cardInfo->token().isNull());
+	ui->noCardInfo->setVisible(selected.isNull());
 	ui->selector->setHidden(list.isEmpty());
 	ui->selector->setChecked(false);
 	ui->cardInfo->setVisible(ui->noCardInfo->isHidden());
 	ui->cardInfo->setCursor(ui->selector->isVisible() ? Qt::PointingHandCursor : Qt::ArrowCursor);
-	ui->cardInfo->update(data, list.size() > 1);
+	ui->cardInfo->update(selected, list.size() > 1);
 	if (!QPCSC::instance().serviceRunning())
 		ui->noCardInfo->update(NoCardInfo::NoPCSC);
 	else if(QPCSC::instance().readers().isEmpty())
@@ -910,7 +904,7 @@ void MainWindow::updateSelectorData(TokenData data)
 		if(show)
 		{
 			auto *cardPopup = new CardPopup(list, this);
-			connect(cardPopup, &CardPopup::activated, qApp->signer(), &QSigner::selectCard, Qt::QueuedConnection);
+			connect(cardPopup, &CardPopup::activated, qApp->signer(), &QSigner::selectCard);
 			connect(cardPopup, &CardPopup::activated, this, [this] { ui->selector->setChecked(false); });
 			cardPopup->show();
 		}
