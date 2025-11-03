@@ -546,7 +546,7 @@ bool QSmartCard::pinChange(QSmartCardData::PinType type, QSmartCard::PinAction a
 	}
 
 	QPCSCReader reader(d->t.reader(), &QPCSC::instance());
-	if(!reader.connect() || !reader.beginTransaction())
+	if(!reader.connect())
 	{
 		FadeInNotification::warning(parent, tr("Changing %1 failed").arg(QSmartCardData::typeString(type)));
 		return false;
@@ -645,7 +645,7 @@ void QSmartCard::reloadCard(const TokenData &token, bool reloadCounters)
 
 	qCDebug(CLog) << "Read" << reader;
 	QPCSCReader selectedReader(reader, &QPCSC::instance());
-	if(!selectedReader.connect() || !selectedReader.beginTransaction())
+	if(!selectedReader.connect())
 		return;
 
 	if(auto atr = selectedReader.atr();

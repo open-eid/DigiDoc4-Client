@@ -23,6 +23,7 @@
 
 #include <QtCore/QHash>
 #include <QtCore/QMutex>
+#include <QtCore/QWaitCondition>
 
 #ifdef Q_OS_WIN
 #undef UNICODE
@@ -73,7 +74,7 @@ FEATURE_CCID_ESC_COMMAND         = 0x13
 
 struct PCSC_TLV_STRUCTURE
 {
-	quint8 tag;
+	DRIVER_FEATURES tag;
 	quint8 length;
 	quint32 value;
 };
@@ -178,16 +179,16 @@ struct DISPLAY_PROPERTIES_STRUCTURE
 
 #pragma pack(pop)
 
-class QPCSC::Private
+struct QPCSC::Private
 {
-public:
 	SCARDCONTEXT context {};
-	QHash<QString,QMutex*> lock;
+	SCARDCONTEXT thread {};
+	QMutex			sleepMutex;
+	QWaitCondition	sleepCond;
 };
 
-class QPCSCReader::Private
+struct QPCSCReader::Private
 {
-public:
 	QHash<DRIVER_FEATURES,quint32> features();
 
 	QPCSC::Private *d {};
