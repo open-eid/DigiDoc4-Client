@@ -112,17 +112,16 @@ public:
 
 	QSmartCardData data() const;
 	TokenData tokenData() const;
-	void reloadCard(const TokenData &token, bool reloadCounters = false);
-	void reloadCounters();
+	void reloadCard(const TokenData &token, bool reloadCounters);
 
 	ErrorType pinUnblock(QSmartCardData::PinType type, PinAction action = UnblockWithPuk, QWidget* parent = nullptr);
 	ErrorType pinChange(QSmartCardData::PinType type, PinAction action = ChangeWithPin, QWidget* parent = nullptr);
 
-signals:
+Q_SIGNALS:
 	void dataChanged(const QSmartCardData &data);
 
 private:
-	Q_DISABLE_COPY(QSmartCard)
+	Q_DISABLE_COPY_MOVE(QSmartCard)
 
 	class Private;
 	std::unique_ptr<Private> d;
