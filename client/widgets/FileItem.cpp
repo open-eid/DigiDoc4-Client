@@ -19,7 +19,6 @@
 
 #include "FileItem.h"
 #include "ui_FileItem.h"
-#include "Styles.h"
 
 using namespace ria::qdigidoc4;
 
@@ -29,7 +28,6 @@ FileItem::FileItem(QString file, ContainerState state, QWidget *parent)
 	, fileName(std::move(file))
 {
 	ui->setupUi(this);
-	ui->fileName->setFont(Styles::font(Styles::Regular, 14));
 
 	stateChange(state);
 

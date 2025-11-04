@@ -72,15 +72,16 @@ background-color: #FFFFFF;
       <widget class="QTreeWidget" name="view">
        <property name="styleSheet">
         <string notr="true">#view {
-	border:none;
+font-family: Roboto, Helvetica;
+font-size: 12px;
+color: #07142A;
 }
 QHeaderView::section {
-	border: 1px solid #D9D9D8;
-	border-width: 0px 0px 1px 0px;
-	padding-left: 5px;
-	height: 28px;
-	background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #FFFFFF, stop:1 #FFFFFF);
+font-family: Roboto, Helvetica;
+font-size: 14px;
+border: none;
+border-bottom: 1px solid #E7EAEF;
+background-color: #FFFFFF;
 }
 QHeaderView::up-arrow,
 QHeaderView::down-arrow {
@@ -90,6 +91,9 @@ QHeaderView::down-arrow {
 	width: 7px;
 	padding-right: 5px;
 }</string>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::NoFrame</enum>
        </property>
        <property name="horizontalScrollBarPolicy">
         <enum>Qt::ScrollBarAlwaysOff</enum>
