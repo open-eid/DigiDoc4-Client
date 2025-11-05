@@ -1,8 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
+    xmlns:desktop="http://schemas.microsoft.com/appx/manifest/desktop/windows10"
+    xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
     xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
     xmlns:uap3="http://schemas.microsoft.com/appx/manifest/uap/windows10/3"
-    xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities">
+    IgnorableNamespaces="desktop uap uap3 rescap">
   <Identity Name="RiigiInfossteemiAmet.DigiDoc4client" ProcessorArchitecture="${PLATFORM}" Version="${PROJECT_VERSION}.0"
     Publisher="CN=8BBBE4D8-620A-4884-A12A-72F1A2030D8B" />
   <Properties>
@@ -51,6 +53,17 @@
               <uap:FileType>.cdoc2</uap:FileType>
             </uap:SupportedFileTypes>
           </uap3:FileTypeAssociation>
+        </uap3:Extension>
+      </Extensions>
+    </Application>
+    <Application Id="DigidocTool" Executable="digidoc-tool.exe" EntryPoint="Windows.FullTrustApplication">
+      <uap:VisualElements DisplayName="digidoc-tool" Description="digidoc-tool" BackgroundColor="transparent"
+        Square150x150Logo="Assets\DigiDoc.150x150.png" Square44x44Logo="Assets\DigiDoc.44x44.png" AppListEntry="none" />
+      <Extensions>
+        <uap3:Extension Category="windows.appExecutionAlias">
+          <uap3:AppExecutionAlias>
+            <desktop:ExecutionAlias Alias="digidoc-tool.exe" />
+          </uap3:AppExecutionAlias>
         </uap3:Extension>
       </Extensions>
     </Application>
