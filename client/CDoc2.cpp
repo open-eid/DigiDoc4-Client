@@ -715,6 +715,7 @@ QByteArray CDoc2::transportKey(const CKey &_key)
 		}
 		if(!cdoc20::checkConnection())
 			return {};
+		qApp->signer()->setCachePIN(true);
 		auto authKey = dispatchToMain(&QSigner::key, qApp->signer());
 		QScopedPointer<QNetworkAccessManager,QScopedPointerDeleteLater> nam(
 			CheckConnection::setupNAM(req, qApp->signer()->tokenauth().cert(), authKey, Settings::CDOC2_GET_CERT));
@@ -722,11 +723,11 @@ QByteArray CDoc2::transportKey(const CKey &_key)
 		QNetworkReply *reply = nam->get(req);
 		connect(reply, &QNetworkReply::finished, &e, &QEventLoop::quit);
 		e.exec();
-		if(authKey.handle())
-			qApp->signer()->logout();
+		qApp->signer()->setCachePIN(false);
 		if(reply->error() != QNetworkReply::NoError &&
 			reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() != 201)
 		{
+			qApp->signer()->logout();
 			setLastError(reply->errorString());
 			return {};
 		}
@@ -752,6 +753,7 @@ QByteArray CDoc2::transportKey(const CKey &_key)
 		QByteArray info = KEK + cdoc20::Header::EnumNameFMKEncryptionMethod(cdoc20::Header::FMKEncryptionMethod::XOR) + key.key + key.publicKey;
 		return Crypto::expand(kekPm, info, KEY_LEN);
 	});
+    qApp->signer()->logout();
 	if(kek.isEmpty())
 	{
 		setLastError(QStringLiteral("Failed to derive key"));
