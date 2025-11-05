@@ -39,10 +39,7 @@ enum Actions : unsigned char {
     ContainerCancel,
     ContainerConvert,
     ContainerEncrypt,
-    ContainerEmail,
-    ContainerSummary,
     ContainerLocation,
-    ContainerNavigate,
     ContainerSave,
     ContainerSaveAs,
 
