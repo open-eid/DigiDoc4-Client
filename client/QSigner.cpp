@@ -279,10 +279,12 @@ quint8 QSigner::login(const TokenData &cert) const
 
 void QSigner::logout() const
 {
-	d->backend->logout();
-	d->lock.unlock();
+	if (d->logged_in) {
+		d->backend->logout();
+		d->lock.unlock();
+	    d->logged_in = false;
+	}
 	d->smartcard->reloadCounters(); // QSmartCard should also know that PIN1 info is updated
-    d->logged_in = false;
 }
 
 QCryptographicHash::Algorithm QSigner::methodToNID(const std::string &method)
