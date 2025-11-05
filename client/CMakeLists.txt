@@ -174,7 +174,7 @@ if( APPLE )
 	)
 	add_custom_target(macdeployqt DEPENDS ${PROJECT_NAME}
 		COMMAND Qt::macdeployqt $<TARGET_BUNDLE_DIR:${PROJECT_NAME}>
-		COMMAND rm -rf $<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/PlugIns/bearer
+		COMMAND rm -rf $<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/PlugIns/networkinformation
 		COMMAND cp -a /Library/Frameworks/digidocpp.framework $<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/Frameworks
 		COMMAND rm $<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/Frameworks/digidocpp.framework/Resources/digidoc-tool
 		COMMAND find $<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/Frameworks -name Headers | xargs rm -rf

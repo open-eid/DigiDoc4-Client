@@ -118,7 +118,7 @@ public:
 
 	std::string logFile() const final
 	{
-		return log.value_or(digidoc::XmlConfCurrent::logFile());
+		return log.or_else([this] { return make_optional(digidoc::XmlConfCurrent::logFile()); }).value();
 	}
 
 	std::string proxyHost() const final
@@ -423,10 +423,10 @@ Application::Application( int &argc, char **argv )
 
 	// Actions
 	d->closeAction = new QAction( tr("Close Window"), this );
-	d->closeAction->setShortcut( Qt::CTRL + Qt::Key_W );
+	d->closeAction->setShortcut(Qt::CTRL | Qt::Key_W);
 	connect(d->closeAction, &QAction::triggered, this, &Application::closeWindow);
 	d->newClientAction = new QAction( tr("New Window"), this );
-	d->newClientAction->setShortcut( Qt::CTRL + Qt::Key_N );
+	d->newClientAction->setShortcut(Qt::CTRL | Qt::Key_N);
 	connect(d->newClientAction, &QAction::triggered, this, []{ showClient({}, false, false, true); });
 
 	// This is needed to release application from memory (Windows)
