@@ -30,7 +30,7 @@
 #include <QtCore/QScopedPointer>
 #include <QtNetwork/QSslKey>
 
-Q_LOGGING_CATEGORY(CLog, "qdigidoc4.QSmartCard")
+static Q_LOGGING_CATEGORY(CLog, "qdigidoc4.QSmartCard")
 
 QSmartCardData::QSmartCardData(): d(new QSmartCardDataPrivate) {}
 QSmartCardData::QSmartCardData(const QSmartCardData &other) = default;
@@ -630,11 +630,6 @@ QSmartCard::ErrorType QSmartCard::pinUnblock(QSmartCardData::PinType type, QSmar
 		}
 	}
 	return unblock(type, parent, newPin, puk, title, textBody);
-}
-
-void QSmartCard::reloadCounters()
-{
-	QMetaObject::invokeMethod(this, [this] { reloadCard(d->token, true); });
 }
 
 void QSmartCard::reloadCard(const TokenData &token, bool reloadCounters)

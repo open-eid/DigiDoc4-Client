@@ -42,9 +42,7 @@
 #include <openssl/obj_mac.h>
 #include <openssl/rsa.h>
 
-#include <memory>
-
-Q_LOGGING_CATEGORY(SLog, "qdigidoc4.QSigner")
+static Q_LOGGING_CATEGORY(SLog, "qdigidoc4.QSigner")
 
 class QSigner::Private final
 {
@@ -123,10 +121,10 @@ QSigner::QSigner(QObject *parent)
 		WarningDialog::show(msg);
 	});
 	connect(this, &QSigner::signDataChanged, this, [this](const TokenData &token) {
-		std::string method = (CONF(signatureDigestUri));
+		std::string method;
 		if(token.data(QStringLiteral("PSS")).toBool())
 		{
-			switch(methodToNID(method))
+			switch(methodToNID(CONF(signatureDigestUri)))
 			{
 			case QCryptographicHash::Sha224: method = "http://www.w3.org/2007/05/xmldsig-more#sha224-rsa-MGF1"; break;
 			case QCryptographicHash::Sha256: method = "http://www.w3.org/2007/05/xmldsig-more#sha256-rsa-MGF1"; break;
@@ -266,7 +264,8 @@ quint8 QSigner::login(const TokenData &cert) const
 		return login(cert);
 	default:
 		d->lock.unlock();
-		d->smartcard->reloadCounters(); // QSmartCard should also know that PIN is blocked.
+		// QSmartCard should also know that PIN is blocked.
+		std::thread(&QSmartCard::reloadCard, d->smartcard, d->smartcard->tokenData(), true).detach();
 		return status;
 	}
 }
@@ -275,7 +274,8 @@ void QSigner::logout() const
 {
 	d->backend->logout();
 	d->lock.unlock();
-	d->smartcard->reloadCounters(); // QSmartCard should also know that PIN1 info is updated
+	// QSmartCard should also know that PIN1 info is updated
+	std::thread(&QSmartCard::reloadCard, d->smartcard, d->smartcard->tokenData(), true).detach();
 }
 
 QCryptographicHash::Algorithm QSigner::methodToNID(const std::string &method)
@@ -320,8 +320,6 @@ void QSigner::run()
 				return;
 			}
 
-			TokenData aold = d->auth, at = aold;
-			TokenData sold = d->sign, st = sold;
 			QList<TokenData> acards, scards;
 			QList<TokenData> cache = d->backend->tokens();
 			std::sort(cache.begin(), cache.end(), cardsOrder);
@@ -340,33 +338,35 @@ void QSigner::run()
 					scards.append(t);
 			}
 
+			TokenData aold = d->auth;
+			TokenData sold = d->sign;
 			// check if selected card is still in slot
-			if(!at.isNull() && !acards.contains(at))
+			if(!d->auth.isNull() && !acards.contains(d->auth))
 			{
-				qCDebug(SLog) << "Disconnected from auth card" << st.card();
-				at.clear();
+				qCDebug(SLog) << "Disconnected from auth card" << d->auth.card();
+				d->auth.clear();
 			}
-			if(!st.isNull() && !scards.contains(st))
+			if(!d->sign.isNull() && !scards.contains(d->sign))
 			{
-				qCDebug(SLog) << "Disconnected from sign card" << st.card();
-				st.clear();
+				qCDebug(SLog) << "Disconnected from sign card" << d->sign.card();
+				d->sign.clear();
 			}
 
 			// if none is selected then pick first card with signing cert;
 			// if no signing certs then pick first card with auth cert
-			if(st.isNull() && !scards.isEmpty())
-				st = scards.first();
-			if(at.isNull() && !acards.isEmpty())
-				at = acards.first();
+			if(d->sign.isNull() && !scards.isEmpty())
+				d->sign = scards.first();
+			if(d->auth.isNull() && !acards.isEmpty())
+				d->auth = acards.first();
 
 			// update data if something has changed
 			TokenData update;
-			if(aold != at)
-				Q_EMIT authDataChanged(d->auth = update = at);
-			if(sold != st)
-				Q_EMIT signDataChanged(d->sign = update = st);
-			if(aold != at || sold != st)
-				d->smartcard->reloadCard(update);
+			if(aold != d->auth)
+				Q_EMIT authDataChanged(update = d->auth);
+			if(sold != d->sign)
+				Q_EMIT signDataChanged(update = d->sign);
+			if(aold != d->auth || sold != d->sign)
+				d->smartcard->reloadCard(update, false);
 			d->lock.unlock();
 		}
 
@@ -394,7 +394,7 @@ void QSigner::selectCard(const TokenData &token)
 			Q_EMIT signDataChanged(d->sign = other);
 		break;
 	}
-	d->smartcard->reloadCard(token);
+	std::thread(&QSmartCard::reloadCard, d->smartcard, token, false).detach();
 }
 
 std::vector<unsigned char> QSigner::sign(const std::string &method, const std::vector<unsigned char> &digest ) const

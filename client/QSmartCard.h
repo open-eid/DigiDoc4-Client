@@ -113,8 +113,7 @@ public:
 	ErrorType change( QSmartCardData::PinType type, QWidget* parent, const QString &newpin, const QString &pin, const QString &title, const QString &bodyText );
 	QSmartCardData data() const;
 	TokenData tokenData() const;
-	void reloadCard(const TokenData &token, bool reloadCounters = false);
-	void reloadCounters();
+	void reloadCard(const TokenData &token, bool reloadCounters);
 	ErrorType unblock( QSmartCardData::PinType type, QWidget* parent, const QString &pin, const QString &puk, const QString &title, const QString &bodyText );
 
 	ErrorType pinUnblock(QSmartCardData::PinType type, PinAction action = UnblockWithPuk, QWidget* parent = nullptr);
