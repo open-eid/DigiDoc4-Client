@@ -374,24 +374,6 @@ bool CryptoDoc::decrypt()
 		return false;
 	}
 
-	if(d->cdoc->version() == 2 && !key.transaction_id.isEmpty() && !Settings::CDOC2_NOTIFICATION.isSet())
-	{
-		auto *dlg = new WarningDialog(tr("You must enter your PIN code twice in order to decrypt the CDOC2 container. "
-			"The first PIN entry is required for authentication to the key server referenced in the CDOC2 container. "
-			"Second PIN entry is required to decrypt the CDOC2 container."), Application::mainWindow());
-		dlg->setCancelText(WarningDialog::Cancel);
-		dlg->addButton(WarningDialog::OK, QMessageBox::Ok);
-		dlg->addButton(tr("Don't show again"), QMessageBox::Ignore);
-		switch (dlg->exec())
-		{
-		case QMessageBox::Ok: break;
-		case QMessageBox::Ignore:
-			Settings::CDOC2_NOTIFICATION = true;
-			break;
-		default: return false;
-		}
-	}
-
 	d->key = d->cdoc->transportKey(key);
 #ifndef NDEBUG
 	qDebug() << "Transport key" << d->key.toHex();

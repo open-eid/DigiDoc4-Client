@@ -43,7 +43,11 @@ class QCNG::Private
 {
 public:
 	TokenData token;
+	NCRYPT_KEY_HANDLE key {};
 	QCNG::PinStatus err = QCNG::PinOK;
+	~Private() {
+		if (key) NCryptFreeObject(key);
+	}
 };
 
 QCNG::QCNG( QObject *parent )
@@ -56,8 +60,19 @@ QCNG::~QCNG()
 	delete d;
 }
 
+void
+QCNG::logout() {
+	if (d->key) {
+		// https://docs.microsoft.com/en-us/archive/blogs/alejacma/smart-cards-pin-gets-cached
+		NCryptSetProperty(d->key, NCRYPT_PIN_PROPERTY, nullptr, 0, 0);
+		NCryptFreeObject(d->key);
+		d->key = {};
+	}
+}
+
 QByteArray QCNG::decrypt(const QByteArray &data, bool oaep) const
 {
+	// Do not reset pin here
 	return exec([&](NCRYPT_PROV_HANDLE prov, NCRYPT_KEY_HANDLE key, QByteArray &result) {
 		BCRYPT_OAEP_PADDING_INFO padding {BCRYPT_SHA256_ALGORITHM, nullptr, 0};
 		PVOID paddingInfo = oaep ? &padding : nullptr;
@@ -157,14 +172,15 @@ QByteArray QCNG::exec(F &&func) const
 	SCOPE<NCRYPT_PROV_HANDLE> prov;
 	if(FAILED(NCryptOpenStorageProvider(&prov, LPCWSTR(d->token.data(u"provider"_s).toString().utf16()), 0)))
 		return {};
-	SCOPE<NCRYPT_KEY_HANDLE> key;
-	if(FAILED(NCryptOpenKey(prov, &key, LPWSTR(d->token.data(u"key"_s).toString().utf16()),
+	if (d->key) {
+		NCryptFreeObject(d->key);
+		d->key = {};
+	}
+	if(FAILED(NCryptOpenKey(prov, &d->key, LPWSTR(d->token.data(u"key"_s).toString().utf16()),
 		d->token.data(u"spec"_s).value<DWORD>(), 0)))
 		return {};
-	// https://docs.microsoft.com/en-us/archive/blogs/alejacma/smart-cards-pin-gets-cached
-	NCryptSetProperty(key, NCRYPT_PIN_PROPERTY, nullptr, 0, 0);
 	QByteArray result;
-	switch(func(prov, key, result))
+	switch(func(prov, d->key, result))
 	{
 	case ERROR_SUCCESS:
 		d->err = PinOK;

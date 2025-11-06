@@ -38,7 +38,7 @@ public:
 	QByteArray deriveHMACExtract(const QByteArray &publicKey, const QByteArray &salt, int keySize) const final;
 	PinStatus lastError() const final;
 	PinStatus login(const TokenData &token) final;
-	void logout() final {}
+	void logout() final;
 	QByteArray sign(QCryptographicHash::Algorithm type, const QByteArray &digest) const final;
 
 private:
