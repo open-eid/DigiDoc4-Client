@@ -128,7 +128,11 @@ MainWindow::MainWindow( QWidget *parent )
 	updateMyEid(qApp->signer()->smartcard()->data());
 }
 
-MainWindow::~MainWindow() noexcept = default;
+MainWindow::~MainWindow() noexcept
+{
+	digiDoc.reset();
+	cryptoDoc.reset();
+}
 
 void MainWindow::adjustDrops()
 {
@@ -136,7 +140,7 @@ void MainWindow::adjustDrops()
 		switch(ui->startScreen->currentIndex())
 		{
 		case SignIntro: return true;
-		case SignDetails: return !digiDoc || digiDoc->signatures().isEmpty();
+		case SignDetails: return !digiDoc || digiDoc->state() != SignedContainer;
 		case CryptoIntro: return true;
 		case CryptoDetails: return !cryptoDoc || cryptoDoc->state() == UnencryptedContainer;
 		case MyEid: return false;
@@ -248,11 +252,15 @@ void MainWindow::navigateToPage( Pages page, const QStringList &files, bool crea
 				}
 			}
 		}
-		else if(auto signatureContainer = DigiDoc::open(files[0], this))
+		else
 		{
-			navigate = true;
-			resetDigiDoc(std::move(signatureContainer));
-			ui->signContainerPage->transition(digiDoc.get());
+			WaitDialogHolder waitDialog(this, tr("Opening"), false);
+			if(auto signatureContainer = DigiDoc::open(files[0], this))
+			{
+				navigate = true;
+				resetDigiDoc(std::move(signatureContainer));
+				ui->signContainerPage->transition(digiDoc.get());
+			}
 		}
 	}
 	else if(page == CryptoDetails)

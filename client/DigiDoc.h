@@ -34,7 +34,7 @@ class QWidget;
 class DigiDocSignature
 {
 public:
-	enum SignatureStatus
+	enum SignatureStatus : quint8
 	{
 		Valid,
 		Warning,
@@ -42,7 +42,7 @@ public:
 		Invalid,
 		Unknown
 	};
-	enum SignatureWarning
+	enum SignatureWarning : quint8
 	{
 		DigestWeak = 1 << 2
 	};
@@ -128,7 +128,6 @@ public:
 	bool extend();
 	QString fileName() const;
 	bool isAsicS() const;
-	bool isCades() const;
 	bool isPDF() const;
 	bool isModified() const;
 	bool isSupported() const;
@@ -144,9 +143,9 @@ public:
 		const QString &country,
 		const QString &role,
 		digidoc::Signer *signer);
-	const QList<DigiDocSignature>& signatures() const;
+	void enumSignatures(std::function<bool (DigiDocSignature &&)> &&cb) const;
+	void enumTimestamps(std::function<bool (DigiDocSignature &&)> &&cb) const;
 	ContainerState state();
-	const QList<DigiDocSignature>& timestamps() const;
 
 	static QStringList parseException(const digidoc::Exception &e,
 		digidoc::Exception::ExceptionCode &code);
@@ -167,7 +166,6 @@ private:
 	std::unique_ptr<DocumentModel>		m_documentModel;
 
 	ContainerState containerState = ria::qdigidoc4::UnsignedContainer;
-	QList<DigiDocSignature> m_signatures, m_timestamps;
 	bool			modified = false;
 	QString			m_fileName;
 
