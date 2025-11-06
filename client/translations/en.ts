@@ -4,12 +4,7 @@
 <context>
     <name>Accordion</name>
     <message>
-        <source>PIN/PUK CODES AND CERTIFICATES</source>
-        <translation>PIN/PUK CODES AND CERTIFICATES</translation>
-    </message>
-    <message>
         <source>PIN/PUK codes and certificates</source>
-        <comment>accessible</comment>
         <translation>PIN/PUK codes and certificates</translation>
     </message>
 </context>
@@ -1048,76 +1043,47 @@
 <context>
     <name>InfoStack</name>
     <message>
-        <source>CITIZENSHIP</source>
-        <translation>CITIZENSHIP</translation>
-    </message>
-    <message>
-        <source>GIVEN NAMES</source>
-        <translation>GIVEN NAMES</translation>
-    </message>
-    <message>
-        <source>PERSONAL CODE</source>
-        <translation>PERSONAL CODE</translation>
-    </message>
-    <message>
-        <source>DOCUMENT</source>
-        <translation>DOCUMENT</translation>
-    </message>
-    <message>
-        <source>SURNAME</source>
-        <translation>SURNAME</translation>
-    </message>
-    <message>
-        <source>NAME</source>
-        <translation>NAME</translation>
-    </message>
-    <message>
-        <source>SERIAL</source>
-        <translation>SERIAL</translation>
-    </message>
-    <message>
-        <source>COUNTRY</source>
-        <translation>COUNTRY</translation>
-    </message>
-    <message>
         <source>You&apos;re using digital identity card</source>
         <translation>You&apos;re using digital identity card</translation>
     </message>
     <message>
-        <source>Valid</source>
-        <translation>Valid</translation>
+        <source>Name</source>
+        <translation>Name</translation>
     </message>
     <message>
-        <source> until </source>
-        <translation> until </translation>
+        <source>Organization</source>
+        <translation>Organization</translation>
     </message>
     <message>
-        <source>Expired</source>
-        <translation>Expired</translation>
+        <source>Serial</source>
+        <translation>Serial</translation>
+    </message>
+    <message>
+        <source>Country</source>
+        <translation>Country</translation>
     </message>
     <message>
         <source>Given names</source>
-        <extracomment>accessible</extracomment>
         <translation>Given names</translation>
     </message>
     <message>
         <source>Surname</source>
-        <extracomment>accessible</extracomment>
         <translation>Surname</translation>
     </message>
     <message>
         <source>Personal code</source>
-        <extracomment>accessible</extracomment>
         <translation>Personal code</translation>
     </message>
     <message>
         <source>Citizenship</source>
-        <extracomment>accessible</extracomment>
         <translation>Citizenship</translation>
     </message>
     <message>
+        <source>Expiry date</source>
+        <translation>Expiry date</translation>
+    </message>
+    <message>
         <source>Document</source>
-        <extracomment>accessible</extracomment>
         <translation>Document</translation>
     </message>
 </context>
@@ -1448,10 +1414,6 @@ ID-Card</translation>
     <message>
         <source>%1 changed!</source>
         <translation>%1 changed!</translation>
-    </message>
-    <message>
-        <source>The ID-card in the card reader has expired and is no longer supported in the DigiDoc4 Client.&lt;br /&gt;You can apply for a new ID-card from the Estonian Police and Border Guard Board.&lt;br /&gt;&lt;a href=&quot;https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult&quot;&gt;Additional information&lt;/a&gt;.</source>
-        <translation>The ID-card in the card reader has expired and is no longer supported in the DigiDoc4 Client.&lt;br /&gt;You can apply for a new ID-card from the Estonian Police and Border Guard Board.&lt;br /&gt;&lt;a href=&quot;https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult&quot;&gt;Additional information&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>Encrypting</source>
@@ -1901,8 +1863,8 @@ ID-Card</translation>
         <translation>PUK code is used for unblocking the certificates, when PIN1 or PIN2 has been entered 3 times incorrectly.</translation>
     </message>
     <message>
-        <source>If you forget the PUK code or the certificates remain blocked, you have to visit the &lt;a href=&quot;https://www.politsei.ee/en/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;service center&lt;/span&gt;&lt;/a&gt; to obtain new codes.</source>
-        <translation>If you forget the PUK code or the certificates remain blocked, you have to visit the &lt;a href=&quot;https://www.politsei.ee/en/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;service center&lt;/span&gt;&lt;/a&gt; to obtain new codes.</translation>
+        <source>If you forget the PUK code or the certificates remain blocked, you have to visit the &lt;a href=&quot;https://www.politsei.ee/en/&quot;&gt;service center&lt;/a&gt; to obtain new codes.</source>
+        <translation>If you forget the PUK code or the certificates remain blocked, you have to visit the &lt;a href=&quot;https://www.politsei.ee/en/&quot;&gt;service center&lt;/a&gt; to obtain new codes.</translation>
     </message>
     <message>
         <source>To unblock the certificate you have to enter the PUK code.</source>
@@ -1913,8 +1875,12 @@ ID-Card</translation>
         <translation>You can find your PUK code inside the ID-card codes envelope.</translation>
     </message>
     <message>
-        <source>If you have forgotten the PUK code for your ID card, please visit &lt;a href=&quot;https://www.politsei.ee/en/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;the Police and Border Guard Board service center&lt;/span&gt;&lt;/a&gt; to obtain new PIN codes.</source>
-        <translation>If you have forgotten the PUK code for your ID-card, please visit &lt;a href=&quot;https://www.politsei.ee/en/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;the Police and Border Guard Board service center&lt;/span&gt;&lt;/a&gt; to obtain new PIN codes.</translation>
+        <source>If you have forgotten the PUK code for your ID card, please visit &lt;a href=&quot;https://www.politsei.ee/en/&quot;&gt;the Police and Border Guard Board service center&lt;/a&gt; to obtain new PIN codes.</source>
+        <translation>If you have forgotten the PUK code for your ID-card, please visit &lt;a href=&quot;https://www.politsei.ee/en/&quot;&gt;the Police and Border Guard Board service center&lt;/a&gt; to obtain new PIN codes.</translation>
+    </message>
+    <message>
+        <source>If you have forgotten the PUK code of your ID-card then you can view it from the Police and Border Guard Board portal. &lt;a href=&quot;https://www.id.ee/en/article/my-pin-is-blocked-locked/&quot;&gt;Additional information&lt;/a&gt;</source>
+        <translation>If you have forgotten the PUK code of your ID-card then you can view it from the Police and Border Guard Board portal. &lt;a href=&quot;https://www.id.ee/en/article/my-pin-is-blocked-locked/&quot;&gt;Additional information&lt;/a&gt;</translation>
     </message>
     <message>
         <source>PUK code is written in the envelope, that is given with the ID-card.</source>
@@ -2294,10 +2260,10 @@ ID-Card</translation>
     </message>
     <message>
         <source>&lt;p&gt;Estonian ID-software is released by Information Systems&apos;s Authority&lt;br /&gt;
-In case of questions please contact our support via &lt;a href=&quot;https://www.id.ee/en/id-help/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;id.ee&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;
+In case of questions please contact our support via &lt;a href=&quot;https://www.id.ee/en/id-help/&quot;&gt;id.ee&lt;/a&gt;.&lt;/p&gt;
 Additional licenses and components</source>
         <translation>&lt;p&gt;Estonian ID-software is released by Information Systems&apos;s Authority&lt;br /&gt;
-In case of questions please contact our support via &lt;a href=&quot;https://www.id.ee/en/id-help/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;id.ee&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;
+In case of questions please contact our support via &lt;a href=&quot;https://www.id.ee/en/id-help/&quot;&gt;id.ee&lt;/a&gt;.&lt;/p&gt;
 Additional licenses and components</translation>
     </message>
     <message>
@@ -2479,7 +2445,7 @@ Additional licenses and components</translation>
     </message>
     <message>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Name</translation>
     </message>
     <message>
         <source>Fetch URL</source>
@@ -2503,6 +2469,14 @@ Additional licenses and components</translation>
     <message>
         <source>Signer</source>
         <translation>Signer</translation>
+    </message>
+    <message>
+        <source>Technical information</source>
+        <translation>Technical information</translation>
+    </message>
+    <message>
+        <source>Role and address</source>
+        <translation>Role and address</translation>
     </message>
     <message>
         <source>City</source>
@@ -2531,10 +2505,6 @@ Additional licenses and components</translation>
     <message>
         <source>Value</source>
         <translation>Value</translation>
-    </message>
-    <message>
-        <source>TECHNICAL INFORMATION</source>
-        <translation>TECHNICAL INFORMATION</translation>
     </message>
     <message>
         <source>Timestamp</source>
@@ -2638,7 +2608,7 @@ Additional licenses and components</translation>
     </message>
     <message>
         <source>SIGNATURE_WARNING</source>
-        <translation>The signature is valid, but the container has a specific feature. Usually, this feature has arisen accidentally when containers were created. However, as it is not possible to edit a container without invalidating the signature, &lt;a href=&apos;https://www.id.ee/en/article/digital-signing-and-electronic-signatures/&apos;&gt;&lt;span style=&apos;color: #006EB5; text-decoration: underline; font-weight: 900;&apos;&gt;a warning&lt;/span&gt;&lt;/a&gt; is displayed.</translation>
+        <translation>The signature is valid, but the container has a specific feature. Usually, this feature has arisen accidentally when containers were created. However, as it is not possible to edit a container without invalidating the signature, &lt;a href=&apos;https://www.id.ee/en/article/digital-signing-and-electronic-signatures/&apos;&gt;&lt;span style=&apos;text-decoration: underline; font-weight: 900;&apos;&gt;a warning&lt;/span&gt;&lt;/a&gt; is displayed.</translation>
     </message>
     <message>
         <source>is valid</source>
@@ -2677,10 +2647,6 @@ Additional licenses and components</translation>
     <message>
         <source>Signing time (UTC)</source>
         <translation>Signing time (UTC)</translation>
-    </message>
-    <message>
-        <source>ROLE AND ADDRESS</source>
-        <translation>ROLE AND ADDRESS</translation>
     </message>
     <message>
         <source>The signature is technically correct, but it is based on the currently weak hash algorithm SHA-1, therefore it is not protected against forgery or alteration.</source>
@@ -2861,10 +2827,6 @@ Additional licenses and components</translation>
         <translation>Certificate has expired!</translation>
     </message>
     <message>
-        <source>Certificate %1is valid%2 until %3</source>
-        <translation>Certificate %1is valid%2 until %3</translation>
-    </message>
-    <message>
         <source>Authentication certificate</source>
         <translation>Authentication certificate</translation>
     </message>
@@ -2877,12 +2839,52 @@ Additional licenses and components</translation>
         <translation>Change PIN%1</translation>
     </message>
     <message>
-        <source>Forgot PIN%1?</source>
-        <translation>Forgot PIN%1?</translation>
+        <source>The PUK code cannot be changed on the ID-card in the reader.&lt;br /&gt;If you have forgotten the PUK code of your ID-card then you can view it from the Police and Border Guard Board portal.&lt;br /&gt;&lt;a href=&quot;https://www.id.ee/en/article/pin-and-puk-codes-security-recommendations/&quot;&gt;Additional information&lt;/a&gt;.</source>
+        <translation>The PUK code cannot be changed on the ID-card in the reader.&lt;br /&gt;If you have forgotten the PUK code of your ID-card then you can view it from the Police and Border Guard Board portal.&lt;br /&gt;&lt;a href=&quot;https://www.id.ee/en/article/pin-and-puk-codes-security-recommendations/&quot;&gt;Additional information&lt;/a&gt;.</translation>
+    </message>
+    <message>
+        <source>PUK code is blocked because the PUK code has been entered 3 times incorrectly.&lt;br/&gt;You can not unblock the PUK code yourself.&lt;br/&gt;As long as the PUK code is blocked, all eID options can be used, except PUK-code.&lt;br/&gt;</source>
+        <translation>PUK code is blocked because the PUK code has been entered 3 times incorrectly.&lt;br/&gt;You can not unblock the PUK code yourself.&lt;br/&gt;As long as the PUK code is blocked, all eID options can be used, except PUK-code.&lt;br/&gt;</translation>
+    </message>
+    <message>
+        <source>Certificate status is unknown. A valid certificate is required for electronic use. </source>
+        <translation>Certificate status is unknown. A valid certificate is required for electronic use. </translation>
+    </message>
+    <message>
+        <source>Your ID-card signing certificate status is unknown. You need valid certificates to use your ID-card electronically. </source>
+        <translation>Your ID-card signing certificate status is unknown. You need valid certificates to use your ID-card electronically. </translation>
+    </message>
+    <message>
+        <source>Your ID-card authentication certificate status is unknown. You need valid certificates to use your ID-card electronically. </source>
+        <translation>Your ID-card authentication certificate status is unknown. You need valid certificates to use your ID-card electronically. </translation>
+    </message>
+    <message>
+        <source>Please visit the service center to obtain new codes.&lt;br/&gt;&lt;a href=&quot;https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult/reminders-for-id-card-holders/&quot;&gt;Additional information&lt;/a&gt;.</source>
+        <translation>Please visit the service center to obtain new codes.&lt;br/&gt;&lt;a href=&quot;https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult/reminders-for-id-card-holders/&quot;&gt;Additional information&lt;/a&gt;.</translation>
+    </message>
+    <message>
+        <source>A new document must be requested to receive the new PUK code.&lt;br/&gt;&lt;a href=&quot;https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult&quot;&gt;Additional information&lt;/a&gt;.</source>
+        <translation>A new document must be requested to receive the new PUK code.&lt;br/&gt;&lt;a href=&quot;https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult&quot;&gt;Additional information&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>Signing certificate</source>
         <translation>Signing certificate</translation>
+    </message>
+    <message>
+        <source>Certificate is valid until %1</source>
+        <translation>Certificate is valid until %1</translation>
+    </message>
+    <message>
+        <source>Change with PUK code</source>
+        <translation>Change with PUK code</translation>
+    </message>
+    <message>
+        <source>PIN%1 code must be changed in order to authenticate</source>
+        <translation>PIN%1 code must be changed in order to authenticate</translation>
+    </message>
+    <message>
+        <source>PIN%1 code must be changed in order to sign</source>
+        <translation>PIN%1 code must be changed in order to sign</translation>
     </message>
     <message>
         <source>Check the details of the certificate</source>
@@ -2899,10 +2901,6 @@ Additional licenses and components</translation>
     <message>
         <source>Change PUK</source>
         <translation>Change PUK</translation>
-    </message>
-    <message>
-        <source>PUK code is blocked because the PUK code has been entered 3 times incorrectly. You can not unblock the PUK code yourself. As long as the PUK code is blocked, all eID options can be used, except PUK code. Please visit the service center to obtain new codes. &lt;a href=&quot;https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult/reminders-for-id-card-holders/&quot;&gt;Additional information&lt;/a&gt;.</source>
-        <translation>PUK code is blocked because the PUK code has been entered 3 times incorrectly. You can not unblock the PUK code yourself. &lt;br&gt;&lt;br&gt;As long as the PUK code is blocked, all eID options can be used, except PUK code. &lt;br&gt;&lt;br&gt;Please visit the service center to obtain new codes. &lt;a href=&quot;https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult/reminders-for-id-card-holders/&quot;&gt;Additional information&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>PIN can be changed only using eToken utility</source>
@@ -2986,6 +2984,10 @@ Additional licenses and components</translation>
 </context>
 <context>
     <name>WarningItem</name>
+    <message>
+        <source>Signing with an ID-card isn&apos;t possible yet. PIN%1 code must be changed in order to sign.</source>
+        <translation>Signing with an ID-card isn&apos;t possible yet. PIN%1 code must be changed in order to sign.</translation>
+    </message>
     <message numerus="yes">
         <source>%n signatures are not valid!</source>
         <translation>
@@ -3045,6 +3047,14 @@ Additional licenses and components</translation>
     <message>
         <source>Certificates expire soon!</source>
         <translation>Certificates expire soon!</translation>
+    </message>
+    <message>
+        <source>Additional information</source>
+        <translation>Additional information</translation>
+    </message>
+    <message>
+        <source>https://www.id.ee/en/article/changing-id-card-pin-codes-and-puk-code/</source>
+        <translation>https://www.id.ee/en/article/changing-id-card-pin-codes-and-puk-code/</translation>
     </message>
     <message>
         <source>This ASiC-S container contains XAdES signature. You are not allowed to add or remove signatures to this container.</source>

@@ -24,7 +24,6 @@
 
 #include "Application.h"
 #include "CheckConnection.h"
-#include "common_enums.h"
 #include "FileDialog.h"
 #include "IKValidator.h"
 #include "LdapSearch.h"
@@ -37,7 +36,6 @@
 
 #include <QtCore/QDateTime>
 #include <QtCore/QJsonArray>
-#include <QtCore/QJsonObject>
 #include <QtNetwork/QSslConfiguration>
 #include <QtNetwork/QSslError>
 #include <QtNetwork/QSslKey>
@@ -46,9 +44,16 @@
 AddRecipients::AddRecipients(ItemList* itemList, QWidget *parent)
 	: QDialog(parent)
 	, ui(new Ui::AddRecipients)
-	, ldap_person(new LdapSearch(defaultUrl(QLatin1String("LDAP-PERSON-URL"), QStringLiteral("ldaps://esteid.ldap.sk.ee")).toUtf8(), this))
-	, ldap_corp(new LdapSearch(defaultUrl(QLatin1String("LDAP-CORP-URL"), QStringLiteral("ldaps://k3.ldap.sk.ee")).toUtf8(), this))
+	, ldap_corp(new LdapSearch(Application::confValue(QLatin1String("LDAP-CORP-URL")).toString(QStringLiteral("ldaps://k3.ldap.sk.ee")), this))
 {
+	for(const auto list = Application::confValue(QLatin1String("LDAP-PERSON-URLS")).toArray(); auto url: list) {
+		ldap_person.append(new LdapSearch(url.toString(), this));
+	}
+	if(ldap_person.isEmpty()) {
+		ldap_person.append(new LdapSearch(QStringLiteral("ldaps://esteid.ldap.sk.ee"), this));
+		ldap_person.append(new LdapSearch(QStringLiteral("ldaps://ldap.eidpki.ee/dc=eidpki,dc=ee"), this));
+	}
+
 	ui->setupUi(this);
 #if defined (Q_OS_WIN)
 	ui->actionLayout->setDirection(QBoxLayout::RightToLeft);
@@ -65,9 +70,11 @@ AddRecipients::AddRecipients(ItemList* itemList, QWidget *parent)
 		ui->leftPane->clear();
 		search(term);
 	});
-	connect(ldap_person, &LdapSearch::searchResult, this, &AddRecipients::showResult);
+	for(auto ldap: ldap_person) {
+		connect(ldap, &LdapSearch::searchResult, this, &AddRecipients::showResult);
+		connect(ldap, &LdapSearch::error, this, &AddRecipients::showError);
+	}
 	connect(ldap_corp, &LdapSearch::searchResult, this, &AddRecipients::showResult);
-	connect(ldap_person, &LdapSearch::error, this, &AddRecipients::showError);
 	connect(ldap_corp, &LdapSearch::error, this, &AddRecipients::showError);
 	connect(this, &AddRecipients::finished, this, &AddRecipients::close);
 
@@ -141,7 +148,7 @@ void AddRecipients::addRecipientFromHistory()
 
 		ui->leftPane->clear();
 		for(const HistoryCertData &certData: selectedCertData) {
-			QString term = (certData.type == QStringLiteral("1") || certData.type == QStringLiteral("3")) ? certData.CN : certData.CN.split(',').value(2);
+			QString term = (certData.type == QLatin1String("1") || certData.type == QLatin1String("3")) ? certData.CN : certData.CN.split(',').value(2);
 			search(term, true, certData.type);
 		}
 	});
@@ -168,11 +175,11 @@ void AddRecipients::addRecipient(const QSslCertificate& cert, bool select)
 			}
 		}
 		leftItem->setDisabled(contains);
+
 		connect(leftItem, &AddressItem::add, this, [this](Item *item) { addRecipientToRightPane(item); });
 		if(auto *add = ui->leftPane->findChild<QWidget*>(QStringLiteral("add")))
 			add->setVisible(true);
 	}
-
 	if(select)
 		addRecipientToRightPane(leftItem);
 }
@@ -218,17 +225,15 @@ void AddRecipients::addRecipientToRightPane(Item *item, bool update)
 				return;
 		}
 	}
-	updated = update;
 
 	rightList.append(key);
 
-	auto *rightItem = new AddressItem(key, AddressItem::Remove, ui->rightPane);
+	auto *rightItem = new AddressItem(CKey(key), AddressItem::Remove, ui->rightPane);
 	connect(rightItem, &AddressItem::remove, this, [this](Item *item) {
 		auto *rightItem = qobject_cast<AddressItem*>(item);
 		if(auto *leftItem = itemListValue(ui->leftPane, rightItem->getKey()))
 			leftItem->setDisabled(false);
 		rightList.removeAll(rightItem->getKey());
-		updated = true;
 		ui->confirm->setDisabled(rightList.isEmpty());
 	});
 	ui->rightPane->addWidget(rightItem);
@@ -238,14 +243,9 @@ void AddRecipients::addRecipientToRightPane(Item *item, bool update)
 		leftItem->setDisabled(true);
 }
 
-QString AddRecipients::defaultUrl(QLatin1String key, const QString &defaultValue)
-{
-	return Application::confValue(key).toString(defaultValue);
-}
-
 bool AddRecipients::isUpdated() const
 {
-	return updated;
+	return ui->confirm->isEnabled();
 }
 
 AddressItem* AddRecipients::itemListValue(ItemList *list, const CDKey &key)
@@ -258,7 +258,7 @@ AddressItem* AddRecipients::itemListValue(ItemList *list, const CDKey &key)
 	return nullptr;
 }
 
-QList<CDKey> AddRecipients::keys()
+QList<CKey> AddRecipients::keys() const
 {
 	QList<CDKey> recipients;
 	for(auto *item: ui->rightPane->items)
@@ -289,6 +289,7 @@ void AddRecipients::search(const QString &term, bool select, const QString &type
 		.replace(QStringLiteral("("), QStringLiteral("\\("))
 		.replace(QStringLiteral(")"), QStringLiteral("\\)"));
 #endif
+	multiSearch = 0;
 	bool isDigit = false;
 	void(cleanTerm.toULongLong(&isDigit));
 	if(!isDigit || (cleanTerm.size() != 11 && cleanTerm.size() != 8))
@@ -298,7 +299,10 @@ void AddRecipients::search(const QString &term, bool select, const QString &type
 	else if(IKValidator::isValid(cleanTerm))
 	{
 		userData[QStringLiteral("personSearch")] = true;
-		ldap_person->search(QStringLiteral("(serialNumber=%1%2)" ).arg(ldap_person->isSSL() ? QStringLiteral("PNOEE-") : QString(), cleanTerm), userData);
+		for(auto *ldap: ldap_person) {
+			ldap->search(QStringLiteral("(serialNumber=PNOEE-%1)").arg(cleanTerm), userData);
+			++multiSearch;
+		}
 	}
 	else
 	{
@@ -330,7 +334,7 @@ void AddRecipients::showResult(const QList<QSslCertificate> &result, int resultC
 	}
 	if(resultCount >= 50)
 		showError(tr("The name you were looking for gave too many results, please refine your search."));
-	else if(ui->leftPane->items.isEmpty())
+	else if(--multiSearch <= 0 && ui->leftPane->items.isEmpty())
 	{
 		showError(tr("Person or company does not own a valid certificate.<br />"
 			"It is necessary to have a valid certificate for encryption.<br />"

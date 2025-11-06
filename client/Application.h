@@ -73,7 +73,7 @@ public:
 	static QWidget* mainWindow();
 	static void openHelp();
 	static uint readTSLVersion(const QString &path);
-	static void showClient(const QStringList &params = {}, bool crypto = false, bool sign = false, bool newWindow = false);
+	static void showClient(QStringList params = {}, bool crypto = false, bool sign = false, bool newWindow = false);
 	static void updateTSLCache(const QDateTime &tslTime);
 #if defined(Q_OS_MAC)
 	static QString groupContainerPath();

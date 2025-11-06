@@ -21,14 +21,20 @@
 #include "ui_Accordion.h"
 
 Accordion::Accordion(QWidget *parent)
-	: StyledWidget(parent)
+	: QWidget(parent)
 	, ui(new Ui::Accordion)
 {
 	ui->setupUi( this );
-	ui->titleVerifyCert->init(true, tr("PIN/PUK CODES AND CERTIFICATES"), tr("PIN/PUK codes and certificates", "accessible"), ui->contentVerifyCert);
-	connect(ui->authBox, &VerifyCert::changePinClicked, this, &Accordion::changePin1Clicked);
-	connect(ui->signBox, &VerifyCert::changePinClicked, this, &Accordion::changePin2Clicked);
-	connect(ui->pukBox, &VerifyCert::changePinClicked, this, &Accordion::changePukClicked);
+	connect(ui->titleVerifyCert, &AccordionTitle::toggled, ui->contentVerifyCert, &QWidget::setVisible);
+	connect(ui->authBox, &VerifyCert::changePinClicked, this, [this](QSmartCard::PinAction action) {
+		emit changePinClicked(QSmartCardData::Pin1Type, action);
+	});
+	connect(ui->signBox, &VerifyCert::changePinClicked, this,[this](QSmartCard::PinAction action) {
+		emit changePinClicked(QSmartCardData::Pin2Type, action);
+	});
+	connect(ui->pukBox, &VerifyCert::changePinClicked, this, [this](QSmartCard::PinAction action) {
+		emit changePinClicked(QSmartCardData::PukType, action);
+	});
 	clear();
 }
 
@@ -42,7 +48,7 @@ void Accordion::clear()
 	ui->authBox->clear();
 	ui->signBox->clear();
 	ui->pukBox->clear();
-	ui->titleVerifyCert->setSectionOpen();
+	ui->titleVerifyCert->setChecked(true);
 }
 
 void Accordion::updateInfo(const SslCertificate &c)
@@ -61,6 +67,8 @@ void Accordion::updateInfo(const SslCertificate &c)
 
 void Accordion::updateInfo(const QSmartCardData &data)
 {
+	if(data.isNull())
+		return clear();
 	ui->authBox->setVisible(!data.authCert().isNull());
 	if (!data.authCert().isNull())
 		ui->authBox->update(QSmartCardData::Pin1Type, data);
@@ -76,9 +84,6 @@ void Accordion::updateInfo(const QSmartCardData &data)
 void Accordion::changeEvent(QEvent* event)
 {
 	if (event->type() == QEvent::LanguageChange)
-	{
 		ui->retranslateUi(this);
-		ui->titleVerifyCert->setText(tr("PIN/PUK CODES AND CERTIFICATES"), tr("PIN/PUK codes and certificates", "accessible"));
-	}
 	QWidget::changeEvent(event);
 }

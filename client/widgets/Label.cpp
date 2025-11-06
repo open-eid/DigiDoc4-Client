@@ -17,28 +17,22 @@
  *
  */
 
-#pragma once 
+#include "Label.h"
 
-#include <QMouseEvent>
-#include <QSvgWidget>
+#include <QStyle>
 
-class DropdownButton : public QSvgWidget
+Label::Label(QWidget *parent)
+	: QLabel(parent)
+{}
+
+QString Label::label() const
 {
-	Q_OBJECT
+	return _label;
+}
 
-public:
-	explicit DropdownButton( const QString normalIcon, const QString selectedIcon, QWidget *parent = nullptr );
-	void init();
-	void press();
-
-signals:
-	void dropdown( bool );
-
-protected:
-	void mouseReleaseEvent( QMouseEvent *event ) override;
-
-private:
-	bool selected;
-	QString normalIcon;
-	QString selectedIcon;
-};
+void Label::setLabel(QString label)
+{
+	_label = std::move(label);
+	parentWidget()->style()->unpolish(this);
+	parentWidget()->style()->polish(this);
+}

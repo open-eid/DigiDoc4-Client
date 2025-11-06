@@ -19,9 +19,10 @@
 
 #pragma once
 
-#include "widgets/StyledWidget.h"
+#include <QWidget>
 
-class QSmartCardData;
+#include "QSmartCard.h"
+
 class SslCertificate;
 
 namespace Ui {
@@ -30,7 +31,7 @@ class Accordion;
 
 class AccordionTitle;
 
-class Accordion final : public StyledWidget
+class Accordion final : public QWidget
 {
 	Q_OBJECT
 
@@ -43,9 +44,7 @@ public:
 	void updateInfo(const QSmartCardData &data);
 
 Q_SIGNALS:
-	void changePin1Clicked(bool isForgotPin, bool isBlockedPin);
-	void changePin2Clicked(bool isForgotPin, bool isBlockedPin);
-	void changePukClicked();
+	void changePinClicked(QSmartCardData::PinType, QSmartCard::PinAction);
 
 private:
 	void changeEvent(QEvent* event) override;

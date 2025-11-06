@@ -11,14 +11,15 @@
    </rect>
   </property>
   <property name="styleSheet">
-   <string notr="true">#authBox, #signBox {
-border-right: 1px solid #DFE5E9;
+   <string notr="true">#titleVerifyCert {
+border-top: 1px solid #E7EAEF;
+border-bottom: 1px solid #E7EAEF;
 }
-#authBox, #signBox, #pukBox {
-border-top: 1px solid #DFE5E9;
+#authBox, #signBox {
+border-right: 1px solid #E7EAEF;
 }</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout" stretch="0,1,0">
+  <layout class="QVBoxLayout" name="AccordionLayout" stretch="0,1,0">
    <property name="spacing">
     <number>0</number>
    </property>
@@ -35,13 +36,18 @@ border-top: 1px solid #DFE5E9;
     <number>0</number>
    </property>
    <item>
-    <widget class="AccordionTitle" name="titleVerifyCert" native="true">
+    <widget class="AccordionTitle" name="titleVerifyCert">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>40</height>
+      </size>
+     </property>
      <property name="cursor">
       <cursorShape>PointingHandCursor</cursorShape>
      </property>
-     <property name="styleSheet">
-      <string notr="true">border-top: 1px solid #DFE5E9;
-</string>
+     <property name="text">
+      <string>PIN/PUK codes and certificates</string>
      </property>
     </widget>
    </item>
@@ -76,7 +82,7 @@ border-top: 1px solid #DFE5E9;
     </widget>
    </item>
    <item>
-    <spacer name="accordionSpacerVertical">
+    <spacer name="accordionSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
      </property>
@@ -93,7 +99,7 @@ border-top: 1px solid #DFE5E9;
  <customwidgets>
   <customwidget>
    <class>AccordionTitle</class>
-   <extends>QWidget</extends>
+   <extends>QCheckBox</extends>
    <header>widgets/AccordionTitle.h</header>
    <container>1</container>
   </customwidget>

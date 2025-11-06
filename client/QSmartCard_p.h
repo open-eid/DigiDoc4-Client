@@ -41,7 +41,7 @@ public:
 		QSmartCardData::PinType type, quint8 newPINOffset, bool requestCurrentPIN);
 	virtual bool updateCounters(QPCSCReader *reader, QSmartCardDataPrivate *d) const = 0;
 
-	static QByteArrayView parseFCI(const QByteArray &data, quint8 expectedTag);
+	static QByteArrayView parseFCI(QByteArrayView data, quint8 expectedTag);
 
 	static const QByteArray CHANGE;
 	static const QByteArray READBINARY;
@@ -64,6 +64,21 @@ public:
 	static const QByteArray AID, AID_OT, AID_QSCD, ATR_COSMO8, ATR_COSMOX;
 };
 
+class THALESCard: public Card
+{
+public:
+	QPCSCReader::Result change(QPCSCReader *reader, QSmartCardData::PinType type, const QString &pin, const QString &newpin) const final;
+	bool loadPerso(QPCSCReader *reader, QSmartCardDataPrivate *d) const final;
+	QPCSCReader::Result replace(QPCSCReader *reader, QSmartCardData::PinType type, const QString &puk, const QString &pin) const final;
+	QByteArray sign(QPCSCReader *reader, const QByteArray &dgst) const final;
+	bool updateCounters(QPCSCReader *reader, QSmartCardDataPrivate *d) const final;
+
+	static bool isSupported(const QByteArray &atr);
+	static QByteArray pinTemplate(const QString &pin);
+
+	static const QByteArray AID;
+};
+
 class QSmartCard::Private
 {
 public:
@@ -83,5 +98,7 @@ public:
 	QHash<QSmartCardData::PersonalDataType,QVariant> data;
 	SslCertificate authCert, signCert;
 	QHash<QSmartCardData::PinType,quint8> retry;
+	QHash<QSmartCardData::PinType,bool> locked;
 	bool pinpad = false;
+	bool pukReplacable = true;
 };

@@ -21,7 +21,7 @@
 
 namespace ria::qdigidoc4 {
 
-enum ContainerState {
+enum ContainerState : unsigned char {
     Uninitialized           = (1 << 0),
 
     UnsignedContainer       = (1 << 1),
@@ -35,7 +35,7 @@ enum ContainerState {
     CryptoContainers        = UnencryptedContainer | EncryptedContainer,
 };
 
-enum Actions {
+enum Actions : unsigned char {
     ContainerCancel,
     ContainerConvert,
     ContainerEncrypt,
@@ -59,7 +59,7 @@ enum Actions {
     EncryptLT
 };
 
-enum ItemType {
+enum ItemType : unsigned char {
     ItemFile,
     ItemSignature,
     ItemAddress,
@@ -67,7 +67,7 @@ enum ItemType {
     AddedAdresses,
 };
 
-enum Pages {
+enum Pages : unsigned char {
     SignIntro,
     SignDetails,
     CryptoIntro,
@@ -75,13 +75,16 @@ enum Pages {
     MyEid
 };
 
-enum WarningType {
+enum WarningType : unsigned char {
     NoWarning = 0,
 
     CertExpiredError,
     CertExpiryWarning,
     UnblockPin1Warning,
     UnblockPin2Warning,
+    ActivatePin2Warning,
+    ActivatePin1WithPUKWarning,
+    ActivatePin2WithPUKWarning,
 
     InvalidSignatureError,
     InvalidTimestampError,

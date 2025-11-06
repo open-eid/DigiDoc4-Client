@@ -4,12 +4,7 @@
 <context>
     <name>Accordion</name>
     <message>
-        <source>PIN/PUK CODES AND CERTIFICATES</source>
-        <translation>PIN-/PUK-KOODID JA SERTIFIKAATIDE KONTROLL</translation>
-    </message>
-    <message>
         <source>PIN/PUK codes and certificates</source>
-        <comment>accessible</comment>
         <translation>PIN/PUK koodid ja sertifikaatide kontroll</translation>
     </message>
 </context>
@@ -218,7 +213,7 @@
     <name>CDoc2</name>
     <message>
         <source>CDoc contains additional payload data that is not part of content</source>
-        <translation type="unfinished"></translation>
+        <translation>CDoc sisaldab lisanduvat andmehulka, mis ei ole osa sisust</translation>
     </message>
 </context>
 <context>
@@ -1048,76 +1043,47 @@
 <context>
     <name>InfoStack</name>
     <message>
-        <source>CITIZENSHIP</source>
-        <translation>KODAKONDSUS</translation>
-    </message>
-    <message>
-        <source>GIVEN NAMES</source>
-        <translation>EESNIMI</translation>
-    </message>
-    <message>
-        <source>PERSONAL CODE</source>
-        <translation>ISIKUKOOD</translation>
-    </message>
-    <message>
-        <source>DOCUMENT</source>
-        <translation>DOKUMENT</translation>
-    </message>
-    <message>
-        <source>SURNAME</source>
-        <translation>PEREKONNANIMI</translation>
-    </message>
-    <message>
-        <source>NAME</source>
-        <translation>NIMI</translation>
-    </message>
-    <message>
-        <source>SERIAL</source>
-        <translation>SEERIANUMBER</translation>
-    </message>
-    <message>
-        <source>COUNTRY</source>
-        <translation>RIIK</translation>
-    </message>
-    <message>
         <source>You&apos;re using digital identity card</source>
         <translation>Kasutate digitaalset isikutunnistust</translation>
     </message>
     <message>
-        <source>Valid</source>
-        <translation>Kehtiv</translation>
+        <source>Name</source>
+        <translation>Nimi</translation>
     </message>
     <message>
-        <source> until </source>
-        <translation> kuni </translation>
+        <source>Organization</source>
+        <translation>Organisatsioon</translation>
     </message>
     <message>
-        <source>Expired</source>
-        <translation>Aegunud</translation>
+        <source>Serial</source>
+        <translation>Seerianumber</translation>
+    </message>
+    <message>
+        <source>Country</source>
+        <translation>Riik</translation>
     </message>
     <message>
         <source>Given names</source>
-        <extracomment>accessible</extracomment>
         <translation>Eesnimi</translation>
     </message>
     <message>
         <source>Surname</source>
-        <extracomment>accessible</extracomment>
         <translation>Perekonnanimi</translation>
     </message>
     <message>
         <source>Personal code</source>
-        <extracomment>accessible</extracomment>
         <translation>Isikukood</translation>
     </message>
     <message>
         <source>Citizenship</source>
-        <extracomment>accessible</extracomment>
         <translation>Kodakondsus</translation>
     </message>
     <message>
+        <source>Expiry date</source>
+        <translation>Aegumiskuupäev</translation>
+    </message>
+    <message>
         <source>Document</source>
-        <extracomment>accessible</extracomment>
         <translation>Dokument</translation>
     </message>
 </context>
@@ -1448,10 +1414,6 @@ ID-kaardiga</translation>
     <message>
         <source>%1 changed!</source>
         <translation>%1-kood muudetud!</translation>
-    </message>
-    <message>
-        <source>The ID-card in the card reader has expired and is no longer supported in the DigiDoc4 Client.&lt;br /&gt;You can apply for a new ID-card from the Estonian Police and Border Guard Board.&lt;br /&gt;&lt;a href=&quot;https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult&quot;&gt;Additional information&lt;/a&gt;.</source>
-        <translation>Lugejas olev ID-kaart on aegunud ning ei ole enam DigiDoc4 kliendis toetatud.&lt;br /&gt;Uue ID-kaardi saad taotleda Politsei- ja Piirivalveametist.&lt;br /&gt;&lt;a href=&quot;https://www.politsei.ee/et/juhend/id-kaardi-taotlemine-taeiskasvanule&quot;&gt;Loe täpsemalt siit&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>Encrypting</source>
@@ -1901,8 +1863,8 @@ ID-kaardiga</translation>
         <translation>PUK-koodi abil saab tühistada sertifikaadi blokeeringu, kui PIN1- või PIN2-koodi on 3 korda järjest valesti sisestatud.</translation>
     </message>
     <message>
-        <source>If you forget the PUK code or the certificates remain blocked, you have to visit the &lt;a href=&quot;https://www.politsei.ee/en/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;service center&lt;/span&gt;&lt;/a&gt; to obtain new codes.</source>
-        <translation>Kui peale vahetamist PUK-kood läheb meelest ära ja sertifikaat jääb blokeerituks kolme vale PIN1 või PIN2 sisestamise järel, siis ainus võimalus ID-kaart jälle tööle saada on pöörduda &lt;a href=&quot;https://www.politsei.ee&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;klienditeeninduspunkti&lt;/span&gt;&lt;/a&gt; poole.</translation>
+        <source>If you forget the PUK code or the certificates remain blocked, you have to visit the &lt;a href=&quot;https://www.politsei.ee/en/&quot;&gt;service center&lt;/a&gt; to obtain new codes.</source>
+        <translation>Kui peale vahetamist PUK-kood läheb meelest ära ja sertifikaat jääb blokeerituks kolme vale PIN1 või PIN2 sisestamise järel, siis ainus võimalus ID-kaart jälle tööle saada on pöörduda &lt;a href=&quot;https://www.politsei.ee&quot;&gt;klienditeeninduspunkti&lt;/a&gt; poole.</translation>
     </message>
     <message>
         <source>To unblock the certificate you have to enter the PUK code.</source>
@@ -1913,8 +1875,12 @@ ID-kaardiga</translation>
         <translation>PUK-koodi leiad ID-kaardi koodiümbrikus, kui sa pole seda vahepeal muutnud.</translation>
     </message>
     <message>
-        <source>If you have forgotten the PUK code for your ID card, please visit &lt;a href=&quot;https://www.politsei.ee/en/&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;the Police and Border Guard Board service center&lt;/span&gt;&lt;/a&gt; to obtain new PIN codes.</source>
-        <translation>Kui sa oled unustanud enda ID-kaardi PUK-koodi, külasta &lt;a href=&quot;https://www.politsei.ee&quot;&gt;&lt;span style=&quot;color: #006EB5; text-decoration: none;&quot;&gt;Politsei- ja Piirivalve esindust&lt;/span&gt;&lt;/a&gt;, kus väljastatakse uus koodiümbrik.</translation>
+        <source>If you have forgotten the PUK code for your ID card, please visit &lt;a href=&quot;https://www.politsei.ee/en/&quot;&gt;the Police and Border Guard Board service center&lt;/a&gt; to obtain new PIN codes.</source>
+        <translation>Kui sa oled unustanud enda ID-kaardi PUK-koodi, külasta &lt;a href=&quot;https://www.politsei.ee&quot;&gt;Politsei- ja Piirivalve esindust&lt;/a&gt;, kus väljastatakse uus koodiümbrik.</translation>
+    </message>
+    <message>
+        <source>If you have forgotten the PUK code of your ID-card then you can view it from the Police and Border Guard Board portal. &lt;a href=&quot;https://www.id.ee/en/article/my-pin-is-blocked-locked/&quot;&gt;Additional information&lt;/a&gt;</source>
+        <translation>Kui oled unustanud enda ID-kaardi PUK-koodi, siis saad sa seda vaadata Politsei- ja Piirivalveameti iseteenindusest. &lt;a href=&quot;https://www.id.ee/artikkel/pin-kood-on-blokeeritud-ehk-lukku-lainud/&quot;&gt;Lisainfo&lt;/a&gt;</translation>
     </message>
     <message>
         <source>PUK code is written in the envelope, that is given with the ID-card.</source>
@@ -2294,10 +2260,10 @@ ID-kaardiga</translation>
     </message>
     <message>
         <source>&lt;p&gt;Estonian ID-software is released by Information Systems&apos;s Authority&lt;br /&gt;
-In case of questions please contact our support via &lt;a href=&quot;https://www.id.ee/en/id-help/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;id.ee&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;
+In case of questions please contact our support via &lt;a href=&quot;https://www.id.ee/en/id-help/&quot;&gt;id.ee&lt;/a&gt;.&lt;/p&gt;
 Additional licenses and components</source>
         <translation>&lt;p&gt;ID-tarkvara arendaja Riigi Infosüsteemi Amet&lt;br /&gt;
-Küsimuste korral võta ühendust &lt;a href=&quot;https://www.id.ee/id-abikeskus/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#006eb5;&quot;&gt;ID-abikeskusega&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;
+Küsimuste korral võta ühendust &lt;a href=&quot;https://www.id.ee/id-abikeskus/&quot;&gt;ID-abikeskusega/a&gt;.&lt;/p&gt;
 Täiendavad litsentsid ja komponendid</translation>
     </message>
     <message>
@@ -2431,11 +2397,11 @@ Täiendavad litsentsid ja komponendid</translation>
     </message>
     <message>
         <source>Select SiVa server certificate</source>
-        <translation type="unfinished"></translation>
+        <translation>Vali Valideerimisteenuse serveri sertifikaat</translation>
     </message>
     <message>
         <source>Select Time-Stamping server certificate</source>
-        <translation type="unfinished"></translation>
+        <translation>Vali ajatempliteenuse serveri sertifikaat</translation>
     </message>
     <message>
         <source>Time-Stamping service SSL certificate</source>
@@ -2479,7 +2445,7 @@ Täiendavad litsentsid ja komponendid</translation>
     </message>
     <message>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nimi</translation>
     </message>
     <message>
         <source>Fetch URL</source>
@@ -2503,6 +2469,14 @@ Täiendavad litsentsid ja komponendid</translation>
     <message>
         <source>Signer</source>
         <translation>Allkirjastaja</translation>
+    </message>
+    <message>
+        <source>Technical information</source>
+        <translation>Tehniline informatsioon</translation>
+    </message>
+    <message>
+        <source>Role and address</source>
+        <translation>Roll ja aadress</translation>
     </message>
     <message>
         <source>City</source>
@@ -2531,10 +2505,6 @@ Täiendavad litsentsid ja komponendid</translation>
     <message>
         <source>Value</source>
         <translation>Väärtus</translation>
-    </message>
-    <message>
-        <source>TECHNICAL INFORMATION</source>
-        <translation>TEHNILINE INFORMATSIOON</translation>
     </message>
     <message>
         <source>Timestamp</source>
@@ -2638,7 +2608,7 @@ Täiendavad litsentsid ja komponendid</translation>
     </message>
     <message>
         <source>SIGNATURE_WARNING</source>
-        <translation>Allkiri on kehtiv, aga ümbrikul on mingi eripära. Tavaliselt on selline eripära tekkinud ümbriku loomisel. Kuna ümbrikku ei ole võimalik muuta ilma, et allkiri kehtetuks muutuks, näidatakse selliste ümbrike puhul &lt;a href=&apos;https://www.id.ee/artikkel/digitaalne-allkirjastamine-ja-elektroonilised-allkirjad/&apos;&gt;&lt;span style=&apos;color: #006EB5; text-decoration: underline; font-weight: 900;&apos;&gt;hoiatust&lt;/span&gt;&lt;/a&gt;.</translation>
+        <translation>Allkiri on kehtiv, aga ümbrikul on mingi eripära. Tavaliselt on selline eripära tekkinud ümbriku loomisel. Kuna ümbrikku ei ole võimalik muuta ilma, et allkiri kehtetuks muutuks, näidatakse selliste ümbrike puhul &lt;a href=&apos;https://www.id.ee/artikkel/digitaalne-allkirjastamine-ja-elektroonilised-allkirjad/&apos;&gt;&lt;span style=&apos;text-decoration: underline; font-weight: 900;&apos;&gt;hoiatust&lt;/span&gt;&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>is valid</source>
@@ -2677,10 +2647,6 @@ Täiendavad litsentsid ja komponendid</translation>
     <message>
         <source>Signing time (UTC)</source>
         <translation>Allkirjastamise aeg (UTC)</translation>
-    </message>
-    <message>
-        <source>ROLE AND ADDRESS</source>
-        <translation>ROLL JA AADRESS</translation>
     </message>
     <message>
         <source>The signature is technically correct, but it is based on the currently weak hash algorithm SHA-1, therefore it is not protected against forgery or alteration.</source>
@@ -2861,10 +2827,6 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>Sertifikaat on aegunud!</translation>
     </message>
     <message>
-        <source>Certificate %1is valid%2 until %3</source>
-        <translation>Sertifikaat %1kehtib%2 kuni %3</translation>
-    </message>
-    <message>
         <source>Authentication certificate</source>
         <translation>Isikutuvastamise sertifikaat</translation>
     </message>
@@ -2877,12 +2839,52 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>Muuda PIN%1</translation>
     </message>
     <message>
-        <source>Forgot PIN%1?</source>
-        <translation>Unustasid PIN%1-koodi?</translation>
+        <source>The PUK code cannot be changed on the ID-card in the reader.&lt;br /&gt;If you have forgotten the PUK code of your ID-card then you can view it from the Police and Border Guard Board portal.&lt;br /&gt;&lt;a href=&quot;https://www.id.ee/en/article/pin-and-puk-codes-security-recommendations/&quot;&gt;Additional information&lt;/a&gt;.</source>
+        <translation>Lugejas oleval ID-kaardil ei ole võimalik PUK-koodi muuta.&lt;br /&gt;Kui oled unustanud enda ID-kaardi PUK-koodi, siis saad sa seda vaadata Politsei- ja Piirivalveameti iseteenindusest.&lt;br /&gt;&lt;a href=&quot;https://www.id.ee/artikkel/pin-ja-puk-koodid-soovitused-turvalisuse-tagamiseks/&quot;&gt;Lisainfo&lt;/a&gt;.</translation>
+    </message>
+    <message>
+        <source>PUK code is blocked because the PUK code has been entered 3 times incorrectly.&lt;br/&gt;You can not unblock the PUK code yourself.&lt;br/&gt;As long as the PUK code is blocked, all eID options can be used, except PUK-code.&lt;br/&gt;</source>
+        <translation>PUK-kood on blokeeritud, kuna PUK-koodi on sisestatud 3 korda valesti.&lt;br/&gt;PUK-koodi ei saa ise lahti blokeerida.&lt;br/&gt;Kuigi PUK-kood on blokeeritud, saab kõiki eID võimalusi kasutada, välja arvatud PUK-koodi vajavaid.&lt;br/&gt;</translation>
+    </message>
+    <message>
+        <source>Certificate status is unknown. A valid certificate is required for electronic use. </source>
+        <translation>Sertifikaadi staatus on teadmata. Elektrooniliseks kasutamiseks on vaja kehtivat sertifikaati. </translation>
+    </message>
+    <message>
+        <source>Your ID-card signing certificate status is unknown. You need valid certificates to use your ID-card electronically. </source>
+        <translation>Sinu ID-kaardi allkirjastamise sertifikaadi staatus on teadmata. Elektrooniliseks kasutamiseks on vaja kehtivat sertifikaati. </translation>
+    </message>
+    <message>
+        <source>Your ID-card authentication certificate status is unknown. You need valid certificates to use your ID-card electronically. </source>
+        <translation>Sinu ID-kaardi isikutuvastamise sertifikaadi staatus on teadmata. Elektrooniliseks kasutamiseks on vaja kehtivat sertifikaati. </translation>
+    </message>
+    <message>
+        <source>Please visit the service center to obtain new codes.&lt;br/&gt;&lt;a href=&quot;https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult/reminders-for-id-card-holders/&quot;&gt;Additional information&lt;/a&gt;.</source>
+        <translation>Uue PUK-koodi saamiseks külasta klienditeeninduspunkti, kust saad koodiümbriku uute koodidega.&lt;br/&gt;&lt;a href=&quot;https://www.politsei.ee/et/juhend/id-kaardi-taotlemine-taeiskasvanule/id-kaardi-kasutaja-meelespea/&quot;&gt;Lisainfo&lt;/a&gt;.</translation>
+    </message>
+    <message>
+        <source>A new document must be requested to receive the new PUK code.&lt;br/&gt;&lt;a href=&quot;https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult&quot;&gt;Additional information&lt;/a&gt;.</source>
+        <translation>Uue PUK-koodi saamiseks tuleb taotleda uus dokument.&lt;br/&gt;&lt;a href=&quot;https://www.politsei.ee/et/juhend/id-kaardi-taotlemine-taeiskasvanule/id-kaardi-kasutaja-meelespea/&quot;&gt;Lisainfo&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>Signing certificate</source>
         <translation>Allkirjastamise sertifikaat</translation>
+    </message>
+    <message>
+        <source>Certificate is valid until %1</source>
+        <translation>Sertifikaat kehtib kuni %1</translation>
+    </message>
+    <message>
+        <source>Change with PUK code</source>
+        <translation>Muuda PUK-koodiga</translation>
+    </message>
+    <message>
+        <source>PIN%1 code must be changed in order to authenticate</source>
+        <translation>Autentimiseks tuleb PIN%1-koodi muuta</translation>
+    </message>
+    <message>
+        <source>PIN%1 code must be changed in order to sign</source>
+        <translation>Allkirjastamiseks tuleb PIN%1-koodi muuta</translation>
     </message>
     <message>
         <source>Check the details of the certificate</source>
@@ -2903,10 +2905,6 @@ Täiendavad litsentsid ja komponendid</translation>
     <message>
         <source>Change PUK</source>
         <translation>Muuda PUK</translation>
-    </message>
-    <message>
-        <source>PUK code is blocked because the PUK code has been entered 3 times incorrectly. You can not unblock the PUK code yourself. As long as the PUK code is blocked, all eID options can be used, except PUK code. Please visit the service center to obtain new codes. &lt;a href=&quot;https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult/reminders-for-id-card-holders/&quot;&gt;Additional information&lt;/a&gt;.</source>
-        <translation>PUK-kood on blokeeritud, kuna PUK-koodi on sisestatud 3 korda valesti. PUK-koodi ei saa ise lahti blokeerida. &lt;br&gt;&lt;br&gt;Kuigi PUK-kood on blokeeritud, saab kõiki eID võimalusi kasutada, välja arvatud PUK-koodi vajavaid. &lt;br&gt;&lt;br&gt;Uue PUK-koodi saamiseks külasta klienditeeninduspunkti, kust saad koodiümbriku uute koodidega. &lt;a href=&quot;https://www.politsei.ee/et/juhend/id-kaardi-taotlemine-taeiskasvanule/id-kaardi-kasutaja-meelespea/&quot;&gt;Lisainfo&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>PIN can be changed only using eToken utility</source>
@@ -2986,6 +2984,10 @@ Täiendavad litsentsid ja komponendid</translation>
 </context>
 <context>
     <name>WarningItem</name>
+    <message>
+        <source>Signing with an ID-card isn&apos;t possible yet. PIN%1 code must be changed in order to sign.</source>
+        <translation>ID-kaardiga allkirjastamine ei ole veel võimalik. Allkirjastamiseks tuleb PIN%1-koodi muuta.</translation>
+    </message>
     <message numerus="yes">
         <source>%n signatures are not valid!</source>
         <translation>
@@ -3045,6 +3047,14 @@ Täiendavad litsentsid ja komponendid</translation>
     <message>
         <source>Certificates have expired!</source>
         <translation>Sertifikaadid on aegunud!</translation>
+    </message>
+    <message>
+        <source>Additional information</source>
+        <translation>Lisainfo</translation>
+    </message>
+    <message>
+        <source>https://www.id.ee/en/article/changing-id-card-pin-codes-and-puk-code/</source>
+        <translation>https://www.id.ee/artikkel/id-kaardi-pin-ja-puk-koodide-muutmine/</translation>
     </message>
     <message>
         <source>This ASiC-S container contains XAdES signature. You are not allowed to add or remove signatures to this container.</source>

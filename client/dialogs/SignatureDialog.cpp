@@ -37,14 +37,16 @@ SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *par
 	d->setupUi( this );
 	setAttribute(Qt::WA_DeleteOnClose);
 	setWindowFlags(windowFlags()|Qt::FramelessWindowHint);
-	d->showErrors->init(false, tr("TECHNICAL INFORMATION"), d->error);
 	d->showErrors->hide();
-	d->showRole->init(true, tr("ROLE AND ADDRESS"), d->role);
 	d->error->hide();
-	connect(d->showErrors, &AccordionTitle::opened, d->showRole, &AccordionTitle::openSection);
-	connect(d->showErrors, &AccordionTitle::closed, this, [this] { d->showRole->setSectionOpen(); });
-	connect(d->showRole, &AccordionTitle::opened, d->showErrors, &AccordionTitle::openSection);
-	connect(d->showRole, &AccordionTitle::closed, this, [this] { d->showErrors->setSectionOpen(); });
+	connect(d->showErrors, &AccordionTitle::toggled, d->showRole, [this](bool open) {
+		d->showRole->setChecked(!open);
+		d->error->setVisible(open && !d->showErrors->isHidden());
+	});
+	connect(d->showRole, &AccordionTitle::toggled, d->showErrors, [this](bool open) {
+		d->showErrors->setChecked(!open);
+		d->role->setVisible(open);
+	});
 
 	new Overlay(this);
 

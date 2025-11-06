@@ -4,12 +4,12 @@
 set -e
 
 ######### Versions of libraries/frameworks to be compiled
-QT_VER="6.8.2"
-OPENSSL_VER="3.0.16"
-OPENLDAP_VER="2.6.9"
+QT_VER="6.9.2"
+OPENSSL_VER="3.5.2"
+OPENLDAP_VER="2.6.10"
 REBUILD=false
 BUILD_PATH=~/cmake_builds
-: ${MACOSX_DEPLOYMENT_TARGET:="12.0"}
+: ${MACOSX_DEPLOYMENT_TARGET:="13.0"}
 export MACOSX_DEPLOYMENT_TARGET
 
 while [[ $# -gt 0 ]]
@@ -80,7 +80,7 @@ if [[ ! -d ${OPENSSL_PATH} ]] ; then
     tar xf openssl-${OPENSSL_VER}.tar.gz
     pushd openssl-${OPENSSL_VER}
     for ARCH in x86_64 arm64; do
-        ./Configure darwin64-${ARCH} --prefix=${OPENSSL_PATH} shared no-autoload-config no-module no-tests enable-ec_nistp_64_gcc_128
+        ./Configure darwin64-${ARCH} --prefix=${OPENSSL_PATH} no-apps shared no-autoload-config no-module no-tests enable-ec_nistp_64_gcc_128
         make -s > /dev/null
         make install_sw
         mv ${OPENSSL_PATH}{,.${ARCH}}
@@ -103,7 +103,7 @@ if [[ "$REBUILD" = true || ! -d ${QT_PATH} ]] ; then
     echo -e "\n${ORANGE}##### Building Qt ${QT_VER} ${QT_PATH} #####${RESET}\n"
     for PACKAGE in qtbase-everywhere-src-${QT_VER} qtsvg-everywhere-src-${QT_VER} qttools-everywhere-src-${QT_VER}; do
         if [ ! -f ${PACKAGE}.tar.xz ]; then
-            curl -O -L http://download.qt.io/official_releases/qt/${QT_MINOR}/${QT_VER}/submodules/${PACKAGE}.tar.xz
+            curl -O -L https://download.qt.io/official_releases/qt/${QT_MINOR}/${QT_VER}/submodules/${PACKAGE}.tar.xz
         fi
         rm -rf ${PACKAGE}
         tar xf ${PACKAGE}.tar.xz
@@ -125,7 +125,7 @@ fi
 if [[ "$REBUILD" = true || ! -d ${OPENLDAP_PATH} ]] ; then
     echo -e "\n${ORANGE}##### Building OpenLDAP ${OPENLDAP_VER} ${OPENLDAP_PATH} #####${RESET}\n"
     if [ ! -f openldap-${OPENLDAP_VER}.tgz ]; then
-        curl -O -L http://mirror.eu.oneandone.net/software/openldap/openldap-release/openldap-${OPENLDAP_VER}.tgz
+        curl -O -L https://mirror.eu.oneandone.net/software/openldap/openldap-release/openldap-${OPENLDAP_VER}.tgz
     fi
     tar xf openldap-${OPENLDAP_VER}.tgz
     pushd openldap-${OPENLDAP_VER}

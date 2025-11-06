@@ -26,6 +26,7 @@ namespace Ui { class WarningItem; }
 struct WarningText {
 	ria::qdigidoc4::WarningType type = ria::qdigidoc4::NoWarning;
 	int counter = 0;
+	std::function<void()> cb;
 };
 
 
@@ -39,9 +40,6 @@ public:
 	
 	int page() const;
 	ria::qdigidoc4::WarningType warningType() const;
-
-signals:
-	void linkActivated(const QString& link);
 
 private:
 	Q_DISABLE_COPY(WarningItem)

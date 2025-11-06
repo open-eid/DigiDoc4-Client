@@ -27,10 +27,9 @@ class LdapSearch final: public QObject
 	Q_OBJECT
 
 public:
-	LdapSearch(QByteArray host, QObject *parent = nullptr);
+	LdapSearch(const QString &url, QObject *parent = nullptr);
 	~LdapSearch() final;
 
-	bool isSSL() const;
 	void search(const QString &search, const QVariantMap &userData);
 
 Q_SIGNALS:

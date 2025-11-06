@@ -1,16 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="200" height="200" viewBox="0 0 200 200" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 46.2 (44496) - http://www.bohemiancoding.com/sketch -->
-    <title>icon_Abi</title>
-    <desc>Created with Sketch.</desc>
-    <defs></defs>
-    <g id="Buttons&amp;Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="scale(10)">
-        <g id="eID">
-            <g id="icon_Abi">
-                <circle id="Combined-Shape" stroke="#727679" stroke-width="1" cx="10" cy="10" r="9.5"></circle>
-                <path d="M14,9.5 C13.3333333,9.5 12.6666667,9.16666667 12,8.5 C11,7.5 10.6568542,6 9,6 C7.34314575,6 6,7.34314575 6,9 C6,10.6568542 7.34314575,12 9,12" id="Oval-3" stroke="#727679" stroke-width="1" transform="translate(10.000000, 9.000000) rotate(-270.000000) translate(-10.000000, -9.000000) "></path>
-                <rect id="Rectangle-5" fill="#727679" fill-rule="evenodd" x="9" y="15" width="1" height="1"></rect>
-            </g>
-        </g>
-    </g>
+<svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M11.0833 11.0833H2.91667V2.91667H7V1.75H2.91667C2.26917 1.75 1.75 2.275 1.75 2.91667V11.0833C1.75 11.725 2.26917 12.25 2.91667 12.25H11.0833C11.725 12.25 12.25 11.725 12.25 11.0833V7H11.0833V11.0833ZM8.16667 1.75V2.91667H10.2608L4.52667 8.65083L5.34917 9.47333L11.0833 3.73917V5.83333H12.25V1.75H8.16667Z" fill="#2F70B6"/>
 </svg>

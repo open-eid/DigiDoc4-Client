@@ -11,14 +11,15 @@ jobs:
     name: Build on macOS
     runs-on: macos-latest
     env:
-      MACOSX_DEPLOYMENT_TARGET: 12.0
+      MACOSX_DEPLOYMENT_TARGET: 13.0
+      LIBS_PATH: ${{ github.workspace }}/cache
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         submodules: recursive
     - name: Download artifact
-      uses: dawidd6/action-download-artifact@v6
+      uses: dawidd6/action-download-artifact@v11
       with:
         workflow: build.yml
         branch: master
@@ -26,25 +27,37 @@ jobs:
         path: libdigidocpp-pkg
         repo: open-eid/libdigidocpp
     - name: Install dependencies
-      env:
-        HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK: YES
       run: |
         brew install flatbuffers
-        HASH=($(shasum prepare_osx_build_environment.sh))
+        brew upgrade cmake || true
         curl -O -L -s https://installer.id.ee/media/github/opensc_0.26.1.pkg
-        curl -O -L -s https://installer.id.ee/media/github/${HASH}.zip
         sudo installer -verboseR -pkg libdigidocpp-pkg/build/macos/libdigidocpp*.pkg -target /
         sudo installer -verboseR -pkg opensc_*.pkg -target /
-        sudo unzip -qq -d /Library/Developer ${HASH}.zip
+        rm -rf libdigidocpp-pkg
+    - name: Cache libraries
+      uses: actions/cache@v4
+      with:
+        path: ${{ env.LIBS_PATH }}
+        key: vcpkg-macOS-${{ hashFiles('prepare_osx_build_environment.sh') }}
+    - name: Build libraries
+      run: |
+        mkdir -p ${LIBS_PATH}/Qt-6.9.2-OpenSSL
+        ./prepare_osx_build_environment.sh -p ${LIBS_PATH}
+    - name: Install Qt
+      uses: jurplel/install-qt-action@v4
+      with:
+        version: 6.9.2
+        arch: clang_64
     - name: Build
       run: |
-        QT_DIR=$(ls -d /Library/Developer/Qt-*-OpenSSL | tail -n 1)
-        cmake "-GNinja" \
-          -DCMAKE_PREFIX_PATH=${QT_DIR} \
-          -DOPENSSL_ROOT_DIR=/Library/Developer/OpenSSL \
-          -DLDAP_ROOT=/Library/Developer/OpenLDAP \
-          -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64" -B build -S .
-        cmake --build build --target zipdebug macdeployqt zip
+        cmake "-GNinja" -B build -S . -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+          -DOPENSSL_ROOT_DIR=${LIBS_PATH}/OpenSSL \
+          -DLDAP_ROOT=${LIBS_PATH}/OpenLDAP \
+          -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64"
+        cmake --build build
+        cmake --build build --target zipdebug
+        cmake --build build --target macdeployqt
+        cmake --build build --target zip
     - name: Archive artifacts
       uses: actions/upload-artifact@v4
       with:
@@ -56,7 +69,7 @@ jobs:
     container: ubuntu:${{ matrix.container }}
     strategy:
       matrix:
-        container: ['22.04', '24.04', '25.04']
+        container: ['22.04', '24.04', '25.04', '25.10']
         arch: ['amd64', 'arm64']
     env:
       DEBIAN_FRONTEND: noninteractive
@@ -64,7 +77,7 @@ jobs:
       DEBEMAIL: github-actions@github.com
     steps:
     - name: Download artifact
-      uses: dawidd6/action-download-artifact@v6
+      uses: dawidd6/action-download-artifact@v11
       with:
         workflow: build.yml
         branch: master
@@ -74,12 +87,11 @@ jobs:
     - name: Install dependencies
       run: apt update -qq && apt install --no-install-recommends -y git lsb-release build-essential devscripts debhelper pkg-config lintian ${UBUNTU_DEPS}
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         submodules: recursive
     - name: Setup changelog
       run: |
-        rm -rf libdigidocpp-pkg
         export VERSION=$(grep project CMakeLists.txt | egrep -o "([0-9]{1,}\.)+[0-9]{1,}")
         export VERSIONEX=${VERSION}.${BUILD_NUMBER}.$(lsb_release -rs)
         dch --distribution $(lsb_release -cs) -v ${VERSIONEX} "Release ${VERSIONEX}."
@@ -100,10 +112,10 @@ jobs:
     container: fedora:${{ matrix.container }}
     strategy:
       matrix:
-        container: [41, 42]
+        container: [41, 42, 43]
     steps:
     - name: Download artifact
-      uses: dawidd6/action-download-artifact@v6
+      uses: dawidd6/action-download-artifact@v11
       with:
         workflow: build.yml
         branch: master
@@ -113,7 +125,7 @@ jobs:
     - name: Install Deps
       run: dnf install -y ./libdigidocpp-pkg/*.rpm git gcc-c++ cmake rpm-build gettext openssl-devel openldap-devel pcsc-lite-devel qt6-qtsvg-devel qt6-qttools-devel flatbuffers-devel flatbuffers-compiler zlib-devel
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         submodules: recursive
     - name: Build
@@ -127,22 +139,19 @@ jobs:
         path: build/qdigidoc4*.rpm
   windows:
     name: Build on Windows
-    runs-on: ${{ matrix.image }}
+    runs-on: windows-2022
     strategy:
       matrix:
         vcver: [143]
-        include:
-        - vcver: 143
-          image: windows-2022
     env:
       VER_SUFFIX: .VS${{ matrix.vcver }}
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         submodules: recursive
     - name: Download artifact
-      uses: dawidd6/action-download-artifact@v6
+      uses: dawidd6/action-download-artifact@v11
       with:
         workflow: build.yml
         branch: master
@@ -156,13 +165,20 @@ jobs:
     - name: Prepare vcpkg
       uses: lukka/run-vcpkg@v11
       with:
-        vcpkgArguments: openssl zlib flatbuffers
-        vcpkgGitCommitId: 4008642a50a01a7115c2406b04d5273898e7fe1c
-        vcpkgTriplet: x64-windows
+        path: ${{ github.workspace }}/vcpkg_cache
+        key: vcpkg-${{ matrix.vcver }}-${{ hashFiles('vcpkg.json') }}
+    - name: Prepare vcpkg
+      uses: lukka/run-vcpkg@v11
+      with:
+        vcpkgJsonGlob: ./vcpkg.json
+        runVcpkgInstall: true
+      env:
+        VCPKG_BINARY_SOURCES: clear;files,${{ github.workspace }}/vcpkg_cache,readwrite
+        VCPKG_INSTALLED_DIR: ${{ github.workspace }}/build/vcpkg_installed
     - name: Install Qt
       uses: jurplel/install-qt-action@v4
       with:
-        version: 6.8.3
+        version: 6.9.2
         arch: win64_msvc2022_64
     - name: Setup dev env
       uses: ilammy/msvc-dev-cmd@v1
@@ -170,8 +186,8 @@ jobs:
         arch: x64
     - name: Install WiX
       run: |
-        dotnet tool install -g wix --version 5.0.2
-        wix extension -g add WixToolset.UI.wixext/5.0.2
+        dotnet tool install -g wix --version 6.0.2
+        wix extension -g add WixToolset.UI.wixext/6.0.2
     - name: Build
       env:
         VCPKG_MANIFEST_DIR: ${{ github.workspace }}/client/libcdoc
@@ -196,11 +212,11 @@ jobs:
       PROJECTNAME: open-eid/DigiDoc4-Client
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         submodules: recursive
     - name: Download artifact
-      uses: dawidd6/action-download-artifact@v6
+      uses: dawidd6/action-download-artifact@v11
       with:
         workflow: build.yml
         branch: master
@@ -238,11 +254,11 @@ jobs:
       security-events: write
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         submodules: recursive
     - name: Download artifact
-      uses: dawidd6/action-download-artifact@v6
+      uses: dawidd6/action-download-artifact@v11
       with:
         workflow: build.yml
         branch: master

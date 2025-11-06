@@ -39,6 +39,7 @@ add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
 	${WIDGETS}
 	images/images.qrc
 	fonts/fonts.qrc
+	mac/Info.plist.cmake
 	common_enums.h
 	main.cpp
 	Application.cpp
@@ -52,6 +53,7 @@ add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
 	DateTime.cpp
 	DateTime.h
 	Diagnostics.cpp
+	$<IF:$<PLATFORM_ID:Windows>,Diagnostics_win.cpp,Diagnostics_unix.cpp>
 	Diagnostics.h
 	DiagnosticsTask.cpp
 	DiagnosticsTask.h
@@ -143,16 +145,9 @@ target_compile_definitions(${PROJECT_NAME} PRIVATE
 )
 
 if( APPLE )
-	file(GLOB_RECURSE RESOURCE_FILES
-		${CMAKE_CURRENT_SOURCE_DIR}/mac/Resources/*.icns
-		${CMAKE_CURRENT_SOURCE_DIR}/mac/Resources/*.strings)
-	foreach(_file ${RESOURCE_FILES})
-		get_filename_component(_file_dir ${_file} PATH)
-		file(RELATIVE_PATH _file_dir ${CMAKE_CURRENT_SOURCE_DIR}/mac ${_file_dir})
-		set_source_files_properties( ${_file} PROPERTIES MACOSX_PACKAGE_LOCATION ${_file_dir})
-	endforeach(_file)
-
-	target_sources(${PROJECT_NAME} PRIVATE ${RESOURCE_FILES} Application_mac.mm MacMenuBar.cpp MacMenuBar.h dialogs/CertificateDetails_mac.mm Diagnostics_unix.cpp)
+	file(GLOB RESOURCE_FILES mac/*.icns mac/*.lproj)
+	target_sources(${PROJECT_NAME} PRIVATE ${RESOURCE_FILES} Application_mac.mm MacMenuBar.cpp MacMenuBar.h dialogs/CertificateDetails_mac.mm)
+	set_source_files_properties(${RESOURCE_FILES} PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
 	set_source_files_properties( Application_mac.mm dialogs/CertificateDetails_mac.mm PROPERTIES COMPILE_FLAGS "-fobjc-arc" )
 	set_source_files_properties( LdapSearch.cpp PROPERTIES COMPILE_FLAGS "-Wno-deprecated-declarations" )
 	target_link_libraries(${PROJECT_NAME} "-framework QuickLookUI" "-fobjc-arc")
@@ -163,7 +158,7 @@ if( APPLE )
 		COMMAND cp -a $<TARGET_BUNDLE_DIR:DigiDocQL> $<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/PlugIns
 	)
 	add_custom_target(macdeployqt DEPENDS ${PROJECT_NAME}
-		COMMAND ${qtCore_install_prefix}/macdeployqt $<TARGET_BUNDLE_DIR:${PROJECT_NAME}>
+		COMMAND Qt::macdeployqt $<TARGET_BUNDLE_DIR:${PROJECT_NAME}>
 		COMMAND rm -rf $<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/PlugIns/bearer
 		COMMAND cp -a /Library/Frameworks/digidocpp.framework $<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/Frameworks
 		COMMAND rm $<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/Frameworks/digidocpp.framework/Resources/digidoc-tool
@@ -174,25 +169,34 @@ if( APPLE )
 		COMMAND ln -sf digidocpp.framework/Libraries/libssl.3.dylib
 			$<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/Frameworks/libssl.3.dylib
 	)
-
 	add_custom_target(codesign DEPENDS ${PROJECT_NAME}
-		COMMAND codesign -f -s \"$$SIGNCERT\"
+		COMMAND codesign -f -s "Developer ID Application: ${SIGNCERT}"
 			$<TARGET_FILE_DIR:${PROJECT_NAME}>/*.*
 			$<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/Frameworks/digidocpp.framework/Libraries/*
 			$<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/Frameworks/*.framework
 			$<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/PlugIns/*/*.dylib
-		COMMAND if echo \"$$SIGNCERT\" | grep -q "Developer ID" \; then
-				codesign -f --options runtime -s \"$$SIGNCERT\" $<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/PlugIns/DigiDocQL.appex --entitlements ${CMAKE_SOURCE_DIR}/extensions/DigiDocQL/DigiDocQL.entitlements\;
-				codesign -f --options runtime -s \"$$SIGNCERT\" $<TARGET_BUNDLE_DIR:${PROJECT_NAME}> --entitlements ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}.eToken.entitlements\;
-			else
-				codesign -f -s \"$$SIGNCERT\" $<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/PlugIns/DigiDocQL.appex --entitlements ${CMAKE_SOURCE_DIR}/extensions/DigiDocQL/DigiDocQL.entitlements\;
-				codesign -f -s \"$$SIGNCERT\" $<TARGET_BUNDLE_DIR:${PROJECT_NAME}> --entitlements ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}.entitlements\;
-			fi
+		COMMAND codesign -f --options runtime -s "Developer ID Application: ${SIGNCERT}"
+			--entitlements ${CMAKE_SOURCE_DIR}/extensions/DigiDocQL/DigiDocQL.entitlements
+			$<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/PlugIns/DigiDocQL.appex
+		COMMAND codesign -f --options runtime -s "Developer ID Application: ${SIGNCERT}"
+			--entitlements ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}.eToken.entitlements
+			$<TARGET_BUNDLE_DIR:${PROJECT_NAME}>
 	)
-
 	add_custom_target(productbuild DEPENDS ${PROJECT_NAME}
+		COMMAND codesign -f -s "Apple distribution: ${SIGNCERT}"
+			$<TARGET_FILE_DIR:${PROJECT_NAME}>/*.*
+			$<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/Frameworks/digidocpp.framework/Libraries/*
+			$<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/Frameworks/*.framework
+			$<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/PlugIns/*/*.dylib
+		COMMAND codesign -f -s "Apple distribution: ${SIGNCERT}"
+			--entitlements ${CMAKE_SOURCE_DIR}/extensions/DigiDocQL/DigiDocQL.entitlements
+			$<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/PlugIns/DigiDocQL.appex
+		COMMAND codesign -f -s "Apple distribution: ${SIGNCERT}"
+			--entitlements ${CMAKE_SOURCE_DIR}/${PROJECT_NAME}.entitlements
+			$<TARGET_BUNDLE_DIR:${PROJECT_NAME}>
 		COMMAND productbuild --component $<TARGET_BUNDLE_DIR:${PROJECT_NAME}> /Applications
-			--sign \"$$INSTCERT\" ${CMAKE_BINARY_DIR}/${PROJECT_NAME}-store_${VERSION}$ENV{VER_SUFFIX}.pkg
+			--sign "3rd Party Mac Developer Installer: ${SIGNCERT}"
+			${CMAKE_BINARY_DIR}/${PROJECT_NAME}-store_${VERSION}$ENV{VER_SUFFIX}.pkg
 	)
 	add_custom_target(zip DEPENDS ${PROJECT_NAME}
 		COMMAND zip --symlinks -r -D ${CMAKE_BINARY_DIR}/${PROJECT_NAME}_${VERSION}$ENV{VER_SUFFIX}.zip ${PROJECT_NAME}.app
@@ -202,7 +206,7 @@ if( APPLE )
 		COMMAND zip -r ${CMAKE_BINARY_DIR}/${PROJECT_NAME}-dbg_${VERSION}$ENV{VER_SUFFIX}.zip ${PROJECT_NAME}.dSYM
 	)
 elseif(WIN32)
-	target_sources(${PROJECT_NAME} PRIVATE QCNG.cpp QCNG.h CertStore.cpp CertStore.h Diagnostics_win.cpp)
+	target_sources(${PROJECT_NAME} PRIVATE QCNG.cpp QCNG.h)
 	target_compile_options(${PROJECT_NAME} PRIVATE "/guard:cf")
 	target_link_options(${PROJECT_NAME} PRIVATE "/guard:cf" $<$<BOOL:${CROSSSIGNCERT}>:/INTEGRITYCHECK>)
 	target_link_libraries(${PROJECT_NAME} NCrypt Crypt32 Cryptui winscard)
@@ -263,7 +267,7 @@ elseif(WIN32)
 		COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/digidocpp.conf appx
 		COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/Assets appx/Assets
 		COMMAND ${CMAKE_COMMAND} -E copy_directory ${LIBS_PATH}/schema appx/schema
-		COMMAND ${qtCore_install_prefix}/windeployqt --no-translations --no-compiler-runtime --no-patchqt --force-openssl
+		COMMAND Qt::windeployqt --no-translations --no-compiler-runtime --no-patchqt --force-openssl
 			--skip-plugin-types generic,networkinformation,iconengines --exclude-plugins qjpeg,qico,qgif,qcertonlybackend,qschannelbackend appx
 		COMMAND makeappx.exe pack -d appx -p ${MSI_FILE}.appx
 		# https://msdn.microsoft.com/en-us/library/windows/desktop/jj835832(v=vs.85).aspx
@@ -275,7 +279,6 @@ elseif(WIN32)
 	)
 else()
 	find_package( Threads REQUIRED )
-	target_sources(${PROJECT_NAME} PRIVATE Diagnostics_unix.cpp)
 	target_link_libraries(${PROJECT_NAME} Threads::Threads )
 	configure_file( qdigidoc4.1.cmake qdigidoc4.1 )
 	install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_BINDIR})

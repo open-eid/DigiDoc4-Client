@@ -21,9 +21,6 @@
 #include "ui_SettingsDialog.h"
 
 #include "Application.h"
-#ifdef Q_OS_WIN
-#include "CertStore.h"
-#endif
 #include "CheckConnection.h"
 #include "Configuration.h"
 #include "Diagnostics.h"
@@ -50,6 +47,13 @@
 #include <QtWidgets/QMessageBox>
 
 #include <algorithm>
+
+#ifdef Q_OS_WIN
+#include <qt_windows.h>
+#include <WinCrypt.h>
+
+using namespace Qt::StringLiterals;
+#endif
 
 #define qdigidoc4log QStringLiteral("%1/%2.log").arg(QDir::tempPath(), QApplication::applicationName())
 
@@ -94,7 +98,7 @@ SettingsDialog::SettingsDialog(int page, QWidget *parent)
 	ui->btGeneralChooseDirectory->hide();
 	ui->rdGeneralSpecifyDirectory->hide();
 #else
-	connect(ui->btGeneralChooseDirectory, &QPushButton::clicked, this, [=]{
+	connect(ui->btGeneralChooseDirectory, &QPushButton::clicked, this, [this]{
 		QString dir = FileDialog::getExistingDirectory(this, tr("Select folder"), Settings::DEFAULT_DIR);
 		if(!dir.isEmpty())
 		{
@@ -103,7 +107,7 @@ SettingsDialog::SettingsDialog(int page, QWidget *parent)
 			ui->txtGeneralDirectory->setText(dir);
 		}
 	});
-	connect(ui->rdGeneralSpecifyDirectory, &QRadioButton::toggled, this, [=](bool enable) {
+	connect(ui->rdGeneralSpecifyDirectory, &QRadioButton::toggled, this, [this](bool enable) {
 		ui->btGeneralChooseDirectory->setVisible(enable);
 		ui->txtGeneralDirectory->setVisible(enable);
 		if(!enable)
@@ -385,16 +389,27 @@ SettingsDialog::SettingsDialog(int page, QWidget *parent)
 	});
 #ifdef Q_OS_WIN
 	connect(ui->btnNavFromHistory, &QPushButton::clicked, this, [this] {
-		// remove certificates from browsing history of Internet Explorer and/or Google Chrome, and do it for all users.
+		// remove certificates from browsing history of Edge and Google Chrome, and do it for all users.
 		QList<TokenData> cache = qApp->signer()->cache();
-		CertStore s;
-		for(const QSslCertificate &c: s.list())
+		HCERTSTORE s = CertOpenStore(CERT_STORE_PROV_SYSTEM_W,
+			X509_ASN_ENCODING, 0, CERT_SYSTEM_STORE_CURRENT_USER, L"MY");
+		if(!s)
+			return;
+
+		auto scope = qScopeGuard([&s] {
+			CertCloseStore(s, 0);
+		});
+
+		PCCERT_CONTEXT c{};
+		while((c = CertEnumCertificatesInStore(s, c)))
 		{
-			if(std::any_of(cache.cbegin(), cache.cend(), [&](const TokenData &token) { return token.cert() == c; }))
+			QSslCertificate cert(QByteArray::fromRawData((char*)c->pbCertEncoded, c->cbCertEncoded), QSsl::Der);
+			if(std::any_of(cache.cbegin(), cache.cend(), [&](const TokenData &token) { return token.cert() == cert; }))
 				continue;
-			if(c.issuerInfo(QSslCertificate::CommonName).join(QString()).contains(QStringLiteral("KLASS3-SK"), Qt::CaseInsensitive) ||
-				c.issuerInfo(QSslCertificate::Organization).contains(QStringLiteral("SK ID Solutions AS"), Qt::CaseInsensitive))
-				s.remove(c);
+			if(cert.issuerInfo(QSslCertificate::CommonName).join(QString()).contains(u"KLASS3-SK"_s, Qt::CaseInsensitive) ||
+				cert.issuerInfo(QSslCertificate::Organization).contains(u"SK ID Solutions AS"_s, Qt::CaseInsensitive) ||
+				cert.issuerInfo(QSslCertificate::Organization).contains(u"Zetes Estonia OÜ"_s, Qt::CaseInsensitive))
+				CertDeleteCertificateFromStore(CertDuplicateCertificateContext(c));
 		}
 		WarningDialog::show(this, tr("Redundant certificates have been successfully removed."));
 	});

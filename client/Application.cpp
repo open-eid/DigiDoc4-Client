@@ -88,7 +88,7 @@ using namespace std::chrono;
 const QStringList Application::CONTAINER_EXT {
 	QStringLiteral("asice"), QStringLiteral("sce"),
 	QStringLiteral("asics"), QStringLiteral("scs"),
-	QStringLiteral("bdoc"), QStringLiteral("edoc"),
+	QStringLiteral("bdoc"), QStringLiteral("edoc"), QStringLiteral("adoc"),
 };
 
 class DigidocConf final: public digidoc::XmlConfCurrent
@@ -313,6 +313,10 @@ Application::Application( int &argc, char **argv )
 	setWindowIcon(QIcon(QStringLiteral(":/images/Icon.svg")));
 	if(QFile::exists(QStringLiteral("%1/%2.log").arg(QDir::tempPath(), applicationName())))
 		qInstallMessageHandler(msgHandler);
+	QPalette p = palette();
+	p.setBrush(QPalette::Link, QBrush("#2F70B6"));
+	p.setBrush(QPalette::LinkVisited, QBrush("#2F70B6"));
+	setPalette(p);
 
 #if defined(Q_OS_WIN)
 	AllowSetForegroundWindow( ASFW_ANY );
@@ -625,14 +629,16 @@ bool Application::event(QEvent *event)
 	{
 	case REOpenEvent::Type:
 		if( !activeWindow() )
-			parseArgs();
+			showClient();
 		return true;
 	case QEvent::FileOpen:
 	{
 		QString fileName = static_cast<QFileOpenEvent*>(event)->file().normalized(QString::NormalizationForm_C);
-		QMetaObject::invokeMethod(this, [fileName = std::move(fileName)] {
-			parseArgs({ fileName });
-		});
+#if QT_VERSION < QT_VERSION_CHECK(6, 5, 0)
+		QMetaObject::invokeMethod(this, [&fileName] { parseArgs({fileName}); });
+#else
+		QMetaObject::invokeMethod(this, qOverload<QStringList>(&Application::parseArgs), QStringList(fileName));
+#endif
 		return true;
 	}
 #ifdef Q_OS_MAC
@@ -841,7 +847,7 @@ void Application::parseArgs(QStringList args)
 		suffix.endsWith(QLatin1String(".cdoc"), Qt::CaseInsensitive) ||
 		suffix.endsWith(QLatin1String(".cdoc2"), Qt::CaseInsensitive))
 		crypto = true;
-	showClient(args, crypto, sign, newWindow);
+	showClient(std::move(args), crypto, sign, newWindow);
 }
 
 uint Application::readTSLVersion(const QString &path)
@@ -869,19 +875,28 @@ int Application::run()
 	return exec();
 }
 
-void Application::showClient(const QStringList &params, bool crypto, bool sign, bool newWindow)
+void Application::showClient(QStringList files, bool crypto, bool sign, bool newWindow)
 {
-	if(sign)
-		sign = params.size() != 1 || !CONTAINER_EXT.contains(QFileInfo(params.value(0)).suffix(), Qt::CaseInsensitive);
-	QWidget *w = nullptr;
-	if(!newWindow && params.isEmpty())
+	// Make sure all parameters are files
+	for(auto i = files.begin(); i != files.end(); )
 	{
-		// If no files selected (e.g. restoring minimized window), select first
-		w = qobject_cast<MainWindow*>(mainWindow());
+		if(QFileInfo(*i).isFile())
+			++i;
+		else
+			i = files.erase(i);
 	}
-	else if(!newWindow)
+
+	if(sign)
+		sign = files.size() != 1 || !CONTAINER_EXT.contains(QFileInfo(files.value(0)).suffix(), Qt::CaseInsensitive);
+
+	MainWindow *w = nullptr;
+	if(newWindow)
+		w = nullptr;
+	else if(files.isEmpty()) // If no files selected (e.g. restoring minimized window), select first
+		w = qobject_cast<MainWindow*>(mainWindow());
+	else
 	{
-		// else select first window with no open files
+		// select first window with no open files
 		for(auto *widget : topLevelWidgets())
 		{
 			if(auto *main = qobject_cast<MainWindow*>(widget);
@@ -923,8 +938,13 @@ void Application::showClient(const QStringList &params, bool crypto, bool sign, 
 	w->show();
 	w->activateWindow();
 	w->raise();
-	if( !params.isEmpty() )
-		QMetaObject::invokeMethod(w, "open", Q_ARG(QStringList,params), Q_ARG(bool,crypto), Q_ARG(bool,sign));
+	if(files.isEmpty())
+		return;
+	QMetaObject::invokeMethod(w, [&] {
+		using enum ria::qdigidoc4::Pages;
+		w->selectPage(crypto && !sign ? CryptoIntro : SignIntro);
+		w->openFiles(files, false, sign);
+	});
 }
 
 void Application::showWarning( const QString &msg, const digidoc::Exception &e )

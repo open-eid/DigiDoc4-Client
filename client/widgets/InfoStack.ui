@@ -23,13 +23,35 @@
    </size>
   </property>
   <property name="styleSheet">
-   <string notr="true">#InfoStack {
-background-color: #F4F5F6;
-border: solid #DEE4E9;
-border-width: 1px 0px 0px 0px; 
+   <string notr="true">QLabel {
+color: #607496;
+font-family: Roboto, Helvetica;
+font-size: 12px;
+font-weight: 400;
+}
+#valueGivenNames, #valueSurname,
+#valuePersonalCode, #valueCitizenship,
+#valueDocument, #valueExpiryDate {
+color: #003168;
+font-size: 14px;
+font-weight: 700;
+}
+#valueExpiryDate[label=&quot;error&quot;] {
+padding: 2px 10px;
+border-radius: 8px;
+color: #AD2A45;
+background: #F5EBED;
+font-weight: 400;
+}
+#valueExpiryDate[label=&quot;good&quot;] {
+padding: 2px 10px;
+border-radius: 8px;
+color: #1A641B;
+background: #EAF8EA;
+font-weight: 400;
 }</string>
   </property>
-  <layout class="QGridLayout" name="InfoStackLayout" rowstretch="0,1,0,1,0,1" columnstretch="0,1">
+  <layout class="QGridLayout" name="InfoStackLayout" columnstretch="0,1">
    <property name="leftMargin">
     <number>20</number>
    </property>
@@ -43,80 +65,44 @@ border-width: 1px 0px 0px 0px;
     <number>20</number>
    </property>
    <property name="horizontalSpacing">
-    <number>5</number>
+    <number>40</number>
    </property>
    <property name="verticalSpacing">
     <number>0</number>
    </property>
    <item row="0" column="0">
     <widget class="QLabel" name="labelGivenNames">
-     <property name="minimumSize">
-      <size>
-       <width>162</width>
-       <height>0</height>
-      </size>
-     </property>
-     <property name="font">
-      <font>
-       <family>Roboto</family>
-       <pointsize>12</pointsize>
-      </font>
-     </property>
      <property name="focusPolicy">
       <enum>Qt::TabFocus</enum>
      </property>
-     <property name="accessibleName">
-      <string extracomment="accessible">Given names</string>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color: #727679;</string>
-     </property>
      <property name="text">
-      <string>GIVEN NAMES</string>
+      <string>Given names</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
      </property>
     </widget>
    </item>
    <item row="0" column="1">
     <widget class="QLabel" name="labelSurname">
-     <property name="font">
-      <font>
-       <family>Roboto</family>
-       <pointsize>12</pointsize>
-      </font>
-     </property>
      <property name="focusPolicy">
       <enum>Qt::TabFocus</enum>
      </property>
-     <property name="accessibleName">
-      <string extracomment="accessible">Surname</string>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color: #727679;</string>
-     </property>
      <property name="text">
-      <string>SURNAME</string>
+      <string>Surname</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
      </property>
     </widget>
    </item>
    <item row="1" column="0">
     <widget class="QLabel" name="valueGivenNames">
-     <property name="font">
-      <font>
-       <family>Roboto</family>
-       <pointsize>16</pointsize>
-      </font>
-     </property>
      <property name="focusPolicy">
       <enum>Qt::TabFocus</enum>
      </property>
-     <property name="styleSheet">
-      <string notr="true">color: #041E42;</string>
-     </property>
      <property name="text">
       <string notr="true">valueGivenNames</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
@@ -125,208 +111,124 @@ border-width: 1px 0px 0px 0px;
    </item>
    <item row="1" column="1">
     <widget class="QLabel" name="valueSurname">
-     <property name="font">
-      <font>
-       <family>Roboto</family>
-       <pointsize>16</pointsize>
-      </font>
-     </property>
      <property name="focusPolicy">
       <enum>Qt::TabFocus</enum>
      </property>
-     <property name="styleSheet">
-      <string notr="true">color: #041E42;</string>
-     </property>
      <property name="text">
       <string notr="true">valueSurname</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
      </property>
     </widget>
    </item>
    <item row="2" column="0">
     <widget class="QLabel" name="labelPersonalCode">
-     <property name="font">
-      <font>
-       <family>Roboto</family>
-       <pointsize>12</pointsize>
-      </font>
-     </property>
      <property name="focusPolicy">
       <enum>Qt::TabFocus</enum>
      </property>
-     <property name="accessibleName">
-      <string extracomment="accessible">Personal code</string>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color: #727679;</string>
-     </property>
      <property name="text">
-      <string>PERSONAL CODE</string>
+      <string>Personal code</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
      </property>
     </widget>
    </item>
    <item row="2" column="1">
     <widget class="QLabel" name="labelCitizenship">
-     <property name="font">
-      <font>
-       <family>Roboto</family>
-       <pointsize>12</pointsize>
-      </font>
-     </property>
      <property name="focusPolicy">
       <enum>Qt::TabFocus</enum>
      </property>
-     <property name="accessibleName">
-      <string extracomment="accessible">Citizenship</string>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color: #727679;</string>
-     </property>
      <property name="text">
-      <string>CITIZENSHIP</string>
+      <string>Citizenship</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
      </property>
     </widget>
    </item>
    <item row="3" column="0">
     <widget class="QLabel" name="valuePersonalCode">
-     <property name="font">
-      <font>
-       <family>Roboto</family>
-       <pointsize>16</pointsize>
-      </font>
-     </property>
      <property name="focusPolicy">
       <enum>Qt::TabFocus</enum>
      </property>
-     <property name="styleSheet">
-      <string notr="true">color: #041E42;</string>
-     </property>
      <property name="text">
       <string notr="true">valuePersonalCode</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
      </property>
     </widget>
    </item>
    <item row="3" column="1">
     <widget class="QLabel" name="valueCitizenship">
-     <property name="font">
-      <font>
-       <family>Roboto</family>
-       <pointsize>16</pointsize>
-      </font>
-     </property>
      <property name="focusPolicy">
       <enum>Qt::TabFocus</enum>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color: #041E42;</string>
      </property>
      <property name="text">
       <string notr="true">valueCitizenship</string>
      </property>
-     <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-     </property>
     </widget>
    </item>
    <item row="4" column="0">
-    <widget class="QLabel" name="labelSerialNumber">
-     <property name="font">
-      <font>
-       <family>Roboto</family>
-       <pointsize>12</pointsize>
-      </font>
+    <widget class="QLabel" name="labelExpiryDate">
+     <property name="focusPolicy">
+      <enum>Qt::TabFocus</enum>
+     </property>
+     <property name="text">
+      <string>Expiry date</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="1">
+    <widget class="QLabel" name="labelDocument">
+     <property name="focusPolicy">
+      <enum>Qt::TabFocus</enum>
+     </property>
+     <property name="text">
+      <string>Document</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="0">
+    <widget class="Label" name="valueExpiryDate">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
      </property>
      <property name="focusPolicy">
       <enum>Qt::TabFocus</enum>
      </property>
-     <property name="accessibleName">
-      <string extracomment="accessible">Document</string>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color: #727679;</string>
-     </property>
      <property name="text">
-      <string>DOCUMENT</string>
+      <string notr="true">valueExpiryDate</string>
+     </property>
+     <property name="label" stdset="0">
+      <string notr="true">good</string>
      </property>
     </widget>
    </item>
-   <item row="5" column="0" colspan="2">
-    <layout class="QHBoxLayout" name="documentLayout" stretch="0,0,1">
-     <property name="spacing">
-      <number>6</number>
+   <item row="5" column="1">
+    <widget class="QLabel" name="valueDocument">
+     <property name="focusPolicy">
+      <enum>Qt::TabFocus</enum>
      </property>
-     <item>
-      <widget class="QLabel" name="valueSerialNumber">
-       <property name="font">
-        <font>
-         <family>Roboto</family>
-         <pointsize>16</pointsize>
-        </font>
-       </property>
-       <property name="focusPolicy">
-        <enum>Qt::TabFocus</enum>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">color: #041E42;</string>
-       </property>
-       <property name="text">
-        <string notr="true">valueSerialNumber</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="valueSpacer">
-       <property name="font">
-        <font>
-         <family>Roboto</family>
-         <pointsize>16</pointsize>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">color: #041E42;</string>
-       </property>
-       <property name="text">
-        <string notr="true">|</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignHCenter|Qt::AlignTop</set>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="valueExpiryDate">
-       <property name="font">
-        <font>
-         <family>Roboto</family>
-         <pointsize>16</pointsize>
-        </font>
-       </property>
-       <property name="focusPolicy">
-        <enum>Qt::TabFocus</enum>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">color: #041E42;</string>
-       </property>
-       <property name="text">
-        <string notr="true">valueExpiryDate</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-       </property>
-      </widget>
-     </item>
-    </layout>
+     <property name="text">
+      <string notr="true">valueSerialNumber</string>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Label</class>
+   <extends>QLabel</extends>
+   <header>widgets/Label.h</header>
+  </customwidget>
+ </customwidgets>
  <tabstops>
   <tabstop>labelGivenNames</tabstop>
   <tabstop>valueGivenNames</tabstop>
@@ -336,9 +238,10 @@ border-width: 1px 0px 0px 0px;
   <tabstop>valuePersonalCode</tabstop>
   <tabstop>labelCitizenship</tabstop>
   <tabstop>valueCitizenship</tabstop>
-  <tabstop>labelSerialNumber</tabstop>
-  <tabstop>valueSerialNumber</tabstop>
+  <tabstop>labelExpiryDate</tabstop>
   <tabstop>valueExpiryDate</tabstop>
+  <tabstop>labelDocument</tabstop>
+  <tabstop>valueDocument</tabstop>
  </tabstops>
  <resources/>
  <connections/>

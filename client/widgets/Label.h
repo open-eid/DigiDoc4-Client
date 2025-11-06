@@ -17,30 +17,20 @@
  *
  */
 
-#include "DropdownButton.h"
+#pragma once
 
-DropdownButton::DropdownButton( const QString normalIcon, const QString selectedIcon, QWidget *parent)
-: QSvgWidget( normalIcon, parent )
-, normalIcon( normalIcon )
-, selectedIcon( selectedIcon )
-{
-	init();
-}
+#include <QLabel>
 
-void DropdownButton::init()
-{
-	selected = false;
-	load( normalIcon );
-}
+class Label : public QLabel {
+	Q_OBJECT
+ public:
+	Q_PROPERTY(QString label READ label WRITE setLabel FINAL)
 
-void DropdownButton::mouseReleaseEvent( QMouseEvent *event )
-{
-	press();
-}
+	explicit Label(QWidget *parent = {});
 
-void DropdownButton::press()
-{
-	selected = !selected;
-	load( selected ? selectedIcon : normalIcon );
-	emit dropdown( selected );
-}
+	QString label() const;
+	void setLabel(QString _label);
+
+private:
+	QString _label;
+};

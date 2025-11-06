@@ -20,7 +20,7 @@
    <string>DigiDoc4 Client</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">   QLabel {
+   <string notr="true">QLabel {
 color: #07142A;
 }
 #logo, #navBar {
@@ -52,6 +52,11 @@ background-color: #2B66A6;
 }
 #signIntroButton:pressed, #cryptoIntroButton:pressed {
 background-color: #215081;
+}
+#signIntroLabel, #cryptoIntroLabel, #noReaderInfoText {
+font-family: Roboto, Helvetica;
+font-size: 18px;
+font-weight: 400;
 }</string>
   </property>
   <layout class="QGridLayout" name="MainWindowLayout">
@@ -76,7 +81,7 @@ background-color: #215081;
       <property name="geometry">
        <rect>
         <x>5</x>
-        <y>17</y>
+        <y>11</y>
         <width>80</width>
         <height>32</height>
        </rect>
@@ -306,14 +311,30 @@ text-decoration: underline;
      <property name="minimumSize">
       <size>
        <width>0</width>
-       <height>65</height>
+       <height>54</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
        <width>16777215</width>
-       <height>65</height>
+       <height>54</height>
       </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">#help, #settings {
+padding: 9px 8px;
+border-radius: 4px;
+color: #2F70B6;
+font-family: Roboto, Helvetica;
+font-size: 12px;
+font-weight: 700;
+}
+#help:hover, #settings:hover {
+background-color: #EAF1F8;
+}
+#help:pressed, #settings:pressed {
+background-color: #BFD3E8;
+}</string>
      </property>
      <layout class="QHBoxLayout" name="topBarLayout">
       <property name="spacing">
@@ -323,52 +344,54 @@ text-decoration: underline;
        <number>0</number>
       </property>
       <property name="topMargin">
-       <number>0</number>
+       <number>6</number>
       </property>
       <property name="rightMargin">
-       <number>0</number>
+       <number>16</number>
       </property>
       <property name="bottomMargin">
-       <number>0</number>
+       <number>6</number>
       </property>
       <item>
-       <widget class="QWidget" name="idSelector" native="true">
-        <layout class="QHBoxLayout" name="idSelectorLayout">
-         <property name="spacing">
-          <number>0</number>
-         </property>
-         <property name="leftMargin">
-          <number>0</number>
-         </property>
-         <property name="topMargin">
-          <number>0</number>
-         </property>
-         <property name="rightMargin">
-          <number>0</number>
-         </property>
-         <property name="bottomMargin">
-          <number>0</number>
-         </property>
-         <item>
-          <widget class="CardWidget" name="cardInfo" native="true"/>
-         </item>
-         <item>
-          <widget class="IDSelector" name="selector" native="true">
-           <property name="minimumSize">
-            <size>
-             <width>20</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>20</width>
-             <height>16777215</height>
-            </size>
-           </property>
-          </widget>
-         </item>
-        </layout>
+       <widget class="CardWidget" name="cardInfo" native="true"/>
+      </item>
+      <item>
+       <widget class="QToolButton" name="selector">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>32</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>32</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">border: none;</string>
+        </property>
+        <property name="icon">
+         <iconset resource="images/images.qrc">
+          <normaloff>:/images/arrow_down.svg</normaloff>
+          <activeon>:/images/arrow_down_selected.svg</activeon>:/images/arrow_down.svg</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
        </widget>
       </item>
       <item>
@@ -381,107 +404,69 @@ text-decoration: underline;
         </property>
         <property name="sizeHint" stdset="0">
          <size>
-          <width>40</width>
+          <width>8</width>
           <height>20</height>
          </size>
         </property>
        </spacer>
       </item>
       <item>
-       <widget class="QWidget" name="tbButtonWidget" native="true">
-        <property name="minimumSize">
-         <size>
-          <width>125</width>
-          <height>0</height>
-         </size>
+       <layout class="QHBoxLayout" name="tbButtonWidgetLayout">
+        <property name="spacing">
+         <number>8</number>
         </property>
-        <property name="styleSheet">
-         <string notr="true">QToolButton {
-  border: none;
-  color: #727679;
-  font-size: 11px;
-}
-QToolButton:hover {
-  color: #006EB5;
-}</string>
-        </property>
-        <layout class="QHBoxLayout" name="tbButtonWidgetLayout">
-         <property name="spacing">
-          <number>0</number>
-         </property>
-         <property name="leftMargin">
-          <number>0</number>
-         </property>
-         <property name="topMargin">
-          <number>0</number>
-         </property>
-         <property name="rightMargin">
-          <number>0</number>
-         </property>
-         <property name="bottomMargin">
-          <number>0</number>
-         </property>
-         <item>
-          <widget class="QToolButton" name="help">
-           <property name="font">
-            <font>
-             <pointsize>-1</pointsize>
-            </font>
-           </property>
-           <property name="cursor">
-            <cursorShape>PointingHandCursor</cursorShape>
-           </property>
-           <property name="text">
-            <string>Help</string>
-           </property>
-           <property name="icon">
-            <iconset>
-             <normalon>:/images/icon_Abi.svg</normalon>
-             <selectedon>:/images/icon_Abi_hover.svg</selectedon>
-            </iconset>
-           </property>
-           <property name="iconSize">
-            <size>
-             <width>20</width>
-             <height>20</height>
-            </size>
-           </property>
-           <property name="toolButtonStyle">
-            <enum>Qt::ToolButtonTextUnderIcon</enum>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QToolButton" name="settings">
-           <property name="font">
-            <font>
-             <pointsize>-1</pointsize>
-            </font>
-           </property>
-           <property name="cursor">
-            <cursorShape>PointingHandCursor</cursorShape>
-           </property>
-           <property name="text">
-            <string>Settings</string>
-           </property>
-           <property name="icon">
-            <iconset>
-             <normalon>:/images/icon_Seaded.svg</normalon>
-            </iconset>
-           </property>
-           <property name="iconSize">
-            <size>
-             <width>20</width>
-             <height>20</height>
-            </size>
-           </property>
-           <property name="toolButtonStyle">
-            <enum>Qt::ToolButtonTextUnderIcon</enum>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
+        <item>
+         <widget class="QToolButton" name="help">
+          <property name="cursor">
+           <cursorShape>PointingHandCursor</cursorShape>
+          </property>
+          <property name="layoutDirection">
+           <enum>Qt::RightToLeft</enum>
+          </property>
+          <property name="text">
+           <string>Help</string>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normalon>:/images/icon_Abi.svg</normalon>
+           </iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>14</width>
+            <height>14</height>
+           </size>
+          </property>
+          <property name="toolButtonStyle">
+           <enum>Qt::ToolButtonTextBesideIcon</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QToolButton" name="settings">
+          <property name="cursor">
+           <cursorShape>PointingHandCursor</cursorShape>
+          </property>
+          <property name="text">
+           <string>Settings</string>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normalon>:/images/icon_Seaded.svg</normalon>
+           </iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>14</width>
+            <height>14</height>
+           </size>
+          </property>
+          <property name="toolButtonStyle">
+           <enum>Qt::ToolButtonTextBesideIcon</enum>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
      </layout>
     </widget>
@@ -515,19 +500,25 @@ QToolButton:hover {
    </item>
    <item row="2" column="1">
     <widget class="QStackedWidget" name="startScreen">
-     <property name="minimumSize">
-      <size>
-       <width>914</width>
-       <height>0</height>
-      </size>
-     </property>
      <property name="currentIndex">
       <number>0</number>
      </property>
      <widget class="QWidget" name="signPage">
       <layout class="QVBoxLayout" name="signPageLayout">
        <property name="spacing">
-        <number>14</number>
+        <number>40</number>
+       </property>
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
        </property>
        <item>
         <spacer name="signPageTopSpacer">
@@ -537,28 +528,13 @@ QToolButton:hover {
          <property name="sizeHint" stdset="0">
           <size>
            <width>20</width>
-           <height>60</height>
+           <height>159</height>
           </size>
          </property>
         </spacer>
        </item>
        <item>
         <widget class="QLabel" name="signIntroLabel">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>45</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>20</pointsize>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">color: #041E42;</string>
-         </property>
          <property name="text">
           <string>Drag file here for signing ...</string>
          </property>
@@ -588,7 +564,7 @@ QToolButton:hover {
          <property name="sizeHint" stdset="0">
           <size>
            <width>20</width>
-           <height>230</height>
+           <height>260</height>
           </size>
          </property>
         </spacer>
@@ -599,7 +575,19 @@ QToolButton:hover {
      <widget class="QWidget" name="cryptoPage">
       <layout class="QVBoxLayout" name="cryptoPageLayout">
        <property name="spacing">
-        <number>14</number>
+        <number>40</number>
+       </property>
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
        </property>
        <item>
         <spacer name="cryptoPageTopSpacer">
@@ -609,28 +597,13 @@ QToolButton:hover {
          <property name="sizeHint" stdset="0">
           <size>
            <width>20</width>
-           <height>60</height>
+           <height>159</height>
           </size>
          </property>
         </spacer>
        </item>
        <item>
         <widget class="QLabel" name="cryptoIntroLabel">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>45</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>20</pointsize>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">color: #041E42;</string>
-         </property>
          <property name="text">
           <string>Drag file here for encryption ...</string>
          </property>
@@ -660,7 +633,7 @@ QToolButton:hover {
          <property name="sizeHint" stdset="0">
           <size>
            <width>20</width>
-           <height>230</height>
+           <height>260</height>
           </size>
          </property>
         </spacer>
@@ -671,7 +644,7 @@ QToolButton:hover {
      <widget class="QWidget" name="eidPage">
       <layout class="QVBoxLayout" name="eidPageLayout">
        <property name="spacing">
-        <number>3</number>
+        <number>0</number>
        </property>
        <property name="leftMargin">
         <number>0</number>
@@ -686,20 +659,7 @@ QToolButton:hover {
         <number>0</number>
        </property>
        <item>
-        <widget class="InfoStack" name="infoStack" native="true">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>172</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>186</height>
-          </size>
-         </property>
-        </widget>
+        <widget class="InfoStack" name="infoStack" native="true"/>
        </item>
        <item>
         <widget class="Accordion" name="accordion" native="true"/>
@@ -708,7 +668,19 @@ QToolButton:hover {
         <widget class="QWidget" name="noReaderInfo" native="true">
          <layout class="QVBoxLayout" name="noReaderInfoLayout">
           <property name="spacing">
-           <number>14</number>
+           <number>40</number>
+          </property>
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
           </property>
           <item>
            <spacer name="noReaderInfoTopSpacer">
@@ -718,30 +690,15 @@ QToolButton:hover {
             <property name="sizeHint" stdset="0">
              <size>
               <width>20</width>
-              <height>60</height>
+              <height>159</height>
              </size>
             </property>
            </spacer>
           </item>
           <item>
            <widget class="QLabel" name="noReaderInfoText">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>45</height>
-             </size>
-            </property>
-            <property name="font">
-             <font>
-              <pointsize>20</pointsize>
-              <bold>true</bold>
-             </font>
-            </property>
             <property name="focusPolicy">
              <enum>Qt::TabFocus</enum>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">color: #041E42;</string>
             </property>
             <property name="text">
              <string>Connect the card reader to your computer and insert your ID card into the reader</string>
@@ -762,7 +719,7 @@ QToolButton:hover {
             <property name="minimumSize">
              <size>
               <width>0</width>
-              <height>45</height>
+              <height>42</height>
              </size>
             </property>
            </widget>
@@ -775,7 +732,7 @@ QToolButton:hover {
             <property name="sizeHint" stdset="0">
              <size>
               <width>20</width>
-              <height>230</height>
+              <height>260</height>
              </size>
             </property>
            </spacer>
@@ -822,12 +779,6 @@ QToolButton:hover {
    <class>NoCardInfo</class>
    <extends>QWidget</extends>
    <header>widgets/NoCardInfo.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>IDSelector</class>
-   <extends>QWidget</extends>
-   <header>widgets/IDSelector.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>

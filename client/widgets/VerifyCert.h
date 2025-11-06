@@ -24,9 +24,7 @@
 #include "QSmartCard.h"
 #include "SslCertificate.h"
 
-namespace Ui {
-class VerifyCert;
-}
+namespace Ui { class VerifyCert; }
 
 class VerifyCert final : public StyledWidget
 {
@@ -41,22 +39,15 @@ public:
 	void update(QSmartCardData::PinType type, const SslCertificate &cert);
 
 signals:
-	void changePinClicked( bool isForgotPin, bool isBlockedPin );
+	void changePinClicked(QSmartCard::PinAction);
 
 private:
-	void changePinStyle( const QString &background ); 
-	bool event(QEvent *event) final;
+	void changeEvent(QEvent *event) final;
 	void update();
 
 	Ui::VerifyCert *ui;
 
-	bool isValidCert = false;
-	bool isBlockedPin = false;
-
 	QSmartCardData::PinType pinType = QSmartCardData::Pin1Type;
 	QSmartCardData cardData;
 	SslCertificate c;
-
-	static QString getGoodCertMessage(const SslCertificate& cert);
-	static QString getRevokedCertMessage(const SslCertificate& cert);
 };

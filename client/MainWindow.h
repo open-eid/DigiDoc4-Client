@@ -45,18 +45,9 @@ public:
 	explicit MainWindow(QWidget *parent = nullptr);
 	~MainWindow() final;
 
+	void openFiles(const QStringList &files, bool addFile = false, bool forceCreate = false);
+	void selectPage(ria::qdigidoc4::Pages page);
 	void showSettings(int page);
-
-signals:
-	void clearPopups();
-
-private Q_SLOTS:
-	void changePin1Clicked( bool isForgotPin, bool isBlockedPin );
-	void changePin2Clicked( bool isForgotPin, bool isBlockedPin );
-	void changePukClicked();
-	void open(const QStringList &params, bool crypto, bool sign);
-	void pageSelected(int page, bool checked = true);
-	void warningClicked(const QString &link);
 
 protected:
 	void changeEvent(QEvent* event) final;
@@ -69,6 +60,7 @@ protected:
 
 private:
 	void adjustDrops();
+	void changePinClicked(QSmartCardData::PinType type, QSmartCard::PinAction action);
 	void convertToBDoc();
 	void convertToCDoc();
 	ria::qdigidoc4::ContainerState currentState();
@@ -81,9 +73,7 @@ private:
 	void onCryptoAction(int action, const QString &id, const QString &phone);
 	void onSignAction(int action, const QString &info1, const QString &info2);
 	void openContainer(bool signature);
-	void openFiles(const QStringList &files, bool addFile = false, bool forceCreate = false);
-	void pinUnblock(QSmartCardData::PinType type, bool isForgotPin);
-	void pinPukChange( QSmartCardData::PinType type );
+	void pageSelected(int page, bool checked = true);
 	void resetCryptoDoc(std::unique_ptr<CryptoDoc> &&doc = {});
 	void resetDigiDoc(DigiDoc *doc = nullptr, bool warnOnChange = true);
 	void removeCryptoFile(int index);
@@ -92,14 +82,10 @@ private:
 	void removeSignatureFile(int index);
 	bool save(bool saveAs = false);
 	QString selectFile( const QString &title, const QString &filename, bool fixedExt );
-	void selectPage(ria::qdigidoc4::Pages page);
-	void showCardMenu( bool show );
 	template <typename F>
 	void sign(F &&sign);
-	void updateCardWarnings(const QSmartCardData &data);
-	bool validateCardError(QSmartCardData::PinType type, QSmartCardData::PinType src, QSmartCard::ErrorType err);
 	bool validateFiles(const QString &container, const QStringList &files);
-	void showPinBlockedWarning(const QSmartCardData& t);
+	void showPinBlockedWarning(const QSmartCardData &data);
 	void updateSelector();
 	void updateSelectorData(TokenData data);
 	void updateMyEID(const TokenData &t);

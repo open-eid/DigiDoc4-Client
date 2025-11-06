@@ -11,60 +11,65 @@
    </rect>
   </property>
   <property name="styleSheet">
-   <string notr="true">#CardWidget:hover { background: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 rgba(0, 118, 190, 0.15), stop: 1 rgba(255,255,255, 0.5)); }</string>
+   <string notr="true">#CardWidget:hover {
+border: 0px solid #EAF1F8;
+border-radius: 8px;
+background-color: #EAF1F8;
+}
+#cardCode, #cardStatus {
+color: #415982;
+font-family: Roboto, Helvetica;
+font-size: 12px;
+font-weight: 400;
+}
+#cardName {
+color: #003168;
+font-size: 16px;
+font-weight: 700;
+}</string>
   </property>
-  <layout class="QGridLayout" name="CardWidgetLayout" rowstretch="1,0" columnstretch="0,0,1">
+  <layout class="QGridLayout" name="CardWidgetLayout" columnstretch="0,0,1">
    <property name="leftMargin">
-    <number>10</number>
+    <number>8</number>
    </property>
    <property name="topMargin">
-    <number>7</number>
-   </property>
-   <property name="rightMargin">
     <number>2</number>
    </property>
+   <property name="rightMargin">
+    <number>8</number>
+   </property>
    <property name="bottomMargin">
-    <number>7</number>
+    <number>2</number>
    </property>
    <property name="horizontalSpacing">
-    <number>5</number>
+    <number>4</number>
+   </property>
+   <property name="verticalSpacing">
+    <number>2</number>
    </property>
    <item row="0" column="0" colspan="3">
     <widget class="QLabel" name="cardName">
-     <property name="font">
-      <font>
-       <bold>false</bold>
-      </font>
-     </property>
      <property name="focusPolicy">
       <enum>Qt::TabFocus</enum>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">color: #041E42;</string>
      </property>
      <property name="text">
       <string notr="true">MARI MAASIKAS MUSTIKAS</string>
      </property>
-     <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+     <property name="textInteractionFlags">
+      <set>Qt::NoTextInteraction</set>
      </property>
     </widget>
    </item>
    <item row="1" column="0">
     <widget class="QLabel" name="cardCode">
-     <property name="font">
-      <font>
-       <pointsize>16</pointsize>
-      </font>
-     </property>
      <property name="focusPolicy">
       <enum>Qt::TabFocus</enum>
      </property>
-     <property name="styleSheet">
-      <string notr="true">color: #727679;</string>
-     </property>
      <property name="text">
       <string notr="true">48405050123 |</string>
+     </property>
+     <property name="textInteractionFlags">
+      <set>Qt::NoTextInteraction</set>
      </property>
     </widget>
    </item>
@@ -72,33 +77,28 @@
     <widget class="QSvgWidget" name="cardIcon" native="true">
      <property name="minimumSize">
       <size>
-       <width>17</width>
-       <height>12</height>
+       <width>16</width>
+       <height>16</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>17</width>
-       <height>12</height>
+       <width>16</width>
+       <height>16</height>
       </size>
      </property>
     </widget>
    </item>
    <item row="1" column="2">
     <widget class="QLabel" name="cardStatus">
-     <property name="font">
-      <font>
-       <pointsize>16</pointsize>
-      </font>
-     </property>
      <property name="focusPolicy">
       <enum>Qt::TabFocus</enum>
      </property>
-     <property name="styleSheet">
-      <string notr="true">color: #727679;</string>
-     </property>
      <property name="text">
       <string>ID-card</string>
+     </property>
+     <property name="textInteractionFlags">
+      <set>Qt::NoTextInteraction</set>
      </property>
     </widget>
    </item>
@@ -108,7 +108,7 @@
   <customwidget>
    <class>QSvgWidget</class>
    <extends>QWidget</extends>
-   <header location="global">QtSvg/QSvgWidget</header>
+   <header location="global">QSvgWidget</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
