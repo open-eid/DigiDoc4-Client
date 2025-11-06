@@ -33,6 +33,7 @@
 #include "dialogs/WarningDialog.h"
 #include "effects/Overlay.h"
 #include "Crypto.h"
+#include "widgets/AddressItem.h"
 
 #include <QtCore/QDateTime>
 #include <QtCore/QJsonArray>
@@ -228,7 +229,7 @@ void AddRecipients::addRecipientToRightPane(Item *item, bool update)
 
 	rightList.append(key);
 
-	auto *rightItem = new AddressItem(CKey(key), AddressItem::Remove, ui->rightPane);
+	auto *rightItem = new AddressItem(key, AddressItem::Remove, ui->rightPane);
 	connect(rightItem, &AddressItem::remove, this, [this](Item *item) {
 		auto *rightItem = qobject_cast<AddressItem*>(item);
 		if(auto *leftItem = itemListValue(ui->leftPane, rightItem->getKey()))
@@ -258,7 +259,7 @@ AddressItem* AddRecipients::itemListValue(ItemList *list, const CDKey &key)
 	return nullptr;
 }
 
-QList<CKey> AddRecipients::keys() const
+QList<CDKey> AddRecipients::keys() const
 {
 	QList<CDKey> recipients;
 	for(auto *item: ui->rightPane->items)

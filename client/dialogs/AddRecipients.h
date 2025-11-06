@@ -41,7 +41,7 @@ public:
 	explicit AddRecipients(ItemList* itemList, QWidget *parent = nullptr);
 	~AddRecipients() final;
 
-	QList<CKey> keys() const;
+	QList<CDKey> keys() const;
 	bool isUpdated() const;
 
 private:
@@ -54,8 +54,6 @@ private:
 	void search(const QString &term, bool select = false, const QString &type = {});
 	void showError(const QString &msg, const QString &details = {});
 	void showResult(const QList<QSslCertificate> &result, int resultCount, const QVariantMap &userData);
-
-	static AddressItem* itemListValue(ItemList *list, const CKey &cert);
 
 	Ui::AddRecipients *ui;
 	QList<CDKey> rightList;
