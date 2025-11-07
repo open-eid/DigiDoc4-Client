@@ -23,6 +23,7 @@
 
 #include "Common.h"
 #include "Configuration.h"
+#include "CDocSupport.h"
 #include "MainWindow.h"
 #include "QSigner.h"
 #include "QSmartCard.h"
@@ -466,6 +467,7 @@ Application::Application( int &argc, char **argv )
 		setQuitOnLastWindowClosed( true );
 		return;
 	}
+	DDCDocLogger::setUpLogger();
 
 	QMetaObject::invokeMethod(this, [this] {
 #ifdef Q_OS_MAC

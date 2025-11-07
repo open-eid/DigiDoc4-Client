@@ -44,8 +44,6 @@ find_package(libdigidocpp 4.2.0 REQUIRED HINTS /Library)
 message("-- Found libdigidocpp: ${libdigidocpp_DIR} (found version \"${libdigidocpp_VERSION}\")")
 find_package(LDAP REQUIRED)
 find_package(Qt6 6.2.0 REQUIRED COMPONENTS Core Widgets Network PrintSupport SvgWidgets LinguistTools)
-find_package(FlatBuffers CONFIG REQUIRED NAMES FlatBuffers Flatbuffers)
-find_package(ZLIB REQUIRED)
 
 if(APPLE)
     add_subdirectory(extensions/DigiDocQL)

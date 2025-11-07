@@ -24,7 +24,7 @@
 #include "effects/Overlay.h"
 #include "dialogs/CertificateDetails.h"
 
-KeyDialog::KeyDialog( const CKey &k, QWidget *parent )
+KeyDialog::KeyDialog(const CDKey &k, QWidget *parent )
 	: QDialog( parent )
 {
 	Ui::KeyDialog d;
@@ -37,10 +37,21 @@ KeyDialog::KeyDialog( const CKey &k, QWidget *parent )
 	new Overlay(this);
 
 	connect(d.close, &QPushButton::clicked, this, &KeyDialog::accept);
-	connect(d.showCert, &QPushButton::clicked, this, [this, cert=k.cert] {
-		CertificateDetails::showCertificate(cert, this);
-	});
-	d.showCert->setHidden(k.cert.isNull());
+	if (!k.rcpt_cert.isNull()) {
+		connect(d.showCert, &QPushButton::clicked, this, [this, cert = k.rcpt_cert] {
+					CertificateDetails::showCertificate(cert, this);
+		});
+		d.showCert->setHidden(false);
+	} else if (k.lock.isCertificate()) {
+		std::vector<uint8_t> cert = k.lock.getBytes(libcdoc::Lock::Params::CERT);
+		QSslCertificate kcert(QByteArray(reinterpret_cast<const char *>(cert.data()), cert.size()), QSsl::Der);
+		connect(d.showCert, &QPushButton::clicked, this, [this, c = kcert] {
+			CertificateDetails::showCertificate(c, this);
+		});
+		d.showCert->setHidden(kcert.isNull());
+	} else {
+		d.showCert->setHidden(true);
+	}
 
 	auto addItem = [view = d.view](const QString &parameter, const QString &value) {
 		if(value.isEmpty())
@@ -51,12 +62,22 @@ KeyDialog::KeyDialog( const CKey &k, QWidget *parent )
 		view->addTopLevelItem(i);
 	};
 
-	addItem(tr("Recipient"), k.recipient);
-	addItem(tr("ConcatKDF digest method"), k.concatDigest);
-	addItem(tr("Key server ID"), k.keyserver_id);
-	addItem(tr("Transaction ID"), k.transaction_id);
-	addItem(tr("Expiry date"), k.cert.expiryDate().toLocalTime().toString(QStringLiteral("dd.MM.yyyy hh:mm:ss")));
-	addItem(tr("Issuer"), k.cert.issuerInfo(QSslCertificate::CommonName).join(' '));
+	addItem(tr("Recipient"), QString::fromStdString(k.lock.label));
+	if (k.lock.isCertificate()) {
+		std::vector<uint8_t> cert = k.lock.getBytes(libcdoc::Lock::Params::CERT);
+		QSslCertificate kcert(QByteArray(reinterpret_cast<const char *>(cert.data()), cert.size()), QSsl::Der);
+		if (k.lock.isCDoc1()) {
+			std::string cdigest = k.lock.getString(libcdoc::Lock::Params::CONCAT_DIGEST);
+			addItem(tr("ConcatKDF digest method"), QString::fromStdString(cdigest));
+		}
+		addItem(tr("Expiry date"), kcert.expiryDate().toLocalTime().toString(QStringLiteral("dd.MM.yyyy hh:mm:ss")));
+		auto iss = kcert.issuerInfo(QSslCertificate::CommonName);
+		addItem(tr("Issuer"), iss.join(" "));
+		d.view->resizeColumnToContents(0);
+	} else if (k.lock.type == libcdoc::Lock::SERVER) {
+		addItem(tr("Key server ID"), QString::fromUtf8(k.lock.getString(libcdoc::Lock::Params::KEYSERVER_ID)));
+		addItem(tr("Transaction ID"), QString::fromUtf8(k.lock.getString(libcdoc::Lock::Params::TRANSACTION_ID)));
+	}
 	d.view->resizeColumnToContents( 0 );
 	adjustSize();
 }

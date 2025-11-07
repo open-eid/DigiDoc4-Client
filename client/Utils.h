@@ -24,6 +24,9 @@
 #include <QTimer>
 #include <exception>
 #include <thread>
+#include <iostream>
+
+#include "Application.h"
 
 namespace {
 	template <typename F, class... Args>
@@ -79,6 +82,32 @@ namespace {
 			}
 		}
 		return escaped;
+	}
+
+	inline qint64 copyIODevice(std::basic_istream<char> *from, QIODevice *to, qint64 max = std::numeric_limits<qint64>::max())
+	{
+		std::array<char,16*1024> buf{};
+		size_t total_read = 0;
+		while ((total_read < max) && !from->eof() && !from->bad()) {
+			size_t to_read = std::min<size_t>(max, buf.size());
+			from->read(buf.data(), to_read);
+			size_t n_read = from->gcount();
+			if(to->write(buf.data(), n_read) != n_read) return -1;
+			total_read += n_read;
+		}
+		return total_read;
+	}
+
+	inline qint64 copyIODevice(QIODevice *from, std::streambuf *to, qint64 max = std::numeric_limits<qint64>::max())
+	{
+		std::array<char,16*1024> buf{};
+		qint64 size = 0, i = 0;
+		for(; (i = from->read(buf.data(), std::min<qint64>(max, buf.size()))) > 0; size += i, max -= i)
+		{
+			if(to->sputn(buf.data(), i) != i)
+				return -1;
+		}
+		return i < 0 ? i : size;
 	}
 
 	inline qint64 copyIODevice(QIODevice *from, QIODevice *to, qint64 max = std::numeric_limits<qint64>::max())
