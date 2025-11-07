@@ -88,7 +88,8 @@ struct DDNetworkBackend : public libcdoc::NetworkBackend, private QObject {
 							  const std::string &url,
 							  const std::vector<uint8_t> &rcpt_key,
 							  const std::vector<uint8_t> &key_material,
-							  const std::string &type) override final;
+							  const std::string &type,
+							  uint64_t expiry_ts) override final;
 	libcdoc::result_t
 	fetchKey(std::vector<uint8_t> &result, const std::string &keyserver_id,
 			 const std::string &transaction_id) override final;

@@ -194,9 +194,12 @@ DDNetworkBackend::getLastErrorStr(libcdoc::result_t code) const
 libcdoc::result_t DDNetworkBackend::sendKey(
 	libcdoc::NetworkBackend::CapsuleInfo &dst, const std::string &url,
 	const std::vector<uint8_t> &rcpt_key,
-	const std::vector<uint8_t> &key_material, const std::string &type) {
+	const std::vector<uint8_t> &key_material, const std::string &type, uint64_t expiry_ts) {
 	QNetworkRequest req(QString::fromStdString(url + "/key-capsules"));
 	req.setHeader(QNetworkRequest::ContentTypeHeader, QStringLiteral("application/json"));
+	if (expiry_ts) {
+		req.setRawHeader("x-expiry-time", QDateTime::fromSecsSinceEpoch(expiry_ts).toString(Qt::ISODate).toLatin1());
+	}
 	if (!checkConnection()) {
 		last_error = "No connection";
 		return BACKEND_ERROR;
@@ -234,8 +237,8 @@ libcdoc::result_t DDNetworkBackend::sendKey(
 		return BACKEND_ERROR;
 	}
 	dst.transaction_id = tr_id.toStdString();
-	QDateTime dt = QDateTime::currentDateTimeUtc();
-	dt = dt.addMonths(6);
+
+	QDateTime dt = QDateTime::fromString(QString::fromLatin1(reply->rawHeader("x-expiry-time")));
 	dst.expiry_time = dt.toSecsSinceEpoch();
 	return libcdoc::OK;
 };
