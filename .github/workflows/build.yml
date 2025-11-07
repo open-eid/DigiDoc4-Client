@@ -11,7 +11,7 @@ jobs:
     name: Build on macOS
     runs-on: macos-latest
     env:
-      MACOSX_DEPLOYMENT_TARGET: 13.0
+      MACOSX_DEPLOYMENT_TARGET: 13.3
       LIBS_PATH: ${{ github.workspace }}/cache
     steps:
     - name: Checkout
