@@ -162,8 +162,8 @@ jobs:
       run: |
         Rename-Item "libdigidocpp*.msi" libdigidocpp.msi
         msiexec /qn /i libdigidocpp.msi
-    - name: Prepare vcpkg
-      uses: lukka/run-vcpkg@v11
+    - name: Cache vcpkg
+      uses: actions/cache@v4
       with:
         path: ${{ github.workspace }}/vcpkg_cache
         key: vcpkg-${{ matrix.vcver }}-${{ hashFiles('vcpkg.json') }}
