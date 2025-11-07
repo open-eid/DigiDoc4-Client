@@ -195,7 +195,7 @@ bool CryptoDoc::Private::encrypt() {
 			enc_keys.push_back(libcdoc::Recipient::makeServer(
 				label, key_der, pk_type, keyserver_id));
 		} else {
-			std::string label = CryptoDoc::labelFromCertificate(cert_der);
+			std::string label;// = CryptoDoc::labelFromCertificate(cert_der);
 			enc_keys.push_back(
 				libcdoc::Recipient::makeCertificate(label, cert_der));
 		}

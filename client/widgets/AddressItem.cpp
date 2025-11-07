@@ -36,6 +36,7 @@ public:
 	QString code;
 	CDKey key;
 	QString label;
+	QDateTime expireDate;
 	bool yourself = false;
 };
 
@@ -70,6 +71,9 @@ AddressItem::AddressItem(const CDKey &key, Type type, QWidget *parent)
 			ui->label = QString::fromStdString(map["cn"]);
 		} else {
 			ui->label = QString::fromStdString(ui->key.lock.label);
+		}
+		if (map.contains("x-expiry-time")) {
+			ui->expireDate = QDateTime::fromSecsSinceEpoch(QString::fromStdString(map["x-expiry-time"]).toLongLong());
 		}
 		if (ui->key.lock.isSymmetric()) {
 			ui->decrypt->show();
@@ -226,6 +230,16 @@ void AddressItem::setIdType() {
 										 QStringLiteral("dd.MM.yyyy")))
 							   : tr("Decryption has expired"));
 			}
+		} else if(!ui->expireDate.isNull()) {
+			bool canDecrypt = ui->expireDate > QDateTime::currentDateTime();
+			ui->expire->setProperty("label", canDecrypt
+												 ? QStringLiteral("good")
+												 : QStringLiteral("warn"));
+			ui->expire->setText(
+				canDecrypt ? QStringLiteral("%1 %2").arg(
+								 tr("Decryption is possible until:"),
+								 ui->expireDate.toLocalTime().toString(QStringLiteral("dd.MM.yyyy")))
+						   : tr("Decryption has expired"));
 		}
 	} else {
 		// No rcpt, lock is invalid = unsupported lock
