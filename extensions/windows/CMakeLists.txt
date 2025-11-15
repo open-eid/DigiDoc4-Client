@@ -1,9 +1,8 @@
 cmake_minimum_required(VERSION 3.16)
 project(EsteidShellExtension VERSION 3.13.9)
 add_library(${PROJECT_NAME} SHARED
-    dllmain.cpp
     EsteidShellExtension.def
-    EsteidShlExt.cpp
+    EsteidShellExtension.cpp
     EsteidShellExtension.rc
 )
 target_compile_definitions(${PROJECT_NAME} PRIVATE
@@ -19,7 +18,30 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
     INTERPROCEDURAL_OPTIMIZATION YES
     COMPILE_OPTIONS "/guard:cf"
     LINK_OPTIONS "/guard:cf"
-    LINK_LIBRARIES "uxtheme;RuntimeObject"
+    LINK_LIBRARIES "uxtheme;RuntimeObject;Shlwapi"
+    SKIP_AUTOMOC ON
+)
+
+add_library(${PROJECT_NAME}V2 SHARED
+    EsteidShellExtension.def
+    EsteidShellExtensionV2.cpp
+    EsteidShellExtension.rc
+)
+target_compile_definitions(${PROJECT_NAME}V2 PRIVATE
+    _UNICODE
+    UNICODE
+    _WINDLL
+    WIN32_LEAN_AND_MEAN
+    NO_ICON
+    VERSION=${PROJECT_VERSION_MAJOR},${PROJECT_VERSION_MINOR},${PROJECT_VERSION_PATCH},${BUILD_NUMBER}
+    VERSION_STR="${VERSION}"
+)
+set_target_properties(${PROJECT_NAME}V2 PROPERTIES
+    MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>"
+    INTERPROCEDURAL_OPTIMIZATION YES
+    COMPILE_OPTIONS "/guard:cf"
+    LINK_OPTIONS "/guard:cf"
+    LINK_LIBRARIES "uxtheme;RuntimeObject;Shlwapi"
     SKIP_AUTOMOC ON
 )
 
