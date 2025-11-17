@@ -840,6 +840,10 @@
         <source>Create %1</source>
         <translation>Create %1</translation>
     </message>
+    <message>
+        <source>Documents (%1)</source>
+        <translation>Documents (%1)</translation>
+    </message>
 </context>
 <context>
     <name>FileItem</name>
@@ -1344,10 +1348,6 @@ ID-Card</translation>
     <message>
         <source>Cannot alter container %1. Save different location?</source>
         <translation>Cannot alter container %1. Save to different location?</translation>
-    </message>
-    <message>
-        <source>Documents (%1)</source>
-        <translation>Documents (%1)</translation>
     </message>
     <message>
         <source>Save file</source>

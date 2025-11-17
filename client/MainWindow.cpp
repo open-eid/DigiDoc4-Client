@@ -420,14 +420,14 @@ void MainWindow::convertToCDoc()
 
 void MainWindow::moveCryptoContainer()
 {
-	QString to = selectFile(tr("Move file"), cryptoDoc->fileName(), true);
+	QString to = FileDialog::getSaveFileName(this, tr("Move file"), cryptoDoc->fileName());
 	if(!to.isNull() && cryptoDoc->move(to))
 		emit ui->cryptoContainerPage->moved(to);
 }
 
 void MainWindow::moveSignatureContainer()
 {
-	QString to = selectFile(tr("Move file"), digiDoc->fileName(), true);
+	QString to = FileDialog::getSaveFileName(this, tr("Move file"), digiDoc->fileName());
 	if(!to.isNull() && digiDoc->move(to))
 		emit ui->signContainerPage->moved(to);
 }
@@ -463,7 +463,7 @@ void MainWindow::onCryptoAction(int action, const QString &/*id*/, const QString
 	{
 		if(!cryptoDoc)
 			break;
-		QString target = selectFile(tr("Save file"), cryptoDoc->fileName(), true);
+		QString target = FileDialog::getSaveFileName(this, tr("Save file"), cryptoDoc->fileName());
 		if(target.isEmpty())
 			break;
 		if( !FileDialog::fileIsWritable(target))
@@ -471,7 +471,7 @@ void MainWindow::onCryptoAction(int action, const QString &/*id*/, const QString
 			auto *dlg = new WarningDialog(tr("Cannot alter container %1. Save different location?").arg(target), this);
 			dlg->addButton(WarningDialog::YES, QMessageBox::Yes);
 			if(dlg->exec() == QMessageBox::Yes) {
-				QString file = selectFile(tr("Save file"), target, true);
+				QString file = FileDialog::getSaveFileName(this, tr("Save file"), target);
 				if(!file.isEmpty())
 					cryptoDoc->saveCopy(file);
 			}
@@ -579,7 +579,7 @@ void MainWindow::openFiles(const QStringList &files, bool addFile, bool forceCre
 
 void MainWindow::openContainer(bool signature)
 {
-	QString filter = QFileDialog::tr("All Files (*)") + QStringLiteral(";;") + tr("Documents (%1)");
+	QString filter = QFileDialog::tr("All Files (*)") + QStringLiteral(";;") + FileDialog::tr("Documents (%1)");
 	if(signature)
 		filter = filter.arg(QStringLiteral("*.bdoc *.ddoc *.asice *.sce *.asics *.scs *.edoc *.adoc%1")
 			.arg(Application::confValue(Application::SiVaUrl).toString().isEmpty() ? QLatin1String() : QLatin1String(" *.pdf")));
@@ -631,7 +631,7 @@ bool MainWindow::save(bool saveAs)
 
 	QString target = digiDoc->fileName();
 	if(saveAs)
-		target = selectFile(tr("Save file"), target, true);
+		target = FileDialog::getSaveFileName(this, tr("Save file"), target);
 	if(target.isEmpty())
 		return false;
 
@@ -640,45 +640,11 @@ bool MainWindow::save(bool saveAs)
 		auto *dlg = new WarningDialog(tr("Cannot alter container %1. Save different location?").arg(target), this);
 		dlg->addButton(WarningDialog::YES, QMessageBox::Yes);
 		if(dlg->exec() == QMessageBox::Yes) {
-			if(QString file = selectFile(tr("Save file"), target, true); !file.isEmpty())
+			if(QString file = FileDialog::getSaveFileName(this, tr("Save file"), target); !file.isEmpty())
 				return saveAs ? digiDoc->saveAs(file) : digiDoc->save(file);
 		}
 	}
 	return saveAs ? digiDoc->saveAs(target) : digiDoc->save(target);
-}
-
-QString MainWindow::selectFile( const QString &title, const QString &filename, bool fixedExt )
-{
-	static const QString adoc = tr("Documents (%1)").arg(QLatin1String("*.adoc"));
-	static const QString bdoc = tr("Documents (%1)").arg(QLatin1String("*.bdoc"));
-	static const QString cdoc = tr("Documents (%1)").arg(QLatin1String("*.cdoc"));
-	static const QString cdoc2 = tr("Documents (%1)").arg(QLatin1String("*.cdoc2"));
-	static const QString edoc = tr("Documents (%1)").arg(QLatin1String("*.edoc"));
-	static const QString asic = tr("Documents (%1)").arg(QLatin1String("*.asice *.sce"));
-	const QString ext = QFileInfo( filename ).suffix().toLower();
-	QStringList exts;
-	QString active;
-	if( fixedExt )
-	{
-		if(ext == QLatin1String("bdoc")) exts.append(bdoc);
-		if(ext == QLatin1String("cdoc")) exts.append(cdoc);
-		if(ext == QLatin1String("cdoc2")) exts.append(cdoc2);
-		if(ext == QLatin1String("asice") || ext == QLatin1String("sce")) exts.append(asic);
-		if(ext == QLatin1String("edoc")) exts.append(edoc);
-		if(ext == QLatin1String("adoc")) exts.append(adoc);
-	}
-	else
-	{
-		exts = QStringList{ bdoc, asic, edoc, adoc };
-		if(ext == QLatin1String("bdoc")) active = bdoc;
-		if(ext == QLatin1String("cdoc")) active = cdoc;
-		if(ext == QLatin1String("cdoc2")) active = cdoc2;
-		if(ext == QLatin1String("asice") || ext == QLatin1String("sce")) active = asic;
-		if(ext == QLatin1String("edoc")) active = edoc;
-		if(ext == QLatin1String("adoc")) active = adoc;
-	}
-
-	return FileDialog::getSaveFileName( this, title, filename, exts.join(QLatin1String(";;")), &active );
 }
 
 void MainWindow::selectPage(Pages page)

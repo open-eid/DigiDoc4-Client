@@ -79,7 +79,6 @@ private:
 	void removeSignature(int index);
 	void removeSignatureFile(int index);
 	bool save(bool saveAs = false);
-	QString selectFile( const QString &title, const QString &filename, bool fixedExt );
 	template <typename F>
 	void sign(F &&sign);
 	bool validateFiles(const QString &container, const QStringList &files);
