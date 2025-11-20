@@ -29,17 +29,7 @@
 #include <QtWidgets/QPushButton>
 #include <QSvgWidget>
 
-PinPopup::PinPopup(PinFlags flags, const SslCertificate &c, TokenFlags count, QWidget *parent)
-	: PinPopup(flags, c.toString(c.showCN() ? QStringLiteral("CN, serialNumber") : QStringLiteral("GN SN, serialNumber")), count, parent)
-{
-	if(c.type() & SslCertificate::TempelType)
-	{
-		regexp->setRegularExpression(QRegularExpression(QStringLiteral("^.{4,}$")));
-		ui->pin->setMaxLength(32767);
-	}
-}
-
-PinPopup::PinPopup(PinFlags flags, const QString &title, TokenFlags count, QWidget *parent, QString text)
+PinPopup::PinPopup(QSmartCardData::PinType type, TokenFlags flags, const SslCertificate &c, QWidget *parent, QString text)
 	: QDialog(parent)
 	, ui(new Ui::PinPopup)
 {
@@ -60,7 +50,7 @@ PinPopup::PinPopup(PinFlags flags, const QString &title, TokenFlags count, QWidg
 
 	if(!text.isEmpty())
 		ui->labelPin->hide();
-	else if( flags & Pin2Type )
+	else if(type == QSmartCardData::Pin2Type)
 	{
 		text = tr("Selected action requires sign certificate.");
 		ui->labelPin->setText(flags & PinpadFlag ?
@@ -76,12 +66,12 @@ PinPopup::PinPopup(PinFlags flags, const QString &title, TokenFlags count, QWidg
 			tr("For using authentication certificate enter PIN1"));
 		setPinLen(4);
 	}
-	ui->label->setText(title);
+	ui->label->setText(c.toString(c.showCN() ? QStringLiteral("CN, serialNumber") : QStringLiteral("GN SN, serialNumber")));
 	ui->text->setText(text);
-	if(count & PinFinalTry)
-		ui->errorPin->setText(tr("PIN will be locked next failed attempt"));
-	else if(count & PinCountLow)
-		ui->errorPin->setText(tr("PIN has been entered incorrectly at least once"));
+	if(flags & PinFinalTry)
+		ui->errorPin->setText(tr("%1 will be locked next failed attempt").arg(QSmartCardData::typeString(type)));
+	else if(flags & PinCountLow)
+		ui->errorPin->setText(tr("%1 has been entered incorrectly at least once").arg(QSmartCardData::typeString(type)));
 	else
 		ui->errorPin->hide();
 
@@ -90,12 +80,13 @@ PinPopup::PinPopup(PinFlags flags, const QString &title, TokenFlags count, QWidg
 		ui->pin->hide();
 		ui->ok->hide();
 		ui->cancel->hide();
+		ui->errorPin->setAlignment(Qt::AlignCenter);
 		auto *movie = new QSvgWidget(QStringLiteral(":/images/wait.svg"), this);
 		movie->setFixedSize(ui->pin->size().height(), ui->pin->size().height());
 		movie->show();
 		ui->layoutContent->addWidget(movie, 0, Qt::AlignCenter);
 	}
-	if( flags & PinpadFlag )
+	else if(flags & PinpadFlag)
 	{
 		ui->pin->hide();
 		ui->ok->hide();
@@ -122,6 +113,11 @@ PinPopup::PinPopup(PinFlags flags, const QString &title, TokenFlags count, QWidg
 		});
 		ui->text->setBuddy( ui->pin );
 		ui->ok->setDisabled(true);
+	}
+	if(c.type() & SslCertificate::TempelType)
+	{
+		regexp->setRegularExpression(QRegularExpression(QStringLiteral("^.{4,}$")));
+		ui->pin->setMaxLength(32767);
 	}
 }
 
