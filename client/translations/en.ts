@@ -1756,14 +1756,6 @@ ID-Card</translation>
 <context>
     <name>PinPopup</name>
     <message>
-        <source>PIN will be locked next failed attempt</source>
-        <translation>PIN will be locked next failed attempt</translation>
-    </message>
-    <message>
-        <source>PIN has been entered incorrectly at least once</source>
-        <translation>PIN has been entered incorrectly at least once</translation>
-    </message>
-    <message>
         <source>For using sign certificate enter PIN2 at the reader</source>
         <translation>For using sign certificate enter PIN2 at the reader</translation>
     </message>
@@ -1782,6 +1774,14 @@ ID-Card</translation>
     <message>
         <source>For using authentication certificate enter PIN1</source>
         <translation>For using authentication certificate enter PIN1</translation>
+    </message>
+    <message>
+        <source>%1 will be locked next failed attempt</source>
+        <translation>%1 will be locked next failed attempt</translation>
+    </message>
+    <message>
+        <source>%1 has been entered incorrectly at least once</source>
+        <translation>%1 has been entered incorrectly at least once</translation>
     </message>
     <message>
         <source>Selected action requires authentication certificate.</source>

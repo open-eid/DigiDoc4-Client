@@ -1756,14 +1756,6 @@ ID-kaardiga</translation>
 <context>
     <name>PinPopup</name>
     <message>
-        <source>PIN will be locked next failed attempt</source>
-        <translation>Vale koodi sisestamisel PIN lukustub</translation>
-    </message>
-    <message>
-        <source>PIN has been entered incorrectly at least once</source>
-        <translation>PIN on vähemalt ühe korra valesti sisestatud</translation>
-    </message>
-    <message>
         <source>For using sign certificate enter PIN2 at the reader</source>
         <translation>Sertifikaadi kasutamiseks sisesta PIN2 kaardilugeja sõrmistikult</translation>
     </message>
@@ -1782,6 +1774,14 @@ ID-kaardiga</translation>
     <message>
         <source>For using authentication certificate enter PIN1</source>
         <translation>Sertifikaadi kasutamiseks sisesta PIN1</translation>
+    </message>
+    <message>
+        <source>%1 will be locked next failed attempt</source>
+        <translation>Vale koodi sisestamisel %1 lukustub</translation>
+    </message>
+    <message>
+        <source>%1 has been entered incorrectly at least once</source>
+        <translation>%1 on vähemalt ühe korra valesti sisestatud</translation>
     </message>
     <message>
         <source>Selected action requires authentication certificate.</source>
