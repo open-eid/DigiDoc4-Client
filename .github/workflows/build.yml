@@ -14,7 +14,8 @@ jobs:
       MACOSX_DEPLOYMENT_TARGET: 13.0
       LIBS_PATH: ${{ github.workspace }}/cache
     steps:
-    - name: Checkout
+    - &Checkout
+      name: Checkout
       uses: actions/checkout@v5
       with:
         submodules: recursive
@@ -41,12 +42,12 @@ jobs:
         key: vcpkg-macOS-${{ hashFiles('prepare_osx_build_environment.sh') }}
     - name: Build libraries
       run: |
-        mkdir -p ${LIBS_PATH}/Qt-6.9.2-OpenSSL
+        mkdir -p ${LIBS_PATH}/Qt-6.10.0-OpenSSL
         ./prepare_osx_build_environment.sh -p ${LIBS_PATH}
     - name: Install Qt
       uses: jurplel/install-qt-action@v4
       with:
-        version: 6.9.2
+        version: 6.10.0
         arch: clang_64
     - name: Build
       run: |
@@ -69,7 +70,7 @@ jobs:
     container: ubuntu:${{ matrix.container }}
     strategy:
       matrix:
-        container: ['22.04', '24.04', '25.04', '25.10']
+        container: ['22.04', '24.04', '25.10']
         arch: ['amd64', 'arm64']
     env:
       DEBIAN_FRONTEND: noninteractive
@@ -86,10 +87,13 @@ jobs:
         repo: open-eid/libdigidocpp
     - name: Install dependencies
       run: apt update -qq && apt install --no-install-recommends -y git lsb-release build-essential devscripts debhelper pkg-config lintian ${UBUNTU_DEPS}
-    - name: Checkout
-      uses: actions/checkout@v5
-      with:
-        submodules: recursive
+    - name: Install gcc 12
+      if: matrix.container == '22.04'
+      run: |
+        apt install -y gcc-12 g++-12
+        update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 60 --slave /usr/bin/g++ g++ /usr/bin/g++-12
+        update-alternatives --set gcc /usr/bin/gcc-12
+    - *Checkout
     - name: Setup changelog
       run: |
         export VERSION=$(grep project CMakeLists.txt | egrep -o "([0-9]{1,}\.)+[0-9]{1,}")
@@ -124,10 +128,7 @@ jobs:
         repo: open-eid/libdigidocpp
     - name: Install Deps
       run: dnf install -y ./libdigidocpp-pkg/*.rpm git gcc-c++ cmake rpm-build gettext openssl-devel openldap-devel pcsc-lite-devel qt6-qtsvg-devel qt6-qttools-devel flatbuffers-devel flatbuffers-compiler zlib-devel
-    - name: Checkout
-      uses: actions/checkout@v5
-      with:
-        submodules: recursive
+    - *Checkout
     - name: Build
       run: |
         cmake -DCMAKE_INSTALL_PREFIX=/usr -B build -S .
@@ -139,23 +140,21 @@ jobs:
         path: build/qdigidoc4*.rpm
   windows:
     name: Build on Windows
-    runs-on: windows-2022
+    runs-on: ${{ matrix.platform == 'arm64' && 'windows-11-arm' || 'windows-2025' }}
     strategy:
       matrix:
         vcver: [143]
+        platform: [x64, arm64]
     env:
       VER_SUFFIX: .VS${{ matrix.vcver }}
     steps:
-    - name: Checkout
-      uses: actions/checkout@v5
-      with:
-        submodules: recursive
+    - *Checkout
     - name: Download artifact
       uses: dawidd6/action-download-artifact@v11
       with:
         workflow: build.yml
         branch: master
-        name: msi_${{ matrix.vcver }}_x64
+        name: msi_${{ matrix.vcver }}_${{ matrix.platform }}
         path: ./
         repo: open-eid/libdigidocpp
     - name: Install artifact
@@ -166,7 +165,7 @@ jobs:
       uses: actions/cache@v4
       with:
         path: ${{ github.workspace }}/vcpkg_cache
-        key: vcpkg-${{ matrix.vcver }}-${{ hashFiles('vcpkg.json') }}
+        key: vcpkg-${{ matrix.vcver }}-${{ matrix.platform }}-${{ hashFiles('vcpkg.json') }}
     - name: Prepare vcpkg
       uses: lukka/run-vcpkg@v11
       with:
@@ -178,12 +177,12 @@ jobs:
     - name: Install Qt
       uses: jurplel/install-qt-action@v4
       with:
-        version: 6.9.2
-        arch: win64_msvc2022_64
+        version: 6.10.0
+        arch: ${{ matrix.platform == 'arm64' && 'win64_msvc2022_arm64' || 'win64_msvc2022_64' }}
     - name: Setup dev env
       uses: ilammy/msvc-dev-cmd@v1
       with:
-        arch: x64
+        arch: ${{ matrix.platform }}
     - name: Install WiX
       run: |
         dotnet tool install -g wix --version 6.0.2
@@ -198,7 +197,7 @@ jobs:
     - name: Archive artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: msi_${{ matrix.vcver }}_x64
+        name: msi_${{ matrix.vcver }}_${{ matrix.platform }}
         path: |
           build/*.msi
           build/*.appx
@@ -210,10 +209,7 @@ jobs:
       TOKEN: ${{ secrets.COVERITY_SCAN_TOKEN }}
       PROJECTNAME: open-eid/DigiDoc4-Client
     steps:
-    - name: Checkout
-      uses: actions/checkout@v5
-      with:
-        submodules: recursive
+    - *Checkout
     - name: Download artifact
       uses: dawidd6/action-download-artifact@v11
       with:
@@ -252,10 +248,7 @@ jobs:
     permissions:
       security-events: write
     steps:
-    - name: Checkout
-      uses: actions/checkout@v5
-      with:
-        submodules: recursive
+    - *Checkout
     - name: Download artifact
       uses: dawidd6/action-download-artifact@v11
       with:

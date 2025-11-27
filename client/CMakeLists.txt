@@ -1,5 +1,3 @@
-get_target_property(qtCore_install_prefix Qt6::qmake IMPORTED_LOCATION)
-get_filename_component(qtCore_install_prefix ${qtCore_install_prefix} DIRECTORY)
 get_filename_component(TSL_FILENAME ${TSL_URL} NAME_WLE)
 set(TSL_LIST ${TSL_FILENAME} ${TSL_INCLUDE})
 list(TRANSFORM TSL_LIST APPEND .xml)
@@ -16,7 +14,7 @@ else()
 		OUTPUT ${TSL_LIST}
 		DEPENDS TSLDownload
 		COMMAND $<TARGET_FILE:TSLDownload> ${CMAKE_CURRENT_BINARY_DIR} ${TSL_URL} ${TSL_INCLUDE}
-		WORKING_DIRECTORY ${qtCore_install_prefix}
+		WORKING_DIRECTORY ${QT_HOST_PATH}
 	)
 endif()
 
@@ -174,7 +172,7 @@ if( APPLE )
 	)
 	add_custom_target(macdeployqt DEPENDS ${PROJECT_NAME}
 		COMMAND Qt::macdeployqt $<TARGET_BUNDLE_DIR:${PROJECT_NAME}>
-		COMMAND rm -rf $<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/PlugIns/bearer
+		COMMAND rm -rf $<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/PlugIns/networkinformation
 		COMMAND cp -a /Library/Frameworks/digidocpp.framework $<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/Frameworks
 		COMMAND rm $<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/Frameworks/digidocpp.framework/Resources/digidoc-tool
 		COMMAND find $<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/Frameworks -name Headers | xargs rm -rf
@@ -241,10 +239,11 @@ elseif(WIN32)
 		${CMAKE_SOURCE_DIR}/common/WelcomeDlg.wxs
 		${CMAKE_SOURCE_DIR}/common/WixUI_Minimal.wxs
 	)
+	get_filename_component(QT_BASE_DIR "${Qt6_DIR}/../../.." ABSOLUTE)
 	add_custom_target(msi DEPENDS ${PROJECT_NAME}
 		COMMAND ${WIX_CMD} -o "${MSI_FILE}.msi"
 		#Build MSI with QT
-		COMMAND ${WIX_CMD} -d qt_path=${qtCore_install_prefix} -o "${MSI_FILE}.qt.msi"
+		COMMAND ${WIX_CMD} -d qt_path=${QT_BASE_DIR}/bin -o "${MSI_FILE}.qt.msi"
 		WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
 	)
 	if(SIGNCERT)
@@ -261,10 +260,12 @@ elseif(WIN32)
 	endif()
 	set(PLATFORM $ENV{PLATFORM})
 	configure_file(${CMAKE_SOURCE_DIR}/AppxManifest.xml.cmake ${CMAKE_BINARY_DIR}/AppxManifest.xml)
-	if(CMAKE_SIZEOF_VOID_P EQUAL 8)
-		set(OPENSSL_SUFFIX "-x64")
-	else()
+	if(CMAKE_SYSTEM_PROCESSOR STREQUAL "ARM64")
+		set(OPENSSL_SUFFIX "-arm64")
+	elseif(CMAKE_SYSTEM_PROCESSOR STREQUAL "x86")
 		set(OPENSSL_SUFFIX "")
+	else()
+		set(OPENSSL_SUFFIX "-x64")
 	endif()
 	add_custom_target(appx DEPENDS ${PROJECT_NAME}
 		COMMAND ${CMAKE_COMMAND} -E remove ${MSI_FILE}.appx

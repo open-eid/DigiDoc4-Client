@@ -22,6 +22,7 @@
 
 #include "CryptoDoc.h"
 #include "DigiDoc.h"
+#include "PrintSheet.h"
 #include "Settings.h"
 #include "SslCertificate.h"
 #include "dialogs/AddRecipients.h"
@@ -37,6 +38,12 @@
 #include <QFileInfo>
 #include <QFontMetrics>
 #include <QMessageBox>
+
+#include <QtCore/QUrlQuery>
+#include <QtGui/QDesktopServices>
+
+#include <QtPrintSupport/QPrintPreviewDialog>
+#include <QtPrintSupport/QPrinterInfo>
 
 using namespace ria::qdigidoc4;
 
@@ -60,16 +67,30 @@ ContainerPage::ContainerPage(QWidget *parent)
 	connectCode(ui->cancel, Actions::ContainerCancel);
 	connectCode(ui->convert, Actions::ContainerConvert);
 	connectCode(ui->saveAs, Actions::ContainerSaveAs);
-	connectCode(ui->email, Actions::ContainerEmail);
-	connectCode(ui->summary, Actions::ContainerSummary);
 	connectCode(ui->save, Actions::ContainerSave);
 	connect(ui->leftPane, &FileList::addFiles, this, &ContainerPage::addFiles);
 	connect(ui->leftPane, &ItemList::removed, this, &ContainerPage::fileRemoved);
 	connect(ui->leftPane, &ItemList::addItem, this, &ContainerPage::forward);
 	connect(ui->rightPane, &ItemList::addItem, this, &ContainerPage::forward);
 	connect(ui->rightPane, &ItemList::removed, this, &ContainerPage::removed);
-	connect(ui->containerFile, &QLabel::linkActivated, this, [this](const QString &link)
-		{ emit action(Actions::ContainerNavigate, link); });
+	connect(ui->email, &QAbstractButton::clicked, this, [this] {
+		if(!QFileInfo::exists(fileName))
+			return;
+		QUrlQuery q;
+		q.addQueryItem(QStringLiteral("subject"), QFileInfo(fileName).fileName());
+		q.addQueryItem(QStringLiteral("attachment"), QFileInfo(fileName).absoluteFilePath());
+		QUrl url;
+		url.setScheme(QStringLiteral("mailto"));
+		url.setQuery(q);
+		QDesktopServices::openUrl(url);
+	});
+	connect(ui->containerFile, &QLabel::linkActivated, this, [this]{
+		if(!QFileInfo::exists(fileName))
+			return;
+		QUrl url = QUrl::fromLocalFile( fileName );
+		url.setScheme(QStringLiteral("browse"));
+		QDesktopServices::openUrl(url);
+	});
 }
 
 ContainerPage::~ContainerPage()
@@ -275,7 +296,10 @@ void ContainerPage::transition(CryptoDoc *container, const QSslCertificate &cert
 			updateDecryptionButton();
 	});
 	disconnect(container, &CryptoDoc::destroyed, this, &ContainerPage::clear);
-	connect(container, &CryptoDoc::destroyed, this, &ContainerPage::clear);
+	connect(container, &CryptoDoc::destroyed, this, [this] {
+		clear();
+		emit action(ClearCryptoWarning);
+	});
 
 	clear();
 	emit action(ClearCryptoWarning);
@@ -303,6 +327,27 @@ void ContainerPage::transition(DigiDoc* container)
 	disconnect(this, &ContainerPage::certChanged, container, nullptr);
 	connect(this, &ContainerPage::certChanged, container, [this, container](const SslCertificate &) {
 		showSigningButton();
+	});
+
+	disconnect(ui->summary, &QAbstractButton::clicked, container, nullptr);
+	connect(ui->summary, &QAbstractButton::clicked, container, [this,container] {
+#ifdef Q_OS_WIN
+		if( QPrinterInfo::availablePrinterNames().isEmpty() )
+		{
+			WarningDialog::show(this,
+								tr("In order to view Validity Confirmation Sheet there has to be at least one printer installed!"));
+			return;
+		}
+#endif
+		auto *dialog = new QPrintPreviewDialog( this );
+		dialog->printer()->setPageSize( QPageSize( QPageSize::A4 ) );
+		dialog->printer()->setPageOrientation( QPageLayout::Portrait );
+		dialog->setMinimumHeight( 700 );
+		connect(dialog, &QPrintPreviewDialog::paintRequested, container, [container](QPrinter *printer) {
+			PrintSheet(container, printer);
+		});
+		dialog->exec();
+		dialog->deleteLater();
 	});
 
 	if(!container->timestamps().isEmpty())
