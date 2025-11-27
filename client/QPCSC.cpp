@@ -27,8 +27,8 @@
 #include <array>
 #include <cstring>
 
-Q_LOGGING_CATEGORY(APDU,"QPCSC.APDU")
-Q_LOGGING_CATEGORY(SCard,"QPCSC.SCard")
+static Q_LOGGING_CATEGORY(APDU,"QPCSC.APDU")
+static Q_LOGGING_CATEGORY(SCard,"QPCSC.SCard")
 
 static quint16 toUInt16(const QByteArray &data, int size)
 {
@@ -94,10 +94,12 @@ QPCSC::QPCSC()
 QPCSC::~QPCSC()
 {
 	requestInterruption();
+	d->sleepCond.wakeAll();
+	if(d->thread)
+		SC(Cancel, d->thread);
 	wait();
-	if( d->context )
+	if(d->context)
 		SC(ReleaseContext, d->context);
-	qDeleteAll(d->lock);
 	delete d;
 }
 
@@ -138,16 +140,14 @@ void QPCSC::run()
 	std::vector<SCARD_READERSTATE> list;
 	while(!isInterruptionRequested())
 	{
-		if(!pcsc.serviceRunning())
-		{
-			sleep(5);
-			continue;
-		}
 		// "\\?PnP?\Notification" does not work on macOS
 		QByteArray data = pcsc.rawReaders();
 		if(data.isEmpty())
 		{
-			sleep(5);
+			QMutexLocker locker(&d->sleepMutex);
+			if (isInterruptionRequested())
+				break;
+			d->sleepCond.wait(&d->sleepMutex, 5000);
 			continue;
 		}
 		for(const char *name = data.constData(); *name; name += strlen(name) + 1)
@@ -155,6 +155,15 @@ void QPCSC::run()
 			if(std::none_of(list.cbegin(), list.cend(), [&name](const SCARD_READERSTATE &state) { return strcmp(state.szReader, name) == 0; }))
 				list.push_back({ strdup(name), nullptr, 0, 0, 0, {} });
 		}
+		if(list.empty())
+		{
+			QMutexLocker locker(&d->sleepMutex);
+			if (isInterruptionRequested())
+				break;
+			d->sleepCond.wait(&d->sleepMutex, 5000);
+			continue;
+		}
+		d->thread = pcsc.d->context;
 		if(SC(GetStatusChange, pcsc.d->context, 5*1000U, list.data(), DWORD(list.size())) != SCARD_S_SUCCESS)
 			continue;
 		for(auto i = list.begin(); i != list.end(); )
@@ -176,6 +185,7 @@ void QPCSC::run()
 				++i;
 		}
 	}
+	d->thread = {};
 }
 
 bool QPCSC::serviceRunning() const
@@ -191,9 +201,6 @@ bool QPCSC::serviceRunning() const
 QPCSCReader::QPCSCReader( const QString &reader, QPCSC *parent )
 	: d(new Private)
 {
-	if(!parent->d->lock.contains(reader))
-		parent->d->lock[reader] = new QMutex();
-	parent->d->lock[reader]->lock();
 	d->d = parent->d;
 	d->reader = reader.toUtf8();
 	d->state.szReader = d->reader.constData();
@@ -203,7 +210,6 @@ QPCSCReader::QPCSCReader( const QString &reader, QPCSC *parent )
 QPCSCReader::~QPCSCReader()
 {
 	disconnect();
-	d->d->lock[d->reader]->unlock();
 	delete d;
 }
 
