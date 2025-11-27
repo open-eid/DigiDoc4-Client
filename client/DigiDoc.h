@@ -33,7 +33,7 @@ class QSslCertificate;
 class DigiDocSignature
 {
 public:
-	enum SignatureStatus
+	enum SignatureStatus : quint8
 	{
 		Valid,
 		Warning,
@@ -41,7 +41,7 @@ public:
 		Invalid,
 		Unknown
 	};
-	enum SignatureWarning
+	enum SignatureWarning : quint8
 	{
 		DigestWeak = 1 << 2
 	};
@@ -124,10 +124,9 @@ public:
 	DocumentModel *documentModel() const;
 	QString fileName() const;
 	bool isAsicS() const;
-	bool isCades() const;
+	bool isAsicE() const;
 	bool isPDF() const;
 	bool isModified() const;
-	bool isSupported() const;
 	QString mediaType() const;
 	bool move(const QString &to);
 	bool open( const QString &file );
@@ -140,9 +139,9 @@ public:
 		const QString &country,
 		const QString &role,
 		digidoc::Signer *signer);
-	QList<DigiDocSignature> signatures() const;
+	void enumSignatures(std::function<void (DigiDocSignature &&)> &&cb) const;
+	void enumTimestamps(std::function<void (DigiDocSignature &&)> &&cb) const;
 	ria::qdigidoc4::ContainerState state();
-	QList<DigiDocSignature> timestamps() const;
 
 	static QStringList parseException(const digidoc::Exception &e,
 		digidoc::Exception::ExceptionCode &code);
@@ -156,7 +155,6 @@ private:
 	std::unique_ptr<DocumentModel>		m_documentModel;
 
 	ria::qdigidoc4::ContainerState containerState = ria::qdigidoc4::UnsignedContainer;
-	QList<DigiDocSignature> m_signatures, m_timestamps;
 	bool			modified = false;
 	QString			m_fileName;
 	QStringList		m_tempFiles;

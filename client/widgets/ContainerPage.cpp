@@ -305,34 +305,43 @@ void ContainerPage::transition(DigiDoc* container)
 		showSigningButton();
 	});
 
-	if(!container->timestamps().isEmpty())
-	{
+	bool hasTimestamps = true;
+	container->enumTimestamps([&, this](DigiDocSignature &&c) {
 		ui->rightPane->addHeader(QT_TRANSLATE_NOOP("ItemList", "Container timestamps"));
-
-		for(const DigiDocSignature &c: container->timestamps())
+		if(!hasTimestamps)
 		{
-			auto *item = new SignatureItem(c, container->state(), ui->rightPane);
-			if(c.isInvalid())
-				++errors[item->getError()];
-			ui->rightPane->addHeaderWidget(item);
+			ui->rightPane->addHeader(QT_TRANSLATE_NOOP("ItemList", "Container timestamps"));
+			hasTimestamps = true;
 		}
-	}
+		bool isInvalid = c.isInvalid();
+		auto *item = new SignatureItem(std::move(c), container->state(), ui->rightPane);
+		if(isInvalid)
+			++errors[item->getError()];
+		ui->rightPane->addHeaderWidget(item);
+	});
 
-	for(const DigiDocSignature &c: container->signatures())
-	{
-		auto *item = new SignatureItem(c, container->state(), ui->rightPane);
-		if(c.isInvalid())
+	bool isXAdES = false;
+	bool isCAdES = false;
+	container->enumSignatures([&, this](DigiDocSignature &&c) {
+		QString profile = c.profile();
+		if(profile.contains(QLatin1String("BES"), Qt::CaseInsensitive))
+			isXAdES = true;
+		if(profile.contains(QLatin1String("CADES"), Qt::CaseInsensitive))
+			isCAdES = true;
+		bool isInvalid = c.isInvalid();
+		auto *item = new SignatureItem(std::move(c), container->state(), ui->rightPane);
+		if(isInvalid)
 			++errors[item->getError()];
 		ui->rightPane->addWidget(item);
-	}
+	});
 
 	for(const auto &[key, value]: errors)
 		emit warning({key, value});
 	if(container->fileName().endsWith(QStringLiteral("ddoc"), Qt::CaseInsensitive))
 		emit warning({UnsupportedDDocWarning});
-	if(container->isAsicS())
+	if(container->isAsicS() && isXAdES)
 		emit warning({UnsupportedAsicSWarning});
-	if(container->isCades())
+	if(isCAdES)
 		emit warning({UnsupportedAsicCadesWarning});
 
 	hasEmptyFile = false;
@@ -345,7 +354,7 @@ void ContainerPage::transition(DigiDoc* container)
 		}
 	}
 
-	isSupported = container->isSupported() || container->isPDF();
+	isSupported = container->isAsicE() && !isCAdES || container->isPDF();
 	showSigningButton();
 
 	ui->leftPane->setModel(container->documentModel());

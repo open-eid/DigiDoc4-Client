@@ -57,7 +57,7 @@ SignatureItem::SignatureItem(DigiDocSignature s, ContainerState /*state*/, QWidg
 	ui->name->installEventFilter(this);
 	ui->idSignTime->installEventFilter(this);
 	ui->role->installEventFilter(this);
-	ui->remove->setVisible(ui->signature.container()->isSupported());
+	ui->remove->setVisible(ui->signature.container()->isAsicE() && s.profile().contains("BES", Qt::CaseInsensitive));
 	connect(ui->remove, &QToolButton::clicked, this, [this]{
 		const SslCertificate c = ui->signature.cert();
 		auto *dlg = new WarningDialog(tr("Remove signature %1?")
