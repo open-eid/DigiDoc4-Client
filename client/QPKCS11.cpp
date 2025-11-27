@@ -29,6 +29,7 @@
 #include <QtCore/QDebug>
 
 #include <array>
+#include <thread>
 
 template<class Container>
 static QString toQString(const Container &c)
@@ -72,11 +73,6 @@ std::vector<CK_OBJECT_HANDLE> QPKCS11::Private::findObject(CK_SESSION_HANDLE ses
 		result.clear();
 	f->C_FindObjectsFinal( session );
 	return result;
-}
-
-void QPKCS11::Private::run()
-{
-	result = f->C_Login(session, CKU_USER, nullptr, 0);
 }
 
 
@@ -225,11 +221,12 @@ QPKCS11::PinStatus QPKCS11::login(const TokenData &t)
 	if(token.flags & CKF_PROTECTED_AUTHENTICATION_PATH)
 	{
 		PinPopup p(isSign ? PinPopup::Pin2PinpadType : PinPopup::Pin1PinpadType, cert, f, Application::mainWindow());
-		connect(d, &Private::started, &p, &PinPopup::startTimer);
-		connect(d, &Private::finished, &p, &PinPopup::accept);
-		d->start();
+		std::thread([&err, &p, this] {
+			emit p.startTimer();
+			err = d->f->C_Login(d->session, CKU_USER, nullptr, 0);
+			p.accept();
+		}).detach();
 		p.exec();
-		err = d->result;
 	}
 	else
 	{
@@ -241,15 +238,15 @@ QPKCS11::PinStatus QPKCS11::login(const TokenData &t)
 		err = d->f->C_Login(d->session, CKU_USER, CK_UTF8CHAR_PTR(pin.constData()), CK_ULONG(pin.size()));
 	}
 
-	d->f->C_GetTokenInfo(currentSlot, &token);
-
 	switch( err )
 	{
 	case CKR_OK:
 	case CKR_USER_ALREADY_LOGGED_IN: return PinOK;
 	case CKR_CANCEL:
 	case CKR_FUNCTION_CANCELED: return PinCanceled;
-	case CKR_PIN_INCORRECT: return (token.flags & CKF_USER_PIN_LOCKED) ? PinLocked : PinIncorrect;
+	case CKR_PIN_INCORRECT:
+		d->f->C_GetTokenInfo(currentSlot, &token);
+		return (token.flags & CKF_USER_PIN_LOCKED) ? PinLocked : PinIncorrect;
 	case CKR_PIN_LOCKED: return PinLocked;
 	case CKR_DEVICE_ERROR: return DeviceError;
 	case CKR_GENERAL_ERROR: return GeneralError;
@@ -332,14 +329,15 @@ bool QPKCS11::reload()
 #ifdef Q_OS_MAC
 		{ QApplication::applicationDirPath() + "/opensc-pkcs11.so", {} },
 		{ "/Library/latvia-eid/lib/eidlv-pkcs11.bundle/Contents/MacOS/eidlv-pkcs11", "3BDB960080B1FE451F830012428F536549440F900020" }, // LV-G2
+		{ "/Library/latvia-eid/lib/eidlv-pkcs11.bundle/Contents/MacOS/eidlv-pkcs11", "3BDC960080B1FE451F830012428F54654944320F900012" }, // LV-G2.1
 		{ "/Library/mCard/lib/mcard-pkcs11.so", "3B9D188131FC358031C0694D54434F5373020505D3" }, // LT-G3
 		{ "/Library/mCard/lib/mcard-pkcs11.so", "3B9D188131FC358031C0694D54434F5373020604D1" }, // LT-G3.1
-		{ "/Library/Atostek ID/Atostek-ID-PKCS11.dylib", "3B7F9600008031B865B0850300EF1200F6829000" }, // FI-G3
 		{ "/Library/Atostek ID/Atostek-ID-PKCS11.dylib", "3B7F9600008031B865B08504021B1200F6829000" }, // FI-G3.1
 		{ "/Library/Atostek ID/Atostek-ID-PKCS11.dylib", "3B7F9600008031B865B085050011122460829000" }, // FI-G4
-		{ "/Library/mPolluxDigiSign/libcryptoki.dylib", "3B7F9600008031B865B0850300EF1200F6829000" }, // FI-G3
+		{ "/Library/Atostek ID/Atostek-ID-PKCS11.dylib", "3B7F9600008031B865B085051024122460829000" }, // FI-G4.1
 		{ "/Library/mPolluxDigiSign/libcryptoki.dylib", "3B7F9600008031B865B08504021B1200F6829000" }, // FI-G3.1
 		{ "/Library/mPolluxDigiSign/libcryptoki.dylib", "3B7F9600008031B865B085050011122460829000" }, // FI-G4
+		{ "/Library/mPolluxDigiSign/libcryptoki.dylib", "3B7F9600008031B865B085051024122460829000" }, // FI-G4.1
 		{ "/Library/Frameworks/eToken.framework/Versions/Current/libeToken.dylib", "3BD5180081313A7D8073C8211030" },
 		{ "/Library/Frameworks/eToken.framework/Versions/Current/libeToken.dylib", "3BD518008131FE7D8073C82110F4" },
 		{ "/Library/Frameworks/eToken.framework/Versions/Current/libeToken.dylib", "3BFF9600008131FE4380318065B0846566FB12017882900085" },
@@ -351,19 +349,20 @@ bool QPKCS11::reload()
 		{ "opensc-pkcs11.so", {} },
 #if defined(Q_OS_LINUX)
 		{ "/opt/latvia-eid/lib/eidlv-pkcs11.so", "3BDB960080B1FE451F830012428F536549440F900020" }, // LV-G2
+		{ "/opt/latvia-eid/lib/eidlv-pkcs11.so", "3BDC960080B1FE451F830012428F54654944320F900012" }, // LV-G2.1
 		{ "mcard-pkcs11.so", "3B9D188131FC358031C0694D54434F5373020505D3" }, // LT-G3
 		{ "mcard-pkcs11.so", "3B9D188131FC358031C0694D54434F5373020604D1" }, // LT-G3.1
 #if Q_PROCESSOR_WORDSIZE == 8
-		{ "/usr/lib/Atostek-ID-PKCS11.so", "3B7F9600008031B865B0850300EF1200F6829000" }, // FI-G3
 		{ "/usr/lib/Atostek-ID-PKCS11.so", "3B7F9600008031B865B08504021B1200F6829000" }, // FI-G3.1
 		{ "/usr/lib/Atostek-ID-PKCS11.so", "3B7F9600008031B865B085050011122460829000" }, // FI-G4
-		{ "/usr/lib64/libcryptoki.so", "3B7F9600008031B865B0850300EF1200F6829000" }, // FI-G3
+		{ "/usr/lib/Atostek-ID-PKCS11.so", "3B7F9600008031B865B085051024122460829000" }, // FI-G4.1
 		{ "/usr/lib64/libcryptoki.so", "3B7F9600008031B865B08504021B1200F6829000" }, // FI-G3.1
 		{ "/usr/lib64/libcryptoki.so", "3B7F9600008031B865B085050011122460829000" }, // FI-G4
+		{ "/usr/lib64/libcryptoki.so", "3B7F9600008031B865B085051024122460829000" }, // FI-G4.1
 #else
-		{ "libcryptoki.so", "3B7F9600008031B865B0850300EF1200F6829000" }, // FI-G3
 		{ "libcryptoki.so", "3B7F9600008031B865B08504021B1200F6829000" }, // FI-G3.1
 		{ "libcryptoki.so", "3B7F9600008031B865B085050011122460829000" }, // FI-G4
+		{ "libcryptoki.so", "3B7F9600008031B865B085051024122460829000" }, // FI-G4.1
 #endif
 		{ "/usr/lib/libeTPkcs11.so", "3BD5180081313A7D8073C8211030" },
 		{ "/usr/lib/libeTPkcs11.so", "3BD518008131FE7D8073C82110F4" },
