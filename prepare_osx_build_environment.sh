@@ -4,8 +4,8 @@
 set -e
 
 ######### Versions of libraries/frameworks to be compiled
-QT_VER="6.9.2"
-OPENSSL_VER="3.5.2"
+QT_VER="6.10.1"
+OPENSSL_VER="3.5.4"
 OPENLDAP_VER="2.6.10"
 REBUILD=false
 BUILD_PATH=~/cmake_builds
@@ -109,7 +109,9 @@ if [[ "$REBUILD" = true || ! -d ${QT_PATH} ]] ; then
         tar xf ${PACKAGE}.tar.xz
         pushd ${PACKAGE}
         if [[ "${PACKAGE}" == *"qtbase"* ]] ; then
-            ./configure -prefix ${QT_PATH} -opensource -nomake tests -nomake examples -no-securetransport -openssl-linked -confirm-license -appstore-compliant -- -DOPENSSL_ROOT_DIR=${OPENSSL_PATH} -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64"
+            ./configure -prefix ${QT_PATH} -opensource -sbom -appstore-compliant -confirm-license -openssl-linked \
+                -no-securetransport -nomake tests -nomake examples -no-dbus -no-libjpeg -no-libpng -no-gif -- \
+                -DOPENSSL_ROOT_DIR=${OPENSSL_PATH} -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64"
         else
             ${QT_PATH}/bin/qt-configure-module .
         fi

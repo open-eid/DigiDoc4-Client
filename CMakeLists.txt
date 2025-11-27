@@ -2,7 +2,10 @@ cmake_minimum_required(VERSION 3.22)
 if(NOT EXISTS ${CMAKE_SOURCE_DIR}/common/CMakeLists.txt)
     message(FATAL_ERROR "common submodule directory empty, did you 'git clone --recursive'?")
 endif()
-project(qdigidoc4 VERSION 4.9.0)
+project(qdigidoc4 VERSION 4.10.0
+    DESCRIPTION "DigiDoc4 application for digital signing and encryption"
+    HOMEPAGE_URL https://github.com/open-eid/DigiDoc4-Client
+)
 
 macro(SET_ENV NAME DEF)
     if(DEFINED ENV{${NAME}})
@@ -26,7 +29,7 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_C_VISIBILITY_PRESET hidden)
 set(CMAKE_CXX_VISIBILITY_PRESET hidden)
 set(CMAKE_VISIBILITY_INLINES_HIDDEN YES)
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED YES)
 set(CMAKE_INTERPROCEDURAL_OPTIMIZATION YES)
 set(CMAKE_INTERPROCEDURAL_OPTIMIZATION_DEBUG NO)

@@ -458,6 +458,10 @@
         <translation>DigiDoc4 klient</translation>
     </message>
     <message>
+        <source>In order to view Validity Confirmation Sheet there has to be at least one printer installed!</source>
+        <translation>Digitaalallkirjade kinnituslehe kuvamiseks peab olema arvutis vähemalt üks printer seadistatud!</translation>
+    </message>
+    <message>
         <source>Change</source>
         <translation>Muuda</translation>
     </message>
@@ -1402,10 +1406,6 @@ ID-kaardiga</translation>
     <message>
         <source>Connect the card reader to your computer and insert your ID card into the reader</source>
         <translation>Ühenda kaardilugeja arvutiga ja sisesta ID-kaart lugejasse</translation>
-    </message>
-    <message>
-        <source>In order to view Validity Confirmation Sheet there has to be at least one printer installed!</source>
-        <translation>Digitaalallkirjade kinnituslehe kuvamiseks peab olema arvutis vähemalt üks printer seadistatud!</translation>
     </message>
     <message>
         <source>%1 has been changed and the certificate has been unblocked!</source>
