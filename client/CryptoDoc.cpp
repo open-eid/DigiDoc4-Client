@@ -122,7 +122,8 @@ bool CDocumentModel::addFile(const QString &file, const QString &mime)
 	}
 
 	auto data = std::make_unique<QFile>(file);
-	data->open(QFile::ReadOnly);
+	if(!data->open(QFile::ReadOnly))
+		return false;
 	d->cdoc->files.push_back({
 		QFileInfo(file).fileName(),
 		QStringLiteral("D%1").arg(d->cdoc->files.size()),
@@ -209,12 +210,11 @@ QString CDocumentModel::save(int row, const QString &path) const
 	if(d->isEncrypted)
 		return {};
 
-	int zone = FileDialog::fileZone(d->fileName);
 	QString fileName = copy(row, path);
 	QFileInfo f(fileName);
 	if(!f.exists())
 		return {};
-	FileDialog::setFileZone(fileName, zone);
+	FileDialog::setFileZone(fileName, d->fileName);
 	return fileName;
 }
 

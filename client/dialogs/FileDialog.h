@@ -36,9 +36,8 @@ public:
 	static QString createNewFileName(const QString &file, bool signature, QWidget *parent);
 	static FileType detect(const QString &filename);
 	static bool fileIsWritable( const QString &filename );
-	static int fileZone(const QString &path);
 	static bool isSignedPDF(const QString &path);
-	static void setFileZone(const QString &path, int zone);
+	static void setFileZone(const QString &target, const QString &source);
 	static void setReadOnly(const QString &path, bool readonly = true);
 	static QString normalized(const QString &file);
 	static QString safeName(const QString &file);
@@ -53,8 +52,7 @@ public:
 	static QString getExistingDirectory(QWidget *parent = nullptr, const QString &caption = {},
 		const QString &dir = {}, Options options = {});
 	static QString getSaveFileName(QWidget *parent = nullptr, const QString &caption = {},
-		const QString &dir = {}, const QString &filter = {},
-		QString *selectedFilter = nullptr, Options options = {});
+		const QString &filename = {}, QString filter = {});
 
 private:
 	static QString result( const QString &str );
