@@ -284,6 +284,7 @@ elseif(WIN32)
 		COMMAND ${CMAKE_COMMAND} -E copy_directory ${LIBS_PATH}/schema appx/schema
 		COMMAND Qt::windeployqt --no-translations --no-compiler-runtime --no-patchqt --force-openssl
 			--skip-plugin-types generic,networkinformation,iconengines --exclude-plugins qjpeg,qico,qgif,qcertonlybackend,qschannelbackend appx
+		COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/digidoc-tool.exe appx
 		COMMAND makeappx.exe pack -d appx -p ${MSI_FILE}.appx
 		# https://msdn.microsoft.com/en-us/library/windows/desktop/jj835832(v=vs.85).aspx
 		#Popups GUI
