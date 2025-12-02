@@ -1,5 +1,5 @@
 {
     "name": "qdigidoc4",
     "dependencies": ["openssl", "flatbuffers", "zlib"],
-    "builtin-baseline": "98e7cd3a7ba579efc543f8854af800d033031eae"
+    "builtin-baseline": "bc38a15b0bee8bc48a49ea267cc32fbb49aedfc4"
 }
