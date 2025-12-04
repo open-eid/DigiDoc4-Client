@@ -52,7 +52,7 @@ public:
 	QSmartCardData();
 	QSmartCardData( const QSmartCardData &other );
 	QSmartCardData(QSmartCardData &&other) noexcept;
-	~QSmartCardData();
+	~QSmartCardData() noexcept;
 	QSmartCardData& operator=( const QSmartCardData &other );
 	QSmartCardData& operator=(QSmartCardData &&other) noexcept;
 	bool operator ==(const QSmartCardData &other) const;
@@ -108,14 +108,12 @@ public:
 	};
 
 	explicit QSmartCard(QObject *parent = nullptr);
-	~QSmartCard() final;
+	~QSmartCard() noexcept final;
 
-	ErrorType change( QSmartCardData::PinType type, QWidget* parent, const QString &newpin, const QString &pin, const QString &title, const QString &bodyText );
 	QSmartCardData data() const;
 	TokenData tokenData() const;
 	void reloadCard(const TokenData &token, bool reloadCounters = false);
 	void reloadCounters();
-	ErrorType unblock( QSmartCardData::PinType type, QWidget* parent, const QString &pin, const QString &puk, const QString &title, const QString &bodyText );
 
 	ErrorType pinUnblock(QSmartCardData::PinType type, PinAction action = UnblockWithPuk, QWidget* parent = nullptr);
 	ErrorType pinChange(QSmartCardData::PinType type, PinAction action = ChangeWithPin, QWidget* parent = nullptr);
