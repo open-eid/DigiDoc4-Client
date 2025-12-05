@@ -79,10 +79,6 @@ public:
 class QSmartCard::Private
 {
 public:
-	static std::unique_ptr<QPCSCReader> connect(const QString &reader);
-	QSmartCard::ErrorType handlePinResult(QPCSCReader *reader, const QPCSCReader::Result &response);
-
-	QSharedPointer<QPCSCReader> reader;
 	std::unique_ptr<Card> card;
 	TokenData		token;
 	QSmartCardData	t;

@@ -1408,47 +1408,8 @@ ID-Card</translation>
         <translation>Connect the card reader to your computer and insert your ID-card into the reader</translation>
     </message>
     <message>
-        <source>%1 has been changed and the certificate has been unblocked!</source>
-        <translation>%1 has been changed and the certificate has been unblocked!</translation>
-    </message>
-    <message>
-        <source>%1 changed!</source>
-        <translation>%1 changed!</translation>
-    </message>
-    <message>
         <source>Encrypting</source>
         <translation>Encrypting</translation>
-    </message>
-    <message>
-        <source>Changing %1 failed</source>
-        <translation>Changing %1 failed</translation>
-    </message>
-    <message>
-        <source>%1 length has to be between %2 and 12</source>
-        <translation>%1 length has to be between %2 and 12</translation>
-    </message>
-    <message numerus="yes">
-        <source>Wrong %1 code. You can try %n more time(s).</source>
-        <translation>
-            <numerusform>Wrong %1 code. You can try %n more time.</numerusform>
-            <numerusform>Wrong %1 code. You can try %n more times.</numerusform>
-        </translation>
-    </message>
-    <message>
-        <source>%1 blocked</source>
-        <translation>%1 blocked</translation>
-    </message>
-    <message>
-        <source>Old and new %1 has to be different!</source>
-        <translation>Old and new %1 has to be different!</translation>
-    </message>
-    <message>
-        <source>New %1 codes doesn&apos;t match</source>
-        <translation>New %1 codes don&apos;t match</translation>
-    </message>
-    <message>
-        <source>%1 timeout</source>
-        <translation>%1 timeout</translation>
     </message>
     <message>
         <source>Signing</source>
@@ -2128,6 +2089,45 @@ ID-Card</translation>
     <message>
         <source>To unblock the %1 code on a PinPad reader the PUK code has to be entered first and then the %1 code twice.</source>
         <translation>To unblock the %1 code on a PinPad reader the PUK&lt;br&gt;code has to be entered first and then the %1 code twice.</translation>
+    </message>
+    <message>
+        <source>Changing %1 failed</source>
+        <translation>Changing %1 failed</translation>
+    </message>
+    <message>
+        <source>%1 changed!</source>
+        <translation>%1 changed!</translation>
+    </message>
+    <message>
+        <source>%1 has been changed and the certificate has been unblocked!</source>
+        <translation>%1 has been changed and the certificate has been unblocked!</translation>
+    </message>
+    <message>
+        <source>%1 blocked</source>
+        <translation>%1 blocked</translation>
+    </message>
+    <message numerus="yes">
+        <source>Wrong %1 code. You can try %n more time(s).</source>
+        <translation>
+            <numerusform>Wrong %1 code. You can try %n more time.</numerusform>
+            <numerusform>Wrong %1 code. You can try %n more times.</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>%1 timeout</source>
+        <translation>%1 timeout</translation>
+    </message>
+    <message>
+        <source>New %1 codes doesn&apos;t match</source>
+        <translation>New %1 codes don&apos;t match</translation>
+    </message>
+    <message>
+        <source>%1 length has to be between %2 and 12</source>
+        <translation>%1 length has to be between %2 and 12</translation>
+    </message>
+    <message>
+        <source>Old and new %1 has to be different!</source>
+        <translation>Old and new %1 has to be different!</translation>
     </message>
 </context>
 <context>

@@ -82,7 +82,6 @@ private:
 	template <typename F>
 	void sign(F &&sign);
 	bool validateFiles(const QString &container, const QStringList &files);
-	void showPinBlockedWarning(const QSmartCardData &data);
 	void updateSelector();
 	void updateSelectorData(TokenData data);
 	void updateMyEID(const TokenData &t);
