@@ -220,7 +220,8 @@ QPKCS11::PinStatus QPKCS11::login(const TokenData &t)
 	if(token.flags & CKF_USER_PIN_FINAL_TRY) f = PinPopup::PinFinalTry;
 	if(token.flags & CKF_PROTECTED_AUTHENTICATION_PATH)
 	{
-		PinPopup p(isSign ? PinPopup::Pin2PinpadType : PinPopup::Pin1PinpadType, cert, f, Application::mainWindow());
+		f |= PinPopup::PinpadFlag;
+		PinPopup p(isSign ? QSmartCardData::Pin2Type : QSmartCardData::Pin1Type, f, cert, Application::mainWindow());
 		std::thread([&err, &p, this] {
 			emit p.startTimer();
 			err = d->f->C_Login(d->session, CKU_USER, nullptr, 0);
@@ -230,7 +231,7 @@ QPKCS11::PinStatus QPKCS11::login(const TokenData &t)
 	}
 	else
 	{
-		PinPopup p(isSign ? PinPopup::Pin2Type : PinPopup::Pin1Type, cert, f, Application::mainWindow());
+		PinPopup p(isSign ? QSmartCardData::Pin2Type : QSmartCardData::Pin1Type, f, cert, Application::mainWindow());
 		p.setPinLen(token.ulMinPinLen, token.ulMaxPinLen < 12 ? 12 : token.ulMaxPinLen);
 		if( !p.exec() )
 			return PinCanceled;

@@ -543,17 +543,15 @@ QSmartCard::ErrorType QSmartCard::pinChange(QSmartCardData::PinType type, QSmart
 	}
 	else
 	{
-		SslCertificate cert = d->t.authCert();
-		QString title = cert.toString(cert.showCN() ? QStringLiteral("CN, serialNumber") : QStringLiteral("GN SN, serialNumber"));
-		PinPopup::PinFlags flags = {};
-		switch(type)
+		PinPopup::TokenFlags flags = PinPopup::PinpadChangeFlag;
+		switch(d->t.retryCount(type))
 		{
-		case QSmartCardData::Pin1Type: flags = PinPopup::Pin1Type; break;
-		case QSmartCardData::Pin2Type: flags = PinPopup::Pin2Type; break;
-		case QSmartCardData::PukType: flags = PinPopup::PukType; break;
-		default: return UnknownError;
+		case 2: flags |= PinPopup::PinCountLow; break;
+		case 1: flags |= PinPopup::PinFinalTry; break;
+		case 0: flags |= PinPopup::PinLocked; break;
+		default: break;
 		}
-		popup.reset(new PinPopup(PinPopup::PinFlags(flags|PinPopup::PinpadChangeFlag), title, {}, parent,
+		popup.reset(new PinPopup(type, flags, d->t.authCert(), parent,
 			tr("To change %1 on a PinPad reader the old %1 code has to be entered first and then the new %1 code twice.").arg(QSmartCardData::typeString(type))));
 		popup->open();
 	}
@@ -579,8 +577,6 @@ QSmartCard::ErrorType QSmartCard::pinUnblock(QSmartCardData::PinType type, QSmar
 	}
 	else
 	{
-		SslCertificate cert = d->t.authCert();
-		QString title = cert.toString(cert.showCN() ? QStringLiteral("CN, serialNumber") : QStringLiteral("GN SN, serialNumber"));
 		QString bodyText;
 		switch(action)
 		{
@@ -594,14 +590,17 @@ QSmartCard::ErrorType QSmartCard::pinUnblock(QSmartCardData::PinType type, QSmar
 		default:
 			break;
 		}
-		PinPopup::PinFlags flags = {};
-		switch(type)
+		if(type == QSmartCardData::PukType)
+			return UnknownError;
+		PinPopup::TokenFlags flags = PinPopup::PinpadChangeFlag;
+		switch(d->t.retryCount(QSmartCardData::PukType))
 		{
-		case QSmartCardData::Pin1Type: flags = PinPopup::Pin1Type; break;
-		case QSmartCardData::Pin2Type: flags = PinPopup::Pin2Type; break;
-		default: return UnknownError;
+		case 2: flags |= PinPopup::PinCountLow; break;
+		case 1: flags |= PinPopup::PinFinalTry; break;
+		case 0: flags |= PinPopup::PinLocked; break;
+		default: break;
 		}
-		popup.reset(new PinPopup(PinPopup::PinFlags(flags|PinPopup::PinpadChangeFlag), title, {}, parent, bodyText));
+		popup.reset(new PinPopup(QSmartCardData::PukType, flags, d->t.authCert(), parent, bodyText));
 		popup->open();
 	}
 
