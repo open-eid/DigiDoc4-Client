@@ -836,6 +836,14 @@
         <source>Documents (%1)</source>
         <translation>Документы (%1)</translation>
     </message>
+    <message>
+        <source>Save file</source>
+        <translation>Сохранить файл</translation>
+    </message>
+    <message>
+        <source>Move file</source>
+        <translation>Переместить файл</translation>
+    </message>
 </context>
 <context>
     <name>FileItem</name>
@@ -852,10 +860,6 @@
 </context>
 <context>
     <name>FileList</name>
-    <message>
-        <source>Save file</source>
-        <translation>Сохранить файл</translation>
-    </message>
     <message>
         <source>Add files</source>
         <translation>Добавить файлы</translation>
@@ -1338,10 +1342,6 @@ ID-картой</translation>
         <translation>Сохранение контейнера %1 не удалось. Сохранить в другой каталог?</translation>
     </message>
     <message>
-        <source>Save file</source>
-        <translation>Сохранить файл</translation>
-    </message>
-    <message>
         <source>The container has been successfully signed!</source>
         <translation>Контейнер успешно подписан!</translation>
     </message>
@@ -1364,10 +1364,6 @@ ID-картой</translation>
     <message>
         <source>Converted to crypto container!</source>
         <translation>Переделан в контейнер для зашифровывания!</translation>
-    </message>
-    <message>
-        <source>Move file</source>
-        <translation>Переместить файл</translation>
     </message>
     <message>
         <source>You are about to delete the last file in the container, it is removed along with the container.</source>

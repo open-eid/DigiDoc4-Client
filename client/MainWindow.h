@@ -60,37 +60,34 @@ protected:
 private:
 	void adjustDrops();
 	void changePinClicked(QSmartCardData::PinType type, QSmartCard::PinAction action);
-	void convertToBDoc();
 	void convertToCDoc();
 	ria::qdigidoc4::ContainerState currentState();
 	bool decrypt();
 	bool encrypt();
 	void loadPicture();
-	void moveCryptoContainer();
-	void moveSignatureContainer();
 	void navigateToPage( ria::qdigidoc4::Pages page, const QStringList &files = QStringList(), bool create = true );
 	void onCryptoAction(int action, const QString &id, const QString &phone);
 	void onSignAction(int action, const QString &idCode, const QString &info2);
 	void openContainer(bool signature);
 	void pageSelected(int page, bool checked = true);
-	void resetDigiDoc(DigiDoc *doc = nullptr, bool warnOnChange = true);
+	void resetDigiDoc(std::unique_ptr<DigiDoc> &&doc);
 	void removeCryptoFile(int index);
 	bool removeFile(DocumentModel *model, int index);
 	void removeSignature(int index);
 	void removeSignatureFile(int index);
-	bool save(bool saveAs = false);
+	bool save();
 	template <typename F>
 	void sign(F &&sign);
 	bool validateFiles(const QString &container, const QStringList &files);
 	void updateSelector();
 	void updateMyEID(const TokenData &t);
 	void updateMyEid(const QSmartCardData &data);
-	bool wrap(const QString& wrappedFile, bool enclose);
+	bool wrap(const QString& wrappedFile, bool pdf);
 	bool wrapContainer(bool signing);
 
 	static QStringList dropEventFiles(QDropEvent *event);
 
 	std::unique_ptr<CryptoDoc> cryptoDoc;
-	DigiDoc* digiDoc = nullptr;
+	std::unique_ptr<DigiDoc> digiDoc;
 	Ui::MainWindow *ui;
 };
