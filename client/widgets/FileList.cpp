@@ -128,7 +128,7 @@ void FileList::save(FileItem *item)
 	{
 		QString extension = QFileInfo(item->getFile()).suffix();
 		QString capitalized = extension[0].toUpper() + extension.mid(1);
-		QString dest = FileDialog::getSaveFileName(this, tr("Save file"),
+		QString dest = FileDialog::getSaveFileName(this, FileDialog::tr("Save file"),
 			QFileInfo(container).dir().absolutePath() + QDir::separator() + FileDialog::safeName(item->getFile()),
 			QStringLiteral("%1 (*%2)").arg(capitalized, extension));
 
@@ -174,7 +174,7 @@ void FileList::saveAll()
 				continue;
 			if(b == QMessageBox::Save)
 			{
-				dest = FileDialog::getSaveFileName( this, tr("Save file"), dest );
+				dest = FileDialog::getSaveFileName(this, FileDialog::tr("Save file"), dest);
 				if( dest.isEmpty() )
 					continue;
 			}

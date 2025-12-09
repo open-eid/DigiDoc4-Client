@@ -447,13 +447,10 @@ QList<CKey> CryptoDoc::keys() const
 
 bool CryptoDoc::move(const QString &to)
 {
-	if(!d->isEncrypted)
-	{
-		d->fileName = to;
-		return true;
-	}
-
-	return false;
+	if(d->isEncrypted)
+		return false;
+	d->fileName = to;
+	return true;
 }
 
 bool CryptoDoc::open( const QString &file )

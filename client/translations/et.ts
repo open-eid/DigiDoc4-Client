@@ -836,6 +836,14 @@
         <source>Documents (%1)</source>
         <translation>Dokumendid (%1)</translation>
     </message>
+    <message>
+        <source>Save file</source>
+        <translation>Salvesta fail</translation>
+    </message>
+    <message>
+        <source>Move file</source>
+        <translation>Liiguta fail</translation>
+    </message>
 </context>
 <context>
     <name>FileItem</name>
@@ -852,10 +860,6 @@
 </context>
 <context>
     <name>FileList</name>
-    <message>
-        <source>Save file</source>
-        <translation>Salvesta fail</translation>
-    </message>
     <message>
         <source>Add files</source>
         <translation>Lisa faile</translation>
@@ -1338,10 +1342,6 @@ ID-kaardiga</translation>
         <translation>Ümbriku %1 salvestamine ebaõnnestus. Salvestada teise asukohta?</translation>
     </message>
     <message>
-        <source>Save file</source>
-        <translation>Salvesta fail</translation>
-    </message>
-    <message>
         <source>The container has been successfully signed!</source>
         <translation>Ümbrik on edukalt allkirjastatud!</translation>
     </message>
@@ -1364,10 +1364,6 @@ ID-kaardiga</translation>
     <message>
         <source>Converted to crypto container!</source>
         <translation>Konverteeritud turvaümbrikuks!</translation>
-    </message>
-    <message>
-        <source>Move file</source>
-        <translation>Liiguta fail</translation>
     </message>
     <message>
         <source>You are about to delete the last file in the container, it is removed along with the container.</source>
