@@ -416,9 +416,8 @@ Application::Application( int &argc, char **argv )
 	loadTranslation(Settings::LANGUAGE);
 
 	// Clear obsolete registriy settings
-	Settings::SETTINGS_MIGRATED.clear();
-#ifdef Q_OS_DARWIN
-	Settings::TSL_ONLINE_DIGEST.clear();
+#ifndef Q_OS_DARWIN
+	Settings::DEFAULT_DIR.clear();
 #endif
 
 	// Actions

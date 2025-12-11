@@ -479,7 +479,7 @@ max-height: 22px;
 }</string>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="pageGeneral">
       <layout class="QVBoxLayout" name="pageGeneralLayout">
@@ -567,56 +567,6 @@ max-height: 22px;
           <string>Ask role and address info on signing</string>
          </property>
         </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="lblDefaultDirectory">
-         <property name="focusPolicy">
-          <enum>Qt::TabFocus</enum>
-         </property>
-         <property name="text">
-          <string>Container default location</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <layout class="QGridLayout" name="locationBoxLayout">
-         <property name="spacing">
-          <number>15</number>
-         </property>
-         <item row="0" column="0">
-          <widget class="QRadioButton" name="rdGeneralSameDirectory">
-           <property name="text">
-            <string>Same folder</string>
-           </property>
-           <attribute name="buttonGroup">
-            <string notr="true">pathGroup</string>
-           </attribute>
-          </widget>
-         </item>
-         <item row="1" column="0">
-          <widget class="QRadioButton" name="rdGeneralSpecifyDirectory">
-           <property name="text">
-            <string>Select the default directory</string>
-           </property>
-           <property name="checked">
-            <bool>true</bool>
-           </property>
-           <attribute name="buttonGroup">
-            <string notr="true">pathGroup</string>
-           </attribute>
-          </widget>
-         </item>
-         <item row="0" column="1" rowspan="2">
-          <widget class="QPushButton" name="btGeneralChooseDirectory">
-           <property name="text">
-            <string notr="true">...</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="2" rowspan="2">
-          <widget class="QLineEdit" name="txtGeneralDirectory"/>
-         </item>
-        </layout>
        </item>
        <item>
         <spacer name="pageGeneralSpacer">
@@ -1798,7 +1748,6 @@ p, li { white-space: pre-wrap; margin-top:12px; margin-bottom:12px; margin-left:
  </resources>
  <connections/>
  <buttongroups>
-  <buttongroup name="pathGroup"/>
   <buttongroup name="pageGroup"/>
   <buttongroup name="rdSiVa"/>
   <buttongroup name="langGroup"/>

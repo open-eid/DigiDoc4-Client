@@ -22,6 +22,7 @@
 #include "Application.h"
 
 #include <QtCore/QJsonValue>
+#include <QtCore/QStandardPaths>
 
 template<class T, class D = T>
 using Option = Settings::Option<T, D>;
@@ -97,9 +98,8 @@ const Option<QString, QString (*)()> Settings::LANGUAGE { QStringLiteral("Langua
 	if(languages.first().contains(QLatin1String("ru"), Qt::CaseInsensitive)) return QStringLiteral("ru");
 	return QStringLiteral("en");
 }};
-const Option<QString> Settings::LAST_PATH { QStringLiteral("lastPath") };
+const Option<QString> Settings::LAST_PATH { QStringLiteral("lastPath"), QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) };
 Option<bool> Settings::LIBDIGIDOCPP_DEBUG { QStringLiteral("LibdigidocppDebug"), false };
-const Option<bool> Settings::SETTINGS_MIGRATED { QStringLiteral("SettingsMigrated"), false };
 const Option<bool> Settings::SHOW_INTRO { QStringLiteral("showIntro"), true };
 const Option<bool> Settings::SHOW_PRINT_SUMMARY { QStringLiteral("ShowPrintSummary"), false };
 const Option<bool> Settings::SHOW_ROLE_ADDRESS_INFO { QStringLiteral("RoleAddressInfo"), false };
@@ -111,5 +111,4 @@ const Option<QString> Settings::PROXY_USER { QStringLiteral("ProxyUser") };
 const Option<QString> Settings::PROXY_PASS { QStringLiteral("ProxyPass") };
 #ifdef Q_OS_MAC
 const Option<QString> Settings::PLUGINS { QStringLiteral("plugins") };
-const Option<bool> Settings::TSL_ONLINE_DIGEST { QStringLiteral("TSLOnlineDigest"), true };
 #endif
