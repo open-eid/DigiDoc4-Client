@@ -24,7 +24,6 @@
 
 #include <QtCore/QCoreApplication>
 #include <QtCore/QRegularExpression>
-#include <QtCore/QStandardPaths>
 #include <QtCore/QTemporaryFile>
 #include <QtWidgets/QMessageBox>
 
@@ -58,10 +57,8 @@ QString FileDialog::createNewFileName(const QString &file, bool signature, QWidg
 		Settings::CDOC2_DEFAULT ? QStringLiteral(".cdoc2") : QStringLiteral(".cdoc");
 	const QString type = signature ? tr("signature container") : tr("crypto container");
 	QString capitalized = type[0].toUpper() + type.mid(1);
-	const QString defaultDir = Settings::DEFAULT_DIR;
 	const QFileInfo f(normalized(file));
-	QString dir = defaultDir.isEmpty() ? f.absolutePath() : defaultDir;
-	QString fileName = QDir::toNativeSeparators(dir + QDir::separator() + f.completeBaseName() + extension);
+	QString fileName = QDir::toNativeSeparators(f.absolutePath() + QDir::separator() + f.completeBaseName() + extension);
 #ifndef Q_OS_MACOS
 	// macOS App Sandbox restricts the rights of the application to write to the filesystem outside of
 	// app sandbox; user must explicitly give permission to write data to the specific folders.
@@ -162,8 +159,7 @@ QString FileDialog::getDir( const QString &dir )
 	path.replace('~', QDir::homePath());
 	return path;
 #else
-	return !dir.isEmpty() ? dir : Settings::LAST_PATH.value(
-		QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation));
+	return !dir.isEmpty() ? dir : Settings::LAST_PATH;
 #endif
 }
 

@@ -2171,18 +2171,6 @@ ID-kaardiga</translation>
         <translation>Keel</translation>
     </message>
     <message>
-        <source>Container default location</source>
-        <translation>Ümbriku loomise vaikekataloog</translation>
-    </message>
-    <message>
-        <source>Same folder</source>
-        <translation>Samasse kataloogi</translation>
-    </message>
-    <message>
-        <source>Select the default directory</source>
-        <translation>Vali vaikimisi kataloog</translation>
-    </message>
-    <message>
         <source>Show print summary</source>
         <translation>Näita kinnituslehte</translation>
     </message>
@@ -2253,10 +2241,6 @@ Additional licenses and components</source>
         <translation>&lt;p&gt;ID-tarkvara arendaja Riigi Infosüsteemi Amet&lt;br /&gt;
 Küsimuste korral võta ühendust &lt;a href=&quot;https://www.id.ee/id-abikeskus/&quot;&gt;ID-abikeskusega/a&gt;.&lt;/p&gt;
 Täiendavad litsentsid ja komponendid</translation>
-    </message>
-    <message>
-        <source>Select folder</source>
-        <translation>Vali kataloog</translation>
     </message>
     <message>
         <source>Save as</source>

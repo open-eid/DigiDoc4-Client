@@ -2171,18 +2171,6 @@ ID-Card</translation>
         <translation>Language</translation>
     </message>
     <message>
-        <source>Container default location</source>
-        <translation>Container default location</translation>
-    </message>
-    <message>
-        <source>Same folder</source>
-        <translation>Same folder</translation>
-    </message>
-    <message>
-        <source>Select the default directory</source>
-        <translation>Select the default directory</translation>
-    </message>
-    <message>
         <source>Show print summary</source>
         <translation>Show print summary</translation>
     </message>
@@ -2253,10 +2241,6 @@ Additional licenses and components</source>
         <translation>&lt;p&gt;Estonian ID-software is released by Information Systems&apos;s Authority&lt;br /&gt;
 In case of questions please contact our support via &lt;a href=&quot;https://www.id.ee/en/id-help/&quot;&gt;id.ee&lt;/a&gt;.&lt;/p&gt;
 Additional licenses and components</translation>
-    </message>
-    <message>
-        <source>Select folder</source>
-        <translation>Select folder</translation>
     </message>
     <message>
         <source>Save as</source>

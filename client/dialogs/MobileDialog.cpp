@@ -43,7 +43,7 @@ MobileDialog::MobileDialog(QWidget *parent)
 	ui->idCode->setAttribute(Qt::WA_MacShowFocusRect, false);
 	ui->errorCode->hide();
 	ui->phoneNo->setValidator(new NumberValidator(ui->phoneNo));
-	ui->phoneNo->setText(Settings::MOBILEID_NUMBER.value(countryCodes[0]));
+	ui->phoneNo->setText(Settings::MOBILEID_NUMBER);
 	ui->phoneNo->setAttribute(Qt::WA_MacShowFocusRect, false);
 	ui->phoneNo->setFocus();
 	ui->errorPhone->hide();
