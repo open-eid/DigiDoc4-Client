@@ -272,6 +272,7 @@ elseif(WIN32)
 		COMMAND ${CMAKE_COMMAND} -E make_directory appx
 		COMMAND ${CMAKE_COMMAND} -E copy AppxManifest.xml appx
 		COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${PROJECT_NAME}> appx
+		COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:EsteidShellExtensionV2> appx
 		COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/libcrypto-3${OPENSSL_SUFFIX}.dll appx
 		COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/libssl-3${OPENSSL_SUFFIX}.dll appx
 		COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/zlib$<$<CONFIG:Debug>:d>1.dll appx

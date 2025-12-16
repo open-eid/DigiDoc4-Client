@@ -1,18 +1,39 @@
-﻿// EsteidShlExt.cpp : Implementation of CEsteidShlExt
-// http://msdn.microsoft.com/en-us/library/bb757020.aspx
+﻿/*
+ * EsteidShellExtension
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ *
+ */
 
-#include "EsteidShlExt.h"
 #include "resource.h"
 
+#include <unknwn.h>
+#include <winrt/base.h>
 #include <shellapi.h>
+#include <ShlObj.h>
 #include <shlwapi.h>
 #include <uxtheme.h>
 
-extern HINSTANCE instanceHandle;
+#include <string>
+#include <vector>
 
-typedef DWORD ARGB;
+extern "C" IMAGE_DOS_HEADER __ImageBase;
 
-bool HasAlpha(ARGB *pargb, const SIZE &sizeImage, int cxRow)
+using ARGB = DWORD;
+
+static bool HasAlpha(ARGB *pargb, const SIZE &sizeImage, int cxRow)
 {
 	ULONG cxDelta = cxRow - sizeImage.cx;
 	for(ULONG y = sizeImage.cy; y; --y)
@@ -27,18 +48,19 @@ bool HasAlpha(ARGB *pargb, const SIZE &sizeImage, int cxRow)
 	return false;
 }
 
-BITMAPINFO InitBitmapInfo(const SIZE &sizeImage)
+static BITMAPINFO InitBitmapInfo(const SIZE &sizeImage)
 {
-	BITMAPINFO pbmi{{sizeof(BITMAPINFOHEADER)}};
-	pbmi.bmiHeader.biPlanes = 1;
-	pbmi.bmiHeader.biCompression = BI_RGB;
-	pbmi.bmiHeader.biWidth = sizeImage.cx;
-	pbmi.bmiHeader.biHeight = sizeImage.cy;
-	pbmi.bmiHeader.biBitCount = 32;
-	return pbmi;
+	return {{
+		.biSize = sizeof(BITMAPINFOHEADER),
+		.biWidth = sizeImage.cx,
+		.biHeight = sizeImage.cy,
+		.biPlanes = 1,
+		.biBitCount = 32,
+		.biCompression = BI_RGB,
+	}};
 }
 
-HRESULT ConvertToPARGB32(HDC hdc, ARGB *pargb, HBITMAP hbmp, const SIZE &sizeImage, int cxRow)
+static HRESULT ConvertToPARGB32(HDC hdc, ARGB *pargb, HBITMAP hbmp, const SIZE &sizeImage, int cxRow)
 {
 	BITMAPINFO bmi = InitBitmapInfo(sizeImage);
 	HRESULT hr = E_OUTOFMEMORY;
@@ -68,7 +90,7 @@ HRESULT ConvertToPARGB32(HDC hdc, ARGB *pargb, HBITMAP hbmp, const SIZE &sizeIma
 	return hr;
 }
 
-HRESULT ConvertBufferToPARGB32(HPAINTBUFFER hPaintBuffer, HDC hdc, HICON hicon, const SIZE &sizeIcon)
+static HRESULT ConvertBufferToPARGB32(HPAINTBUFFER hPaintBuffer, HDC hdc, HICON hicon, const SIZE &sizeIcon)
 {
 	RGBQUAD *prgbQuad;
 	int cxRow = 0;
@@ -91,10 +113,42 @@ HRESULT ConvertBufferToPARGB32(HPAINTBUFFER hPaintBuffer, HDC hdc, HICON hicon, 
 	return hr;
 }
 
+struct
+#ifdef _WIN64
+	__declspec(uuid("5606A547-759D-43DA-AEEB-D3BF1D1E816D"))
+#else
+	__declspec(uuid("310AAB39-76FE-401B-8A7F-0F578C5F6AB5"))
+#endif
+	CEsteidShlExt : public winrt::implements<CEsteidShlExt, IShellExtInit, IContextMenu>
+{
+	CEsteidShlExt();
+	~CEsteidShlExt() override;
+
+	// IShellExtInit
+	STDMETHODIMP Initialize(LPCITEMIDLIST pidlFolder, LPDATAOBJECT pdtobj, HKEY hkeyProgID) final;
+
+	// IContextMenu
+	STDMETHODIMP QueryContextMenu(HMENU, UINT, UINT, UINT, UINT) final;
+	STDMETHODIMP InvokeCommand(LPCMINVOKECOMMANDINFO) final;
+	STDMETHODIMP GetCommandString(UINT_PTR, UINT, UINT *, LPSTR, UINT) final;
+
+private:
+	enum : uint8_t {
+		MENU_SIGN = 0,
+		MENU_ENCRYPT = 1,
+	};
+
+	static bool WINAPI FindRegistryInstallPath(std::wstring &path);
+	STDMETHODIMP ExecuteDigidocclient(LPCMINVOKECOMMANDINFO pCmdInfo, bool crypto = false);
+
+	HBITMAP m_DigidocBmp = nullptr;
+	std::vector<std::wstring> m_Files;
+};
+
 CEsteidShlExt::CEsteidShlExt()
 {
 	const SIZE sizeIcon { GetSystemMetrics(SM_CXSMICON), GetSystemMetrics(SM_CYSMICON) };
-	if(HICON hIcon = (HICON)LoadImage(instanceHandle, MAKEINTRESOURCE(IDB_DIGIDOCICO), IMAGE_ICON, sizeIcon.cx, sizeIcon.cy, LR_DEFAULTCOLOR|LR_CREATEDIBSECTION))
+	if(HICON hIcon = (HICON)LoadImage(reinterpret_cast<HMODULE>(&__ImageBase), MAKEINTRESOURCE(IDB_DIGIDOCICO), IMAGE_ICON, sizeIcon.cx, sizeIcon.cy, LR_DEFAULTCOLOR|LR_CREATEDIBSECTION))
 	{
 		if(HDC hdcDest = CreateCompatibleDC(nullptr))
 		{
@@ -211,9 +265,17 @@ STDMETHODIMP CEsteidShlExt::GetCommandString(
 	// supplied buffer.
 	if (uFlags & GCS_HELPTEXT) {
 		if (uFlags & GCS_UNICODE) {
-			LPCWSTR szText = idCmd == MENU_SIGN
-								 ? L"Allkirjasta valitud failid digitaalselt"
-								 : L"Krüpteeri valitud failid";
+			LPCWSTR szText = idCmd == MENU_ENCRYPT ? L"Encrypt selected files" : L"Digitally sign selected files";
+			switch(PRIMARYLANGID(GetUserDefaultUILanguage()))
+			{
+			case LANG_ESTONIAN:
+				szText = idCmd == MENU_ENCRYPT ? L"Krüpteeri valitud failid" : L"Allkirjasta valitud failid digitaalselt";
+				break;
+			case LANG_RUSSIAN:
+				szText = idCmd == MENU_ENCRYPT ? L"Зашифровать выбранные файлы" : L"Цифровая подпись выбранных файлов";
+				break;
+			default: break;
+			}
 			// We need to cast pszName to a Unicode string, and then use the
 			// Unicode string copy API.
 			lstrcpynW(LPWSTR(pszName), szText, int(cchMax));
@@ -256,7 +318,7 @@ STDMETHODIMP CEsteidShlExt::ExecuteDigidocclient(LPCMINVOKECOMMANDINFO /* pCmdIn
 	// Read the location of the installation from registry
 	if (!FindRegistryInstallPath(path)) {
 		// .. and fall back to directory where shellext resides if not found from registry
-		GetModuleFileName(instanceHandle, path.data(), path.size());
+		GetModuleFileName(reinterpret_cast<HMODULE>(&__ImageBase), path.data(), path.size());
 		path.resize(path.find_last_of(L'\\') + 1);
 	}
 
@@ -290,4 +352,44 @@ STDMETHODIMP CEsteidShlExt::InvokeCommand(LPCMINVOKECOMMANDINFO pCmdInfo)
 	default:
 		return E_INVALIDARG;
 	}
+}
+
+struct CEsteidShlExtFactory : winrt::implements<CEsteidShlExtFactory, IClassFactory>
+{
+	STDMETHODIMP CreateInstance(
+		IUnknown *pUnkOuter, REFIID riid, LPVOID *ppvObject) noexcept final try {
+		if(!ppvObject)
+			return E_POINTER;
+		*ppvObject = nullptr;
+		if(pUnkOuter)
+			return CLASS_E_NOAGGREGATION;
+		return winrt::make<CEsteidShlExt>().as(riid, ppvObject);
+	} catch (...) {
+		return winrt::to_hresult();
+	}
+
+	STDMETHODIMP LockServer(BOOL /*fLock*/) noexcept final {
+		return S_OK;
+	}
+};
+
+// Used to determine whether the DLL can be unloaded by OLE
+STDMETHODIMP DllCanUnloadNow()
+{
+	if (winrt::get_module_lock())
+		return S_FALSE;
+	winrt::clear_factory_cache();
+	return S_OK;
+}
+
+// Returns a class factory to create an object of the requested type
+//STDAPI DllGetClassObject(REFCLSID rclsid, REFIID riid, LPVOID *result)
+STDMETHODIMP DllGetClassObject(const GUID &clsid, const GUID &iid, LPVOID *result) try
+{
+	*result = nullptr;
+	if (clsid == __uuidof(CEsteidShlExt))
+		return winrt::make<CEsteidShlExtFactory>().as(iid, result);
+	return winrt::hresult_class_not_available().to_abi();
+} catch (...) {
+	return winrt::to_hresult();
 }
