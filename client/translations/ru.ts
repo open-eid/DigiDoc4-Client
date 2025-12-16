@@ -1757,14 +1757,6 @@ ID-картой</translation>
 <context>
     <name>PinPopup</name>
     <message>
-        <source>PIN will be locked next failed attempt</source>
-        <translation>PIN будет заблокирован при следующей неудачной попытке</translation>
-    </message>
-    <message>
-        <source>PIN has been entered incorrectly at least once</source>
-        <translation>По меньшей мере один раз был введен неправильный PIN</translation>
-    </message>
-    <message>
         <source>For using sign certificate enter PIN2 at the reader</source>
         <translation>Для использования сертификата цифровой подписи введите PIN2&lt;br/&gt;с клавиатуры считывателя</translation>
     </message>
@@ -1783,6 +1775,14 @@ ID-картой</translation>
     <message>
         <source>For using authentication certificate enter PIN1</source>
         <translation>Для использования сертификата идентификации введите PIN1</translation>
+    </message>
+    <message>
+        <source>%1 will be locked next failed attempt</source>
+        <translation>%1 будет заблокирован при следующей неудачной попытке</translation>
+    </message>
+    <message>
+        <source>%1 has been entered incorrectly at least once</source>
+        <translation>По меньшей мере один раз был введен неправильный %1</translation>
     </message>
     <message>
         <source>Selected action requires authentication certificate.</source>

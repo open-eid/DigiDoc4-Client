@@ -102,6 +102,7 @@ qt_add_translations(${PROJECT_NAME} TS_FILES
 	../common/translations/qtbase_et.ts
 	../common/translations/qtbase_ru.ts
 	RESOURCE_PREFIX /translations
+	LUPDATE_OPTIONS -locations none
 )
 qt_add_resources(${PROJECT_NAME} tsl BASE ${TSL_DIR} PREFIX /TSL FILES ${TSL_LIST})
 
