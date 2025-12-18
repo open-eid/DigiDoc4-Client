@@ -19,7 +19,6 @@
 
 #include "FileDialog.h"
 
-#include "Application.h"
 #include "Settings.h"
 #include "dialogs/WarningDialog.h"
 
@@ -47,6 +46,8 @@ class CPtr
 	inline operator T*() const { return d; }
 	inline T** operator&() { return &d; }
 };
+#elif defined(Q_OS_MAC)
+#include <sys/xattr.h>
 #endif
 
 #include <array>
@@ -61,7 +62,7 @@ QString FileDialog::createNewFileName(const QString &file, bool signature, QWidg
 	const QFileInfo f(normalized(file));
 	QString dir = defaultDir.isEmpty() ? f.absolutePath() : defaultDir;
 	QString fileName = QDir::toNativeSeparators(dir + QDir::separator() + f.completeBaseName() + extension);
-#ifndef Q_OS_OSX
+#ifndef Q_OS_MACOS
 	// macOS App Sandbox restricts the rights of the application to write to the filesystem outside of
 	// app sandbox; user must explicitly give permission to write data to the specific folders.
 	if(!QFile::exists(fileName))
@@ -107,23 +108,6 @@ bool FileDialog::fileIsWritable( const QString &filename )
 	return result;
 }
 
-int FileDialog::fileZone(const QString &path)
-{
-#ifdef Q_OS_WIN
-	CPtr<IZoneIdentifier> spzi;
-	CPtr<IPersistFile> spf;
-	DWORD dwZone = 0;
-	if(SUCCEEDED(CoCreateInstance(CLSID_PersistentZoneIdentifier, nullptr, CLSCTX_INPROC, IID_PPV_ARGS(&spzi))) &&
-		SUCCEEDED(spzi->QueryInterface(&spf)) &&
-		SUCCEEDED(spf->Load(LPCWSTR(QDir::toNativeSeparators(path).utf16()), STGM_READ)) &&
-		SUCCEEDED(spzi->GetId(&dwZone)))
-		return int(dwZone);
-#else
-	Q_UNUSED(path)
-#endif
-	return -1;
-}
-
 bool FileDialog::isSignedPDF(const QString &path)
 {
 	if(!path.endsWith(QLatin1String("pdf"), Qt::CaseInsensitive))
@@ -136,25 +120,33 @@ bool FileDialog::isSignedPDF(const QString &path)
 	return std::any_of(list.begin(), list.end(), [&blob](const char *token) { return blob.indexOf(token) > 0; });
 }
 
-void FileDialog::setFileZone(const QString &path, int zone)
+void FileDialog::setFileZone(const QString &target, const QString &source)
 {
-	if(zone < 0)
-		return;
 #ifdef Q_OS_WIN
 	CPtr<IZoneIdentifier> spzi;
 	CPtr<IPersistFile> spf;
-	if(SUCCEEDED(CoCreateInstance(CLSID_PersistentZoneIdentifier, nullptr, CLSCTX_INPROC, IID_PPV_ARGS(&spzi))) &&
-		SUCCEEDED(spzi->SetId(zone)) &&
-		SUCCEEDED(spzi->QueryInterface(&spf)))
-		spf->Save(LPCWSTR(QDir::toNativeSeparators(path).utf16()), TRUE);
+	if(SUCCEEDED(CoCreateInstance(CLSID_PersistentZoneIdentifier, nullptr, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&spzi))) &&
+		SUCCEEDED(spzi->QueryInterface(&spf)) &&
+		SUCCEEDED(spf->Load(LPCWSTR(QDir::toNativeSeparators(source).utf16()), STGM_READ)))
+		spf->Save(LPCWSTR(QDir::toNativeSeparators(target).utf16()), TRUE);
+#elif defined(Q_OS_MACOS)
+	QByteArray p = QFile::encodeName(source);
+	ssize_t n = getxattr(p.constData(), "com.apple.quarantine", nullptr, 0, 0, 0);
+	if(n <= 0)
+		return;
+	QByteArray value(int(n), Qt::Uninitialized);
+	n = getxattr(p.constData(), "com.apple.quarantine", value.data(), value.size(), 0, 0);
+	if(n > 0)
+		setxattr(QFile::encodeName(target).constData(), "com.apple.quarantine", value.constData(), size_t(n), 0, 0);
 #else
-	Q_UNUSED(path)
+	Q_UNUSED(target)
+	Q_UNUSED(source)
 #endif
 }
 
 void FileDialog::setReadOnly(const QString &path, bool readonly)
 {
-#if defined(Q_OS_WIN)
+#ifdef Q_OS_WIN
 	::SetFileAttributesW(LPCWSTR(path.utf16()), readonly ? FILE_ATTRIBUTE_READONLY : FILE_ATTRIBUTE_NORMAL);
 #else
 	QFile::setPermissions(path, QFile::Permissions(QFile::Permission::ReadOwner)
@@ -164,7 +156,7 @@ void FileDialog::setReadOnly(const QString &path, bool readonly)
 
 QString FileDialog::getDir( const QString &dir )
 {
-#ifdef Q_OS_OSX
+#ifdef Q_OS_MACOS
 	Q_UNUSED(dir)
 	QString path = QSettings().value(QStringLiteral("NSNavLastRootDirectory")).toString();
 	path.replace('~', QDir::homePath());
@@ -266,14 +258,32 @@ QString FileDialog::getExistingDirectory( QWidget *parent, const QString &captio
 	return result( res );
 }
 
-QString FileDialog::getSaveFileName( QWidget *parent, const QString &caption,
-	const QString &dir, const QString &filter, QString *selectedFilter, Options options )
+QString FileDialog::getSaveFileName(QWidget *parent, const QString &caption, const QString &filename, QString filter)
 {
+	if(filename.endsWith(QLatin1String(".adoc"), Qt::CaseInsensitive))
+		filter = tr("Documents (%1)").arg(QLatin1String("*.adoc"));
+	else if(filename.endsWith(QLatin1String(".asice"), Qt::CaseInsensitive) ||
+			 filename.endsWith(QLatin1String(".sce"), Qt::CaseInsensitive))
+		filter = tr("Documents (%1)").arg(QLatin1String("*.asice *.sce"));
+	else if(filename.endsWith(QLatin1String(".asics"), Qt::CaseInsensitive) ||
+			 filename.endsWith(QLatin1String(".scs"), Qt::CaseInsensitive))
+		filter = tr("Documents (%1)").arg(QLatin1String("*.asics *.scs"));
+	else if(filename.endsWith(QLatin1String(".bdoc"), Qt::CaseInsensitive))
+		filter = tr("Documents (%1)").arg(QLatin1String("*.bdoc"));
+	else if(filename.endsWith(QLatin1String(".cdoc"), Qt::CaseInsensitive))
+		filter = tr("Documents (%1)").arg(QLatin1String("*.cdoc"));
+	else if(filename.endsWith(QLatin1String(".cdoc2"), Qt::CaseInsensitive))
+		filter = tr("Documents (%1)").arg(QLatin1String("*.cdoc2"));
+	else if(filename.endsWith(QLatin1String(".ddoc"), Qt::CaseInsensitive))
+		filter = tr("Documents (%1)").arg(QLatin1String("*.ddoc"));
+	else if(filename.endsWith(QLatin1String(".edoc"), Qt::CaseInsensitive))
+		filter = tr("Documents (%1)").arg(QLatin1String("*.edoc"));
+	else if(filename.endsWith(QLatin1String(".pdf"), Qt::CaseInsensitive))
+		filter = tr("Documents (%1)").arg(QLatin1String("*.pdf"));
 	QString file;
 	while( true )
 	{
-		file = QFileDialog::getSaveFileName(parent,
-			caption, normalized(dir), filter, selectedFilter, options);
+		file = QFileDialog::getSaveFileName(parent, caption, normalized(filename), filter);
 		if( !file.isEmpty() && !fileIsWritable( file ) )
 		{
 			WarningDialog::show(parent, tr( "You don't have sufficient privileges to write this file into folder %1" ).arg( file ));
@@ -301,7 +311,7 @@ QString FileDialog::normalized(const QString &data)
 
 QString FileDialog::result( const QString &str )
 {
-#ifndef Q_OS_OSX
+#ifndef Q_OS_MACOS
 	if(!str.isEmpty())
 		Settings::LAST_PATH = QFileInfo(str).absolutePath();
 #else
@@ -322,7 +332,7 @@ QString FileDialog::tempPath(const QString &file)
 {
 	QDir tmp = QDir::temp();
 	if(!tmp.exists(file))
-		return tmp.path() + "/" + file;
+		return tmp.path() + '/' + file;
 	QFileInfo info(file);
 	int i = 0;
 	while(tmp.exists(QStringLiteral("%1_%2.%3").arg(info.baseName()).arg(i).arg(info.suffix())))
@@ -334,7 +344,7 @@ QString FileDialog::safeName(const QString &file)
 {
 	QFileInfo info(file);
 	QString filename = info.fileName();
-#if defined(Q_OS_WIN)
+#ifdef Q_OS_WIN
 	static const QStringList disabled { "CON", "PRN", "AUX", "NUL",
 		"COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9",
 		"LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9" };

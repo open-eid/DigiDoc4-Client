@@ -840,6 +840,10 @@
         <source>Create %1</source>
         <translation>Loo %1</translation>
     </message>
+    <message>
+        <source>Documents (%1)</source>
+        <translation>Dokumendid (%1)</translation>
+    </message>
 </context>
 <context>
     <name>FileItem</name>
@@ -1344,10 +1348,6 @@ ID-kaardiga</translation>
     <message>
         <source>Cannot alter container %1. Save different location?</source>
         <translation>Ümbriku %1 salvestamine ebaõnnestus. Salvestada teise asukohta?</translation>
-    </message>
-    <message>
-        <source>Documents (%1)</source>
-        <translation>Dokumendid (%1)</translation>
     </message>
     <message>
         <source>Save file</source>

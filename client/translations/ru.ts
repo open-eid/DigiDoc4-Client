@@ -840,6 +840,10 @@
         <source>Create %1</source>
         <translation>Создайте %1</translation>
     </message>
+    <message>
+        <source>Documents (%1)</source>
+        <translation>Документы (%1)</translation>
+    </message>
 </context>
 <context>
     <name>FileItem</name>
@@ -1344,10 +1348,6 @@ ID-картой</translation>
     <message>
         <source>Cannot alter container %1. Save different location?</source>
         <translation>Сохранение контейнера %1 не удалось. Сохранить в другой каталог?</translation>
-    </message>
-    <message>
-        <source>Documents (%1)</source>
-        <translation>Документы (%1)</translation>
     </message>
     <message>
         <source>Save file</source>
