@@ -52,6 +52,7 @@ struct DDConfiguration : public libcdoc::Configuration {
 //
 
 struct DDCryptoBackend : public libcdoc::CryptoBackend {
+	static constexpr int BACKEND_ERROR = -303;
 	libcdoc::result_t decryptRSA(std::vector<uint8_t> &result,
 								 const std::vector<uint8_t> &data, bool oaep,
 								 unsigned int idx) override final;
@@ -68,6 +69,7 @@ struct DDCryptoBackend : public libcdoc::CryptoBackend {
 										unsigned int idx) override final;
 	libcdoc::result_t getSecret(std::vector<uint8_t> &secret,
 								unsigned int idx) override final;
+	std::string getLastErrorStr(libcdoc::result_t code) const final;
 
 	std::vector<uint8_t> secret;
 

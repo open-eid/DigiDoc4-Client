@@ -89,6 +89,40 @@ public:
 		start();
 		e.exec();
 	}
+	inline libcdoc::result_t decrypt(unsigned int lock_idx) {
+		TempListConsumer cons;
+		libcdoc::result_t result = waitFor([&]{
+			std::vector<uint8_t> fmk;
+			libcdoc::result_t result = reader->getFMK(fmk, lock_idx);
+			qDebug() << "getFMK result: " << result << " " << reader->getLastErrorStr();
+			if (result != libcdoc::OK) return result;
+			result = reader->decrypt(fmk, &cons);
+			std::fill(fmk.begin(), fmk.end(), 0);
+			qDebug() << "Decryption result: " << result << " " << reader->getLastErrorStr();
+			return result;
+		});
+		if (result == libcdoc::OK) {
+			files = std::move(cons.files);
+			// Success, immediately create writer from reader
+			keys.clear();
+			writer_last_error.clear();
+			reader.reset();
+		}
+		return result;
+	}
+
+	inline libcdoc::result_t encrypt(unsigned int lock_idx) {
+		libcdoc::result_t result = waitFor([&]{
+			libcdoc::result_t result = encrypt();
+			qDebug() << "Encryption result: " << result << " " << reader->getLastErrorStr();
+			if (result == libcdoc::OK) {
+				// Encryption successful, open new reader
+				reader = createCDocReader(fileName.toStdString());
+			}
+			return result;
+		});
+		return result;
+	}
 
 	std::unique_ptr<libcdoc::CDocReader> reader;
 	std::string writer_last_error;
@@ -97,8 +131,6 @@ public:
 	bool isEncrypted() const { return reader != nullptr; }
 	CDocumentModel	*documents = new CDocumentModel(this);
 	QStringList		tempFiles;
-	// Decryption data
-	QByteArray fmk;
 	// Encryption data
 	QString label;
 	uint32_t kdf_iter;
@@ -126,8 +158,7 @@ public:
 		}
 		return std::unique_ptr<libcdoc::CDocReader>(r);
 	}
-private:
-	bool encrypt();
+	libcdoc::result_t encrypt();
 };
 
 bool CryptoDoc::Private::warnIfNotWritable() const
@@ -144,33 +175,20 @@ bool CryptoDoc::Private::warnIfNotWritable() const
 
 void CryptoDoc::Private::run()
 {
-	if(reader) {
-		qCDebug(CRYPTO) << "Decrypt" << fileName;
-		std::vector<uint8_t> pfmk(fmk.cbegin(), fmk.cend());
-
-		TempListConsumer cons;
-		if (reader->decrypt(pfmk, &cons) == libcdoc::OK) {
-			files = std::move(cons.files);
-			// Success, immediately create writer from reader
-			keys.clear();
-			writer_last_error.clear();
-			reader.reset();
-		}
-	} else {
-		if (encrypt()) {
-			// Encryption successful, open new reader
-			reader = createCDocReader(fileName.toStdString());
-			if (!reader) return;
-		}
+	if (encrypt() == libcdoc::OK) {
+		// Encryption successful, open new reader
+		reader = createCDocReader(fileName.toStdString());
+		if (!reader) return;
 	}
 }
 
-bool CryptoDoc::Private::encrypt() {
+libcdoc::result_t
+CryptoDoc::Private::encrypt() {
 	qCDebug(CRYPTO) << "Encrypt" << fileName;
 
 	libcdoc::OStreamConsumer ofs(fileName.toStdString());
 	if (ofs.isError())
-		return false;
+		return libcdoc::OUTPUT_ERROR;
 
 	StreamListSource slsrc(files);
 	std::vector<libcdoc::Recipient> enc_keys;
@@ -195,7 +213,7 @@ bool CryptoDoc::Private::encrypt() {
 			enc_keys.push_back(libcdoc::Recipient::makeServer(
 				label, key_der, pk_type, keyserver_id));
 		} else {
-			std::string label;// = CryptoDoc::labelFromCertificate(cert_der);
+			std::string label;
 			enc_keys.push_back(
 				libcdoc::Recipient::makeCertificate(label, cert_der));
 		}
@@ -215,7 +233,7 @@ bool CryptoDoc::Private::encrypt() {
 	}
 	delete writer;
 	ofs.close();
-	return (result == libcdoc::OK);
+	return result;
 }
 
 CDocumentModel::CDocumentModel(CryptoDoc::Private *doc) : d(doc) {}
@@ -459,26 +477,12 @@ bool CryptoDoc::decrypt(const libcdoc::Lock *lock, const QByteArray &secret) {
 	}
 
 	d->crypto.secret.assign(secret.cbegin(), secret.cend());
-	std::vector<uint8_t> fmk;
-	if (d->reader->getFMK(fmk, lock_idx) != libcdoc::OK)
-		return false;
-	d->fmk = QByteArray(reinterpret_cast<const char *>(fmk.data()), fmk.size());
-	if (d->fmk.isEmpty()) {
-		const std::string &msg = d->reader->getLastErrorStr();
-		WarningDialog::show(tr("Failed to decrypt document. Please check your "
-							   "internet connection and network settings."),
-							QString::fromStdString(msg));
-		return false;
-	}
 
-	d->waitForFinished();
-	if (d->reader) {
+	libcdoc::result_t result = d->decrypt(lock_idx);
+	if (result != libcdoc::OK) {
 		const std::string &msg = d->reader->getLastErrorStr();
-		if (msg.empty()) {
-			WarningDialog::show(tr("Error parsing document"));
-		} else {
-			WarningDialog::show(QString::fromStdString(msg));
-		}
+		WarningDialog::show(tr("Failed to decrypt document"),
+							QString::fromStdString(d->reader->getLastErrorStr()));
 	}
 	return !d->isEncrypted();
 }
@@ -507,14 +511,15 @@ bool CryptoDoc::encrypt( const QString &filename, const QString& label, const QB
 		d->crypto.secret.assign(secret.cbegin(), secret.cend());
 		d->kdf_iter = kdf_iter;
 	}
-	d->waitForFinished();
+	libcdoc::result_t result = d->encrypt();
 	d->label.clear();
 	d->crypto.secret.clear();
-	if(d->isEncrypted()) {
-		open(d->fileName);
-	} else {
-		WarningDialog::show(tr("Failed to encrypt document. Please check your internet connection and network settings."), QString::fromStdString(d->writer_last_error));
+	if (result != libcdoc::OK) {
+		const std::string &msg = d->reader->getLastErrorStr();
+		WarningDialog::show(tr("Failed to encrypt document"),
+							QString::fromStdString(d->writer_last_error));
 	}
+
 	return d->isEncrypted();
 }
 

@@ -438,3 +438,10 @@ std::vector<unsigned char> QSigner::sign(const std::string &method, const std::v
 QSmartCard * QSigner::smartcard() const { return d->smartcard; }
 TokenData QSigner::tokenauth() const { return d->auth; }
 TokenData QSigner::tokensign() const { return d->sign; }
+
+QString
+QSigner::getLastErrorStr() const
+{
+	QCryptoBackend::PinStatus status = d->backend->lastError();
+	return d->backend->errorString(status);
+}

@@ -97,7 +97,7 @@ DDCryptoBackend::decryptRSA(std::vector<uint8_t>& result, const std::vector<uint
 			return backend->decrypt(qdata, oaep);
 	});
 	result.assign(qkek.cbegin(), qkek.cend());
-	return (result.empty()) ? OPENSSL_ERROR : libcdoc::OK;
+	return (result.empty()) ? BACKEND_ERROR : libcdoc::OK;
 }
 
 const QString SHA256_MTH = QStringLiteral("http://www.w3.org/2001/04/xmlenc#sha256");
@@ -119,7 +119,7 @@ DDCryptoBackend::deriveConcatKDF(std::vector<uint8_t>& dst, const std::vector<ui
 				QByteArray(reinterpret_cast<const char *>(partyVInfo.data()), partyVInfo.size()));
 	});
 	dst.assign(decryptedKey.cbegin(), decryptedKey.cend());
-	return (dst.empty()) ? OPENSSL_ERROR : libcdoc::OK;
+	return (dst.empty()) ? BACKEND_ERROR : libcdoc::OK;
 }
 
 libcdoc::result_t
@@ -131,7 +131,7 @@ DDCryptoBackend::deriveHMACExtract(std::vector<uint8_t>& dst, const std::vector<
 		return backend->deriveHMACExtract(qkey_material, qsalt, ECC_KEY_LEN);
 	});
 	dst = std::vector<uint8_t>(qkekpm.cbegin(), qkekpm.cend());
-	return (dst.empty()) ? OPENSSL_ERROR : libcdoc::OK;
+	return (dst.empty()) ? BACKEND_ERROR : libcdoc::OK;
 }
 
 libcdoc::result_t
@@ -139,6 +139,15 @@ DDCryptoBackend::getSecret(std::vector<uint8_t>& _secret, unsigned int idx)
 {
 	_secret = secret;
 	return libcdoc::OK;
+}
+
+std::string
+DDCryptoBackend::getLastErrorStr(libcdoc::result_t code) const
+{
+	if (code == BACKEND_ERROR) {
+		return qApp->signer()->getLastErrorStr().toStdString();
+	}
+	return libcdoc::CryptoBackend::getLastErrorStr(code);
 }
 
 bool

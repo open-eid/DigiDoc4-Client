@@ -24,6 +24,7 @@
 #include "QPCSC.h"
 #include "SslCertificate.h"
 #include "TokenData.h"
+#include "Utils.h"
 #include "dialogs/PinPopup.h"
 
 #include <QtCore/QDebug>
@@ -222,23 +223,24 @@ QPKCS11::PinStatus QPKCS11::login(const TokenData &t)
 	if(token.flags & CKF_USER_PIN_LOCKED) return PinLocked;
 	if(token.flags & CKF_USER_PIN_COUNT_LOW) f = PinPopup::PinCountLow;
 	if(token.flags & CKF_USER_PIN_FINAL_TRY) f = PinPopup::PinFinalTry;
-	if(token.flags & CKF_PROTECTED_AUTHENTICATION_PATH)
-	{
-		PinPopup p(isSign ? PinPopup::Pin2PinpadType : PinPopup::Pin1PinpadType, cert, f, Application::mainWindow());
-		connect(d, &Private::started, &p, &PinPopup::startTimer);
-		connect(d, &Private::finished, &p, &PinPopup::accept);
-		d->start();
-		p.exec();
-		err = d->result;
-	}
-	else
-	{
-		PinPopup p(isSign ? PinPopup::Pin2Type : PinPopup::Pin1Type, cert, f, Application::mainWindow());
-		p.setPinLen(token.ulMinPinLen, token.ulMaxPinLen < 12 ? 12 : token.ulMaxPinLen);
-		if( !p.exec() )
-			return PinCanceled;
-		QByteArray pin = p.pin().toUtf8();
-		err = d->f->C_Login(d->session, CKU_USER, CK_UTF8CHAR_PTR(pin.constData()), CK_ULONG(pin.size()));
+	if(token.flags & CKF_PROTECTED_AUTHENTICATION_PATH) {
+		err = dispatchToMain([&]{
+			PinPopup p(isSign ? PinPopup::Pin2PinpadType : PinPopup::Pin1PinpadType, cert, f, Application::mainWindow());
+			connect(d, &Private::started, &p, &PinPopup::startTimer);
+			connect(d, &Private::finished, &p, &PinPopup::accept);
+			d->start();
+			p.exec();
+			return d->result;
+		});
+	} else {
+		err = dispatchToMain([&]{
+			PinPopup p(isSign ? PinPopup::Pin2Type : PinPopup::Pin1Type, cert, f, Application::mainWindow());
+			p.setPinLen(token.ulMinPinLen, token.ulMaxPinLen < 12 ? 12 : token.ulMaxPinLen);
+			if(!p.exec())
+				return CKR_FUNCTION_CANCELED;
+			QByteArray pin = p.pin().toUtf8();
+			return d->f->C_Login(d->session, CKU_USER, CK_UTF8CHAR_PTR(pin.constData()), CK_ULONG(pin.size()));
+		});
 	}
 
 	d->f->C_GetTokenInfo(currentSlot, &token);
