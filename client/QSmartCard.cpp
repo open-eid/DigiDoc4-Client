@@ -609,11 +609,6 @@ QSmartCard::ErrorType QSmartCard::pinUnblock(QSmartCardData::PinType type, QSmar
 	return UnknownError;
 }
 
-void QSmartCard::reloadCounters()
-{
-	QMetaObject::invokeMethod(this, [this] { reloadCard(d->token, true); });
-}
-
 void QSmartCard::reloadCard(const TokenData &token, bool reloadCounters)
 {
 	qCDebug(CLog) << "Polling";
@@ -662,8 +657,7 @@ void QSmartCard::reloadCard(const TokenData &token, bool reloadCounters)
 	}
 
 	qCDebug(CLog) << "Read card" << token.card() << "info";
-	QSharedDataPointer<QSmartCardDataPrivate> t;
-	t = d->t.d;
+	QSharedDataPointer<QSmartCardDataPrivate> t = d->t.d;
 	t->reader = selectedReader->name();
 	t->pinpad = selectedReader->isPinPad();
 	if(d->card->loadPerso(selectedReader.get(), t))
