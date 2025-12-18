@@ -56,7 +56,7 @@ class QPCSCReader final: public QObject
 public:
 	struct Result {
 		QByteArray data;
-		quint16 SW;
+		quint16 SW = 0;
 		quint32 err = 0;
 		constexpr operator bool() const { return SW == 0x9000; }
 	};

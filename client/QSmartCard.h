@@ -85,19 +85,6 @@ class QSmartCard final: public QObject
 {
 	Q_OBJECT
 public:
-	enum ErrorType : quint8
-	{
-		NoError,
-		UnknownError,
-		BlockedError,
-		TimeoutError,
-		CancelError,
-		DifferentError,
-		LenghtError,
-		ValidateError,
-		OldNewPinSameError
-	};
-
 	enum PinAction : quint8
 	{
 		ActivateWithPuk,
@@ -114,8 +101,7 @@ public:
 	TokenData tokenData() const;
 	void reloadCard(const TokenData &token, bool reloadCounters);
 
-	ErrorType pinUnblock(QSmartCardData::PinType type, PinAction action = UnblockWithPuk, QWidget* parent = nullptr);
-	ErrorType pinChange(QSmartCardData::PinType type, PinAction action = ChangeWithPin, QWidget* parent = nullptr);
+	bool pinChange(QSmartCardData::PinType type, PinAction action = ChangeWithPin, QWidget* parent = nullptr);
 
 Q_SIGNALS:
 	void dataChanged(const QSmartCardData &data);

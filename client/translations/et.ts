@@ -1408,47 +1408,8 @@ ID-kaardiga</translation>
         <translation>Ühenda kaardilugeja arvutiga ja sisesta ID-kaart lugejasse</translation>
     </message>
     <message>
-        <source>%1 has been changed and the certificate has been unblocked!</source>
-        <translation>%1-kood on muudetud ja sertifikaadi blokeering tühistatud!</translation>
-    </message>
-    <message>
-        <source>%1 changed!</source>
-        <translation>%1-kood muudetud!</translation>
-    </message>
-    <message>
         <source>Encrypting</source>
         <translation>Krüpteerin</translation>
-    </message>
-    <message>
-        <source>Changing %1 failed</source>
-        <translation>%1 muutmine ebaõnnestus</translation>
-    </message>
-    <message>
-        <source>%1 length has to be between %2 and 12</source>
-        <translation>%1-koodi pikkus peab olema %2-12 numbrit</translation>
-    </message>
-    <message numerus="yes">
-        <source>Wrong %1 code. You can try %n more time(s).</source>
-        <translation>
-            <numerusform>Vale %1-kood. Saad veel proovida %n kord.</numerusform>
-            <numerusform>Vale %1-kood. Saad veel proovida %n korda.</numerusform>
-        </translation>
-    </message>
-    <message>
-        <source>%1 blocked</source>
-        <translation>%1-kood blokeeritud</translation>
-    </message>
-    <message>
-        <source>Old and new %1 has to be different!</source>
-        <translation>Kehtiv ja uus %1 peavad olema erinevad!</translation>
-    </message>
-    <message>
-        <source>New %1 codes doesn&apos;t match</source>
-        <translation>Uued %1-koodid on erinevad</translation>
-    </message>
-    <message>
-        <source>%1 timeout</source>
-        <translation>%1 päring aegus</translation>
     </message>
     <message>
         <source>Signing</source>
@@ -2128,6 +2089,45 @@ ID-kaardiga</translation>
     <message>
         <source>To unblock the %1 code on a PinPad reader the PUK code has to be entered first and then the %1 code twice.</source>
         <translation>PinPad lugejaga %1 blokeeringu tühistamiseks&lt;br&gt;tuleb kõigepealt sisestada PUK ning siis kaks korda %1.</translation>
+    </message>
+    <message>
+        <source>Changing %1 failed</source>
+        <translation>%1 muutmine ebaõnnestus</translation>
+    </message>
+    <message>
+        <source>%1 changed!</source>
+        <translation>%1-kood muudetud!</translation>
+    </message>
+    <message>
+        <source>%1 has been changed and the certificate has been unblocked!</source>
+        <translation>%1-kood on muudetud ja sertifikaadi blokeering tühistatud!</translation>
+    </message>
+    <message>
+        <source>%1 blocked</source>
+        <translation>%1-kood blokeeritud</translation>
+    </message>
+    <message numerus="yes">
+        <source>Wrong %1 code. You can try %n more time(s).</source>
+        <translation>
+            <numerusform>Vale %1-kood. Saad veel proovida %n kord.</numerusform>
+            <numerusform>Vale %1-kood. Saad veel proovida %n korda.</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>%1 timeout</source>
+        <translation>%1 päring aegus</translation>
+    </message>
+    <message>
+        <source>New %1 codes doesn&apos;t match</source>
+        <translation>Uued %1-koodid on erinevad</translation>
+    </message>
+    <message>
+        <source>%1 length has to be between %2 and 12</source>
+        <translation>%1-koodi pikkus peab olema %2-12 numbrit</translation>
+    </message>
+    <message>
+        <source>Old and new %1 has to be different!</source>
+        <translation>Kehtiv ja uus %1 peavad olema erinevad!</translation>
     </message>
 </context>
 <context>
