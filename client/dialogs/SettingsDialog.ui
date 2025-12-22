@@ -89,7 +89,7 @@ color: transparent;
 selection-color: transparent;
 }
 QRadioButton:checked {
-background-color: #E9ECF3;
+background-color: #EAF1F8;
 }</string>
      </property>
      <layout class="QVBoxLayout" name="leftPaneLayout">
@@ -417,7 +417,7 @@ border: 2px solid transparent;
 border-radius: 4px;
 }
 QCheckBox:disabled, QRadioButton:disabled {
-color: #BDBDBD;
+color: #C4CBD8;
 }
 QCheckBox::indicator, QRadioButton::indicator {
 width: 16px;
@@ -479,7 +479,7 @@ max-height: 22px;
 }</string>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="pageGeneral">
       <layout class="QVBoxLayout" name="pageGeneralLayout">
@@ -567,56 +567,6 @@ max-height: 22px;
           <string>Ask role and address info on signing</string>
          </property>
         </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="lblDefaultDirectory">
-         <property name="focusPolicy">
-          <enum>Qt::TabFocus</enum>
-         </property>
-         <property name="text">
-          <string>Container default location</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <layout class="QGridLayout" name="locationBoxLayout">
-         <property name="spacing">
-          <number>15</number>
-         </property>
-         <item row="0" column="0">
-          <widget class="QRadioButton" name="rdGeneralSameDirectory">
-           <property name="text">
-            <string>Same folder</string>
-           </property>
-           <attribute name="buttonGroup">
-            <string notr="true">pathGroup</string>
-           </attribute>
-          </widget>
-         </item>
-         <item row="1" column="0">
-          <widget class="QRadioButton" name="rdGeneralSpecifyDirectory">
-           <property name="text">
-            <string>Select the default directory</string>
-           </property>
-           <property name="checked">
-            <bool>true</bool>
-           </property>
-           <attribute name="buttonGroup">
-            <string notr="true">pathGroup</string>
-           </attribute>
-          </widget>
-         </item>
-         <item row="0" column="1" rowspan="2">
-          <widget class="QPushButton" name="btGeneralChooseDirectory">
-           <property name="text">
-            <string notr="true">...</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="2" rowspan="2">
-          <widget class="QLineEdit" name="txtGeneralDirectory"/>
-         </item>
-        </layout>
        </item>
        <item>
         <spacer name="pageGeneralSpacer">
@@ -1608,22 +1558,22 @@ max-height: 22px;
         <widget class="QTextEdit" name="txtDiagnostics">
          <property name="styleSheet">
           <string notr="true">QTextEdit {
-	color: #363739;
-	background: #FFFFFF;
-	border-bottom: 1px solid #DEE4E9;
+color: #07142A;
+background: #FFFFFF;
+border-bottom: 1px solid #E7EAEF;
 }
 QScrollBar {
-	width: 10px;
-	padding: 5px 5px 5px 0;
-	margin: 2px 0px 2px 0;
-	border: none;
-	background: #FFFFFF;
+width: 10px;
+padding: 5px 5px 5px 0px;
+margin: 2px 0px 2px 0px;
+border: none;
+background: #FFFFFF;
 }
 QScrollBar::handle:vertical {
-background-color: #8E969D;
-	margin: 0 0 0 0;
-	border-radius: 2px;
-	height: 145px;
+background-color: #C4CBD8;
+margin: 0px;
+border-radius: 2px;
+height: 145px;
 }
 QScrollBar::add-line:vertical,
 QScrollBar::sub-line:vertical {
@@ -1712,21 +1662,21 @@ Additional licenses and components</string>
         <widget class="QTextBrowser" name="txtInfo">
          <property name="styleSheet">
           <string notr="true">QTextEdit {
-	color: #363739;
-	background: #FFFFFF;
+color: #07142A;
+background: #FFFFFF;
 }
 QScrollBar {
-	width: 10px;
-	padding: 5px 5px 5px 0;
-	margin: 2px 0px 2px 0;
-	border: none;
-	background: #FFFFFF;
+width: 10px;
+padding: 5px 5px 5px 0px;
+margin: 2px 0px 2px 0px;
+border: none;
+background: #FFFFFF;
 }
 QScrollBar::handle:vertical {
-background-color: #8E969D;
-	margin: 0 0 0 0;
-	border-radius: 2px;
-	height: 145px;
+background-color: #C4CBD8;
+margin: 0px;
+border-radius: 2px;
+height: 145px;
 }
 QScrollBar::add-line:vertical,
 QScrollBar::sub-line:vertical {
@@ -1798,7 +1748,6 @@ p, li { white-space: pre-wrap; margin-top:12px; margin-bottom:12px; margin-left:
  </resources>
  <connections/>
  <buttongroups>
-  <buttongroup name="pathGroup"/>
   <buttongroup name="pageGroup"/>
   <buttongroup name="rdSiVa"/>
   <buttongroup name="langGroup"/>

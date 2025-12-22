@@ -34,14 +34,14 @@ public:
 
 	ria::qdigidoc4::WarningType getError() const;
 	void initTabOrder(QWidget *item) final;
-	bool isSelfSigned(const QString& cardCode, const QString& mobileCode) const;
+	bool isSelfSigned(const QString& cardCode) const;
 	QWidget* lastTabWidget() final;
 
 private:
 	bool event(QEvent *event) final;
 	bool eventFilter(QObject *o, QEvent *e) final;
 	void init();
-	void updateNameField();
+	void elideRole();
 
 	class Private;
 	Private *ui;

@@ -36,12 +36,11 @@ enum ContainerState : unsigned char {
 };
 
 enum Actions : unsigned char {
+    ContainerClose,
     ContainerCancel,
     ContainerConvert,
     ContainerEncrypt,
-    ContainerLocation,
     ContainerSave,
-    ContainerSaveAs,
 
     EncryptContainer,
     DecryptContainer,
