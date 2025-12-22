@@ -27,8 +27,8 @@
 #include <array>
 #include <cstring>
 
-Q_LOGGING_CATEGORY(APDU,"QPCSC.APDU")
-Q_LOGGING_CATEGORY(SCard,"QPCSC.SCard")
+static Q_LOGGING_CATEGORY(APDU,"QPCSC.APDU")
+static Q_LOGGING_CATEGORY(SCard,"QPCSC.SCard")
 
 static quint16 toUInt16(const QByteArray &data, int size)
 {
@@ -219,34 +219,22 @@ bool QPCSCReader::beginTransaction()
 
 bool QPCSCReader::connect(Connect connect, Mode mode)
 {
-	return connectEx(connect, mode) == SCARD_S_SUCCESS;
-}
-
-quint32 QPCSCReader::connectEx(Connect connect, Mode mode)
-{
 	LONG err = SC(Connect, d->d->context, d->state.szReader, connect, mode, &d->card, &d->io.dwProtocol);
 	updateState();
-	return quint32(err);
+	return err == SCARD_S_SUCCESS;
 }
 
 void QPCSCReader::disconnect( Reset reset )
 {
 	if(d->isTransacted)
-		endTransaction();
+		SC(EndTransaction, d->card, reset);
+	d->isTransacted = false;
 	if( d->card )
 		SC(Disconnect, d->card, reset);
 	d->io.dwProtocol = SCARD_PROTOCOL_UNDEFINED;
 	d->card = {};
 	d->featuresList.clear();
 	updateState();
-}
-
-bool QPCSCReader::endTransaction( Reset reset )
-{
-	bool result = SC(EndTransaction, d->card, reset) == SCARD_S_SUCCESS;
-	if(result)
-		d->isTransacted = false;
-	return result;
 }
 
 bool QPCSCReader::isPinPad() const
@@ -288,15 +276,6 @@ QHash<QPCSCReader::Properties, int> QPCSCReader::properties() const
 		}
 	}
 	return properties;
-}
-
-bool QPCSCReader::reconnect( Reset reset, Mode mode )
-{
-	if( !d->card )
-		return false;
-	LONG err = SC(Reconnect, d->card, DWORD(SCARD_SHARE_SHARED), mode, reset, &d->io.dwProtocol);
-	updateState();
-	return err == SCARD_S_SUCCESS;
 }
 
 QStringList QPCSCReader::state() const

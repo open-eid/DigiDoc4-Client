@@ -59,7 +59,6 @@ public:
 	static void loadProxy( const digidoc::Conf *conf );
 
 signals:
-	void langChanged(const QString& lang);
 	void togglePrinting(bool enable);
 
 private:
@@ -74,7 +73,6 @@ private:
 	void updateCDoc2Cert(const QSslCertificate &c);
 	void updateSiVaCert(const QSslCertificate &c);
 	void updateTSACert(const QSslCertificate &c);
-	void updateVersion();
 	void updateDiagnostics();
 	void useDefaultSettings();
 

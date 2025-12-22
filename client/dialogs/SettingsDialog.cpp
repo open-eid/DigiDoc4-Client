@@ -240,6 +240,8 @@ SettingsDialog::SettingsDialog(int page, QWidget *parent)
 	};
 	for(QJsonObject::const_iterator i = list.constBegin(); i != list.constEnd(); ++i)
 		ui->cmbCdoc2Name->addItem(i.value().toObject().value(QLatin1String("NAME")).toString(), i.key());
+	if(QUuid(QString(Settings::CDOC2_UUID)).isNull())
+		Settings::CDOC2_UUID = QUuid::createUuid().toString(QUuid::WithoutBraces);
 	ui->cmbCdoc2Name->addItem(tr("Use a manually specified key transfer server for encryption"), Settings::CDOC2_UUID);
 	QString cdoc2Service = Settings::CDOC2_DEFAULT_KEYSERVER;
 	ui->cmbCdoc2Name->setCurrentIndex(ui->cmbCdoc2Name->findData(cdoc2Service));
@@ -249,7 +251,10 @@ SettingsDialog::SettingsDialog(int page, QWidget *parent)
 		setCDoc2Values(key);
 	});
 	setCDoc2Values(cdoc2Service);
-	connect(ui->txtCdoc2UUID, &QLineEdit::textEdited, this, Settings::CDOC2_UUID);
+	connect(ui->txtCdoc2UUID, &QLineEdit::textEdited, this, [](const QString &uuid) {
+		Settings::CDOC2_UUID = uuid;
+		Settings::CDOC2_DEFAULT_KEYSERVER = uuid;
+	});
 	connect(ui->txtCdoc2Fetch, &QLineEdit::textEdited, this, [this](const QString &url) {
 		Settings::CDOC2_GET = url;
 		if(url.isEmpty())
@@ -424,7 +429,6 @@ SettingsDialog::SettingsDialog(int page, QWidget *parent)
 	ui->pageGroup->setId(ui->btnMenuInfo, LicenseSettings);
 	connect(ui->pageGroup, &QButtonGroup::idClicked, this, &SettingsDialog::showPage);
 
-	updateVersion();
 	updateDiagnostics();
 	showPage(page);
 }
@@ -467,11 +471,8 @@ void SettingsDialog::checkConnection()
 
 void SettingsDialog::retranslate(const QString& lang)
 {
-	emit langChanged(lang);
-
 	qApp->loadTranslation( lang );
 	ui->retranslateUi(this);
-	updateVersion();
 	updateDiagnostics();
 	ui->cmbCdoc2Name->setItemText(ui->cmbCdoc2Name->count() - 1,
 		tr("Use a manually specified key transfer server for encryption"));
@@ -523,12 +524,6 @@ void SettingsDialog::selectLanguage()
 		button->setChecked(button->property("lang").toString() == Settings::LANGUAGE);
 }
 
-void SettingsDialog::updateVersion()
-{
-	ui->txtNavVersion->setText(tr("DigiDoc4 version %1, released %2")
-		.arg(QApplication::applicationVersion(), QStringLiteral(BUILD_DATE)));
-}
-
 void SettingsDialog::saveProxy()
 {
 	Settings::PROXY_CONFIG = ui->proxyGroup->checkedId();
@@ -568,6 +563,8 @@ void SettingsDialog::loadProxy( const digidoc::Conf *conf )
 
 void SettingsDialog::updateDiagnostics()
 {
+	ui->txtNavVersion->setText(tr("DigiDoc4 version %1, released %2")
+		.arg(QApplication::applicationVersion(), QStringLiteral(BUILD_DATE)));
 	ui->txtDiagnostics->setEnabled(false);
 	ui->txtDiagnostics->clear();
 	ui->btnNavSaveReport->setDisabled(true);
