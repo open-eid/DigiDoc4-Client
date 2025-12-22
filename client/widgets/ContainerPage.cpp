@@ -62,11 +62,8 @@ ContainerPage::ContainerPage(QWidget *parent)
 		connect(btn, &QAbstractButton::clicked, this, [this,code] { emit forward(code); });
 	};
 
-	connect(this, &ContainerPage::moved,this, &ContainerPage::setHeader);
-	connectCode(ui->changeLocation, Actions::ContainerLocation);
 	connectCode(ui->cancel, Actions::ContainerCancel);
 	connectCode(ui->convert, Actions::ContainerConvert);
-	connectCode(ui->saveAs, Actions::ContainerSaveAs);
 	connectCode(ui->save, Actions::ContainerSave);
 	connect(ui->leftPane, &FileList::addFiles, this, &ContainerPage::addFiles);
 	connect(ui->leftPane, &ItemList::removed, this, &ContainerPage::fileRemoved);
@@ -134,11 +131,11 @@ bool ContainerPage::checkAction(int code, const QString& selectedCard, const QSt
 	return true;
 }
 
-void ContainerPage::clear()
+void ContainerPage::clear(int code)
 {
 	ui->leftPane->clear();
 	ui->rightPane->clear();
-	isSupported = false;
+	emit action(code);
 }
 
 void ContainerPage::clearPopups()
@@ -295,14 +292,23 @@ void ContainerPage::transition(CryptoDoc *container, const QSslCertificate &cert
 		if(ui->leftPane->getState() & EncryptedContainer)
 			updateDecryptionButton();
 	});
-	disconnect(container, &CryptoDoc::destroyed, this, &ContainerPage::clear);
+	disconnect(ui->changeLocation, &QPushButton::clicked, container, nullptr);
+	connect(ui->changeLocation, &QPushButton::clicked, container, [container, this] {
+		QString to = FileDialog::getSaveFileName(this, FileDialog::tr("Move file"), container->fileName());
+		if(!to.isNull() && container->move(to))
+			setHeader(to);
+	});
+	disconnect(ui->saveAs, &QPushButton::clicked, container, nullptr);
+	connect(ui->saveAs, &QPushButton::clicked, container, [container, this] {
+		if(QString target = FileDialog::getSaveFileName(this, FileDialog::tr("Save file"), container->fileName()); !target.isEmpty())
+			container->saveCopy(target);
+	});
+	disconnect(container, &CryptoDoc::destroyed, this, nullptr);
 	connect(container, &CryptoDoc::destroyed, this, [this] {
-		clear();
-		emit action(ClearCryptoWarning);
+		clear(ClearCryptoWarning);
 	});
 
-	clear();
-	emit action(ClearCryptoWarning);
+	clear(ClearCryptoWarning);
 	isSupported = container->state() & UnencryptedContainer || container->canDecrypt(cert);
 	setHeader(container->fileName());
 	bool hasUnsupported = false;
@@ -319,23 +325,17 @@ void ContainerPage::transition(CryptoDoc *container, const QSslCertificate &cert
 
 void ContainerPage::transition(DigiDoc* container)
 {
-	clear();
-	emit action(ClearSignatureWarning);
-	std::map<ria::qdigidoc4::WarningType, int> errors;
-	setHeader(container->fileName());
-
 	disconnect(this, &ContainerPage::certChanged, container, nullptr);
 	connect(this, &ContainerPage::certChanged, container, [this, container](const SslCertificate &) {
 		showSigningButton();
 	});
-
 	disconnect(ui->summary, &QAbstractButton::clicked, container, nullptr);
 	connect(ui->summary, &QAbstractButton::clicked, container, [this,container] {
 #ifdef Q_OS_WIN
 		if( QPrinterInfo::availablePrinterNames().isEmpty() )
 		{
 			WarningDialog::show(this,
-								tr("In order to view Validity Confirmation Sheet there has to be at least one printer installed!"));
+				tr("In order to view Validity Confirmation Sheet there has to be at least one printer installed!"));
 			return;
 		}
 #endif
@@ -349,6 +349,25 @@ void ContainerPage::transition(DigiDoc* container)
 		dialog->exec();
 		dialog->deleteLater();
 	});
+	disconnect(ui->changeLocation, &QPushButton::clicked, container, nullptr);
+	connect(ui->changeLocation, &QPushButton::clicked, container, [container, this] {
+		QString to = FileDialog::getSaveFileName(this, FileDialog::tr("Move file"), container->fileName());
+		if(!to.isNull() && container->move(to))
+			setHeader(to);
+	});
+	disconnect(ui->saveAs, &QPushButton::clicked, container, nullptr);
+	connect(ui->saveAs, &QPushButton::clicked, container, [container, this] {
+		if(QString target = FileDialog::getSaveFileName(this, FileDialog::tr("Save file"), container->fileName()); !target.isEmpty())
+			container->saveAs(target);
+	});
+	disconnect(container, &DigiDoc::destroyed, this, nullptr);
+	connect(container, &DigiDoc::destroyed, this, [this] {
+		clear(ClearSignatureWarning);
+	});
+
+	clear(ClearSignatureWarning);
+	std::map<ria::qdigidoc4::WarningType, int> errors;
+	setHeader(container->fileName());
 
 	if(!container->timestamps().isEmpty())
 	{
@@ -445,20 +464,20 @@ void ContainerPage::updatePanes(ContainerState state)
 		cancelText = QT_TR_NOOP("Start");
 		convertText = QT_TR_NOOP("Sign");
 
-		ui->changeLocation->show();
 		ui->leftPane->init(fileName, QT_TRANSLATE_NOOP("ItemList", "Encrypted files"));
 		ui->rightPane->init(ItemAddress, QT_TRANSLATE_NOOP("ItemList", "Recipients"));
 		showMainAction({ EncryptContainer });
+		setButtonsVisible({ ui->changeLocation, ui->convert }, true);
 		setButtonsVisible({ ui->saveAs, ui->email }, false);
 		break;
 	case EncryptedContainer:
 		cancelText = QT_TR_NOOP("Start");
 		convertText = QT_TR_NOOP("Sign");
 
-		ui->changeLocation->hide();
 		ui->leftPane->init(fileName, QT_TRANSLATE_NOOP("ItemList", "Encrypted files"));
 		ui->rightPane->init(ItemAddress, QT_TRANSLATE_NOOP("ItemList", "Recipients"));
 		updateDecryptionButton();
+		setButtonsVisible({ ui->changeLocation, ui->convert }, false);
 		setButtonsVisible({ ui->saveAs, ui->email }, true);
 		break;
 	default:
