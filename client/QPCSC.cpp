@@ -94,10 +94,12 @@ QPCSC::QPCSC()
 QPCSC::~QPCSC()
 {
 	requestInterruption();
+	d->sleepCond.wakeAll();
+	if(d->thread)
+		SC(Cancel, d->thread);
 	wait();
-	if( d->context )
+	if(d->context)
 		SC(ReleaseContext, d->context);
-	qDeleteAll(d->lock);
 	delete d;
 }
 
@@ -138,16 +140,14 @@ void QPCSC::run()
 	std::vector<SCARD_READERSTATE> list;
 	while(!isInterruptionRequested())
 	{
-		if(!pcsc.serviceRunning())
-		{
-			sleep(5);
-			continue;
-		}
 		// "\\?PnP?\Notification" does not work on macOS
 		QByteArray data = pcsc.rawReaders();
 		if(data.isEmpty())
 		{
-			sleep(5);
+			QMutexLocker locker(&d->sleepMutex);
+			if (isInterruptionRequested())
+				break;
+			d->sleepCond.wait(&d->sleepMutex, 5000);
 			continue;
 		}
 		for(const char *name = data.constData(); *name; name += strlen(name) + 1)
@@ -155,6 +155,15 @@ void QPCSC::run()
 			if(std::none_of(list.cbegin(), list.cend(), [&name](const SCARD_READERSTATE &state) { return strcmp(state.szReader, name) == 0; }))
 				list.push_back({ strdup(name), nullptr, 0, 0, 0, {} });
 		}
+		if(list.empty())
+		{
+			QMutexLocker locker(&d->sleepMutex);
+			if (isInterruptionRequested())
+				break;
+			d->sleepCond.wait(&d->sleepMutex, 5000);
+			continue;
+		}
+		d->thread = pcsc.d->context;
 		if(SC(GetStatusChange, pcsc.d->context, 5*1000U, list.data(), DWORD(list.size())) != SCARD_S_SUCCESS)
 			continue;
 		for(auto i = list.begin(); i != list.end(); )
@@ -164,6 +173,8 @@ void QPCSC::run()
 				++i;
 				continue;
 			}
+			if((i->dwCurrentState & SCARD_STATE_PRESENT) != (i->dwEventState & SCARD_STATE_PRESENT))
+				Q_EMIT cardChanged();
 			i->dwCurrentState = i->dwEventState;
 			qCDebug(SCard) << "New state: " << QString::fromLocal8Bit(i->szReader) << stateToString(i->dwCurrentState);
 			Q_EMIT statusChanged(QString::fromLocal8Bit(i->szReader), stateToString(i->dwCurrentState));
@@ -176,6 +187,7 @@ void QPCSC::run()
 				++i;
 		}
 	}
+	d->thread = {};
 }
 
 bool QPCSC::serviceRunning() const
@@ -191,9 +203,6 @@ bool QPCSC::serviceRunning() const
 QPCSCReader::QPCSCReader( const QString &reader, QPCSC *parent )
 	: d(new Private)
 {
-	if(!parent->d->lock.contains(reader))
-		parent->d->lock[reader] = new QMutex();
-	parent->d->lock[reader]->lock();
 	d->d = parent->d;
 	d->reader = reader.toUtf8();
 	d->state.szReader = d->reader.constData();
@@ -202,8 +211,10 @@ QPCSCReader::QPCSCReader( const QString &reader, QPCSC *parent )
 
 QPCSCReader::~QPCSCReader()
 {
-	disconnect();
-	d->d->lock[d->reader]->unlock();
+	if(d->isTransacted)
+		SC(EndTransaction, d->card, SCARD_LEAVE_CARD);
+	if(d->card)
+		SC(Disconnect, d->card, SCARD_LEAVE_CARD);
 	delete d;
 }
 
@@ -212,29 +223,14 @@ QByteArray QPCSCReader::atr() const
 	return QByteArray::fromRawData((const char*)d->state.rgbAtr, int(d->state.cbAtr)).toHex().toUpper();
 }
 
-bool QPCSCReader::beginTransaction()
-{
-	return d->isTransacted = SC(BeginTransaction, d->card) == SCARD_S_SUCCESS;
-}
-
 bool QPCSCReader::connect(Connect connect, Mode mode)
 {
 	LONG err = SC(Connect, d->d->context, d->state.szReader, connect, mode, &d->card, &d->io.dwProtocol);
 	updateState();
-	return err == SCARD_S_SUCCESS;
-}
-
-void QPCSCReader::disconnect( Reset reset )
-{
-	if(d->isTransacted)
-		SC(EndTransaction, d->card, reset);
-	d->isTransacted = false;
-	if( d->card )
-		SC(Disconnect, d->card, reset);
-	d->io.dwProtocol = SCARD_PROTOCOL_UNDEFINED;
-	d->card = {};
-	d->featuresList.clear();
-	updateState();
+	if(err != SCARD_S_SUCCESS)
+		return false;
+	d->isTransacted = SC(BeginTransaction, d->card) == SCARD_S_SUCCESS;
+	return true;
 }
 
 bool QPCSCReader::isPinPad() const
@@ -272,7 +268,7 @@ QHash<QPCSCReader::Properties, int> QPCSCReader::properties() const
 			int tag = *p++, len = *p++, value = 0;
 			for(int i = 0; i < len; ++i)
 				value |= *p++ << 8 * i;
-			properties[Properties(tag)] = value;
+			properties.emplace(Properties(tag), value);
 		}
 	}
 	return properties;
@@ -303,7 +299,7 @@ QPCSCReader::Result QPCSCReader::transfer( const QByteArray &apdu ) const
 	case 0x6100: // Read more
 	{
 		QByteArray cmd( "\x00\xC0\x00\x00\x00", 5 );
-		cmd[4] = data.at(int(size - 1));
+		cmd[4] = char(result.SW);
 		Result result2 = transfer( cmd );
 		result2.data.prepend(result.data);
 		return result2;

@@ -58,8 +58,6 @@ bool TokenData::isNull() const {
 TokenData& TokenData::operator =( const TokenData &other ) = default;
 TokenData& TokenData::operator =(TokenData &&other) Q_DECL_NOEXCEPT = default;
 
-bool TokenData::operator !=( const TokenData &other ) const { return !(operator==(other)); }
-
 bool TokenData::operator ==( const TokenData &other ) const
 {
 	return d == other.d || (
