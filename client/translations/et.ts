@@ -2451,7 +2451,7 @@ Täiendavad litsentsid ja komponendid</translation>
 <context>
     <name>SignatureDialog</name>
     <message>
-        <source>Notice</source>
+        <source>Warnings</source>
         <translation>Hoiatused</translation>
     </message>
     <message>
@@ -2499,20 +2499,12 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>Väärtus</translation>
     </message>
     <message>
-        <source>Timestamp</source>
-        <translation>Ajatempel</translation>
-    </message>
-    <message>
-        <source>Warnings</source>
-        <translation>Hoiatused</translation>
-    </message>
-    <message>
-        <source>Restrictions</source>
-        <translation>Piirangud</translation>
-    </message>
-    <message>
         <source>This e-Signature is not equivalent with handwritten signature and therefore can be used only in transactions where Qualified e-Signature is not required.</source>
         <translation>See e-allkiri ei ole käsitsi kirjutatud allkirjadega samaväärne ja seetõttu saab seda kasutada ainult tehingute puhul, kus kvalifitseeritud e-allkiri pole kohustuslik.</translation>
+    </message>
+    <message>
+        <source>The signature is valid, but the container has a specific feature. Usually, this feature has arisen accidentally when containers were created. However, as it is not possible to edit a container without invalidating the signature, &lt;a href=&apos;https://www.id.ee/en/article/digital-signing-and-electronic-signatures/&apos;&gt;a warning&lt;/a&gt; is displayed.</source>
+        <translation>Allkiri on kehtiv, aga ümbrikul on mingi eripära. Tavaliselt on selline eripära tekkinud ümbriku loomisel. Kuna ümbrikku ei ole võimalik muuta ilma, et allkiri kehtetuks muutuks, näidatakse selliste ümbrike puhul &lt;a href=&apos;https://www.id.ee/artikkel/digitaalne-allkirjastamine-ja-elektroonilised-allkirjad/&apos;&gt;hoiatust&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>Unknown error</source>
@@ -2597,40 +2589,6 @@ Täiendavad litsentsid ja komponendid</translation>
     <message>
         <source>Claimed signing time (UTC)</source>
         <translation>Väidetav allkirjastamise aeg (UTC)</translation>
-    </message>
-    <message>
-        <source>SIGNATURE_WARNING</source>
-        <translation>Allkiri on kehtiv, aga ümbrikul on mingi eripära. Tavaliselt on selline eripära tekkinud ümbriku loomisel. Kuna ümbrikku ei ole võimalik muuta ilma, et allkiri kehtetuks muutuks, näidatakse selliste ümbrike puhul &lt;a href=&apos;https://www.id.ee/artikkel/digitaalne-allkirjastamine-ja-elektroonilised-allkirjad/&apos;&gt;&lt;span style=&apos;text-decoration: underline; font-weight: 900;&apos;&gt;hoiatust&lt;/span&gt;&lt;/a&gt;.</translation>
-    </message>
-    <message>
-        <source>is valid</source>
-        <comment>Timestamp</comment>
-        <translation>on kehtiv</translation>
-    </message>
-    <message>
-        <source>is valid</source>
-        <comment>Signature</comment>
-        <translation>on kehtiv</translation>
-    </message>
-    <message>
-        <source>is not valid</source>
-        <comment>Timestamp</comment>
-        <translation>ei ole kehtiv</translation>
-    </message>
-    <message>
-        <source>is not valid</source>
-        <comment>Signature</comment>
-        <translation>ei ole kehtiv</translation>
-    </message>
-    <message>
-        <source>is unknown</source>
-        <comment>Timestamp</comment>
-        <translation>on teadmata</translation>
-    </message>
-    <message>
-        <source>is unknown</source>
-        <comment>Signature</comment>
-        <translation>on teadmata</translation>
     </message>
     <message>
         <source>Close</source>

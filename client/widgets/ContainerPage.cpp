@@ -356,7 +356,7 @@ void ContainerPage::transition(DigiDoc* container)
 
 		for(const DigiDocSignature &c: container->timestamps())
 		{
-			auto *item = new SignatureItem(c, container->state(), ui->rightPane);
+			auto *item = new SignatureItem(c, ui->rightPane);
 			if(c.isInvalid())
 				++errors[item->getError()];
 			ui->rightPane->addHeaderWidget(item);
@@ -365,7 +365,7 @@ void ContainerPage::transition(DigiDoc* container)
 
 	for(const DigiDocSignature &c: container->signatures())
 	{
-		auto *item = new SignatureItem(c, container->state(), ui->rightPane);
+		auto *item = new SignatureItem(c, ui->rightPane);
 		if(c.isInvalid())
 			++errors[item->getError()];
 		ui->rightPane->addWidget(item);

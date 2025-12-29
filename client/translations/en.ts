@@ -2451,8 +2451,8 @@ Additional licenses and components</translation>
 <context>
     <name>SignatureDialog</name>
     <message>
-        <source>Notice</source>
-        <translation>Notice</translation>
+        <source>Warnings</source>
+        <translation>Warnings</translation>
     </message>
     <message>
         <source>Role / resolution</source>
@@ -2499,20 +2499,12 @@ Additional licenses and components</translation>
         <translation>Value</translation>
     </message>
     <message>
-        <source>Timestamp</source>
-        <translation>Timestamp</translation>
-    </message>
-    <message>
-        <source>Warnings</source>
-        <translation>Warnings</translation>
-    </message>
-    <message>
-        <source>Restrictions</source>
-        <translation>Restrictions</translation>
-    </message>
-    <message>
         <source>This e-Signature is not equivalent with handwritten signature and therefore can be used only in transactions where Qualified e-Signature is not required.</source>
         <translation>This e-Signature is not equivalent with handwritten signature and therefore can be used only in transactions where Qualified e-Signature is not required.</translation>
+    </message>
+    <message>
+        <source>The signature is valid, but the container has a specific feature. Usually, this feature has arisen accidentally when containers were created. However, as it is not possible to edit a container without invalidating the signature, &lt;a href=&apos;https://www.id.ee/en/article/digital-signing-and-electronic-signatures/&apos;&gt;a warning&lt;/a&gt; is displayed.</source>
+        <translation>The signature is valid, but the container has a specific feature. Usually, this feature has arisen accidentally when containers were created. However, as it is not possible to edit a container without invalidating the signature, &lt;a href=&apos;https://www.id.ee/en/article/digital-signing-and-electronic-signatures/&apos;&gt;a warning&lt;/a&gt; is displayed.</translation>
     </message>
     <message>
         <source>Unknown error</source>
@@ -2597,40 +2589,6 @@ Additional licenses and components</translation>
     <message>
         <source>Claimed signing time (UTC)</source>
         <translation>Claimed signing time (UTC)</translation>
-    </message>
-    <message>
-        <source>SIGNATURE_WARNING</source>
-        <translation>The signature is valid, but the container has a specific feature. Usually, this feature has arisen accidentally when containers were created. However, as it is not possible to edit a container without invalidating the signature, &lt;a href=&apos;https://www.id.ee/en/article/digital-signing-and-electronic-signatures/&apos;&gt;&lt;span style=&apos;text-decoration: underline; font-weight: 900;&apos;&gt;a warning&lt;/span&gt;&lt;/a&gt; is displayed.</translation>
-    </message>
-    <message>
-        <source>is valid</source>
-        <comment>Timestamp</comment>
-        <translation>is valid</translation>
-    </message>
-    <message>
-        <source>is valid</source>
-        <comment>Signature</comment>
-        <translation>is valid</translation>
-    </message>
-    <message>
-        <source>is not valid</source>
-        <comment>Timestamp</comment>
-        <translation>is not valid</translation>
-    </message>
-    <message>
-        <source>is not valid</source>
-        <comment>Signature</comment>
-        <translation>is not valid</translation>
-    </message>
-    <message>
-        <source>is unknown</source>
-        <comment>Timestamp</comment>
-        <translation>is unknown</translation>
-    </message>
-    <message>
-        <source>is unknown</source>
-        <comment>Signature</comment>
-        <translation>is unknown</translation>
     </message>
     <message>
         <source>Close</source>
