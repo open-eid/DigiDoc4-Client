@@ -68,16 +68,17 @@ QNetworkAccessManager* CheckConnection::setupNAM(QNetworkRequest &req, const QBy
 		.arg(Application::applicationName(), Application::applicationVersion(), Common::applicationOs()).toUtf8());
 	auto *nam = new QNetworkAccessManager();
 	QObject::connect(nam, &QNetworkAccessManager::sslErrors, nam, [](QNetworkReply *reply, const QList<QSslError> &errors) {
-		QList<QSslError> ignore;
+        QSslCertificate peer = reply->sslConfiguration().peerCertificate();
+        QList<QSslError> ignore;
 		for(const QSslError &error: errors)
 		{
 			switch(error.error())
 			{
-			case QSslError::UnableToVerifyFirstCertificate:
-			case QSslError::UnableToGetLocalIssuerCertificate:
+            case QSslError::UnableToVerifyFirstCertificate:
 			case QSslError::CertificateUntrusted:
+            case QSslError::UnableToGetLocalIssuerCertificate:
 			case QSslError::SelfSignedCertificateInChain:
-				if(reply->sslConfiguration().caCertificates().contains(reply->sslConfiguration().peerCertificate())) {
+				if(reply->sslConfiguration().caCertificates().contains(peer)) {
 					ignore.append(error);
 					break;
 				}
@@ -111,8 +112,10 @@ QSslConfiguration CheckConnection::sslConfiguration(const QByteArray &add)
 	trusted.reserve(list.size());
 	for(const auto &cert: list)
 		trusted.append(QSslCertificate(QByteArray::fromBase64(cert.toString().toLatin1()), QSsl::Der));
-	if(!add.isEmpty())
-		trusted.append(QSslCertificate(QByteArray::fromBase64(add), QSsl::Der));
+	if(!add.isEmpty()) {
+        QSslCertificate cert = QSslCertificate(add, QSsl::Der);
+		trusted.append(cert);
+	}
 	ssl.setCaCertificates(trusted);
 #endif
 	return ssl;

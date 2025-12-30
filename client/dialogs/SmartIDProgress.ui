@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MobileProgress</class>
- <widget class="QDialog" name="MobileProgress">
+ <class>SmartIDProgress</class>
+ <widget class="QDialog" name="SmartIDProgress">
   <property name="windowModality">
    <enum>Qt::WindowModality::WindowModal</enum>
   </property>
@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>432</width>
-    <height>322</height>
+    <height>606</height>
    </rect>
   </property>
   <property name="styleSheet">
@@ -19,13 +19,13 @@ color: #07142A;
 font-family: Roboto, Helvetica;
 font-size: 14px;
 }
-#MobileProgress {
+#SmartIDProgressProgress {
 background-color: #FFFFFF;
 border-radius: 4px;
 }
 #code {
 color: #003168;
-font-size: 32px;
+font-size: 16px;
 font-weight: 700;
 }
 QPushButton {
@@ -59,7 +59,7 @@ border-color: #82A9D3;
 background-color: #82A9D3;
 }</string>
   </property>
-  <layout class="QVBoxLayout" name="MobileProgressLayout">
+  <layout class="QVBoxLayout" name="SmartIDProgressLayout">
    <property name="spacing">
     <number>30</number>
    </property>
@@ -92,7 +92,7 @@ background-color: #82A9D3;
         </size>
        </property>
        <property name="text">
-        <string>Control code:</string>
+        <string>DeviceLink code</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignmentFlag::AlignCenter</set>
@@ -101,21 +101,30 @@ background-color: #82A9D3;
      </item>
      <item>
       <widget class="QLabel" name="code">
+       <property name="minimumSize">
+        <size>
+         <width>256</width>
+         <height>256</height>
+        </size>
+       </property>
        <property name="focusPolicy">
         <enum>Qt::FocusPolicy::TabFocus</enum>
        </property>
        <property name="text">
-        <string notr="true">1234</string>
+        <string notr="true">QR Code</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignmentFlag::AlignCenter</set>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QLabel" name="info">
        <property name="text">
-        <string notr="true">Make sure control code matches with one in phone screen and enter mobile-ID PIN2-code.</string>
+        <string notr="true">Please scan the QR code with your SmartID app</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignmentFlag::AlignCenter</set>

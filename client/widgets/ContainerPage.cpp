@@ -108,7 +108,7 @@ void ContainerPage::cardChanged(const SslCertificate &cert, bool isBlocked)
 	emit certChanged(cert);
 }
 
-bool ContainerPage::checkAction(int code, const QString& selectedCard, const QString& selectedMobile)
+bool ContainerPage::checkIfAlreadySigned(int code, const QString& selectedCard, const QString& selectedMobile)
 {
 	switch(code)
 	{
@@ -174,7 +174,7 @@ void ContainerPage::forward(int code)
 	{
 		if(MobileDialog dlg(this); dlg.exec() == QDialog::Accepted)
 		{
-			if(checkAction(SignatureMobile, dlg.idCode(), dlg.phoneNo()))
+            if(checkIfAlreadySigned(SignatureMobile, dlg.idCode(), dlg.phoneNo()))
 				emit action(SignatureMobile, dlg.idCode(), dlg.phoneNo());
 		}
 
@@ -187,17 +187,7 @@ void ContainerPage::forward(int code)
 	}
 	case SignatureSmartID:
 	{
-		if(SmartIDDialog dlg(this); dlg.exec() == QDialog::Accepted)
-		{
-			if(checkAction(SignatureMobile, dlg.idCode(), {}))
-				emit action(SignatureSmartID, dlg.country(), dlg.idCode());
-		}
-
-		if(QString newCode = Settings::SMARTID_CODE; newCode != mobileCode)
-		{
-			mobileCode = std::move(newCode);
-			showSigningButton();
-		}
+        emit action(SignatureSmartID);
 		break;
 	}
 	case ContainerCancel:
@@ -206,7 +196,7 @@ void ContainerPage::forward(int code)
 		emit action(code);
 		break;
 	default:
-		if(checkAction(code, cardInReader, mobileCode))
+        if(checkIfAlreadySigned(code, cardInReader, mobileCode))
 			emit action(code);
 		break;
 	}

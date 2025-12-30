@@ -22,18 +22,20 @@
 #include <digidocpp/crypto/Signer.h>
 
 #include <QCoreApplication>
+#include <QtNetwork/QNetworkReply>
 
 class QWidget;
 
 class SmartIDProgress final: public digidoc::Signer
 {
-	Q_DECLARE_TR_FUNCTIONS(MobileProgress)
+	Q_DECLARE_TR_FUNCTIONS(SmartIDProgress)
 public:
-	explicit SmartIDProgress(QWidget *parent = nullptr);
+    explicit SmartIDProgress(QWidget *parent = nullptr);
 	~SmartIDProgress() final;
 	digidoc::X509Cert cert() const final;
 	bool init(const QString &country, const QString &idCode, const QString &fileName);
 	std::vector<unsigned char> sign(const std::string &method, const std::vector<unsigned char> &digest) const final;
+	std::string method() const final;
 
 private:
 	class Private;

@@ -51,6 +51,7 @@ public:
 	void togglePrinting(bool enable);
 	void transition(CryptoDoc *container, const QSslCertificate &cert);
 	void transition(DigiDoc* container);
+    bool checkIfAlreadySigned(int code, const QString& selectedCard, const QString& selectedMobile);
 
 signals:
 	void action(int code, const QString &info1 = {}, const QString &info2 = {});
@@ -63,7 +64,6 @@ signals:
 
 private:
 	void changeEvent(QEvent* event) final;
-	bool checkAction(int code, const QString& selectedCard, const QString& selectedMobile);
 	void elideFileName();
 	bool eventFilter(QObject *o, QEvent *e) final;
 	void forward(int code);
