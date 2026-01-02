@@ -29,12 +29,13 @@
 class RoleAddressDialog::Private: public Ui::RoleAddressDialog {};
 
 static QString cleanUp(const QString& src) {
-	QString dst(src.size(), QChar(0));
+	QString dst;
+	dst.reserve(src.size());
 	size_t dlen = 0;
 	for (auto s = src.cbegin(); s != src.cend(); s++) {
 		if ((*s <= ' ') &&  (*s != QChar(0x9)) && (*s != QChar(0xa)) && (*s != QChar(0xd))) continue;
 		if ((*s == QChar(0xfffe)) || (*s == QChar(0xffff))) continue;
-		dst[dlen++] = *s;
+		dst.append(*s);
 	}
 	dst.resize(dlen);
 	return dst;
