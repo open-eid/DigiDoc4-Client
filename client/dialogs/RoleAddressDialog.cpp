@@ -31,10 +31,10 @@ class RoleAddressDialog::Private: public Ui::RoleAddressDialog {};
 static QString cleanUp(const QString& src) {
 	QString dst(src.size(), QChar(0));
 	size_t dlen = 0;
-	for (auto s = 0; s < src.size(); s++) {
-		if ((src[s] <= ' ') &&  (src[s] != QChar(0x9)) && (src[s] != QChar(0xa)) && (src[s] != QChar(0xd))) continue;
-		if ((src[s] == QChar(0xfffe)) || (src[s] == QChar(0xffff))) continue;
-		dst[dlen++] = src[s]; 
+	for (auto s = src.cbegin(); s != src.cend(); s++) {
+		if ((*s <= ' ') &&  (*s != QChar(0x9)) && (*s != QChar(0xa)) && (*s != QChar(0xd))) continue;
+		if ((*s == QChar(0xfffe)) || (*s == QChar(0xffff))) continue;
+		dst[dlen++] = *s;
 	}
 	dst.resize(dlen);
 	return dst;
