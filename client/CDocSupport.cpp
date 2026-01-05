@@ -50,6 +50,10 @@ QDebug operator<<(QDebug d, std::string_view str) {
 #define Q_FATAL(m) qCFatal(LOG_CDOC) << (m)
 #endif
 
+static QByteArray toByteArray(const std::vector<uint8_t> &data) {
+	return QByteArray::fromRawData(reinterpret_cast<const char *>(data.data()), data.size());
+}
+
 std::vector<libcdoc::FileInfo>
 CDocSupport::getCDocFileList(QString filename)
 {
@@ -92,18 +96,17 @@ CDocSupport::getCDocFileList(QString filename)
 libcdoc::result_t
 DDCryptoBackend::decryptRSA(std::vector<uint8_t>& result, const std::vector<uint8_t> &data, bool oaep, unsigned int idx)
 {
-	QByteArray qdata(reinterpret_cast<const char *>(data.data()), data.size());
-	QByteArray qkek = qApp->signer()->decrypt([&qdata, &oaep](QCryptoBackend *backend) {
-			return backend->decrypt(qdata, oaep);
+	QByteArray qkek = qApp->signer()->decrypt([qdata = toByteArray(data), &oaep](QCryptoBackend *backend) {
+		return backend->decrypt(qdata, oaep);
 	});
 	result.assign(qkek.cbegin(), qkek.cend());
 	return (result.empty()) ? BACKEND_ERROR : libcdoc::OK;
 }
 
-const QString SHA256_MTH = QStringLiteral("http://www.w3.org/2001/04/xmlenc#sha256");
-const QString SHA384_MTH = QStringLiteral("http://www.w3.org/2001/04/xmlenc#sha384");
-const QString SHA512_MTH = QStringLiteral("http://www.w3.org/2001/04/xmlenc#sha512");
-const QHash<QString, QCryptographicHash::Algorithm> SHA_MTH{
+constexpr std::string_view SHA256_MTH {"http://www.w3.org/2001/04/xmlenc#sha256"};
+constexpr std::string_view SHA384_MTH {"http://www.w3.org/2001/04/xmlenc#sha384"};
+constexpr std::string_view SHA512_MTH {"http://www.w3.org/2001/04/xmlenc#sha512"};
+const QHash<std::string_view, QCryptographicHash::Algorithm> SHA_MTH{
 	{SHA256_MTH, QCryptographicHash::Sha256}, {SHA384_MTH, QCryptographicHash::Sha384}, {SHA512_MTH, QCryptographicHash::Sha512}
 };
 
@@ -112,11 +115,8 @@ DDCryptoBackend::deriveConcatKDF(std::vector<uint8_t>& dst, const std::vector<ui
 								 const std::vector<uint8_t> &algorithmID, const std::vector<uint8_t> &partyUInfo, const std::vector<uint8_t> &partyVInfo, unsigned int idx)
 {
 	QByteArray decryptedKey = qApp->signer()->decrypt([&publicKey, &digest, &algorithmID, &partyUInfo, &partyVInfo](QCryptoBackend *backend) {
-			QByteArray ba(reinterpret_cast<const char *>(publicKey.data()), publicKey.size());
-			return backend->deriveConcatKDF(ba, SHA_MTH[QString::fromStdString(digest)],
-				QByteArray(reinterpret_cast<const char *>(algorithmID.data()), algorithmID.size()),
-				QByteArray(reinterpret_cast<const char *>(partyUInfo.data()), partyUInfo.size()),
-				QByteArray(reinterpret_cast<const char *>(partyVInfo.data()), partyVInfo.size()));
+		return backend->deriveConcatKDF(toByteArray(publicKey), SHA_MTH[digest],
+			toByteArray(algorithmID), toByteArray(partyUInfo), toByteArray(partyVInfo));
 	});
 	dst.assign(decryptedKey.cbegin(), decryptedKey.cend());
 	return (dst.empty()) ? BACKEND_ERROR : libcdoc::OK;
@@ -125,9 +125,7 @@ DDCryptoBackend::deriveConcatKDF(std::vector<uint8_t>& dst, const std::vector<ui
 libcdoc::result_t
 DDCryptoBackend::deriveHMACExtract(std::vector<uint8_t>& dst, const std::vector<uint8_t> &key_material, const std::vector<uint8_t> &salt, unsigned int idx)
 {
-	QByteArray qkey_material(reinterpret_cast<const char *>(key_material.data()), key_material.size());
-	QByteArray qsalt(reinterpret_cast<const char *>(salt.data()), salt.size());
-	QByteArray qkekpm = qApp->signer()->decrypt([&qkey_material, &qsalt](QCryptoBackend *backend) {
+	QByteArray qkekpm = qApp->signer()->decrypt([qkey_material = toByteArray(key_material), qsalt = toByteArray(salt)](QCryptoBackend *backend) {
 		return backend->deriveHMACExtract(qkey_material, qsalt, ECC_KEY_LEN);
 	});
 	dst = std::vector<uint8_t>(qkekpm.cbegin(), qkekpm.cend());
@@ -171,7 +169,7 @@ DDConfiguration::getValue(std::string_view domain, std::string_view param) const
 		if (param == libcdoc::Configuration::KEYSERVER_SEND_URL) {
 #ifdef CONFIG_URL
 			QJsonObject list = Application::confValue(QLatin1String("CDOC2-CONF")).toObject();
-			QJsonObject data = list.value(QString::fromUtf8(domain.data(), domain.size())).toObject();
+			QJsonObject data = list.value(QLatin1String(domain.data(), domain.size())).toObject();
 			QString url = data.value(QLatin1String("POST")).toString(Settings::CDOC2_POST);
 			return url.toStdString();
 #else
@@ -181,7 +179,7 @@ DDConfiguration::getValue(std::string_view domain, std::string_view param) const
 		} else if (param == libcdoc::Configuration::KEYSERVER_FETCH_URL) {
 #ifdef CONFIG_URL
 			QJsonObject list = Application::confValue(QLatin1String("CDOC2-CONF")).toObject();
-			QJsonObject data = list.value(QString::fromUtf8(domain.data(), domain.size())).toObject();
+			QJsonObject data = list.value(QLatin1String(domain.data(), domain.size())).toObject();
 			QString url = data.value(QLatin1String("FETCH")).toString(Settings::CDOC2_GET);
 			return url.toStdString();
 #else
@@ -214,27 +212,14 @@ libcdoc::result_t DDNetworkBackend::sendKey(
 		return BACKEND_ERROR;
 	}
 	QScopedPointer<QNetworkAccessManager, QScopedPointerDeleteLater> nam(CheckConnection::setupNAM(req, Settings::CDOC2_POST_CERT));
-	QEventLoop e;
-	QNetworkReply *reply = nam->post(req,
-		QJsonDocument({
-				{QLatin1String("recipient_id"),
-				 QLatin1String(
-					 QByteArray(reinterpret_cast<const char *>(rcpt_key.data()),
-								rcpt_key.size())
-						 .toBase64())},
-				{QLatin1String("ephemeral_key_material"),
-				 QLatin1String(QByteArray(reinterpret_cast<const char *>(
-											  key_material.data()),
-										  key_material.size())
-								   .toBase64())},
-				{QLatin1String("capsule_type"), QLatin1String(type.c_str())},
-			}).toJson());
-	connect(reply, &QNetworkReply::finished, &e, &QEventLoop::quit);
-	e.exec();
+	QNetworkReply *reply = waitFor(qOverload<const QNetworkRequest &, const QByteArray &>(&QNetworkAccessManager::post), nam.get(), req, QJsonDocument({
+		{QLatin1String("recipient_id"), QLatin1String(toByteArray(rcpt_key).toBase64())},
+		{QLatin1String("ephemeral_key_material"), QLatin1String(toByteArray(key_material).toBase64())},
+		{QLatin1String("capsule_type"), QLatin1String(type.c_str())},
+	}).toJson());
 	QString tr_id;
 	if (reply->error() == QNetworkReply::NoError &&
-		reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() ==
-			201) {
+		reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() == 201) {
 		tr_id = QString::fromLatin1(reply->rawHeader("Location"))
 					.remove(QLatin1String("/key-capsules/"));
 	} else {
@@ -247,8 +232,11 @@ libcdoc::result_t DDNetworkBackend::sendKey(
 	}
 	dst.transaction_id = tr_id.toStdString();
 
-	QDateTime dt = QDateTime::fromString(QString::fromLatin1(reply->rawHeader("x-expiry-time")));
-	dst.expiry_time = dt.toSecsSinceEpoch();
+	if (const QByteArray &expiry = reply->rawHeader("x-expiry-time"); !expiry.isEmpty()) {
+		dst.expiry_time = QDateTime::fromString(QLatin1String(expiry)).toSecsSinceEpoch();
+	} else {
+		dst.expiry_time = expiry_ts;
+	}
 	return libcdoc::OK;
 };
 
@@ -256,7 +244,7 @@ libcdoc::result_t
 DDNetworkBackend::fetchKey(std::vector<uint8_t> &result,
 						   const std::string &url,
 						   const std::string &transaction_id) {
-	QNetworkRequest req(QStringLiteral("%1/key-capsules/%2").arg(QString::fromStdString(url), QString::fromStdString(transaction_id)));
+	QNetworkRequest req(QStringLiteral("%1/key-capsules/%2").arg(QString::fromStdString(url), QLatin1String(transaction_id.c_str())));
 	req.setHeader(QNetworkRequest::ContentTypeHeader, QStringLiteral("application/json"));
 	if(!checkConnection()) {
 		last_error = "No connection";
@@ -370,7 +358,7 @@ TempListConsumer::open(const std::string& name, int64_t size)
 	return libcdoc::OK;
 }
 
-StreamListSource::StreamListSource(const std::vector<IOEntry>& files) : _files(files), _current(-1)
+StreamListSource::StreamListSource(const std::vector<IOEntry>& files) : _files(files)
 {
 }
 

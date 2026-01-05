@@ -170,7 +170,7 @@ struct StreamListSource : public libcdoc::MultiDataSource {
 	libcdoc::result_t next(std::string &name, int64_t &size) override final;
 
 	const std::vector<IOEntry> &_files;
-	int64_t _current;
+	int64_t _current = -1;
 };
 
 #endif // __CDOCSUPPORT_H__
