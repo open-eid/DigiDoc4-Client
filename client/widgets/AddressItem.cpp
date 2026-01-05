@@ -152,8 +152,8 @@ QWidget* AddressItem::lastTabWidget()
 }
 
 void AddressItem::mouseReleaseEvent(QMouseEvent * /*event*/) {
-	if (ui->key.rcpt_cert.isNull() && !ui->key.lock.isValid())
-		(new KeyDialog(ui->key))->open();
+	if (!ui->key.rcpt_cert.isNull())
+		(new KeyDialog(ui->key, this))->open();
 }
 
 void AddressItem::setName()
