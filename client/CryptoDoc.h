@@ -67,7 +67,6 @@ public:
 	bool saveCopy(const QString &filename);
 	ria::qdigidoc4::ContainerState state() const;
 
-	static std::string labelFromCertificate(const std::vector<uint8_t>& cert);
 private:
 	class Private;
 	Private *d;

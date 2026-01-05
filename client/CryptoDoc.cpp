@@ -54,28 +54,6 @@ auto toHex = [](const std::vector<uint8_t>& data) -> QString {
 	return ba.toHex();
 };
 
-std::string
-CryptoDoc::labelFromCertificate(const std::vector<uint8_t>& cert)
-{
-	QSslCertificate kcert(QByteArray(reinterpret_cast<const char *>(cert.data()), cert.size()), QSsl::Der);
-	return [](const SslCertificate &c) {
-		QString cn = c.subjectInfo(QSslCertificate::CommonName);
-		QString gn = c.subjectInfo("GN");
-		QString sn = c.subjectInfo("SN");
-		if(!gn.isEmpty() || !sn.isEmpty())
-			cn = QStringLiteral("%1 %2 %3").arg(gn, sn, c.personalCode());
-
-		int certType = c.type();
-		if(certType & SslCertificate::EResidentSubType)
-			return QStringLiteral("%1 %2").arg(cn, CryptoDoc::tr("Digi-ID E-RESIDENT")).toStdString();
-		if(certType & SslCertificate::DigiIDType)
-			return QStringLiteral("%1 %2").arg(cn, CryptoDoc::tr("Digi-ID")).toStdString();
-		if(certType & SslCertificate::EstEidType)
-			return QStringLiteral("%1 %2").arg(cn, CryptoDoc::tr("ID-CARD")).toStdString();
-		return cn.toStdString();
-	}(kcert);
-}
-
 class CryptoDoc::Private final: public QThread
 {
 	Q_OBJECT
@@ -199,23 +177,12 @@ CryptoDoc::Private::encrypt() {
 	}
 	for (auto &key : keys) {
 		QByteArray ba = key.rcpt_cert.toDer();
-		std::vector<uint8_t> cert_der =
-			std::vector<uint8_t>(ba.cbegin(), ba.cend());
-		QSslKey qkey = key.rcpt_cert.publicKey();
-		ba = Crypto::toPublicKeyDer(qkey);
-		std::vector<uint8_t> key_der(ba.cbegin(), ba.cend());
-		libcdoc::Recipient::PKType pk_type =
-			(qkey.algorithm() == QSsl::KeyAlgorithm::Rsa)
-				? libcdoc::Recipient::PKType::RSA
-				: libcdoc::Recipient::PKType::ECC;
-		if (!keyserver_id.empty()) {
-			std::string label = CryptoDoc::labelFromCertificate(cert_der);
-			enc_keys.push_back(libcdoc::Recipient::makeServer(
-				label, key_der, pk_type, keyserver_id));
-		} else {
-			std::string label;
+		if (keyserver_id.empty()) {
 			enc_keys.push_back(
-				libcdoc::Recipient::makeCertificate(label, cert_der));
+				libcdoc::Recipient::makeCertificate({}, {ba.cbegin(), ba.cend()}));
+		} else {
+			enc_keys.push_back(
+				libcdoc::Recipient::makeServer({}, {ba.cbegin(), ba.cend()}, keyserver_id));
 		}
 	}
 	if (!crypto.secret.empty()) {
