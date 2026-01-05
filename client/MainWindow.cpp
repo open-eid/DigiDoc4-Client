@@ -968,27 +968,6 @@ void MainWindow::updateSelectorData(TokenData data)
 	});
 }
 
-void MainWindow::containerSummary()
-{
-#ifdef Q_OS_WIN
-	if( QPrinterInfo::availablePrinterNames().isEmpty() )
-	{
-		WarningDialog::show(this,
-			tr("In order to view Validity Confirmation Sheet there has to be at least one printer installed!"));
-		return;
-	}
-#endif
-	auto *dialog = new QPrintPreviewDialog( this );
-	dialog->printer()->setPageSize( QPageSize( QPageSize::A4 ) );
-	dialog->printer()->setPageOrientation( QPageLayout::Portrait );
-	dialog->setMinimumHeight( 700 );
-	connect(dialog, &QPrintPreviewDialog::paintRequested, digiDoc, [this](QPrinter *printer) {
-		PrintSheet(digiDoc, printer);
-	});
-	dialog->exec();
-	dialog->deleteLater();
-}
-
 void
 MainWindow::decryptClicked(const libcdoc::Lock *lock)
 {
