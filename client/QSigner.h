@@ -50,6 +50,7 @@ public:
 	QSmartCard * smartcard() const;
 	TokenData tokenauth() const;
 	TokenData tokensign() const;
+	QString getLastErrorStr() const;
 
 Q_SIGNALS:
 	void cacheChanged();
