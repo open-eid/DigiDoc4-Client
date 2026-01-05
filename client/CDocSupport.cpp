@@ -61,7 +61,8 @@ CDocSupport::getCDocFileList(QString filename)
 	int version = libcdoc::CDocReader::getCDocFileVersion(filename.toStdString());
 	if (version != 1) return files;
 	QFile ifs(filename);
-	ifs.open(QIODevice::ReadOnly);
+	if(!ifs.open(QIODevice::ReadOnly))
+		return files;
 	QXmlStreamReader xml(&ifs);
 	while (xml.readNextStartElement()) {
 		if (xml.name() == QStringLiteral("EncryptedData")) {
@@ -315,7 +316,7 @@ TempListConsumer::~TempListConsumer()
 	}
 }
 
-libcdoc::result_t TempListConsumer::write(const uint8_t *src, size_t size) {
+libcdoc::result_t TempListConsumer::write(const uint8_t *src, size_t size) noexcept {
 	if (files.empty())
 		return libcdoc::OUTPUT_ERROR;
 	IOEntry &file = files.back();
@@ -363,7 +364,7 @@ StreamListSource::StreamListSource(const std::vector<IOEntry>& files) : _files(f
 }
 
 libcdoc::result_t
-StreamListSource::read(uint8_t *dst, size_t size)
+StreamListSource::read(uint8_t *dst, size_t size) noexcept
 {
 	if ((_current < 0) || (_current >= _files.size())) return 0;
 	return _files[_current].data->read((char *) dst, size);
