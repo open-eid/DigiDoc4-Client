@@ -38,6 +38,11 @@ static QString toQString(const Container &c)
 	return QString::fromLatin1((const char*)std::data(c), std::size(c));
 }
 
+void QPKCS11::Private::run()
+{
+	result = f->C_Login(session, CKU_USER, nullptr, 0);
+}
+
 QByteArray QPKCS11::Private::attribute(CK_SESSION_HANDLE session, CK_OBJECT_HANDLE obj, CK_ATTRIBUTE_TYPE type) const
 {
 	QByteArray data;

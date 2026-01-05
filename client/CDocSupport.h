@@ -21,6 +21,7 @@
  */
 
 #include <QtCore/QObject>
+#include <QtCore/QIODevice>
 
 #include <cdoc/Configuration.h>
 #include <cdoc/CryptoBackend.h>

@@ -1,5 +1,3 @@
-set(CMAKE_CXX_STANDARD 20)
-
 get_target_property(qtCore_install_prefix Qt6::qmake IMPORTED_LOCATION)
 get_filename_component(qtCore_install_prefix ${qtCore_install_prefix} DIRECTORY)
 get_filename_component(TSL_FILENAME ${TSL_URL} NAME_WLE)
