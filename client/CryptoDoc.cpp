@@ -89,17 +89,50 @@ public:
 		return result;
 	}
 
-	inline libcdoc::result_t encrypt(unsigned int lock_idx) {
-		libcdoc::result_t result = waitFor([&]{
-			libcdoc::result_t result = encrypt();
-			qDebug() << "Encryption result: " << result << " " << reader->getLastErrorStr();
+	inline libcdoc::result_t encrypt() {
+		libcdoc::result_t res = waitFor([&]{
+			qCDebug(CRYPTO) << "Encrypt" << fileName;
+			libcdoc::OStreamConsumer ofs(fileName.toStdString());
+			if (ofs.isError())
+				return (libcdoc::result_t) libcdoc::OUTPUT_ERROR;
+			StreamListSource slsrc(files);
+			std::vector<libcdoc::Recipient> enc_keys;
+			std::string keyserver_id;
+			if (Settings::CDOC2_DEFAULT && Settings::CDOC2_USE_KEYSERVER) {
+				keyserver_id = Settings::CDOC2_DEFAULT_KEYSERVER;
+			}
+			for (auto &key : keys) {
+				QByteArray ba = key.rcpt_cert.toDer();
+				if (keyserver_id.empty()) {
+					enc_keys.push_back(
+						libcdoc::Recipient::makeCertificate({}, {ba.cbegin(), ba.cend()}));
+				} else {
+					enc_keys.push_back(
+						libcdoc::Recipient::makeServer({}, {ba.cbegin(), ba.cend()}, keyserver_id));
+				}
+			}
+			if (!crypto.secret.empty()) {
+				auto key =
+					libcdoc::Recipient::makeSymmetric(label.toStdString(), kdf_iter);
+				enc_keys.push_back(key);
+			}
+			libcdoc::CDocWriter *writer = libcdoc::CDocWriter::createWriter(
+				Settings::CDOC2_DEFAULT ? 2 : 1, &ofs, false, &conf, &crypto, &network);
+			libcdoc::result_t result = writer->encrypt(slsrc, enc_keys);
+			if (result != libcdoc::OK) {
+				writer_last_error = writer->getLastErrorStr();
+				std::filesystem::remove(std::filesystem::path(fileName.toStdString()));
+			}
+			qDebug() << "Encryption result: " << result << " " << writer->getLastErrorStr();
+			delete writer;
+			ofs.close();
 			if (result == libcdoc::OK) {
 				// Encryption successful, open new reader
 				reader = createCDocReader(fileName.toStdString());
 			}
 			return result;
 		});
-		return result;
+		return res;
 	}
 
 	std::unique_ptr<libcdoc::CDocReader> reader;
@@ -136,7 +169,6 @@ public:
 		}
 		return std::unique_ptr<libcdoc::CDocReader>(r);
 	}
-	libcdoc::result_t encrypt();
 };
 
 bool CryptoDoc::Private::warnIfNotWritable() const
@@ -158,49 +190,6 @@ void CryptoDoc::Private::run()
 		reader = createCDocReader(fileName.toStdString());
 		if (!reader) return;
 	}
-}
-
-libcdoc::result_t
-CryptoDoc::Private::encrypt() {
-	qCDebug(CRYPTO) << "Encrypt" << fileName;
-
-	libcdoc::OStreamConsumer ofs(fileName.toStdString());
-	if (ofs.isError())
-		return libcdoc::OUTPUT_ERROR;
-
-	StreamListSource slsrc(files);
-	std::vector<libcdoc::Recipient> enc_keys;
-
-	std::string keyserver_id;
-	if (Settings::CDOC2_DEFAULT && Settings::CDOC2_USE_KEYSERVER) {
-		keyserver_id = Settings::CDOC2_DEFAULT_KEYSERVER;
-	}
-	for (auto &key : keys) {
-		QByteArray ba = key.rcpt_cert.toDer();
-		if (keyserver_id.empty()) {
-			enc_keys.push_back(
-				libcdoc::Recipient::makeCertificate({}, {ba.cbegin(), ba.cend()}));
-		} else {
-			enc_keys.push_back(
-				libcdoc::Recipient::makeServer({}, {ba.cbegin(), ba.cend()}, keyserver_id));
-		}
-	}
-	if (!crypto.secret.empty()) {
-		auto key =
-			libcdoc::Recipient::makeSymmetric(label.toStdString(), kdf_iter);
-		enc_keys.push_back(key);
-	}
-
-	libcdoc::CDocWriter *writer = libcdoc::CDocWriter::createWriter(
-		Settings::CDOC2_DEFAULT ? 2 : 1, &ofs, false, &conf, &crypto, &network);
-	int result = writer->encrypt(slsrc, enc_keys);
-	if (result != libcdoc::OK) {
-		writer_last_error = writer->getLastErrorStr();
-		std::filesystem::remove(std::filesystem::path(fileName.toStdString()));
-	}
-	delete writer;
-	ofs.close();
-	return result;
 }
 
 CDocumentModel::CDocumentModel(CryptoDoc::Private *doc) : d(doc) {}
@@ -482,7 +471,6 @@ bool CryptoDoc::encrypt( const QString &filename, const QString& label, const QB
 	d->label.clear();
 	d->crypto.secret.clear();
 	if (result != libcdoc::OK) {
-		const std::string &msg = d->reader->getLastErrorStr();
 		WarningDialog::show(tr("Failed to encrypt document"),
 							QString::fromStdString(d->writer_last_error));
 	}
