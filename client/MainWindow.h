@@ -83,7 +83,6 @@ private:
 	void sign(F &&sign);
 	bool validateFiles(const QString &container, const QStringList &files);
 	void updateSelector();
-	void updateSelectorData(TokenData data);
 	void updateMyEID(const TokenData &t);
 	void updateMyEid(const QSmartCardData &data);
 	bool wrap(const QString& wrappedFile, bool enclose);

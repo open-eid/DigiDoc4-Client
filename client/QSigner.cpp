@@ -20,6 +20,7 @@
 #include "QSigner.h"
 
 #include "Application.h"
+#include "QPCSC.h"
 #include "QSmartCard.h"
 #include "TokenData.h"
 #ifdef Q_OS_WIN
@@ -34,8 +35,9 @@
 #include <digidocpp/crypto/X509Cert.h>
 
 #include <QtCore/QLoggingCategory>
+#include <QtCore/QMutex>
 #include <QtCore/QReadWriteLock>
-#include <QtCore/QRegularExpression>
+#include <QtCore/QWaitCondition>
 #include <QtNetwork/QSslKey>
 
 #include <openssl/ecdsa.h>
@@ -52,6 +54,8 @@ public:
 	TokenData		auth, sign;
 	QList<TokenData> cache;
 	QReadWriteLock	lock;
+	QMutex			sleepMutex;
+	QWaitCondition	sleepCond;
 
 	static ECDSA_SIG* ecdsa_do_sign(const unsigned char *dgst, int dgst_len,
 		const BIGNUM *inv, const BIGNUM *rp, EC_KEY *eckey);
@@ -135,12 +139,18 @@ QSigner::QSigner(QObject *parent)
 		}
 		setMethod(method);
 	});
+	connect(&QPCSC::instance(), &QPCSC::cardChanged, this, [this] {
+		qCDebug(SLog) << "Card change detected";
+		d->sleepCond.wakeAll();
+	});
 	start();
+	QPCSC::instance().start();
 }
 
 QSigner::~QSigner()
 {
 	requestInterruption();
+	d->sleepCond.wakeAll();
 	wait();
 	delete d->smartcard;
 	RSA_meth_free(d->rsamethod);
@@ -149,42 +159,6 @@ QSigner::~QSigner()
 }
 
 QList<TokenData> QSigner::cache() const { return d->cache; }
-
-bool QSigner::cardsOrder(const TokenData &s1, const TokenData &s2)
-{
-	static auto cardsOrderScore = [](QChar c) -> quint8 {
-		switch(c.toLatin1())
-		{
-		case 'N': return 6;
-		case 'A': return 5;
-		case 'P': return 4;
-		case 'E': return 3;
-		case 'F': return 2;
-		case 'B': return 1;
-		default: return 0;
-		}
-	};
-	static const QRegularExpression reg(QStringLiteral("(\\w{1,2})(\\d{7})"));
-	QRegularExpressionMatch r1 = reg.match(s1.card());
-	QRegularExpressionMatch r2 = reg.match(s2.card());
-	if(r1.hasMatch() || r2.hasMatch())
-		return false;
-	QStringList cap1 = r1.capturedTexts();
-	QStringList cap2 = r1.capturedTexts();
-	if(cap1.isEmpty() || cap2.isEmpty())
-		return false;
-	// new cards to front
-	if(cap1[1].size() != cap2[1].size())
-		return cap1[1].size() > cap2[1].size();
-	// card type order
-	if(cap1[1][0] != cap2[1][0])
-		return cardsOrderScore(cap1[1][0]) > cardsOrderScore(cap2[1][0]);
-	// card version order
-	if(cap1[1].size() > 1 && cap2[1].size() > 1 && cap1[1][1] != cap2[1][1])
-		return cap1[1][1] > cap2[1][1];
-	// serial number order
-	return cap1[2].toUInt() > cap2[2].toUInt();
-}
 
 X509Cert QSigner::cert() const
 {
@@ -265,7 +239,7 @@ quint8 QSigner::login(const TokenData &cert) const
 	default:
 		d->lock.unlock();
 		// QSmartCard should also know that PIN is blocked.
-		std::thread(&QSmartCard::reloadCard, d->smartcard, d->smartcard->tokenData(), true).detach();
+		d->smartcard->reloadCard(d->smartcard->tokenData(), true);
 		return status;
 	}
 }
@@ -275,7 +249,7 @@ void QSigner::logout() const
 	d->backend->logout();
 	d->lock.unlock();
 	// QSmartCard should also know that PIN1 info is updated
-	std::thread(&QSmartCard::reloadCard, d->smartcard, d->smartcard->tokenData(), true).detach();
+	d->smartcard->reloadCard(d->smartcard->tokenData(), true);
 }
 
 QCryptographicHash::Algorithm QSigner::methodToNID(const std::string &method)
@@ -322,7 +296,6 @@ void QSigner::run()
 
 			QList<TokenData> acards, scards;
 			QList<TokenData> cache = d->backend->tokens();
-			std::sort(cache.begin(), cache.end(), cardsOrder);
 			if(cache != d->cache)
 			{
 				d->cache = std::move(cache);
@@ -370,13 +343,16 @@ void QSigner::run()
 			d->lock.unlock();
 		}
 
-		if(!isInterruptionRequested())
-			sleep( 5 );
+		QMutexLocker locker(&d->sleepMutex);
+		if (isInterruptionRequested())
+			break;
+		d->sleepCond.wait(&d->sleepMutex, 5000);
 	}
 }
 
 void QSigner::selectCard(const TokenData &token)
 {
+	d->smartcard->reloadCard(token, false);
 	bool isSign = SslCertificate(token.cert()).keyUsage().contains(SslCertificate::NonRepudiation);
 	if(isSign)
 		Q_EMIT signDataChanged(d->sign = token);
@@ -394,7 +370,6 @@ void QSigner::selectCard(const TokenData &token)
 			Q_EMIT signDataChanged(d->sign = other);
 		break;
 	}
-	std::thread(&QSmartCard::reloadCard, d->smartcard, token, false).detach();
 }
 
 std::vector<unsigned char> QSigner::sign(const std::string &method, const std::vector<unsigned char> &digest ) const
