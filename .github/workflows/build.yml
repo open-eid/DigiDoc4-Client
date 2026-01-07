@@ -14,7 +14,8 @@ jobs:
       MACOSX_DEPLOYMENT_TARGET: 13.3
       LIBS_PATH: ${{ github.workspace }}/cache
     steps:
-    - name: Checkout
+    - &Checkout
+      name: Checkout
       uses: actions/checkout@v5
       with:
         submodules: recursive
@@ -41,12 +42,12 @@ jobs:
         key: vcpkg-macOS-${{ hashFiles('prepare_osx_build_environment.sh') }}
     - name: Build libraries
       run: |
-        mkdir -p ${LIBS_PATH}/Qt-6.9.2-OpenSSL
+        mkdir -p ${LIBS_PATH}/Qt-6.10.1-OpenSSL
         ./prepare_osx_build_environment.sh -p ${LIBS_PATH}
     - name: Install Qt
       uses: jurplel/install-qt-action@v4
       with:
-        version: 6.9.2
+        version: 6.10.1
         arch: clang_64
     - name: Build
       run: |
@@ -59,7 +60,7 @@ jobs:
         cmake --build build --target macdeployqt
         cmake --build build --target zip
     - name: Archive artifacts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         name: macOS
         path: build/qdigidoc4*.zip
@@ -86,10 +87,13 @@ jobs:
         repo: open-eid/libdigidocpp
     - name: Install dependencies
       run: apt update -qq && apt install --no-install-recommends -y git lsb-release build-essential devscripts debhelper pkg-config lintian ${UBUNTU_DEPS}
-    - name: Checkout
-      uses: actions/checkout@v5
-      with:
-        submodules: recursive
+    - name: Install gcc 12
+      if: matrix.container == '22.04'
+      run: |
+        apt install -y gcc-12 g++-12
+        update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 60 --slave /usr/bin/g++ g++ /usr/bin/g++-12
+        update-alternatives --set gcc /usr/bin/gcc-12
+    - *Checkout
     - name: Setup changelog
       run: |
         export VERSION=$(grep project CMakeLists.txt | egrep -o "([0-9]{1,}\.)+[0-9]{1,}")
@@ -102,7 +106,7 @@ jobs:
     - name: Lintian
       run: lintian *.deb;
     - name: Archive artifacts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         name: ubuntu_${{ matrix.container }}_${{ matrix.arch }}
         path: qdigidoc4*.*
@@ -112,7 +116,7 @@ jobs:
     container: fedora:${{ matrix.container }}
     strategy:
       matrix:
-        container: [41, 42, 43]
+        container: [42, 43]
     steps:
     - name: Download artifact
       uses: dawidd6/action-download-artifact@v11
@@ -124,32 +128,26 @@ jobs:
         repo: open-eid/libdigidocpp
     - name: Install Deps
       run: dnf install -y ./libdigidocpp-pkg/*.rpm git gcc-c++ cmake rpm-build gettext openssl-devel openldap-devel pcsc-lite-devel qt6-qtsvg-devel qt6-qttools-devel flatbuffers-devel flatbuffers-compiler zlib-devel
-    - name: Checkout
-      uses: actions/checkout@v5
-      with:
-        submodules: recursive
+    - *Checkout
     - name: Build
       run: |
         cmake -DCMAKE_INSTALL_PREFIX=/usr -B build -S .
         cmake --build build --target all package
     - name: Archive artifacts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         name: fedora_${{ matrix.container }}
         path: build/qdigidoc4*.rpm
   windows:
     name: Build on Windows
-    runs-on: windows-2022
+    runs-on: windows-2025
     strategy:
       matrix:
         vcver: [143]
     env:
       VER_SUFFIX: .VS${{ matrix.vcver }}
     steps:
-    - name: Checkout
-      uses: actions/checkout@v5
-      with:
-        submodules: recursive
+    - *Checkout
     - name: Download artifact
       uses: dawidd6/action-download-artifact@v11
       with:
@@ -178,7 +176,7 @@ jobs:
     - name: Install Qt
       uses: jurplel/install-qt-action@v4
       with:
-        version: 6.9.2
+        version: 6.10.1
         arch: win64_msvc2022_64
     - name: Setup dev env
       uses: ilammy/msvc-dev-cmd@v1
@@ -197,7 +195,7 @@ jobs:
         cmake --build build --target msishellext
         cmake --build build --target appx
     - name: Archive artifacts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         name: msi_${{ matrix.vcver }}_x64
         path: |
@@ -211,10 +209,7 @@ jobs:
       TOKEN: ${{ secrets.COVERITY_SCAN_TOKEN }}
       PROJECTNAME: open-eid/DigiDoc4-Client
     steps:
-    - name: Checkout
-      uses: actions/checkout@v5
-      with:
-        submodules: recursive
+    - *Checkout
     - name: Download artifact
       uses: dawidd6/action-download-artifact@v11
       with:
@@ -253,10 +248,7 @@ jobs:
     permissions:
       security-events: write
     steps:
-    - name: Checkout
-      uses: actions/checkout@v5
-      with:
-        submodules: recursive
+    - *Checkout
     - name: Download artifact
       uses: dawidd6/action-download-artifact@v11
       with:
@@ -268,14 +260,14 @@ jobs:
     - name: Install dependencies
       run: sudo apt update -qq && sudo apt install --no-install-recommends -y ${UBUNTU_DEPS}
     - name: Initialize CodeQL
-      uses: github/codeql-action/init@v3
+      uses: github/codeql-action/init@v4
       with:
         languages: cpp
         queries: +security-and-quality
     - name: Autobuild
-      uses: github/codeql-action/autobuild@v3
+      uses: github/codeql-action/autobuild@v4
     - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v3
+      uses: github/codeql-action/analyze@v4
       with:
         upload: False
         output: sarif-results
@@ -290,6 +282,6 @@ jobs:
         input: sarif-results/cpp.sarif
         output: sarif-results/cpp.sarif
     - name: Upload results
-      uses: github/codeql-action/upload-sarif@v3
+      uses: github/codeql-action/upload-sarif@v4
       with:
         sarif_file: sarif-results/cpp.sarif

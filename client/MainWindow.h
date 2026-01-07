@@ -74,28 +74,22 @@ private:
 	void onSignAction(int action, const QString &info1, const QString &info2);
 	void openContainer(bool signature);
 	void pageSelected(int page, bool checked = true);
-	void resetCryptoDoc(std::unique_ptr<CryptoDoc> &&doc = {});
 	void resetDigiDoc(DigiDoc *doc = nullptr, bool warnOnChange = true);
 	void removeCryptoFile(int index);
 	bool removeFile(DocumentModel *model, int index);
 	void removeSignature(int index);
 	void removeSignatureFile(int index);
 	bool save(bool saveAs = false);
-	QString selectFile( const QString &title, const QString &filename, bool fixedExt );
 	template <typename F>
 	void sign(F &&sign);
 	bool validateFiles(const QString &container, const QStringList &files);
-	void showPinBlockedWarning(const QSmartCardData &data);
 	void updateSelector();
 	void updateSelectorData(TokenData data);
 	void updateMyEID(const TokenData &t);
 	void updateMyEid(const QSmartCardData &data);
 	bool wrap(const QString& wrappedFile, bool enclose);
 	bool wrapContainer(bool signing);
-	void containerSummary();
 
-	static void browseOnDisk(const QString &fileName);
-	static void containerToEmail(const QString &fileName);
 	static QStringList dropEventFiles(QDropEvent *event);
 
 	std::unique_ptr<CryptoDoc> cryptoDoc;

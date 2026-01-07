@@ -303,12 +303,11 @@ QString CDocumentModel::save(int row, const QString &path) const
 	if(d->isEncrypted())
 		return {};
 
-	int zone = FileDialog::fileZone(d->fileName);
 	QString fileName = copy(row, path);
 	QFileInfo f(fileName);
 	if(!f.exists())
 		return {};
-	FileDialog::setFileZone(fileName, zone);
+	FileDialog::setFileZone(fileName, d->fileName);
 	return fileName;
 }
 

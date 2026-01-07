@@ -1,5 +1,3 @@
-set(CMAKE_CXX_STANDARD 20)
-
 get_target_property(qtCore_install_prefix Qt6::qmake IMPORTED_LOCATION)
 get_filename_component(qtCore_install_prefix ${qtCore_install_prefix} DIRECTORY)
 get_filename_component(TSL_FILENAME ${TSL_URL} NAME_WLE)
@@ -105,6 +103,7 @@ qt_add_translations(${PROJECT_NAME} TS_FILES
 	../common/translations/qtbase_et.ts
 	../common/translations/qtbase_ru.ts
 	RESOURCE_PREFIX /translations
+	LUPDATE_OPTIONS -locations none
 )
 qt_add_resources(${PROJECT_NAME} tsl BASE ${TSL_DIR} PREFIX /TSL FILES ${TSL_LIST})
 
@@ -159,7 +158,7 @@ if( APPLE )
 	)
 	add_custom_target(macdeployqt DEPENDS ${PROJECT_NAME}
 		COMMAND Qt::macdeployqt $<TARGET_BUNDLE_DIR:${PROJECT_NAME}>
-		COMMAND rm -rf $<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/PlugIns/bearer
+		COMMAND rm -rf $<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/PlugIns/networkinformation
 		COMMAND cp -a /Library/Frameworks/digidocpp.framework $<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/Frameworks
 		COMMAND rm $<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/Frameworks/digidocpp.framework/Resources/digidoc-tool
 		COMMAND find $<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/Frameworks -name Headers | xargs rm -rf
@@ -257,6 +256,7 @@ elseif(WIN32)
 		COMMAND ${CMAKE_COMMAND} -E make_directory appx
 		COMMAND ${CMAKE_COMMAND} -E copy AppxManifest.xml appx
 		COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${PROJECT_NAME}> appx
+		COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:EsteidShellExtensionV2> appx
 		COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/libcrypto-3${OPENSSL_SUFFIX}.dll appx
 		COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/libssl-3${OPENSSL_SUFFIX}.dll appx
 		COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/zlib$<$<CONFIG:Debug>:d>1.dll appx
@@ -269,6 +269,7 @@ elseif(WIN32)
 		COMMAND ${CMAKE_COMMAND} -E copy_directory ${LIBS_PATH}/schema appx/schema
 		COMMAND Qt::windeployqt --no-translations --no-compiler-runtime --no-patchqt --force-openssl
 			--skip-plugin-types generic,networkinformation,iconengines --exclude-plugins qjpeg,qico,qgif,qcertonlybackend,qschannelbackend appx
+		COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/digidoc-tool.exe appx
 		COMMAND makeappx.exe pack -d appx -p ${MSI_FILE}.appx
 		# https://msdn.microsoft.com/en-us/library/windows/desktop/jj835832(v=vs.85).aspx
 		#Popups GUI

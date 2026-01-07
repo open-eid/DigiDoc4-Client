@@ -458,6 +458,10 @@
         <translation>DigiDoc4 клиент</translation>
     </message>
     <message>
+        <source>In order to view Validity Confirmation Sheet there has to be at least one printer installed!</source>
+        <translation>Для отображения листа подтверждения действительности цифровой подписи на компьютере должен быть установлен как минимум один принтер!</translation>
+    </message>
+    <message>
         <source>Change</source>
         <translation>Поменять</translation>
     </message>
@@ -679,14 +683,6 @@
         <source>TSL cache</source>
         <translation>TSL-буфер</translation>
     </message>
-    <message>
-        <source>true</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>false</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>DigiDoc</name>
@@ -835,6 +831,10 @@
     <message>
         <source>Create %1</source>
         <translation>Создайте %1</translation>
+    </message>
+    <message>
+        <source>Documents (%1)</source>
+        <translation>Документы (%1)</translation>
     </message>
 </context>
 <context>
@@ -1342,10 +1342,6 @@ ID-картой</translation>
         <translation>Сохранение контейнера %1 не удалось. Сохранить в другой каталог?</translation>
     </message>
     <message>
-        <source>Documents (%1)</source>
-        <translation>Документы (%1)</translation>
-    </message>
-    <message>
         <source>Save file</source>
         <translation>Сохранить файл</translation>
     </message>
@@ -1404,52 +1400,8 @@ ID-картой</translation>
         <translation>Подключите устройство чтения карт к компьютеру и вставьте ID-карту в устройство чтения</translation>
     </message>
     <message>
-        <source>In order to view Validity Confirmation Sheet there has to be at least one printer installed!</source>
-        <translation>Для отображения листа подтверждения действительности цифровой подписи на компьютере должен быть установлен как минимум один принтер!</translation>
-    </message>
-    <message>
-        <source>%1 has been changed and the certificate has been unblocked!</source>
-        <translation>%1-код изменён и сертификат разблокирован!</translation>
-    </message>
-    <message>
-        <source>%1 changed!</source>
-        <translation>%1-код изменён!</translation>
-    </message>
-    <message>
         <source>Encrypting</source>
         <translation>Зашифровывание</translation>
-    </message>
-    <message>
-        <source>Changing %1 failed</source>
-        <translation>Смена %1-кода прошла неудачно</translation>
-    </message>
-    <message>
-        <source>%1 length has to be between %2 and 12</source>
-        <translation>Длина %1 должна быть %2-12 номера</translation>
-    </message>
-    <message numerus="yes">
-        <source>Wrong %1 code. You can try %n more time(s).</source>
-        <translation>
-            <numerusform>Неверный %1-код. Попыток ещё: %n.</numerusform>
-            <numerusform>Неверный %1-код. Попыток ещё: %n.</numerusform>
-            <numerusform>Неверный %1-код. Попыток ещё: %n.</numerusform>
-        </translation>
-    </message>
-    <message>
-        <source>%1 blocked</source>
-        <translation>%1 заблокирован</translation>
-    </message>
-    <message>
-        <source>Old and new %1 has to be different!</source>
-        <translation>Старый и новый %1 должны отличаться!</translation>
-    </message>
-    <message>
-        <source>New %1 codes doesn&apos;t match</source>
-        <translation>Новые %1-коды не сходятся</translation>
-    </message>
-    <message>
-        <source>%1 timeout</source>
-        <translation>Время запроса %1-кода истекло</translation>
     </message>
     <message>
         <source>Signing</source>
@@ -1757,14 +1709,6 @@ ID-картой</translation>
 <context>
     <name>PinPopup</name>
     <message>
-        <source>PIN will be locked next failed attempt</source>
-        <translation>PIN будет заблокирован при следующей неудачной попытке</translation>
-    </message>
-    <message>
-        <source>PIN has been entered incorrectly at least once</source>
-        <translation>По меньшей мере один раз был введен неправильный PIN</translation>
-    </message>
-    <message>
         <source>For using sign certificate enter PIN2 at the reader</source>
         <translation>Для использования сертификата цифровой подписи введите PIN2&lt;br/&gt;с клавиатуры считывателя</translation>
     </message>
@@ -1783,6 +1727,14 @@ ID-картой</translation>
     <message>
         <source>For using authentication certificate enter PIN1</source>
         <translation>Для использования сертификата идентификации введите PIN1</translation>
+    </message>
+    <message>
+        <source>%1 will be locked next failed attempt</source>
+        <translation>%1 будет заблокирован при следующей неудачной попытке</translation>
+    </message>
+    <message>
+        <source>%1 has been entered incorrectly at least once</source>
+        <translation>По меньшей мере один раз был введен неправильный %1</translation>
     </message>
     <message>
         <source>Selected action requires authentication certificate.</source>
@@ -2129,6 +2081,46 @@ ID-картой</translation>
     <message>
         <source>To unblock the %1 code on a PinPad reader the PUK code has to be entered first and then the %1 code twice.</source>
         <translation>Для разблокировки %1-кода Вам необходимо ввести один раз&lt;br&gt;PUK-код и два раза новый %1-код с помощью PinPad.</translation>
+    </message>
+    <message>
+        <source>Changing %1 failed</source>
+        <translation>Смена %1-кода прошла неудачно</translation>
+    </message>
+    <message>
+        <source>%1 changed!</source>
+        <translation>%1-код изменён!</translation>
+    </message>
+    <message>
+        <source>%1 has been changed and the certificate has been unblocked!</source>
+        <translation>%1-код изменён и сертификат разблокирован!</translation>
+    </message>
+    <message>
+        <source>%1 blocked</source>
+        <translation>%1 заблокирован</translation>
+    </message>
+    <message numerus="yes">
+        <source>Wrong %1 code. You can try %n more time(s).</source>
+        <translation>
+            <numerusform>Неверный %1-код. Попыток ещё: %n.</numerusform>
+            <numerusform>Неверный %1-код. Попыток ещё: %n.</numerusform>
+            <numerusform>Неверный %1-код. Попыток ещё: %n.</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>%1 timeout</source>
+        <translation>Время запроса %1-кода истекло</translation>
+    </message>
+    <message>
+        <source>New %1 codes doesn&apos;t match</source>
+        <translation>Новые %1-коды не сходятся</translation>
+    </message>
+    <message>
+        <source>%1 length has to be between %2 and 12</source>
+        <translation>Длина %1 должна быть %2-12 номера</translation>
+    </message>
+    <message>
+        <source>Old and new %1 has to be different!</source>
+        <translation>Старый и новый %1 должны отличаться!</translation>
     </message>
 </context>
 <context>

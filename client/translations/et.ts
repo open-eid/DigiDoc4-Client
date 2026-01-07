@@ -458,6 +458,10 @@
         <translation>DigiDoc4 klient</translation>
     </message>
     <message>
+        <source>In order to view Validity Confirmation Sheet there has to be at least one printer installed!</source>
+        <translation>Digitaalallkirjade kinnituslehe kuvamiseks peab olema arvutis vähemalt üks printer seadistatud!</translation>
+    </message>
+    <message>
         <source>Change</source>
         <translation>Muuda</translation>
     </message>
@@ -679,14 +683,6 @@
         <source>TSL cache</source>
         <translation>TSL puhver</translation>
     </message>
-    <message>
-        <source>true</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>false</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>DigiDoc</name>
@@ -835,6 +831,10 @@
     <message>
         <source>Create %1</source>
         <translation>Loo %1</translation>
+    </message>
+    <message>
+        <source>Documents (%1)</source>
+        <translation>Dokumendid (%1)</translation>
     </message>
 </context>
 <context>
@@ -1342,10 +1342,6 @@ ID-kaardiga</translation>
         <translation>Ümbriku %1 salvestamine ebaõnnestus. Salvestada teise asukohta?</translation>
     </message>
     <message>
-        <source>Documents (%1)</source>
-        <translation>Dokumendid (%1)</translation>
-    </message>
-    <message>
         <source>Save file</source>
         <translation>Salvesta fail</translation>
     </message>
@@ -1404,51 +1400,8 @@ ID-kaardiga</translation>
         <translation>Ühenda kaardilugeja arvutiga ja sisesta ID-kaart lugejasse</translation>
     </message>
     <message>
-        <source>In order to view Validity Confirmation Sheet there has to be at least one printer installed!</source>
-        <translation>Digitaalallkirjade kinnituslehe kuvamiseks peab olema arvutis vähemalt üks printer seadistatud!</translation>
-    </message>
-    <message>
-        <source>%1 has been changed and the certificate has been unblocked!</source>
-        <translation>%1-kood on muudetud ja sertifikaadi blokeering tühistatud!</translation>
-    </message>
-    <message>
-        <source>%1 changed!</source>
-        <translation>%1-kood muudetud!</translation>
-    </message>
-    <message>
         <source>Encrypting</source>
         <translation>Krüpteerin</translation>
-    </message>
-    <message>
-        <source>Changing %1 failed</source>
-        <translation>%1 muutmine ebaõnnestus</translation>
-    </message>
-    <message>
-        <source>%1 length has to be between %2 and 12</source>
-        <translation>%1-koodi pikkus peab olema %2-12 numbrit</translation>
-    </message>
-    <message numerus="yes">
-        <source>Wrong %1 code. You can try %n more time(s).</source>
-        <translation>
-            <numerusform>Vale %1-kood. Saad veel proovida %n kord.</numerusform>
-            <numerusform>Vale %1-kood. Saad veel proovida %n korda.</numerusform>
-        </translation>
-    </message>
-    <message>
-        <source>%1 blocked</source>
-        <translation>%1-kood blokeeritud</translation>
-    </message>
-    <message>
-        <source>Old and new %1 has to be different!</source>
-        <translation>Kehtiv ja uus %1 peavad olema erinevad!</translation>
-    </message>
-    <message>
-        <source>New %1 codes doesn&apos;t match</source>
-        <translation>Uued %1-koodid on erinevad</translation>
-    </message>
-    <message>
-        <source>%1 timeout</source>
-        <translation>%1 päring aegus</translation>
     </message>
     <message>
         <source>Signing</source>
@@ -1756,14 +1709,6 @@ ID-kaardiga</translation>
 <context>
     <name>PinPopup</name>
     <message>
-        <source>PIN will be locked next failed attempt</source>
-        <translation>Vale koodi sisestamisel PIN lukustub</translation>
-    </message>
-    <message>
-        <source>PIN has been entered incorrectly at least once</source>
-        <translation>PIN on vähemalt ühe korra valesti sisestatud</translation>
-    </message>
-    <message>
         <source>For using sign certificate enter PIN2 at the reader</source>
         <translation>Sertifikaadi kasutamiseks sisesta PIN2 kaardilugeja sõrmistikult</translation>
     </message>
@@ -1782,6 +1727,14 @@ ID-kaardiga</translation>
     <message>
         <source>For using authentication certificate enter PIN1</source>
         <translation>Sertifikaadi kasutamiseks sisesta PIN1</translation>
+    </message>
+    <message>
+        <source>%1 will be locked next failed attempt</source>
+        <translation>Vale koodi sisestamisel %1 lukustub</translation>
+    </message>
+    <message>
+        <source>%1 has been entered incorrectly at least once</source>
+        <translation>%1 on vähemalt ühe korra valesti sisestatud</translation>
     </message>
     <message>
         <source>Selected action requires authentication certificate.</source>
@@ -2128,6 +2081,45 @@ ID-kaardiga</translation>
     <message>
         <source>To unblock the %1 code on a PinPad reader the PUK code has to be entered first and then the %1 code twice.</source>
         <translation>PinPad lugejaga %1 blokeeringu tühistamiseks&lt;br&gt;tuleb kõigepealt sisestada PUK ning siis kaks korda %1.</translation>
+    </message>
+    <message>
+        <source>Changing %1 failed</source>
+        <translation>%1 muutmine ebaõnnestus</translation>
+    </message>
+    <message>
+        <source>%1 changed!</source>
+        <translation>%1-kood muudetud!</translation>
+    </message>
+    <message>
+        <source>%1 has been changed and the certificate has been unblocked!</source>
+        <translation>%1-kood on muudetud ja sertifikaadi blokeering tühistatud!</translation>
+    </message>
+    <message>
+        <source>%1 blocked</source>
+        <translation>%1-kood blokeeritud</translation>
+    </message>
+    <message numerus="yes">
+        <source>Wrong %1 code. You can try %n more time(s).</source>
+        <translation>
+            <numerusform>Vale %1-kood. Saad veel proovida %n kord.</numerusform>
+            <numerusform>Vale %1-kood. Saad veel proovida %n korda.</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>%1 timeout</source>
+        <translation>%1 päring aegus</translation>
+    </message>
+    <message>
+        <source>New %1 codes doesn&apos;t match</source>
+        <translation>Uued %1-koodid on erinevad</translation>
+    </message>
+    <message>
+        <source>%1 length has to be between %2 and 12</source>
+        <translation>%1-koodi pikkus peab olema %2-12 numbrit</translation>
+    </message>
+    <message>
+        <source>Old and new %1 has to be different!</source>
+        <translation>Kehtiv ja uus %1 peavad olema erinevad!</translation>
     </message>
 </context>
 <context>

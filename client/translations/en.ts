@@ -458,6 +458,10 @@
         <translation>DigiDoc4 Client</translation>
     </message>
     <message>
+        <source>In order to view Validity Confirmation Sheet there has to be at least one printer installed!</source>
+        <translation>In order to view Validity Confirmation Sheet there has to be at least one printer installed!</translation>
+    </message>
+    <message>
         <source>Change</source>
         <translation>Change</translation>
     </message>
@@ -679,14 +683,6 @@
         <source>TSL cache</source>
         <translation>TSL cache</translation>
     </message>
-    <message>
-        <source>true</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>false</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>DigiDoc</name>
@@ -835,6 +831,10 @@
     <message>
         <source>Create %1</source>
         <translation>Create %1</translation>
+    </message>
+    <message>
+        <source>Documents (%1)</source>
+        <translation>Documents (%1)</translation>
     </message>
 </context>
 <context>
@@ -1342,10 +1342,6 @@ ID-Card</translation>
         <translation>Cannot alter container %1. Save to different location?</translation>
     </message>
     <message>
-        <source>Documents (%1)</source>
-        <translation>Documents (%1)</translation>
-    </message>
-    <message>
         <source>Save file</source>
         <translation>Save file</translation>
     </message>
@@ -1404,51 +1400,8 @@ ID-Card</translation>
         <translation>Connect the card reader to your computer and insert your ID-card into the reader</translation>
     </message>
     <message>
-        <source>In order to view Validity Confirmation Sheet there has to be at least one printer installed!</source>
-        <translation>In order to view Validity Confirmation Sheet there has to be at least one printer installed!</translation>
-    </message>
-    <message>
-        <source>%1 has been changed and the certificate has been unblocked!</source>
-        <translation>%1 has been changed and the certificate has been unblocked!</translation>
-    </message>
-    <message>
-        <source>%1 changed!</source>
-        <translation>%1 changed!</translation>
-    </message>
-    <message>
         <source>Encrypting</source>
         <translation>Encrypting</translation>
-    </message>
-    <message>
-        <source>Changing %1 failed</source>
-        <translation>Changing %1 failed</translation>
-    </message>
-    <message>
-        <source>%1 length has to be between %2 and 12</source>
-        <translation>%1 length has to be between %2 and 12</translation>
-    </message>
-    <message numerus="yes">
-        <source>Wrong %1 code. You can try %n more time(s).</source>
-        <translation>
-            <numerusform>Wrong %1 code. You can try %n more time.</numerusform>
-            <numerusform>Wrong %1 code. You can try %n more times.</numerusform>
-        </translation>
-    </message>
-    <message>
-        <source>%1 blocked</source>
-        <translation>%1 blocked</translation>
-    </message>
-    <message>
-        <source>Old and new %1 has to be different!</source>
-        <translation>Old and new %1 has to be different!</translation>
-    </message>
-    <message>
-        <source>New %1 codes doesn&apos;t match</source>
-        <translation>New %1 codes don&apos;t match</translation>
-    </message>
-    <message>
-        <source>%1 timeout</source>
-        <translation>%1 timeout</translation>
     </message>
     <message>
         <source>Signing</source>
@@ -1756,14 +1709,6 @@ ID-Card</translation>
 <context>
     <name>PinPopup</name>
     <message>
-        <source>PIN will be locked next failed attempt</source>
-        <translation>PIN will be locked next failed attempt</translation>
-    </message>
-    <message>
-        <source>PIN has been entered incorrectly at least once</source>
-        <translation>PIN has been entered incorrectly at least once</translation>
-    </message>
-    <message>
         <source>For using sign certificate enter PIN2 at the reader</source>
         <translation>For using sign certificate enter PIN2 at the reader</translation>
     </message>
@@ -1782,6 +1727,14 @@ ID-Card</translation>
     <message>
         <source>For using authentication certificate enter PIN1</source>
         <translation>For using authentication certificate enter PIN1</translation>
+    </message>
+    <message>
+        <source>%1 will be locked next failed attempt</source>
+        <translation>%1 will be locked next failed attempt</translation>
+    </message>
+    <message>
+        <source>%1 has been entered incorrectly at least once</source>
+        <translation>%1 has been entered incorrectly at least once</translation>
     </message>
     <message>
         <source>Selected action requires authentication certificate.</source>
@@ -2128,6 +2081,45 @@ ID-Card</translation>
     <message>
         <source>To unblock the %1 code on a PinPad reader the PUK code has to be entered first and then the %1 code twice.</source>
         <translation>To unblock the %1 code on a PinPad reader the PUK&lt;br&gt;code has to be entered first and then the %1 code twice.</translation>
+    </message>
+    <message>
+        <source>Changing %1 failed</source>
+        <translation>Changing %1 failed</translation>
+    </message>
+    <message>
+        <source>%1 changed!</source>
+        <translation>%1 changed!</translation>
+    </message>
+    <message>
+        <source>%1 has been changed and the certificate has been unblocked!</source>
+        <translation>%1 has been changed and the certificate has been unblocked!</translation>
+    </message>
+    <message>
+        <source>%1 blocked</source>
+        <translation>%1 blocked</translation>
+    </message>
+    <message numerus="yes">
+        <source>Wrong %1 code. You can try %n more time(s).</source>
+        <translation>
+            <numerusform>Wrong %1 code. You can try %n more time.</numerusform>
+            <numerusform>Wrong %1 code. You can try %n more times.</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>%1 timeout</source>
+        <translation>%1 timeout</translation>
+    </message>
+    <message>
+        <source>New %1 codes doesn&apos;t match</source>
+        <translation>New %1 codes don&apos;t match</translation>
+    </message>
+    <message>
+        <source>%1 length has to be between %2 and 12</source>
+        <translation>%1 length has to be between %2 and 12</translation>
+    </message>
+    <message>
+        <source>Old and new %1 has to be different!</source>
+        <translation>Old and new %1 has to be different!</translation>
     </message>
 </context>
 <context>

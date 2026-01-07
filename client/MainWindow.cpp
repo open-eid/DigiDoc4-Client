@@ -24,7 +24,6 @@
 #include "CheckConnection.h"
 #include "CryptoDoc.h"
 #include "DigiDoc.h"
-#include "PrintSheet.h"
 #include "QPCSC.h"
 #include "QSigner.h"
 #include "SslCertificate.h"
@@ -45,12 +44,8 @@
 
 #include <QtCore/QMimeData>
 #include <QtCore/QStandardPaths>
-#include <QtCore/QUrlQuery>
-#include <QtGui/QDesktopServices>
 #include <QtGui/QDragEnterEvent>
 #include <QtNetwork/QSslKey>
-#include <QtPrintSupport/QPrinterInfo>
-#include <QtPrintSupport/QPrintPreviewDialog>
 #include <QtWidgets/QMessageBox>
 
 using namespace ria::qdigidoc4;
@@ -141,6 +136,7 @@ MainWindow::MainWindow( QWidget *parent )
 
 MainWindow::~MainWindow()
 {
+	cryptoDoc.reset();
 	delete ui;
 }
 
@@ -160,15 +156,6 @@ void MainWindow::adjustDrops()
 	setAcceptDrops(currentState() != SignedContainer);
 }
 
-void MainWindow::browseOnDisk(const QString &fileName)
-{
-	if(!QFileInfo::exists(fileName))
-		return;
-	QUrl url = QUrl::fromLocalFile( fileName );
-	url.setScheme(QStringLiteral("browse"));
-	QDesktopServices::openUrl(url);
-}
-
 void MainWindow::changeEvent(QEvent* event)
 {
 	if (event->type() == QEvent::LanguageChange)
@@ -184,7 +171,7 @@ void MainWindow::changeEvent(QEvent* event)
 
 void MainWindow::closeEvent(QCloseEvent * /*event*/)
 {
-	resetCryptoDoc();
+	cryptoDoc.reset();
 	resetDigiDoc();
 	ui->startScreen->setCurrentIndex(SignIntro);
 }
@@ -378,7 +365,7 @@ void MainWindow::navigateToPage( Pages page, const QStringList &files, bool crea
 			navigate = cryptoContainer->open(files[0]);
 		if(navigate)
 		{
-			resetCryptoDoc(std::move(cryptoContainer));
+			cryptoDoc = std::move(cryptoContainer);
 			ui->cryptoContainerPage->transition(cryptoDoc.get(), qApp->signer()->tokenauth().cert());
 		}
 	}
@@ -430,21 +417,9 @@ void MainWindow::onSignAction(int action, const QString &info1, const QString &i
 	case ContainerSaveAs:
 		save(true);
 		break;
-	case ContainerEmail:
-		if(digiDoc)
-			containerToEmail(digiDoc->fileName());
-		break;
-	case ContainerSummary:
-		if(digiDoc)
-			containerSummary();
-		break;
 	case ContainerLocation:
 		if(digiDoc)
 			moveSignatureContainer();
-		break;
-	case ContainerNavigate:
-		if(digiDoc)
-			browseOnDisk(digiDoc->fileName());
 		break;
 	default:
 		break;
@@ -478,7 +453,7 @@ void MainWindow::convertToCDoc()
 		cryptoContainer->addEncryptionKey(cardData.cert());
 	}
 
-	resetCryptoDoc(std::move(cryptoContainer));
+	cryptoDoc = std::move(cryptoContainer);
 	resetDigiDoc(nullptr, false);
 	ui->cryptoContainerPage->transition(cryptoDoc.get(),  qApp->signer()->tokenauth().cert());
 	selectPage(CryptoDetails);
@@ -488,14 +463,14 @@ void MainWindow::convertToCDoc()
 
 void MainWindow::moveCryptoContainer()
 {
-	QString to = selectFile(tr("Move file"), cryptoDoc->fileName(), true);
+	QString to = FileDialog::getSaveFileName(this, tr("Move file"), cryptoDoc->fileName());
 	if(!to.isNull() && cryptoDoc->move(to))
 		emit ui->cryptoContainerPage->moved(to);
 }
 
 void MainWindow::moveSignatureContainer()
 {
-	QString to = selectFile(tr("Move file"), digiDoc->fileName(), true);
+	QString to = FileDialog::getSaveFileName(this, tr("Move file"), digiDoc->fileName());
 	if(!to.isNull() && digiDoc->move(to))
 		emit ui->signContainerPage->moved(to);
 }
@@ -505,7 +480,7 @@ void MainWindow::onCryptoAction(int action, const QString &/*id*/, const QString
 	switch(action)
 	{
 	case ContainerCancel:
-		resetCryptoDoc();
+		cryptoDoc.reset();
 		selectPage(Pages::CryptoIntro);
 		break;
 	case ContainerConvert:
@@ -537,7 +512,7 @@ void MainWindow::onCryptoAction(int action, const QString &/*id*/, const QString
 	{
 		if(!cryptoDoc)
 			break;
-		QString target = selectFile(tr("Save file"), cryptoDoc->fileName(), true);
+		QString target = FileDialog::getSaveFileName(this, tr("Save file"), cryptoDoc->fileName());
 		if(target.isEmpty())
 			break;
 		if( !FileDialog::fileIsWritable(target))
@@ -545,7 +520,7 @@ void MainWindow::onCryptoAction(int action, const QString &/*id*/, const QString
 			auto *dlg = new WarningDialog(tr("Cannot alter container %1. Save different location?").arg(target), this);
 			dlg->addButton(WarningDialog::YES, QMessageBox::Yes);
 			if(dlg->exec() == QMessageBox::Yes) {
-				QString file = selectFile(tr("Save file"), target, true);
+				QString file = FileDialog::getSaveFileName(this, tr("Save file"), target);
 				if(!file.isEmpty())
 					cryptoDoc->saveCopy(file);
 			}
@@ -557,17 +532,9 @@ void MainWindow::onCryptoAction(int action, const QString &/*id*/, const QString
 		ui->crypto->warningIcon(false);
 		ui->warnings->closeWarnings(CryptoDetails);
 		break;
-	case ContainerEmail:
-		if( cryptoDoc )
-			containerToEmail( cryptoDoc->fileName() );
-		break;
 	case ContainerLocation:
 		if(cryptoDoc)
 			moveCryptoContainer();
-		break;
-	case ContainerNavigate:
-		if( cryptoDoc )
-			browseOnDisk( cryptoDoc->fileName() );
 		break;
 	}
 }
@@ -661,7 +628,7 @@ void MainWindow::openFiles(const QStringList &files, bool addFile, bool forceCre
 
 void MainWindow::openContainer(bool signature)
 {
-	QString filter = QFileDialog::tr("All Files (*)") + QStringLiteral(";;") + tr("Documents (%1)");
+	QString filter = QFileDialog::tr("All Files (*)") + QStringLiteral(";;") + FileDialog::tr("Documents (%1)");
 	if(signature)
 		filter = filter.arg(QStringLiteral("*.bdoc *.ddoc *.asice *.sce *.asics *.scs *.edoc *.adoc%1")
 			.arg(Application::confValue(Application::SiVaUrl).toString().isEmpty() ? QLatin1String() : QLatin1String(" *.pdf")));
@@ -670,12 +637,6 @@ void MainWindow::openContainer(bool signature)
 	QStringList files = FileDialog::getOpenFileNames(this, tr("Select documents"), {}, filter);
 	if(!files.isEmpty())
 		openFiles(files);
-}
-
-void MainWindow::resetCryptoDoc(std::unique_ptr<CryptoDoc> &&doc)
-{
-	ui->crypto->warningIcon(false);
-	cryptoDoc = std::move(doc);
 }
 
 void MainWindow::resetDigiDoc(DigiDoc *doc, bool warnOnChange)
@@ -719,7 +680,7 @@ bool MainWindow::save(bool saveAs)
 
 	QString target = digiDoc->fileName();
 	if(saveAs)
-		target = selectFile(tr("Save file"), target, true);
+		target = FileDialog::getSaveFileName(this, tr("Save file"), target);
 	if(target.isEmpty())
 		return false;
 
@@ -728,45 +689,11 @@ bool MainWindow::save(bool saveAs)
 		auto *dlg = new WarningDialog(tr("Cannot alter container %1. Save different location?").arg(target), this);
 		dlg->addButton(WarningDialog::YES, QMessageBox::Yes);
 		if(dlg->exec() == QMessageBox::Yes) {
-			if(QString file = selectFile(tr("Save file"), target, true); !file.isEmpty())
+			if(QString file = FileDialog::getSaveFileName(this, tr("Save file"), target); !file.isEmpty())
 				return saveAs ? digiDoc->saveAs(file) : digiDoc->save(file);
 		}
 	}
 	return saveAs ? digiDoc->saveAs(target) : digiDoc->save(target);
-}
-
-QString MainWindow::selectFile( const QString &title, const QString &filename, bool fixedExt )
-{
-	static const QString adoc = tr("Documents (%1)").arg(QLatin1String("*.adoc"));
-	static const QString bdoc = tr("Documents (%1)").arg(QLatin1String("*.bdoc"));
-	static const QString cdoc = tr("Documents (%1)").arg(QLatin1String("*.cdoc"));
-	static const QString cdoc2 = tr("Documents (%1)").arg(QLatin1String("*.cdoc2"));
-	static const QString edoc = tr("Documents (%1)").arg(QLatin1String("*.edoc"));
-	static const QString asic = tr("Documents (%1)").arg(QLatin1String("*.asice *.sce"));
-	const QString ext = QFileInfo( filename ).suffix().toLower();
-	QStringList exts;
-	QString active;
-	if( fixedExt )
-	{
-		if(ext == QLatin1String("bdoc")) exts.append(bdoc);
-		if(ext == QLatin1String("cdoc")) exts.append(cdoc);
-		if(ext == QLatin1String("cdoc2")) exts.append(cdoc2);
-		if(ext == QLatin1String("asice") || ext == QLatin1String("sce")) exts.append(asic);
-		if(ext == QLatin1String("edoc")) exts.append(edoc);
-		if(ext == QLatin1String("adoc")) exts.append(adoc);
-	}
-	else
-	{
-		exts = QStringList{ bdoc, asic, edoc, adoc };
-		if(ext == QLatin1String("bdoc")) active = bdoc;
-		if(ext == QLatin1String("cdoc")) active = cdoc;
-		if(ext == QLatin1String("cdoc2")) active = cdoc2;
-		if(ext == QLatin1String("asice") || ext == QLatin1String("sce")) active = asic;
-		if(ext == QLatin1String("edoc")) active = edoc;
-		if(ext == QLatin1String("adoc")) active = adoc;
-	}
-
-	return FileDialog::getSaveFileName( this, title, filename, exts.join(QLatin1String(";;")), &active );
 }
 
 void MainWindow::selectPage(Pages page)
@@ -803,11 +730,6 @@ void MainWindow::showSettings(int page)
 		return;
 	}
 	SettingsDialog dlg(page, this);
-
-	connect(&dlg, &SettingsDialog::langChanged, this, [this](const QString& lang ) {
-		qApp->loadTranslation( lang );
-		ui->retranslateUi(this);
-	});
 	connect(&dlg, &SettingsDialog::togglePrinting, ui->signContainerPage, &ContainerPage::togglePrinting);
 	dlg.exec();
 }
@@ -860,7 +782,7 @@ void MainWindow::removeCryptoFile(int index)
 	{
 		if(QFile::exists(cryptoDoc->fileName()))
 			QFile::remove(cryptoDoc->fileName());
-		resetCryptoDoc();
+		cryptoDoc.reset();
 		selectPage(Pages::CryptoIntro);
 	}
 }
@@ -922,19 +844,6 @@ void MainWindow::removeSignatureFile(int index)
 	}
 }
 
-void MainWindow::containerToEmail(const QString &fileName)
-{
-	if(!QFileInfo::exists(fileName))
-		return;
-	QUrlQuery q;
-	q.addQueryItem(QStringLiteral("subject"), QFileInfo(fileName).fileName());
-	q.addQueryItem(QStringLiteral("attachment"), QFileInfo(fileName).absoluteFilePath());
-	QUrl url;
-	url.setScheme(QStringLiteral("mailto"));
-	url.setQuery(q);
-	QDesktopServices::openUrl(url);
-}
-
 bool MainWindow::validateFiles(const QString &container, const QStringList &files)
 {
 	// Check that container is not dropped into itself
@@ -964,7 +873,7 @@ bool MainWindow::wrap(const QString& wrappedFile, bool enclose)
 	else
 		signatureContainer->documentModel()->addTempFiles(cryptoDoc->documentModel()->tempFiles());
 
-	resetCryptoDoc();
+	cryptoDoc.reset();
 	resetDigiDoc(signatureContainer.release());
 
 	ui->signContainerPage->transition(digiDoc);
@@ -1059,30 +968,8 @@ void MainWindow::updateSelectorData(TokenData data)
 	});
 }
 
-void MainWindow::containerSummary()
-{
-#ifdef Q_OS_WIN
-	if( QPrinterInfo::availablePrinterNames().isEmpty() )
-	{
-		WarningDialog::show(this,
-			tr("In order to view Validity Confirmation Sheet there has to be at least one printer installed!"));
-		return;
-	}
-#endif
-	auto *dialog = new QPrintPreviewDialog( this );
-	dialog->printer()->setPageSize( QPageSize( QPageSize::A4 ) );
-	dialog->printer()->setPageOrientation( QPageLayout::Portrait );
-	dialog->setMinimumHeight( 700 );
-	connect(dialog, &QPrintPreviewDialog::paintRequested, digiDoc, [this](QPrinter *printer) {
-		PrintSheet(digiDoc, printer);
-	});
-	dialog->exec();
-	dialog->deleteLater();
-}
-
 void
 MainWindow::decryptClicked(const libcdoc::Lock *lock)
 {
 	decrypt(lock);
 }
-

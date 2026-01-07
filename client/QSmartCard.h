@@ -52,7 +52,7 @@ public:
 	QSmartCardData();
 	QSmartCardData( const QSmartCardData &other );
 	QSmartCardData(QSmartCardData &&other) noexcept;
-	~QSmartCardData();
+	~QSmartCardData() noexcept;
 	QSmartCardData& operator=( const QSmartCardData &other );
 	QSmartCardData& operator=(QSmartCardData &&other) noexcept;
 	bool operator ==(const QSmartCardData &other) const;
@@ -85,19 +85,6 @@ class QSmartCard final: public QObject
 {
 	Q_OBJECT
 public:
-	enum ErrorType : quint8
-	{
-		NoError,
-		UnknownError,
-		BlockedError,
-		TimeoutError,
-		CancelError,
-		DifferentError,
-		LenghtError,
-		ValidateError,
-		OldNewPinSameError
-	};
-
 	enum PinAction : quint8
 	{
 		ActivateWithPuk,
@@ -108,23 +95,19 @@ public:
 	};
 
 	explicit QSmartCard(QObject *parent = nullptr);
-	~QSmartCard() final;
+	~QSmartCard() noexcept final;
 
-	ErrorType change( QSmartCardData::PinType type, QWidget* parent, const QString &newpin, const QString &pin, const QString &title, const QString &bodyText );
 	QSmartCardData data() const;
 	TokenData tokenData() const;
-	void reloadCard(const TokenData &token, bool reloadCounters = false);
-	void reloadCounters();
-	ErrorType unblock( QSmartCardData::PinType type, QWidget* parent, const QString &pin, const QString &puk, const QString &title, const QString &bodyText );
+	void reloadCard(const TokenData &token, bool reloadCounters);
 
-	ErrorType pinUnblock(QSmartCardData::PinType type, PinAction action = UnblockWithPuk, QWidget* parent = nullptr);
-	ErrorType pinChange(QSmartCardData::PinType type, PinAction action = ChangeWithPin, QWidget* parent = nullptr);
+	bool pinChange(QSmartCardData::PinType type, PinAction action = ChangeWithPin, QWidget* parent = nullptr);
 
-signals:
+Q_SIGNALS:
 	void dataChanged(const QSmartCardData &data);
 
 private:
-	Q_DISABLE_COPY(QSmartCard)
+	Q_DISABLE_COPY_MOVE(QSmartCard)
 
 	class Private;
 	std::unique_ptr<Private> d;

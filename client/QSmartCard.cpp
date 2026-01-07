@@ -24,18 +24,19 @@
 #include "Utils.h"
 #include "dialogs/PinPopup.h"
 #include "dialogs/PinUnblock.h"
+#include "effects/FadeInNotification.h"
 
 #include <QtCore/QDateTime>
 #include <QtCore/QLoggingCategory>
 #include <QtCore/QScopedPointer>
 #include <QtNetwork/QSslKey>
 
-Q_LOGGING_CATEGORY(CLog, "qdigidoc4.QSmartCard")
+static Q_LOGGING_CATEGORY(CLog, "qdigidoc4.QSmartCard")
 
 QSmartCardData::QSmartCardData(): d(new QSmartCardDataPrivate) {}
 QSmartCardData::QSmartCardData(const QSmartCardData &other) = default;
 QSmartCardData::QSmartCardData(QSmartCardData &&other) noexcept = default;
-QSmartCardData::~QSmartCardData() = default;
+QSmartCardData::~QSmartCardData() noexcept = default;
 QSmartCardData& QSmartCardData::operator =(const QSmartCardData &other) = default;
 QSmartCardData& QSmartCardData::operator =(QSmartCardData &&other) noexcept = default;
 bool QSmartCardData::operator ==(const QSmartCardData &other) const
@@ -197,15 +198,14 @@ QPCSCReader::Result IDEMIACard::change(QPCSCReader *reader, QSmartCardData::PinT
 	QByteArray pin = pinTemplate(pin_);
 	switch (type) {
 	case QSmartCardData::Pin1Type:
-		reader->transfer(AID);
 		cmd[3] = 1;
 		break;
 	case QSmartCardData::PukType:
-		reader->transfer(AID);
 		cmd[3] = 2;
 		break;
 	case QSmartCardData::Pin2Type:
-		reader->transfer(AID_QSCD);
+		if(auto result = reader->transfer(AID_QSCD); !result)
+			return result;
 		cmd[3] = char(0x85);
 		break;
 	}
@@ -223,7 +223,8 @@ bool IDEMIACard::loadPerso(QPCSCReader *reader, QSmartCardDataPrivate *d) const
 	if(d->data.isEmpty() && reader->transfer(APDU("00A4090C 04 3F00 5000")))
 	{
 		QByteArray cmd = APDU("00A4020C 02 5001");
-		for(char data = QSmartCardData::SurName; data <= QSmartCardData::Expiry; ++data)
+		using enum QSmartCardData::PersonalDataType;
+		for(char data = SurName; data <= Expiry; ++data)
 		{
 			cmd[6] = data;
 			if(!reader->transfer(cmd))
@@ -236,19 +237,19 @@ bool IDEMIACard::loadPerso(QPCSCReader *reader, QSmartCardDataPrivate *d) const
 				record.clear();
 			switch(data)
 			{
-			case QSmartCardData::SurName:
-			case QSmartCardData::FirstName:
-			case QSmartCardData::Citizen:
-			case QSmartCardData::Id:
-			case QSmartCardData::DocumentId:
+			case SurName:
+			case FirstName:
+			case Citizen:
+			case Id:
+			case DocumentId:
 				d->data[QSmartCardData::PersonalDataType(data)] = record;
 				break;
-			case QSmartCardData::BirthDate:
+			case BirthDate:
 				if(!record.isEmpty())
-					d->data[QSmartCardData::BirthDate] = QDate::fromString(record.left(10), QStringLiteral("dd MM yyyy"));
+					d->data[BirthDate] = QDate::fromString(record.left(10), QStringLiteral("dd MM yyyy"));
 				break;
-			case QSmartCardData::Expiry:
-				d->data[QSmartCardData::Expiry] = QDateTime::fromString(record, QStringLiteral("dd MM yyyy")).addDays(1).addSecs(-1);
+			case Expiry:
+				d->data[Expiry] = QDateTime::fromString(record, QStringLiteral("dd MM yyyy")).addDays(1).addSecs(-1);
 				break;
 			default: break;
 			}
@@ -293,29 +294,29 @@ bool IDEMIACard::loadPerso(QPCSCReader *reader, QSmartCardDataPrivate *d) const
 QByteArray IDEMIACard::pinTemplate(const QString &pin)
 {
 	QByteArray result = pin.toUtf8();
+#if QT_VERSION >= QT_VERSION_CHECK(6, 4, 0)
+	result.resize(12, char(0xFF));
+#else
 	result += QByteArray(12 - result.size(), char(0xFF));
+#endif
 	return result;
 }
 
 QPCSCReader::Result IDEMIACard::replace(QPCSCReader *reader, QSmartCardData::PinType type, const QString &puk_, const QString &pin_) const
 {
-	auto result = reader->transfer(AID);
-	if(!result)
-		return result;
-
 	QByteArray puk = pinTemplate(puk_);
 	QByteArray cmd = VERIFY;
 	cmd[3] = 2;
 	cmd[4] = char(puk.size());
-	result = transfer(reader, true, cmd + puk, type, 0, true);
-	if(!result)
+	if(auto result = transfer(reader, true, cmd + puk, QSmartCardData::PukType, 0, true); !result)
 		return result;
 
 	cmd = Card::REPLACE;
 	cmd[2] = 2;
 	if(type == QSmartCardData::Pin2Type)
 	{
-		reader->transfer(IDEMIACard::AID_QSCD);
+		if(auto result = reader->transfer(IDEMIACard::AID_QSCD); !result)
+			return result;
 		cmd[3] = char(0x85);
 	}
 	else
@@ -323,17 +324,6 @@ QPCSCReader::Result IDEMIACard::replace(QPCSCReader *reader, QSmartCardData::Pin
 	QByteArray pin = pinTemplate(pin_);
 	cmd[4] = char(pin.size());
 	return transfer(reader, false, cmd + pin, type, 0, false);
-}
-
-QByteArray IDEMIACard::sign(QPCSCReader *reader, const QByteArray &dgst) const
-{
-	if(!reader->transfer(AID_OT) ||
-		!reader->transfer(APDU("002241A4 09 8004FF200800840181")))
-		return {};
-	QByteArray cmd = APDU("00880000 00 00");
-	cmd[4] = char(std::min<size_t>(size_t(dgst.size()), 0x30));
-	cmd.insert(5, dgst.left(0x30));
-	return reader->transfer(cmd).data;
 }
 
 bool IDEMIACard::updateCounters(QPCSCReader *reader, QSmartCardDataPrivate *d) const
@@ -455,7 +445,11 @@ bool THALESCard::loadPerso(QPCSCReader *reader, QSmartCardDataPrivate *d) const
 QByteArray THALESCard::pinTemplate(const QString &pin)
 {
 	QByteArray result = pin.toUtf8();
+#if QT_VERSION >= QT_VERSION_CHECK(6, 4, 0)
+	result.resize(12, char(0x00));
+#else
 	result += QByteArray(12 - result.size(), char(0x00));
+#endif
 	return result;
 }
 
@@ -467,22 +461,6 @@ QPCSCReader::Result THALESCard::replace(QPCSCReader *reader, QSmartCardData::Pin
 	cmd[3] = char(0x80 | type);
 	cmd[4] = char(puk.size() + pin.size());
 	return transfer(reader, false, cmd + puk + pin, type, quint8(puk.size()), true);
-}
-
-QByteArray THALESCard::sign(QPCSCReader *reader, const QByteArray &dgst) const
-{
-	if(!reader->transfer(APDU("002241B6 09 800154840101")))
-		return {};
-
-	QByteArray send {0x90, char(dgst.size())};
-	send.append(dgst);
-	send.insert(0, char(send.size()));
-	send.insert(0, APDU("002A90A0"));
-
-	if(!reader->transfer(send))
-		return {};
-
-	return reader->transfer(APDU("002A9E9A 00")).data;
 }
 
 bool THALESCard::updateCounters(QPCSCReader *reader, QSmartCardDataPrivate *d) const
@@ -500,42 +478,10 @@ bool THALESCard::updateCounters(QPCSCReader *reader, QSmartCardDataPrivate *d) c
 			auto changed = info[0xDF2F];
 			d->locked[QSmartCardData::PinType(type)] = changed && changed.data[0] == 0;
 		}
+		else
+			return false;
 	}
 	return true;
-}
-
-
-
-QSharedPointer<QPCSCReader> QSmartCard::Private::connect(const QString &reader)
-{
-	qCDebug(CLog) << "Connecting to reader" << reader;
-	QSharedPointer<QPCSCReader> r(new QPCSCReader(reader, &QPCSC::instance()));
-	if(!r->connect() || !r->beginTransaction())
-		r.clear();
-	return r;
-}
-
-QSmartCard::ErrorType QSmartCard::Private::handlePinResult(QPCSCReader *reader, const QPCSCReader::Result &response, bool forceUpdate)
-{
-	if(!response || forceUpdate)
-		card->updateCounters(reader, t.d);
-	switch(response.SW)
-	{
-	case 0x9000: return QSmartCard::NoError;
-	case 0x63C0: return QSmartCard::BlockedError;//pin retry count 0
-	case 0x63C1: // Validate error, 1 tries left
-	case 0x63C2: // Validate error, 2 tries left
-	case 0x63C3: return QSmartCard::ValidateError;
-	case 0x6400: return QSmartCard::TimeoutError; // Timeout (SCM)
-	case 0x6401: return QSmartCard::CancelError; // Cancel (OK, SCM)
-	case 0x6402: return QSmartCard::DifferentError;
-	case 0x6403: return QSmartCard::LenghtError;
-	case 0x6983:
-	case 0x6984: return QSmartCard::BlockedError;
-	case 0x6985:
-	case 0x6A80: return QSmartCard::OldNewPinSameError;
-	default: return QSmartCard::UnknownError;
-	}
 }
 
 
@@ -543,98 +489,125 @@ QSmartCard::ErrorType QSmartCard::Private::handlePinResult(QPCSCReader *reader, 
 QSmartCard::QSmartCard(QObject *parent)
 	: QObject(parent)
 	, d(new Private)
-{
-}
+{}
 
-QSmartCard::~QSmartCard() = default;
-
-QSmartCard::ErrorType QSmartCard::change(QSmartCardData::PinType type, QWidget* parent, const QString &newpin, const QString &pin, const QString &title, const QString &bodyText)
-{
-	PinPopup::PinFlags flags = {};
-	switch(type)
-	{
-	case QSmartCardData::Pin1Type: flags = PinPopup::Pin1Type; break;
-	case QSmartCardData::Pin2Type: flags = PinPopup::Pin2Type; break;
-	case QSmartCardData::PukType: flags = PinPopup::PukType; break;
-	default: return UnknownError;
-	}
-	QSharedPointer<QPCSCReader> reader(d->connect(d->t.reader()));
-	if(!reader)
-		return UnknownError;
-
-	QScopedPointer<PinPopup> p;
-	if(d->t.isPinpad())
-	{
-		p.reset(new PinPopup(PinPopup::PinFlags(flags|PinPopup::PinpadChangeFlag), title, {}, parent, bodyText));
-		p->open();
-	}
-	return d->handlePinResult(reader.data(), d->card->change(reader.data(), type, pin, newpin), true);
-}
+QSmartCard::~QSmartCard() noexcept = default;
 
 QSmartCardData QSmartCard::data() const { return d->t; }
 
-QSmartCard::ErrorType QSmartCard::pinChange(QSmartCardData::PinType type, QSmartCard::PinAction action, QWidget* parent)
+bool QSmartCard::pinChange(QSmartCardData::PinType type, QSmartCard::PinAction action, QWidget* parent)
 {
-	QScopedPointer<PinUnblock> p;
+	std::unique_ptr<PinPopup,QScopedPointerDeleteLater> popup;
 	QByteArray oldPin, newPin;
-	QString title, textBody;
-
-	if (!d->t.isPinpad())
+	QSmartCardData::PinType src = type;
+	if(action != QSmartCard::ChangeWithPin && action != QSmartCard::ActivateWithPin)
 	{
-		p.reset(new PinUnblock(type, action, d->t.retryCount(type), d->t.data(QSmartCardData::BirthDate).toDate(),
-			d->t.data(QSmartCardData::Id).toString(), d->t.isPUKReplacable(), parent));
-		if (!p->exec())
-			return CancelError;
-		oldPin = p->firstCodeText().toUtf8();
-		newPin = p->newCodeText().toUtf8();
+		if(type == QSmartCardData::PukType)
+			return false;
+		src = QSmartCardData::PukType;
 	}
-	else
-	{
-		SslCertificate cert = d->t.authCert();
-		title = cert.toString(cert.showCN() ? QStringLiteral("CN, serialNumber") : QStringLiteral("GN SN, serialNumber"));
-		textBody = tr("To change %1 on a PinPad reader the old %1 code has to be entered first and then the new %1 code twice.").arg(QSmartCardData::typeString(type));
-	}
-	return change(type, parent, newPin, oldPin, title, textBody);
-}
 
-QSmartCard::ErrorType QSmartCard::pinUnblock(QSmartCardData::PinType type, QSmartCard::PinAction action, QWidget* parent)
-{
-	QScopedPointer<PinUnblock> p;
-	QByteArray puk, newPin;
-	QString title, textBody;
-
-	if (!d->t.isPinpad())
+	if(d->t.isPinpad())
 	{
-		p.reset(new PinUnblock(type, action,
-			d->t.retryCount(QSmartCardData::PukType), d->t.data(QSmartCardData::BirthDate).toDate(), d->t.data(QSmartCardData::Id).toString(), d->t.isPUKReplacable(), parent));
-		if (!p->exec())
-			return CancelError;
-		puk = p->firstCodeText().toUtf8();
-		newPin = p->newCodeText().toUtf8();
-	}
-	else
-	{
-		SslCertificate cert = d->t.authCert();
-		title = cert.toString(cert.showCN() ? QStringLiteral("CN, serialNumber") : QStringLiteral("GN SN, serialNumber"));
+		QString bodyText;
 		switch(action)
 		{
 		case QSmartCard::ActivateWithPuk:
 		case QSmartCard::ChangeWithPuk:
-			textBody = tr("To change %1 code with the PUK code on a PinPad reader the PUK code has to be entered first and then the %1 code twice.").arg(QSmartCardData::typeString(type));
+			bodyText = tr("To change %1 code with the PUK code on a PinPad reader the PUK code has to be entered first and then the %1 code twice.").arg(QSmartCardData::typeString(type));
 			break;
 		case QSmartCard::UnblockWithPuk:
-			textBody = tr("To unblock the %1 code on a PinPad reader the PUK code has to be entered first and then the %1 code twice.").arg(QSmartCardData::typeString(type));
+			bodyText = tr("To unblock the %1 code on a PinPad reader the PUK code has to be entered first and then the %1 code twice.").arg(QSmartCardData::typeString(type));
 			break;
 		default:
+			bodyText = tr("To change %1 on a PinPad reader the old %1 code has to be entered first and then the new %1 code twice.").arg(QSmartCardData::typeString(type));
 			break;
 		}
-	}
-	return unblock(type, parent, newPin, puk, title, textBody);
-}
 
-void QSmartCard::reloadCounters()
-{
-	QMetaObject::invokeMethod(this, [this] { reloadCard(d->token, true); });
+		PinPopup::TokenFlags flags = PinPopup::PinpadChangeFlag;
+		switch(d->t.retryCount(src))
+		{
+		case 2: flags |= PinPopup::PinCountLow; break;
+		case 1: flags |= PinPopup::PinFinalTry; break;
+		case 0: flags |= PinPopup::PinLocked; break;
+		default: break;
+		}
+		popup.reset(new PinPopup(src, flags, d->t.authCert(), parent, bodyText));
+		popup->open();
+	}
+	else
+	{
+		PinUnblock p(type, action, d->t.retryCount(src), d->t.data(QSmartCardData::BirthDate).toDate(),
+			d->t.data(QSmartCardData::Id).toString(), d->t.isPUKReplacable(), parent);
+		if (!p.exec())
+			return false;
+		oldPin = p.firstCodeText().toUtf8();
+		newPin = p.newCodeText().toUtf8();
+	}
+
+	QPCSCReader reader(d->t.reader(), &QPCSC::instance());
+	if(!reader.connect() || !reader.beginTransaction())
+	{
+		FadeInNotification::warning(parent, tr("Changing %1 failed").arg(QSmartCardData::typeString(type)));
+		return false;
+	}
+	QPCSCReader::Result	response = src == QSmartCardData::PukType ?
+		d->card->replace(&reader, type, oldPin, newPin) :
+		d->card->change(&reader, type, oldPin, newPin);
+	switch(response.SW)
+	{
+	case 0x9000:
+		d->card->updateCounters(&reader, d->t.d);
+		switch(action)
+		{
+			using enum QSmartCard::PinAction;
+		case ActivateWithPin:
+		case ActivateWithPuk:
+			FadeInNotification::success(parent, tr("%1 changed!").arg(QSmartCardData::typeString(type)));
+			return true;
+		case ChangeWithPin:
+		case ChangeWithPuk:
+			FadeInNotification::success(parent, tr("%1 changed!").arg(QSmartCardData::typeString(type)));
+			return false; // Do not update ui, there is no warning in MainWindow when PIN usage count is low
+		case UnblockWithPuk:
+			FadeInNotification::success(parent, tr("%1 has been changed and the certificate has been unblocked!")
+				.arg(QSmartCardData::typeString(type)));
+			return true;
+		}
+		return false;
+	case 0x63C0: //pin retry count 0
+	case 0x6983:
+	case 0x6984:
+		d->card->updateCounters(&reader, d->t.d);
+		FadeInNotification::warning(parent, tr("%1 blocked").arg(QSmartCardData::typeString(src)));
+		return true;
+	case 0x63C1: // Validate error, 1 tries left
+	case 0x63C2: // Validate error, 2 tries left
+	case 0x63C3:
+		d->card->updateCounters(&reader, d->t.d);
+		FadeInNotification::warning(parent, tr("Wrong %1 code. You can try %n more time(s).", nullptr,
+			d->t.retryCount(src)).arg(QSmartCardData::typeString(src)));
+		return false;
+	case 0x6400:
+		FadeInNotification::warning(parent, tr("%1 timeout").arg(QSmartCardData::typeString(type)));
+		return false; // Timeout (SCM)
+	case 0x6401:
+		return false; // Cancel (OK, SCM)
+	case 0x6402:
+		FadeInNotification::warning(parent, tr("New %1 codes doesn't match").arg(QSmartCardData::typeString(type)));
+		return false;
+	case 0x6403:
+		FadeInNotification::warning(parent, tr("%1 length has to be between %2 and 12")
+			.arg(QSmartCardData::typeString(src)).arg(QSmartCardData::minPinLen(src)));
+		return false;
+	case 0x6985:
+	case 0x6A80:
+		FadeInNotification::warning(parent, tr("Old and new %1 has to be different!").arg(QSmartCardData::typeString(type)));
+		return false;
+	default:
+		FadeInNotification::warning(parent, tr("Changing %1 failed").arg(QSmartCardData::typeString(type)));
+		return false;
+	}
 }
 
 void QSmartCard::reloadCard(const TokenData &token, bool reloadCounters)
@@ -663,7 +636,7 @@ void QSmartCard::reloadCard(const TokenData &token, bool reloadCounters)
 		return;
 
 	QString reader = token.reader();
-	if(token.reader().endsWith(QStringLiteral("..."))) {
+	if(token.reader().endsWith(QLatin1String("..."))) {
 		for(const QString &test: QPCSC::instance().readers()) {
 			if(test.startsWith(token.reader().left(token.reader().size() - 3)))
 				reader = test;
@@ -671,55 +644,32 @@ void QSmartCard::reloadCard(const TokenData &token, bool reloadCounters)
 	}
 
 	qCDebug(CLog) << "Read" << reader;
-	QScopedPointer<QPCSCReader> selectedReader(new QPCSCReader(reader, &QPCSC::instance()));
-	if(!selectedReader->connect() || !selectedReader->beginTransaction())
+	QPCSCReader selectedReader(reader, &QPCSC::instance());
+	if(!selectedReader.connect() || !selectedReader.beginTransaction())
 		return;
 
-	std::unique_ptr<Card> card;
-	if(IDEMIACard::isSupported(selectedReader->atr()))
-		card = std::make_unique<IDEMIACard>();
-	else if(THALESCard::isSupported(selectedReader->atr()))
-		card = std::make_unique<THALESCard>();
+	if(auto atr = selectedReader.atr();
+		IDEMIACard::isSupported(atr))
+		d->card = std::make_unique<IDEMIACard>();
+	else if(THALESCard::isSupported(atr))
+		d->card = std::make_unique<THALESCard>();
 	else {
-		qDebug() << "Unsupported card";
+		qCDebug(CLog) << "Unsupported card";
 		return;
 	}
 
 	qCDebug(CLog) << "Read card" << token.card() << "info";
-	QSharedDataPointer<QSmartCardDataPrivate> t;
-	t = d->t.d;
-	t->reader = selectedReader->name();
-	t->pinpad = selectedReader->isPinPad();
-	d->card = std::move(card);
-	if(d->card->loadPerso(selectedReader.data(), t))
+	QSharedDataPointer<QSmartCardDataPrivate> t = d->t.d;
+	t->reader = selectedReader.name();
+	t->pinpad = selectedReader.isPinPad();
+	if(d->card->loadPerso(&selectedReader, t))
 	{
 		d->t.d = std::move(t);
 		emit dataChanged(d->t);
 	}
 	else
-		qDebug() << "Failed to read card info, try again next round";
+		qCDebug(CLog) << "Failed to read card info, try again next round";
 }
 
 TokenData QSmartCard::tokenData() const { return d->token; }
 
-QSmartCard::ErrorType QSmartCard::unblock(QSmartCardData::PinType type, QWidget* parent, const QString &pin, const QString &puk, const QString &title, const QString &bodyText)
-{
-	PinPopup::PinFlags flags = {};
-	switch(type)
-	{
-	case QSmartCardData::Pin1Type: flags = PinPopup::Pin1Type; break;
-	case QSmartCardData::Pin2Type: flags = PinPopup::Pin2Type; break;
-	default: return UnknownError;
-	}
-	QSharedPointer<QPCSCReader> reader(d->connect(d->t.reader()));
-	if(!reader)
-		return UnknownError;
-
-	QScopedPointer<PinPopup> p;
-	if(d->t.isPinpad())
-	{
-		p.reset(new PinPopup(PinPopup::PinFlags(flags|PinPopup::PinpadChangeFlag), title, {}, parent, bodyText));
-		p->open();
-	}
-	return d->handlePinResult(reader.data(), d->card->replace(reader.data(), type, puk, pin), true);
-}
