@@ -72,11 +72,11 @@ public:
 		libcdoc::result_t result = waitFor([&]{
 			std::vector<uint8_t> fmk;
 			libcdoc::result_t result = reader->getFMK(fmk, lock_idx);
-			qDebug() << "getFMK result: " << result << " " << reader->getLastErrorStr();
+			qDebug() << "getFMK result: " << result << " " << QString::fromStdString(reader->getLastErrorStr());
 			if (result != libcdoc::OK) return result;
 			result = reader->decrypt(fmk, &cons);
 			std::fill(fmk.begin(), fmk.end(), 0);
-			qDebug() << "Decryption result: " << result << " " << reader->getLastErrorStr();
+			qDebug() << "Decryption result: " << result << " " << QString::fromStdString(reader->getLastErrorStr());
 			return result;
 		});
 		if (result == libcdoc::OK) {
@@ -123,7 +123,7 @@ public:
 				writer_last_error = writer->getLastErrorStr();
 				std::filesystem::remove(std::filesystem::path(fileName.toStdString()));
 			}
-			qDebug() << "Encryption result: " << result << " " << writer->getLastErrorStr();
+			qDebug() << "Encryption result: " << result << " " << QString::fromStdString(writer->getLastErrorStr());
 			delete writer;
 			ofs.close();
 			if (result == libcdoc::OK) {
