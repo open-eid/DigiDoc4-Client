@@ -140,9 +140,9 @@ public:
 		const QString &country,
 		const QString &role,
 		digidoc::Signer *signer);
-	QList<DigiDocSignature> signatures() const;
+	const QList<DigiDocSignature>& signatures() const;
 	ria::qdigidoc4::ContainerState state();
-	QList<DigiDocSignature> timestamps() const;
+	const QList<DigiDocSignature>& timestamps() const;
 
 	static QStringList parseException(const digidoc::Exception &e,
 		digidoc::Exception::ExceptionCode &code);

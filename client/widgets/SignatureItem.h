@@ -19,7 +19,6 @@
 
 #pragma once
 
-#include "common_enums.h"
 #include "widgets/Item.h"
 
 class DigiDocSignature;
@@ -29,7 +28,7 @@ class SignatureItem final : public Item
 	Q_OBJECT
 
 public:
-	explicit SignatureItem(DigiDocSignature s, ria::qdigidoc4::ContainerState state, QWidget *parent = nullptr);
+	explicit SignatureItem(DigiDocSignature s, QWidget *parent = nullptr);
 	~SignatureItem() final;
 
 	ria::qdigidoc4::WarningType getError() const;
@@ -41,8 +40,8 @@ private:
 	bool event(QEvent *event) final;
 	bool eventFilter(QObject *o, QEvent *e) final;
 	void init();
-	void updateNameField();
+	void elideRole();
 
-	class Private;
+	struct Private;
 	Private *ui;
 };
