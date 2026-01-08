@@ -193,9 +193,9 @@ void SignatureItem::initTabOrder(QWidget *item)
 	setTabOrder(ui->name, lastTabWidget());
 }
 
-bool SignatureItem::isSelfSigned(const QString& cardCode, const QString& mobileCode) const
+bool SignatureItem::isSelfSigned(const QString& cardCode) const
 {
-	return !ui->serial.isEmpty() && (ui->serial == cardCode || ui->serial == mobileCode);
+	return !ui->serial.isEmpty() && ui->serial == cardCode;
 }
 
 QWidget* SignatureItem::lastTabWidget()

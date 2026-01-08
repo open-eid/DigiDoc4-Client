@@ -462,6 +462,10 @@
         <translation>Для отображения листа подтверждения действительности цифровой подписи на компьютере должен быть установлен как минимум один принтер!</translation>
     </message>
     <message>
+        <source>You are about to delete the last file in the container, it is removed along with the container.</source>
+        <translation>Вы собираетесь удалить последний файл в контейнере, он удаляется вместе с контейнером.</translation>
+    </message>
+    <message>
         <source>Change</source>
         <translation>Поменять</translation>
     </message>
@@ -836,6 +840,14 @@
         <source>Documents (%1)</source>
         <translation>Документы (%1)</translation>
     </message>
+    <message>
+        <source>Save file</source>
+        <translation>Сохранить файл</translation>
+    </message>
+    <message>
+        <source>Move file</source>
+        <translation>Переместить файл</translation>
+    </message>
 </context>
 <context>
     <name>FileItem</name>
@@ -852,10 +864,6 @@
 </context>
 <context>
     <name>FileList</name>
-    <message>
-        <source>Save file</source>
-        <translation>Сохранить файл</translation>
-    </message>
     <message>
         <source>Add files</source>
         <translation>Добавить файлы</translation>
@@ -1123,10 +1131,6 @@
         &lt;p align=center&gt;Получатель - физическое или юридическое лицо, для которого документ может быть зашифрован. Если документ зашифрован, только указанный получатель может видеть его содержимое.&lt;/p&gt;</translation>
     </message>
     <message>
-        <source>Enter personal code, company or registry code</source>
-        <translation>Введите личный код, учреждение или код регистра</translation>
-    </message>
-    <message>
         <source>Add recipients</source>
         <translation>Добавьте получателей</translation>
     </message>
@@ -1342,10 +1346,6 @@ ID-картой</translation>
         <translation>Сохранение контейнера %1 не удалось. Сохранить в другой каталог?</translation>
     </message>
     <message>
-        <source>Save file</source>
-        <translation>Сохранить файл</translation>
-    </message>
-    <message>
         <source>The container has been successfully signed!</source>
         <translation>Контейнер успешно подписан!</translation>
     </message>
@@ -1368,14 +1368,6 @@ ID-картой</translation>
     <message>
         <source>Converted to crypto container!</source>
         <translation>Переделан в контейнер для зашифровывания!</translation>
-    </message>
-    <message>
-        <source>Move file</source>
-        <translation>Переместить файл</translation>
-    </message>
-    <message>
-        <source>You are about to delete the last file in the container, it is removed along with the container.</source>
-        <translation>Вы собираетесь удалить последний файл в контейнере, он удаляется вместе с контейнером.</translation>
     </message>
     <message>
         <source>Removing signature</source>
@@ -2176,18 +2168,6 @@ ID-картой</translation>
         <translation>Язык</translation>
     </message>
     <message>
-        <source>Container default location</source>
-        <translation>Расположение контейнера по умолчанию</translation>
-    </message>
-    <message>
-        <source>Same folder</source>
-        <translation>Та же папка</translation>
-    </message>
-    <message>
-        <source>Select the default directory</source>
-        <translation>Выберите каталог</translation>
-    </message>
-    <message>
         <source>Show print summary</source>
         <translation>Показать подтверждающий лист</translation>
     </message>
@@ -2258,10 +2238,6 @@ Additional licenses and components</source>
         <translation>&lt;p&gt;Разработчиком программного обеспечения ID-карты является Riigi Infosüsteemi Amet.&lt;br /&gt;
 Если у вас возникнут вопросы, пожалуйста, обратитесь на &lt;a href=&quot;https://www.id.ee/ru/id-pomoshh/&quot;&gt;id.ee&lt;/a&gt;.&lt;/p&gt;
 Дополнительные лицензии и компоненты</translation>
-    </message>
-    <message>
-        <source>Select folder</source>
-        <translation>Выбрать каталог</translation>
     </message>
     <message>
         <source>Save as</source>
@@ -2831,7 +2807,7 @@ Additional licenses and components</source>
     </message>
     <message>
         <source>PIN%1 code must be changed in order to authenticate</source>
-        <translation>Чтобы аутентифицироваться, необходимо изменить PIN%1.</translation>
+        <translation>Чтобы аутентифицироваться, необходимо изменить PIN%1</translation>
     </message>
     <message>
         <source>PIN%1 code must be changed in order to sign</source>

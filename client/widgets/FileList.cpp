@@ -38,7 +38,7 @@ using namespace ria::qdigidoc4;
 FileList::FileList(QWidget *parent)
 : ItemList(parent)
 {
-	connect(ui->add, &QToolButton::clicked, this, &FileList::selectFile);
+	connect(this, &FileList::add, this, &FileList::selectFile);
 	connect(ui->download, &QToolButton::clicked, this, &FileList::saveAll);
 }
 
@@ -50,7 +50,7 @@ void FileList::addFile( const QString& file )
 
 	connect(item, &FileItem::open, this, &FileList::open);
 	connect(item, &FileItem::download, this, &FileList::save);
-
+	connect(item, &FileItem::destroyed, this, &FileList::updateDownload);
 	updateDownload();
 }
 
@@ -117,8 +117,9 @@ void FileList::open(FileItem *item) const
 
 void FileList::removeItem(int row)
 {
+	if(!documentModel->removeRow(row))
+		return;
 	ItemList::removeItem(row);
-
 	updateDownload();
 }
 
@@ -128,7 +129,7 @@ void FileList::save(FileItem *item)
 	{
 		QString extension = QFileInfo(item->getFile()).suffix();
 		QString capitalized = extension[0].toUpper() + extension.mid(1);
-		QString dest = FileDialog::getSaveFileName(this, tr("Save file"),
+		QString dest = FileDialog::getSaveFileName(this, FileDialog::tr("Save file"),
 			QFileInfo(container).dir().absolutePath() + QDir::separator() + FileDialog::safeName(item->getFile()),
 			QStringLiteral("%1 (*%2)").arg(capitalized, extension));
 
@@ -174,7 +175,7 @@ void FileList::saveAll()
 				continue;
 			if(b == QMessageBox::Save)
 			{
-				dest = FileDialog::getSaveFileName( this, tr("Save file"), dest );
+				dest = FileDialog::getSaveFileName(this, FileDialog::tr("Save file"), dest);
 				if( dest.isEmpty() )
 					continue;
 			}
@@ -203,9 +204,8 @@ void FileList::setModel(DocumentModel *documentModel)
 {
 	this->documentModel = documentModel;
 	disconnect(documentModel, &DocumentModel::added, nullptr, nullptr);
-	disconnect(documentModel, &DocumentModel::removed, nullptr, nullptr);
 	connect(documentModel, &DocumentModel::added, this, &FileList::addFile);
-	connect(documentModel, &DocumentModel::removed, this, &FileList::removeItem);
+
 	auto count = documentModel->rowCount();
 	for(int i = 0; i < count; i++)
 		addFile(documentModel->data(i));

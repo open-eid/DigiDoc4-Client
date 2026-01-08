@@ -462,6 +462,10 @@
         <translation>In order to view Validity Confirmation Sheet there has to be at least one printer installed!</translation>
     </message>
     <message>
+        <source>You are about to delete the last file in the container, it is removed along with the container.</source>
+        <translation>You are about to delete the last file in the container, it is removed along with the container.</translation>
+    </message>
+    <message>
         <source>Change</source>
         <translation>Change</translation>
     </message>
@@ -836,6 +840,14 @@
         <source>Documents (%1)</source>
         <translation>Documents (%1)</translation>
     </message>
+    <message>
+        <source>Save file</source>
+        <translation>Save file</translation>
+    </message>
+    <message>
+        <source>Move file</source>
+        <translation>Move file</translation>
+    </message>
 </context>
 <context>
     <name>FileItem</name>
@@ -852,10 +864,6 @@
 </context>
 <context>
     <name>FileList</name>
-    <message>
-        <source>Save file</source>
-        <translation>Save file</translation>
-    </message>
     <message>
         <source>Add files</source>
         <translation>Add files</translation>
@@ -1123,10 +1131,6 @@
         &lt;p align=center&gt;The recipient is a physical person or legal entity for whom the document can be encrypted. If the document is encrypted, only the specified recipient can see its content.&lt;/p&gt;</translation>
     </message>
     <message>
-        <source>Enter personal code, company or registry code</source>
-        <translation>Enter personal code, company or registry code</translation>
-    </message>
-    <message>
         <source>Add recipients</source>
         <translation>Add recipients</translation>
     </message>
@@ -1342,10 +1346,6 @@ ID-Card</translation>
         <translation>Cannot alter container %1. Save to different location?</translation>
     </message>
     <message>
-        <source>Save file</source>
-        <translation>Save file</translation>
-    </message>
-    <message>
         <source>The container has been successfully signed!</source>
         <translation>The container has been successfully signed!</translation>
     </message>
@@ -1368,14 +1368,6 @@ ID-Card</translation>
     <message>
         <source>Converted to crypto container!</source>
         <translation>Converted to crypto container!</translation>
-    </message>
-    <message>
-        <source>Move file</source>
-        <translation>Move file</translation>
-    </message>
-    <message>
-        <source>You are about to delete the last file in the container, it is removed along with the container.</source>
-        <translation>You are about to delete the last file in the container, it is removed along with the container.</translation>
     </message>
     <message>
         <source>Removing signature</source>
@@ -2175,18 +2167,6 @@ ID-Card</translation>
         <translation>Language</translation>
     </message>
     <message>
-        <source>Container default location</source>
-        <translation>Container default location</translation>
-    </message>
-    <message>
-        <source>Same folder</source>
-        <translation>Same folder</translation>
-    </message>
-    <message>
-        <source>Select the default directory</source>
-        <translation>Select the default directory</translation>
-    </message>
-    <message>
         <source>Show print summary</source>
         <translation>Show print summary</translation>
     </message>
@@ -2257,10 +2237,6 @@ Additional licenses and components</source>
         <translation>&lt;p&gt;Estonian ID-software is released by Information Systems&apos;s Authority&lt;br /&gt;
 In case of questions please contact our support via &lt;a href=&quot;https://www.id.ee/en/id-help/&quot;&gt;id.ee&lt;/a&gt;.&lt;/p&gt;
 Additional licenses and components</translation>
-    </message>
-    <message>
-        <source>Select folder</source>
-        <translation>Select folder</translation>
     </message>
     <message>
         <source>Save as</source>

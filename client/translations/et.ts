@@ -462,6 +462,10 @@
         <translation>Digitaalallkirjade kinnituslehe kuvamiseks peab olema arvutis vähemalt üks printer seadistatud!</translation>
     </message>
     <message>
+        <source>You are about to delete the last file in the container, it is removed along with the container.</source>
+        <translation>Oled kustutamas viimast faili ümbrikus, koos sellega eemaldatakse ka ümbrik.</translation>
+    </message>
+    <message>
         <source>Change</source>
         <translation>Muuda</translation>
     </message>
@@ -836,6 +840,14 @@
         <source>Documents (%1)</source>
         <translation>Dokumendid (%1)</translation>
     </message>
+    <message>
+        <source>Save file</source>
+        <translation>Salvesta fail</translation>
+    </message>
+    <message>
+        <source>Move file</source>
+        <translation>Liiguta fail</translation>
+    </message>
 </context>
 <context>
     <name>FileItem</name>
@@ -852,10 +864,6 @@
 </context>
 <context>
     <name>FileList</name>
-    <message>
-        <source>Save file</source>
-        <translation>Salvesta fail</translation>
-    </message>
     <message>
         <source>Add files</source>
         <translation>Lisa faile</translation>
@@ -1123,10 +1131,6 @@
         &lt;p align=center&gt;Adressaat on füüsiline või juriidiline isik või asutus, kelle jaoks saab dokumendi krüpteerida. Kui dokument on krüpteeritud, siis saab ainult konkreetne adressaat selle sisu näha.&lt;/p&gt;</translation>
     </message>
     <message>
-        <source>Enter personal code, company or registry code</source>
-        <translation>Sisesta isikukood, asutus või registrikood</translation>
-    </message>
-    <message>
         <source>Add recipients</source>
         <translation>Lisa adressaadid</translation>
     </message>
@@ -1342,10 +1346,6 @@ ID-kaardiga</translation>
         <translation>Ümbriku %1 salvestamine ebaõnnestus. Salvestada teise asukohta?</translation>
     </message>
     <message>
-        <source>Save file</source>
-        <translation>Salvesta fail</translation>
-    </message>
-    <message>
         <source>The container has been successfully signed!</source>
         <translation>Ümbrik on edukalt allkirjastatud!</translation>
     </message>
@@ -1368,14 +1368,6 @@ ID-kaardiga</translation>
     <message>
         <source>Converted to crypto container!</source>
         <translation>Konverteeritud turvaümbrikuks!</translation>
-    </message>
-    <message>
-        <source>Move file</source>
-        <translation>Liiguta fail</translation>
-    </message>
-    <message>
-        <source>You are about to delete the last file in the container, it is removed along with the container.</source>
-        <translation>Oled kustutamas viimast faili ümbrikus, koos sellega eemaldatakse ka ümbrik.</translation>
     </message>
     <message>
         <source>Removing signature</source>
@@ -2175,18 +2167,6 @@ ID-kaardiga</translation>
         <translation>Keel</translation>
     </message>
     <message>
-        <source>Container default location</source>
-        <translation>Ümbriku loomise vaikekataloog</translation>
-    </message>
-    <message>
-        <source>Same folder</source>
-        <translation>Samasse kataloogi</translation>
-    </message>
-    <message>
-        <source>Select the default directory</source>
-        <translation>Vali vaikimisi kataloog</translation>
-    </message>
-    <message>
         <source>Show print summary</source>
         <translation>Näita kinnituslehte</translation>
     </message>
@@ -2257,10 +2237,6 @@ Additional licenses and components</source>
         <translation>&lt;p&gt;ID-tarkvara arendaja Riigi Infosüsteemi Amet&lt;br /&gt;
 Küsimuste korral võta ühendust &lt;a href=&quot;https://www.id.ee/id-abikeskus/&quot;&gt;ID-abikeskusega/a&gt;.&lt;/p&gt;
 Täiendavad litsentsid ja komponendid</translation>
-    </message>
-    <message>
-        <source>Select folder</source>
-        <translation>Vali kataloog</translation>
     </message>
     <message>
         <source>Save as</source>
