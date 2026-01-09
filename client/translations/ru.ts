@@ -2172,18 +2172,6 @@ ID-картой</translation>
         <translation>Язык</translation>
     </message>
     <message>
-        <source>Container default location</source>
-        <translation>Расположение контейнера по умолчанию</translation>
-    </message>
-    <message>
-        <source>Same folder</source>
-        <translation>Та же папка</translation>
-    </message>
-    <message>
-        <source>Select the default directory</source>
-        <translation>Выберите каталог</translation>
-    </message>
-    <message>
         <source>Show print summary</source>
         <translation>Показать подтверждающий лист</translation>
     </message>
@@ -2254,10 +2242,6 @@ Additional licenses and components</source>
         <translation>&lt;p&gt;Разработчиком программного обеспечения ID-карты является Riigi Infosüsteemi Amet.&lt;br /&gt;
 Если у вас возникнут вопросы, пожалуйста, обратитесь на &lt;a href=&quot;https://www.id.ee/ru/id-pomoshh/&quot;&gt;id.ee&lt;/a&gt;.&lt;/p&gt;
 Дополнительные лицензии и компоненты</translation>
-    </message>
-    <message>
-        <source>Select folder</source>
-        <translation>Выбрать каталог</translation>
     </message>
     <message>
         <source>Save as</source>
