@@ -148,8 +148,8 @@ public:
 		digidoc::Exception::ExceptionCode &code);
 
 private:
-	bool isError(bool failure, const QString &msg = {}) const;
-	static void setLastError( const QString &msg, const digidoc::Exception &e );
+	bool isError(bool failure, const QString &title, const QString &text) const;
+	static void setLastError(const QString &title, const digidoc::Exception &e);
 
 	std::unique_ptr<digidoc::Container> b;
 	std::unique_ptr<digidoc::Container> parentContainer;

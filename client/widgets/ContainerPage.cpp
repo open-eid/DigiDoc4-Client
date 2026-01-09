@@ -176,7 +176,7 @@ void ContainerPage::handleAction(int type)
 			return signatureItem->isSelfSigned(code);
 		}))
 	{
-		auto *dlg = new WarningDialog(tr("The document has already been signed by you."), this);
+		auto *dlg = WarningDialog::create(this)->withTitle(tr("The document has already been signed by you."));
 		dlg->addButton(tr("Continue signing"), QMessageBox::Ok);
 		if(dlg->exec() != QMessageBox::Ok)
 			return;
@@ -203,7 +203,7 @@ void ContainerPage::deleteConfirm(C *c, int index)
 		ui->leftPane->removeItem(index);
 		return;
 	}
-	auto *dlg = new WarningDialog(tr("You are about to delete the last file in the container, it is removed along with the container."), this);
+	auto *dlg = WarningDialog::create(this)->withText(tr("You are about to delete the last file in the container, it is removed along with the container."));
 	dlg->setCancelText(WarningDialog::Cancel);
 	dlg->resetCancelStyle(false);
 	dlg->addButton(WarningDialog::Remove, QMessageBox::Ok, true);
@@ -340,8 +340,9 @@ void ContainerPage::transition(DigiDoc* container)
 #ifdef Q_OS_WIN
 		if( QPrinterInfo::availablePrinterNames().isEmpty() )
 		{
-			WarningDialog::show(this,
-				tr("In order to view Validity Confirmation Sheet there has to be at least one printer installed!"));
+			WarningDialog::create(this)
+				->withText(tr("In order to view Validity Confirmation Sheet there has to be at least one printer installed!"))
+				->open();
 			return;
 		}
 #endif

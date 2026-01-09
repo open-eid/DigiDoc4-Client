@@ -53,8 +53,8 @@ SignatureItem::SignatureItem(DigiDocSignature s, QWidget *parent)
 	ui->remove->setVisible(ui->signature.container()->isSupported());
 	connect(ui->remove, &QToolButton::clicked, this, [this]{
 		const SslCertificate c = ui->signature.cert();
-		auto *dlg = new WarningDialog(tr("Remove signature %1?")
-			.arg(c.toString(c.showCN() ? QStringLiteral("CN serialNumber") : QStringLiteral("GN SN serialNumber"))), this);
+		auto *dlg = WarningDialog::create(this)->withTitle(tr("Remove signature %1?")
+			.arg(c.toString(c.showCN() ? QStringLiteral("CN serialNumber") : QStringLiteral("GN SN serialNumber"))));
 		dlg->setCancelText(WarningDialog::Cancel);
 		dlg->resetCancelStyle(false);
 		dlg->addButton(WarningDialog::Remove, QMessageBox::Ok, true);
