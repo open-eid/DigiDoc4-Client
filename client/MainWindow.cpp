@@ -245,8 +245,9 @@ bool MainWindow::encrypt()
 
 	while (!FileDialog::fileIsWritable(cryptoDoc->fileName()))
 	{
-		auto *dlg = new WarningDialog(tr("Cannot alter container %1. Save different location?")
-			.arg(FileDialog::normalized(cryptoDoc->fileName())), this);
+		auto *dlg = WarningDialog::create(this)
+			->withTitle(CryptoDoc::tr("Failed to encrypt document"))
+			->withText(tr("Cannot alter container %1. Save different location?").arg(FileDialog::normalized(cryptoDoc->fileName())));
 		dlg->addButton(WarningDialog::YES, QMessageBox::Yes);
 		if(dlg->exec() != QMessageBox::Yes)
 			return false;
@@ -543,23 +544,20 @@ void MainWindow::resetDigiDoc(std::unique_ptr<DigiDoc> &&doc)
 {
 	if(digiDoc && digiDoc->isModified())
 	{
-		QString warning, cancelTxt, saveTxt;
+		auto *dlg = WarningDialog::create(this);
+		QString saveTxt;
 		if(digiDoc->state() == UnsignedContainer)
 		{
-			warning = tr("You've added file(s) to container, but these are not signed yet. Keep the unsigned container or remove it?");
-			cancelTxt = WarningDialog::buttonLabel(WarningDialog::Remove);
-			saveTxt = tr("Keep");
+			dlg->withText(tr("You've added file(s) to container, but these are not signed yet. Keep the unsigned container or remove it?"));
+			dlg->setCancelText(WarningDialog::Remove);
+			dlg->addButton(tr("Keep"), QMessageBox::Save);
 		}
 		else
 		{
-			warning = tr("You've changed the open container but have not saved any changes. Save the changes or close without saving?");
-			cancelTxt = tr("Do not save");
-			saveTxt = tr("Save");
+			dlg->withText(tr("You've changed the open container but have not saved any changes. Save the changes or close without saving?"));
+			dlg->setCancelText(tr("Do not save"));
+			dlg->addButton(tr("Save"), QMessageBox::Save);
 		}
-
-		auto *dlg = new WarningDialog(warning, this);
-		dlg->setCancelText(cancelTxt);
-		dlg->addButton(saveTxt, QMessageBox::Save);
 		if(dlg->exec() == QMessageBox::Save)
 			save();
 	}
@@ -574,7 +572,9 @@ bool MainWindow::save()
 	QString target = digiDoc->fileName();
 	while(!FileDialog::fileIsWritable(target))
 	{
-		auto *dlg = new WarningDialog(tr("Cannot alter container %1. Save different location?").arg(target), this);
+		auto *dlg = WarningDialog::create(this)
+			->withTitle(tr("Cannot alter container"))
+			->withText(tr("Cannot alter container %1. Save different location?").arg(FileDialog::normalized(target)));
 		dlg->addButton(WarningDialog::YES, QMessageBox::Yes);
 		if(dlg->exec() != QMessageBox::Yes)
 			return false;
@@ -701,10 +701,11 @@ bool MainWindow::wrap(const QString& wrappedFile, bool pdf)
 
 bool MainWindow::wrapContainer(bool signing)
 {
-	QString msg = signing ?
-		tr("Files can not be added to the signed container. The system will create a new container which shall contain the signed document and the files you wish to add.") :
-		tr("Files can not be added to the cryptocontainer. The system will create a new container which shall contain the cypto-document and the files you wish to add.");
-	auto *dlg = new WarningDialog(msg, this);
+	auto *dlg = WarningDialog::create(this)
+		->withTitle(signing ? tr("Files can not be added to the signed container") : tr("Files can not be added to the cryptocontainer"))
+		->withText(signing ?
+			tr("The system will create a new container which shall contain the signed document and the files you wish to add.") :
+			tr("The system will create a new container which shall contain the cypto-document and the files you wish to add."));
 	dlg->setCancelText(WarningDialog::Cancel);
 	dlg->addButton(tr("Continue"), QMessageBox::Ok);
 	return dlg->exec() == QMessageBox::Ok;

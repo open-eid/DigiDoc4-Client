@@ -51,7 +51,7 @@ private:
 	void addRecipientToRightPane(Item *item, bool update = true);
 
 	void search(const QString &term, bool select = false, const QString &type = {});
-	void showError(const QString &msg, const QString &details = {});
+	void showError(const QString &title, const QString &details);
 	void showResult(const QList<QSslCertificate> &result, int resultCount, const QVariantMap &userData);
 
 	static AddressItem* itemListValue(ItemList *list, const CKey &cert);

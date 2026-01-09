@@ -92,7 +92,7 @@ private:
 	static void msgHandler(QtMsgType type, const QMessageLogContext &ctx, const QString &msg);
 	static void parseArgs(const QString &msg = {});
 	static void parseArgs(QStringList args);
-	static void showWarning(const QString &msg, const digidoc::Exception &e);
+	static void showWarning(const QString &title, const digidoc::Exception &e);
 #if defined(Q_OS_MAC)
 	static void initMacEvents();
 	static void deinitMacEvents();

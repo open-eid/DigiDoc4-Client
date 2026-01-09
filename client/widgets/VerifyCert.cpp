@@ -49,37 +49,45 @@ VerifyCert::VerifyCert(QWidget *parent)
 			pinType == QSmartCardData::Pin1Type ? QStringLiteral("-auth") : QStringLiteral("-sign"));
 	});
 	connect(ui->checkCert, &QPushButton::clicked, this, [this]{
-		QString msg = tr("Read more <a href=\"https://www.id.ee/en/article/validity-of-id-card-certificates/\">here</a>.");
+		auto *dlg = WarningDialog::create(this);
+		QString readMore = tr("Read more <a href=\"https://www.id.ee/en/article/validity-of-id-card-certificates/\">here</a>.");
 		switch(c.validateOnline())
 		{
 		case SslCertificate::Good:
 			if(SslCertificate::CertType::TempelType == c.type())
-				msg.prepend(tr("Certificate is valid. "));
+				dlg->withTitle(tr("Certificate is valid"));
 			else if(c.keyUsage().contains(SslCertificate::NonRepudiation))
-				msg.prepend(tr("Your ID-card signing certificate is valid. "));
+				dlg->withTitle(tr("Your ID-card signing certificate is valid"));
 			else
-				msg.prepend(tr("Your ID-card authentication certificate is valid. "));
+				dlg->withTitle(tr("Your ID-card authentication certificate is valid"));
 			break;
 		case SslCertificate::Revoked:
 			if(SslCertificate::CertType::TempelType == c.type())
-				msg.prepend(tr("Certificate is not valid. A valid certificate is required for electronic use. "));
+				dlg->withTitle(tr("Certificate is not valid"))
+					->withText(tr("A valid certificate is required for electronic use. ") + readMore);
 			else if(c.keyUsage().contains(SslCertificate::NonRepudiation))
-				msg.prepend(tr("Your ID-card signing certificate is not valid. You need valid certificates to use your ID-card electronically. "));
+				dlg->withTitle(tr("Your ID-card signing certificate is not valid"))
+					->withText(tr("You need valid certificates to use your ID-card electronically. ") + readMore);
 			else
-				msg.prepend(tr("Your ID-card authentication certificate is not valid. You need valid certificates to use your ID-card electronically. "));
+				dlg->withTitle(tr("Your ID-card authentication certificate is not valid"))
+					->withText(tr("You need valid certificates to use your ID-card electronically. ") + readMore);
 			break;
 		case SslCertificate::Unknown:
 			if(SslCertificate::CertType::TempelType == c.type())
-				msg.prepend(tr("Certificate status is unknown. A valid certificate is required for electronic use. "));
+				dlg->withTitle(tr("Certificate status is unknown"))
+					->withText(tr("A valid certificate is required for electronic use. ") + readMore);
 			else if(c.keyUsage().contains(SslCertificate::NonRepudiation))
-				msg.prepend(tr("Your ID-card signing certificate status is unknown. You need valid certificates to use your ID-card electronically. "));
+				dlg->withTitle(tr("Your ID-card signing certificate status is unknown"))
+					->withText(tr("You need valid certificates to use your ID-card electronically. ") + readMore);
 			else
-				msg.prepend(tr("Your ID-card authentication certificate status is unknown. You need valid certificates to use your ID-card electronically. "));
+				dlg->withTitle(tr("Your ID-card authentication certificate status is unknown"))
+					->withText(tr("You need valid certificates to use your ID-card electronically. ") + readMore);
 			break;
 		default:
-			msg = tr("Certificate status check failed. Please check your internet connection.");
+			dlg->withTitle(tr("Certificate status check failed"))
+				->withText(tr("Please check your internet connection."));
 		}
-		WarningDialog::show(this, msg);
+		dlg->open();
 	});
 
 	clear();
