@@ -53,6 +53,7 @@ enum Actions : unsigned char {
     SignatureToken,
     ClearSignatureWarning,
     ClearCryptoWarning,
+    EncryptLT
 };
 
 enum ItemType : unsigned char {
