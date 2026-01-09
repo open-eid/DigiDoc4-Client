@@ -39,21 +39,24 @@ public:
 		YES,
 		Remove,
 	};
-	explicit WarningDialog(const QString &text, const QString &details, QWidget *parent = nullptr);
-	explicit WarningDialog(const QString &text, QWidget *parent = nullptr);
 	~WarningDialog() final;
 
-	void addButton(ButtonText label, int ret, bool red = false);
-	void addButton(const QString& label, int ret, bool red = false);
-	void setCancelText(ButtonText label);
-	void setCancelText(const QString& label);
-	void resetCancelStyle(bool warning);
-	static WarningDialog *show(const QString &text, const QString &details = {});
-	static WarningDialog *show(QWidget *parent, const QString &text, const QString &details = {});
+	WarningDialog *addButton(ButtonText label, int ret, bool red = false);
+	WarningDialog *addButton(const QString& label, int ret, bool red = false);
+	WarningDialog *setCancelText(ButtonText label);
+	WarningDialog *setCancelText(const QString& label);
+	WarningDialog *resetCancelStyle(bool warning);
+	WarningDialog *withTitle(const QString &text);
+	WarningDialog *withText(const QString &text);
+	WarningDialog *withDetails(const QString &details);
+
+	static WarningDialog *create(QWidget *parent = {});
+
+private:
+	explicit WarningDialog(QWidget *parent = nullptr);
 
 	static QString buttonLabel(ButtonText label);
 
-private:
 	Ui::WarningDialog *ui;
 	WaitDialogHider hider;
 	QPushButton *cancel;

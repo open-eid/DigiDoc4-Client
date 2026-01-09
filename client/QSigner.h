@@ -55,10 +55,10 @@ Q_SIGNALS:
 	void cacheChanged();
 	void authDataChanged( const TokenData &token );
 	void signDataChanged( const TokenData &token );
-	void error( const QString &msg );
+	void error(const QString &title, const QString &text);
 
 private:
-	quint8 login(const TokenData &cert) const;
+	quint8 login(const TokenData &token) const;
 	static QCryptographicHash::Algorithm methodToNID(const std::string &method);
 	void run() final;
 

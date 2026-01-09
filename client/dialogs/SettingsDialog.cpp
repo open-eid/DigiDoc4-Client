@@ -300,19 +300,23 @@ SettingsDialog::SettingsDialog(int page, QWidget *parent)
 		if(QFile f(qdigidoc4log); f.open(QFile::WriteOnly|QFile::Truncate))
 			f.write({});
 #ifdef Q_OS_MACOS
-		WarningDialog::show(this, tr("Restart DigiDoc4 Client to activate logging. Read more "
-			"<a href=\"https://www.id.ee/en/article/log-file-generation-in-digidoc4-client/\">here</a>."));
+		WarningDialog::create(this)
+			->withTitle(tr("Restart DigiDoc4 Client to activate logging"))
+			->withText(tr("Read more <a href=\"https://www.id.ee/en/article/log-file-generation-in-digidoc4-client/\">here</a>."))
+			->open();
 #else
-		auto *dlg = WarningDialog::show(this, tr("Restart DigiDoc4 Client to activate logging. Read more "
-			"<a href=\"https://www.id.ee/en/article/log-file-generation-in-digidoc4-client/\">here</a>. Restart now?"));
-		dlg->setCancelText(WarningDialog::NO);
-		dlg->addButton(WarningDialog::YES, QMessageBox::Yes);
+		auto *dlg = WarningDialog::create(this)
+			->withTitle(tr("Restart DigiDoc4 Client to activate logging"))
+			->withText(tr("Read more <a href=\"https://www.id.ee/en/article/log-file-generation-in-digidoc4-client/\">here</a>. Restart now?"))
+			->setCancelText(WarningDialog::NO)
+			->addButton(WarningDialog::YES, QMessageBox::Yes);
 		connect(dlg, &WarningDialog::finished, qApp, [](int result) {
 			if(result == QMessageBox::Yes) {
 				qApp->setProperty("restart", true);
 				QApplication::quit();
 			}
 		});
+		dlg->open();
 #endif
 	});
 
@@ -332,11 +336,16 @@ SettingsDialog::SettingsDialog(int page, QWidget *parent)
 #ifdef CONFIG_URL
 	connect(qApp->conf(), &Configuration::finished, this, [this](bool /*update*/, const QString &error){
 		if(!error.isEmpty()) {
-			WarningDialog::show(this, tr("Checking updates has failed.") + "<br />" + tr("Please try again."), error);
+			WarningDialog::create(this)
+				->withTitle(tr("Checking updates has failed."))
+				->withText(tr("Please try again."))
+				->withDetails(error)
+				->open();
 			return;
 		}
-		auto *dlg = WarningDialog::show(this, tr("DigiDoc4 Client configuration update was successful."));
+		auto *dlg = WarningDialog::create(this)->withTitle(tr("DigiDoc4 Client configuration update was successful."));
 		new Overlay(dlg);
+		dlg->open();
 #ifdef Q_OS_WIN
 		QString path = QApplication::applicationDirPath() + QLatin1String("/id-updater.exe");
 		if (QFile::exists(path))
@@ -386,7 +395,7 @@ SettingsDialog::SettingsDialog(int page, QWidget *parent)
 				cert.issuerInfo(QSslCertificate::Organization).contains(u"Zetes Estonia OÜ"_s, Qt::CaseInsensitive))
 				CertDeleteCertificateFromStore(CertDuplicateCertificateContext(c));
 		}
-		WarningDialog::show(this, tr("Redundant certificates have been successfully removed."));
+		WarningDialog::create(this)->withTitle(tr("Redundant certificates have been successfully removed."))->open();
 	});
 #endif
 
@@ -597,7 +606,7 @@ void SettingsDialog::saveFile(const QString &name, const QByteArray &content)
 	if( filename.isEmpty() )
 		return;
 	if(QFile f(filename); !f.open(QIODevice::WriteOnly|QIODevice::Text) || !f.write(content))
-		WarningDialog::show(this, tr("Failed write to file!"));
+		WarningDialog::create(this)->withText(tr("Failed write to file!"))->open();
 }
 
 

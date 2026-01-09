@@ -51,14 +51,9 @@ ItemList::~ItemList()
 void ItemList::addHeader(const char *label)
 {
 	headerText = label;
-
 	header = new QLabel(tr(label), this);
-	header->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
-	header->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-	header->setFocusPolicy(Qt::TabFocus);
-	header->resize(415, 64);
-	header->setFixedHeight(64);
-	header->setStyleSheet(QStringLiteral("border-bottom: 1px solid #E7EAEF; color: #003168;"));
+	header->setAlignment(Qt::AlignCenter);
+	header->setStyleSheet(QStringLiteral("border-bottom: 1px solid #E7EAEF; color: #003168; font-size: 22px; padding: 16px 0px;"));
 	ui->itemLayout->insertWidget(0, header);
 	setTabOrder(this, header);
 	setTabOrder(header, ui->header);
@@ -143,12 +138,14 @@ int ItemList::index(Item *item) const
 	return items.indexOf(item);
 }
 
-void ItemList::init(ItemType item, const char *header)
+void ItemList::init(ListType item, const char *header)
 {
 	ui->listHeader->setText(tr(title = header));
 
 	switch(item)
 	{
+	case AddedAdresses:
+		break;
 	case ToAddAdresses:
 		addTitle = QT_TR_NOOP("Add all");
 		ui->findGroup->show();
@@ -176,8 +173,6 @@ void ItemList::init(ItemType item, const char *header)
 		break;
 	case ItemSignature:
 		ui->add->hide();
-		break;
-	default:
 		break;
 	}
 	ui->add->setText(tr(addTitle));

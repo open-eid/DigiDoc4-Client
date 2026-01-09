@@ -54,14 +54,6 @@ enum Actions : unsigned char {
     ClearCryptoWarning,
 };
 
-enum ItemType : unsigned char {
-    ItemFile,
-    ItemSignature,
-    ItemAddress,
-    ToAddAdresses,
-    AddedAdresses,
-};
-
 enum Pages : unsigned char {
     SignIntro,
     SignDetails,

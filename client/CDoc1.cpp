@@ -24,10 +24,10 @@
 #include "QCryptoBackend.h"
 #include "QSigner.h"
 #include "Utils.h"
-#include "dialogs/FileDialog.h"
 
 #include <QtCore/QBuffer>
 #include <QtCore/QDebug>
+#include <QtCore/QDir>
 #include <QtCore/QTemporaryFile>
 #include <QtCore/QXmlStreamWriter>
 #include <QtNetwork/QSslKey>
@@ -68,7 +68,7 @@ const QHash<QString, QCryptographicHash::Algorithm> CDoc1::SHA_MTH{
 CDoc1::CDoc1(const QString &path)
 	: QFile(path)
 {
-	setLastError(CryptoDoc::tr("An error occurred while opening the document."));
+	setLastError(CryptoDoc::tr("An error occurred while opening the document"));
 	if(!open(QFile::ReadOnly))
 		return;
 	readXML(this, [this](QXmlStreamReader &xml) {
@@ -195,7 +195,7 @@ bool CDoc1::decryptPayload(const QByteArray &key)
 		return setLastError(CryptoDoc::tr("Error parsing document"));
 	data = Crypto::cipher(ENC_MTH[method], key, data, false);
 	if(data.isEmpty())
-		return setLastError(CryptoDoc::tr("Failed to decrypt document"));
+		return setLastError(QCoreApplication::translate("QSigner", "Failed to decrypt document"));
 
 	// remove ANSIX923 padding
 	if(data.size() > 0 && method == AES128CBC_MTH)

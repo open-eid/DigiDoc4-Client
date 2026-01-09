@@ -34,7 +34,7 @@ public:
 
 Q_SIGNALS:
 	void searchResult(const QList<QSslCertificate> &result, int resultCount, const QVariantMap &userData);
-	void error( const QString &msg, const QString &details );
+	void error(const QString &title, const QString &details);
 
 private:
 	bool init();

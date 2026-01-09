@@ -32,16 +32,20 @@ bool DocumentModel::addFileCheck(const QString &container, QFileInfo file)
 	// Check that container is not dropped into itself
 	if(QFileInfo(container) == file)
 	{
-		auto *dlg = new WarningDialog(tr("Cannot add container to same container\n%1")
-			.arg(FileDialog::normalized(container)));
-		dlg->setCancelText(WarningDialog::Cancel);
-		dlg->open();
+		WarningDialog::create()
+			->withTitle(tr("Cannot add container to same container"))
+			->withText(FileDialog::normalized(container))
+			->setCancelText(WarningDialog::Cancel)
+			->open();
 		return false;
 	}
 
 	if(file.size() == 0)
 	{
-		WarningDialog::show(tr("Cannot add empty file to the container."));
+		WarningDialog::create()
+			->withTitle(tr("Cannot add empty file to the container"))
+			->withText(FileDialog::normalized(file.absoluteFilePath()))
+			->open();
 		return false;
 	}
 	QString fileName = file.fileName();
@@ -49,8 +53,10 @@ bool DocumentModel::addFileCheck(const QString &container, QFileInfo file)
 	{
 		if(fileName == data(row))
 		{
-			WarningDialog::show(tr("Cannot add the file to the envelope. File '%1' is already in container.")
-				.arg(FileDialog::normalized(fileName)));
+			WarningDialog::create()
+				->withTitle(tr("File is already in container"))
+				->withText(FileDialog::normalized(fileName))
+				->open();
 			return false;
 		}
 	}
@@ -90,8 +96,10 @@ bool DocumentModel::verifyFile(const QString &f)
 	QJsonArray allowedExts = Application::confValue(QLatin1String("ALLOWED-EXTENSIONS")).toArray(defaultArray);
 	if(allowedExts.contains(QJsonValue(QFileInfo(f).suffix().toLower())))
 		return true;
-	auto *dlg = new WarningDialog(tr("A file with this extension cannot be opened in the DigiDoc4 Client. Download the file to view it."));
-	dlg->setCancelText(WarningDialog::OK);
-	dlg->open();
+	WarningDialog::create()
+		->withTitle(tr("Failed to open file"))
+		->withText(tr("A file with this extension cannot be opened in the DigiDoc4 Client. Download the file to view it."))
+		->setCancelText(WarningDialog::OK)
+		->open();
 	return false;
 }

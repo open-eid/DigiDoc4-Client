@@ -37,10 +37,18 @@ class ItemList : public QScrollArea
 	Q_OBJECT
 
 public:
+	enum ListType : unsigned char {
+		ItemFile,
+		ItemSignature,
+		ItemAddress,
+		ToAddAdresses,
+		AddedAdresses,
+	};
+
 	explicit ItemList(QWidget *parent = {});
 	~ItemList() override;
 
-	void init(ria::qdigidoc4::ItemType itemType, const char *header);
+	void init(ListType itemType, const char *header);
 	void addHeader(const char *label);
 	void addHeaderWidget(Item *widget);
 	void addWidget(Item *widget);
