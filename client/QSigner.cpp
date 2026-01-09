@@ -121,8 +121,11 @@ QSigner::QSigner(QObject *parent)
 	EC_KEY_METHOD_set_sign(d->ecmethod, sign, sign_setup, Private::ecdsa_do_sign);
 
 	d->smartcard = new QSmartCard(parent);
-	connect(this, &QSigner::error, this, [](const QString &msg) {
-		WarningDialog::show(msg);
+	connect(this, &QSigner::error, this, [](const QString &title, const QString &msg) {
+		WarningDialog::create()
+			->withTitle(title)
+			->withText(msg)
+			->open();
 	});
 	connect(this, &QSigner::signDataChanged, this, [this](const TokenData &token) {
 		std::string method;
@@ -172,13 +175,13 @@ QByteArray QSigner::decrypt(std::function<QByteArray (QCryptoBackend *)> &&func)
 {
 	if(!d->lock.tryLockForWrite(10 * 1000))
 	{
-		Q_EMIT error( tr("Signing/decrypting is already in progress another window.") );
+		Q_EMIT error(tr("Failed to decrypt document"), tr("Signing/decrypting is already in progress another window."));
 		return {};
 	}
 
 	if( d->auth.cert().isNull() )
 	{
-		Q_EMIT error( tr("Authentication certificate is not selected.") );
+		Q_EMIT error(tr("Failed to decrypt document"), tr("Authentication certificate is not selected."));
 		d->lock.unlock();
 		return {};
 	}
@@ -188,10 +191,10 @@ QByteArray QSigner::decrypt(std::function<QByteArray (QCryptoBackend *)> &&func)
 	case QCryptoBackend::PinOK: break;
 	case QCryptoBackend::PinCanceled: return {};
 	case QCryptoBackend::PinLocked:
-		Q_EMIT error(QCryptoBackend::errorString(status));
+		Q_EMIT error(tr("Failed to decrypt document"), QCryptoBackend::errorString(status));
 		return {};
 	default:
-		Q_EMIT error(tr("Failed to login token") + ' ' + QCryptoBackend::errorString(status));
+		Q_EMIT error(tr("Failed to decrypt document"), tr("Failed to login token") + ' ' + QCryptoBackend::errorString(status));
 		return {};
 	}
 	QByteArray result = waitFor(func, d->backend);
@@ -200,7 +203,7 @@ QByteArray QSigner::decrypt(std::function<QByteArray (QCryptoBackend *)> &&func)
 		return {};
 
 	if(result.isEmpty())
-		Q_EMIT error( tr("Failed to decrypt document") );
+		Q_EMIT error(tr("Failed to decrypt document"), {});
 	return result;
 }
 
@@ -228,14 +231,17 @@ QSslKey QSigner::key() const
 	return key;
 }
 
-quint8 QSigner::login(const TokenData &cert) const
+quint8 QSigner::login(const TokenData &token) const
 {
-	switch(auto status = d->backend->login(cert))
+	switch(auto status = d->backend->login(token))
 	{
 	case QCryptoBackend::PinOK: return status;
 	case QCryptoBackend::PinIncorrect:
-		(new WarningDialog(QCryptoBackend::errorString(status), Application::mainWindow()))->exec();
-		return login(cert);
+		WarningDialog::create()
+			->withTitle(SslCertificate(token.cert()).keyUsage().contains(SslCertificate::NonRepudiation) ? tr("Failed to sign document") : tr("Failed to decrypt document"))
+			->withText(QCryptoBackend::errorString(status))
+			->exec();
+		return login(token);
 	default:
 		d->lock.unlock();
 		// QSmartCard should also know that PIN is blocked.
@@ -290,7 +296,7 @@ void QSigner::run()
 			auto *pkcs11 = qobject_cast<QPKCS11*>(d->backend);
 			if(pkcs11 && !pkcs11->reload())
 			{
-				Q_EMIT error(tr("Failed to load PKCS#11 module"));
+				Q_EMIT error(tr("Failed to load PKCS#11 module"), {});
 				return;
 			}
 

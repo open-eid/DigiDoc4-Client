@@ -182,8 +182,9 @@ void ContainerPage::handleAction(int type)
 			return signatureItem->isSelfSigned(code);
 		}))
 	{
-		auto *dlg = new WarningDialog(tr("The document has already been signed by you."), this);
-		dlg->addButton(tr("Continue signing"), QMessageBox::Ok);
+		auto *dlg = WarningDialog::create(this)
+			->withTitle(tr("The document has already been signed by you"))
+			->addButton(tr("Continue signing"), QMessageBox::Ok);
 		if(dlg->exec() != QMessageBox::Ok)
 			return;
 	}
@@ -209,10 +210,12 @@ void ContainerPage::deleteConfirm(C *c, int index)
 		ui->leftPane->removeItem(index);
 		return;
 	}
-	auto *dlg = new WarningDialog(tr("You are about to delete the last file in the container, it is removed along with the container."), this);
-	dlg->setCancelText(WarningDialog::Cancel);
-	dlg->resetCancelStyle(false);
-	dlg->addButton(WarningDialog::Remove, QMessageBox::Ok, true);
+	auto *dlg = WarningDialog::create(this)
+		->withTitle(tr("You are about to delete the last file in the container"))
+		->withText(tr("It is removed along with the container."))
+		->setCancelText(WarningDialog::Cancel)
+		->resetCancelStyle(false)
+		->addButton(WarningDialog::Remove, QMessageBox::Ok, true);
 	if (dlg->exec() != QMessageBox::Ok)
 		return;
 	window()->setWindowFilePath({});
@@ -318,7 +321,7 @@ void ContainerPage::transition(CryptoDoc *container, const QSslCertificate &cert
 	isSupported = container->state() & UnencryptedContainer || container->canDecrypt(cert);
 	setHeader(container->fileName());
 	ui->leftPane->init(fileName, QT_TRANSLATE_NOOP("ItemList", "Encrypted files"));
-	ui->rightPane->init(ItemAddress, QT_TRANSLATE_NOOP("ItemList", "Recipients"));
+	ui->rightPane->init(ItemList::ItemAddress, QT_TRANSLATE_NOOP("ItemList", "Recipients"));
 	bool hasUnsupported = false;
 	for(CKey &key: container->keys())
 	{
@@ -346,8 +349,9 @@ void ContainerPage::transition(DigiDoc* container)
 #ifdef Q_OS_WIN
 		if( QPrinterInfo::availablePrinterNames().isEmpty() )
 		{
-			WarningDialog::show(this,
-				tr("In order to view Validity Confirmation Sheet there has to be at least one printer installed!"));
+			WarningDialog::create(this)
+				->withText(tr("In order to view Validity Confirmation Sheet there has to be at least one printer installed!"))
+				->open();
 			return;
 		}
 #endif
@@ -459,7 +463,7 @@ void ContainerPage::updatePanes(ContainerState state)
 		cancelText = QT_TR_NOOP("Start");
 
 		ui->changeLocation->show();
-		ui->rightPane->init(ItemSignature, QT_TRANSLATE_NOOP("ItemList", "Container is not signed"));
+		ui->rightPane->init(ItemList::ItemSignature, QT_TRANSLATE_NOOP("ItemList", "Container is not signed"));
 		ui->summary->setVisible(Settings::SHOW_PRINT_SUMMARY);
 		setButtonsVisible({ ui->saveAs, ui->email }, true);
 		break;
@@ -467,7 +471,7 @@ void ContainerPage::updatePanes(ContainerState state)
 		cancelText = QT_TR_NOOP("Start");
 
 		ui->changeLocation->hide();
-		ui->rightPane->init(ItemSignature, QT_TRANSLATE_NOOP("ItemList", "Container signatures"));
+		ui->rightPane->init(ItemList::ItemSignature, QT_TRANSLATE_NOOP("ItemList", "Container signatures"));
 		ui->summary->setVisible(Settings::SHOW_PRINT_SUMMARY);
 		setButtonsVisible({ ui->saveAs, ui->email }, true);
 		break;

@@ -25,7 +25,6 @@
 #include <QtCore/QCoreApplication>
 #include <QtCore/QRegularExpression>
 #include <QtCore/QTemporaryFile>
-#include <QtWidgets/QMessageBox>
 
 #include <algorithm>
 
@@ -247,7 +246,10 @@ QString FileDialog::getExistingDirectory( QWidget *parent, const QString &captio
 	if( !QFileInfo( res ).isWritable() )
 #endif
 	{
-		WarningDialog::show(parent, tr( "You don't have sufficient privileges to write this file into folder %1" ).arg( res ));
+		WarningDialog::create(parent)
+			->withTitle(tr("Failed to save files"))
+			->withText(tr("You don't have sufficient privileges to write this file into folder %1").arg(res))
+			->open();
 		return {};
 	}
 
@@ -259,10 +261,10 @@ QString FileDialog::getSaveFileName(QWidget *parent, const QString &caption, con
 	if(filename.endsWith(QLatin1String(".adoc"), Qt::CaseInsensitive))
 		filter = tr("Documents (%1)").arg(QLatin1String("*.adoc"));
 	else if(filename.endsWith(QLatin1String(".asice"), Qt::CaseInsensitive) ||
-			 filename.endsWith(QLatin1String(".sce"), Qt::CaseInsensitive))
+			filename.endsWith(QLatin1String(".sce"), Qt::CaseInsensitive))
 		filter = tr("Documents (%1)").arg(QLatin1String("*.asice *.sce"));
 	else if(filename.endsWith(QLatin1String(".asics"), Qt::CaseInsensitive) ||
-			 filename.endsWith(QLatin1String(".scs"), Qt::CaseInsensitive))
+			filename.endsWith(QLatin1String(".scs"), Qt::CaseInsensitive))
 		filter = tr("Documents (%1)").arg(QLatin1String("*.asics *.scs"));
 	else if(filename.endsWith(QLatin1String(".bdoc"), Qt::CaseInsensitive))
 		filter = tr("Documents (%1)").arg(QLatin1String("*.bdoc"));
@@ -277,17 +279,16 @@ QString FileDialog::getSaveFileName(QWidget *parent, const QString &caption, con
 	else if(filename.endsWith(QLatin1String(".pdf"), Qt::CaseInsensitive))
 		filter = tr("Documents (%1)").arg(QLatin1String("*.pdf"));
 	QString file;
-	while( true )
+	while(!(file = QFileDialog::getSaveFileName(parent, caption, normalized(filename), filter)).isEmpty())
 	{
-		file = QFileDialog::getSaveFileName(parent, caption, normalized(filename), filter);
-		if( !file.isEmpty() && !fileIsWritable( file ) )
-		{
-			WarningDialog::show(parent, tr( "You don't have sufficient privileges to write this file into folder %1" ).arg( file ));
-		}
-		else
-			break;
+		if(fileIsWritable(file))
+			return result(file);
+		WarningDialog::create(parent)
+			->withTitle(tr("Failed to save file"))
+			->withText(tr("You don't have sufficient privileges to write this file into folder %1").arg(file))
+			->exec();
 	}
-	return result( file );
+	return file;
 }
 
 QString FileDialog::normalized(const QString &data)
@@ -310,8 +311,6 @@ QString FileDialog::result( const QString &str )
 #ifndef Q_OS_MACOS
 	if(!str.isEmpty())
 		Settings::LAST_PATH = QFileInfo(str).absolutePath();
-#else
-	Settings::LAST_PATH.clear();
 #endif
 	return str;
 }
