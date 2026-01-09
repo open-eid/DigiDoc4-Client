@@ -32,6 +32,8 @@ QString Label::label() const
 
 void Label::setLabel(QString label)
 {
+	if (label == _label)
+		return;
 	_label = std::move(label);
 	parentWidget()->style()->unpolish(this);
 	parentWidget()->style()->polish(this);

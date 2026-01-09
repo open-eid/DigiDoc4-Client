@@ -6,20 +6,20 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>457</width>
-    <height>44</height>
+    <width>181</width>
+    <height>53</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>415</width>
-    <height>44</height>
+    <height>53</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>16777215</width>
-    <height>44</height>
+    <height>53</height>
    </size>
   </property>
   <property name="styleSheet">
@@ -30,33 +30,29 @@ background-color: #ffffff;
   </property>
   <layout class="QHBoxLayout" name="FileItemLayout">
    <property name="spacing">
-    <number>2</number>
+    <number>10</number>
    </property>
    <property name="leftMargin">
-    <number>0</number>
+    <number>8</number>
    </property>
    <property name="topMargin">
-    <number>1</number>
+    <number>15</number>
    </property>
    <property name="rightMargin">
-    <number>0</number>
+    <number>8</number>
    </property>
    <property name="bottomMargin">
-    <number>1</number>
+    <number>15</number>
    </property>
    <item>
     <widget class="QPushButton" name="fileName">
-     <property name="font">
-      <font>
-       <family>Roboto</family>
-       <pointsize>14</pointsize>
-      </font>
-     </property>
      <property name="cursor">
       <cursorShape>PointingHandCursor</cursorShape>
      </property>
      <property name="styleSheet">
-      <string notr="true">color: #363739;
+      <string notr="true">color: #07142A;
+font-family: Roboto, Helvetica;
+font-size: 14px;
 border: 0px;
 text-align: left;</string>
      </property>

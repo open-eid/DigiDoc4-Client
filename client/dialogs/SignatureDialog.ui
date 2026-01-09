@@ -179,25 +179,22 @@ padding: 10px 14px;
         </property>
         <property name="styleSheet">
          <string notr="true">QScrollBar {
-	width: 10px;
-	padding: 5px 5px 5px 0;
-	margin: 2px 0px 2px 0;
-	border: none;
-	background: #FFFFFF;
+width: 10px;
+padding: 5px 5px 5px 0px;
+margin: 2px 0px 2px 0;
+border: none;
+background: #FFFFFF;
 }
-QScrollBar::handle:vertical{
-    background-color: #8E969D;
-	margin: 0 0 0 0;
-	border-radius: 2px;
-	height: 145px;
+QScrollBar::handle:vertical {
+background-color: #C4CBD8;
+margin: 0px;
+border-radius: 2px;
+height: 145px;
 }
-QScrollBar::add-line:vertical {
-      border: none;
-      background: none;
-}
+QScrollBar::add-line:vertical,
 QScrollBar::sub-line:vertical {
-      border: none;
-      background: none;
+border: none;
+background: none;
 }</string>
         </property>
         <property name="frameShape">

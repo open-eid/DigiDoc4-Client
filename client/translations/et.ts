@@ -1123,10 +1123,6 @@
         &lt;p align=center&gt;Adressaat on füüsiline või juriidiline isik või asutus, kelle jaoks saab dokumendi krüpteerida. Kui dokument on krüpteeritud, siis saab ainult konkreetne adressaat selle sisu näha.&lt;/p&gt;</translation>
     </message>
     <message>
-        <source>Enter personal code, company or registry code</source>
-        <translation>Sisesta isikukood, asutus või registrikood</translation>
-    </message>
-    <message>
         <source>Add recipients</source>
         <translation>Lisa adressaadid</translation>
     </message>

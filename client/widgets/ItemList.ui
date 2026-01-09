@@ -11,20 +11,33 @@
    </rect>
   </property>
   <property name="styleSheet">
-   <string notr="true">QScrollBar{
-	width: 10px;
-	padding: 5px 5px 5px 0;
+   <string notr="true">QWidget {
+color: #07142A;
+font-family: Roboto, Helvetica;
+font-size: 14px;
 }
-QScrollBar::handle:vertical{
-    background-color: #8E969D;
-	margin: 0 0 0 0;
-	border-radius: 2px;
-	height: 145px;
+QLineEdit {
+padding: 10px 14px;
+border: 1px solid #C4CBD8;
+border-radius: 4px;
+background-color: white;
+placeholder-text-color: #607496;
+font-size: 16px;
+}
+QScrollBar {
+width: 10px;
+padding: 5px 5px 5px 0px;
+}
+QScrollBar::handle:vertical {
+background-color: #C4CBD8;
+margin: 0px;
+border-radius: 2px;
+height: 145px;
 }
 QScrollBar::add-line:vertical,
 QScrollBar::sub-line:vertical {
-      border: none;
-      background: none;
+border: none;
+background: none;
 }
 #items {
 background-color: #ffffff;
@@ -34,19 +47,26 @@ border-bottom: 1px solid #E7EAEF;
 }
 #add {
 font-family: Roboto, Helvetica;
-margin: 6px 0px;
-padding: 9px 8px;
+margin-top: 32px;
+padding: 10px 12px;
 font-size: 12px;
 font-weight: 700;
 border-radius: 4px;
 border: none;
 color: #2F70B6;
+border: 1px solid #2F70B6;
 }
 #add:hover {
 background-color: #EAF1F8;
+border-color: #EAF1F8;
 }
 #add:pressed {
 background-color: #BFD3E8;
+border-color: #BFD3E8;
+}
+#listHeader {
+color: #003168;
+font-size: 22px;
 }</string>
   </property>
   <property name="frameShape">
@@ -75,43 +95,34 @@ background-color: #BFD3E8;
      <number>0</number>
     </property>
     <property name="leftMargin">
-     <number>20</number>
+     <number>24</number>
+    </property>
+    <property name="topMargin">
+     <number>32</number>
     </property>
     <property name="rightMargin">
-     <number>20</number>
+     <number>24</number>
     </property>
     <property name="bottomMargin">
      <number>22</number>
     </property>
     <item>
      <widget class="QWidget" name="header" native="true">
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>64</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>16777215</width>
-        <height>64</height>
-       </size>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">color: #041E42;</string>
-      </property>
       <layout class="QHBoxLayout" name="headerLayout" stretch="1,0,1">
+       <property name="spacing">
+        <number>4</number>
+       </property>
        <property name="leftMargin">
-        <number>0</number>
+        <number>8</number>
        </property>
        <property name="topMargin">
         <number>1</number>
        </property>
        <property name="rightMargin">
-        <number>0</number>
+        <number>8</number>
        </property>
        <property name="bottomMargin">
-        <number>1</number>
+        <number>16</number>
        </property>
        <item>
         <spacer name="headerLeftSpacer">
@@ -121,27 +132,18 @@ background-color: #BFD3E8;
          <property name="sizeHint" stdset="0">
           <size>
            <width>40</width>
-           <height>20</height>
+           <height>0</height>
           </size>
          </property>
         </spacer>
        </item>
        <item>
         <widget class="QLabel" name="listHeader">
-         <property name="font">
-          <font>
-           <family>Roboto</family>
-           <pointsize>20</pointsize>
-          </font>
-         </property>
          <property name="focusPolicy">
           <enum>Qt::TabFocus</enum>
          </property>
-         <property name="styleSheet">
-          <string notr="true">color: #003168;</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
+         <property name="text">
+          <string notr="true">+ Add recipient</string>
          </property>
         </widget>
        </item>
@@ -171,7 +173,7 @@ background-color: #BFD3E8;
 	border-radius: 2px;
 	text-align: center;
 	font-weight: 400; 
-	text-decoration: none solid rgb(252, 252, 252);
+	text-decoration: none solid #fcfcfc;
 	padding: 5px; font-size: 13px;
 }</string>
            </property>
@@ -192,25 +194,8 @@ background-color: #BFD3E8;
          </item>
          <item>
           <widget class="QLabel" name="count">
-           <property name="minimumSize">
-            <size>
-             <width>15</width>
-             <height>19</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>15</width>
-             <height>19</height>
-            </size>
-           </property>
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-            </font>
-           </property>
            <property name="styleSheet">
-            <string notr="true">color: #006EB5;</string>
+            <string notr="true">color: #2F70B6;</string>
            </property>
            <property name="text">
             <string notr="true">1</string>
@@ -231,11 +216,11 @@ background-color: #BFD3E8;
            <property name="cursor">
             <cursorShape>PointingHandCursor</cursorShape>
            </property>
-           <property name="accessibleName">
-            <string>Download all files</string>
-           </property>
            <property name="styleSheet">
             <string notr="true">border: none;</string>
+           </property>
+           <property name="text">
+            <string>Download all files</string>
            </property>
            <property name="icon">
             <iconset resource="../images/images.qrc">
@@ -256,10 +241,7 @@ background-color: #BFD3E8;
     </item>
     <item>
      <widget class="QWidget" name="findGroup" native="true">
-      <layout class="QHBoxLayout" name="findGroupLayout">
-       <property name="spacing">
-        <number>4</number>
-       </property>
+      <layout class="QGridLayout" name="findGroupLayout">
        <property name="leftMargin">
         <number>0</number>
        </property>
@@ -270,65 +252,54 @@ background-color: #BFD3E8;
         <number>0</number>
        </property>
        <property name="bottomMargin">
-        <number>8</number>
+        <number>16</number>
        </property>
-       <item>
-        <widget class="LineEdit" name="txtFind">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>35</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>35</height>
-          </size>
-         </property>
-         <property name="accessibleName">
+       <property name="horizontalSpacing">
+        <number>24</number>
+       </property>
+       <property name="verticalSpacing">
+        <number>6</number>
+       </property>
+       <item row="0" column="0" colspan="2">
+        <widget class="QLabel" name="lblFind">
+         <property name="text">
           <string>Enter the personal code, institution or registry code</string>
          </property>
-         <property name="styleSheet">
-          <string notr="true">#txtFind
-{
-border: 1px solid #8E969D;
-border-radius: 2px;
-background-color: #FFFFFF;
-padding: 0px 10px;
-}</string>
-         </property>
-         <property name="placeholderText">
-          <string>Enter the personal code, institution or registry code</string>
+         <property name="buddy">
+          <cstring>txtFind</cstring>
          </property>
         </widget>
        </item>
-       <item>
+       <item row="1" column="0">
+        <widget class="QLineEdit" name="txtFind"/>
+       </item>
+       <item row="1" column="1">
         <widget class="QPushButton" name="btnFind">
-         <property name="minimumSize">
-          <size>
-           <width>80</width>
-           <height>34</height>
-          </size>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
          </property>
          <property name="cursor">
           <cursorShape>PointingHandCursor</cursorShape>
          </property>
          <property name="styleSheet">
           <string notr="true">QPushButton {
-	border-radius: 2px; 
-	border: none;
-	color: #ffffff;
-	background-color: #006EB5;
+padding: 12px 12px;
+border-radius: 4px;
+color: #ffffff;
+font-weight: 700;
+background-color: #2F70B6;
+}
+QPushButton:hover {
+background-color: #2B66A6;
 }
 QPushButton:pressed {
-	background-color: #41B6E6;
-}
-QPushButton:hover:!pressed {
-	background-color: #008DCF;
+background-color: #215081;
 }
 QPushButton:disabled {
-	background-color: #BEDBED;
+background-color: #82A9D3;
 }</string>
          </property>
          <property name="text">
@@ -350,29 +321,22 @@ QPushButton:disabled {
      </widget>
     </item>
     <item>
-     <widget class="QWidget" name="lovid" native="true">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
+     <spacer name="bottomSpacer">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
       </property>
-      <property name="styleSheet">
-       <string notr="true">QWidget#widget { background-image: url(:/images/bg_lovid.svg);
-background-repeat: repeat-x;
-background-position: left bottom; }</string>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>0</height>
+       </size>
       </property>
-     </widget>
+     </spacer>
     </item>
    </layout>
   </widget>
  </widget>
  <customwidgets>
-  <customwidget>
-   <class>LineEdit</class>
-   <extends>QLineEdit</extends>
-   <header>widgets/LineEdit.h</header>
-  </customwidget>
   <customwidget>
    <class>QSvgWidget</class>
    <extends>QWidget</extends>
