@@ -836,6 +836,14 @@
         <source>Documents (%1)</source>
         <translation>Documents (%1)</translation>
     </message>
+    <message>
+        <source>Save file</source>
+        <translation>Save file</translation>
+    </message>
+    <message>
+        <source>Move file</source>
+        <translation>Move file</translation>
+    </message>
 </context>
 <context>
     <name>FileItem</name>
@@ -852,10 +860,6 @@
 </context>
 <context>
     <name>FileList</name>
-    <message>
-        <source>Save file</source>
-        <translation>Save file</translation>
-    </message>
     <message>
         <source>Add files</source>
         <translation>Add files</translation>
@@ -1338,10 +1342,6 @@ ID-Card</translation>
         <translation>Cannot alter container %1. Save to different location?</translation>
     </message>
     <message>
-        <source>Save file</source>
-        <translation>Save file</translation>
-    </message>
-    <message>
         <source>The container has been successfully signed!</source>
         <translation>The container has been successfully signed!</translation>
     </message>
@@ -1364,10 +1364,6 @@ ID-Card</translation>
     <message>
         <source>Converted to crypto container!</source>
         <translation>Converted to crypto container!</translation>
-    </message>
-    <message>
-        <source>Move file</source>
-        <translation>Move file</translation>
     </message>
     <message>
         <source>You are about to delete the last file in the container, it is removed along with the container.</source>

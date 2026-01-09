@@ -45,26 +45,25 @@ public:
 	~ContainerPage() final;
 
 	void cardChanged(const SslCertificate &cert, bool isBlocked = false);
-	void clear();
 	void clearPopups();
+	void setHeader(const QString &file);
 	void togglePrinting(bool enable);
 	void transition(CryptoDoc *container, const QSslCertificate &cert);
 	void transition(DigiDoc* container);
 
-signals:
+Q_SIGNALS:
 	void action(int code, const QString &idCode = {}, const QString &info2 = {});
 	void addFiles(const QStringList &files);
 	void certChanged(const SslCertificate &cert);
 	void fileRemoved(int row);
-	void moved(const QString &to);
 	void removed(int row);
 	void warning(const WarningText &warningText);
 
 private:
 	void changeEvent(QEvent* event) final;
+	void clear(int code);
 	void elideFileName();
 	bool eventFilter(QObject *o, QEvent *e) final;
-	void setHeader(const QString &file);
 	void showMainAction(const QList<ria::qdigidoc4::Actions> &actions);
 	void showSigningButton();
 	void handleAction(int type);
