@@ -340,7 +340,7 @@ void MainWindow::convertToCDoc()
 	if (digiDoc->state() == SignedContainer)
 		cryptoContainer->documentModel()->addFile(digiDoc->fileName());
 	else
-		cryptoContainer->documentModel()->addTempFiles(digiDoc->documentModel()->tempFiles());
+		cryptoContainer->documentModel()->copyModel(digiDoc->documentModel());
 
 	auto cardData = qApp->signer()->tokenauth();
 	if (!cardData.cert().isNull()) {
@@ -607,7 +607,7 @@ bool MainWindow::wrap(const QString& wrappedFile, bool pdf)
 	if(pdf)
 		signatureContainer->documentModel()->addFile(wrappedFile);
 	else
-		signatureContainer->documentModel()->addTempFiles(cryptoDoc->documentModel()->tempFiles());
+		signatureContainer->documentModel()->copyModel(cryptoDoc->documentModel());
 
 	cryptoDoc.reset();
 	resetDigiDoc(std::move(signatureContainer));
