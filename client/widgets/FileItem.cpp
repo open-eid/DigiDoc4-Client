@@ -61,11 +61,6 @@ bool FileItem::event(QEvent *event)
 	return Item::event(event);
 }
 
-QString FileItem::getFile()
-{
-	return fileName;
-}
-
 void FileItem::initTabOrder(QWidget *item)
 {
 	setTabOrder(item, ui->fileName);

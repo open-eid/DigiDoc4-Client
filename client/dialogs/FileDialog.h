@@ -41,7 +41,6 @@ public:
 	static void setReadOnly(const QString &path, bool readonly = true);
 	static QString normalized(const QString &file);
 	static QString safeName(const QString &file);
-	static QString tempPath(const QString &file);
 
 	static QString getOpenFileName(QWidget *parent = nullptr, const QString &caption = {},
 		const QString &dir = {}, const QString &filter = {},

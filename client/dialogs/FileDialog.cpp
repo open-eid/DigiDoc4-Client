@@ -323,18 +323,6 @@ QStringList FileDialog::result( const QStringList &list )
 	return l;
 }
 
-QString FileDialog::tempPath(const QString &file)
-{
-	QDir tmp = QDir::temp();
-	if(!tmp.exists(file))
-		return tmp.path() + '/' + file;
-	QFileInfo info(file);
-	int i = 0;
-	while(tmp.exists(QStringLiteral("%1_%2.%3").arg(info.baseName()).arg(i).arg(info.suffix())))
-		++i;
-	return QStringLiteral("%1/%2_%3.%4").arg(tmp.path()).arg(info.baseName()).arg(i).arg(info.suffix());
-}
-
 QString FileDialog::safeName(const QString &file)
 {
 	QFileInfo info(file);
