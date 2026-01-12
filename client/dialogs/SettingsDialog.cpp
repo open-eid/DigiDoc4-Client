@@ -91,34 +91,6 @@ SettingsDialog::SettingsDialog(int page, QWidget *parent)
 	ui->chkRoleAddressInfo->setChecked(Settings::SHOW_ROLE_ADDRESS_INFO);
 	connect(ui->chkRoleAddressInfo, &QCheckBox::toggled, this, Settings::SHOW_ROLE_ADDRESS_INFO);
 
-#ifdef Q_OS_MACOS
-	ui->lblDefaultDirectory->hide();
-	ui->rdGeneralSameDirectory->hide();
-	ui->txtGeneralDirectory->hide();
-	ui->btGeneralChooseDirectory->hide();
-	ui->rdGeneralSpecifyDirectory->hide();
-#else
-	connect(ui->btGeneralChooseDirectory, &QPushButton::clicked, this, [this]{
-		QString dir = FileDialog::getExistingDirectory(this, tr("Select folder"), Settings::DEFAULT_DIR);
-		if(!dir.isEmpty())
-		{
-			ui->rdGeneralSpecifyDirectory->setChecked(true);
-			Settings::DEFAULT_DIR = dir;
-			ui->txtGeneralDirectory->setText(dir);
-		}
-	});
-	connect(ui->rdGeneralSpecifyDirectory, &QRadioButton::toggled, this, [this](bool enable) {
-		ui->btGeneralChooseDirectory->setVisible(enable);
-		ui->txtGeneralDirectory->setVisible(enable);
-		if(!enable)
-			ui->txtGeneralDirectory->clear();
-	});
-	ui->txtGeneralDirectory->setText(Settings::DEFAULT_DIR);
-	if(ui->txtGeneralDirectory->text().isEmpty())
-		ui->rdGeneralSameDirectory->setChecked(true);
-	connect(ui->txtGeneralDirectory, &QLineEdit::textChanged, this, Settings::DEFAULT_DIR);
-#endif
-
 	// pageServices - TimeStamp
 	ui->rdTimeStampDefault->setDisabled(Settings::TSA_URL_CUSTOM.isLocked());
 	ui->rdTimeStampCustom->setEnabled(ui->rdTimeStampDefault->isEnabled());
@@ -126,8 +98,7 @@ SettingsDialog::SettingsDialog(int page, QWidget *parent)
 	ui->txtTimeStamp->setReadOnly(Settings::TSA_URL.isLocked());
 	ui->txtTimeStamp->setVisible(ui->rdTimeStampCustom->isChecked());
 	ui->txtTimeStamp->setPlaceholderText(Application::confValue(Settings::TSA_URL.KEY).toString());
-	QString TSA_URL = Settings::TSA_URL.value(Application::confValue(Application::TSAUrl));
-	ui->txtTimeStamp->setText(ui->txtTimeStamp->placeholderText() == TSA_URL ? QString() : std::move(TSA_URL));
+	ui->txtTimeStamp->setText(Settings::TSA_URL);
 	ui->wgtTSACert->setDisabled(Settings::TSA_CERT.isLocked());
 	ui->wgtTSACert->setVisible(ui->rdTimeStampCustom->isChecked());
 	connect(ui->rdTimeStampCustom, &QRadioButton::toggled, ui->txtTimeStamp, [this](bool checked) {
@@ -183,8 +154,7 @@ SettingsDialog::SettingsDialog(int page, QWidget *parent)
 	ui->txtSiVa->setReadOnly(Settings::SIVA_URL.isLocked());
 	ui->txtSiVa->setVisible(ui->rdSiVaCustom->isChecked());
 	ui->txtSiVa->setPlaceholderText(Application::confValue(Settings::SIVA_URL.KEY).toString());
-	QString SIVA_URL = Settings::SIVA_URL.value(Application::confValue(Application::SiVaUrl));
-	ui->txtSiVa->setText(ui->txtSiVa->placeholderText() == SIVA_URL ? QString() : std::move(SIVA_URL));
+	ui->txtSiVa->setText(Settings::SIVA_URL);
 	ui->wgtSiVaCert->setDisabled(Settings::SIVA_CERT.isLocked());
 	ui->wgtSiVaCert->setVisible(ui->rdSiVaCustom->isChecked());
 	connect(ui->rdSiVaCustom, &QRadioButton::toggled, ui->txtSiVa, [this](bool checked) {
