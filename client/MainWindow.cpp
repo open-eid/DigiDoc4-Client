@@ -131,6 +131,7 @@ MainWindow::MainWindow( QWidget *parent )
 
 MainWindow::~MainWindow()
 {
+	digiDoc.reset();
 	cryptoDoc.reset();
 	delete ui;
 }
@@ -167,7 +168,7 @@ void MainWindow::changeEvent(QEvent* event)
 void MainWindow::closeEvent(QCloseEvent * /*event*/)
 {
 	cryptoDoc.reset();
-	resetDigiDoc();
+	resetDigiDoc({});
 	ui->startScreen->setCurrentIndex(SignIntro);
 }
 
@@ -248,15 +249,17 @@ bool MainWindow::encrypt()
 	if(!cryptoDoc)
 		return false;
 
-	if(!FileDialog::fileIsWritable(cryptoDoc->fileName())) {
+	while (!FileDialog::fileIsWritable(cryptoDoc->fileName()))
+	{
 		auto *dlg = new WarningDialog(tr("Cannot alter container %1. Save different location?")
 			.arg(FileDialog::normalized(cryptoDoc->fileName())), this);
 		dlg->addButton(WarningDialog::YES, QMessageBox::Yes);
-		if(dlg->exec() == QMessageBox::Yes) {
-			moveCryptoContainer();
-			return encrypt();
-		}
-		return false;
+		if(dlg->exec() != QMessageBox::Yes)
+			return false;
+		QString to = FileDialog::getSaveFileName(this, FileDialog::tr("Save file"), cryptoDoc->fileName());
+		if(to.isNull() || !cryptoDoc->move(to))
+			return false;
+		ui->cryptoContainerPage->setHeader(to);
 	}
 
 	WaitDialogHolder waitDialog(this, tr("Encrypting"));
@@ -296,8 +299,8 @@ void MainWindow::navigateToPage( Pages page, const QStringList &files, bool crea
 			navigate = signatureContainer->open(files[0]);
 		if(navigate)
 		{
-			resetDigiDoc(signatureContainer.release());
-			ui->signContainerPage->transition(digiDoc);
+			resetDigiDoc(std::move(signatureContainer));
+			ui->signContainerPage->transition(digiDoc.get());
 		}
 	}
 	else if(page == CryptoDetails)
@@ -358,9 +361,10 @@ void MainWindow::onSignAction(int action, const QString &idCode, const QString &
 	case ClearSignatureWarning:
 		ui->signature->warningIcon(false);
 		ui->warnings->closeWarnings(SignDetails);
+		ui->warnings->closeWarning(EmptyFileWarning);
 		break;
 	case ContainerCancel:
-		resetDigiDoc();
+		resetDigiDoc({});
 		selectPage(Pages::SignIntro);
 		break;
 	case ContainerConvert:
@@ -369,24 +373,11 @@ void MainWindow::onSignAction(int action, const QString &idCode, const QString &
 		break;
 	case ContainerSave:
 		save();
-		ui->signContainerPage->transition(digiDoc);
-		break;
-	case ContainerSaveAs:
-		save(true);
-		break;
-	case ContainerLocation:
-		if(digiDoc)
-			moveSignatureContainer();
+		ui->signContainerPage->transition(digiDoc.get());
 		break;
 	default:
 		break;
 	}
-}
-
-void MainWindow::convertToBDoc()
-{
-	if(wrap(cryptoDoc->fileName(), cryptoDoc->state() == EncryptedContainer))
-		FadeInNotification::success(ui->topBar, tr("Converted to signed document!"));
 }
 
 void MainWindow::convertToCDoc()
@@ -409,25 +400,11 @@ void MainWindow::convertToCDoc()
 		cryptoContainer->addKey(CKey(cardData.cert()));
 
 	cryptoDoc = std::move(cryptoContainer);
-	resetDigiDoc(nullptr, false);
+	digiDoc.reset();
 	ui->cryptoContainerPage->transition(cryptoDoc.get(),  qApp->signer()->tokenauth().cert());
 	selectPage(CryptoDetails);
 
 	FadeInNotification::success(ui->topBar, tr("Converted to crypto container!"));
-}
-
-void MainWindow::moveCryptoContainer()
-{
-	QString to = FileDialog::getSaveFileName(this, tr("Move file"), cryptoDoc->fileName());
-	if(!to.isNull() && cryptoDoc->move(to))
-		emit ui->cryptoContainerPage->moved(to);
-}
-
-void MainWindow::moveSignatureContainer()
-{
-	QString to = FileDialog::getSaveFileName(this, tr("Move file"), digiDoc->fileName());
-	if(!to.isNull() && digiDoc->move(to))
-		emit ui->signContainerPage->moved(to);
 }
 
 void MainWindow::onCryptoAction(int action, const QString &/*id*/, const QString &/*phone*/)
@@ -439,8 +416,8 @@ void MainWindow::onCryptoAction(int action, const QString &/*id*/, const QString
 		selectPage(Pages::CryptoIntro);
 		break;
 	case ContainerConvert:
-		if(cryptoDoc)
-			convertToBDoc();
+		if(cryptoDoc && wrap(cryptoDoc->fileName(), false))
+			FadeInNotification::success(ui->topBar, tr("Converted to signed document!"));
 		break;
 	case DecryptContainer:
 	case DecryptToken:
@@ -457,33 +434,11 @@ void MainWindow::onCryptoAction(int action, const QString &/*id*/, const QString
 			FadeInNotification::success(ui->topBar, tr("Encryption succeeded!"));
 		}
 		break;
-	case ContainerSaveAs:
-	{
-		if(!cryptoDoc)
-			break;
-		QString target = FileDialog::getSaveFileName(this, tr("Save file"), cryptoDoc->fileName());
-		if(target.isEmpty())
-			break;
-		if( !FileDialog::fileIsWritable(target))
-		{
-			auto *dlg = new WarningDialog(tr("Cannot alter container %1. Save different location?").arg(target), this);
-			dlg->addButton(WarningDialog::YES, QMessageBox::Yes);
-			if(dlg->exec() == QMessageBox::Yes) {
-				QString file = FileDialog::getSaveFileName(this, tr("Save file"), target);
-				if(!file.isEmpty())
-					cryptoDoc->saveCopy(file);
-			}
-		}
-		cryptoDoc->saveCopy(target);
-		break;
-	}
 	case ClearCryptoWarning:
 		ui->crypto->warningIcon(false);
 		ui->warnings->closeWarnings(CryptoDetails);
 		break;
-	case ContainerLocation:
-		if(cryptoDoc)
-			moveCryptoContainer();
+	default:
 		break;
 	}
 }
@@ -588,9 +543,9 @@ void MainWindow::openContainer(bool signature)
 		openFiles(files);
 }
 
-void MainWindow::resetDigiDoc(DigiDoc *doc, bool warnOnChange)
+void MainWindow::resetDigiDoc(std::unique_ptr<DigiDoc> &&doc)
 {
-	if(warnOnChange && digiDoc && digiDoc->isModified())
+	if(digiDoc && digiDoc->isModified())
 	{
 		QString warning, cancelTxt, saveTxt;
 		if(digiDoc->state() == UnsignedContainer)
@@ -612,37 +567,28 @@ void MainWindow::resetDigiDoc(DigiDoc *doc, bool warnOnChange)
 		if(dlg->exec() == QMessageBox::Save)
 			save();
 	}
-
-	ui->signature->warningIcon(false);
-
-	ui->signContainerPage->clear();
-	delete digiDoc;
-	ui->warnings->closeWarnings(SignDetails);
-	ui->warnings->closeWarning(EmptyFileWarning);
-	digiDoc = doc;
+	digiDoc = std::move(doc);
 }
 
-bool MainWindow::save(bool saveAs)
+bool MainWindow::save()
 {
 	if(!digiDoc)
 		return false;
 
 	QString target = digiDoc->fileName();
-	if(saveAs)
-		target = FileDialog::getSaveFileName(this, tr("Save file"), target);
-	if(target.isEmpty())
-		return false;
-
-	if(!FileDialog::fileIsWritable(target))
+	while(!FileDialog::fileIsWritable(target))
 	{
 		auto *dlg = new WarningDialog(tr("Cannot alter container %1. Save different location?").arg(target), this);
 		dlg->addButton(WarningDialog::YES, QMessageBox::Yes);
-		if(dlg->exec() == QMessageBox::Yes) {
-			if(QString file = FileDialog::getSaveFileName(this, tr("Save file"), target); !file.isEmpty())
-				return saveAs ? digiDoc->saveAs(file) : digiDoc->save(file);
-		}
+		if(dlg->exec() != QMessageBox::Yes)
+			return false;
+		if(target = FileDialog::getSaveFileName(this, FileDialog::tr("Save file"), target); target.isEmpty())
+			return false;
 	}
-	return saveAs ? digiDoc->saveAs(target) : digiDoc->save(target);
+	bool result = digiDoc->save(target);
+	if(result)
+		ui->signContainerPage->setHeader(target);
+	return result;
 }
 
 void MainWindow::selectPage(Pages page)
@@ -705,7 +651,7 @@ void MainWindow::sign(F &&sign)
 
 		if(!sign(city, state, zip, country, role))
 		{
-			resetDigiDoc(nullptr, false);
+			digiDoc.reset();
 			navigateToPage(SignDetails, {std::move(wrappedFile)}, false);
 			return;
 		}
@@ -716,7 +662,7 @@ void MainWindow::sign(F &&sign)
 	if(!save())
 		return;
 
-	ui->signContainerPage->transition(digiDoc);
+	ui->signContainerPage->transition(digiDoc.get());
 
 	FadeInNotification::success(ui->topBar, tr("The container has been successfully signed!"));
 	adjustDrops();
@@ -761,7 +707,7 @@ bool MainWindow::removeFile(DocumentModel *model, int index)
 			continue;
 		ui->warnings->closeWarning(EmptyFileWarning);
 		if(digiDoc)
-			ui->signContainerPage->transition(digiDoc);
+			ui->signContainerPage->transition(digiDoc.get());
 		break;
 	}
 
@@ -775,7 +721,7 @@ void MainWindow::removeSignature(int index)
 	WaitDialogHolder waitDialog(this, tr("Removing signature"));
 	digiDoc->removeSignature(unsigned(index));
 	save();
-	ui->signContainerPage->transition(digiDoc);
+	ui->signContainerPage->transition(digiDoc.get());
 	adjustDrops();
 }
 
@@ -788,7 +734,7 @@ void MainWindow::removeSignatureFile(int index)
 	{
 		if(QFile::exists(digiDoc->fileName()))
 			QFile::remove(digiDoc->fileName());
-		resetDigiDoc(nullptr, false);
+		digiDoc.reset();
 		selectPage(Pages::SignIntro);
 	}
 }
@@ -807,7 +753,7 @@ bool MainWindow::validateFiles(const QString &container, const QStringList &file
 	return false;
 }
 
-bool MainWindow::wrap(const QString& wrappedFile, bool enclose)
+bool MainWindow::wrap(const QString& wrappedFile, bool pdf)
 {
 	QString filename = FileDialog::createNewFileName(wrappedFile, true, this);
 	if(filename.isNull())
@@ -816,16 +762,16 @@ bool MainWindow::wrap(const QString& wrappedFile, bool enclose)
 	std::unique_ptr<DigiDoc> signatureContainer(new DigiDoc(this));
 	signatureContainer->create(filename);
 
-	// If encrypted container or pdf, add whole file to signature container; otherwise content only
-	if(enclose)
+	// If pdf, add whole file to signature container; otherwise content only
+	if(pdf)
 		signatureContainer->documentModel()->addFile(wrappedFile);
 	else
 		signatureContainer->documentModel()->addTempFiles(cryptoDoc->documentModel()->tempFiles());
 
 	cryptoDoc.reset();
-	resetDigiDoc(signatureContainer.release());
+	resetDigiDoc(std::move(signatureContainer));
 
-	ui->signContainerPage->transition(digiDoc);
+	ui->signContainerPage->transition(digiDoc.get());
 	selectPage(SignDetails);
 
 	return true;

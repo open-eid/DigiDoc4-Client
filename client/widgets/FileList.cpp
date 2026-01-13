@@ -128,7 +128,7 @@ void FileList::save(FileItem *item)
 	{
 		QString extension = QFileInfo(item->getFile()).suffix();
 		QString capitalized = extension[0].toUpper() + extension.mid(1);
-		QString dest = FileDialog::getSaveFileName(this, tr("Save file"),
+		QString dest = FileDialog::getSaveFileName(this, FileDialog::tr("Save file"),
 			QFileInfo(container).dir().absolutePath() + QDir::separator() + FileDialog::safeName(item->getFile()),
 			QStringLiteral("%1 (*%2)").arg(capitalized, extension));
 
@@ -174,7 +174,7 @@ void FileList::saveAll()
 				continue;
 			if(b == QMessageBox::Save)
 			{
-				dest = FileDialog::getSaveFileName( this, tr("Save file"), dest );
+				dest = FileDialog::getSaveFileName(this, FileDialog::tr("Save file"), dest);
 				if( dest.isEmpty() )
 					continue;
 			}
@@ -209,15 +209,12 @@ void FileList::setModel(DocumentModel *documentModel)
 	auto count = documentModel->rowCount();
 	for(int i = 0; i < count; i++)
 		addFile(documentModel->data(i));
-	if(state == EncryptedContainer && count == 0)
-		addWidget(new LabelItem(QT_TRANSLATE_NOOP("LabelItem",
-			"The container must be decrypted in order to see the contents of an encrypted container.")));
 }
 
 void FileList::stateChange(ria::qdigidoc4::ContainerState state)
 {
 	ItemList::stateChange(state);
-	updateDownload();
+		updateDownload();
 }
 
 void FileList::updateDownload()
@@ -226,4 +223,7 @@ void FileList::updateDownload()
 	ui->download->setVisible(state & (UnsignedSavedContainer | SignedContainer | UnencryptedContainer) && c);
 	ui->count->setVisible(state & (UnsignedSavedContainer | SignedContainer | UnencryptedContainer) && c);
 	ui->count->setText(QString::number(c));
+	if(state == EncryptedContainer && c == 0)
+		addWidget(new LabelItem(QT_TRANSLATE_NOOP("LabelItem",
+			"The container must be decrypted in order to see the contents of an encrypted container.")));
 }
