@@ -117,8 +117,9 @@ void FileList::open(FileItem *item) const
 
 void FileList::removeItem(int row)
 {
+	if(!documentModel->removeRow(row))
+		return;
 	ItemList::removeItem(row);
-
 	updateDownload();
 }
 
@@ -128,7 +129,7 @@ void FileList::save(FileItem *item)
 	{
 		QString extension = QFileInfo(item->getFile()).suffix();
 		QString capitalized = extension[0].toUpper() + extension.mid(1);
-		QString dest = FileDialog::getSaveFileName(this, tr("Save file"),
+		QString dest = FileDialog::getSaveFileName(this, FileDialog::tr("Save file"),
 			QFileInfo(container).dir().absolutePath() + QDir::separator() + FileDialog::safeName(item->getFile()),
 			QStringLiteral("%1 (*%2)").arg(capitalized, extension));
 
@@ -154,13 +155,15 @@ void FileList::saveAll()
 		QString dest = dir + QDir::separator() + FileDialog::safeName(documentModel->data(i));
 		if( QFile::exists( dest ) )
 		{
-			if( b == QMessageBox::YesToAll )
+			if(b == QMessageBox::YesToAll)
 			{
-					QFile::remove( dest );
-					documentModel->save( i, dest );
-					continue;
+				QFile::remove( dest );
+				documentModel->save( i, dest );
+				continue;
 			}
-			auto *dlg = new WarningDialog(tr("%1 already exists.<br />Do you want replace it?").arg( dest ), this);
+			auto *dlg = WarningDialog::create(this)
+				->withTitle(FileDialog::tr("Failed to save files"))
+				->withText(tr("%1 already exists.<br />Do you want replace it?").arg(dest));
 			dlg->setCancelText(WarningDialog::Cancel);
 			dlg->addButton(WarningDialog::YES, QMessageBox::Yes);
 			dlg->addButton(WarningDialog::NO, QMessageBox::No);
@@ -168,18 +171,19 @@ void FileList::saveAll()
 			dlg->addButton(tr("Replace all"), QMessageBox::YesToAll);
 			b = dlg->exec();
 
-			if(b == QDialog::Rejected)
-				break;
-			if(b == QMessageBox::No)
-				continue;
-			if(b == QMessageBox::Save)
+			switch(b)
 			{
-				dest = FileDialog::getSaveFileName( this, tr("Save file"), dest );
-				if( dest.isEmpty() )
+			case QDialog::Rejected:
+				return;
+			case QMessageBox::No:
+				continue;
+			case QMessageBox::Save:
+				if(dest = FileDialog::getSaveFileName(this, FileDialog::tr("Save file"), dest); dest.isEmpty())
 					continue;
+				break;
+			default:
+				QFile::remove(dest);
 			}
-			else
-				QFile::remove( dest );
 		}
 		documentModel->save( i, dest );
 	}
@@ -203,21 +207,17 @@ void FileList::setModel(DocumentModel *documentModel)
 {
 	this->documentModel = documentModel;
 	disconnect(documentModel, &DocumentModel::added, nullptr, nullptr);
-	disconnect(documentModel, &DocumentModel::removed, nullptr, nullptr);
 	connect(documentModel, &DocumentModel::added, this, &FileList::addFile);
-	connect(documentModel, &DocumentModel::removed, this, &FileList::removeItem);
+
 	auto count = documentModel->rowCount();
 	for(int i = 0; i < count; i++)
 		addFile(documentModel->data(i));
-	if(state == EncryptedContainer && count == 0)
-		addWidget(new LabelItem(QT_TRANSLATE_NOOP("LabelItem",
-			"The container must be decrypted in order to see the contents of an encrypted container.")));
 }
 
 void FileList::stateChange(ria::qdigidoc4::ContainerState state)
 {
 	ItemList::stateChange(state);
-	updateDownload();
+		updateDownload();
 }
 
 void FileList::updateDownload()
@@ -226,4 +226,7 @@ void FileList::updateDownload()
 	ui->download->setVisible(state & (UnsignedSavedContainer | SignedContainer | UnencryptedContainer) && c);
 	ui->count->setVisible(state & (UnsignedSavedContainer | SignedContainer | UnencryptedContainer) && c);
 	ui->count->setText(QString::number(c));
+	if(state == EncryptedContainer && c == 0)
+		addWidget(new LabelItem(QT_TRANSLATE_NOOP("LabelItem",
+			"The container must be decrypted in order to see the contents of an encrypted container.")));
 }

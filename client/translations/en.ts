@@ -219,10 +219,6 @@
 <context>
     <name>CDocumentModel</name>
     <message>
-        <source>Failed to save file &apos;%1&apos;</source>
-        <translation>Failed to save file &apos;%1&apos;</translation>
-    </message>
-    <message>
         <source>Added file(s) exceeds the maximum size limit of the container (∼120MB). &lt;a href=&apos;https://www.id.ee/en/article/encrypting-large-120-mb-files/&apos;&gt;Read more about it&lt;/a&gt;</source>
         <translation>Added file(s) exceeds the maximum size limit of the container (∼120MB). &lt;a href=&apos;https://www.id.ee/en/article/encrypting-large-120-mb-files/&apos;&gt;Read more about it&lt;/a&gt;</translation>
     </message>
@@ -361,10 +357,6 @@
         <translation>Save certificate</translation>
     </message>
     <message>
-        <source>Failed to save file</source>
-        <translation>Failed to save file</translation>
-    </message>
-    <message>
         <source>Close</source>
         <translation>Close</translation>
     </message>
@@ -462,6 +454,10 @@
         <translation>In order to view Validity Confirmation Sheet there has to be at least one printer installed!</translation>
     </message>
     <message>
+        <source>You are about to delete the last file in the container, it is removed along with the container.</source>
+        <translation>You are about to delete the last file in the container, it is removed along with the container.</translation>
+    </message>
+    <message>
         <source>Change</source>
         <translation>Change</translation>
     </message>
@@ -545,8 +541,20 @@
         <translation>Digi-ID</translation>
     </message>
     <message>
-        <source>Failed to decrypt document</source>
-        <translation>Failed to decrypt document</translation>
+        <source>Failed to add key</source>
+        <translation>Failed to add key</translation>
+    </message>
+    <message>
+        <source>Please check your internet connection and network settings.</source>
+        <translation>Please check your internet connection and network settings.</translation>
+    </message>
+    <message>
+        <source>Failed to encrypt document</source>
+        <translation>Failed to encrypt document</translation>
+    </message>
+    <message>
+        <source>Failed to remove key</source>
+        <translation>Failed to remove key</translation>
     </message>
     <message>
         <source>Failed to open document</source>
@@ -559,14 +567,6 @@
     <message>
         <source>You must enter your PIN code twice in order to decrypt the CDOC2 container. The first PIN entry is required for authentication to the key server referenced in the CDOC2 container. Second PIN entry is required to decrypt the CDOC2 container.</source>
         <translation>You must enter your PIN code twice in order to decrypt the CDOC2 container. The first PIN entry is required for authentication to the key server referenced in the CDOC2 container. Second PIN entry is required to decrypt the CDOC2 container.</translation>
-    </message>
-    <message>
-        <source>Failed to encrypt document. Please check your internet connection and network settings.</source>
-        <translation>Failed to encrypt document. Please check your internet connection and network settings.</translation>
-    </message>
-    <message>
-        <source>Failed to decrypt document. Please check your internet connection and network settings.</source>
-        <translation>Failed to decrypt document. Please check your internet connection and network settings.</translation>
     </message>
     <message>
         <source>Don&apos;t show again</source>
@@ -695,6 +695,10 @@
         <translation>Cannot add files to signed container</translation>
     </message>
     <message>
+        <source>Please check your internet connection.</source>
+        <translation>Please check your internet connection.</translation>
+    </message>
+    <message>
         <source>Cannot add signature to empty container</source>
         <translation>Cannot add signature to empty container</translation>
     </message>
@@ -711,6 +715,14 @@
         <translation>PIN Login failed</translation>
     </message>
     <message>
+        <source>Connecting to SiVa server failed!</source>
+        <translation>Connecting to SiVa server failed!</translation>
+    </message>
+    <message>
+        <source>Please check your internet connection and network settings.</source>
+        <translation>Please check your internet connection and network settings.</translation>
+    </message>
+    <message>
         <source>Certificate status revoked</source>
         <translation>Certificate status revoked</translation>
     </message>
@@ -719,8 +731,16 @@
         <translation>Certificate status unknown</translation>
     </message>
     <message>
+        <source>Check your Time-Stamping service access settings.</source>
+        <translation>Check your Time-Stamping service access settings.</translation>
+    </message>
+    <message>
         <source>PIN Locked. Unblock to reuse PIN.</source>
         <translation>PIN Locked. Unblock to reuse PIN.</translation>
+    </message>
+    <message>
+        <source>Signing service URL is incorrect.</source>
+        <translation>Signing service URL is incorrect.</translation>
     </message>
     <message>
         <source>An error occurred while opening the document.</source>
@@ -739,10 +759,6 @@
         <translation>Failed to save container</translation>
     </message>
     <message>
-        <source>Failed to sign container. Check your Time-Stamping service access settings.</source>
-        <translation>Failed to sign container. Check your Time-Stamping service access settings.</translation>
-    </message>
-    <message>
         <source>You have not granted IP-based access. Check your validity confirmation service access settings.</source>
         <translation>You have not granted IP-based access. Check your validity confirmation service access settings.</translation>
     </message>
@@ -759,43 +775,39 @@
         <translation>The timestamp added to the signature must be taken before validity confirmation.</translation>
     </message>
     <message>
-        <source>Connecting to SiVa server failed! Please check your internet connection.</source>
-        <translation>Connecting to SiVa server failed! Please check your internet connection.</translation>
-    </message>
-    <message>
-        <source>Failed to sign container.</source>
-        <translation>Failed to sign container.</translation>
-    </message>
-    <message>
         <source>This type of signed document will be transmitted to the Digital Signature Validation Service SiVa to verify the validity of the digital signature. Read more information about transmitted data to Digital Signature Validation service from &lt;a href=&quot;https://www.id.ee/en/article/data-protection-conditions-for-the-id-software-of-the-national-information-system-authority/&quot;&gt;here&lt;/a&gt;.&lt;br /&gt;Do you want to continue?</source>
         <translation>This type of signed document will be transmitted to the Digital Signature Validation Service SiVa to verify the validity of the digital signature. Read more information about transmitted data to Digital Signature Validation service from &lt;a href=&quot;https://www.id.ee/en/article/data-protection-conditions-for-the-id-software-of-the-national-information-system-authority/&quot;&gt;here&lt;/a&gt;.&lt;br /&gt;Do you want to continue?</translation>
-    </message>
-    <message>
-        <source>Connecting to SiVa server failed! Please check your internet connection and network settings.</source>
-        <translation>Connecting to SiVa server failed! Please check your internet connection and network settings.</translation>
-    </message>
-    <message>
-        <source>Failed to sign container. Please check the access to signing services and network settings.</source>
-        <translation>Failed to sign container. Please check the access to signing services and network settings.</translation>
-    </message>
-    <message>
-        <source>Failed to sign container. Signing service URL is incorrect.</source>
-        <translation>Failed to sign container. Signing service URL is incorrect.</translation>
     </message>
     <message>
         <source>Opening</source>
         <translation>Opening</translation>
     </message>
+    <message>
+        <source>Failed to sign container</source>
+        <translation>Failed to sign container</translation>
+    </message>
 </context>
 <context>
     <name>DocumentModel</name>
+    <message>
+        <source>Cannot add container to same container</source>
+        <translation>Cannot add container to same container</translation>
+    </message>
+    <message>
+        <source>File is already in container.</source>
+        <translation>File is already in container.</translation>
+    </message>
+    <message>
+        <source>Failed to open file</source>
+        <translation>Failed to open file</translation>
+    </message>
     <message>
         <source>A file with this extension cannot be opened in the DigiDoc4 Client. Download the file to view it.</source>
         <translation>A file with this extension cannot be opened in the DigiDoc4 Client. Download the file to view it.</translation>
     </message>
     <message>
-        <source>Cannot add the file to the envelope. File &apos;%1&apos; is already in container.</source>
-        <translation>Cannot add the file to the envelope. File &apos;%1&apos; is already in container.</translation>
+        <source>Failed remove document from container</source>
+        <translation>Failed remove document from container</translation>
     </message>
     <message>
         <source>Internal error</source>
@@ -808,6 +820,10 @@
     <message>
         <source>Cannot add empty file to the container.</source>
         <translation>Cannot add empty file to the container.</translation>
+    </message>
+    <message>
+        <source>Failed to add file</source>
+        <translation>Failed to add file</translation>
     </message>
 </context>
 <context>
@@ -833,8 +849,24 @@
         <translation>Create %1</translation>
     </message>
     <message>
+        <source>Failed to save files</source>
+        <translation>Failed to save files</translation>
+    </message>
+    <message>
         <source>Documents (%1)</source>
         <translation>Documents (%1)</translation>
+    </message>
+    <message>
+        <source>Save file</source>
+        <translation>Save file</translation>
+    </message>
+    <message>
+        <source>Move file</source>
+        <translation>Move file</translation>
+    </message>
+    <message>
+        <source>Failed to save file</source>
+        <translation>Failed to save file</translation>
     </message>
 </context>
 <context>
@@ -852,10 +884,6 @@
 </context>
 <context>
     <name>FileList</name>
-    <message>
-        <source>Save file</source>
-        <translation>Save file</translation>
-    </message>
     <message>
         <source>Add files</source>
         <translation>Add files</translation>
@@ -1338,10 +1366,6 @@ ID-Card</translation>
         <translation>Cannot alter container %1. Save to different location?</translation>
     </message>
     <message>
-        <source>Save file</source>
-        <translation>Save file</translation>
-    </message>
-    <message>
         <source>The container has been successfully signed!</source>
         <translation>The container has been successfully signed!</translation>
     </message>
@@ -1366,30 +1390,12 @@ ID-Card</translation>
         <translation>Converted to crypto container!</translation>
     </message>
     <message>
-        <source>Move file</source>
-        <translation>Move file</translation>
-    </message>
-    <message>
-        <source>You are about to delete the last file in the container, it is removed along with the container.</source>
-        <translation>You are about to delete the last file in the container, it is removed along with the container.</translation>
+        <source>Cannot alter container</source>
+        <translation>Cannot alter container</translation>
     </message>
     <message>
         <source>Removing signature</source>
         <translation>Removing signature</translation>
-    </message>
-    <message>
-        <source>Files can not be added to the signed container. The system will create a new container which shall contain the signed document and the files you wish to add.</source>
-        <translation>Files can not be added to the signed container. The system will create a new container which shall contain the signed document and the files you wish to add.</translation>
-    </message>
-    <message>
-        <source>Files can not be added to the cryptocontainer. The system will create a new container which shall contain the cypto-document and the files you wish to add.</source>
-        <translation>Files can not be added to the cryptocontainer. The system will create a new container which shall contain the cypto-document and the files you wish to add.</translation>
-    </message>
-    <message>
-        <source>Cannot add container to same container
-%1</source>
-        <translation>Cannot add container to same container
-%1</translation>
     </message>
     <message>
         <source>Connect the card reader to your computer and insert your ID card into the reader</source>
@@ -1463,6 +1469,22 @@ ID-Card</translation>
     <message>
         <source>Save</source>
         <translation>Save</translation>
+    </message>
+    <message>
+        <source>Files can not be added to the signed container</source>
+        <translation>Files can not be added to the signed container</translation>
+    </message>
+    <message>
+        <source>Files can not be added to the cryptocontainer</source>
+        <translation>Files can not be added to the cryptocontainer</translation>
+    </message>
+    <message>
+        <source>The system will create a new container which shall contain the signed document and the files you wish to add.</source>
+        <translation>The system will create a new container which shall contain the signed document and the files you wish to add.</translation>
+    </message>
+    <message>
+        <source>The system will create a new container which shall contain the cypto-document and the files you wish to add.</source>
+        <translation>The system will create a new container which shall contain the cypto-document and the files you wish to add.</translation>
     </message>
     <message>
         <source>Continue</source>
@@ -1587,8 +1609,20 @@ ID-Card</translation>
         <translation>mobile-ID</translation>
     </message>
     <message>
+        <source>Your Smart-ID transaction has expired or user account not found.</source>
+        <translation>Your Smart-ID transaction has expired or user account not found.</translation>
+    </message>
+    <message>
         <source>Smart-ID</source>
         <translation>Smart-ID</translation>
+    </message>
+    <message>
+        <source>Check your %1 service access settings. &lt;a href=&quot;https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/&quot;&gt;Additional information&lt;/a&gt;</source>
+        <translation>Check your %1 service access settings. &lt;a href=&quot;https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/&quot;&gt;Additional information&lt;/a&gt;</translation>
+    </message>
+    <message>
+        <source>You need to update your Smart-ID application to sign documents in DigiDoc4 Client.</source>
+        <translation>You need to update your Smart-ID application to sign documents in DigiDoc4 Client.</translation>
     </message>
     <message>
         <source>Service result: </source>
@@ -1597,10 +1631,6 @@ ID-Card</translation>
     <message>
         <source>Make sure control code matches with one in phone screen and enter Smart-ID PIN2-code.</source>
         <translation>Make sure control code matches with one in phone screen and enter Smart-ID PIN2-code.</translation>
-    </message>
-    <message>
-        <source>Failed to sign container. Check your %1 service access settings. &lt;a href=&quot;https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/&quot;&gt;Additional information&lt;/a&gt;</source>
-        <translation>Failed to sign container. Check your %1 service access settings. &lt;a href=&quot;https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/&quot;&gt;Additional information&lt;/a&gt;</translation>
     </message>
     <message>
         <source>Your Smart-ID certificate level must be qualified to sign documents in DigiDoc4 Client.</source>
@@ -1665,14 +1695,6 @@ ID-Card</translation>
     <message>
         <source>Failed to send request. The number of unsuccesful request from this IP address has been exceeded. Please try again later.</source>
         <translation>Failed to send request. The number of unsuccesful request from this IP address has been exceeded. Please try again later.</translation>
-    </message>
-    <message>
-        <source>Failed to sign container. Your Smart-ID transaction has expired or user account not found.</source>
-        <translation>Failed to sign container. Your Smart-ID transaction has expired or user account not found.</translation>
-    </message>
-    <message>
-        <source>Failed to sign container. You need to update your Smart-ID application to sign documents in DigiDoc4 Client.</source>
-        <translation>Failed to sign container. You need to update your Smart-ID application to sign documents in DigiDoc4 Client.</translation>
     </message>
     <message>
         <source>Failed to send request. A valid session is associated with this personal code. It is not possible to start a new signing before the current session expires. Please try again later.</source>
@@ -2154,13 +2176,6 @@ ID-Card</translation>
     </message>
 </context>
 <context>
-    <name>SDocumentModel</name>
-    <message>
-        <source>Failed remove document from container</source>
-        <translation>Failed remove document from container</translation>
-    </message>
-</context>
-<context>
     <name>SettingsDialog</name>
     <message>
         <source>Settings</source>
@@ -2221,6 +2236,18 @@ ID-Card</translation>
     <message>
         <source>Checking updates has failed.</source>
         <translation>Checking updates has failed.</translation>
+    </message>
+    <message>
+        <source>Restart DigiDoc4 Client to activate logging.</source>
+        <translation>Restart DigiDoc4 Client to activate logging.</translation>
+    </message>
+    <message>
+        <source>Read more &lt;a href=&quot;https://www.id.ee/en/article/log-file-generation-in-digidoc4-client/&quot;&gt;here&lt;/a&gt;.</source>
+        <translation>Read more &lt;a href=&quot;https://www.id.ee/en/article/log-file-generation-in-digidoc4-client/&quot;&gt;here&lt;/a&gt;.</translation>
+    </message>
+    <message>
+        <source>Read more &lt;a href=&quot;https://www.id.ee/en/article/log-file-generation-in-digidoc4-client/&quot;&gt;here&lt;/a&gt;. Restart now?</source>
+        <translation>Read more &lt;a href=&quot;https://www.id.ee/en/article/log-file-generation-in-digidoc4-client/&quot;&gt;here&lt;/a&gt;. Restart now?</translation>
     </message>
     <message>
         <source>Please try again.</source>
@@ -2334,14 +2361,6 @@ Additional licenses and components</translation>
     <message>
         <source>Save log</source>
         <translation>Save log</translation>
-    </message>
-    <message>
-        <source>Restart DigiDoc4 Client to activate logging. Read more &lt;a href=&quot;https://www.id.ee/en/article/log-file-generation-in-digidoc4-client/&quot;&gt;here&lt;/a&gt;. Restart now?</source>
-        <translation>Restart DigiDoc4 Client to activate logging. Read more &lt;a href=&quot;https://www.id.ee/en/article/log-file-generation-in-digidoc4-client/&quot;&gt;here&lt;/a&gt;. Restart now?</translation>
-    </message>
-    <message>
-        <source>Restart DigiDoc4 Client to activate logging. Read more &lt;a href=&quot;https://www.id.ee/en/article/log-file-generation-in-digidoc4-client/&quot;&gt;here&lt;/a&gt;.</source>
-        <translation>Restart DigiDoc4 Client to activate logging. Read more &lt;a href=&quot;https://www.id.ee/en/article/log-file-generation-in-digidoc4-client/&quot;&gt;here&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>The project is supported by the European Regional Development Fund</source>
@@ -2777,18 +2796,6 @@ Additional licenses and components</translation>
         <translation>PUK code is blocked because the PUK code has been entered 3 times incorrectly.&lt;br/&gt;You can not unblock the PUK code yourself.&lt;br/&gt;As long as the PUK code is blocked, all eID options can be used, except PUK-code.&lt;br/&gt;</translation>
     </message>
     <message>
-        <source>Certificate status is unknown. A valid certificate is required for electronic use. </source>
-        <translation>Certificate status is unknown. A valid certificate is required for electronic use. </translation>
-    </message>
-    <message>
-        <source>Your ID-card signing certificate status is unknown. You need valid certificates to use your ID-card electronically. </source>
-        <translation>Your ID-card signing certificate status is unknown. You need valid certificates to use your ID-card electronically. </translation>
-    </message>
-    <message>
-        <source>Your ID-card authentication certificate status is unknown. You need valid certificates to use your ID-card electronically. </source>
-        <translation>Your ID-card authentication certificate status is unknown. You need valid certificates to use your ID-card electronically. </translation>
-    </message>
-    <message>
         <source>Please visit the service center to obtain new codes.&lt;br/&gt;&lt;a href=&quot;https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult/reminders-for-id-card-holders/&quot;&gt;Additional information&lt;/a&gt;.</source>
         <translation>Please visit the service center to obtain new codes.&lt;br/&gt;&lt;a href=&quot;https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult/reminders-for-id-card-holders/&quot;&gt;Additional information&lt;/a&gt;.</translation>
     </message>
@@ -2841,6 +2848,58 @@ Additional licenses and components</translation>
         <translation>Certificate for Encryption</translation>
     </message>
     <message>
+        <source>Certificate is valid</source>
+        <translation>Certificate is valid</translation>
+    </message>
+    <message>
+        <source>Your ID-card signing certificate is valid</source>
+        <translation>Your ID-card signing certificate is valid</translation>
+    </message>
+    <message>
+        <source>Your ID-card authentication certificate is valid</source>
+        <translation>Your ID-card authentication certificate is valid</translation>
+    </message>
+    <message>
+        <source>Certificate is not valid</source>
+        <translation>Certificate is not valid</translation>
+    </message>
+    <message>
+        <source>A valid certificate is required for electronic use. </source>
+        <translation>A valid certificate is required for electronic use. </translation>
+    </message>
+    <message>
+        <source>Your ID-card signing certificate is not valid</source>
+        <translation>Your ID-card signing certificate is not valid</translation>
+    </message>
+    <message>
+        <source>You need valid certificates to use your ID-card electronically. </source>
+        <translation>You need valid certificates to use your ID-card electronically. </translation>
+    </message>
+    <message>
+        <source>Your ID-card authentication certificate is not valid</source>
+        <translation>Your ID-card authentication certificate is not valid</translation>
+    </message>
+    <message>
+        <source>Certificate status is unknown</source>
+        <translation>Certificate status unknown</translation>
+    </message>
+    <message>
+        <source>Your ID-card signing certificate status is unknown</source>
+        <translation>Your ID-card signing certificate status is unknown</translation>
+    </message>
+    <message>
+        <source>Your ID-card authentication certificate status is unknown</source>
+        <translation>Your ID-card authentication certificate status is unknown</translation>
+    </message>
+    <message>
+        <source>Certificate status check failed</source>
+        <translation>Certificate status check failed</translation>
+    </message>
+    <message>
+        <source>Please check your internet connection.</source>
+        <translation>Please check your internet connection.</translation>
+    </message>
+    <message>
         <source>PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times.</source>
         <translation>PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times.</translation>
     </message>
@@ -2853,40 +2912,12 @@ Additional licenses and components</translation>
         <translation>Check certificate status</translation>
     </message>
     <message>
-        <source>Your ID-card authentication certificate is valid. </source>
-        <translation>Your ID-card authentication certificate is valid. </translation>
-    </message>
-    <message>
-        <source>Your ID-card signing certificate is valid. </source>
-        <translation>Your ID-card signing certificate is valid. </translation>
-    </message>
-    <message>
-        <source>Your ID-card signing certificate is not valid. You need valid certificates to use your ID-card electronically. </source>
-        <translation>Your ID-card signing certificate is not valid. You need valid certificates to use your ID-card electronically. </translation>
-    </message>
-    <message>
-        <source>Your ID-card authentication certificate is not valid. You need valid certificates to use your ID-card electronically. </source>
-        <translation>Your ID-card authentication certificate is not valid. You need valid certificates to use your ID-card electronically. </translation>
-    </message>
-    <message>
         <source>Read more &lt;a href=&quot;https://www.id.ee/en/article/validity-of-id-card-certificates/&quot;&gt;here&lt;/a&gt;.</source>
         <translation>Read more &lt;a href=&quot;https://www.id.ee/en/article/validity-of-id-card-certificates/&quot;&gt;here&lt;/a&gt;.</translation>
     </message>
     <message>
-        <source>Certificate is valid. </source>
-        <translation>Certificate is valid. </translation>
-    </message>
-    <message>
-        <source>Certificate is not valid. A valid certificate is required for electronic use. </source>
-        <translation>Certificate is not valid. A valid certificate is required for electronic use. </translation>
-    </message>
-    <message>
         <source>PIN%1 can not be used because the certificate has expired.</source>
         <translation>PIN%1 can not be used because the certificate has expired.</translation>
-    </message>
-    <message>
-        <source>Certificate status check failed. Please check your internet connection.</source>
-        <translation>Certificate status check failed. Please check your internet connection.</translation>
     </message>
 </context>
 <context>

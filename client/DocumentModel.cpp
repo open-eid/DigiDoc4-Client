@@ -27,6 +27,43 @@
 #include <QtCore/QFileInfo>
 #include <QtCore/QProcessEnvironment>
 
+bool DocumentModel::addFileCheck(const QString &container, QFileInfo file)
+{
+	// Check that container is not dropped into itself
+	if(QFileInfo(container) == file)
+	{
+		auto *dlg = WarningDialog::create()
+			->withTitle(tr("Cannot add container to same container"))
+			->withText(FileDialog::normalized(container));
+		dlg->setCancelText(WarningDialog::Cancel);
+		dlg->open();
+		return false;
+	}
+
+	if(file.size() == 0)
+	{
+		WarningDialog::create()
+			->withTitle(tr("Cannot add empty file to the container."))
+			->withText(FileDialog::normalized(file.absoluteFilePath()))
+			->open();
+		return false;
+	}
+	QString fileName = file.fileName();
+	for(int row = 0; row < rowCount(); row++)
+	{
+		if(fileName == data(row))
+		{
+			WarningDialog::create()
+				->withTitle(tr("File is already in container."))
+				->withText(FileDialog::normalized(fileName))
+				->open();
+			return false;
+		}
+	}
+
+	return true;
+}
+
 void DocumentModel::addTempFiles(const QStringList &files)
 {
 	for(const QString &file: files)
@@ -59,7 +96,9 @@ bool DocumentModel::verifyFile(const QString &f)
 	QJsonArray allowedExts = Application::confValue(QLatin1String("ALLOWED-EXTENSIONS")).toArray(defaultArray);
 	if(allowedExts.contains(QJsonValue(QFileInfo(f).suffix().toLower())))
 		return true;
-	auto *dlg = new WarningDialog(tr("A file with this extension cannot be opened in the DigiDoc4 Client. Download the file to view it."));
+	auto *dlg = WarningDialog::create()
+		->withTitle(tr("Failed to open file"))
+		->withText(tr("A file with this extension cannot be opened in the DigiDoc4 Client. Download the file to view it."));
 	dlg->setCancelText(WarningDialog::OK);
 	dlg->open();
 	return false;

@@ -75,7 +75,7 @@ CertificateDetails::CertificateDetails(const SslCertificate &cert, QWidget *pare
 		if(QFile f(file); f.open(QIODevice::WriteOnly))
 			f.write(cert.toPem());
 		else
-			WarningDialog::show(this, tr("Failed to save file"));
+			WarningDialog::create(this)->withTitle(QCoreApplication::translate("FileDialog", "Failed to save file"))->open();
 	});
 	connect(ui.close, &QPushButton::clicked, this, &CertificateDetails::accept);
 	connect( this, &CertificateDetails::finished, this, &CertificateDetails::close );
