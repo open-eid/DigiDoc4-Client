@@ -110,16 +110,18 @@ background-color: #007aff;
 	d->req.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 	d->manager = CheckConnection::setupNAM(d->req);
 	d->manager->setParent(d);
-	QNetworkAccessManager::connect(d->manager, &QNetworkAccessManager::finished, d, [&](QNetworkReply *reply){
+	QNetworkAccessManager::connect(d->manager, &QNetworkAccessManager::finished, d, [&, this](QNetworkReply *reply){
 		QScopedPointer<QNetworkReply,QScopedPointerDeleteLater> scope(reply);
-		auto returnError = [=](const QString &err, const QString &details = {}) {
+		auto returnError = [=, this](const QString &err, const QString &details = {}) {
 			qCWarning(SIDLog) << err;
 			d->statusTimer->stop();
 			delete d->timer;
 			d->timer = nullptr;
 			d->hide();
-			auto *dlg = WarningDialog::show(d->parentWidget(), err, details);
+			auto *dlg = WarningDialog::create(d->parentWidget())->withText(err)->withDetails(details)
+				->withTitle(QCoreApplication::translate("DigiDoc", "Failed to sign container"));
 			QObject::connect(dlg, &WarningDialog::finished, &d->l, &QEventLoop::exit);
+			dlg->open();
 		};
 
 		switch(reply->error())
@@ -127,7 +129,7 @@ background-color: #007aff;
 		case QNetworkReply::NoError:
 			break;
 		case QNetworkReply::ContentNotFoundError:
-			return returnError(tr("Failed to sign container. Your Smart-ID transaction has expired or user account not found."));
+			return returnError(tr("Your Smart-ID transaction has expired or user account not found."));
 		case QNetworkReply::ConnectionRefusedError:
 			return returnError(tr("%1 service has encountered technical errors. Please try again later.").arg(tr("Smart-ID")));
 		case QNetworkReply::SslHandshakeFailedError:
@@ -144,7 +146,7 @@ background-color: #007aff;
 			switch (httpStatusCode)
 			{
 			case 403:
-				return returnError(tr("Failed to sign container. Check your %1 service access settings. "
+				return returnError(tr("Check your %1 service access settings. "
 					"<a href=\"https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/\">Additional information</a>").arg(tr("Smart-ID")));
 			case 409:
 				return returnError(tr("Failed to send request. The number of unsuccesful request from this IP address has been exceeded. Please try again later."));
@@ -185,9 +187,9 @@ background-color: #007aff;
 				endResult == QLatin1String("USER_REFUSED_CONFIRMATIONMESSAGE_WITH_VC_CHOICE"))
 				returnError(tr("User denied or cancelled"));
 			else if(endResult == QLatin1String("TIMEOUT"))
-				returnError(tr("Failed to sign container. Your Smart-ID transaction has expired or user account not found."));
+				returnError(tr("Your Smart-ID transaction has expired or user account not found."));
 			else if(endResult == QLatin1String("REQUIRED_INTERACTION_NOT_SUPPORTED_BY_APP"))
-				returnError(tr("Failed to sign container. You need to update your Smart-ID application to sign documents in DigiDoc4 Client."));
+				returnError(tr("You need to update your Smart-ID application to sign documents in DigiDoc4 Client."));
 			else if(endResult == QLatin1String("WRONG_VC"))
 				returnError(tr("Error: an incorrect control code was chosen"));
 			else if(endResult == QLatin1String("DOCUMENT_UNUSABLE"))
@@ -238,7 +240,10 @@ bool SmartIDProgress::init(const QString &country, const QString &idCode, const 
 {
 	if(!d->UUID.isEmpty() && QUuid(d->UUID).isNull())
 	{
-		WarningDialog::show(d->parentWidget(), tr("Failed to send request. Check your %1 service access settings.").arg(tr("Smart-ID")));
+		WarningDialog::create(d->parentWidget())
+			->withText(tr("Failed to send request. Check your %1 service access settings.").arg(tr("Smart-ID")))
+			->withTitle(QCoreApplication::translate("DigiDoc", "Failed to sign container"))
+			->open();
 		return false;
 	}
 	QFileInfo info(fileName);
