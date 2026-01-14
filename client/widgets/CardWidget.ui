@@ -24,6 +24,7 @@ font-weight: 400;
 }
 #cardName {
 color: #003168;
+font-family: Roboto, Helvetica;
 font-size: 16px;
 font-weight: 700;
 }</string>
