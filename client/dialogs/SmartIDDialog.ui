@@ -38,7 +38,7 @@ QLineEdit, QComboBox {
 padding: 10px 14px;
 border: 1px solid #C4CBD8;
 border-radius: 4px;
-background-color: white;
+background-color: #FFFFFF;
 placeholder-text-color: #607496;
 font-size: 16px;
 }

@@ -113,65 +113,49 @@ color: #041E42;
        </property>
        <property name="styleSheet">
         <string notr="true">QComboBox {
-    padding: 0px 10px;
-    image: none;
-    border: 1px solid #8E969D;
-    border-radius: 2px;
-    background-color: #FFFFFF;
-    color: #353739;
-    padding: 0px;
-    padding-left:12px;
+padding: 0px 14px;
+border: 1px solid #C4CBD8;
+border-radius: 4px;
+background-color: #FFFFFF;
+color: #07142A;
+font-size: 16px;
 }
-
-/* list */
 QComboBox QWidget#popup {
-    background-color: transparent;
+background-color: transparent;
 }
 QComboBox QWidget#content {
-    border: 1px solid #8E969D;
-    border-radius: 2px;
-    background-color: #FFFFFF;
+border: 1px solid #C4CBD8;
+border-radius: 4px;
+background-color: #FFFFFF;
 }
-
-/* rows */
 QComboBox QPushButton {
-    margin: 3px;
-    padding: 0px 8px 0px 4px;
-    border: 0px;
-    color: #353739;
-    background-color: #FFFFFF;
-    text-align: left;
-    qproperty-iconSize: 14px 9px;
-    qproperty-layoutDirection: RightToLeft;
+margin: 3px;
+padding: 0px 12px 0px 4px;
+border: 0px;
+color: #07142A;
+background-color: #FFFFFF;
+text-align: left;
+font-weight: normal;
+font-size: 16px;
+qproperty-iconSize: 14px 9px;
+qproperty-layoutDirection: RightToLeft;
 }
 QComboBox QPushButton#selected {
-    qproperty-icon: url(:/images/arrow_up.svg);
-}
-
-/* hover row */
-QComboBox QPushButton:hover, QComboBox QPushButton:focus {
-    background-color: #006EB5;
-    color: #FFFFFF;
+qproperty-icon: url(:/images/arrow_up.svg);
 }
 QComboBox QPushButton:hover#selected, QComboBox QPushButton:focus#selected {
-    qproperty-icon: url(:/images/arrow_up_white.svg);
+qproperty-icon: url(:/images/arrow_up_white.svg);
 }
-
-/* drop-down button*/
 QComboBox::drop-down {
-    background-color: #FFFFFF;
-    width: 25px;
+background-color: #FFFFFF;
+width: 25px;
 }
-
-/* drop-down button image*/
 QComboBox::down-arrow {
-    image: url(:/images/arrow_down.svg);
+image: url(:/images/arrow_down.svg);
 }
-
-/* drop-down button image on clicked*/
 QComboBox::down-arrow:on {
-    top: 1px;
-    left: 1px;
+top: 1px;
+left: 1px;
 }</string>
        </property>
        <property name="maxVisibleItems">
@@ -640,7 +624,7 @@ border-radius: 3px;</string>
          <x>363</x>
          <y>500</y>
          <width>298</width>
-         <height>30</height>
+         <height>32</height>
         </rect>
        </property>
        <property name="cursor">
@@ -657,9 +641,9 @@ border-radius: 3px;</string>
        <property name="geometry">
         <rect>
          <x>363</x>
-         <y>535</y>
+         <y>537</y>
          <width>298</width>
-         <height>30</height>
+         <height>32</height>
         </rect>
        </property>
        <property name="cursor">
@@ -1083,9 +1067,9 @@ border-radius: 3px;</string>
        <property name="geometry">
         <rect>
          <x>363</x>
-         <y>535</y>
+         <y>537</y>
          <width>298</width>
-         <height>30</height>
+         <height>32</height>
         </rect>
        </property>
        <property name="cursor">
@@ -1104,7 +1088,7 @@ border-radius: 3px;</string>
          <x>363</x>
          <y>500</y>
          <width>298</width>
-         <height>30</height>
+         <height>32</height>
         </rect>
        </property>
        <property name="cursor">
@@ -1340,7 +1324,7 @@ border-radius: 3px;</string>
          <x>363</x>
          <y>500</y>
          <width>298</width>
-         <height>30</height>
+         <height>32</height>
         </rect>
        </property>
        <property name="cursor">

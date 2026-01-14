@@ -1174,8 +1174,8 @@
     </message>
     <message>
         <source>RECIPIENT_MESSAGE</source>
-        <translation>&lt;p align=center&gt;Kes on adressaat?&lt;/p&gt;
-        &lt;p align=center&gt;Adressaat on füüsiline või juriidiline isik või asutus, kelle jaoks saab dokumendi krüpteerida. Kui dokument on krüpteeritud, siis saab ainult konkreetne adressaat selle sisu näha.&lt;/p&gt;</translation>
+        <translation>&lt;p align=&quot;left&quot;&gt;Kes on adressaat?&lt;/p&gt;
+&lt;p align=&quot;left&quot;&gt;Adressaat on füüsiline või juriidiline isik või asutus, kelle jaoks saab dokumendi krüpteerida. Kui dokument on krüpteeritud, siis saab ainult konkreetne adressaat selle sisu näha.&lt;/p&gt;</translation>
     </message>
     <message>
         <source>Add recipients</source>

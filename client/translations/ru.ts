@@ -1174,8 +1174,8 @@
     </message>
     <message>
         <source>RECIPIENT_MESSAGE</source>
-        <translation>&lt;p align=center&gt;Кто является получателем?&lt;/p&gt;
-        &lt;p align=center&gt;Получатель - физическое или юридическое лицо, для которого документ может быть зашифрован. Если документ зашифрован, только указанный получатель может видеть его содержимое.&lt;/p&gt;</translation>
+        <translation>&lt;p align=&quot;left&quot;&gt;Кто является получателем?&lt;/p&gt;
+&lt;p align=&quot;left&quot;&gt;Получатель - физическое или юридическое лицо, для которого документ может быть зашифрован. Если документ зашифрован, только указанный получатель может видеть его содержимое.&lt;/p&gt;</translation>
     </message>
     <message>
         <source>Add recipients</source>

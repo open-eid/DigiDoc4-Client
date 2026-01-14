@@ -115,7 +115,14 @@ font-size: 22px;
         </size>
        </property>
        <property name="styleSheet">
-        <string notr="true">QHeaderView::section {
+        <string notr="true">QTableWidget {
+background-color: #FFFFFF;
+}
+QTableWidget::item:selected {
+background-color: #E7EAEF;
+color: #07142A;
+}
+QHeaderView::section {
 border: 1px solid #E7EAEF;
 border-width: 0px 0px 1px 0px;
 padding: 0px 0px 8px 5px;
