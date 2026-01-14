@@ -24,10 +24,7 @@
 #include "QSmartCard.h"
 #include "WaitDialog.h"
 
-namespace Ui {
-class PinPopup;
-}
-
+class QLineEdit;
 class QRegularExpressionValidator;
 class SslCertificate;
 
@@ -47,7 +44,6 @@ public:
 	Q_DECLARE_FLAGS(TokenFlags, TokenFlag)
 
 	PinPopup(QSmartCardData::PinType type, TokenFlags flags, const SslCertificate &cert, QWidget *parent = {}, QString text = {});
-	~PinPopup() final;
 
 	void setPinLen(unsigned long minLen, unsigned long maxLen = 12);
 	QString pin() const;
@@ -56,8 +52,11 @@ signals:
 	void startTimer();
 
 private:
-	Ui::PinPopup *ui;
+	void reject() final;
+
+	QLineEdit *pinInput;
 	QRegularExpressionValidator *regexp {};
 	WaitDialogHider hider;
+	bool isPinPad = false;
 };
 
