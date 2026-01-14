@@ -62,7 +62,6 @@ private:
 	void changePinClicked(QSmartCardData::PinType type, QSmartCard::PinAction action);
 	void convertToCDoc();
 	ria::qdigidoc4::ContainerState currentState();
-	bool decrypt();
 	bool encrypt();
 	void loadPicture();
 	void navigateToPage( ria::qdigidoc4::Pages page, const QStringList &files = QStringList(), bool create = true );
@@ -71,14 +70,10 @@ private:
 	void openContainer(bool signature);
 	void pageSelected(int page, bool checked = true);
 	void resetDigiDoc(std::unique_ptr<DigiDoc> &&doc);
-	void removeCryptoFile(int index);
-	bool removeFile(DocumentModel *model, int index);
 	void removeSignature(int index);
-	void removeSignatureFile(int index);
 	bool save();
 	template <typename F>
 	void sign(F &&sign);
-	bool validateFiles(const QString &container, const QStringList &files);
 	void updateSelector();
 	void updateMyEID(const TokenData &t);
 	void updateMyEid(const QSmartCardData &data);

@@ -98,14 +98,16 @@ background-color: #007aff;
 	d->req.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 	d->manager = CheckConnection::setupNAM(d->req);
 	d->manager->setParent(d);
-	QObject::connect(d->manager, &QNetworkAccessManager::finished, d, [=](QNetworkReply *reply) {
+	QObject::connect(d->manager, &QNetworkAccessManager::finished, d, [=, this](QNetworkReply *reply) {
 		QScopedPointer<QNetworkReply,QScopedPointerDeleteLater> scope(reply);
-		auto returnError = [=](const QString &err, const QString &details = {}) {
+		auto returnError = [=, this](const QString &err, const QString &details = {}) {
 			qCWarning(MIDLog) << err;
 			d->statusTimer->stop();
 			d->hide();
-			auto *dlg = WarningDialog::show(d->parentWidget(), err, details);
+			auto *dlg = WarningDialog::create(d->parentWidget())->withText(err)->withDetails(details)
+				->withTitle(QCoreApplication::translate("DigiDoc", "Failed to sign container"));
 			QObject::connect(dlg, &WarningDialog::finished, &d->l, &QEventLoop::exit);
+			dlg->open();
 		};
 
 		switch(reply->error())
@@ -224,7 +226,10 @@ bool MobileProgress::init(const QString &ssid, const QString &cell)
 {
 	if(!d->UUID.isEmpty() && QUuid(d->UUID).isNull())
 	{
-		WarningDialog::show(d->parentWidget(), tr("Failed to send request. Check your %1 service access settings.").arg(tr("mobile-ID")));
+		WarningDialog::create(d->parentWidget())
+			->withText(tr("Failed to send request. Check your %1 service access settings.").arg(tr("mobile-ID")))
+			->withTitle(QCoreApplication::translate("DigiDoc", "Failed to sign container"))
+			->open();
 		return false;
 	}
 	d->ssid = ssid;

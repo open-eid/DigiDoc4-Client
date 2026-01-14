@@ -28,7 +28,6 @@
 #include "QSmartCard.h"
 #include "DigiDoc.h"
 #include "Settings.h"
-#include "Styles.h"
 #ifdef Q_OS_MAC
 #include "MacMenuBar.h"
 #else
@@ -66,6 +65,7 @@ class MacMenuBar {};
 #include <QtCore/QXmlStreamReader>
 #include <QtGui/QDesktopServices>
 #include <QtGui/QFileOpenEvent>
+#include <QtGui/QFontDatabase>
 #include <QtGui/QScreen>
 #include <QtNetwork/QNetworkProxy>
 #include <QtNetwork/QSslCertificate>
@@ -197,11 +197,12 @@ public:
 		if(static std::atomic_bool isShown(false); !isShown.exchange(true))
 		{
 			dispatchToMain([] {
-				WarningDialog::show(Application::tr(
+				WarningDialog::create()->withText(Application::tr(
 					"The renewal of Trust Service status List, used for digital signature validation, has failed. "
 					"Please check your internet connection and make sure you have the latest ID-software version "
 					"installed. An expired Trust Service List (TSL) will be used for signature validation. "
-					"<a href=\"https://www.id.ee/en/article/digidoc4-message-updating-the-list-of-trusted-certificates-was-unsuccessful/\">Additional information</a>"), QString());
+					"<a href=\"https://www.id.ee/en/article/digidoc4-message-updating-the-list-of-trusted-certificates-was-unsuccessful/\">Additional information</a>"))
+					->open();
 			});
 		}
 		return true;
@@ -312,10 +313,6 @@ Application::Application( int &argc, char **argv )
 	setWindowIcon(QIcon(QStringLiteral(":/images/Icon.svg")));
 	if(QFile::exists(QStringLiteral("%1/%2.log").arg(QDir::tempPath(), applicationName())))
 		qInstallMessageHandler(msgHandler);
-	QPalette p = palette();
-	p.setBrush(QPalette::Link, QBrush("#2F70B6"));
-	p.setBrush(QPalette::LinkVisited, QBrush("#2F70B6"));
-	setPalette(p);
 
 #if defined(Q_OS_WIN)
 	AllowSetForegroundWindow( ASFW_ANY );
@@ -328,10 +325,6 @@ Application::Application( int &argc, char **argv )
 	setLibraryPaths({ applicationDirPath() + "/../PlugIns" });
 #endif
 #endif
-	setStyleSheet(QStringLiteral(
-		"QDialogButtonBox { dialogbuttonbox-buttons-have-icons: 0; }\n"));
-
-	QNetworkProxyFactory::setUseSystemConfiguration(true);
 
 	QStringList args = arguments();
 	args.removeFirst();
@@ -344,6 +337,19 @@ Application::Application( int &argc, char **argv )
 	connect(this, &Application::messageReceived, this, qOverload<const QString&>(&Application::parseArgs));
 #endif
 
+	QPalette p = palette();
+	p.setBrush(QPalette::Link, QBrush("#2F70B6"));
+	p.setBrush(QPalette::LinkVisited, QBrush("#2F70B6"));
+	setPalette(p);
+	setStyleSheet(QStringLiteral(
+		"QDialogButtonBox { dialogbuttonbox-buttons-have-icons: 0; }\n"));
+	QNetworkProxyFactory::setUseSystemConfiguration(true);
+	QFontDatabase::addApplicationFont(QStringLiteral(":/fonts/Roboto-Bold.ttf"));
+	QFontDatabase::addApplicationFont(QStringLiteral(":/fonts/Roboto-Regular.ttf"));
+	QFont f(QStringLiteral("Roboto, Helvetica"));
+	f.setPixelSize(14);
+	QToolTip::setFont(f);
+
 #ifdef CONFIG_URL
 	d->conf = new Configuration(this);
 	QMetaObject::invokeMethod(this, [this] {
@@ -354,7 +360,7 @@ Application::Application( int &argc, char **argv )
 		WarningDialog *dlg{};
 		if(lessThanVersion(QLatin1String("QDIGIDOC4-UNSUPPORTED")))
 		{
-			dlg = WarningDialog::show(tr(
+			dlg = WarningDialog::create()->withText(tr(
 				"This version of ID-software on your computer is unsupported. "
 				"DigiDoc4 Client cannot be used until you update ID-software. "
 				"Install new ID-software from <a href=\"https://www.id.ee/en/article/install-id-software/\">www.id.ee</a>. "
@@ -364,7 +370,7 @@ Application::Application( int &argc, char **argv )
 		}
 		else if(lessThanVersion(QLatin1String("QDIGIDOC4-SUPPORTED")))
 		{
-			dlg = WarningDialog::show(tr(
+			dlg = WarningDialog::create()->withText(tr(
 				"Your ID-software has expired. To download the latest software version, go to the "
 				"<a href=\"https://www.id.ee/en/article/install-id-software/\">id.ee</a> website. "
 				"macOS users can download the latest ID-software version from the "
@@ -373,11 +379,11 @@ Application::Application( int &argc, char **argv )
 		connect(d->conf, &Configuration::finished, this, [lessThanVersion](bool changed, const QString &){
 			if(changed && lessThanVersion(QLatin1String("QDIGIDOC4-LATEST")))
 			{
-				auto *dlg = new WarningDialog(tr(
+				auto *dlg = WarningDialog::create(activeWindow())->withText(tr(
 					"An ID-software update has been found. To download the update, go to the "
 					"<a href=\"https://www.id.ee/en/article/install-id-software/\">id.ee</a> website. "
 					"macOS users can download the update from the "
-					"<a href=\"https://itunes.apple.com/ee/developer/ria/id556524921?mt=12\">Mac App Store</a>."), activeWindow());
+					"<a href=\"https://itunes.apple.com/ee/developer/ria/id556524921?mt=12\">Mac App Store</a>."));
 				new Overlay(dlg, activeWindow());
 				dlg->exec();
 			}
@@ -385,14 +391,13 @@ Application::Application( int &argc, char **argv )
 #ifdef Q_OS_WIN
 		if(dlg)
 		{
-			dlg->addButton(tr("Start downloading"), 2);
-			connect(dlg, &WarningDialog::finished, this, [](int result) {
-				if(result != 2)
-					return;
+			dlg->addButton(tr("Start downloading"), QMessageBox::Ok);
+			connect(dlg, &WarningDialog::accepted, this, [] {
 				QString path = QApplication::applicationDirPath() + QLatin1String("/id-updater.exe");
 				if (QFile::exists(path))
 					QProcess::startDetached(path, {});
 			});
+			dlg->open();
 		}
 #endif
 	}, Qt::QueuedConnection);
@@ -401,7 +406,6 @@ Application::Application( int &argc, char **argv )
 	qRegisterMetaType<TokenData>("TokenData");
 	qRegisterMetaType<QSmartCardData>("QSmartCardData");
 	qRegisterMetaType<QEventLoop*>("QEventLoop*");
-	QToolTip::setFont(Styles::font(Styles::Regular, 14));
 	QDesktopServices::setUrlHandler(QStringLiteral("browse"), this, "browse");
 	QDesktopServices::setUrlHandler(QStringLiteral("mailto"), this, "mailTo");
 	QAccessible::installFactory([](const QString &classname, QObject *object) -> QAccessibleInterface* {
@@ -470,8 +474,8 @@ Application::Application( int &argc, char **argv )
 #ifdef Q_OS_MAC
 		if(!Settings::PLUGINS.isSet())
 		{
-			auto *dlg = new WarningDialog(tr(
-				"In order to authenticate and sign in e-services with an ID-card you need to install the web browser components."), mainWindow());
+			auto *dlg = WarningDialog::create()
+				->withText(tr("In order to authenticate and sign in e-services with an ID-card you need to install the web browser components."));
 			dlg->setCancelText(tr("Ignore forever"));
 			dlg->addButton(tr("Remind later"), QMessageBox::Ignore);
 			dlg->addButton(tr("Install"), QMessageBox::Open);
@@ -809,11 +813,15 @@ bool Application::notify(QObject *object, QEvent *event)
 	}
 	catch(const std::bad_alloc &e)
 	{
-		WarningDialog::show(tr("Added file(s) exceeds the maximum size limit of the container(120MB)."), QString::fromLocal8Bit(e.what()));
+		WarningDialog::create()
+			->withTitle(DocumentModel::tr("Failed to add file"))
+			->withText(tr("Added file(s) exceeds the maximum size limit of the container(120MB)."))
+			->withDetails(QString::fromLocal8Bit(e.what()))
+			->open();
 	}
 	catch(...)
 	{
-		WarningDialog::show(tr("Caught exception!"));
+		WarningDialog::create()->withTitle(tr("Caught exception!"))->open();
 	}
 
 	return false;
@@ -944,11 +952,11 @@ void Application::showClient(QStringList files, bool crypto, bool sign, bool new
 	});
 }
 
-void Application::showWarning( const QString &msg, const digidoc::Exception &e )
+void Application::showWarning(const QString &title, const digidoc::Exception &e)
 {
 	digidoc::Exception::ExceptionCode code = digidoc::Exception::General;
 	QStringList causes = DigiDoc::parseException(e, code);
-	WarningDialog::show(msg, causes.join('\n'));
+	WarningDialog::create()->withTitle(title)->withDetails(causes.join('\n'))->open();
 }
 
 QSigner* Application::signer() const { return d->signer; }
