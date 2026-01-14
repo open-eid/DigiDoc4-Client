@@ -20,7 +20,6 @@
 #include "MainAction.h"
 #include "ui_MainAction.h"
 #include "Settings.h"
-#include "Styles.h"
 
 #include <QtGui/QPainter>
 #include <QtGui/QPainterPath>
@@ -40,7 +39,6 @@ MainAction::MainAction(QWidget *parent)
 	, ui(new Private)
 {
 	ui->setupUi(this);
-	ui->mainAction->setFont(Styles::font(Styles::Condensed, 16));
 	ui->otherCards->hide();
 	ui->otherCards->installEventFilter(this);
 	parent->installEventFilter(this);
@@ -52,9 +50,10 @@ MainAction::MainAction(QWidget *parent)
 		if (ui->actions.value(0) == Actions::SignatureSmartID)
 			Settings::MOBILEID_ORDER = false;
 	});
-	connect(ui->mainAction, &QPushButton::clicked, this, [&]{ emit action(ui->actions.value(0)); });
+	connect(ui->mainAction, &QPushButton::clicked, this, [this]{ emit action(ui->actions.value(0)); });
 	connect(ui->mainAction, &QPushButton::clicked, this, &MainAction::hideDropdown);
 	connect(ui->otherCards, &QToolButton::clicked, this, &MainAction::showDropdown);
+	adjustSize();
 }
 
 MainAction::~MainAction()
@@ -75,7 +74,7 @@ void MainAction::hideDropdown()
 	for(QPushButton *other: ui->list)
 		other->deleteLater();
 	ui->list.clear();
-	setStyleSheet(QStringLiteral("QPushButton { border-top-left-radius: 2px; }"));
+	setStyleSheet(QStringLiteral("QPushButton { border-top-left-radius: 4px; }"));
 }
 
 bool MainAction::eventFilter(QObject *watched, QEvent *event)
@@ -86,39 +85,12 @@ bool MainAction::eventFilter(QObject *watched, QEvent *event)
 		if(watched == parentWidget())
 		{
 			move(parentWidget()->width() - width(), parentWidget()->height() - height());
-			int i = 1;
-			for(QPushButton *other: ui->list)
-				other->move(pos() + QPoint(0, (-height() - 1) * (i++)));
-		}
-		break;
-	case QEvent::MouseButtonPress:
-		if(watched == ui->otherCards)
-			ui->otherCards->setProperty("pressed", true);
-		break;
-	case QEvent::MouseButtonRelease:
-		if(watched == ui->otherCards)
-			ui->otherCards->setProperty("pressed", false);
-		break;
-	case QEvent::Paint:
-		if(watched == ui->otherCards)
-		{
-			auto *button = qobject_cast<QToolButton*>(watched);
-			QPainter painter(button);
-			painter.setRenderHint(QPainter::Antialiasing);
-			if(ui->otherCards->property("pressed").toBool())
-				painter.fillRect(button->rect(), QStringLiteral("#41B6E6"));
-			else if(button->rect().contains(button->mapFromGlobal(QCursor::pos())))
-				painter.fillRect(button->rect(), QStringLiteral("#008DCF"));
-			else
-				painter.fillRect(button->rect(), QStringLiteral("#006EB5"));
-			QRect rect(0, 0, 13, 6);
-			rect.moveCenter(button->rect().center());
-			painter.setPen(QPen(Qt::white, 2));
-			QPainterPath path(rect.bottomLeft());
-			path.lineTo(rect.center().x(), rect.top());
-			path.lineTo(rect.bottomRight());
-			painter.drawPath(path);
-			return true;
+			QWidget* prev = this;
+			for(QPushButton *other: std::as_const(ui->list))
+			{
+				other->move(prev->pos() + QPoint(0, -height() - 1));
+				prev = other;
+			}
 		}
 		break;
 	default: break;
@@ -146,18 +118,15 @@ void MainAction::setButtonEnabled(bool enabled)
 	ui->mainAction->setEnabled(enabled);
 }
 
-void MainAction::showActions(const QList<Actions> &actions)
+void MainAction::showActions(QList<Actions> actions)
 {
-	QList<Actions> order = actions;
-	if(order.size() == 2 &&
-		std::all_of(order.cbegin(), order.cend(), [] (Actions action) {
+	if(actions.size() == 2 &&
+		std::all_of(actions.cbegin(), actions.cend(), [] (Actions action) {
 			return action == SignatureMobile || action == SignatureSmartID;
 		}) &&
 		!Settings::MOBILEID_ORDER)
-	{
-		std::reverse(order.begin(), order.end());
-	}
-	ui->actions = std::move(order);
+		std::reverse(actions.begin(), actions.end());
+	ui->actions = std::move(actions);
 	update();
 	ui->otherCards->setVisible(ui->actions.size() > 1);
 	show();
@@ -167,25 +136,28 @@ void MainAction::showDropdown()
 {
 	if(ui->actions.size() > 1 && ui->list.isEmpty())
 	{
-		for(QList<Actions>::const_iterator i = ui->actions.cbegin() + 1; i != ui->actions.cend(); ++i)
+		QWidget* prev = this;
+		for(auto i = std::next(ui->actions.cbegin()); i != ui->actions.cend(); ++i)
 		{
 			auto *other = new QPushButton(label(*i), parentWidget());
 			other->setCursor(ui->mainAction->cursor());
-			other->setFont(ui->mainAction->font());
 			other->resize(size());
-			other->move(pos() + QPoint(0, (-height() - 1) * (ui->list.size() + 1)));
+			other->move(prev->pos() + QPoint(0, -height() - 1));
+			prev = other;
 			other->show();
 			other->setStyleSheet(ui->mainAction->styleSheet() +
-				QStringLiteral("\nborder-top-left-radius: 2px; border-top-right-radius: 2px;"));
-			if (*i == Actions::SignatureMobile)
-				connect(other, &QPushButton::clicked, this, []{ Settings::MOBILEID_ORDER = true; });
-			if (*i == Actions::SignatureSmartID)
-				connect(other, &QPushButton::clicked, this, []{ Settings::MOBILEID_ORDER = false; });
-			connect(other, &QPushButton::clicked, this, &MainAction::hideDropdown);
-			connect(other, &QPushButton::clicked, this, [=]{ emit this->action(*i); });
+				(i + 1 == ui->actions.cend() ? QStringLiteral("\nQPushButton { border-top-left-radius: 4px; }") : QString()));
+			connect(other, &QPushButton::clicked, this, [i, this]{
+				hideDropdown();
+				if (*i == Actions::SignatureMobile)
+					Settings::MOBILEID_ORDER = true;
+				if (*i == Actions::SignatureSmartID)
+					Settings::MOBILEID_ORDER = false;
+				emit action(*i);
+			});
 			ui->list.push_back(other);
 		}
-		setStyleSheet(QStringLiteral("QPushButton { border-top-left-radius: 0px; }"));
+		setStyleSheet({});
 	}
 	else
 		hideDropdown();

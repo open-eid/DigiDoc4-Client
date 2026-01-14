@@ -135,13 +135,6 @@ background-color: #82A9D3;
      </item>
      <item>
       <widget class="QPushButton" name="showCert">
-       <property name="font">
-        <font>
-         <family>Roboto</family>
-         <pointsize>-1</pointsize>
-         <bold>true</bold>
-        </font>
-       </property>
        <property name="cursor">
         <cursorShape>PointingHandCursor</cursorShape>
        </property>
