@@ -24,36 +24,34 @@
 
 #include <QtCore/QTimeLine>
 #include <QtGui/QRegularExpressionValidator>
-#include <QtWidgets/QLineEdit>
 #include <QtWidgets/QProgressBar>
-#include <QtWidgets/QPushButton>
 #include <QSvgWidget>
 
 PinPopup::PinPopup(QSmartCardData::PinType type, TokenFlags flags, const SslCertificate &c, QWidget *parent, QString text)
 	: QDialog(parent)
-	, ui(new Ui::PinPopup)
 {
-	ui->setupUi(this);
+	Ui::PinPopup ui {};
+	ui.setupUi(this);
 	setWindowFlags(Qt::Dialog | Qt::CustomizeWindowHint);
 #ifdef Q_OS_WIN
-	ui->buttonLayout->setDirection(QBoxLayout::RightToLeft);
+	ui.buttonLayout->setDirection(QBoxLayout::RightToLeft);
 #endif
 	for(QLineEdit *w: findChildren<QLineEdit*>())
 		w->setAttribute(Qt::WA_MacShowFocusRect, false);
-	ui->pin->setValidator(regexp = new QRegularExpressionValidator(ui->pin));
+	ui.pin->setValidator(regexp = new QRegularExpressionValidator(ui.pin));
 	new Overlay(this);
 
-	connect( ui->ok, &QPushButton::clicked, this, &PinPopup::accept );
-	connect( ui->cancel, &QPushButton::clicked, this, &PinPopup::reject );
-	connect( this, &PinPopup::finished, this, &PinPopup::close );
-	connect(ui->pin, &QLineEdit::returnPressed, ui->ok, &QPushButton::click);
+	connect(ui.ok, &QPushButton::clicked, this, &PinPopup::accept);
+	connect(ui.cancel, &QPushButton::clicked, this, &PinPopup::reject);
+	connect(this, &PinPopup::finished, this, &PinPopup::close );
+	connect(ui.pin, &QLineEdit::returnPressed, ui.ok, &QPushButton::click);
 
 	if(!text.isEmpty())
-		ui->labelPin->hide();
+		ui.labelPin->hide();
 	else if(type == QSmartCardData::Pin2Type)
 	{
 		text = tr("Selected action requires sign certificate.");
-		ui->labelPin->setText(flags & PinpadFlag ?
+		ui.labelPin->setText(flags & PinpadFlag ?
 			tr("For using sign certificate enter PIN2 at the reader") :
 			tr("For using sign certificate enter PIN2"));
 		setPinLen(5);
@@ -61,43 +59,45 @@ PinPopup::PinPopup(QSmartCardData::PinType type, TokenFlags flags, const SslCert
 	else
 	{
 		text = tr("Selected action requires authentication certificate.");
-		ui->labelPin->setText(flags & PinpadFlag ?
+		ui.labelPin->setText(flags & PinpadFlag ?
 			tr("For using authentication certificate enter PIN1 at the reader") :
 			tr("For using authentication certificate enter PIN1"));
 		setPinLen(4);
 	}
-	ui->label->setText(c.toString(c.showCN() ? QStringLiteral("CN, serialNumber") : QStringLiteral("GN SN, serialNumber")));
-	ui->text->setText(text);
+	ui.label->setText(c.toString(c.showCN() ? QStringLiteral("CN, serialNumber") : QStringLiteral("GN SN, serialNumber")));
+	ui.text->setText(text);
 	if(flags & PinFinalTry)
-		ui->errorPin->setText(tr("%1 will be locked next failed attempt").arg(QSmartCardData::typeString(type)));
+		ui.errorPin->setText(tr("%1 will be locked next failed attempt").arg(QSmartCardData::typeString(type)));
 	else if(flags & PinCountLow)
-		ui->errorPin->setText(tr("%1 has been entered incorrectly at least once").arg(QSmartCardData::typeString(type)));
+		ui.errorPin->setText(tr("%1 has been entered incorrectly at least once").arg(QSmartCardData::typeString(type)));
 	else
-		ui->errorPin->hide();
+		ui.errorPin->hide();
 
 	if(flags & PinpadChangeFlag)
 	{
-		ui->pin->hide();
-		ui->ok->hide();
-		ui->cancel->hide();
-		ui->errorPin->setAlignment(Qt::AlignCenter);
+		isPinPad = true;
+		ui.pin->hide();
+		ui.ok->hide();
+		ui.cancel->hide();
+		ui.errorPin->setAlignment(Qt::AlignCenter);
 		auto *movie = new QSvgWidget(QStringLiteral(":/images/wait.svg"), this);
-		movie->setFixedSize(ui->pin->size().height(), ui->pin->size().height());
+		movie->setFixedSize(ui.pin->size().height(), ui.pin->size().height());
 		movie->show();
-		ui->layoutContent->addWidget(movie, 0, Qt::AlignCenter);
+		ui.layoutContent->addWidget(movie, 0, Qt::AlignCenter);
 	}
 	else if(flags & PinpadFlag)
 	{
-		ui->pin->hide();
-		ui->ok->hide();
-		ui->cancel->hide();
+		isPinPad = true;
+		ui.pin->hide();
+		ui.ok->hide();
+		ui.cancel->hide();
 		auto *progress = new QProgressBar(this);
 		progress->setRange( 0, 30 );
 		progress->setValue( progress->maximum() );
 		progress->setTextVisible( false );
 		progress->resize( 200, 30 );
 		progress->move( 153, 122 );
-		ui->layoutContent->addWidget(progress);
+		ui.layoutContent->addWidget(progress);
 		auto *statusTimer = new QTimeLine(progress->maximum() * 1000, this);
 		statusTimer->setEasingCurve(QEasingCurve::Linear);
 		statusTimer->setFrameRange( progress->maximum(), progress->minimum() );
@@ -106,24 +106,20 @@ PinPopup::PinPopup(QSmartCardData::PinType type, TokenFlags flags, const SslCert
 	}
 	else
 	{
-		ui->pin->setFocus();
-		ui->pin->setMaxLength( 12 );
-		connect(ui->pin, &QLineEdit::textEdited, this, [&](const QString &text) {
-			ui->ok->setEnabled(regexp->regularExpression().match(text).hasMatch());
+		ui.pin->setFocus();
+		ui.pin->setMaxLength( 12 );
+		connect(ui.pin, &QLineEdit::textEdited, this, [ok = ui.ok, this](const QString &text) {
+			ok->setEnabled(regexp->regularExpression().match(text).hasMatch());
 		});
-		ui->text->setBuddy( ui->pin );
-		ui->ok->setDisabled(true);
+		ui.text->setBuddy(ui.pin);
+		ui.ok->setDisabled(true);
 	}
 	if(c.type() & SslCertificate::TempelType)
 	{
 		regexp->setRegularExpression(QRegularExpression(QStringLiteral("^.{4,}$")));
-		ui->pin->setMaxLength(32767);
+		ui.pin->setMaxLength(32767);
 	}
-}
-
-PinPopup::~PinPopup()
-{
-	delete ui;
+	pinInput = ui.pin;
 }
 
 void PinPopup::setPinLen(unsigned long minLen, unsigned long maxLen)
@@ -132,4 +128,10 @@ void PinPopup::setPinLen(unsigned long minLen, unsigned long maxLen)
 	regexp->setRegularExpression(QRegularExpression(QStringLiteral("^%1{%2,%3}$").arg(charPattern).arg(minLen).arg(maxLen)));
 }
 
-QString PinPopup::pin() const { return ui->pin->text(); }
+QString PinPopup::pin() const { return pinInput->text(); }
+
+void PinPopup::reject()
+{
+	if (!isPinPad)
+		QDialog::reject();
+}

@@ -24,12 +24,12 @@
 #include "QPCSC.h"
 #include "SslCertificate.h"
 #include "TokenData.h"
+#include "Utils.h"
 #include "dialogs/PinPopup.h"
 
 #include <QtCore/QDebug>
 
 #include <array>
-#include <thread>
 
 template<class Container>
 static QString toQString(const Container &c)
@@ -222,12 +222,10 @@ QPKCS11::PinStatus QPKCS11::login(const TokenData &t)
 	{
 		f |= PinPopup::PinpadFlag;
 		PinPopup p(isSign ? QSmartCardData::Pin2Type : QSmartCardData::Pin1Type, f, cert, Application::mainWindow());
-		std::thread([&err, &p, this] {
-			emit p.startTimer();
-			err = d->f->C_Login(d->session, CKU_USER, nullptr, 0);
-			p.accept();
-		}).detach();
-		p.exec();
+		p.open();
+		p.startTimer();
+		err = waitFor(d->f->C_Login, d->session, CKU_USER, nullptr, 0);
+		p.accept();
 	}
 	else
 	{
