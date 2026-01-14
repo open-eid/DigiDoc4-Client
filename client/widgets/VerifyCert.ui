@@ -52,16 +52,22 @@ font-family: Roboto, Helvetica;
 font-size: 14px;
 font-weight: 700;
 }
-#changePIN:default {
+#changePIN:hover, #changePIN:focus {
+background-color: #EAF1F8;
+}
+#changePIN:pressed {
+background-color: #BFD3E8;
+}
+#changePIN[active=&quot;true&quot;] {
 color: #ffffff;
 border-color: #2F70B6;
 background-color: #2F70B6;
 }
-#changePIN:default:hover {
+#changePIN[active=&quot;true&quot;]:hover, #changePIN[active=true]:focus {
 border-color: #2B66A6;
 background-color: #2B66A6;
 }
-#changePIN:default:pressed {
+#changePIN[active=&quot;true&quot;]:pressed {
 border-color: #215081;
 background-color: #215081;
 }</string>
@@ -220,12 +226,15 @@ background-color: #215081;
     </widget>
    </item>
    <item alignment="Qt::AlignHCenter|Qt::AlignVCenter">
-    <widget class="QPushButton" name="changePIN">
+    <widget class="QToolButton" name="changePIN">
      <property name="cursor">
       <cursorShape>PointingHandCursor</cursorShape>
      </property>
      <property name="text">
       <string notr="true">Change PUK</string>
+     </property>
+     <property name="active" stdset="0">
+      <bool>false</bool>
      </property>
     </widget>
    </item>
@@ -264,7 +273,7 @@ font-family: Roboto, Helvetica;
 font-size: 14px;
 text-decoration: underline solid;
 }
-QToolButton:hover {
+QToolButton:hover, QToolButton:focus {
 background-color: #EAF1F8;
 }
 QToolButton:pressed {

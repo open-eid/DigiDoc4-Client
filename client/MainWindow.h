@@ -28,13 +28,9 @@ namespace Ui {
 class MainWindow;
 }
 
-class CKey;
 class CryptoDoc;
 class DigiDoc;
-class DocumentModel;
-class PageIcon;
 class TokenData;
-class WarningList;
 
 class MainWindow final : public QWidget
 {
@@ -70,7 +66,6 @@ private:
 	void openContainer(bool signature);
 	void resetDigiDoc(std::unique_ptr<DigiDoc> &&doc);
 	void removeSignature(int index);
-	bool save();
 	template <typename F>
 	void sign(F &&sign);
 	void updateSelector();
