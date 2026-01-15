@@ -940,7 +940,7 @@ void Application::showClient(QStringList files, bool crypto, bool sign, bool new
 	QMetaObject::invokeMethod(w, [&] {
 		using enum ria::qdigidoc4::Pages;
 		w->selectPage(crypto && !sign ? CryptoIntro : SignIntro);
-		w->openFiles(files, false, sign);
+		w->openFiles(std::move(files), false, sign);
 	});
 }
 

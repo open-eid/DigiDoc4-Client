@@ -50,5 +50,5 @@ private:
 	Ui::WarningItem *ui;
 	WarningText warnText;
 	QString url;
-	int _page = -1;
+	ria::qdigidoc4::Pages _page = ria::qdigidoc4::MyEid;
 };

@@ -20,6 +20,8 @@
 
 #include <QObject>
 
+class QFileInfo;
+
 class DocumentModel: public QObject
 {
 	Q_OBJECT
@@ -40,8 +42,8 @@ public:
 
 signals:
 	void added(const QString &file);
-	void removed(int row);
 
 protected:
+	bool addFileCheck(const QString &container, QFileInfo file);
 	static bool verifyFile(const QString &f);
 };
