@@ -328,7 +328,7 @@ libcdoc::result_t TempListConsumer::write(const uint8_t *src, size_t size) noexc
 	return size;
 }
 
-libcdoc::result_t TempListConsumer::close() {
+libcdoc::result_t TempListConsumer::close() noexcept {
 	if (files.empty())
 		return libcdoc::OUTPUT_ERROR;
 	IOEntry &file = files.back();
@@ -338,10 +338,10 @@ libcdoc::result_t TempListConsumer::close() {
 }
 
 bool
-TempListConsumer::isError()
+TempListConsumer::isError() noexcept
 {
 	if (files.empty()) return false;
-	IOEntry& file = files.back();
+	const IOEntry& file = files.back();
 	return !file.data->isWritable();
 }
 
@@ -371,14 +371,14 @@ StreamListSource::read(uint8_t *dst, size_t size) noexcept
 }
 
 bool
-StreamListSource::isError()
+StreamListSource::isError() noexcept
 {
 	if ((_current < 0) || (_current >= _files.size())) return 0;
 	return _files[_current].data->isReadable();
 }
 
 bool
-StreamListSource::isEof()
+StreamListSource::isEof() noexcept
 {
 	if (_current < 0) return false;
 	if (_current >= _files.size()) return true;

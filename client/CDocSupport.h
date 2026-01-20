@@ -152,8 +152,8 @@ struct TempListConsumer : public libcdoc::MultiDataConsumer {
 	~TempListConsumer();
 
 	libcdoc::result_t write(const uint8_t *src, size_t size) noexcept final;
-	libcdoc::result_t close() override final;
-	bool isError() override final;
+	libcdoc::result_t close() noexcept final;
+	bool isError() noexcept final;
 	libcdoc::result_t open(const std::string &name,
 						   int64_t size) override final;
 
@@ -165,8 +165,8 @@ struct StreamListSource : public libcdoc::MultiDataSource {
 	StreamListSource(const std::vector<IOEntry> &files);
 
 	libcdoc::result_t read(uint8_t *dst, size_t size) noexcept final;
-	bool isError() override final;
-	bool isEof() override final;
+	bool isError() noexcept final;
+	bool isEof() noexcept final;
 	libcdoc::result_t getNumComponents() override final;
 	libcdoc::result_t next(std::string &name, int64_t &size) override final;
 
