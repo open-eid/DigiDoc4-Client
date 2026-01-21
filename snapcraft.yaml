@@ -1,0 +1,42 @@
+name: qdigidoc4
+base: core22
+version: 4.5.0
+summary: DigiDoc4 Client
+description: DigiDoc4 Client
+icon: client/images/Icon.svg 
+grade: devel
+confinement: devmode
+
+#package-repositories:
+#  - type: apt
+#    components: [main]
+#    suites: [focal, jammy]
+#    key-id: 16A4D8047F6FD921EE24D3F9E9AB214DC6C83D68
+#    key-server: hkp://keyserver.ubuntu.com:80
+#    url: https://installer.id.ee/media/ubuntu
+
+apps:
+  qdigidoc4:
+    command: usr/bin/qdigidoc4
+    desktop: usr/share/applications/qdigidoc4.desktop
+    extensions: [kde-neon]
+    plugs: [home, network]
+  digidoc-tool:
+    command: usr/bin/digidoc-tool
+
+parts:
+  libdigidocpp:
+    plugin: cmake
+    source: https://github.com/open-eid/libdigidocpp.git
+    stage-packages: [libxalan-c112, libxerces-c3.2, libxml-security-c20]
+    build-packages: [g++, xxd, libxml-security-c-dev, libssl-dev, zlib1g-dev, xsdcxx]
+    cmake-parameters: [-DCMAKE_INSTALL_PREFIX=/usr, -DCMAKE_FIND_ROOT_PATH=/usr]
+  qdigidoc4:
+    plugin: cmake
+    source: .
+    stage-packages: [opensc-pkcs11]
+    build-packages: [libssl-dev, libpcsclite-dev, libldap2-dev, libflatbuffers-dev]
+    after: [libdigidocpp]
+    cmake-parameters:
+      - -DCMAKE_INSTALL_PREFIX=/usr
+      - "-DCMAKE_FIND_ROOT_PATH=/usr\\;/root/stage\\;/snap/kf5-5-110-qt-5-15-11-core22-sdk/current"
