@@ -200,6 +200,38 @@ jobs:
         path: |
           build/*.msi
           build/*.appx
+  appimage:
+    name: Build AppImage
+    runs-on: ubuntu-20.04
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        submodules: recursive
+    - name: Install dependencies
+      run: sudo apt update -qq && sudo apt install --no-install-recommends -y cmake libldap2-dev gettext libpcsclite-dev libminizip-dev libxml-security-c-dev libqt5svg5-dev qttools5-dev-tools qttools5-dev
+    - name: Download artifact
+      uses: dawidd6/action-download-artifact@v2
+      with:
+        workflow: build.yml
+        branch: master
+        name: debs
+        path: libdigidocpp-pkg
+        repo: open-eid/libdigidocpp
+    - name: Install artifact
+      run: sudo dpkg -i libdigidocpp-pkg/*$(lsb_release -rs)*.deb
+    - name: Configure
+      run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr
+    - name: Build
+      run: cmake --build build --target install -- DESTDIR=${PWD}/AppDir
+    - name: Build AppImage
+      uses: AppImageCrafters/build-appimage-action@master
+      with:
+        recipe: AppImageBuilder.yml
+    - uses: actions/upload-artifact@v3
+      with:
+        name: AppImage
+        path: './*.AppImage*'
   coverity:
     name: Run Coverity tests
     if: github.repository == 'open-eid/DigiDoc4-Client' && contains(github.ref, 'coverity_scan')
