@@ -42,9 +42,12 @@ background-color: white;
 placeholder-text-color: #607496;
 font-size: 16px;
 }
+QLineEdit[label=&quot;error&quot;] {
+border-color: #BE7884;
+}
 QCheckBox {
 spacing: 8px;
-border: none; /*Workaround for right padding*/
+border-right: none; /*Workaround for right padding*/
 }
 QCheckBox:disabled {
 color: #C4CBD8;
@@ -174,6 +177,9 @@ background-color: #82A9D3;
          <property name="placeholderText">
           <string notr="true">37254321</string>
          </property>
+         <property name="label" stdset="0">
+          <string notr="true"/>
+         </property>
         </widget>
        </item>
        <item>
@@ -216,6 +222,9 @@ background-color: #82A9D3;
         <widget class="LineEdit" name="idCode">
          <property name="placeholderText">
           <string notr="true">47101010033</string>
+         </property>
+         <property name="label" stdset="0">
+          <string notr="true"/>
          </property>
         </widget>
        </item>

@@ -22,36 +22,32 @@
 #include <QtCore/QCoreApplication>
 #include <QtCore/QSettings>
 
-template<typename T>
-using if_QString = std::enable_if_t<std::is_same_v<T,QString>, bool>;
-
 struct Settings
 {
 	template<class T, class D = T>
 	struct Option
 	{
 		operator QVariant() const {
-			return settings().value(KEY, defaultValue());
+			if(QSettings s(isLocked() ? QSettings::SystemScope : QSettings::UserScope); s.contains(KEY))
+				return s.value(KEY);
+			return defaultValue();
 		}
 		operator T() const {
 			return operator QVariant().template value<T>();
 		}
-		template <typename P = T, typename = if_QString<P>>
-		operator std::string() const {
+		operator std::string() const requires(std::is_same_v<T,QString>) {
 			return operator T().toStdString();
 		}
 		void operator =(const QVariant &value) const {
-			setValue(value, defaultValue());
-		}
-		void operator =(const T &value) const {
-			operator =(QVariant(value));
+			if(value == defaultValue())
+				clear();
+			else
+				QSettings().setValue(KEY, value);
+			if(f)
+				f(operator T());
 		}
 		void operator() (const T &value) const {
 			operator =(QVariant(value));
-		}
-		template <typename P = T, typename = if_QString<P>>
-		void operator =(const std::string &value) const {
-			operator =(QString::fromStdString(value));
 		}
 		void clear() const {
 			QSettings().remove(KEY);
@@ -61,18 +57,6 @@ struct Settings
 		}
 		bool isSet() const {
 			return QSettings().contains(KEY);
-		}
-		T value(const QVariant &def) const {
-			return settings().value(KEY, def).template value<T>();
-		}
-		void setValue(const QVariant &value, const QVariant &def = {}) const {
-			if(bool valueIsNullOrEmpty = value.typeId() == QMetaType::QString ? value.toString().isEmpty() : value.isNull();
-				value == def || (def.isNull() && valueIsNullOrEmpty))
-				clear();
-			else
-				QSettings().setValue(KEY, value);
-			if(f)
-				f(operator T());
 		}
 		T defaultValue() const {
 			if constexpr (std::is_invocable_v<D>)
@@ -84,9 +68,6 @@ struct Settings
 		void registerCallback(F functor)
 		{
 			f = functor;
-		}
-		QSettings settings() const {
-			return QSettings(isLocked() ? QSettings::SystemScope : QSettings::UserScope);
 		}
 		const QString KEY;
 		const D DEFAULT {};
@@ -134,12 +115,11 @@ struct Settings
 	static const Option<QString, QString (*)()> LANGUAGE;
 	static const Option<QString> LAST_PATH;
 	static Option<bool> LIBDIGIDOCPP_DEBUG;
-	static const Option<bool> SETTINGS_MIGRATED;
 	static const Option<bool> SHOW_INTRO;
 	static const Option<bool> SHOW_PRINT_SUMMARY;
 	static const Option<bool> SHOW_ROLE_ADDRESS_INFO;
 
-	enum ProxyConfig {
+	enum ProxyConfig: quint8 {
 		ProxyNone,
 		ProxySystem,
 		ProxyManual,
@@ -151,6 +131,5 @@ struct Settings
 	static const Option<QString> PROXY_PASS;
 #ifdef Q_OS_MAC
 	static const Option<QString> PLUGINS;
-	static const Option<bool> TSL_ONLINE_DIGEST;
 #endif
 };

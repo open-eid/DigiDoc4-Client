@@ -76,10 +76,12 @@ void WarningItem::lookupWarning()
 		setObjectName("WarningItemError");
 		ui->warningText->setText(tr("Certificates have expired!"));
 		url = tr("https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult/");
+		_page = MyEid;
 		break;
 	case CertExpiryWarning:
 		ui->warningText->setText(tr("Certificates expire soon!"));
 		url = tr("https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult/");
+		_page = MyEid;
 		break;
 	case ActivatePin1WithPUKWarning:
 	case UnblockPin1Warning:
@@ -87,6 +89,7 @@ void WarningItem::lookupWarning()
 			VerifyCert::tr("PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times.").arg(1),
 			VerifyCert::tr("Unblock to reuse PIN%1.").arg(1)));
 		ui->warningAction->setText(VerifyCert::tr("Unblock"));
+		_page = MyEid;
 		break;
 	case ActivatePin2WithPUKWarning:
 	case UnblockPin2Warning:
@@ -94,11 +97,13 @@ void WarningItem::lookupWarning()
 			VerifyCert::tr("PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times.").arg(2),
 			VerifyCert::tr("Unblock to reuse PIN%1.").arg(2)));
 		ui->warningAction->setText(VerifyCert::tr("Unblock"));
+		_page = MyEid;
 		break;
 	case ActivatePin2Warning:
 		ui->warningText->setText(tr("Signing with an ID-card isn't possible yet. PIN%1 code must be changed in order to sign.").arg(2));
 		ui->warningAction->setText(tr("Additional information"));
 		url = tr("https://www.id.ee/en/article/changing-id-card-pin-codes-and-puk-code/");
+		_page = MyEid;
 		break;
 	// SignDetails
 	case InvalidSignatureError:
@@ -153,7 +158,8 @@ void WarningItem::lookupWarning()
 		ui->warningAction->hide();
 		_page = SignDetails;
 		break;
-	default: break;
+	case NoWarning:
+		break;
 	}
 }
 

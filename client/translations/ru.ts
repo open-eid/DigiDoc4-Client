@@ -19,12 +19,24 @@
         <translation>Данным сертификатом нельзя зашифровать</translation>
     </message>
     <message>
+        <source>Failed to add certificate</source>
+        <translation>Не удалось добавить сертификат</translation>
+    </message>
+    <message>
+        <source>An expired certificate cannot be used for encryption.</source>
+        <translation>Сертификат с истекшим сроком действия нельзя использовать для шифрования.</translation>
+    </message>
+    <message>
         <source>Personal code is not valid!</source>
         <translation>Личный код недействителен!</translation>
     </message>
     <message>
-        <source>Person or company does not own a valid certificate.&lt;br /&gt;It is necessary to have a valid certificate for encryption.&lt;br /&gt;&lt;a href=&apos;https://www.id.ee/en/article/encryption-and-decryption-of-documents/&apos;&gt;Read more about it&lt;/a&gt;.</source>
-        <translation>У человека или предприятия отсутствует действующий сертификат.&lt;br /&gt;Для шифрования нужен действующий сертификат.&lt;br /&gt;&lt;a href=&apos;https://www.id.ee/ru/artikkel/shifrovanie-i-deshifrovka-dokumentov/&apos;&gt;Точнее можно прочитать&lt;/a&gt;.</translation>
+        <source>Person or company does not own a valid certificate</source>
+        <translation>У человека или предприятия отсутствует действующий сертификат</translation>
+    </message>
+    <message>
+        <source>It is necessary to have a valid certificate for encryption.&lt;br /&gt;&lt;a href=&apos;https://www.id.ee/en/article/encryption-and-decryption-of-documents/&apos;&gt;Read more about it&lt;/a&gt;.</source>
+        <translation>Для шифрования нужен действующий сертификат.&lt;br /&gt;&lt;a href=&apos;https://www.id.ee/ru/artikkel/shifrovanie-i-deshifrovka-dokumentov/&apos;&gt;Точнее можно прочитать&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>Certificates (*.cer *.crt *.pem)</source>
@@ -61,10 +73,6 @@
     <message>
         <source>The name you were looking for gave too many results, please refine your search.</source>
         <translation>Согласно Вашему запросу выдается много ответов, пожалуйста уточните запрос.</translation>
-    </message>
-    <message>
-        <source>Failed to add certificate. An expired certificate cannot be used for encryption.</source>
-        <translation>Не удалось добавить сертификат. Сертификат с истекшим сроком действия нельзя использовать для шифрования.</translation>
     </message>
 </context>
 <context>
@@ -145,16 +153,20 @@
         <translation>Перехвачена системная ошибка!</translation>
     </message>
     <message>
-        <source>The renewal of Trust Service status List, used for digital signature validation, has failed. Please check your internet connection and make sure you have the latest ID-software version installed. An expired Trust Service List (TSL) will be used for signature validation. &lt;a href=&quot;https://www.id.ee/en/article/digidoc4-message-updating-the-list-of-trusted-certificates-was-unsuccessful/&quot;&gt;Additional information&lt;/a&gt;</source>
-        <translation>Не удалось обновить список доверенных сертификатов, используемый для проверки действительности цифровых подписей. Пожалуйста, проверьте ваше интернет-соединение и убедитесь в том, что на компьютере установлена последняя версия программного обеспечения ID-карты. Для верификации подписей будет использован устаревший список доверенных сертификатов. &lt;a href=&quot;https://www.id.ee/ru/artikkel/uvedomlenie-digidoc4-obnovlenie-spiska-doveriya-sertifikatov-ne-udalos/&quot;&gt;Дополнительная информация&lt;/a&gt;</translation>
-    </message>
-    <message>
         <source>Loading TSL lists</source>
         <translation>Загружаем список TSL</translation>
     </message>
     <message>
         <source>Added file(s) exceeds the maximum size limit of the container(120MB).</source>
         <translation>Вложенные файл(ы) превышают размер контейнера безопасности (~120 МБ).</translation>
+    </message>
+    <message>
+        <source>The renewal of Trust Service status List has failed</source>
+        <translation>Не удалось обновить список доверенных сертификатов</translation>
+    </message>
+    <message>
+        <source>Trust Service status List is used for digital signature validation. Please check your internet connection and make sure you have the latest ID-software version installed. An expired Trust Service List (TSL) will be used for signature validation. &lt;a href=&quot;https://www.id.ee/en/article/digidoc4-message-updating-the-list-of-trusted-certificates-was-unsuccessful/&quot;&gt;Additional information&lt;/a&gt;</source>
+        <translation>Список доверенных сертификатов используется для проверки действительности цифровых подписей. Пожалуйста, проверьте ваше интернет-соединение и убедитесь в том, что на компьютере установлена последняя версия программного обеспечения ID-карты. Для верификации подписей будет использован устаревший список доверенных сертификатов. &lt;a href=&quot;https://www.id.ee/ru/artikkel/uvedomlenie-digidoc4-obnovlenie-spiska-doveriya-sertifikatov-ne-udalos/&quot;&gt;Дополнительная информация&lt;/a&gt;</translation>
     </message>
     <message>
         <source>Ignore forever</source>
@@ -167,6 +179,30 @@
     <message>
         <source>DigiDoc4 Client Help</source>
         <translation>DigiDoc4 клиент помощь</translation>
+    </message>
+    <message>
+        <source>This version of ID-software on your computer is unsupported</source>
+        <translation>Программное обеспечение ID на вашем компьютере не поддерживается</translation>
+    </message>
+    <message>
+        <source>DigiDoc4 Client cannot be used until you update ID-software. Install new ID-software from &lt;a href=&quot;https://www.id.ee/en/article/install-id-software/&quot;&gt;www.id.ee&lt;/a&gt;. macOS users can download the latest ID-software version from the &lt;a href=&quot;https://itunes.apple.com/ee/developer/ria/id556524921?mt=12&quot;&gt;Mac App Store&lt;/a&gt;.</source>
+        <translation>Чтобы использовать программу DigiDoc4 клиент, вам необходимо обновить программное обеспечение ID. Установите новое программное обеспечение ID с веб-сайта &lt;a href=&quot;https://www.id.ee/ru/artikkel/ustanovite-id-programmu/&quot;&gt;www.id.ee&lt;/a&gt;. Пользователи macOS могут скачать последнюю версию программного обеспечения ID-карты в магазине &lt;a href=&quot;https://itunes.apple.com/ee/developer/ria/id556524921?mt=12&quot;&gt;Mac App Store&lt;/a&gt;.</translation>
+    </message>
+    <message>
+        <source>Your ID-software has expired</source>
+        <translation>Вам необходимо обновить программное обеспечение ID-карты</translation>
+    </message>
+    <message>
+        <source>To download the latest software version, go to the &lt;a href=&quot;https://www.id.ee/en/article/install-id-software/&quot;&gt;id.ee&lt;/a&gt; website. macOS users can download the latest ID-software version from the &lt;a href=&quot;https://itunes.apple.com/ee/developer/ria/id556524921?mt=12&quot;&gt;Mac App Store&lt;/a&gt;.</source>
+        <translation>Чтобы скачать последнюю версию программы, перейдите на сайт &lt;a href=&quot;https://www.id.ee/ru/artikkel/ustanovite-id-programmu/&quot;&gt;id.ee&lt;/a&gt;. Пользователи macOS могут скачать последнюю версию программного обеспечения ID-карты в магазине &lt;a href=&quot;https://itunes.apple.com/ee/developer/ria/id556524921?mt=12&quot;&gt;Mac App Store&lt;/a&gt;.</translation>
+    </message>
+    <message>
+        <source>An ID-software update has been found</source>
+        <translation>Выпущено обновление для программного обеспечения ID-карты</translation>
+    </message>
+    <message>
+        <source>To download the update, go to the &lt;a href=&quot;https://www.id.ee/en/article/install-id-software/&quot;&gt;id.ee&lt;/a&gt; website. macOS users can download the update from the &lt;a href=&quot;https://itunes.apple.com/ee/developer/ria/id556524921?mt=12&quot;&gt;Mac App Store&lt;/a&gt;.</source>
+        <translation>Чтобы скачать обновление, перейдите на сайт &lt;a href=&quot;https://www.id.ee/ru/artikkel/ustanovite-id-programmu/&quot;&gt;id.ee&lt;/a&gt;. Пользователи macOS могут скачать обновление в магазине &lt;a href=&quot;https://itunes.apple.com/ee/developer/ria/id556524921?mt=12&quot;&gt;Mac App Store&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>Close Window</source>
@@ -193,18 +229,6 @@
         <translation>https://www.id.ee/ru/id-pomoshh/</translation>
     </message>
     <message>
-        <source>This version of ID-software on your computer is unsupported. DigiDoc4 Client cannot be used until you update ID-software. Install new ID-software from &lt;a href=&quot;https://www.id.ee/en/article/install-id-software/&quot;&gt;www.id.ee&lt;/a&gt;. macOS users can download the latest ID-software version from the &lt;a href=&quot;https://itunes.apple.com/ee/developer/ria/id556524921?mt=12&quot;&gt;Mac App Store&lt;/a&gt;.</source>
-        <translation>Программное обеспечение ID на вашем компьютере не поддерживается. Чтобы использовать программу DigiDoc4 клиент, вам необходимо обновить программное обеспечение ID. Установите новое программное обеспечение ID с веб-сайта &lt;a href=&quot;https://www.id.ee/ru/artikkel/ustanovite-id-programmu/&quot;&gt;www.id.ee&lt;/a&gt;. Пользователи macOS могут скачать последнюю версию программного обеспечения ID-карты в магазине &lt;a href=&quot;https://itunes.apple.com/ee/developer/ria/id556524921?mt=12&quot;&gt;Mac App Store&lt;/a&gt;.</translation>
-    </message>
-    <message>
-        <source>Your ID-software has expired. To download the latest software version, go to the &lt;a href=&quot;https://www.id.ee/en/article/install-id-software/&quot;&gt;id.ee&lt;/a&gt; website. macOS users can download the latest ID-software version from the &lt;a href=&quot;https://itunes.apple.com/ee/developer/ria/id556524921?mt=12&quot;&gt;Mac App Store&lt;/a&gt;.</source>
-        <translation>Вам необходимо обновить программное обеспечение ID-карты. Чтобы скачать последнюю версию программы, перейдите на сайт &lt;a href=&quot;https://www.id.ee/ru/artikkel/ustanovite-id-programmu/&quot;&gt;id.ee&lt;/a&gt;. Пользователи macOS могут скачать последнюю версию программного обеспечения ID-карты в магазине &lt;a href=&quot;https://itunes.apple.com/ee/developer/ria/id556524921?mt=12&quot;&gt;Mac App Store&lt;/a&gt;.</translation>
-    </message>
-    <message>
-        <source>An ID-software update has been found. To download the update, go to the &lt;a href=&quot;https://www.id.ee/en/article/install-id-software/&quot;&gt;id.ee&lt;/a&gt; website. macOS users can download the update from the &lt;a href=&quot;https://itunes.apple.com/ee/developer/ria/id556524921?mt=12&quot;&gt;Mac App Store&lt;/a&gt;.</source>
-        <translation>Выпущено обновление для программного обеспечения ID-карты. Чтобы скачать обновление, перейдите на сайт &lt;a href=&quot;https://www.id.ee/ru/artikkel/ustanovite-id-programmu/&quot;&gt;id.ee&lt;/a&gt;. Пользователи macOS могут скачать обновление в магазине &lt;a href=&quot;https://itunes.apple.com/ee/developer/ria/id556524921?mt=12&quot;&gt;Mac App Store&lt;/a&gt;.</translation>
-    </message>
-    <message>
         <source>Start downloading</source>
         <translation>Начать установку</translation>
     </message>
@@ -218,10 +242,6 @@
 </context>
 <context>
     <name>CDocumentModel</name>
-    <message>
-        <source>Failed to save file &apos;%1&apos;</source>
-        <translation>Неудачное сохранение файла &apos;%1&apos;</translation>
-    </message>
     <message>
         <source>Added file(s) exceeds the maximum size limit of the container (∼120MB). &lt;a href=&apos;https://www.id.ee/en/article/encrypting-large-120-mb-files/&apos;&gt;Read more about it&lt;/a&gt;</source>
         <translation>Добаленные файл/ы превышают максимальный размер контейнера. &lt;a href=&apos;https://www.id.ee/ru/artikkel/kriptovanie-fajlov-s-bolshim-obemom-120-mb/&apos;&gt;Точнее можно прочитать&lt;/a&gt;</translation>
@@ -361,10 +381,6 @@
         <translation>Сохранить сертификат</translation>
     </message>
     <message>
-        <source>Failed to save file</source>
-        <translation>Не удалось сохранить файл</translation>
-    </message>
-    <message>
         <source>Close</source>
         <translation>Закрыть</translation>
     </message>
@@ -450,12 +466,20 @@
         <translation>Kонтейнер:</translation>
     </message>
     <message>
-        <source>The document has already been signed by you.</source>
-        <translation>Вы уже подписали этот документ.</translation>
+        <source>The document has already been signed by you</source>
+        <translation>Вы уже подписали этот документ</translation>
     </message>
     <message>
         <source>DigiDoc4 Client</source>
         <translation>DigiDoc4 клиент</translation>
+    </message>
+    <message>
+        <source>You are about to delete the last file in the container</source>
+        <translation>Вы собираетесь удалить последний файл в контейнере</translation>
+    </message>
+    <message>
+        <source>It is removed along with the container.</source>
+        <translation>Он удаляется вместе с контейнером.</translation>
     </message>
     <message>
         <source>In order to view Validity Confirmation Sheet there has to be at least one printer installed!</source>
@@ -545,28 +569,32 @@
         <translation>Digi-ID</translation>
     </message>
     <message>
-        <source>Failed to decrypt document</source>
-        <translation>Не удалось расшифровать документ</translation>
+        <source>Failed to add key</source>
+        <translation>Не удалось добавить ключ</translation>
+    </message>
+    <message>
+        <source>Please check your internet connection and network settings.</source>
+        <translation>Пожалуйста, проверьте подключение к Интернету и настройки сети.</translation>
+    </message>
+    <message>
+        <source>Failed to encrypt document</source>
+        <translation>Не удалось зашифровать документ</translation>
+    </message>
+    <message>
+        <source>Failed to remove key</source>
+        <translation>Не удалось удалить ключ</translation>
     </message>
     <message>
         <source>Failed to open document</source>
         <translation>Не удалось открыть документ</translation>
     </message>
     <message>
-        <source>An error occurred while opening the document.</source>
-        <translation>Во время открытия конверта возникла ошибка.</translation>
+        <source>An error occurred while opening the document</source>
+        <translation>Во время открытия конверта возникла ошибка</translation>
     </message>
     <message>
         <source>You must enter your PIN code twice in order to decrypt the CDOC2 container. The first PIN entry is required for authentication to the key server referenced in the CDOC2 container. Second PIN entry is required to decrypt the CDOC2 container.</source>
         <translation>PIN-код необходимо ввести дважды, чтобы расшифровать конверт CDOC2. Первый ввод PIN-кода требуется для аутентификации на сервере передачи ключей, указанном в конверте CDOC2. Для расшифровки конверта CDOC2 требуется второй ввод PIN-кода.</translation>
-    </message>
-    <message>
-        <source>Failed to encrypt document. Please check your internet connection and network settings.</source>
-        <translation>Не удалось зашифровать документ. Пожалуйста, проверьте подключение к Интернету и настройки сети.</translation>
-    </message>
-    <message>
-        <source>Failed to decrypt document. Please check your internet connection and network settings.</source>
-        <translation>Не удалось расшифровать документ. Пожалуйста, проверьте подключение к Интернету и настройки сети.</translation>
     </message>
     <message>
         <source>Don&apos;t show again</source>
@@ -699,6 +727,14 @@
         <translation>Подпись отсутствует</translation>
     </message>
     <message>
+        <source>Check your Time-Stamping service access settings.</source>
+        <translation>Проверьте настройки доступа к меткам времени.</translation>
+    </message>
+    <message>
+        <source>Please check your internet connection.</source>
+        <translation>Пожалуйста проверьте подключение к интернету.</translation>
+    </message>
+    <message>
         <source>Cannot add signature to empty container</source>
         <translation>Нельзя добавить подпись в пустой контейнер</translation>
     </message>
@@ -723,8 +759,20 @@
         <translation>PIN заблокирован. Разблокируйте его для повторного использования PIN.</translation>
     </message>
     <message>
-        <source>An error occurred while opening the document.</source>
-        <translation>Во время открытия конверта возникла ошибка.</translation>
+        <source>An error occurred while opening the document</source>
+        <translation>Во время открытия конверта возникла ошибка</translation>
+    </message>
+    <message>
+        <source>Connecting to SiVa server failed!</source>
+        <translation>Ошибка при подключении с SiVa сервером!</translation>
+    </message>
+    <message>
+        <source>Please check your internet connection and network settings.</source>
+        <translation>Пожалуйста, проверьте подключение к Интернету и настройки сети.</translation>
+    </message>
+    <message>
+        <source>Send document to SiVa</source>
+        <translation>Отправить документ в SiVa</translation>
     </message>
     <message>
         <source>Failed add file to container</source>
@@ -739,8 +787,8 @@
         <translation>Не удается сохранить контейнер</translation>
     </message>
     <message>
-        <source>Failed to sign container. Check your Time-Stamping service access settings.</source>
-        <translation>Не удалось подписать контейнер. Проверьте настройки доступа к меткам времени.</translation>
+        <source>Signing service URL is incorrect.</source>
+        <translation>Службы URL-адрес подписи неверены.</translation>
     </message>
     <message>
         <source>You have not granted IP-based access. Check your validity confirmation service access settings.</source>
@@ -759,43 +807,39 @@
         <translation>Добавленная к подписи метка времени должна быть более ранней по времени, чем подтверждение действительности.</translation>
     </message>
     <message>
-        <source>Connecting to SiVa server failed! Please check your internet connection.</source>
-        <translation>Ошибка при подключении с SiVa сервером! Пожалуйста проверьте подключение к интернету.</translation>
-    </message>
-    <message>
-        <source>Failed to sign container.</source>
-        <translation>Не удалось подписать контейнер.</translation>
-    </message>
-    <message>
         <source>This type of signed document will be transmitted to the Digital Signature Validation Service SiVa to verify the validity of the digital signature. Read more information about transmitted data to Digital Signature Validation service from &lt;a href=&quot;https://www.id.ee/en/article/data-protection-conditions-for-the-id-software-of-the-national-information-system-authority/&quot;&gt;here&lt;/a&gt;.&lt;br /&gt;Do you want to continue?</source>
         <translation>Данный тип подписанного документа передается в службу валидации SiVa для проверки действительности цифровых подписей. Подробнее о данных, переданных для проверки действительности электронно-цифровых подписей, можно прочитать &lt;a href=&quot;https://www.id.ee/ru/artikkel/usloviya-zashhity-dannyh-programmnogo-obespecheniya-id-karty-departamenta-gosudarstvennoj-infosistemy/&quot;&gt;здесь&lt;/a&gt;.&lt;br /&gt;Желаете продолжить?</translation>
-    </message>
-    <message>
-        <source>Connecting to SiVa server failed! Please check your internet connection and network settings.</source>
-        <translation>Ошибка при подключении с SiVa сервером! Пожалуйста проверьте интернет соединение и настройки сети.</translation>
-    </message>
-    <message>
-        <source>Failed to sign container. Please check the access to signing services and network settings.</source>
-        <translation>Не удалось подписать контейнер. Пожалуйста, проверьте настройки доступа и сеть для служб подписи.</translation>
-    </message>
-    <message>
-        <source>Failed to sign container. Signing service URL is incorrect.</source>
-        <translation>Не удалось подписать контейнер. Службы URL-адрес подписи неверены.</translation>
     </message>
     <message>
         <source>Opening</source>
         <translation>Открывается</translation>
     </message>
+    <message>
+        <source>Failed to sign container</source>
+        <translation>Не удалось подписать контейнер</translation>
+    </message>
 </context>
 <context>
     <name>DocumentModel</name>
+    <message>
+        <source>Cannot add container to same container</source>
+        <translation>Невозможно добавить контейнер в тот же контейнер</translation>
+    </message>
+    <message>
+        <source>File is already in container</source>
+        <translation>Файл уже в контейнере</translation>
+    </message>
+    <message>
+        <source>Failed to open file</source>
+        <translation>Не удалось открыть файл</translation>
+    </message>
     <message>
         <source>A file with this extension cannot be opened in the DigiDoc4 Client. Download the file to view it.</source>
         <translation>Файл с таким расширением не может быть открыт в клиенте DigiDoc4. Загрузите файл, чтобы просмотреть его.</translation>
     </message>
     <message>
-        <source>Cannot add the file to the envelope. File &apos;%1&apos; is already in container.</source>
-        <translation>Невозможно добавить файл в контейнер. Файл &apos;%1&apos; уже в контейнере.</translation>
+        <source>Failed remove document from container</source>
+        <translation>Не удается удалить файл из контейнера</translation>
     </message>
     <message>
         <source>Internal error</source>
@@ -806,8 +850,12 @@
         <translation>Файл с названием &quot;mimetype&quot; нельзя добавить в контейнер.</translation>
     </message>
     <message>
-        <source>Cannot add empty file to the container.</source>
-        <translation>Пустой файл нельзя добавить в контейнер.</translation>
+        <source>Cannot add empty file to the container</source>
+        <translation>Пустой файл нельзя добавить в контейнер</translation>
+    </message>
+    <message>
+        <source>Failed to add file</source>
+        <translation>Не удалось добавить файл</translation>
     </message>
 </context>
 <context>
@@ -833,8 +881,24 @@
         <translation>Создайте %1</translation>
     </message>
     <message>
+        <source>Failed to save files</source>
+        <translation>Не удалось сохранить файлы</translation>
+    </message>
+    <message>
         <source>Documents (%1)</source>
         <translation>Документы (%1)</translation>
+    </message>
+    <message>
+        <source>Save file</source>
+        <translation>Сохранить файл</translation>
+    </message>
+    <message>
+        <source>Move file</source>
+        <translation>Переместить файл</translation>
+    </message>
+    <message>
+        <source>Failed to save file</source>
+        <translation>Не удалось сохранить файл</translation>
     </message>
 </context>
 <context>
@@ -852,10 +916,6 @@
 </context>
 <context>
     <name>FileList</name>
-    <message>
-        <source>Save file</source>
-        <translation>Сохранить файл</translation>
-    </message>
     <message>
         <source>Add files</source>
         <translation>Добавить файлы</translation>
@@ -1123,10 +1183,6 @@
         &lt;p align=center&gt;Получатель - физическое или юридическое лицо, для которого документ может быть зашифрован. Если документ зашифрован, только указанный получатель может видеть его содержимое.&lt;/p&gt;</translation>
     </message>
     <message>
-        <source>Enter personal code, company or registry code</source>
-        <translation>Введите личный код, учреждение или код регистра</translation>
-    </message>
-    <message>
         <source>Add recipients</source>
         <translation>Добавьте получателей</translation>
     </message>
@@ -1342,10 +1398,6 @@ ID-картой</translation>
         <translation>Сохранение контейнера %1 не удалось. Сохранить в другой каталог?</translation>
     </message>
     <message>
-        <source>Save file</source>
-        <translation>Сохранить файл</translation>
-    </message>
-    <message>
         <source>The container has been successfully signed!</source>
         <translation>Контейнер успешно подписан!</translation>
     </message>
@@ -1370,30 +1422,12 @@ ID-картой</translation>
         <translation>Переделан в контейнер для зашифровывания!</translation>
     </message>
     <message>
-        <source>Move file</source>
-        <translation>Переместить файл</translation>
-    </message>
-    <message>
-        <source>You are about to delete the last file in the container, it is removed along with the container.</source>
-        <translation>Вы собираетесь удалить последний файл в контейнере, он удаляется вместе с контейнером.</translation>
+        <source>Cannot alter container</source>
+        <translation>Сохранение контейнера не удалось</translation>
     </message>
     <message>
         <source>Removing signature</source>
         <translation>Удаление подписи</translation>
-    </message>
-    <message>
-        <source>Files can not be added to the signed container. The system will create a new container which shall contain the signed document and the files you wish to add.</source>
-        <translation>Файлы не могут быть добавлены в подписанный контейнер. Система создаст новый контейнер, в который будет добавлен подписанный документ и выбранные вами файлы.</translation>
-    </message>
-    <message>
-        <source>Files can not be added to the cryptocontainer. The system will create a new container which shall contain the cypto-document and the files you wish to add.</source>
-        <translation>Файлы не могут быть добавлены в криптоконтейнер. Система создаст новый контейнер, в который будет добавлен зашифрованный документ и выбранные вами файлы.</translation>
-    </message>
-    <message>
-        <source>Cannot add container to same container
-%1</source>
-        <translation>Невозможно добавить контейнер в тот же контейнер
-%1</translation>
     </message>
     <message>
         <source>Connect the card reader to your computer and insert your ID card into the reader</source>
@@ -1467,6 +1501,22 @@ ID-картой</translation>
     <message>
         <source>Save</source>
         <translation>Сохранить</translation>
+    </message>
+    <message>
+        <source>Files can not be added to the signed container</source>
+        <translation>Файлы не могут быть добавлены в подписанный контейнер</translation>
+    </message>
+    <message>
+        <source>Files can not be added to the cryptocontainer</source>
+        <translation>Файлы не могут быть добавлены в криптоконтейнер</translation>
+    </message>
+    <message>
+        <source>The system will create a new container which shall contain the signed document and the files you wish to add.</source>
+        <translation>Система создаст новый контейнер, в который будет добавлен подписанный документ и выбранные вами файлы.</translation>
+    </message>
+    <message>
+        <source>The system will create a new container which shall contain the cypto-document and the files you wish to add.</source>
+        <translation>Система создаст новый контейнер, в который будет добавлен зашифрованный документ и выбранные вами файлы.</translation>
     </message>
     <message>
         <source>Continue</source>
@@ -1591,8 +1641,20 @@ ID-картой</translation>
         <translation>mobiil-ID</translation>
     </message>
     <message>
+        <source>Your Smart-ID transaction has expired or user account not found.</source>
+        <translation>Срок действия вашей операции Smart-ID истек или учетная запись не найдена.</translation>
+    </message>
+    <message>
         <source>Smart-ID</source>
         <translation>Smart-ID</translation>
+    </message>
+    <message>
+        <source>Check your %1 service access settings. &lt;a href=&quot;https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/&quot;&gt;Additional information&lt;/a&gt;</source>
+        <translation>Проверьте настройки доступа услуги %1 &lt;a href=&quot;https://www.id.ee/ru/artikkel/dlya-uchrezhdenij-v-kotoryh-v-bolshom-obeme-podpisyvayutsya-dokumenty-s-pomoshhyu-digidoc4-klienta/&quot;&gt;Дополнительная информация&lt;/a&gt;</translation>
+    </message>
+    <message>
+        <source>You need to update your Smart-ID application to sign documents in DigiDoc4 Client.</source>
+        <translation>Для подписания с помощью Smart-ID в программе DigiDoc4 клиент нужно обновить приложение Smart-ID.</translation>
     </message>
     <message>
         <source>Service result: </source>
@@ -1601,10 +1663,6 @@ ID-картой</translation>
     <message>
         <source>Make sure control code matches with one in phone screen and enter Smart-ID PIN2-code.</source>
         <translation>Убедитесь в правильности контрольного кодa и введите PIN2-код для Smart-ID.</translation>
-    </message>
-    <message>
-        <source>Failed to sign container. Check your %1 service access settings. &lt;a href=&quot;https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/&quot;&gt;Additional information&lt;/a&gt;</source>
-        <translation>Не удалось подписать контейнер. Проверьте настройки доступа услуги %1 &lt;a href=&quot;https://www.id.ee/ru/artikkel/dlya-uchrezhdenij-v-kotoryh-v-bolshom-obeme-podpisyvayutsya-dokumenty-s-pomoshhyu-digidoc4-klienta/&quot;&gt;Дополнительная информация&lt;/a&gt;</translation>
     </message>
     <message>
         <source>Your Smart-ID certificate level must be qualified to sign documents in DigiDoc4 Client.</source>
@@ -1669,14 +1727,6 @@ ID-картой</translation>
     <message>
         <source>Failed to send request. The number of unsuccesful request from this IP address has been exceeded. Please try again later.</source>
         <translation>Не удалось отправить запрос. Превышено количество неудачных запросов с этого IP-адреса. Пожалуйста, попробуйте позже.</translation>
-    </message>
-    <message>
-        <source>Failed to sign container. Your Smart-ID transaction has expired or user account not found.</source>
-        <translation>Не удалось подписать контейнер. Срок действия вашей операции Smart-ID истек или учетная запись не найдена.</translation>
-    </message>
-    <message>
-        <source>Failed to sign container. You need to update your Smart-ID application to sign documents in DigiDoc4 Client.</source>
-        <translation>Не удалось подписать контейнер. Для подписания с помощью Smart-ID в программе DigiDoc4 клиент нужно обновить приложение Smart-ID.</translation>
     </message>
     <message>
         <source>Failed to send request. A valid session is associated with this personal code. It is not possible to start a new signing before the current session expires. Please try again later.</source>
@@ -2159,13 +2209,6 @@ ID-картой</translation>
     </message>
 </context>
 <context>
-    <name>SDocumentModel</name>
-    <message>
-        <source>Failed remove document from container</source>
-        <translation>Не удается удалить файл из контейнера</translation>
-    </message>
-</context>
-<context>
     <name>SettingsDialog</name>
     <message>
         <source>Settings</source>
@@ -2174,18 +2217,6 @@ ID-картой</translation>
     <message>
         <source>Language</source>
         <translation>Язык</translation>
-    </message>
-    <message>
-        <source>Container default location</source>
-        <translation>Расположение контейнера по умолчанию</translation>
-    </message>
-    <message>
-        <source>Same folder</source>
-        <translation>Та же папка</translation>
-    </message>
-    <message>
-        <source>Select the default directory</source>
-        <translation>Выберите каталог</translation>
     </message>
     <message>
         <source>Show print summary</source>
@@ -2240,6 +2271,18 @@ ID-картой</translation>
         <translation>Ошибка проверки обновлений.</translation>
     </message>
     <message>
+        <source>Restart DigiDoc4 Client to activate logging</source>
+        <translation>Перезапустите клиент DigiDoc4, чтобы активировать ведение журнала</translation>
+    </message>
+    <message>
+        <source>Read more &lt;a href=&quot;https://www.id.ee/en/article/log-file-generation-in-digidoc4-client/&quot;&gt;here&lt;/a&gt;.</source>
+        <translation>Подробнее читайте &lt;a href=&quot;https://www.id.ee/ru/artikkel/generirovanie-log-fajla-v-kliente-digidoc4/&quot;&gt;здесь&lt;/a&gt;.</translation>
+    </message>
+    <message>
+        <source>Read more &lt;a href=&quot;https://www.id.ee/en/article/log-file-generation-in-digidoc4-client/&quot;&gt;here&lt;/a&gt;. Restart now?</source>
+        <translation>Подробнее читайте &lt;a href=&quot;https://www.id.ee/ru/artikkel/generirovanie-log-fajla-v-kliente-digidoc4/&quot;&gt;здесь&lt;/a&gt;. Перезапустить приложение?</translation>
+    </message>
+    <message>
         <source>Please try again.</source>
         <translation>Пожалуйста, попробуйте еще раз.</translation>
     </message>
@@ -2258,10 +2301,6 @@ Additional licenses and components</source>
         <translation>&lt;p&gt;Разработчиком программного обеспечения ID-карты является Riigi Infosüsteemi Amet.&lt;br /&gt;
 Если у вас возникнут вопросы, пожалуйста, обратитесь на &lt;a href=&quot;https://www.id.ee/ru/id-pomoshh/&quot;&gt;id.ee&lt;/a&gt;.&lt;/p&gt;
 Дополнительные лицензии и компоненты</translation>
-    </message>
-    <message>
-        <source>Select folder</source>
-        <translation>Выбрать каталог</translation>
     </message>
     <message>
         <source>Save as</source>
@@ -2357,14 +2396,6 @@ Additional licenses and components</source>
         <translation>Сохранить лог-файл</translation>
     </message>
     <message>
-        <source>Restart DigiDoc4 Client to activate logging. Read more &lt;a href=&quot;https://www.id.ee/en/article/log-file-generation-in-digidoc4-client/&quot;&gt;here&lt;/a&gt;. Restart now?</source>
-        <translation>Перезапустите клиент DigiDoc4, чтобы активировать ведение журнала. Подробнее читайте &lt;a href=&quot;https://www.id.ee/ru/artikkel/generirovanie-log-fajla-v-kliente-digidoc4/&quot;&gt;здесь&lt;/a&gt;. Перезапустить приложение?</translation>
-    </message>
-    <message>
-        <source>Restart DigiDoc4 Client to activate logging. Read more &lt;a href=&quot;https://www.id.ee/en/article/log-file-generation-in-digidoc4-client/&quot;&gt;here&lt;/a&gt;.</source>
-        <translation>Перезапустите клиент DigiDoc4, чтобы активировать ведение журнала. Подробнее читайте &lt;a href=&quot;https://www.id.ee/ru/artikkel/generirovanie-log-fajla-v-kliente-digidoc4/&quot;&gt;здесь&lt;/a&gt;.</translation>
-    </message>
-    <message>
         <source>The project is supported by the European Regional Development Fund</source>
         <translation>Проект поддерживается Европейским фондом регионального развития</translation>
     </message>
@@ -2452,7 +2483,7 @@ Additional licenses and components</source>
 <context>
     <name>SignatureDialog</name>
     <message>
-        <source>Notice</source>
+        <source>Warnings</source>
         <translation>Предупреждение</translation>
     </message>
     <message>
@@ -2500,54 +2531,16 @@ Additional licenses and components</source>
         <translation>Значение</translation>
     </message>
     <message>
-        <source>Timestamp</source>
-        <translation>Временной штамп</translation>
-    </message>
-    <message>
-        <source>is valid</source>
-        <comment>Signature</comment>
-        <translation>действительна</translation>
-    </message>
-    <message>
-        <source>is valid</source>
-        <comment>Timestamp</comment>
-        <translation>действителен</translation>
-    </message>
-    <message>
-        <source>Warnings</source>
-        <translation>Предупреждения</translation>
-    </message>
-    <message>
-        <source>Restrictions</source>
-        <translation>Ограничения</translation>
-    </message>
-    <message>
         <source>This e-Signature is not equivalent with handwritten signature and therefore can be used only in transactions where Qualified e-Signature is not required.</source>
         <translation>Эта электронная подпись не эквивалентна рукописной подписи и поэтому может использоваться только в тех случаях, когда не требуется квалифицированная электронная подпись.</translation>
     </message>
     <message>
-        <source>is unknown</source>
-        <comment>Signature</comment>
-        <translation>неизвестная</translation>
-    </message>
-    <message>
-        <source>is unknown</source>
-        <comment>Timestamp</comment>
-        <translation>неизвестный</translation>
+        <source>The signature is valid, but the container has a specific feature. Usually, this feature has arisen accidentally when containers were created. However, as it is not possible to edit a container without invalidating the signature, &lt;a href=&apos;https://www.id.ee/en/article/digital-signing-and-electronic-signatures/&apos;&gt;a warning&lt;/a&gt; is displayed.</source>
+        <translation>Подпись действительна, но у контейнера имеется какая-то особенность. Чаще всего, такая особенность возникает при изготовлении контейнеров случайно. Однако поскольку контейнер невозможно изменить без потери действительности подписи, то отображается &lt;a href=&apos;https://www.id.ee/ru/artikkel/czifrovoe-podpisanie-i-elektronnye-podpisi/&apos;&gt;предупреждение&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>Unknown error</source>
         <translation>Неизвестная ошибка</translation>
-    </message>
-    <message>
-        <source>is not valid</source>
-        <comment>Signature</comment>
-        <translation>недействительна</translation>
-    </message>
-    <message>
-        <source>is not valid</source>
-        <comment>Timestamp</comment>
-        <translation>недействителен</translation>
     </message>
     <message>
         <source>This is an invalid signature or malformed digitally signed file. The signature is not valid.</source>
@@ -2630,10 +2623,6 @@ Additional licenses and components</source>
         <translation>Заявленное время подписания (UTC)</translation>
     </message>
     <message>
-        <source>SIGNATURE_WARNING</source>
-        <translation>Подпись действительна, но у контейнера имеется какая-то особенность. Чаще всего, такая особенность возникает при изготовлении контейнеров случайно. Однако поскольку контейнер невозможно изменить без потери действительности подписи, то отображается &lt;a href=&apos;https://www.id.ee/ru/artikkel/czifrovoe-podpisanie-i-elektronnye-podpisi/&apos;&gt;&lt;span style=&apos;text-decoration: underline; font-weight: 900;&apos;&gt;предупреждение&lt;/span&gt;&lt;/a&gt;.</translation>
-    </message>
-    <message>
         <source>Close</source>
         <translation>Закрыть</translation>
     </message>
@@ -2687,10 +2676,6 @@ Additional licenses and components</source>
     <message>
         <source>time</source>
         <translation>время</translation>
-    </message>
-    <message>
-        <source>Remove signature %1?</source>
-        <translation>Удалить подпись %1?</translation>
     </message>
     <message>
         <source>Remove signature</source>
@@ -2840,18 +2825,6 @@ Additional licenses and components</source>
         <translation>PUK заблокирован, потому что PUK введен неверно 3 раза.&lt;br/&gt;PUK невозможно разблокировать самому.&lt;br/&gt;Пока PUK-код заблокирован, можно использовать все возможности eID, кроме тех которые требуют PUK.&lt;br/&gt;</translation>
     </message>
     <message>
-        <source>Certificate status is unknown. A valid certificate is required for electronic use. </source>
-        <translation>Статус сертификата неизвестен. Для электронного использования требуется действующий сертификат. </translation>
-    </message>
-    <message>
-        <source>Your ID-card signing certificate status is unknown. You need valid certificates to use your ID-card electronically. </source>
-        <translation>Статус сертификата подписи вашей ID-карты неизвестен. Для электронного использования вашей ID-карты необходимы действующие сертификаты. </translation>
-    </message>
-    <message>
-        <source>Your ID-card authentication certificate status is unknown. You need valid certificates to use your ID-card electronically. </source>
-        <translation>Статус сертификата идентификации вашей ID-карты неизвестен. Для электронного использования вашей ID-карты необходимы действующие сертификаты. </translation>
-    </message>
-    <message>
         <source>Please visit the service center to obtain new codes.&lt;br/&gt;&lt;a href=&quot;https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult/reminders-for-id-card-holders/&quot;&gt;Additional information&lt;/a&gt;.</source>
         <translation>Для получения нового PUK-кода для своей ID-карты, посетите центр обслуживания, где вы сможете получить конверт с кодами.&lt;br/&gt;&lt;a href=&quot;https://www.politsei.ee/ru/instruktsii/hodataystvo-o-vydache-id-karty-vzroslomu/pamyatka-dlya-polzovatelya-id-karti/&quot;&gt;Дополнительная информация&lt;/a&gt;.</translation>
     </message>
@@ -2873,7 +2846,7 @@ Additional licenses and components</source>
     </message>
     <message>
         <source>PIN%1 code must be changed in order to authenticate</source>
-        <translation>Чтобы аутентифицироваться, необходимо изменить PIN%1.</translation>
+        <translation>Чтобы аутентифицироваться, необходимо изменить PIN%1</translation>
     </message>
     <message>
         <source>PIN%1 code must be changed in order to sign</source>
@@ -2904,6 +2877,58 @@ Additional licenses and components</source>
         <translation>Сертификат шифрования</translation>
     </message>
     <message>
+        <source>Certificate is valid</source>
+        <translation>Сертификат действителен</translation>
+    </message>
+    <message>
+        <source>Your ID-card signing certificate is valid</source>
+        <translation>Сертификат подписи в вашей ID-карте действителен</translation>
+    </message>
+    <message>
+        <source>Your ID-card authentication certificate is valid</source>
+        <translation>Сертификат идентификации личности в вашей ID-карте действителен</translation>
+    </message>
+    <message>
+        <source>Certificate is not valid</source>
+        <translation>Сертификат недействителен</translation>
+    </message>
+    <message>
+        <source>A valid certificate is required for electronic use. </source>
+        <translation>Для электронного использования необходим действующий сертификат. </translation>
+    </message>
+    <message>
+        <source>Your ID-card signing certificate is not valid</source>
+        <translation>Сертификат подписи вашей ID-карты недействителен</translation>
+    </message>
+    <message>
+        <source>You need valid certificates to use your ID-card electronically. </source>
+        <translation>Для электронного использования ID-карты требуются действующие сертификаты. </translation>
+    </message>
+    <message>
+        <source>Your ID-card authentication certificate is not valid</source>
+        <translation>Сертификат идентификации личности в вашей ID-карте недействителен</translation>
+    </message>
+    <message>
+        <source>Certificate status is unknown</source>
+        <translation>Статус сертификата неизвестен</translation>
+    </message>
+    <message>
+        <source>Your ID-card signing certificate status is unknown</source>
+        <translation>Статус сертификата подписи вашей ID-карты неизвестен</translation>
+    </message>
+    <message>
+        <source>Your ID-card authentication certificate status is unknown</source>
+        <translation>Статус сертификата идентификации вашей ID-карты неизвестен</translation>
+    </message>
+    <message>
+        <source>Certificate status check failed</source>
+        <translation>Проверка статуса сертификата не удалась</translation>
+    </message>
+    <message>
+        <source>Please check your internet connection.</source>
+        <translation>Пожалуйста проверьте подключение к интернету.</translation>
+    </message>
+    <message>
         <source>PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times.</source>
         <translation>PIN%1 заблокирован, потому что PIN%1-код был введен неверно 3 раза.</translation>
     </message>
@@ -2916,40 +2941,12 @@ Additional licenses and components</source>
         <translation>Проверить статус сертификата</translation>
     </message>
     <message>
-        <source>Your ID-card authentication certificate is valid. </source>
-        <translation>Сертификат идентификации личности в вашей ID-карте действителен. </translation>
-    </message>
-    <message>
-        <source>Your ID-card signing certificate is valid. </source>
-        <translation>Сертификат подписи в вашей ID-карте действителен. </translation>
-    </message>
-    <message>
-        <source>Your ID-card signing certificate is not valid. You need valid certificates to use your ID-card electronically. </source>
-        <translation>Сертификат подписи вашей ID-карты недействителен. Для электронного использования ID-карты требуются действующие сертификаты. </translation>
-    </message>
-    <message>
-        <source>Your ID-card authentication certificate is not valid. You need valid certificates to use your ID-card electronically. </source>
-        <translation>Сертификат идентификации личности в вашей ID-карте недействителен. Для электронного использования ID-карты требуются действующие сертификаты. </translation>
-    </message>
-    <message>
         <source>Read more &lt;a href=&quot;https://www.id.ee/en/article/validity-of-id-card-certificates/&quot;&gt;here&lt;/a&gt;.</source>
         <translation>Подробнее читайте &lt;a href=&quot;https://www.id.ee/ru/artikkel/dejstvitelnost-sertifikatov-id-karty/&quot;&gt;здесь&lt;/a&gt;.</translation>
     </message>
     <message>
-        <source>Certificate is valid. </source>
-        <translation>Сертификат действителен. </translation>
-    </message>
-    <message>
-        <source>Certificate is not valid. A valid certificate is required for electronic use. </source>
-        <translation>Сертификат недействителен. Для электронного использования необходим действующий сертификат. </translation>
-    </message>
-    <message>
         <source>PIN%1 can not be used because the certificate has expired.</source>
         <translation>PIN%1 не может быть использован, так как срок действия сертификата истек.</translation>
-    </message>
-    <message>
-        <source>Certificate status check failed. Please check your internet connection.</source>
-        <translation>Проверка статуса сертификата не удалась. Пожалуйста проверьте подключение к интернету.</translation>
     </message>
 </context>
 <context>

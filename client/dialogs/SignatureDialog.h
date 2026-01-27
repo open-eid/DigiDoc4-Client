@@ -30,6 +30,7 @@ namespace Ui {
 class QDateTime;
 class QLabel;
 class QTreeWidget;
+class SslCertificate;
 
 class SignatureDialog : public QDialog
 {
@@ -45,9 +46,8 @@ private:
 	void addItem(QTreeWidget *view, const QString &variable, QWidget *value);
 	void addItem(QTreeWidget *view, const QString &variable, const QString &value);
 	void addItem(QTreeWidget *view, const QString &variable, const QDateTime &value);
-	void addItem(QTreeWidget *view, const QString &variable, const QSslCertificate &cert);
+	void addItem(QTreeWidget *view, const QString &variable, SslCertificate cert);
 	void addItem(QTreeWidget *view, const QString &variable, const QUrl &url);
-	void decorateNotice(const QString &color);
 
 	DigiDocSignature s;
 	Ui::SignatureDialog *d;

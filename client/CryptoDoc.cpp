@@ -49,7 +49,7 @@ class CryptoDoc::Private final: public QThread
 {
 	Q_OBJECT
 public:
-	bool isEncryptedWarning() const;
+	bool isEncryptedWarning(const QString &title) const;
 	void run() final;
 	inline void waitForFinished()
 	{
@@ -67,12 +67,12 @@ public:
 	QStringList		tempFiles;
 };
 
-bool CryptoDoc::Private::isEncryptedWarning() const
+bool CryptoDoc::Private::isEncryptedWarning(const QString &title) const
 {
 	if( fileName.isEmpty() )
-		WarningDialog::show(CryptoDoc::tr("Container is not open"));
+		WarningDialog::create()->withTitle(title)->withText(CryptoDoc::tr("Container is not open"))->open();
 	if(isEncrypted)
-		WarningDialog::show(CryptoDoc::tr("Container is encrypted"));
+		WarningDialog::create()->withTitle(title)->withText(CryptoDoc::tr("Container is encrypted"))->open();
 	return fileName.isEmpty() || isEncrypted;
 }
 
@@ -96,28 +96,20 @@ CDocumentModel::CDocumentModel(CryptoDoc::Private *doc)
 
 bool CDocumentModel::addFile(const QString &file, const QString &mime)
 {
-	if( d->isEncryptedWarning() )
+	if(d->isEncryptedWarning(DocumentModel::tr("Failed to add file")))
 		return false;
 
 	QFileInfo info(file);
-	if(info.size() == 0)
-	{
-		WarningDialog::show(DocumentModel::tr("Cannot add empty file to the container."));
+	if(!addFileCheck(d->fileName, info))
 		return false;
-	}
+
 	if(d->cdoc->version() == 1 && info.size() > 120*1024*1024)
 	{
-		WarningDialog::show(tr("Added file(s) exceeds the maximum size limit of the container (∼120MB). "
-			"<a href='https://www.id.ee/en/article/encrypting-large-120-mb-files/'>Read more about it</a>"));
-		return false;
-	}
-
-	QString fileName(info.fileName());
-	if(std::any_of(d->cdoc->files.cbegin(), d->cdoc->files.cend(),
-			[&fileName](const auto &containerFile) { return containerFile.name == fileName; }))
-	{
-		WarningDialog::show(DocumentModel::tr("Cannot add the file to the envelope. File '%1' is already in container.")
-			 .arg(FileDialog::normalized(fileName)));
+		WarningDialog::create()
+			->withTitle(DocumentModel::tr("Failed to add file"))
+			->withText(tr("Added file(s) exceeds the maximum size limit of the container (∼120MB). "
+				"<a href='https://www.id.ee/en/article/encrypting-large-120-mb-files/'>Read more about it</a>"))
+			->open();
 		return false;
 	}
 
@@ -148,7 +140,10 @@ QString CDocumentModel::copy(int row, const QString &dst) const
 	file.data->seek(0);
 	if(QFile f(dst); f.open(QFile::WriteOnly) && copyIODevice(file.data.get(), &f) == file.size)
 		return dst;
-	WarningDialog::show(tr("Failed to save file '%1'").arg(dst));
+	WarningDialog::create()
+		->withTitle(FileDialog::tr("Failed to save file"))
+		->withText(dst)
+		->open();
 	return {};
 }
 
@@ -186,17 +181,19 @@ void CDocumentModel::open(int row)
 
 bool CDocumentModel::removeRow(int row)
 {
-	if(d->isEncryptedWarning())
+	if(d->isEncryptedWarning(DocumentModel::tr("Failed remove document from container")))
 		return false;
 
 	if(d->cdoc->files.empty() || row >= d->cdoc->files.size())
 	{
-		WarningDialog::show(DocumentModel::tr("Internal error"));
+		WarningDialog::create()
+			->withTitle(DocumentModel::tr("Failed remove document from container"))
+			->withText(DocumentModel::tr("Internal error"))
+			->open();
 		return false;
 	}
 
 	d->cdoc->files.erase(d->cdoc->files.cbegin() + row);
-	emit removed(row);
 	return true;
 }
 
@@ -319,11 +316,14 @@ CryptoDoc::~CryptoDoc() { clear(); delete d; }
 
 bool CryptoDoc::addKey( const CKey &key )
 {
-	if(d->isEncryptedWarning())
+	if(d->isEncryptedWarning(tr("Failed to add key")))
 		return false;
 	if(d->cdoc->keys.contains(key))
 	{
-		WarningDialog::show(tr("Key already exists"));
+		WarningDialog::create()
+			->withTitle(tr("Failed to add key"))
+			->withText(tr("Key already exists"))
+			->open();
 		return false;
 	}
 	d->cdoc->keys.append(key);
@@ -361,7 +361,10 @@ bool CryptoDoc::decrypt()
 {
 	if( d->fileName.isEmpty() )
 	{
-		WarningDialog::show(tr("Container is not open"));
+		WarningDialog::create()
+			->withTitle(QSigner::tr("Failed to decrypt document"))
+			->withText(tr("Container is not open"))
+			->open();
 		return false;
 	}
 	if(!d->isEncrypted)
@@ -370,18 +373,23 @@ bool CryptoDoc::decrypt()
 	CKey key = d->cdoc->canDecrypt(qApp->signer()->tokenauth().cert());
 	if(key.key.isEmpty())
 	{
-		WarningDialog::show(tr("You do not have the key to decrypt this document"));
+		WarningDialog::create()
+			->withTitle(QSigner::tr("Failed to decrypt document"))
+			->withText(tr("You do not have the key to decrypt this document"))
+			->open();
 		return false;
 	}
 
 	if(d->cdoc->version() == 2 && !key.transaction_id.isEmpty() && !Settings::CDOC2_NOTIFICATION.isSet())
 	{
-		auto *dlg = new WarningDialog(tr("You must enter your PIN code twice in order to decrypt the CDOC2 container. "
-			"The first PIN entry is required for authentication to the key server referenced in the CDOC2 container. "
-			"Second PIN entry is required to decrypt the CDOC2 container."), Application::mainWindow());
-		dlg->setCancelText(WarningDialog::Cancel);
-		dlg->addButton(WarningDialog::OK, QMessageBox::Ok);
-		dlg->addButton(tr("Don't show again"), QMessageBox::Ignore);
+		auto *dlg = WarningDialog::create()
+			->withTitle(QSigner::tr("Failed to decrypt document"))
+			->withText(tr("You must enter your PIN code twice in order to decrypt the CDOC2 container. "
+				"The first PIN entry is required for authentication to the key server referenced in the CDOC2 container. "
+				"Second PIN entry is required to decrypt the CDOC2 container."))
+			->setCancelText(WarningDialog::Cancel)
+			->addButton(WarningDialog::OK, QMessageBox::Ok)
+			->addButton(tr("Don't show again"), QMessageBox::Ignore);
 		switch (dlg->exec())
 		{
 		case QMessageBox::Ok: break;
@@ -398,15 +406,25 @@ bool CryptoDoc::decrypt()
 #endif
 	if(d->key.isEmpty())
 	{
-		WarningDialog::show(tr("Failed to decrypt document. Please check your internet connection and network settings."), d->cdoc->lastError);
+		WarningDialog::create()
+			->withTitle(QSigner::tr("Failed to decrypt document"))
+			->withText(tr("Please check your internet connection and network settings."))
+			->withDetails(d->cdoc->lastError)
+			->open();
 		return false;
 	}
 
 	d->waitForFinished();
 	if(d->isEncrypted)
-		WarningDialog::show(tr("Error parsing document"));
+		WarningDialog::create()
+			->withTitle(QSigner::tr("Failed to decrypt document"))
+			->withText(tr("Error parsing document"))
+			->open();
 	if(!d->cdoc->lastError.isEmpty())
-		WarningDialog::show(d->cdoc->lastError);
+		WarningDialog::create()
+			->withTitle(QSigner::tr("Failed to decrypt document"))
+			->withDetails(d->cdoc->lastError)
+			->open();
 
 	return !d->isEncrypted;
 }
@@ -419,14 +437,20 @@ bool CryptoDoc::encrypt( const QString &filename )
 		d->fileName = filename;
 	if( d->fileName.isEmpty() )
 	{
-		WarningDialog::show(tr("Container is not open"));
+		WarningDialog::create()
+			->withTitle(tr("Failed to encrypt document"))
+			->withText(tr("Container is not open"))
+			->open();
 		return false;
 	}
 	if(d->isEncrypted)
 		return true;
 	if(d->cdoc->keys.isEmpty())
 	{
-		WarningDialog::show(tr("No keys specified"));
+		WarningDialog::create()
+			->withTitle(tr("Failed to encrypt document"))
+			->withText(tr("No keys specified"))
+			->open();
 		return false;
 	}
 
@@ -434,7 +458,11 @@ bool CryptoDoc::encrypt( const QString &filename )
 	if(d->isEncrypted)
 		open(d->fileName);
 	else
-		WarningDialog::show(tr("Failed to encrypt document. Please check your internet connection and network settings."), d->cdoc->lastError);
+		WarningDialog::create()
+			->withTitle(tr("Failed to encrypt document"))
+			->withText(tr("Please check your internet connection and network settings."))
+			->withDetails(d->cdoc->lastError)
+			->open();
 	return d->isEncrypted;
 }
 
@@ -447,13 +475,10 @@ QList<CKey> CryptoDoc::keys() const
 
 bool CryptoDoc::move(const QString &to)
 {
-	if(!d->isEncrypted)
-	{
-		d->fileName = to;
-		return true;
-	}
-
-	return false;
+	if(d->isEncrypted)
+		return false;
+	d->fileName = to;
+	return true;
 }
 
 bool CryptoDoc::open( const QString &file )
@@ -465,7 +490,10 @@ bool CryptoDoc::open( const QString &file )
 	d->isEncrypted = bool(d->cdoc);
 	if(!d->isEncrypted || d->cdoc->keys.isEmpty())
 	{
-		WarningDialog::show(tr("Failed to open document"), d->cdoc->lastError);
+		WarningDialog::create()
+			->withTitle(tr("Failed to open document"))
+			->withDetails(d->cdoc->lastError)
+			->open();
 		return false;
 	}
 	Application::addRecent( file );
@@ -474,7 +502,7 @@ bool CryptoDoc::open( const QString &file )
 
 void CryptoDoc::removeKey( int id )
 {
-	if(!d->isEncryptedWarning())
+	if(!d->isEncryptedWarning(tr("Failed to remove key")))
 		d->cdoc->keys.removeAt(id);
 }
 

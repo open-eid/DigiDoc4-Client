@@ -20,42 +20,45 @@
 #pragma once
 
 #include "common_enums.h"
-#include "widgets/Item.h"
 
 #include "SslCertificate.h"
 
-#include <functional>
 #include <QScrollArea>
 
 namespace Ui {
 class ItemList;
 }
 
+class Item;
 class QLabel;
-class QSvgWidget;
 
 class ItemList : public QScrollArea
 {
 	Q_OBJECT
 
 public:
+	enum ListType : unsigned char {
+		ItemFile,
+		ItemSignature,
+		ItemAddress,
+		ToAddAdresses,
+		AddedAdresses,
+	};
+
 	explicit ItemList(QWidget *parent = {});
 	~ItemList() override;
 
-	void init(ria::qdigidoc4::ItemType itemType, const char *header);
+	void init(ListType itemType, const char *header);
 	void addHeader(const char *label);
 	void addHeaderWidget(Item *widget);
 	void addWidget(Item *widget);
 	virtual void clear();
-	ria::qdigidoc4::ContainerState getState() const;
-	bool hasItem(const std::function<bool(Item* const)> &cb);
 	virtual void removeItem(int row);
 	virtual void stateChange(ria::qdigidoc4::ContainerState state);
 
 signals:
-	void addAll();
+	void add();
 	void addItem(int code);
-	void addressSearch();
 	void idChanged(const SslCertificate &cert);
 	void keysSelected(QList<Item *> keys);
 	void removed(int row);
@@ -71,15 +74,14 @@ protected:
 	ria::qdigidoc4::ContainerState state = ria::qdigidoc4::UnencryptedContainer;
 
 private:
-	QString addLabel();
 	void addWidget(Item *widget, int index, QWidget *tabIndex = {});
 	void setRecipientTooltip();
 
 	QList<Item*> items;
 	QLabel *header = nullptr;
-	ria::qdigidoc4::ItemType itemType = ria::qdigidoc4::ItemAddress;
+	const char *title = "";
+	const char *addTitle = "";
 	const char *headerText = "";
-	const char *listText = "";
 	SslCertificate cert;
 
 	friend class AddRecipients;

@@ -140,16 +140,16 @@ public:
 		const QString &country,
 		const QString &role,
 		digidoc::Signer *signer);
-	QList<DigiDocSignature> signatures() const;
+	const QList<DigiDocSignature>& signatures() const;
 	ria::qdigidoc4::ContainerState state();
-	QList<DigiDocSignature> timestamps() const;
+	const QList<DigiDocSignature>& timestamps() const;
 
 	static QStringList parseException(const digidoc::Exception &e,
 		digidoc::Exception::ExceptionCode &code);
 
 private:
-	bool isError(bool failure, const QString &msg = {}) const;
-	static void setLastError( const QString &msg, const digidoc::Exception &e );
+	bool isError(bool failure, const QString &title, const QString &text) const;
+	static void setLastError(const QString &title, const digidoc::Exception &e);
 
 	std::unique_ptr<digidoc::Container> b;
 	std::unique_ptr<digidoc::Container> parentContainer;

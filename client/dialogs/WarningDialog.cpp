@@ -25,7 +25,7 @@
 #include <QPushButton>
 #include <QStyle>
 
-WarningDialog::WarningDialog(const QString &text, const QString &details, QWidget *parent)
+WarningDialog::WarningDialog(QWidget *parent)
 	: QDialog(parent)
 	, ui(new Ui::WarningDialog)
 {
@@ -37,33 +37,28 @@ WarningDialog::WarningDialog(const QString &text, const QString &details, QWidge
 #endif
 
 	ui->buttonBox->layout()->setSpacing(40);
-	ui->text->setText(text);
-	ui->details->setText(details);
+	ui->title->hide();
+	ui->text->hide();
 	ui->details->hide();
-	ui->showDetails->setHidden(details.isEmpty());
+	ui->showDetails->hide();
 	connect(ui->showDetails, &AccordionTitle::toggled, ui->details, &QLabel::setVisible);
 	cancel = ui->buttonBox->button(QDialogButtonBox::Close);
 	cancel->setCursor(Qt::PointingHandCursor);
 	connect(cancel, &QPushButton::clicked, this, &QDialog::reject);
 	resetCancelStyle(true);
-
 }
-
-WarningDialog::WarningDialog(const QString &text, QWidget *parent)
-	: WarningDialog(text, {}, parent)
-{}
 
 WarningDialog::~WarningDialog()
 {
 	delete ui;
 }
 
-void WarningDialog::addButton(ButtonText label, int ret, bool red)
+WarningDialog *WarningDialog::addButton(ButtonText label, int ret, bool red)
 {
-	addButton(buttonLabel(label), ret, red);
+	return addButton(buttonLabel(label), ret, red);
 }
 
-void WarningDialog::addButton(const QString& label, int ret, bool red)
+WarningDialog *WarningDialog::addButton(const QString& label, int ret, bool red)
 {
 	if(ui->buttonBox->buttons().size() > 3)
 		ui->buttonBox->layout()->setSpacing(5);
@@ -116,6 +111,7 @@ void WarningDialog::addButton(const QString& label, int ret, bool red)
 		break;
 	}
 	connect(button, &QPushButton::clicked, this, [this, ret] { done(ret); });
+	return this;
 }
 
 QString WarningDialog::buttonLabel(ButtonText label)
@@ -130,32 +126,48 @@ QString WarningDialog::buttonLabel(ButtonText label)
 	}
 }
 
-void WarningDialog::resetCancelStyle(bool warning)
+WarningDialog *WarningDialog::resetCancelStyle(bool warning)
 {
 	style()->unpolish(cancel);
 	cancel->setProperty("warning", warning);
 	style()->polish(cancel);
+	return this;
 }
 
-void WarningDialog::setCancelText(ButtonText label)
+WarningDialog *WarningDialog::setCancelText(ButtonText label)
 {
-	setCancelText(buttonLabel(label));
+	return setCancelText(buttonLabel(label));
 }
 
-void WarningDialog::setCancelText(const QString &label)
+WarningDialog *WarningDialog::setCancelText(const QString &label)
 {
 	cancel->setText(label);
 	ui->buttonBox->addButton(cancel, QDialogButtonBox::RejectRole);
+	return this;
 }
 
-WarningDialog* WarningDialog::show(const QString &text, const QString &details)
+WarningDialog* WarningDialog::create(QWidget *parent)
 {
-	return show(Application::mainWindow(), text, details);
+	return new WarningDialog(parent ? parent : Application::mainWindow());
 }
 
-WarningDialog* WarningDialog::show(QWidget *parent, const QString &text, const QString &details)
+WarningDialog* WarningDialog::withText(const QString &text)
 {
-	auto *dlg = new WarningDialog(text, details, parent);
-	dlg->open();
-	return dlg;
+	ui->text->setText(text);
+	ui->text->setHidden(text.isEmpty());
+	return this;
+}
+WarningDialog* WarningDialog::withTitle(const QString &title)
+{
+	ui->title->setText(title);
+	ui->title->setHidden(title.isEmpty());
+	return this;
+}
+
+WarningDialog* WarningDialog::withDetails(const QString &details)
+{
+	ui->details->setText(details);
+	ui->details->hide();
+	ui->showDetails->setHidden(details.isEmpty());
+	return this;
 }

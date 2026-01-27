@@ -82,9 +82,7 @@ public:
 	{
 		switch( font )
 		{
-			case Styles::Bold: return bold;
 			case Styles::Condensed: return condensed;
-			case Styles::CondensedBold: return condensedBold;
 			default: return regular;
 		}
 	}
@@ -129,12 +127,8 @@ private:
 	};
 #endif
 
-	QString bold = QFontDatabase::applicationFontFamilies(
-		QFontDatabase::addApplicationFont(QStringLiteral(":/fonts/Roboto-Bold.ttf"))).at(0);
 	QString condensed = QFontDatabase::applicationFontFamilies(
 		QFontDatabase::addApplicationFont(QStringLiteral(":/fonts/RobotoCondensed-Regular.ttf"))).at(0);
-	QString condensedBold = QFontDatabase::applicationFontFamilies(
-		QFontDatabase::addApplicationFont(QStringLiteral(":/fonts/RobotoCondensed-Bold.ttf"))).at(0);
 	QString regular = QFontDatabase::applicationFontFamilies(
 		QFontDatabase::addApplicationFont(QStringLiteral(":/fonts/Roboto-Regular.ttf"))).at(0);
 #ifndef Q_OS_MAC

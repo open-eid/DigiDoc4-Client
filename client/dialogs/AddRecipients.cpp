@@ -60,8 +60,8 @@ AddRecipients::AddRecipients(ItemList* itemList, QWidget *parent)
 	setWindowFlags( Qt::Dialog | Qt::CustomizeWindowHint );
 	new Overlay(this);
 
-	ui->leftPane->init(ria::qdigidoc4::ToAddAdresses, QT_TRANSLATE_NOOP("ItemList", "Add recipients"));
-	ui->rightPane->init(ria::qdigidoc4::AddedAdresses, QT_TRANSLATE_NOOP("ItemList", "Added recipients"));
+	ui->leftPane->init(ItemList::ToAddAdresses, QT_TRANSLATE_NOOP("ItemList", "Add recipients"));
+	ui->rightPane->init(ItemList::AddedAdresses, QT_TRANSLATE_NOOP("ItemList", "Added recipients"));
 
 	connect(ui->confirm, &QPushButton::clicked, this, &AddRecipients::accept);
 	connect(ui->cancel, &QPushButton::clicked, this, &AddRecipients::reject);
@@ -77,7 +77,7 @@ AddRecipients::AddRecipients(ItemList* itemList, QWidget *parent)
 	connect(ldap_corp, &LdapSearch::error, this, &AddRecipients::showError);
 	connect(this, &AddRecipients::finished, this, &AddRecipients::close);
 
-	connect(ui->leftPane, &ItemList::addAll, this, [this] {
+	connect(ui->leftPane, &ItemList::add, this, [this] {
 		for(Item *item: ui->leftPane->items)
 			addRecipientToRightPane(item);
 	});
@@ -116,7 +116,7 @@ void AddRecipients::addRecipientFromFile()
 	QFile f( file );
 	if( !f.open( QIODevice::ReadOnly ) )
 	{
-		WarningDialog::show(this, tr("Failed to read certificate"));
+		WarningDialog::create(this)->withTitle(tr("Failed to read certificate"))->open();
 		return;
 	}
 
@@ -128,12 +128,12 @@ void AddRecipients::addRecipientFromFile()
 	}
 	if( cert.isNull() )
 	{
-		WarningDialog::show(this, tr("Failed to read certificate"));
+		WarningDialog::create(this)->withTitle(tr("Failed to read certificate"))->open();
 	}
 	else if( !SslCertificate( cert ).keyUsage().contains( SslCertificate::KeyEncipherment ) &&
 		!SslCertificate( cert ).keyUsage().contains( SslCertificate::KeyAgreement ) )
 	{
-		WarningDialog::show(this, tr("This certificate cannot be used for encryption"));
+		WarningDialog::create(this)->withTitle(tr("This certificate cannot be used for encryption"))->open();
 	}
 	else
 		addRecipient(cert);
@@ -184,14 +184,18 @@ void AddRecipients::addRecipientToRightPane(Item *item, bool update)
 		{
 			if(Settings::CDOC2_DEFAULT && Settings::CDOC2_USE_KEYSERVER)
 			{
-				WarningDialog::show(this, tr("Failed to add certificate. An expired certificate cannot be used for encryption."));
+				WarningDialog::create(this)
+					->withTitle(tr("Failed to add certificate"))
+					->withText(tr("An expired certificate cannot be used for encryption."))
+					->open();
 				return;
 			}
-			auto *dlg = new WarningDialog(tr("Are you sure that you want use certificate for encrypting, which expired on %1?<br />"
+			auto *dlg = WarningDialog::create(this)->withText(tr(
+				"Are you sure that you want use certificate for encrypting, which expired on %1?<br />"
 				"When decrypter has updated certificates then decrypting is impossible.")
-				.arg(expiryDate.toString(QStringLiteral("dd.MM.yyyy hh:mm:ss"))), this);
-			dlg->setCancelText(WarningDialog::NO);
-			dlg->addButton(WarningDialog::YES, QMessageBox::Yes);
+				.arg(expiryDate.toString(QStringLiteral("dd.MM.yyyy hh:mm:ss"))))
+				->setCancelText(WarningDialog::NO)
+				->addButton(WarningDialog::YES, QMessageBox::Yes);
 			if(dlg->exec() != QMessageBox::Yes)
 				return;
 		}
@@ -202,9 +206,10 @@ void AddRecipients::addRecipientToRightPane(Item *item, bool update)
 		errors.removeAll(QSslError(QSslError::CertificateExpired, key.cert));
 		if(!errors.isEmpty())
 		{
-			auto *dlg = new WarningDialog(tr("Recipient’s certification chain contains certificates that are not trusted. Continue with encryption?"), this);
-			dlg->setCancelText(WarningDialog::NO);
-			dlg->addButton(WarningDialog::YES, QMessageBox::Yes);
+			auto *dlg = WarningDialog::create(this)
+				->withText(tr("Recipient’s certification chain contains certificates that are not trusted. Continue with encryption?"))
+				->setCancelText(WarningDialog::NO)
+				->addButton(WarningDialog::YES, QMessageBox::Yes);
 			if(dlg->exec() != QMessageBox::Yes)
 				return;
 		}
@@ -291,14 +296,14 @@ void AddRecipients::search(const QString &term, bool select, const QString &type
 	else
 	{
 		QApplication::restoreOverrideCursor();
-		WarningDialog::show(this, tr("Personal code is not valid!"));
+		WarningDialog::create(this)->withTitle(tr("Personal code is not valid!"))->open();
 	}
 }
 
-void AddRecipients::showError( const QString &msg, const QString &details )
+void AddRecipients::showError(const QString &title, const QString &details)
 {
 	QApplication::restoreOverrideCursor();
-	WarningDialog::show(this, msg, details);
+	WarningDialog::create(this)->withTitle(title)->withDetails(details)->open();
 }
 
 void AddRecipients::showResult(const QList<QSslCertificate> &result, int resultCount, const QVariantMap &userData)
@@ -317,12 +322,14 @@ void AddRecipients::showResult(const QList<QSslCertificate> &result, int resultC
 		}
 	}
 	if(resultCount >= 50)
-		showError(tr("The name you were looking for gave too many results, please refine your search."));
+		WarningDialog::create(this)
+			->withText(tr("The name you were looking for gave too many results, please refine your search."))
+			->open();
 	else if(--multiSearch <= 0 && ui->leftPane->items.isEmpty())
-	{
-		showError(tr("Person or company does not own a valid certificate.<br />"
-			"It is necessary to have a valid certificate for encryption.<br />"
-			"<a href='https://www.id.ee/en/article/encryption-and-decryption-of-documents/'>Read more about it</a>."));
-	}
+		WarningDialog::create(this)
+			->withTitle(tr("Person or company does not own a valid certificate"))
+			->withText(tr("It is necessary to have a valid certificate for encryption.<br />"
+				"<a href='https://www.id.ee/en/article/encryption-and-decryption-of-documents/'>Read more about it</a>."))
+			->open();
 	QApplication::restoreOverrideCursor();
 }
