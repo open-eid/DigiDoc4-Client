@@ -463,7 +463,6 @@ void MainWindow::onCryptoAction(int action, const QString &/*id*/, const QString
 			FadeInNotification::success(ui->topBar, tr("Decryption succeeded!"));
 		}
 		break;
-	}
 	case EncryptContainer:
 		if(encrypt())
 		{
@@ -477,26 +476,6 @@ void MainWindow::onCryptoAction(int action, const QString &/*id*/, const QString
 			FadeInNotification::success(ui->topBar, tr("Encryption succeeded!"));
 		}
 		break;
-		case ContainerSaveAs:
-	{
-		if(!cryptoDoc)
-			break;
-		QString target = FileDialog::getSaveFileName(this, tr("Save file"), cryptoDoc->fileName());
-		if(target.isEmpty())
-			break;
-		if( !FileDialog::fileIsWritable(target))
-		{
-			auto *dlg = new WarningDialog(tr("Cannot alter container %1. Save different location?").arg(target), this);
-			dlg->addButton(WarningDialog::YES, QMessageBox::Yes);
-			if(dlg->exec() == QMessageBox::Yes) {
-				QString file = FileDialog::getSaveFileName(this, tr("Save file"), target);
-				if(!file.isEmpty())
-					cryptoDoc->saveCopy(file);
-			}
-		}
-		cryptoDoc->saveCopy(target);
-		break;
-	}
 	case ClearCryptoWarning:
 		ui->crypto->warningIcon(false);
 		ui->warnings->closeWarnings(CryptoDetails);

@@ -548,6 +548,12 @@ void CryptoDoc::removeKey(unsigned int id)
 		d->keys.erase(d->keys.begin() + id);
 }
 
+void CryptoDoc::clearKeys()
+{
+	if(!d->isEncryptedWarning(tr("Failed to remove key")))
+		d->keys.clear();
+}
+
 bool CryptoDoc::saveCopy(const QString &filename)
 {
 	if(QFileInfo(filename) == QFileInfo(d->fileName))
