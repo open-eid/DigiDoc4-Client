@@ -22,9 +22,7 @@
 #include "Application.h"
 #include "CheckConnection.h"
 #include "Common.h"
-#include "QPCSC.h"
 #include "QSigner.h"
-#include "SslCertificate.h"
 #include "TokenData.h"
 #include "Utils.h"
 #include "dialogs/FileDialog.h"
@@ -56,18 +54,24 @@ struct ServiceConfirmation final: public ContainerOpenCB
 	bool validateOnline() const final {
 		if(!CheckConnection().check())
 			return dispatchToMain([this] {
-				WarningDialog::show(parent, DigiDoc::tr("Connecting to SiVa server failed! Please check your internet connection and network settings."));
+				WarningDialog::create(parent)
+					->withTitle(DigiDoc::tr("Connecting to SiVa server failed!"))
+					->withText(DigiDoc::tr("Please check your internet connection and network settings."))
+					->open();
 				return false;
 			});
 		return dispatchToMain([this] {
-			auto *dlg = new WarningDialog(DigiDoc::tr("This type of signed document will be transmitted to the "
-				"Digital Signature Validation Service SiVa to verify the validity of the digital signature. "
-				"Read more information about transmitted data to Digital Signature Validation service from "
-				"<a href=\"https://www.id.ee/en/article/data-protection-conditions-for-the-id-software-of-the-national-information-system-authority/\">here</a>.<br />"
-				"Do you want to continue?"), parent);
-			dlg->setCancelText(WarningDialog::Cancel);
-			dlg->addButton(WarningDialog::YES, QMessageBox::Yes);
-			return dlg->exec() == QMessageBox::Yes;
+			return WarningDialog::create(parent)
+				->withTitle(DigiDoc::tr("Send document to SiVa"))
+				->withText(DigiDoc::tr(
+					"This type of signed document will be transmitted to the "
+					"Digital Signature Validation Service SiVa to verify the validity of the digital signature. "
+					"Read more information about transmitted data to Digital Signature Validation service from "
+					"<a href=\"https://www.id.ee/en/article/data-protection-conditions-for-the-id-software-of-the-national-information-system-authority/\">here</a>.<br />"
+					"Do you want to continue?"))
+				->setCancelText(WarningDialog::Cancel)
+				->addButton(WarningDialog::YES, QMessageBox::Yes)
+				->exec() == QMessageBox::Yes;
 		});
 	}
 	Q_DISABLE_COPY(ServiceConfirmation)
@@ -289,25 +293,16 @@ SDocumentModel::SDocumentModel(DigiDoc *container)
 bool SDocumentModel::addFile(const QString &file, const QString &mime)
 {
 	QFileInfo info(file);
-	if(info.size() == 0)
-	{
-		WarningDialog::show(DocumentModel::tr("Cannot add empty file to the container."));
+	if(!addFileCheck(doc->fileName(), info))
 		return false;
-	}
 	QString fileName(info.fileName());
 	if(fileName == QStringLiteral("mimetype"))
 	{
-		WarningDialog::show(DocumentModel::tr("Cannot add file with name 'mimetype' to the envelope."));
+		WarningDialog::create()
+			->withTitle(DocumentModel::tr("Failed to add file"))
+			->withText(DocumentModel::tr("Cannot add file with name 'mimetype' to the envelope."))
+			->open();
 		return false;
-	}
-	for(int row = 0; row < rowCount(); row++)
-	{
-		if(fileName == from(doc->b->dataFiles().at(size_t(row))->fileName()))
-		{
-			WarningDialog::show(DocumentModel::tr("Cannot add the file to the envelope. File '%1' is already in container.")
-				.arg(FileDialog::normalized(fileName)));
-			return false;
-		}
 	}
 	if(doc->addFile(file, mime))
 	{
@@ -372,10 +367,9 @@ bool SDocumentModel::removeRow(int row)
 	{
 		doc->b->removeDataFile(unsigned(row));
 		doc->modified = true;
-		emit removed(row);
 		return true;
 	}
-	catch( const Exception &e ) { DigiDoc::setLastError(tr("Failed remove document from container"), e); }
+	catch( const Exception &e ) { DigiDoc::setLastError(DocumentModel::tr("Failed remove document from container"), e); }
 	return false;
 }
 
@@ -407,7 +401,7 @@ DigiDoc::~DigiDoc() { clear(); }
 
 bool DigiDoc::addFile(const QString &file, const QString &mime)
 {
-	if(isError(!b->signatures().empty(), tr("Cannot add files to signed container")))
+	if(isError(!b->signatures().empty(), DocumentModel::tr("Failed to add file"), tr("Cannot add files to signed container")))
 		return false;
 	try {
 		b->addDataFile( to(file), to(mime));
@@ -450,12 +444,12 @@ DocumentModel* DigiDoc::documentModel() const
 
 QString DigiDoc::fileName() const { return m_fileName; }
 
-bool DigiDoc::isError(bool failure, const QString &msg) const
+bool DigiDoc::isError(bool failure, const QString &title, const QString &text) const
 {
 	if(!b)
-		WarningDialog::show(tr("Container is not open"));
+		WarningDialog::create()->withTitle(title)->withText(tr("Container is not open"))->open();
 	else if(failure)
-		WarningDialog::show(msg);
+		WarningDialog::create()->withTitle(title)->withText(text)->open();
 	return !b || failure;
 }
 
@@ -553,15 +547,13 @@ bool DigiDoc::open( const QString &file )
 		switch(e.code())
 		{
 		case Exception::NetworkError:
-			setLastError(tr("Connecting to SiVa server failed! Please check your internet connection."), e);
-			break;
 		case Exception::HostNotFound:
 		case Exception::InvalidUrl:
-			setLastError(tr("Connecting to SiVa server failed! Please check your internet connection and network settings."), e);
+			setLastError(tr("Connecting to SiVa server failed!"), e);
 			break;
 		default:
 			if(e.msg().find("Online validation disabled") == std::string::npos)
-				setLastError(tr("An error occurred while opening the document."), e);
+				setLastError(tr("An error occurred while opening the document"), e);
 			break;
 		}
 	}
@@ -598,7 +590,7 @@ QStringList DigiDoc::parseException(const Exception &e, Exception::ExceptionCode
 
 void DigiDoc::removeSignature( unsigned int num )
 {
-	if(isError(num >= b->signatures().size(), tr("Missing signature")))
+	if(isError(num >= b->signatures().size(), tr("Failed remove signature from container"), tr("Missing signature")))
 		return;
 	try {
 		modified = waitFor([&] {
@@ -639,47 +631,51 @@ bool DigiDoc::saveAs(const QString &filename)
 	return false;
 }
 
-void DigiDoc::setLastError( const QString &msg, const Exception &e )
+void DigiDoc::setLastError(const QString &title, const Exception &e)
 {
+	auto *dlg = WarningDialog::create()->withTitle(title);
 	Exception::ExceptionCode code = Exception::General;
 	QStringList causes = parseException(e, code);
 	switch( code )
 	{
 	case Exception::CertificateRevoked:
-		WarningDialog::show(tr("Certificate status revoked"), causes.join('\n')); break;
+		dlg->withText(tr("Certificate status revoked")); break;
 	case Exception::CertificateUnknown:
-		WarningDialog::show(tr("Certificate status unknown"), causes.join('\n')); break;
+		dlg->withText(tr("Certificate status unknown")); break;
 	case Exception::OCSPTimeSlot:
-		WarningDialog::show(tr("Please check your computer time. <a href='https://www.id.ee/en/article/digidoc4-client-error-please-check-your-computer-time-2/'>Additional information</a>"), causes.join('\n')); break;
+		dlg->withText(tr("Please check your computer time. <a href='https://www.id.ee/en/article/digidoc4-client-error-please-check-your-computer-time-2/'>Additional information</a>")); break;
 	case Exception::OCSPRequestUnauthorized:
-		WarningDialog::show(tr("You have not granted IP-based access. "
-			"Check your validity confirmation service access settings."), causes.join('\n')); break;
+		dlg->withText(tr("You have not granted IP-based access. "
+			"Check your validity confirmation service access settings.")); break;
 	case Exception::TSForbidden:
-		WarningDialog::show(tr("Failed to sign container. "
-			"Check your Time-Stamping service access settings."), causes.join('\n')); break;
+		dlg->withText(tr("Check your Time-Stamping service access settings.")); break;
 	case Exception::TSTooManyRequests:
-		WarningDialog::show(tr("The limit for digital signatures per month has been reached for this IP address. "
-			"<a href=\"https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/\">Additional information</a>"), causes.join('\n')); break;
+		dlg->withText(tr("The limit for digital signatures per month has been reached for this IP address. "
+			"<a href=\"https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/\">Additional information</a>")); break;
 	case Exception::PINCanceled:
-		break;
+		dlg->deleteLater();
+		return;
 	case Exception::PINFailed:
-		WarningDialog::show(tr("PIN Login failed"), causes.join('\n')); break;
+		dlg->withText(tr("PIN Login failed")); break;
 	case Exception::PINIncorrect:
-		WarningDialog::show(tr("PIN Incorrect"), causes.join('\n')); break;
+		dlg->withText(tr("PIN Incorrect")); break;
 	case Exception::PINLocked:
-		WarningDialog::show(tr("PIN Locked. Unblock to reuse PIN."), causes.join('\n')); break;
-	case Exception::NetworkError: // use passed message for these thre exceptions
+		dlg->withText(tr("PIN Locked. Unblock to reuse PIN.")); break;
+	case Exception::NetworkError:
+		dlg->withText(tr("Please check your internet connection.")); break;
 	case Exception::HostNotFound:
 	case Exception::InvalidUrl:
+		dlg->withText(tr("Please check your internet connection and network settings.")); break;
 	default:
-		WarningDialog::show(msg, causes.join('\n')); break;
+		break;
 	}
+	dlg->withDetails(causes.join('\n'))->open();
 }
 
 bool DigiDoc::sign(const QString &city, const QString &state, const QString &zip,
 	const QString &country, const QString &role, Signer *signer)
 {
-	if(isError(b->dataFiles().empty(), tr("Cannot add signature to empty container")))
+	if(isError(b->dataFiles().empty(), tr("Failed to sign container"), tr("Cannot add signature to empty container")))
 		return false;
 
 	try
@@ -709,21 +705,26 @@ bool DigiDoc::sign(const QString &city, const QString &state, const QString &zip
 		switch(code)
 		{
 		case Exception::PINIncorrect:
-			(new WarningDialog(tr("PIN Incorrect"), Application::mainWindow()))->exec();
+			WarningDialog::create()
+				->withTitle(tr("Failed to sign container"))
+				->withText(tr("PIN Incorrect"))
+				->exec();
 			return sign(city, state, zip, country, role, signer);
-		case Exception::NetworkError:
-		case Exception::HostNotFound:
-			WarningDialog::show(tr("Failed to sign container. Please check the access to signing services and network settings."), causes.join('\n')); break;
 		case Exception::InvalidUrl:
-			WarningDialog::show(tr("Failed to sign container. Signing service URL is incorrect."), causes.join('\n')); break;
+			WarningDialog::create()
+				->withTitle(tr("Failed to sign container"))
+				->withText(tr("Signing service URL is incorrect."))
+				->withDetails(causes.join('\n'))
+				->open();
+			break;
 		default:
-			setLastError(tr("Failed to sign container."), e); break;
+			setLastError(tr("Failed to sign container"), e); break;
 		}
 	}
 	return false;
 }
 
-QList<DigiDocSignature> DigiDoc::signatures() const
+const QList<DigiDocSignature>& DigiDoc::signatures() const
 {
 	return m_signatures;
 }
@@ -733,7 +734,7 @@ ContainerState DigiDoc::state()
 	return containerState;
 }
 
-QList<DigiDocSignature> DigiDoc::timestamps() const
+const QList<DigiDocSignature>& DigiDoc::timestamps() const
 {
 	return m_timestamps;
 }

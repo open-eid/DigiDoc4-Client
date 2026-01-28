@@ -36,12 +36,11 @@ enum ContainerState : unsigned char {
 };
 
 enum Actions : unsigned char {
+    ContainerClose,
     ContainerCancel,
     ContainerConvert,
     ContainerEncrypt,
-    ContainerLocation,
     ContainerSave,
-    ContainerSaveAs,
 
     EncryptContainer,
     DecryptContainer,
@@ -54,14 +53,6 @@ enum Actions : unsigned char {
     ClearSignatureWarning,
     ClearCryptoWarning,
     EncryptLT
-};
-
-enum ItemType : unsigned char {
-    ItemFile,
-    ItemSignature,
-    ItemAddress,
-    ToAddAdresses,
-    AddedAdresses,
 };
 
 enum Pages : unsigned char {

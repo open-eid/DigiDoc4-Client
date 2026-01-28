@@ -122,7 +122,6 @@ void Diagnostics::generalInfo(QTextStream &s)
 			continue;
 
 		s << "ATR - " << reader.atr() << "<br />";
-		reader.beginTransaction();
 		constexpr auto APDU = &QByteArray::fromHex;
 		auto printAID = [&](QLatin1String label, const QByteArray &apdu)
 		{

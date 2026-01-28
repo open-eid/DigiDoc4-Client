@@ -52,7 +52,7 @@ private:
 
 	AddressItem* itemListValue(ItemList *list, const CDKey &key);
 	void search(const QString &term, bool select = false, const QString &type = {});
-	void showError(const QString &msg, const QString &details = {});
+	void showError(const QString &title, const QString &details);
 	void showResult(const QList<QSslCertificate> &result, int resultCount, const QVariantMap &userData);
 
 	Ui::AddRecipients *ui;

@@ -24,9 +24,7 @@
 
 #include <QtCore/QCoreApplication>
 #include <QtCore/QRegularExpression>
-#include <QtCore/QStandardPaths>
 #include <QtCore/QTemporaryFile>
-#include <QtWidgets/QMessageBox>
 
 #include <algorithm>
 
@@ -58,10 +56,8 @@ QString FileDialog::createNewFileName(const QString &file, bool signature, QWidg
 		Settings::CDOC2_DEFAULT ? QStringLiteral(".cdoc2") : QStringLiteral(".cdoc");
 	const QString type = signature ? tr("signature container") : tr("crypto container");
 	QString capitalized = type[0].toUpper() + type.mid(1);
-	const QString defaultDir = Settings::DEFAULT_DIR;
 	const QFileInfo f(normalized(file));
-	QString dir = defaultDir.isEmpty() ? f.absolutePath() : defaultDir;
-	QString fileName = QDir::toNativeSeparators(dir + QDir::separator() + f.completeBaseName() + extension);
+	QString fileName = QDir::toNativeSeparators(f.absolutePath() + QDir::separator() + f.completeBaseName() + extension);
 #ifndef Q_OS_MACOS
 	// macOS App Sandbox restricts the rights of the application to write to the filesystem outside of
 	// app sandbox; user must explicitly give permission to write data to the specific folders.
@@ -162,8 +158,7 @@ QString FileDialog::getDir( const QString &dir )
 	path.replace('~', QDir::homePath());
 	return path;
 #else
-	return !dir.isEmpty() ? dir : Settings::LAST_PATH.value(
-		QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation));
+	return !dir.isEmpty() ? dir : Settings::LAST_PATH;
 #endif
 }
 
@@ -251,7 +246,10 @@ QString FileDialog::getExistingDirectory( QWidget *parent, const QString &captio
 	if( !QFileInfo( res ).isWritable() )
 #endif
 	{
-		WarningDialog::show(parent, tr( "You don't have sufficient privileges to write this file into folder %1" ).arg( res ));
+		WarningDialog::create(parent)
+			->withTitle(tr("Failed to save files"))
+			->withText(tr("You don't have sufficient privileges to write this file into folder %1").arg(res))
+			->open();
 		return {};
 	}
 
@@ -263,10 +261,10 @@ QString FileDialog::getSaveFileName(QWidget *parent, const QString &caption, con
 	if(filename.endsWith(QLatin1String(".adoc"), Qt::CaseInsensitive))
 		filter = tr("Documents (%1)").arg(QLatin1String("*.adoc"));
 	else if(filename.endsWith(QLatin1String(".asice"), Qt::CaseInsensitive) ||
-			 filename.endsWith(QLatin1String(".sce"), Qt::CaseInsensitive))
+			filename.endsWith(QLatin1String(".sce"), Qt::CaseInsensitive))
 		filter = tr("Documents (%1)").arg(QLatin1String("*.asice *.sce"));
 	else if(filename.endsWith(QLatin1String(".asics"), Qt::CaseInsensitive) ||
-			 filename.endsWith(QLatin1String(".scs"), Qt::CaseInsensitive))
+			filename.endsWith(QLatin1String(".scs"), Qt::CaseInsensitive))
 		filter = tr("Documents (%1)").arg(QLatin1String("*.asics *.scs"));
 	else if(filename.endsWith(QLatin1String(".bdoc"), Qt::CaseInsensitive))
 		filter = tr("Documents (%1)").arg(QLatin1String("*.bdoc"));
@@ -281,17 +279,16 @@ QString FileDialog::getSaveFileName(QWidget *parent, const QString &caption, con
 	else if(filename.endsWith(QLatin1String(".pdf"), Qt::CaseInsensitive))
 		filter = tr("Documents (%1)").arg(QLatin1String("*.pdf"));
 	QString file;
-	while( true )
+	while(!(file = QFileDialog::getSaveFileName(parent, caption, normalized(filename), filter)).isEmpty())
 	{
-		file = QFileDialog::getSaveFileName(parent, caption, normalized(filename), filter);
-		if( !file.isEmpty() && !fileIsWritable( file ) )
-		{
-			WarningDialog::show(parent, tr( "You don't have sufficient privileges to write this file into folder %1" ).arg( file ));
-		}
-		else
-			break;
+		if(fileIsWritable(file))
+			return result(file);
+		WarningDialog::create(parent)
+			->withTitle(tr("Failed to save file"))
+			->withText(tr("You don't have sufficient privileges to write this file into folder %1").arg(file))
+			->exec();
 	}
-	return result( file );
+	return file;
 }
 
 QString FileDialog::normalized(const QString &data)
@@ -314,8 +311,6 @@ QString FileDialog::result( const QString &str )
 #ifndef Q_OS_MACOS
 	if(!str.isEmpty())
 		Settings::LAST_PATH = QFileInfo(str).absolutePath();
-#else
-	Settings::LAST_PATH.clear();
 #endif
 	return str;
 }

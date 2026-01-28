@@ -45,7 +45,7 @@ public:
 	explicit MainWindow(QWidget *parent = nullptr);
 	~MainWindow() final;
 
-	void openFiles(const QStringList &files, bool addFile = false, bool forceCreate = false);
+	void openFiles(QStringList files, bool addFile = false, bool forceCreate = false);
 	void selectPage(ria::qdigidoc4::Pages page);
 	void showSettings(int page);
 
@@ -61,39 +61,30 @@ protected:
 private:
 	void adjustDrops();
 	void changePinClicked(QSmartCardData::PinType type, QSmartCard::PinAction action);
-	void convertToBDoc();
 	void convertToCDoc();
 	ria::qdigidoc4::ContainerState currentState();
 	bool decrypt(const libcdoc::Lock *lock);
 	bool encrypt(bool askForKey = false);
 	void loadPicture();
-	void moveCryptoContainer();
-	void moveSignatureContainer();
 	void navigateToPage( ria::qdigidoc4::Pages page, const QStringList &files = QStringList(), bool create = true );
 	void onCryptoAction(int action, const QString &id, const QString &phone);
-	void onSignAction(int action, const QString &info1, const QString &info2);
+	void onSignAction(int action, const QString &idCode, const QString &info2);
 	void openContainer(bool signature);
-	void pageSelected(int page, bool checked = true);
-	void resetDigiDoc(DigiDoc *doc = nullptr, bool warnOnChange = true);
-	void removeCryptoFile(int index);
-	bool removeFile(DocumentModel *model, int index);
+	void resetDigiDoc(std::unique_ptr<DigiDoc> &&doc);
 	void removeSignature(int index);
-	void removeSignatureFile(int index);
-	bool save(bool saveAs = false);
+	bool save();
 	template <typename F>
 	void sign(F &&sign);
-	bool validateFiles(const QString &container, const QStringList &files);
 	void updateSelector();
-	void updateSelectorData(TokenData data);
 	void updateMyEID(const TokenData &t);
 	void updateMyEid(const QSmartCardData &data);
-	bool wrap(const QString& wrappedFile, bool enclose);
+	bool wrap(const QString& wrappedFile, bool pdf);
 	bool wrapContainer(bool signing);
 
 	static QStringList dropEventFiles(QDropEvent *event);
 
 	std::unique_ptr<CryptoDoc> cryptoDoc;
-	DigiDoc* digiDoc = nullptr;
+	std::unique_ptr<DigiDoc> digiDoc;
 	Ui::MainWindow *ui;
 
 	void decryptClicked(const libcdoc::Lock *lock);

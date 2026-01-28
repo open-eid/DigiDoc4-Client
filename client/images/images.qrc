@@ -13,7 +13,8 @@
 		<file>icon_ajatempel.svg</file>
 		<file>icon_alert_error.svg</file>
 		<file>icon_alert_warning.svg</file>
-		<file>icon_alert_red.svg</file>
+		<file>icon_alert_large_error.svg</file>
+		<file>icon_alert_large_warning.svg</file>
 		<file>icon_Allkiri_hover.svg</file>
 		<file>icon_Allkiri_small.svg</file>
 		<file>icon_Allkiri.svg</file>
@@ -29,6 +30,7 @@
 		<file>icon_digitempel.svg</file>
 		<file>icon_download.svg</file>
 		<file>icon_Edit.svg</file>
+		<file>icon_error.svg</file>
 		<file>icon_help.svg</file>
 		<file>icon_IDkaart_red.svg</file>
 		<file>icon_IDkaart_green.svg</file>

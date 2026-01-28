@@ -58,7 +58,10 @@ class CryptoDoc::Private final: public QThread
 {
 	Q_OBJECT
 public:
-	bool warnIfNotWritable() const;
+	static unsigned int getCDocVersion() {
+		return (Settings::CDOC2_DEFAULT) ? 2 : 1;
+	}
+	bool isEncryptedWarning(const QString &title) const;
 	void run() final;
 	inline void waitForFinished()
 	{
@@ -160,7 +163,10 @@ public:
 	std::unique_ptr<libcdoc::CDocReader> createCDocReader(const std::string& filename) {
 		libcdoc::CDocReader *r = libcdoc::CDocReader::createReader(filename, &conf, &crypto, &network);
 		if (!r) {
-			WarningDialog::show(tr("Failed to open document"), tr("Unsupported file format"));
+			WarningDialog::create()
+				->withTitle(tr("Failed to open document"))
+				->withText(tr("Unsupported file format"))
+				->open();
 			return nullptr;
 		}
 		keys.clear();
@@ -171,16 +177,13 @@ public:
 	}
 };
 
-bool CryptoDoc::Private::warnIfNotWritable() const
+bool CryptoDoc::Private::isEncryptedWarning(const QString &title) const
 {
-	if(fileName.isEmpty()) {
-		WarningDialog::show(CryptoDoc::tr("Container is not open"));
-	} else if(reader) {
-		WarningDialog::show(CryptoDoc::tr("Container is encrypted"));
-	} else {
-		return false;
-	}
-	return true;
+	if(fileName.isEmpty() )
+		WarningDialog::create()->withTitle(title)->withText(CryptoDoc::tr("Container is not open"))->open();
+	if(isEncrypted())
+		WarningDialog::create()->withTitle(title)->withText(CryptoDoc::tr("Container is encrypted"))->open();
+	return fileName.isEmpty() || isEncrypted();
 }
 
 void CryptoDoc::Private::run()
@@ -196,24 +199,20 @@ CDocumentModel::CDocumentModel(CryptoDoc::Private *doc) : d(doc) {}
 
 bool CDocumentModel::addFile(const QString &file, const QString &mime)
 {
-	if(d->warnIfNotWritable()) return false;
+	if(d->isEncryptedWarning(DocumentModel::tr("Failed to add file")))
+		return false;
 
 	QFileInfo info(file);
-	if(info.size() == 0) {
-		WarningDialog::show(DocumentModel::tr("Cannot add empty file to the container."));
+	if(!addFileCheck(d->fileName, info))
 		return false;
-	}
-	if(!Settings::CDOC2_DEFAULT && info.size() > 120*1024*1024) {
-		WarningDialog::show(tr("Added file(s) exceeds the maximum size limit of the container (∼120MB). "
-			"<a href='https://www.id.ee/en/article/encrypting-large-120-mb-files/'>Read more about it</a>"));
-		return false;
-	}
-	std::string fileName(info.fileName().toStdString());
-	if(std::any_of(d->files.cbegin(), d->files.cend(),
-			[&fileName](const auto &containerFile) { return containerFile.name == fileName; }))
+
+	if(d->getCDocVersion() == 1 && info.size() > 120*1024*1024)
 	{
-		WarningDialog::show(DocumentModel::tr("Cannot add the file to the envelope. File '%1' is already in container.")
-							.arg(FileDialog::normalized(info.fileName())));
+		WarningDialog::create()
+			->withTitle(DocumentModel::tr("Failed to add file"))
+			->withText(tr("Added file(s) exceeds the maximum size limit of the container (∼120MB). "
+				"<a href='https://www.id.ee/en/article/encrypting-large-120-mb-files/'>Read more about it</a>"))
+			->open();
 		return false;
 	}
 
@@ -242,7 +241,10 @@ QString CDocumentModel::copy(int row, const QString &dst) const
 	file.data->seek(0);
 	if(QFile f(dst); f.open(QFile::WriteOnly) && copyIODevice(file.data.get(), &f) == file.size)
 		return dst;
-	WarningDialog::show(tr("Failed to save file '%1'").arg(dst));
+	WarningDialog::create()
+		->withTitle(FileDialog::tr("Failed to save file"))
+		->withText(dst)
+		->open();
 	return {};
 }
 
@@ -280,16 +282,19 @@ void CDocumentModel::open(int row)
 
 bool CDocumentModel::removeRow(int row)
 {
-	if(d->warnIfNotWritable())
+	if(d->isEncryptedWarning(DocumentModel::tr("Failed remove document from container")))
 		return false;
 
-	if(row >= d->files.size()) {
-		WarningDialog::show(DocumentModel::tr("Internal error"));
+	if(d->files.empty() || row >= d->files.size())
+	{
+		WarningDialog::create()
+			->withTitle(DocumentModel::tr("Failed remove document from container"))
+			->withText(DocumentModel::tr("Internal error"))
+			->open();
 		return false;
 	}
 
-	d->files.erase(d->files.begin() + row);
-	emit removed(row);
+	d->files.erase(d->files.cbegin() + row);
 	return true;
 }
 
@@ -328,13 +333,14 @@ CryptoDoc::supportsSymmetricKeys() const
 }
 
 bool CryptoDoc::addEncryptionKey(const QSslCertificate &cert) {
-	if (d->warnIfNotWritable()) {
+	if(d->isEncryptedWarning(tr("Failed to add key")))
 		return false;
-	}
 	for (auto &k : d->keys) {
 		if (k.rcpt_cert == cert) {
-			WarningDialog::show(
-				tr("Recipient with the same key already exists"));
+			WarningDialog::create()
+				->withTitle(tr("Failed to add key"))
+				->withText(tr("Key already exists"))
+				->open();
 			return false;
 		}
 	}
@@ -371,9 +377,14 @@ ContainerState CryptoDoc::state() const
 	return d->isEncrypted() ? EncryptedContainer : UnencryptedContainer;
 }
 
-bool CryptoDoc::decrypt(const libcdoc::Lock *lock, const QByteArray &secret) {
-	if (d->fileName.isEmpty()) {
-		WarningDialog::show(tr("Container is not open"));
+bool CryptoDoc::decrypt(const libcdoc::Lock *lock, const QByteArray& secret)
+{
+	if( d->fileName.isEmpty() )
+	{
+		WarningDialog::create()
+			->withTitle(QSigner::tr("Failed to decrypt document"))
+			->withText(tr("Container is not open"))
+			->open();
 		return false;
 	}
 	if (!d->reader)
@@ -386,8 +397,10 @@ bool CryptoDoc::decrypt(const libcdoc::Lock *lock, const QByteArray &secret) {
 		lock_idx = d->reader->getLockForCert(
 			std::vector<uint8_t>(der.cbegin(), der.cend()));
 		if (lock_idx < 0) {
-			WarningDialog::show(
-				tr("You do not have the key to decrypt this document"));
+			WarningDialog::create()
+				->withTitle(QSigner::tr("Failed to decrypt document"))
+				->withText(tr("You do not have the key to decrypt this document"))
+				->open();
 			return false;
 		}
 		lock = &locks.at(lock_idx);
@@ -402,24 +415,24 @@ bool CryptoDoc::decrypt(const libcdoc::Lock *lock, const QByteArray &secret) {
 			lock_idx = -1;
 	}
 	if (!lock || (lock->isSymmetric() && secret.isEmpty())) {
-		WarningDialog::show(
-			tr("You do not have the key to decrypt this document"));
+		WarningDialog::create()
+			->withTitle(QSigner::tr("Failed to decrypt document"))
+			->withText(tr("You do not have the key to decrypt this document"))
+			->open();
 		return false;
 	}
 
 	if (d->reader->version == 2 &&
 		(lock->type == libcdoc::Lock::Type::SERVER) &&
 		!Settings::CDOC2_NOTIFICATION.isSet()) {
-		auto *dlg = new WarningDialog(
-			tr("You must enter your PIN code twice in order to decrypt the "
-			   "CDOC2 container. "
-			   "The first PIN entry is required for authentication to the key "
-			   "server referenced in the CDOC2 container. "
-			   "Second PIN entry is required to decrypt the CDOC2 container."),
-			Application::mainWindow());
-		dlg->setCancelText(WarningDialog::Cancel);
-		dlg->addButton(WarningDialog::OK, QMessageBox::Ok);
-		dlg->addButton(tr("Don't show again"), QMessageBox::Ignore);
+		auto *dlg = WarningDialog::create()
+			->withTitle(QSigner::tr("Failed to decrypt document"))
+			->withText(tr("You must enter your PIN code twice in order to decrypt the CDOC2 container. "
+				"The first PIN entry is required for authentication to the key server referenced in the CDOC2 container. "
+				"Second PIN entry is required to decrypt the CDOC2 container."))
+			->setCancelText(WarningDialog::Cancel)
+			->addButton(WarningDialog::OK, QMessageBox::Ok)
+			->addButton(tr("Don't show again"), QMessageBox::Ignore);
 		switch (dlg->exec())
 		{
 		case QMessageBox::Ok: break;
@@ -436,9 +449,14 @@ bool CryptoDoc::decrypt(const libcdoc::Lock *lock, const QByteArray &secret) {
 	libcdoc::result_t result = d->decrypt(lock_idx);
 	if (result != libcdoc::OK) {
 		const std::string &msg = d->reader->getLastErrorStr();
-		WarningDialog::show(tr("Failed to decrypt document"),
-							QString::fromStdString(d->reader->getLastErrorStr()));
+		WarningDialog::create()
+			->withTitle(QSigner::tr("Failed to decrypt document"))
+			->withText(tr("Please check your internet connection and network settings."))
+			->withDetails(QString::fromStdString(d->reader->getLastErrorStr()))
+			->open();
+		return false;
 	}
+
 	return !d->isEncrypted();
 }
 
@@ -446,9 +464,14 @@ DocumentModel *CryptoDoc::documentModel() const { return d->documents; }
 
 bool CryptoDoc::encrypt( const QString &filename, const QString& label, const QByteArray& secret, uint32_t kdf_iter)
 {
-	if(!filename.isEmpty()) d->fileName = filename;
-	if(d->fileName.isEmpty()) {
-		WarningDialog::show(tr("Container is not open"));
+	if( !filename.isEmpty() )
+		d->fileName = filename;
+	if( d->fileName.isEmpty() )
+	{
+		WarningDialog::create()
+			->withTitle(tr("Failed to encrypt document"))
+			->withText(tr("Container is not open"))
+			->open();
 		return false;
 	}
 	// I think the correct semantics is to fail if container is already encrypted
@@ -457,7 +480,10 @@ bool CryptoDoc::encrypt( const QString &filename, const QString& label, const QB
 		// Encrypt for address list
 		if(d->keys.empty())
 		{
-			WarningDialog::show(tr("No keys specified"));
+			WarningDialog::create()
+				->withTitle(tr("Failed to encrypt document"))
+				->withText(tr("No keys specified"))
+				->open();
 			return false;
 		}
 	} else {
@@ -470,8 +496,11 @@ bool CryptoDoc::encrypt( const QString &filename, const QString& label, const QB
 	d->label.clear();
 	d->crypto.secret.clear();
 	if (result != libcdoc::OK) {
-		WarningDialog::show(tr("Failed to encrypt document"),
-							QString::fromStdString(d->writer_last_error));
+		WarningDialog::create()
+			->withTitle(tr("Failed to encrypt document"))
+			->withText(tr("Please check your internet connection and network settings."))
+			->withDetails(QString::fromStdString(d->writer_last_error))
+			->open();
 	}
 
 	return d->isEncrypted();
@@ -487,13 +516,10 @@ CryptoDoc::keys() const
 
 bool CryptoDoc::move(const QString &to)
 {
-	if(!d->isEncrypted())
-	{
-		d->fileName = to;
-		return true;
-	}
-
-	return false;
+	if(d->isEncrypted())
+		return false;
+	d->fileName = to;
+	return true;
 }
 
 bool CryptoDoc::open(const QString &file)
@@ -502,6 +528,10 @@ bool CryptoDoc::open(const QString &file)
 	clear(file);
 	d->reader = d->createCDocReader(file.toStdString());
 	if (!d->reader) {
+		WarningDialog::create()
+			->withTitle(tr("Failed to open document"))
+			->withDetails(tr("Cannot rerad file or file is not a CDoc container"))
+			->open();
 		return false;
 	}
 	std::vector<libcdoc::FileInfo> files = CDocSupport::getCDocFileList(file);
@@ -514,14 +544,8 @@ bool CryptoDoc::open(const QString &file)
 
 void CryptoDoc::removeKey(unsigned int id)
 {
-	if(!d->warnIfNotWritable())
+	if(!d->isEncryptedWarning(tr("Failed to remove key")))
 		d->keys.erase(d->keys.begin() + id);
-}
-
-void CryptoDoc::clearKeys()
-{
-	if(!d->warnIfNotWritable())
-		d->keys.clear();
 }
 
 bool CryptoDoc::saveCopy(const QString &filename)

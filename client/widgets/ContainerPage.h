@@ -34,6 +34,7 @@ class DigiDoc;
 class QSslCertificate;
 class SignatureItem;
 class SslCertificate;
+class TokenData;
 struct WarningText;
 
 class ContainerPage final : public QWidget
@@ -45,19 +46,17 @@ public:
 	~ContainerPage() final;
 
 	void cardChanged(const SslCertificate &cert, bool isBlocked = false);
-	void clear();
+	void tokenChanged(const TokenData &token);
 	void clearPopups();
 	void setHeader(const QString &file);
 	void togglePrinting(bool enable);
 	void transition(CryptoDoc *container, const QSslCertificate &cert);
 	void transition(DigiDoc* container);
 
-signals:
-	void action(int code, const QString &info1 = {}, const QString &info2 = {});
+Q_SIGNALS:
+	void action(int code, const QString &idCode = {}, const QString &info2 = {});
 	void addFiles(const QStringList &files);
 	void certChanged(const SslCertificate &cert);
-	void fileRemoved(int row);
-	void moved(const QString &to);
 	void removed(int row);
 	void warning(const WarningText &warningText);
 
@@ -65,26 +64,26 @@ signals:
 
 private:
 	void changeEvent(QEvent* event) final;
-	bool checkAction(int code, const QString& selectedCard, const QString& selectedMobile);
+	void clear(int code);
+	template<class C>
+	void deleteConfirm(C *c, int index);
 	void elideFileName();
 	bool eventFilter(QObject *o, QEvent *e) final;
-	void forward(int code);
 	void showMainAction(const QList<ria::qdigidoc4::Actions> &actions);
 	void showSigningButton();
+	void handleAction(int type);
 	void updateDecryptionButton();
 	void updatePanes(ria::qdigidoc4::ContainerState state, CryptoDoc *crypto_container);
 	void translateLabels();
 
 	Ui::ContainerPage *ui;
 	std::unique_ptr<MainAction> mainAction;
-	QString cardInReader;
+	QString idCode;
 	QString fileName;
-	QString mobileCode;
 
 	const char *cancelText = QT_TR_NOOP("Cancel");
 	const char *convertText = QT_TR_NOOP("Encrypt");
 	bool isSupported = false;
-	bool hasEmptyFile = false;
 	bool isSeal = false;
 	bool isExpired = false;
 	bool isBlocked = false;

@@ -48,7 +48,6 @@ public:
 
 	TokenData& operator =( const TokenData &other );
 	TokenData& operator =(TokenData &&other) Q_DECL_NOEXCEPT;
-	bool operator !=( const TokenData &other ) const;
 	bool operator ==( const TokenData &other ) const;
 
 private:

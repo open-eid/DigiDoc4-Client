@@ -33,9 +33,9 @@ class Card
 {
 public:
 	virtual ~Card() noexcept = default;
-	virtual QPCSCReader::Result change(QPCSCReader *reader, QSmartCardData::PinType type, const QString &pin, const QString &newpin) const = 0;
+	virtual QPCSCReader::Result change(QPCSCReader *reader, QSmartCardData::PinType type, QByteArray &&pin, QByteArray &&newpin) const = 0;
 	virtual bool loadPerso(QPCSCReader *reader, QSmartCardDataPrivate *d) const = 0;
-	virtual QPCSCReader::Result replace(QPCSCReader *reader, QSmartCardData::PinType type, const QString &puk, const QString &pin) const = 0;
+	virtual QPCSCReader::Result replace(QPCSCReader *reader, QSmartCardData::PinType type, QByteArray &&puk, QByteArray &&pin) const = 0;
 	static QPCSCReader::Result transfer(QPCSCReader *reader,  bool verify, const QByteArray &apdu,
 		QSmartCardData::PinType type, quint8 newPINOffset, bool requestCurrentPIN);
 	virtual bool updateCounters(QPCSCReader *reader, QSmartCardDataPrivate *d) const = 0;
@@ -51,13 +51,13 @@ public:
 class IDEMIACard: public Card
 {
 public:
-	QPCSCReader::Result change(QPCSCReader *reader, QSmartCardData::PinType type, const QString &pin, const QString &newpin) const final;
+	QPCSCReader::Result change(QPCSCReader *reader, QSmartCardData::PinType type, QByteArray &&pin, QByteArray &&newpin) const final;
 	bool loadPerso(QPCSCReader *reader, QSmartCardDataPrivate *d) const final;
-	QPCSCReader::Result replace(QPCSCReader *reader, QSmartCardData::PinType type, const QString &puk, const QString &pin) const final;
+	QPCSCReader::Result replace(QPCSCReader *reader, QSmartCardData::PinType type, QByteArray &&puk, QByteArray &&pin) const final;
 	bool updateCounters(QPCSCReader *reader, QSmartCardDataPrivate *d) const final;
 
 	static bool isSupported(const QByteArray &atr);
-	static QByteArray pinTemplate(const QString &pin);
+	static QByteArray pinTemplate(QByteArray &&pin);
 
 	static const QByteArray AID, AID_OT, AID_QSCD, ATR_COSMO8, ATR_COSMOX;
 };
@@ -65,9 +65,9 @@ public:
 class THALESCard: public Card
 {
 public:
-	QPCSCReader::Result change(QPCSCReader *reader, QSmartCardData::PinType type, const QString &pin, const QString &newpin) const final;
+	QPCSCReader::Result change(QPCSCReader *reader, QSmartCardData::PinType type, QByteArray &&pin, QByteArray &&newpin) const final;
 	bool loadPerso(QPCSCReader *reader, QSmartCardDataPrivate *d) const final;
-	QPCSCReader::Result replace(QPCSCReader *reader, QSmartCardData::PinType type, const QString &puk, const QString &pin) const final;
+	QPCSCReader::Result replace(QPCSCReader *reader, QSmartCardData::PinType type, QByteArray &&puk, QByteArray &&pin) const final;
 	bool updateCounters(QPCSCReader *reader, QSmartCardDataPrivate *d) const final;
 
 	static bool isSupported(const QByteArray &atr);
