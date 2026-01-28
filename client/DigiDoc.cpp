@@ -22,6 +22,7 @@
 #include "Application.h"
 #include "CheckConnection.h"
 #include "Common.h"
+#include "MainWindow.h"
 #include "QSigner.h"
 #include "TokenData.h"
 #include "Utils.h"
@@ -602,12 +603,25 @@ void DigiDoc::removeSignature( unsigned int num )
 	catch( const Exception &e ) { setLastError( tr("Failed remove signature from container"), e ); }
 }
 
-bool DigiDoc::save( const QString &filename )
+bool DigiDoc::save(QString filename)
 {
-	if(!filename.isEmpty())
-		m_fileName = filename;
-	if(!saveAs(m_fileName))
+	if(filename.isEmpty())
+		 filename = m_fileName;
+	QWidget *parentWidget = qobject_cast<QWidget*>(parent());
+	if(!FileDialog::fileIsWritable(filename))
+	{
+		auto *dlg = WarningDialog::create(parentWidget)
+			->withTitle(MainWindow::tr("Cannot alter container"))
+			->withText(MainWindow::tr("Cannot alter container %1. Save different location?").arg(FileDialog::normalized(filename)))
+			->addButton(WarningDialog::YES, QMessageBox::Yes);
+		if(dlg->exec() != QMessageBox::Yes)
+			return false;
+		if(filename = FileDialog::getSaveFileName(parentWidget, FileDialog::tr("Save file"), filename); filename.isEmpty())
+			return false;
+	}
+	if(!saveAs(filename))
 		return false;
+	m_fileName = filename;
 	Application::addRecent(m_fileName);
 	modified = false;
 	containerState = signatures().isEmpty() ? ContainerState::UnsignedSavedContainer : ContainerState::SignedContainer;

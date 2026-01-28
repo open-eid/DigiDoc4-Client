@@ -81,7 +81,7 @@ color: #2F70B6;
 font-size: 12px;
 font-weight: 700;
 }
-QPushButton:hover {
+QPushButton:hover, QPushButton:focus {
 background-color: #EAF1F8;
 }
 QPushButton:pressed {
@@ -95,7 +95,7 @@ color: #ffffff;
 border-color: #2F70B6;
 background-color: #2F70B6;
 }
-QPushButton:default:hover {
+QPushButton:default:hover, QPushButton:default:focus {
 border-color: #2B66A6;
 background-color: #2B66A6;
 }
@@ -106,6 +106,17 @@ background-color: #215081;
 QPushButton:default:disabled {
 border-color: #82A9D3;
 background-color: #82A9D3;
+}
+#cancel {
+border: 1px solid #AD2A45;
+background-color: transparent;
+color: #AD2A45;
+}
+#cancel:hover, #cancel:focus {
+background-color: #F5EBED;
+}
+#cancel:pressed {
+background-color: #E1C1C6;
 }</string>
      </property>
      <layout class="QHBoxLayout" name="navigationAreaLayout" stretch="0,0,0,1,0">
@@ -188,18 +199,6 @@ background-color: #82A9D3;
          <widget class="QPushButton" name="cancel">
           <property name="cursor">
            <cursorShape>PointingHandCursor</cursorShape>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">QPushButton {
-border: 1px solid #AD2A45;
-color: #AD2A45;
-}
-QPushButton:hover {
-background-color: #F5EBED;
-}
-QPushButton:pressed {
-background-color: #E1C1C6;
-}</string>
           </property>
           <property name="text">
            <string>Cancel</string>

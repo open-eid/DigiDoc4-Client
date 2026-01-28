@@ -42,7 +42,7 @@ border: 1px solid #AD2A45;
 color: #AD2A45;
 font-weight: 700;
 }
-QPushButton:hover {
+QPushButton:hover, QPushButton:focus {
 background-color: #F5EBED;
 }
 QPushButton:pressed {
@@ -53,7 +53,7 @@ color: #ffffff;
 border-color: #2F70B6;
 background-color: #2F70B6;
 }
-QPushButton:default:hover {
+QPushButton:default:hover, QPushButton:default:focus {
 border-color: #2B66A6;
 background-color: #2B66A6;
 }
@@ -135,13 +135,6 @@ background-color: #82A9D3;
      </item>
      <item>
       <widget class="QPushButton" name="showCert">
-       <property name="font">
-        <font>
-         <family>Roboto</family>
-         <pointsize>-1</pointsize>
-         <bold>true</bold>
-        </font>
-       </property>
        <property name="cursor">
         <cursorShape>PointingHandCursor</cursorShape>
        </property>

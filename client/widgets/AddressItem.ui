@@ -55,11 +55,17 @@ border-radius: 4px;
 border: none;
 color: #2F70B6;
 }
-#add:hover {
+#add:hover, #add:focus {
 background-color: #EAF1F8;
 }
 #add:pressed {
 background-color: #BFD3E8;
+}
+#remove:hover, #remove:focus {
+icon: url(:/images/icon_remove_hover.svg);
+}
+#remove:pressed {
+icon: url(:/images/icon_remove_clicked.svg);
 }</string>
   </property>
   <layout class="QGridLayout" name="AddressItemLayout">
@@ -147,7 +153,7 @@ background-color: #BFD3E8;
     </spacer>
    </item>
    <item row="0" column="4" rowspan="2">
-    <widget class="QToolButton" name="remove">
+    <widget class="QPushButton" name="remove">
      <property name="maximumSize">
       <size>
        <width>24</width>
@@ -161,7 +167,7 @@ background-color: #BFD3E8;
       <string>Remove</string>
      </property>
      <property name="styleSheet">
-      <string notr="true">border: none; background: none;</string>
+      <string notr="true">border: none</string>
      </property>
      <property name="icon">
       <iconset resource="../images/images.qrc">

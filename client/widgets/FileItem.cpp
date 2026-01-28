@@ -31,9 +31,9 @@ FileItem::FileItem(QString file, ContainerState state, QWidget *parent)
 
 	stateChange(state);
 
-	connect(ui->fileName, &QToolButton::clicked, this, [this]{ emit open(this); setUnderline(false); });
-	connect(ui->download, &QToolButton::clicked, this, [this]{ emit download(this); setUnderline(false); });
-	connect(ui->remove, &QToolButton::clicked, this, [this]{ emit remove(this);});
+	connect(ui->fileName, &QPushButton::clicked, this, [this]{ emit open(this); setUnderline(false); });
+	connect(ui->download, &QPushButton::clicked, this, [this]{ emit download(this); setUnderline(false); });
+	connect(ui->remove, &QPushButton::clicked, this, [this]{ emit remove(this);});
 
 	setFileName();
 }

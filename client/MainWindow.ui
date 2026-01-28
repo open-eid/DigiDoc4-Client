@@ -47,7 +47,8 @@ font-weight: 700;
 color: #ffffff;
 background-color: #2F70B6;
 }
-#signIntroButton:hover, #cryptoIntroButton:hover {
+#signIntroButton:hover, #signIntroButton:focus,
+#cryptoIntroButton:hover, #cryptoIntroButton:focus {
 background-color: #2B66A6;
 }
 #signIntroButton:pressed, #cryptoIntroButton:pressed {
@@ -329,7 +330,8 @@ font-family: Roboto, Helvetica;
 font-size: 12px;
 font-weight: 700;
 }
-#help:hover, #settings:hover {
+#help:hover, #settings:hover,
+#help:focus, #settings:focus {
 background-color: #EAF1F8;
 }
 #help:pressed, #settings:pressed {

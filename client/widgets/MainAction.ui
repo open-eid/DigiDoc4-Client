@@ -10,9 +10,14 @@
     <height>65</height>
    </rect>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>200</width>
+    <height>65</height>
+   </size>
+  </property>
   <property name="styleSheet">
-   <string notr="true">border-radius: 2px 0 0 0;
-background-color: #1a7dbc;</string>
+   <string notr="true">QPushButton { border-top-left-radius: 4px; }</string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <property name="spacing">
@@ -44,35 +49,31 @@ background-color: #1a7dbc;</string>
        <height>65</height>
       </size>
      </property>
-     <property name="font">
-      <font>
-       <family>Roboto Condensed</family>
-       <pointsize>16</pointsize>
-      </font>
-     </property>
      <property name="cursor">
       <cursorShape>PointingHandCursor</cursorShape>
      </property>
      <property name="styleSheet">
       <string notr="true">QPushButton {
-	border-top-left-radius: 2px;
-	border: none;
-	color: #ffffff;
-	background-color: #006EB5;
+border: 0px;
+color: #ffffff;
+background-color: #2F70B6;
+font-family: Roboto, Helvetica;
+font-size: 16px;
+font-weight: 700;
+}
+QPushButton:hover, QPushButton:focus {
+background-color: #2B66A6;
 }
 QPushButton:pressed {
-	background-color: #41B6E6;
-}
-QPushButton:hover:!pressed {
-	background-color: #008DCF;
+background-color: #215081;
 }
 QPushButton:disabled {
-	background-color: #D3D3D3;
+background-color: #82A9D3;
 }</string>
      </property>
      <property name="text">
-      <string notr="true">ALLKIRJASTA
-ID-KAARDIGA</string>
+      <string notr="true">Allkirjasta
+ID-Kaardiga</string>
      </property>
     </widget>
    </item>
@@ -98,17 +99,16 @@ ID-KAARDIGA</string>
      </property>
      <property name="styleSheet">
       <string notr="true">QToolButton {
-	border: solid #1a7dbc;
-	border-width: 0px 0px 0px 1px;
-	background-color: #006EB5;
+border: 0px solid #E7EAEF;
+border-width: 0px 0px 0px 1px;
+background-color: #2F70B6;
+}
+QToolButton:hover, QToolButton:focus {
+background-color: #2B66A6;
 }
 QToolButton:pressed {
-	background-color: #41B6E6;
-}
-QToolButton:hover:!pressed {
-	background-color: #008DCF;
-}
-</string>
+background-color: #215081;
+}</string>
      </property>
      <property name="icon">
       <iconset>

@@ -28,7 +28,6 @@
 #include "QSmartCard.h"
 #include "DigiDoc.h"
 #include "Settings.h"
-#include "Styles.h"
 #ifdef Q_OS_MAC
 #include "MacMenuBar.h"
 #else
@@ -57,7 +56,6 @@ class MacMenuBar {};
 #include <QtCore/QJsonObject>
 #include <QtCore/QProcess>
 #include <QtCore/QRegularExpression>
-#include <QtCore/QStandardPaths>
 #include <QtCore/QTimer>
 #include <QtCore/QTranslator>
 #include <QtCore/QUrl>
@@ -316,10 +314,6 @@ Application::Application( int &argc, char **argv )
 	setWindowIcon(QIcon(QStringLiteral(":/images/Icon.svg")));
 	if(QFile::exists(QStringLiteral("%1/%2.log").arg(QDir::tempPath(), applicationName())))
 		qInstallMessageHandler(msgHandler);
-	QPalette p = palette();
-	p.setBrush(QPalette::Link, QBrush("#2F70B6"));
-	p.setBrush(QPalette::LinkVisited, QBrush("#2F70B6"));
-	setPalette(p);
 
 #if defined(Q_OS_WIN)
 	AllowSetForegroundWindow( ASFW_ANY );
@@ -332,10 +326,6 @@ Application::Application( int &argc, char **argv )
 	setLibraryPaths({ applicationDirPath() + "/../PlugIns" });
 #endif
 #endif
-	setStyleSheet(QStringLiteral(
-		"QDialogButtonBox { dialogbuttonbox-buttons-have-icons: 0; }\n"));
-
-	QNetworkProxyFactory::setUseSystemConfiguration(true);
 
 	QStringList args = arguments();
 	args.removeFirst();
@@ -348,7 +338,18 @@ Application::Application( int &argc, char **argv )
 	connect(this, &Application::messageReceived, this, qOverload<const QString&>(&Application::parseArgs));
 #endif
 
+	QPalette p = palette();
+	p.setBrush(QPalette::Link, QBrush("#2F70B6"));
+	p.setBrush(QPalette::LinkVisited, QBrush("#2F70B6"));
+	setPalette(p);
+	setStyleSheet(QStringLiteral(
+		"QDialogButtonBox { dialogbuttonbox-buttons-have-icons: 0; }\n"));
+	QNetworkProxyFactory::setUseSystemConfiguration(true);
 	QFontDatabase::addApplicationFont(QStringLiteral(":/fonts/Roboto-Bold.ttf"));
+	QFontDatabase::addApplicationFont(QStringLiteral(":/fonts/Roboto-Regular.ttf"));
+	QFont f(QStringLiteral("Roboto, Helvetica"));
+	f.setPixelSize(14);
+	QToolTip::setFont(f);
 
 #ifdef CONFIG_URL
 	d->conf = new Configuration(this);
@@ -408,7 +409,6 @@ Application::Application( int &argc, char **argv )
 	qRegisterMetaType<TokenData>("TokenData");
 	qRegisterMetaType<QSmartCardData>("QSmartCardData");
 	qRegisterMetaType<QEventLoop*>("QEventLoop*");
-	QToolTip::setFont(Styles::font(Styles::Regular, 14));
 	QDesktopServices::setUrlHandler(QStringLiteral("browse"), this, "browse");
 	QDesktopServices::setUrlHandler(QStringLiteral("mailto"), this, "mailTo");
 	QAccessible::installFactory([](const QString &classname, QObject *object) -> QAccessibleInterface* {
@@ -894,9 +894,6 @@ void Application::showClient(QStringList files, bool crypto, bool sign, bool new
 			i = files.erase(i);
 	}
 
-	if(sign)
-		sign = files.size() != 1 || !CONTAINER_EXT.contains(QFileInfo(files.value(0)).suffix(), Qt::CaseInsensitive);
-
 	MainWindow *w = nullptr;
 	if(newWindow)
 		w = nullptr;
@@ -950,6 +947,8 @@ void Application::showClient(QStringList files, bool crypto, bool sign, bool new
 		return;
 	QMetaObject::invokeMethod(w, [&] {
 		using enum ria::qdigidoc4::Pages;
+		if(sign)
+			sign = files.size() != 1 || !CONTAINER_EXT.contains(QFileInfo(files.value(0)).suffix(), Qt::CaseInsensitive);
 		w->selectPage(crypto && !sign ? CryptoIntro : SignIntro);
 		w->openFiles(std::move(files), false, sign);
 	});
