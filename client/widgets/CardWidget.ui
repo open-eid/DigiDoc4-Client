@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="styleSheet">
-   <string notr="true">#CardWidget:hover {
+   <string notr="true">#CardWidget:hover, #CardWidget:focus {
 border: 0px solid #EAF1F8;
 border-radius: 8px;
 background-color: #EAF1F8;

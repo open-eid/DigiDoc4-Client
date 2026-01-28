@@ -248,7 +248,7 @@ color: #2F70B6;
 font-size: 12px;
 font-weight: 700;
 }
-QPushButton:hover {
+QPushButton:hover, QPushButton:focus {
 background-color: #EAF1F8;
 }
 QPushButton:pressed {
@@ -258,7 +258,7 @@ QPushButton:default {
 color: #ffffff;
 background-color: #2F70B6;
 }
-QPushButton:default:hover {
+QPushButton:default:hover, QPushButton:default:focus {
 background-color: #2B66A6;
 }
 QPushButton:default:pressed {
@@ -396,7 +396,7 @@ qproperty-layoutDirection: RightToLeft;
 QComboBox QPushButton#selected {
 qproperty-icon: url(:/images/arrow_up.svg);
 }
-QComboBox QPushButton:hover#selected {
+QComboBox QPushButton:hover#selected, QComboBox QPushButton:focus#selected {
 qproperty-icon: url(:/images/arrow_up_white.svg);
 }
 QComboBox::drop-down {
@@ -426,7 +426,7 @@ height: 16px;
 QCheckBox::indicator:unchecked {
 image: url(:/images/icon_checkbox.svg);
 }
-QCheckBox::indicator:unchecked:hover {
+QCheckBox::indicator:unchecked:hover, QCheckBox::indicator:unchecked:focus {
 image: url(:/images/icon_checkbox_active.svg);
 }
 QCheckBox::indicator:unchecked:disabled {
@@ -435,7 +435,7 @@ image: url(:/images/icon_checkbox_disabled.svg);
 QCheckBox::indicator:checked {
 image: url(:/images/icon_checkbox_check.svg);
 }
-QCheckBox::indicator:checked:hover {
+QCheckBox::indicator:checked:hover, QCheckBox::indicator:checked:focus {
 image: url(:/images/icon_checkbox_check_active.svg);
 }
 QCheckBox::indicator:checked:disabled {
@@ -444,7 +444,7 @@ image: url(:/images/icon_checkbox_check_disabled.svg);
 QRadioButton::indicator:unchecked {
 image: url(:/images/icon_radio.svg);
 }
-QRadioButton::indicator:unchecked:hover {
+QRadioButton::indicator:unchecked:hover, QRadioButton::indicator:unchecked:focus {
 image: url(:/images/icon_radio_active.svg);
 }
 QRadioButton::indicator:unchecked:disabled {
@@ -453,7 +453,7 @@ image: url(:/images/icon_radio_disabled.svg);
 QRadioButton::indicator:checked {
 image: url(:/images/icon_radio_check.svg);
 }
-QRadioButton::indicator:checked:hover {
+QRadioButton::indicator:checked:hover, QRadioButton::indicator:checked:focus {
 image: url(:/images/icon_radio_check_active.svg);
 }
 QRadioButton::indicator:checked:disabled {
@@ -467,7 +467,7 @@ color: #2F70B6;
 font-size: 12px;
 font-weight: 700;
 }
-QPushButton:hover {
+QPushButton:hover, QPushButton:focus {
 background-color: #EAF1F8;
 }
 QPushButton:pressed {

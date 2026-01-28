@@ -383,8 +383,8 @@ bool CryptoDoc::decrypt()
 	if(d->cdoc->version() == 2 && !key.transaction_id.isEmpty() && !Settings::CDOC2_NOTIFICATION.isSet())
 	{
 		auto *dlg = WarningDialog::create()
-			->withTitle(QSigner::tr("Failed to decrypt document"))
-			->withText(tr("You must enter your PIN code twice in order to decrypt the CDOC2 container. "
+			->withTitle(tr("You must enter your PIN code twice in order to decrypt the CDOC2 container"))
+			->withText(tr(
 				"The first PIN entry is required for authentication to the key server referenced in the CDOC2 container. "
 				"Second PIN entry is required to decrypt the CDOC2 container."))
 			->setCancelText(WarningDialog::Cancel)

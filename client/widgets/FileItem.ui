@@ -26,6 +26,18 @@
    <string notr="true">#FileItem { 
 border-bottom: 1px solid #E7EAEF;
 background-color: #ffffff;
+}
+#remove:hover, #remove:focus {
+icon: url(:/images/icon_remove_hover.svg);
+}
+#remove:pressed {
+icon: url(:/images/icon_remove_clicked.svg);
+}
+#download:hover, #download:focus {
+icon: url(:/images/icon_download_hover.svg);
+}
+#download:pressed {
+icon: url(:/images/icon_download_clicked.svg);
 }</string>
   </property>
   <layout class="QHBoxLayout" name="FileItemLayout">
@@ -62,7 +74,7 @@ text-align: left;</string>
     </widget>
    </item>
    <item>
-    <widget class="QToolButton" name="remove">
+    <widget class="QPushButton" name="remove">
      <property name="maximumSize">
       <size>
        <width>24</width>
@@ -91,7 +103,7 @@ text-align: left;</string>
     </widget>
    </item>
    <item>
-    <widget class="QToolButton" name="download">
+    <widget class="QPushButton" name="download">
      <property name="maximumSize">
       <size>
        <width>24</width>

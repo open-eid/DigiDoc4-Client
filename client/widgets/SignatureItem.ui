@@ -46,6 +46,12 @@ background-color: #FDF7EE;
 #status[label=&quot;good&quot;], #warning[label=&quot;good&quot;] {
 color: #1A641B;
 background-color: #EAF8EA;
+}
+#remove:hover, #remove:focus {
+icon: url(:/images/icon_remove_hover.svg);
+}
+#remove:pressed {
+icon: url(:/images/icon_remove_clicked.svg);
 }</string>
   </property>
   <layout class="QGridLayout" name="SignatureItemLayout">
@@ -119,7 +125,7 @@ background-color: #EAF8EA;
     </widget>
    </item>
    <item row="0" column="4" rowspan="3">
-    <widget class="QToolButton" name="remove">
+    <widget class="QPushButton" name="remove">
      <property name="maximumSize">
       <size>
        <width>24</width>
