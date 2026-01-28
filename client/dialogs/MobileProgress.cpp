@@ -125,6 +125,7 @@ background-color: #007aff;
 			return returnError(tr("Failed to connect with service server. Please check your network settings or try again later."));
 		case QNetworkReply::HostNotFoundError:
 		case QNetworkReply::AuthenticationRequiredError:
+		case QNetworkReply::InternalServerError:
 			return returnError(tr("Failed to send request. Check your %1 service access settings.").arg(tr("mobile-ID")));
 		default:
 		{
@@ -154,19 +155,19 @@ background-color: #007aff;
 		if(result.isEmpty())
 			return returnError(tr("Failed to parse JSON content"));
 
-		if(result.contains(QStringLiteral("error")))
+		if(result.contains(QLatin1String("error")))
 		{
-			QString error =result[QStringLiteral("error")].toString();
-			if(error == QStringLiteral("phoneNumber must contain of + and numbers(8-30)"))
+			QString error = result[QLatin1String("error")].toString();
+			if(error == QLatin1String("phoneNumber must contain of + and numbers(8-30)"))
 				returnError(tr("Please include correct country code."));
 			else
 				returnError(tr(error.toUtf8().constData()));
 			return;
 		}
-		if(result.contains(QStringLiteral("cert")))
+		if(result.contains(QLatin1String("cert")))
 		{
 			try {
-				QByteArray b64 = QByteArray::fromBase64(result.value(QStringLiteral("cert")).toString().toUtf8());
+				QByteArray b64 = QByteArray::fromBase64(result.value(QLatin1String("cert")).toString().toUtf8());
 				d->cert = X509Cert((const unsigned char*)b64.constData(), size_t(b64.size()), X509Cert::Der);
 				d->hide();
 				d->l.exit(QDialog::Accepted);
@@ -175,32 +176,32 @@ background-color: #007aff;
 			}
 			return;
 		}
-		if(result.contains(QStringLiteral("sessionID")))
-			d->sessionID = result.value(QStringLiteral("sessionID")).toString();
-		else if(result.value(QStringLiteral("state")).toString() != QStringLiteral("RUNNING"))
+		if(result.contains(QLatin1String("sessionID")))
+			d->sessionID = result.value(QLatin1String("sessionID")).toString();
+		else if(result.value(QLatin1String("state")).toString() != QLatin1String("RUNNING"))
 		{
-			QString endResult = result.value(QStringLiteral("result")).toString();
-			if(endResult == QStringLiteral("OK"))
+			QString endResult = result.value(QLatin1String("result")).toString();
+			if(endResult == QLatin1String("OK"))
 			{
 				QByteArray b64 = QByteArray::fromBase64(
-					result.value(QStringLiteral("signature")).toObject().value(QStringLiteral("value")).toString().toUtf8());
+					result.value(QLatin1String("signature")).toObject().value(QLatin1String("value")).toString().toUtf8());
 				d->signature.assign(b64.cbegin(), b64.cend());
 				d->hide();
 				d->l.exit(QDialog::Accepted);
 			}
-			else if(endResult == QStringLiteral("NOT_MID_CLIENT") || endResult == QStringLiteral("NOT_FOUND") || endResult == QStringLiteral("NOT_ACTIVE"))
+			else if(endResult == QLatin1String("NOT_MID_CLIENT") || endResult == QLatin1String("NOT_FOUND") || endResult == QLatin1String("NOT_ACTIVE"))
 				returnError(tr("User is not a mobile-ID client"));
-			else if(endResult == QStringLiteral("USER_CANCELLED"))
+			else if(endResult == QLatin1String("USER_CANCELLED"))
 				returnError(tr("User denied or cancelled"));
-			else if(endResult == QStringLiteral("TIMEOUT"))
+			else if(endResult == QLatin1String("TIMEOUT"))
 				returnError(tr("Your mobile-ID transaction has expired. Please try again."));
-			else if(endResult == QStringLiteral("PHONE_ABSENT"))
+			else if(endResult == QLatin1String("PHONE_ABSENT"))
 				returnError(tr("Phone is not in coverage area"));
-			else if(endResult == QStringLiteral("DELIVERY_ERROR"))
+			else if(endResult == QLatin1String("DELIVERY_ERROR"))
 				returnError(tr("Request sending error"));
-			else if(endResult == QStringLiteral("SIM_ERROR"))
+			else if(endResult == QLatin1String("SIM_ERROR"))
 				returnError(tr("SIM error"));
-			else if(endResult == QStringLiteral("SIGNATURE_HASH_MISMATCH"))
+			else if(endResult == QLatin1String("SIGNATURE_HASH_MISMATCH"))
 				returnError(tr("Your mobile-ID transaction has failed. Please contact your mobile network operator."));
 			else
 				returnError(tr("Service result:") + endResult);
@@ -227,8 +228,8 @@ bool MobileProgress::init(const QString &ssid, const QString &cell)
 	if(!d->UUID.isEmpty() && QUuid(d->UUID).isNull())
 	{
 		WarningDialog::create(d->parentWidget())
-			->withText(tr("Failed to send request. Check your %1 service access settings.").arg(tr("mobile-ID")))
 			->withTitle(QCoreApplication::translate("DigiDoc", "Failed to sign container"))
+			->withText(tr("Failed to send request. Check your %1 service access settings.").arg(tr("mobile-ID")))
 			->open();
 		return false;
 	}
