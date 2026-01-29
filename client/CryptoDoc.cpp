@@ -94,6 +94,7 @@ public:
 
 	inline libcdoc::result_t encrypt() {
 		libcdoc::result_t res = waitFor([&]{
+			qDebug() << "CryptoDoc::Private::encrypt, thread id: " << QThread::currentThreadId();
 			qCDebug(CRYPTO) << "Encrypt" << fileName;
 			libcdoc::OStreamConsumer ofs(fileName.toStdString());
 			if (ofs.isError())

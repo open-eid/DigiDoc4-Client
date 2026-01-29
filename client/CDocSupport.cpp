@@ -203,6 +203,7 @@ libcdoc::result_t DDNetworkBackend::sendKey(
 	libcdoc::NetworkBackend::CapsuleInfo &dst, const std::string &url,
 	const std::vector<uint8_t> &rcpt_key,
 	const std::vector<uint8_t> &key_material, const std::string &type, uint64_t expiry_ts) {
+	qDebug() << "sendKey, thread id: " << QThread::currentThreadId();
 	QNetworkRequest req(QString::fromStdString(url + "/key-capsules"));
 	req.setHeader(QNetworkRequest::ContentTypeHeader, QStringLiteral("application/json"));
 	if (expiry_ts) {
@@ -213,20 +214,27 @@ libcdoc::result_t DDNetworkBackend::sendKey(
 		return BACKEND_ERROR;
 	}
 	QScopedPointer<QNetworkAccessManager, QScopedPointerDeleteLater> nam(CheckConnection::setupNAM(req, Settings::CDOC2_POST_CERT));
-	QNetworkReply *reply = waitFor(qOverload<const QNetworkRequest &, const QByteArray &>(&QNetworkAccessManager::post), nam.get(), req, QJsonDocument({
+	QNetworkReply *reply = nam->post(req, QJsonDocument({
 		{QLatin1String("recipient_id"), QLatin1String(toByteArray(rcpt_key).toBase64())},
 		{QLatin1String("ephemeral_key_material"), QLatin1String(toByteArray(key_material).toBase64())},
 		{QLatin1String("capsule_type"), QLatin1String(type.c_str())},
 	}).toJson());
-	QString tr_id;
-	if (reply->error() == QNetworkReply::NoError &&
-		reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() == 201) {
-		tr_id = QString::fromLatin1(reply->rawHeader("Location"))
-					.remove(QLatin1String("/key-capsules/"));
-	} else {
+	QNetworkReply::NetworkError n_err = reply->error();
+	if (n_err != QNetworkReply::NoError) {
 		last_error = reply->errorString().toStdString();
 		return BACKEND_ERROR;
 	}
+	QByteArrayList lst = reply->rawHeaderList();
+	for (auto hdr : lst) {
+		qDebug() << QString::fromUtf8(hdr);
+	}
+	int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+	if (status != 201) {
+		last_error = reply->errorString().toStdString();
+		return BACKEND_ERROR;
+	}
+	QString tr_id;
+	tr_id = QString::fromLatin1(reply->rawHeader("Location")).remove(QLatin1String("/key-capsules/"));
 	if (tr_id.isEmpty()) {
 		last_error = "Failed to post key capsule";
 		return BACKEND_ERROR;
