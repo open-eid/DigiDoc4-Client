@@ -301,25 +301,8 @@ background-color: #BFD3E8;
         <property name="cursor">
          <cursorShape>PointingHandCursor</cursorShape>
         </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
         <property name="text">
          <string notr="true">Change with PUK code</string>
-        </property>
-        <property name="icon">
-         <iconset>
-          <normalon>:/images/icon_Abi.svg</normalon>
-         </iconset>
-        </property>
-        <property name="iconSize">
-         <size>
-          <width>14</width>
-          <height>14</height>
-         </size>
-        </property>
-        <property name="toolButtonStyle">
-         <enum>Qt::ToolButtonTextBesideIcon</enum>
         </property>
        </widget>
       </item>
@@ -328,25 +311,8 @@ background-color: #BFD3E8;
         <property name="cursor">
          <cursorShape>PointingHandCursor</cursorShape>
         </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
         <property name="text">
          <string>Check the details of the certificate</string>
-        </property>
-        <property name="icon">
-         <iconset>
-          <normalon>:/images/icon_Abi.svg</normalon>
-         </iconset>
-        </property>
-        <property name="iconSize">
-         <size>
-          <width>14</width>
-          <height>14</height>
-         </size>
-        </property>
-        <property name="toolButtonStyle">
-         <enum>Qt::ToolButtonTextBesideIcon</enum>
         </property>
        </widget>
       </item>
@@ -355,25 +321,8 @@ background-color: #BFD3E8;
         <property name="cursor">
          <cursorShape>PointingHandCursor</cursorShape>
         </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
         <property name="text">
          <string>Check certificate status</string>
-        </property>
-        <property name="icon">
-         <iconset>
-          <normalon>:/images/icon_Abi.svg</normalon>
-         </iconset>
-        </property>
-        <property name="iconSize">
-         <size>
-          <width>14</width>
-          <height>14</height>
-         </size>
-        </property>
-        <property name="toolButtonStyle">
-         <enum>Qt::ToolButtonTextBesideIcon</enum>
         </property>
        </widget>
       </item>
