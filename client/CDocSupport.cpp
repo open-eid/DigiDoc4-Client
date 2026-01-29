@@ -203,7 +203,6 @@ libcdoc::result_t DDNetworkBackend::sendKey(
 	libcdoc::NetworkBackend::CapsuleInfo &dst, const std::string &url,
 	const std::vector<uint8_t> &rcpt_key,
 	const std::vector<uint8_t> &key_material, const std::string &type, uint64_t expiry_ts) {
-	qDebug() << "sendKey, thread id: " << QThread::currentThreadId();
 	QNetworkRequest req(QString::fromStdString(url + "/key-capsules"));
 	req.setHeader(QNetworkRequest::ContentTypeHeader, QStringLiteral("application/json"));
 	if (expiry_ts) {
@@ -219,14 +218,13 @@ libcdoc::result_t DDNetworkBackend::sendKey(
 		{QLatin1String("ephemeral_key_material"), QLatin1String(toByteArray(key_material).toBase64())},
 		{QLatin1String("capsule_type"), QLatin1String(type.c_str())},
 	}).toJson());
+	QEventLoop e;
+	connect(reply, &QNetworkReply::finished, &e, &QEventLoop::quit);
+	e.exec();
 	QNetworkReply::NetworkError n_err = reply->error();
 	if (n_err != QNetworkReply::NoError) {
 		last_error = reply->errorString().toStdString();
 		return BACKEND_ERROR;
-	}
-	QByteArrayList lst = reply->rawHeaderList();
-	for (auto hdr : lst) {
-		qDebug() << QString::fromUtf8(hdr);
 	}
 	int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 	if (status != 201) {
