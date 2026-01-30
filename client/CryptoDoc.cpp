@@ -50,8 +50,7 @@ using namespace ria::qdigidoc4;
 Q_LOGGING_CATEGORY(CRYPTO, "CRYPTO")
 
 auto toHex = [](const std::vector<uint8_t>& data) -> QString {
-	QByteArray ba(reinterpret_cast<const char *>(data.data()), data.size());
-	return ba.toHex();
+	return QByteArray::fromRawData(reinterpret_cast<const char *>(data.data()), data.size()).toHex();
 };
 
 struct CryptoDoc::Private
@@ -507,13 +506,8 @@ bool CryptoDoc::open(const QString &file)
 	d->writer_last_error.clear();
 	clear(file);
 	d->reader = d->createCDocReader(file.toStdString());
-	if (!d->reader) {
-		WarningDialog::create()
-			->withTitle(tr("Failed to open document"))
-			->withDetails(tr("Cannot rerad file or file is not a CDoc container"))
-			->open();
+	if (!d->reader)
 		return false;
-	}
 	std::vector<libcdoc::FileInfo> files = CDocSupport::getCDocFileList(file);
 	for (auto& f : files) {
 		d->files.push_back({f.name, {}, f.size, {}});

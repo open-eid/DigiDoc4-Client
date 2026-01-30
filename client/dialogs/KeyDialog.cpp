@@ -29,6 +29,7 @@ KeyDialog::KeyDialog(const CDKey &k, QWidget *parent )
 {
 	Ui::KeyDialog d;
 	d.setupUi(this);
+	d.showCert->hide();
 #if defined (Q_OS_WIN)
 	d.buttonLayout->setDirection(QBoxLayout::RightToLeft);
 #endif
@@ -37,21 +38,6 @@ KeyDialog::KeyDialog(const CDKey &k, QWidget *parent )
 	new Overlay(this);
 
 	connect(d.close, &QPushButton::clicked, this, &KeyDialog::accept);
-	if (!k.rcpt_cert.isNull()) {
-		connect(d.showCert, &QPushButton::clicked, this, [this, cert = k.rcpt_cert] {
-					CertificateDetails::showCertificate(cert, this);
-		});
-		d.showCert->setHidden(false);
-	} else if (k.lock.isCertificate()) {
-		std::vector<uint8_t> cert = k.lock.getBytes(libcdoc::Lock::Params::CERT);
-		QSslCertificate kcert(QByteArray(reinterpret_cast<const char *>(cert.data()), cert.size()), QSsl::Der);
-		connect(d.showCert, &QPushButton::clicked, this, [this, c = kcert] {
-			CertificateDetails::showCertificate(c, this);
-		});
-		d.showCert->setHidden(kcert.isNull());
-	} else {
-		d.showCert->setHidden(true);
-	}
 
 	auto addItem = [view = d.view](const QString &parameter, const QString &value) {
 		if(value.isEmpty())
@@ -63,16 +49,24 @@ KeyDialog::KeyDialog(const CDKey &k, QWidget *parent )
 	};
 
 	addItem(tr("Recipient"), QString::fromStdString(k.lock.label));
-	if (k.lock.isCertificate()) {
-		std::vector<uint8_t> cert = k.lock.getBytes(libcdoc::Lock::Params::CERT);
-		QSslCertificate kcert(QByteArray(reinterpret_cast<const char *>(cert.data()), cert.size()), QSsl::Der);
+	QSslCertificate cert;
+	if (!k.rcpt_cert.isNull()) {
+		cert = k.rcpt_cert;
+	} else if (k.lock.isCertificate()) {
+		std::vector<uint8_t> certData = k.lock.getBytes(libcdoc::Lock::Params::CERT);
+		cert = QSslCertificate(QByteArray::fromRawData(reinterpret_cast<const char *>(certData.data()), certData.size()), QSsl::Der);
+	}
+	if (!cert.isNull()) {
+		connect(d.showCert, &QPushButton::clicked, this, [this, cert] {
+			CertificateDetails::showCertificate(cert, this);
+		});
+		d.showCert->show();
 		if (k.lock.isCDoc1()) {
 			std::string cdigest = k.lock.getString(libcdoc::Lock::Params::CONCAT_DIGEST);
 			addItem(tr("ConcatKDF digest method"), QString::fromStdString(cdigest));
 		}
-		addItem(tr("Expiry date"), kcert.expiryDate().toLocalTime().toString(QStringLiteral("dd.MM.yyyy hh:mm:ss")));
-		auto iss = kcert.issuerInfo(QSslCertificate::CommonName);
-		addItem(tr("Issuer"), iss.join(" "));
+		addItem(tr("Expiry date"), cert.expiryDate().toLocalTime().toString(QStringLiteral("dd.MM.yyyy hh:mm:ss")));
+		addItem(tr("Issuer"), cert.issuerInfo(QSslCertificate::CommonName).join(" "));
 		d.view->resizeColumnToContents(0);
 	} else if (k.lock.type == libcdoc::Lock::SERVER) {
 		addItem(tr("Key server ID"), QString::fromUtf8(k.lock.getString(libcdoc::Lock::Params::KEYSERVER_ID)));
