@@ -453,7 +453,7 @@ bool CryptoDoc::decrypt(const libcdoc::Lock *lock, const QByteArray& secret)
 		WarningDialog::create()
 			->withTitle(QSigner::tr("Failed to decrypt document"))
 			->withText(tr("Please check your internet connection and network settings."))
-			->withDetails(QString::fromStdString(d->reader->getLastErrorStr()))
+			->withDetails(QString::fromStdString(msg))
 			->open();
 		return false;
 	}
