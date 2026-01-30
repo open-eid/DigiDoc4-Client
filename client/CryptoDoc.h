@@ -23,6 +23,7 @@
 #include "DocumentModel.h"
 
 #include <QtCore/QIODevice>
+#include <QtCore/QLoggingCategory>
 #include <QtNetwork/QSslCertificate>
 
 #include <cdoc/CDoc.h>
@@ -31,6 +32,8 @@
 #include <cdoc/Recipient.h>
 
 class QSslKey;
+
+Q_DECLARE_LOGGING_CATEGORY(CRYPTO)
 
 //
 // A wrapper structure for UI that contains either:

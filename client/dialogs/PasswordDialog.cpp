@@ -1,6 +1,7 @@
 #include "PasswordDialog.h"
-#include "Crypto.h"
 #include "ui_PasswordDialog.h"
+
+#include <QRandomGenerator>
 
 PasswordDialog::PasswordDialog(QWidget *parent)
 	: QDialog(parent), mode(Mode::DECRYPT), type(Type::PASSWORD)
@@ -72,7 +73,13 @@ PasswordDialog::editChanged()
 void
 PasswordDialog::genKeyClicked()
 {
-	QByteArray key = Crypto::random();
+	QByteArray key(32, 0);
+	auto *g = QRandomGenerator::system();
+	for (int i = 0; i < key.size(); i += 4) {
+		const quint32 r = g->generate();
+		const int n = qMin(4, key.size() - i);
+		memcpy(key.data() + i, &r, n);
+	}
 	ui->keyEdit->clear();
 	ui->keyEdit->appendPlainText(key.toHex());
 }

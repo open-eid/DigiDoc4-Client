@@ -20,13 +20,11 @@
 #include "CryptoDoc.h"
 
 #include "Application.h"
-#include "Crypto.h"
 #include "CDocSupport.h"
 #include "TokenData.h"
 #include "QCryptoBackend.h"
 #include "QSigner.h"
 #include "Settings.h"
-#include "SslCertificate.h"
 #include "Utils.h"
 #include "dialogs/FileDialog.h"
 #include "dialogs/WarningDialog.h"
@@ -48,6 +46,8 @@
 #include <cdoc/Crypto.h>
 
 using namespace ria::qdigidoc4;
+
+Q_LOGGING_CATEGORY(CRYPTO, "CRYPTO")
 
 auto toHex = [](const std::vector<uint8_t>& data) -> QString {
 	QByteArray ba(reinterpret_cast<const char *>(data.data()), data.size());
@@ -75,11 +75,11 @@ public:
 		libcdoc::result_t result = waitFor([&]{
 			std::vector<uint8_t> fmk;
 			libcdoc::result_t result = reader->getFMK(fmk, lock_idx);
-			qDebug() << "getFMK result: " << result << " " << QString::fromStdString(reader->getLastErrorStr());
+			qCDebug(CRYPTO) << "getFMK result: " << result << " " << QString::fromStdString(reader->getLastErrorStr());
 			if (result != libcdoc::OK) return result;
 			result = reader->decrypt(fmk, &cons);
 			std::fill(fmk.begin(), fmk.end(), 0);
-			qDebug() << "Decryption result: " << result << " " << QString::fromStdString(reader->getLastErrorStr());
+			qCDebug(CRYPTO) << "Decryption result: " << result << " " << QString::fromStdString(reader->getLastErrorStr());
 			return result;
 		});
 		if (result == libcdoc::OK) {
@@ -94,7 +94,7 @@ public:
 
 	inline libcdoc::result_t encrypt() {
 		libcdoc::result_t res = waitFor([&]{
-			qDebug() << "CryptoDoc::Private::encrypt, thread id: " << QThread::currentThreadId();
+			qCDebug(CRYPTO) << "CryptoDoc::Private::encrypt, thread id: " << QThread::currentThreadId();
 			qCDebug(CRYPTO) << "Encrypt" << fileName;
 			libcdoc::OStreamConsumer ofs(fileName.toStdString());
 			if (ofs.isError())
@@ -218,7 +218,8 @@ bool CDocumentModel::addFile(const QString &file, const QString &mime)
 	}
 
 	auto data = std::make_unique<QFile>(file);
-	data->open(QFile::ReadOnly);
+	if(!data->open(QFile::ReadOnly))
+		return false;
 	d->files.push_back({
 		QFileInfo(file).fileName().toStdString(),
 		mime.toStdString(),

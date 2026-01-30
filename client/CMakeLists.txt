@@ -44,8 +44,6 @@ add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
 	Application.h
 	CheckConnection.cpp
 	CheckConnection.h
-	Crypto.cpp
-	Crypto.h
 	CryptoDoc.cpp
 	CryptoDoc.h
 	DateTime.cpp
