@@ -28,6 +28,7 @@
 #include "dialogs/PinPopup.h"
 
 #include <QtCore/QDebug>
+#include <QtCore/QtEndian>
 
 #include <cdoc/utils/memory.h>
 

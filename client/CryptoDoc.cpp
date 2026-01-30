@@ -29,11 +29,9 @@
 #include "dialogs/FileDialog.h"
 #include "dialogs/WarningDialog.h"
 
-#include <QtCore/QDebug>
 #include <QtCore/QDir>
 #include <QtCore/QFileInfo>
 #include <QtCore/QRegularExpression>
-#include <QtCore/QtEndian>
 #include <QtCore/QThread>
 #include <QtCore/QUrl>
 #include <QtCore/QUrlQuery>
@@ -114,7 +112,7 @@ struct CryptoDoc::Private
 				writer_last_error = writer->getLastErrorStr();
 				std::filesystem::remove(std::filesystem::path(fileName.toStdString()));
 			}
-			qDebug() << "Encryption result: " << result << " " << QString::fromStdString(writer->getLastErrorStr());
+			qCDebug(CRYPTO) << "Encryption result: " << result << " " << QString::fromStdString(writer->getLastErrorStr());
 			delete writer;
 			ofs.close();
 			if (result == libcdoc::OK) {
@@ -332,9 +330,8 @@ bool CryptoDoc::canDecrypt(const QSslCertificate &cert) {
 	if (!d->reader)
 		return false;
 	QByteArray der = cert.toDer();
-	libcdoc::Lock lock;
 	return d->reader->getLockForCert(
-			   std::vector<uint8_t>(der.cbegin(), der.cend())) >= 0;
+		std::vector<uint8_t>(der.cbegin(), der.cend())) >= 0;
 }
 
 void CryptoDoc::clear( const QString &file )
@@ -456,21 +453,20 @@ bool CryptoDoc::encrypt( const QString &filename, const QString& label, const QB
 	}
 	// I think the correct semantics is to fail if container is already encrypted
 	if(d->reader) return false;
-	if (secret.isEmpty()) {
-		// Encrypt for address list
-		if(d->keys.empty())
-		{
-			WarningDialog::create()
-				->withTitle(tr("Failed to encrypt document"))
-				->withText(tr("No keys specified"))
-				->open();
-			return false;
-		}
-	} else {
+	if (!secret.isEmpty()) {
 		// Encrypt with symmetric key
 		d->label = label;
 		d->crypto.secret.assign(secret.cbegin(), secret.cend());
 		d->kdf_iter = kdf_iter;
+	}
+	// Encrypt for address list
+	else if(d->keys.empty())
+	{
+		WarningDialog::create()
+			->withTitle(tr("Failed to encrypt document"))
+			->withText(tr("No keys specified"))
+			->open();
+		return false;
 	}
 	libcdoc::result_t result = d->encrypt();
 	d->label.clear();

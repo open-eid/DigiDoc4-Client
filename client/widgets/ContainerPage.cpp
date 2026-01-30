@@ -332,7 +332,7 @@ void ContainerPage::transition(CryptoDoc *container, const QSslCertificate &cert
 	if (hasUnsupported)
 		emit warning({UnsupportedCDocWarning});
 	ui->leftPane->setModel(container->documentModel());
-	updatePanes(container->state(), nullptr);
+	updatePanes(container->state(), container);
 }
 
 void ContainerPage::transition(DigiDoc* container)
