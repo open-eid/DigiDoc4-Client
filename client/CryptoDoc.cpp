@@ -33,6 +33,7 @@
 #include <QtCore/QDir>
 #include <QtCore/QFileInfo>
 #include <QtCore/QRegularExpression>
+#include <QtCore/QtEndian>
 #include <QtCore/QThread>
 #include <QtCore/QUrl>
 #include <QtCore/QUrlQuery>
@@ -148,7 +149,7 @@ struct CryptoDoc::Private
 		return files;
 	}
 	std::unique_ptr<libcdoc::CDocReader> createCDocReader(const std::string& filename) {
-		libcdoc::CDocReader *r = libcdoc::CDocReader::createReader(filename, &conf, &crypto, &network);
+		std::unique_ptr<libcdoc::CDocReader> r(libcdoc::CDocReader::createReader(filename, &conf, &crypto, &network));
 		if (!r) {
 			WarningDialog::create()
 				->withTitle(CryptoDoc::tr("Failed to open document"))
@@ -160,7 +161,7 @@ struct CryptoDoc::Private
 		for (auto& key : r->getLocks()) {
 			keys.push_back({key, QSslCertificate()});
 		}
-		return std::unique_ptr<libcdoc::CDocReader>(r);
+		return r;
 	}
 };
 
