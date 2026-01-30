@@ -152,7 +152,7 @@ QWidget* AddressItem::lastTabWidget()
 }
 
 void AddressItem::mouseReleaseEvent(QMouseEvent * /*event*/) {
-	if (!ui->key.rcpt_cert.isNull())
+	if (!ui->key.rcpt_cert.isNull() || ui->key.lock.isCertificate())
 		(new KeyDialog(ui->key, this))->open();
 }
 
