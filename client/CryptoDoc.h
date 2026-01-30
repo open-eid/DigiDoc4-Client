@@ -71,7 +71,7 @@ public:
 	ria::qdigidoc4::ContainerState state() const;
 
 private:
-	class Private;
+	struct Private;
 	Private *d;
 
 	friend class CDocumentModel;

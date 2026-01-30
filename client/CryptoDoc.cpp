@@ -54,22 +54,9 @@ auto toHex = [](const std::vector<uint8_t>& data) -> QString {
 	return ba.toHex();
 };
 
-class CryptoDoc::Private final: public QThread
+struct CryptoDoc::Private
 {
-	Q_OBJECT
-public:
-	static unsigned int getCDocVersion() {
-		return (Settings::CDOC2_DEFAULT) ? 2 : 1;
-	}
 	bool isEncryptedWarning(const QString &title) const;
-	void run() final;
-	inline void waitForFinished()
-	{
-		QEventLoop e;
-		connect(this, &Private::finished, &e, &QEventLoop::quit);
-		start();
-		e.exec();
-	}
 	inline libcdoc::result_t decrypt(unsigned int lock_idx) {
 		TempListConsumer cons;
 		libcdoc::result_t result = waitFor([&]{
@@ -165,8 +152,8 @@ public:
 		libcdoc::CDocReader *r = libcdoc::CDocReader::createReader(filename, &conf, &crypto, &network);
 		if (!r) {
 			WarningDialog::create()
-				->withTitle(tr("Failed to open document"))
-				->withText(tr("Unsupported file format"))
+				->withTitle(CryptoDoc::tr("Failed to open document"))
+				->withText(CryptoDoc::tr("Unsupported file format"))
 				->open();
 			return nullptr;
 		}
@@ -187,15 +174,6 @@ bool CryptoDoc::Private::isEncryptedWarning(const QString &title) const
 	return fileName.isEmpty() || isEncrypted();
 }
 
-void CryptoDoc::Private::run()
-{
-	if (encrypt() == libcdoc::OK) {
-		// Encryption successful, open new reader
-		reader = createCDocReader(fileName.toStdString());
-		if (!reader) return;
-	}
-}
-
 CDocumentModel::CDocumentModel(CryptoDoc::Private *doc) : d(doc) {}
 
 bool CDocumentModel::addFile(const QString &file, const QString &mime)
@@ -207,7 +185,7 @@ bool CDocumentModel::addFile(const QString &file, const QString &mime)
 	if(!addFileCheck(d->fileName, info))
 		return false;
 
-	if(d->getCDocVersion() == 1 && info.size() > 120*1024*1024)
+	if(d->fileName.last(3) == QLatin1String("cdoc") && info.size() > 120*1024*1024)
 	{
 		WarningDialog::create()
 			->withTitle(DocumentModel::tr("Failed to add file"))
@@ -564,5 +542,3 @@ bool CryptoDoc::saveCopy(const QString &filename)
 		QFile::remove(filename);
 	return QFile::copy(d->fileName, filename);
 }
-
-#include "CryptoDoc.moc"
