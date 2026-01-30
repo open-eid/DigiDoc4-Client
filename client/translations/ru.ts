@@ -102,6 +102,10 @@
         <translation>Добавлен</translation>
     </message>
     <message>
+        <source>Decrypt</source>
+        <translation>Расшифровать</translation>
+    </message>
+    <message>
         <source>Add</source>
         <translation>Добавить</translation>
     </message>

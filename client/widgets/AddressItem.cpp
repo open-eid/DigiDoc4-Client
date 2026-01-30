@@ -72,13 +72,14 @@ AddressItem::AddressItem(const CDKey &key, Type type, QWidget *parent)
 		} else {
 			ui->label = QString::fromStdString(ui->key.lock.label);
 		}
-		if (map.contains("x-expiry-time")) {
-			ui->expireDate = QDateTime::fromSecsSinceEpoch(QString::fromStdString(map["x-expiry-time"]).toLongLong());
+		if (map.contains("server_exp")) {
+			ui->expireDate = QDateTime::fromSecsSinceEpoch(QString::fromStdString(map["server_exp"]).toLongLong());
 		}
 		if (ui->key.lock.isSymmetric()) {
 			ui->decrypt->show();
-			connect(ui->decrypt, &QToolButton::clicked, this,
-					[this] { emit decrypt(&ui->key.lock); });
+			connect(ui->decrypt, &QToolButton::clicked, this, [this] {
+				emit decrypt(&ui->key.lock);
+			});
 		} else {
 			ui->decrypt->hide();
 		}

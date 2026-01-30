@@ -102,6 +102,10 @@
         <translation>Lisatud</translation>
     </message>
     <message>
+        <source>Decrypt</source>
+        <translation>Dekrüpteeri</translation>
+    </message>
+    <message>
         <source>Add</source>
         <translation>Lisa</translation>
     </message>
