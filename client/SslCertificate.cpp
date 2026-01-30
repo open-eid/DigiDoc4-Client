@@ -78,7 +78,7 @@ static QByteArray i2dDer(Arg arg)
 	QByteArray der;
 	if(!arg)
 		return der;
-	der.resize(Func(arg, nullptr), 0);
+	der.resize(Func(arg, nullptr));
 	if(auto *p = (unsigned char*)der.data(); der.isEmpty() || Func(arg, &p) != der.size())
 		der.clear();
 	return der;
