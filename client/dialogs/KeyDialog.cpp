@@ -49,6 +49,17 @@ KeyDialog::KeyDialog(const CDKey &k, QWidget *parent )
 	};
 
 	addItem(tr("Recipient"), QString::fromStdString(k.lock.label));
+	addItem(tr("Lock type"), [type = k.lock.type] {
+		switch(type) {
+		case libcdoc::Lock::SYMMETRIC_KEY: return QStringLiteral("SYMMETRIC_KEY");
+		case libcdoc::Lock::PASSWORD: return QStringLiteral("PASSWORD");
+		case libcdoc::Lock::PUBLIC_KEY: return QStringLiteral("PUBLIC_KEY");
+		case libcdoc::Lock::CDOC1: return QStringLiteral("CDOC1");
+		case libcdoc::Lock::SERVER: return QStringLiteral("SERVER");
+		case libcdoc::Lock::SHARE_SERVER: return QStringLiteral("SHARE_SERVER");
+		default: return QStringLiteral("INVALID");
+		}
+	}());
 	QSslCertificate cert;
 	if (!k.rcpt_cert.isNull()) {
 		cert = k.rcpt_cert;
