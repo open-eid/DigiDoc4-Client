@@ -374,7 +374,7 @@ void ContainerPage::transition(DigiDoc* container)
 	disconnect(ui->save, &QPushButton::clicked, container, nullptr);
 	connect(ui->save, &QPushButton::clicked, container, [container, this] {
 		if(container->save())
-			updatePanes(container->state());
+			updatePanes(container->state(), nullptr);
 	});
 	disconnect(ui->saveAs, &QPushButton::clicked, container, nullptr);
 	connect(ui->saveAs, &QPushButton::clicked, container, [container, this] {
