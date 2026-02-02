@@ -33,7 +33,7 @@ public:
 
 	void hideDropdown();
 	void setButtonEnabled(bool enabled);
-	void showActions(const QList<ria::qdigidoc4::Actions> &actions);
+	void showActions(QList<ria::qdigidoc4::Actions> actions);
 
 signals:
 	void action(ria::qdigidoc4::Actions action);

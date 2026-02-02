@@ -36,7 +36,6 @@ add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
 	${PROJECT_NAME}.rc
 	${WIDGETS}
 	images/images.qrc
-	fonts/fonts.qrc
 	mac/Info.plist.cmake
 	common_enums.h
 	main.cpp
@@ -82,8 +81,6 @@ add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
 	Settings.h
 	SslCertificate.cpp
 	SslCertificate.h
-	Styles.cpp
-	Styles.h
 	TokenData.cpp
 	TokenData.h
 	Utils.h
@@ -103,6 +100,10 @@ qt_add_translations(${PROJECT_NAME} TS_FILES
 	LUPDATE_OPTIONS -locations none
 )
 qt_add_resources(${PROJECT_NAME} tsl BASE ${TSL_DIR} PREFIX /TSL FILES ${TSL_LIST})
+qt_add_resources(${PROJECT_NAME} fonts BASE fonts PREFIX /fonts FILES
+	fonts/Roboto-Bold.ttf
+	fonts/Roboto-Regular.ttf
+)
 
 target_link_libraries(${PROJECT_NAME}
 	qdigidoccommon

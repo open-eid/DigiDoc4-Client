@@ -16,7 +16,7 @@ jobs:
     steps:
     - &Checkout
       name: Checkout
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
       with:
         submodules: recursive
     - name: Download artifact
@@ -36,7 +36,7 @@ jobs:
         sudo installer -verboseR -pkg opensc_*.pkg -target /
         rm -rf libdigidocpp-pkg
     - name: Cache libraries
-      uses: actions/cache@v4
+      uses: actions/cache@v5
       with:
         path: ${{ env.LIBS_PATH }}
         key: vcpkg-macOS-${{ hashFiles('prepare_osx_build_environment.sh') }}
@@ -60,7 +60,7 @@ jobs:
         cmake --build build --target macdeployqt
         cmake --build build --target zip
     - name: Archive artifacts
-      uses: actions/upload-artifact@v5
+      uses: actions/upload-artifact@v6
       with:
         name: macOS
         path: build/qdigidoc4*.zip
@@ -70,7 +70,7 @@ jobs:
     container: ubuntu:${{ matrix.container }}
     strategy:
       matrix:
-        container: ['22.04', '24.04', '25.04', '25.10']
+        container: ['22.04', '24.04', '25.10']
         arch: ['amd64', 'arm64']
     env:
       DEBIAN_FRONTEND: noninteractive
@@ -106,7 +106,7 @@ jobs:
     - name: Lintian
       run: lintian *.deb;
     - name: Archive artifacts
-      uses: actions/upload-artifact@v5
+      uses: actions/upload-artifact@v6
       with:
         name: ubuntu_${{ matrix.container }}_${{ matrix.arch }}
         path: qdigidoc4*.*
@@ -134,7 +134,7 @@ jobs:
         cmake -DCMAKE_INSTALL_PREFIX=/usr -B build -S .
         cmake --build build --target all package
     - name: Archive artifacts
-      uses: actions/upload-artifact@v5
+      uses: actions/upload-artifact@v6
       with:
         name: fedora_${{ matrix.container }}
         path: build/qdigidoc4*.rpm
@@ -161,7 +161,7 @@ jobs:
         Rename-Item "libdigidocpp*.msi" libdigidocpp.msi
         msiexec /qn /i libdigidocpp.msi
     - name: Cache vcpkg
-      uses: actions/cache@v4
+      uses: actions/cache@v5
       with:
         path: ${{ github.workspace }}/vcpkg_cache
         key: vcpkg-${{ matrix.vcver }}-${{ hashFiles('vcpkg.json') }}
@@ -195,7 +195,7 @@ jobs:
         cmake --build build --target msishellext
         cmake --build build --target appx
     - name: Archive artifacts
-      uses: actions/upload-artifact@v5
+      uses: actions/upload-artifact@v6
       with:
         name: msi_${{ matrix.vcver }}_x64
         path: |

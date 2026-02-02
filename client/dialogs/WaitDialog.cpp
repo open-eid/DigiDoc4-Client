@@ -17,35 +17,44 @@
  *
  */
 
-
 #include "WaitDialog.h"
-#include "WaitDialog_p.h"
 #include "ui_WaitDialog.h"
 
-#include "Application.h"
-#include "Styles.h"
 #include "effects/Overlay.h"
+
+#include <QTimer>
+
+class WaitDialog : public QDialog
+{
+	Q_OBJECT
+
+public:
+	explicit WaitDialog(QWidget *parent = nullptr);
+
+	void setText(const QString &text);
+
+	static WaitDialog* create(QWidget *parent);
+	static void destroy();
+	static WaitDialog* instance();
+
+	static WaitDialog *waitDialog;
+	Ui::WaitDialog ui;
+	QTimer timer;
+};
 
 WaitDialog* WaitDialog::waitDialog = nullptr;
 
 WaitDialog::WaitDialog(QWidget *parent)
 	: QDialog(parent)
-	, ui(new Ui::WaitDialog)
 {
 	new Overlay(this);
 	setWindowFlags(Qt::Dialog|Qt::FramelessWindowHint);
-	ui->setupUi(this);
-	ui->movie->load(QStringLiteral(":/images/wait.svg"));
-	ui->label->setFont(Styles::font(Styles::Condensed, 24));
-	ui->label->setFocusPolicy(Qt::TabFocus);
+	ui.setupUi(this);
+	ui.movie->load(QStringLiteral(":/images/wait.svg"));
+	ui.label->setFocusPolicy(Qt::TabFocus);
 	move(parent->geometry().center() - geometry().center());
 	timer.setSingleShot(true);
 	connect(&timer, &QTimer::timeout, this, &WaitDialog::show);
-}
-
-WaitDialog::~WaitDialog()
-{
-	delete ui;
 }
 
 WaitDialog* WaitDialog::create(QWidget *parent)
@@ -68,7 +77,7 @@ WaitDialog* WaitDialog::instance()
 
 void WaitDialog::setText(const QString &text)
 {
-	ui->label->setText(text);
+	ui.label->setText(text);
 }
 
 
@@ -104,3 +113,5 @@ WaitDialogHider::~WaitDialogHider()
 	if(WaitDialog *d = WaitDialog::instance())
 		d->show();
 }
+
+#include "WaitDialog.moc"

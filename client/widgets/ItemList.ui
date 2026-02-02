@@ -45,7 +45,7 @@ background-color: #ffffff;
 #header {
 border-bottom: 1px solid #E7EAEF;
 }
-#add {
+#items &gt; #add {
 font-family: Roboto, Helvetica;
 margin-top: 32px;
 padding: 10px 12px;
@@ -56,17 +56,23 @@ border: none;
 color: #2F70B6;
 border: 1px solid #2F70B6;
 }
-#add:hover, #add:focus {
+#items &gt; #add:hover, #items &gt; #add:focus {
 background-color: #EAF1F8;
-border-color: #EAF1F8;
+border-color: #2F70B6;
 }
-#add:pressed {
+#items &gt; #add:pressed {
 background-color: #BFD3E8;
-border-color: #BFD3E8;
+border-color: #2F70B6;
 }
 #listHeader {
 color: #003168;
 font-size: 22px;
+}
+#download:hover, #download:focus {
+icon: url(:/images/icon_download_hover.svg);
+}
+#download:pressed {
+icon: url(:/images/icon_download_clicked.svg);
 }</string>
   </property>
   <property name="frameShape">
@@ -206,7 +212,7 @@ font-size: 22px;
           </widget>
          </item>
          <item>
-          <widget class="QToolButton" name="download">
+          <widget class="QPushButton" name="download">
            <property name="maximumSize">
             <size>
              <width>24</width>
@@ -216,11 +222,11 @@ font-size: 22px;
            <property name="cursor">
             <cursorShape>PointingHandCursor</cursorShape>
            </property>
-           <property name="styleSheet">
-            <string notr="true">border: none;</string>
-           </property>
-           <property name="text">
+           <property name="accessibleName">
             <string>Download all files</string>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">border: none</string>
            </property>
            <property name="icon">
             <iconset resource="../images/images.qrc">

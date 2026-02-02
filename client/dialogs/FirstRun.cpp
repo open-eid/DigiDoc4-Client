@@ -21,7 +21,6 @@
 #include "ui_FirstRun.h"
 
 #include "Settings.h"
-#include "Styles.h"
 
 #include <QKeyEvent>
 #include <QPixmap>
@@ -40,19 +39,7 @@ FirstRun::FirstRun(QWidget *parent)
 	if(parent)
 		move(parent->geometry().center() - geometry().center());
 
-	auto buttonFont = Styles::font(Styles::Condensed, 14);
-	auto dmLabelFont = Styles::font(Styles::Regular, 18);
-	auto regular12 = Styles::font(Styles::Regular, 12);
-	auto regular14 = Styles::font(Styles::Regular, 14);
-	auto titleFont = Styles::font(Styles::Regular, 20, QFont::DemiBold);
-
 	//	Page 1: language
-	ui->title->setFont(Styles::font(Styles::Regular, 20, QFont::Bold));
-	ui->welcome->setFont(titleFont);
-	ui->intro->setFont(regular14);
-	ui->langLabel->setFont(regular12);
-
-	ui->lang->setFont(regular14);
 	ui->lang->addItem(QStringLiteral("Eesti keel"));
 	ui->lang->addItem(QStringLiteral("English"));
 	ui->lang->addItem(QString::fromUtf8("Русский язык")); //QStringLiteral breaks windows text
@@ -74,63 +61,19 @@ FirstRun::FirstRun(QWidget *parent)
 		ui->retranslateUi(this);
 		loadImages();
 	});
-	ui->continueBtn->setFont(buttonFont);
 
 	ui->coatOfArms->load(QStringLiteral(":/images/Logo_Suur.svg"));
 	ui->leaves->load(QStringLiteral(":/images/vapilehed.svg"));
 	ui->structureFunds->load(QStringLiteral(":/images/Struktuurifondid.svg"));
-
-	// Page 2: intro
-	ui->introTitle->setFont(titleFont);
-	ui->introLabelSign->setFont(dmLabelFont);
-	ui->introLabelCrypto->setFont(dmLabelFont);
-	ui->introLabelEid->setFont(dmLabelFont);
-	ui->introIntroSign->setFont(regular14);
-	ui->introIntroCrypto->setFont(regular14);
-	ui->introIntroEid->setFont(regular14);
-	ui->introSkip->setFont(regular12);
-	ui->introViewSigning->setFont(buttonFont);
-	ui->introViewEncryption->setFont(buttonFont);
-	ui->introViewEid->setFont(buttonFont);
 	ui->signWidget->load(QStringLiteral(":/images/icon_Allkiri_hover.svg"));
 	ui->cryptoWidget->load(QStringLiteral(":/images/icon_Krypto_hover.svg"));
 	ui->eidWidget->load(QStringLiteral(":/images/icon_Minu_eID_hover.svg"));
-
-	// Page 3: Signing
-	ui->signTitle->setFont(titleFont);
-	ui->signLabel1->setFont(dmLabelFont);
-	ui->signLabel2->setFont(dmLabelFont);
-	ui->signLabel3->setFont(dmLabelFont);
-	ui->signText1->setFont(regular14);
-	ui->signText2->setFont(regular14);
-	ui->signText3->setFont(regular14);
-	ui->signSkip->setFont(regular12);
-	ui->signNext->setFont(buttonFont);
 	ui->signOne->load(QStringLiteral(":/images/intro_one.svg"));
 	ui->signTwo->load(QStringLiteral(":/images/intro_two.svg"));
 	ui->signThree->load(QStringLiteral(":/images/intro_three.svg"));
-
-	// Page 4: Crypto
-	ui->cryptoTitle->setFont(titleFont);
-	ui->cryptoLabel1->setFont(dmLabelFont);
-	ui->cryptoLabel2->setFont(dmLabelFont);
-	ui->cryptoLabel3->setFont(dmLabelFont);
-	ui->cryptoText1->setFont(regular14);
-	ui->cryptoText2->setFont(regular14);
-	ui->cryptoText3->setFont(regular14);
-	ui->cryptoSkip->setFont(regular12);
-	ui->cryptoNext->setFont(buttonFont);
 	ui->cryptoOne->load(QStringLiteral(":/images/intro_one.svg"));
 	ui->cryptoTwo->load(QStringLiteral(":/images/intro_two.svg"));
 	ui->cryptoThree->load(QStringLiteral(":/images/intro_three.svg"));
-
-	// Page 5: My eID
-	ui->eidTitle->setFont(titleFont);
-	ui->eidLabel1->setFont(dmLabelFont);
-	ui->eidLabel3->setFont(dmLabelFont);
-	ui->eidText1->setFont(regular14);
-	ui->eidText3->setFont(regular14);
-	ui->eidEnter->setFont(buttonFont);
 
 	connect(ui->buttonGroup, QOverload<QAbstractButton*>::of(&QButtonGroup::buttonClicked), this, [this](QAbstractButton *b){
 		if(b == ui->continueBtn)

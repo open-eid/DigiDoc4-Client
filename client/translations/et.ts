@@ -577,6 +577,14 @@
         <translation>Võtme lisamine ebaõnnestus</translation>
     </message>
     <message>
+        <source>You must enter your PIN code twice in order to decrypt the CDOC2 container</source>
+        <translation>CDOC2 ümbriku dekrüpteerimiseks tuleb sisestada PIN-koodi kaks korda</translation>
+    </message>
+    <message>
+        <source>The first PIN entry is required for authentication to the key server referenced in the CDOC2 container. Second PIN entry is required to decrypt the CDOC2 container.</source>
+        <translation>Esimene PIN-koodi sisestamine on vajalik autentimiseks CDOC2 ümbrikus viidatud võtmeedastusserverisse. Teine PIN-koodi sisestamine on vajalik CDOC2 ümbriku dekrüpteerimiseks.</translation>
+    </message>
+    <message>
         <source>Please check your internet connection and network settings.</source>
         <translation>Palun kontrolli internetiühendust ja võrgu sätteid.</translation>
     </message>
@@ -595,10 +603,6 @@
     <message>
         <source>An error occurred while opening the document</source>
         <translation>Ümbriku avamisel tekkis viga</translation>
-    </message>
-    <message>
-        <source>You must enter your PIN code twice in order to decrypt the CDOC2 container. The first PIN entry is required for authentication to the key server referenced in the CDOC2 container. Second PIN entry is required to decrypt the CDOC2 container.</source>
-        <translation>CDOC2 ümbriku dekrüpteerimiseks tuleb sisestada PIN-koodi kaks korda. Esimene PIN-koodi sisestamine on vajalik autentimiseks CDOC2 ümbrikus viidatud võtmeedastusserverisse. Teine PIN-koodi sisestamine on vajalik CDOC2 ümbriku dekrüpteerimiseks.</translation>
     </message>
     <message>
         <source>Don&apos;t show again</source>
@@ -827,7 +831,7 @@
     <name>DocumentModel</name>
     <message>
         <source>Cannot add container to same container</source>
-        <translation>Ümbriku lisamine samasse ümbrikusse ebaõnnestus1</translation>
+        <translation>Ümbriku lisamine samasse ümbrikusse ebaõnnestus</translation>
     </message>
     <message>
         <source>File is already in container</source>
@@ -952,24 +956,8 @@
         <translation>DigiDoc on loodud Eesti eID-de haldamiseks ja on ametlik rakendus dokumentide digitaalseks allkirjastamiseks ja krüpteerimiseks.</translation>
     </message>
     <message>
-        <source>CONTINUE</source>
-        <translation>JÄTKA</translation>
-    </message>
-    <message>
-        <source>VIEW NEXT INTRO</source>
-        <translation>VAATA JÄRGMIST TUTVUSTUST</translation>
-    </message>
-    <message>
         <source>Skip introductions</source>
         <translation>Jäta tutvustused vahele →</translation>
-    </message>
-    <message>
-        <source>VIEW INTRODUCTION</source>
-        <translation>VAATA TUTVUSTUST</translation>
-    </message>
-    <message>
-        <source>ENTER THE APPLICATION</source>
-        <translation>SISENE RAKENDUSSE</translation>
     </message>
     <message>
         <source>The DigiDoc application allows you to:</source>
@@ -1069,22 +1057,18 @@
     </message>
     <message>
         <source>Continue</source>
-        <extracomment>accessible</extracomment>
         <translation>Edasi</translation>
     </message>
     <message>
         <source>View introduction</source>
-        <extracomment>accessible</extracomment>
         <translation>Vaata tutvustust</translation>
     </message>
     <message>
         <source>View next intro</source>
-        <extracomment>accessible</extracomment>
         <translation>Vaata järgmist tutvustust</translation>
     </message>
     <message>
         <source>Enter the application</source>
-        <extracomment>accessible</extracomment>
         <translation>Sisene rakendusse</translation>
     </message>
     <message>

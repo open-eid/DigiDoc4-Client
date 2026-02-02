@@ -67,7 +67,6 @@ ContainerPage::ContainerPage(QWidget *parent)
 		emit action(Actions::ContainerCancel);
 	});
 	connectCode(ui->convert, Actions::ContainerConvert);
-	connectCode(ui->save, Actions::ContainerSave);
 	connect(ui->leftPane, &FileList::addFiles, this, &ContainerPage::addFiles);
 	connect(ui->leftPane, &ItemList::addItem, this, [this](int code) { emit action(code); });
 	connect(ui->rightPane, &ItemList::addItem, this, [this](int code) { emit action(code); });
@@ -371,6 +370,11 @@ void ContainerPage::transition(DigiDoc* container)
 		QString to = FileDialog::getSaveFileName(this, FileDialog::tr("Move file"), container->fileName());
 		if(!to.isNull() && container->move(to))
 			setHeader(to);
+	});
+	disconnect(ui->save, &QPushButton::clicked, container, nullptr);
+	connect(ui->save, &QPushButton::clicked, container, [container, this] {
+		if(container->save())
+			updatePanes(container->state());
 	});
 	disconnect(ui->saveAs, &QPushButton::clicked, container, nullptr);
 	connect(ui->saveAs, &QPushButton::clicked, container, [container, this] {

@@ -72,9 +72,11 @@ QPushButton {
 padding: 9px 12px;
 border-radius: 4px;
 color: #2F70B6;
+font-family: Roboto, Helvetica;
+font-size: 14px;
 font-weight: 700;
 }
-QPushButton:hover {
+QPushButton:hover, QPushButton:focus {
 background-color: #EAF1F8;
 }
 QPushButton:pressed {
@@ -175,14 +177,14 @@ background-color: #BFD3E8;
      </property>
      <property name="styleSheet">
       <string notr="true">QPushButton {
-padding: 9px 12px;
+padding: 10px 12px;
 border-radius: 4px;
 color: #2F70B6;
 font-family: Roboto, Helvetica;
 font-size: 12px;
 font-weight: 700;
 }
-QPushButton:hover {
+QPushButton:hover, QPushButton:focus {
 background-color: #EAF1F8;
 }
 QPushButton:pressed {
@@ -191,7 +193,7 @@ background-color: #BFD3E8;
 QPushButton:default {
 color: #AD2A45;
 }
-QPushButton:default:hover {
+QPushButton:default:hover, QPushButton:default:focus {
 background-color: #F5EBED;
 }
 QPushButton:default:pressed {

@@ -577,6 +577,14 @@
         <translation>Не удалось добавить ключ</translation>
     </message>
     <message>
+        <source>You must enter your PIN code twice in order to decrypt the CDOC2 container</source>
+        <translation>PIN-код необходимо ввести дважды, чтобы расшифровать конверт CDOC2</translation>
+    </message>
+    <message>
+        <source>The first PIN entry is required for authentication to the key server referenced in the CDOC2 container. Second PIN entry is required to decrypt the CDOC2 container.</source>
+        <translation>Первый ввод PIN-кода требуется для аутентификации на сервере передачи ключей, указанном в конверте CDOC2. Для расшифровки конверта CDOC2 требуется второй ввод PIN-кода.</translation>
+    </message>
+    <message>
         <source>Please check your internet connection and network settings.</source>
         <translation>Пожалуйста, проверьте подключение к Интернету и настройки сети.</translation>
     </message>
@@ -595,10 +603,6 @@
     <message>
         <source>An error occurred while opening the document</source>
         <translation>Во время открытия конверта возникла ошибка</translation>
-    </message>
-    <message>
-        <source>You must enter your PIN code twice in order to decrypt the CDOC2 container. The first PIN entry is required for authentication to the key server referenced in the CDOC2 container. Second PIN entry is required to decrypt the CDOC2 container.</source>
-        <translation>PIN-код необходимо ввести дважды, чтобы расшифровать конверт CDOC2. Первый ввод PIN-кода требуется для аутентификации на сервере передачи ключей, указанном в конверте CDOC2. Для расшифровки конверта CDOC2 требуется второй ввод PIN-кода.</translation>
     </message>
     <message>
         <source>Don&apos;t show again</source>
@@ -952,24 +956,8 @@
         <translation>DigiDoc создан для управления эстонскими eID и является официальным приложением для цифровой подписи и шифрования.</translation>
     </message>
     <message>
-        <source>CONTINUE</source>
-        <translation>ПРОДОЛЖИТЬ</translation>
-    </message>
-    <message>
-        <source>VIEW NEXT INTRO</source>
-        <translation>ПОСМОТРЕТЬ СЛЕДУЮЩИЙ</translation>
-    </message>
-    <message>
         <source>Skip introductions</source>
         <translation>Пропустить введение →</translation>
-    </message>
-    <message>
-        <source>VIEW INTRODUCTION</source>
-        <translation>ПОСМОТРЕТЬ ВВЕДЕНИЕ</translation>
-    </message>
-    <message>
-        <source>ENTER THE APPLICATION</source>
-        <translation>ВОЙТИ В ПРОГРАММУ</translation>
     </message>
     <message>
         <source>The DigiDoc application allows you to:</source>
@@ -1069,22 +1057,18 @@
     </message>
     <message>
         <source>Continue</source>
-        <extracomment>accessible</extracomment>
         <translation>Продолжить</translation>
     </message>
     <message>
         <source>View introduction</source>
-        <extracomment>accessible</extracomment>
         <translation>Посмотреть введение</translation>
     </message>
     <message>
         <source>View next intro</source>
-        <extracomment>accessible</extracomment>
         <translation>Посмотреть следующий</translation>
     </message>
     <message>
         <source>Enter the application</source>
-        <extracomment>accessible</extracomment>
         <translation>Войти в программу</translation>
     </message>
     <message>
