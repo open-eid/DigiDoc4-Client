@@ -132,7 +132,7 @@ public:
 	bool move(const QString &to);
 	bool open( const QString &file );
 	void removeSignature( unsigned int num );
-	bool save(const QString &filename = {});
+	bool save(QString filename = {});
 	bool saveAs(const QString &filename);
 	bool sign(const QString &city,
 		const QString &state,

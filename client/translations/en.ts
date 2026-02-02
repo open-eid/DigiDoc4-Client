@@ -573,6 +573,14 @@
         <translation>Failed to add key</translation>
     </message>
     <message>
+        <source>You must enter your PIN code twice in order to decrypt the CDOC2 container</source>
+        <translation>You must enter your PIN code twice in order to decrypt the CDOC2 container</translation>
+    </message>
+    <message>
+        <source>The first PIN entry is required for authentication to the key server referenced in the CDOC2 container. Second PIN entry is required to decrypt the CDOC2 container.</source>
+        <translation>The first PIN entry is required for authentication to the key server referenced in the CDOC2 container. Second PIN entry is required to decrypt the CDOC2 container.</translation>
+    </message>
+    <message>
         <source>Please check your internet connection and network settings.</source>
         <translation>Please check your internet connection and network settings.</translation>
     </message>
@@ -591,10 +599,6 @@
     <message>
         <source>An error occurred while opening the document</source>
         <translation>An error occurred while opening the document</translation>
-    </message>
-    <message>
-        <source>You must enter your PIN code twice in order to decrypt the CDOC2 container. The first PIN entry is required for authentication to the key server referenced in the CDOC2 container. Second PIN entry is required to decrypt the CDOC2 container.</source>
-        <translation>You must enter your PIN code twice in order to decrypt the CDOC2 container. The first PIN entry is required for authentication to the key server referenced in the CDOC2 container. Second PIN entry is required to decrypt the CDOC2 container.</translation>
     </message>
     <message>
         <source>Don&apos;t show again</source>
@@ -948,24 +952,8 @@
         <translation>DigiDoc is created for managing Estonian eIDs and is the official digital signing and encryption application.</translation>
     </message>
     <message>
-        <source>CONTINUE</source>
-        <translation>CONTINUE</translation>
-    </message>
-    <message>
-        <source>VIEW NEXT INTRO</source>
-        <translation>VIEW NEXT INTRO</translation>
-    </message>
-    <message>
         <source>Skip introductions</source>
         <translation>Skip introductions →</translation>
-    </message>
-    <message>
-        <source>VIEW INTRODUCTION</source>
-        <translation>VIEW INTRODUCTION</translation>
-    </message>
-    <message>
-        <source>ENTER THE APPLICATION</source>
-        <translation>ENTER THE APPLICATION</translation>
     </message>
     <message>
         <source>The DigiDoc application allows you to:</source>
@@ -1065,22 +1053,18 @@
     </message>
     <message>
         <source>Continue</source>
-        <extracomment>accessible</extracomment>
         <translation>Continue</translation>
     </message>
     <message>
         <source>View introduction</source>
-        <extracomment>accessible</extracomment>
         <translation>View introduction</translation>
     </message>
     <message>
         <source>View next intro</source>
-        <extracomment>accessible</extracomment>
         <translation>View next intro</translation>
     </message>
     <message>
         <source>Enter the application</source>
-        <extracomment>accessible</extracomment>
         <translation>Enter the application</translation>
     </message>
     <message>

@@ -46,7 +46,7 @@ border: 1px solid #AD2A45;
 color: #AD2A45;
 font-weight: 700;
 }
-QPushButton:hover {
+QPushButton:hover, QPushButton:focus {
 background-color: #F5EBED;
 }
 QPushButton:pressed {
@@ -57,7 +57,7 @@ color: #ffffff;
 border-color: #2F70B6;
 background-color: #2F70B6;
 }
-QPushButton:default:hover {
+QPushButton:default:hover, QPushButton:default:focus {
 border-color: #2B66A6;
 background-color: #2B66A6;
 }
@@ -227,6 +227,9 @@ background-color: #82A9D3;
        </property>
        <property name="text">
         <string>Cancel</string>
+       </property>
+       <property name="autoDefault">
+        <bool>false</bool>
        </property>
       </widget>
      </item>

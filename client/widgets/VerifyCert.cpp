@@ -31,7 +31,7 @@ VerifyCert::VerifyCert(QWidget *parent)
 {
 	ui->setupUi( this );
 
-	connect(ui->changePIN, &QPushButton::clicked, this, [this] {
+	connect(ui->changePIN, &QToolButton::clicked, this, [this] {
 		if(cardData.retryCount(pinType) == 0 && cardData.pinLocked(pinType))
 			emit changePinClicked(QSmartCard::ActivateWithPuk);
 		else if(cardData.retryCount(pinType) == 0)
@@ -41,14 +41,14 @@ VerifyCert::VerifyCert(QWidget *parent)
 		else
 			emit changePinClicked(QSmartCard::ChangeWithPin);
 	});
-	connect(ui->forgotPinLink, &QPushButton::clicked, this, [this] {
+	connect(ui->forgotPinLink, &QToolButton::clicked, this, [this] {
 		emit changePinClicked(cardData.pinLocked(pinType) ? QSmartCard::ActivateWithPuk : QSmartCard::ChangeWithPuk);
 	});
-	connect(ui->details, &QPushButton::clicked, this, [this] {
+	connect(ui->details, &QToolButton::clicked, this, [this] {
 		CertificateDetails::showCertificate(c, this,
 			pinType == QSmartCardData::Pin1Type ? QStringLiteral("-auth") : QStringLiteral("-sign"));
 	});
-	connect(ui->checkCert, &QPushButton::clicked, this, [this]{
+	connect(ui->checkCert, &QToolButton::clicked, this, [this]{
 		auto *dlg = WarningDialog::create(this);
 		QString readMore = tr("Read more <a href=\"https://www.id.ee/en/article/validity-of-id-card-certificates/\">here</a>.");
 		switch(c.validateOnline())
@@ -227,7 +227,9 @@ void VerifyCert::update()
 	}
 
 	ui->info->setHidden(ui->info->text().isEmpty());
-	ui->changePIN->setDefault(isBlockedPin);
+	style()->unpolish(ui->changePIN);
+	ui->changePIN->setProperty("active", isBlockedPin);
+	style()->polish(ui->changePIN);
 	ui->nameIcon->setHidden(icon.isEmpty());
 	if(!icon.isEmpty())
 		ui->nameIcon->load(icon);

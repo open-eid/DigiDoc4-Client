@@ -513,7 +513,7 @@ background-color: #2F70B6;
 font-size: 12px;
 font-weight: 700;
 }
-QPushButton:hover {
+QPushButton:hover, QPushButton:focus {
 background-color: #2B66A6;
 }
 QPushButton:pressed {

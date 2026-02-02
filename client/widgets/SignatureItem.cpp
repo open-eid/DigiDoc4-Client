@@ -51,7 +51,7 @@ SignatureItem::SignatureItem(DigiDocSignature s, QWidget *parent)
 	ui->idSignTime->installEventFilter(this);
 	ui->role->installEventFilter(this);
 	ui->remove->setVisible(ui->signature.container()->isSupported());
-	connect(ui->remove, &QToolButton::clicked, this, [this]{
+	connect(ui->remove, &QPushButton::clicked, this, [this]{
 		const SslCertificate c = ui->signature.cert();
 		auto *dlg = WarningDialog::create(this)
 			->withTitle(tr("Remove signature"))
