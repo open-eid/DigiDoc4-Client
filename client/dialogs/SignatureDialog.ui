@@ -9,21 +9,25 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1013</width>
-    <height>600</height>
+    <width>1090</width>
+    <height>816</height>
    </rect>
   </property>
   <property name="styleSheet">
-   <string notr="true">#SignatureDialog {
-background-color: #ffffff;
+   <string notr="true">QWidget {
+font-family: Roboto, Helvetica;
+font-size: 14px;
+color: #07142A;
+}
+#SignatureDialog {
+background-color: #FFFFFF;
+border-radius: 4px;
 }
 #lblSignerHeader, #lblSignatureHeader {
-font-family: Roboto, Helvetica;
 font-size: 22px;
-color: #003168
+color: #003168;
 }
 #status, #warning, #lblNotice {
-font-family: Roboto, Helvetica;
 font-size: 12px;
 color: #091A36;
 padding: 2px 10px;
@@ -67,28 +71,11 @@ background-color: #EAF8EA;
    </property>
    <item row="0" column="0">
     <widget class="QWidget" name="leftPane" native="true">
-     <property name="minimumSize">
-      <size>
-       <width>505</width>
-       <height>0</height>
-      </size>
-     </property>
      <property name="styleSheet">
       <string notr="true">#leftPane {
 border-right: 1px solid #E7EAEF;
 }
-#info, #error {
-font-family: Roboto, Helvetica;
-font-size: 14px;
-color: #07142A;
-}
-#lblSigningCity, #lblSigningCounty, #lblSigningState, #lblSigningZip, #lblRole {
-font-family: Roboto, Helvetica;
-font-size: 14px;
-color: #07142A;
-}
 #signerCity, #signerCountry, #signerState, #signerZip, #signerRoles {
-font-family: Roboto, Helvetica;
 font-size: 16px;
 color: #607496;
 border: 1px solid #C4CBD8;
@@ -96,7 +83,9 @@ border-radius: 4px;
 background-color: #F3F5F7;
 padding: 10px 14px;
 }
-</string>
+#showErrors, #showRole {
+border-right: none; /*Workaround for right padding*/
+}</string>
      </property>
      <layout class="QVBoxLayout" name="leftPaneLayout" stretch="0,0,0,0,1,0,0,0">
       <property name="spacing">
@@ -112,10 +101,16 @@ padding: 10px 14px;
        <number>24</number>
       </property>
       <property name="bottomMargin">
-       <number>32</number>
+       <number>24</number>
       </property>
       <item>
        <widget class="QLabel" name="lblSignerHeader">
+        <property name="minimumSize">
+         <size>
+          <width>506</width>
+          <height>0</height>
+         </size>
+        </property>
         <property name="focusPolicy">
          <enum>Qt::TabFocus</enum>
         </property>
@@ -161,6 +156,12 @@ padding: 10px 14px;
       </item>
       <item>
        <widget class="AccordionTitle" name="showErrors">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>40</height>
+         </size>
+        </property>
         <property name="cursor">
          <cursorShape>PointingHandCursor</cursorShape>
         </property>
@@ -207,6 +208,12 @@ background: none;
       </item>
       <item>
        <widget class="AccordionTitle" name="showRole">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>40</height>
+         </size>
+        </property>
         <property name="cursor">
          <cursorShape>PointingHandCursor</cursorShape>
         </property>
@@ -237,12 +244,12 @@ background: none;
           <number>0</number>
          </property>
          <item>
-          <layout class="QVBoxLayout" name="layoutRole">
+          <layout class="QVBoxLayout" name="signerRolesLayout">
            <property name="spacing">
             <number>6</number>
            </property>
            <item>
-            <widget class="QLabel" name="lblRole">
+            <widget class="QLabel" name="labelRoles">
              <property name="text">
               <string>Role / resolution</string>
              </property>
@@ -270,12 +277,12 @@ background: none;
           </layout>
          </item>
          <item>
-          <layout class="QVBoxLayout" name="layoutCity">
+          <layout class="QVBoxLayout" name="signerCityLayout">
            <property name="spacing">
             <number>6</number>
            </property>
            <item>
-            <widget class="QLabel" name="lblSigningCity">
+            <widget class="QLabel" name="labelCity">
              <property name="text">
               <string>City</string>
              </property>
@@ -294,12 +301,12 @@ background: none;
           </layout>
          </item>
          <item>
-          <layout class="QVBoxLayout" name="layoutState">
+          <layout class="QVBoxLayout" name="signerStateLayout">
            <property name="spacing">
             <number>6</number>
            </property>
            <item>
-            <widget class="QLabel" name="lblSigningState">
+            <widget class="QLabel" name="labelState">
              <property name="text">
               <string>State</string>
              </property>
@@ -318,12 +325,12 @@ background: none;
           </layout>
          </item>
          <item>
-          <layout class="QVBoxLayout" name="layoutCountry">
+          <layout class="QVBoxLayout" name="signerCountryLayout">
            <property name="spacing">
             <number>6</number>
            </property>
            <item>
-            <widget class="QLabel" name="lblSigningCountry">
+            <widget class="QLabel" name="labelCountry">
              <property name="text">
               <string>Country</string>
              </property>
@@ -342,12 +349,12 @@ background: none;
           </layout>
          </item>
          <item>
-          <layout class="QVBoxLayout" name="layoutZip">
+          <layout class="QVBoxLayout" name="signerZipLayout">
            <property name="spacing">
             <number>6</number>
            </property>
            <item>
-            <widget class="QLabel" name="lblSigningZip">
+            <widget class="QLabel" name="labelZip">
              <property name="text">
               <string>Zip</string>
              </property>
@@ -357,6 +364,9 @@ background: none;
             <widget class="QLabel" name="signerZip">
              <property name="textFormat">
               <enum>Qt::PlainText</enum>
+             </property>
+             <property name="wordWrap">
+              <bool>true</bool>
              </property>
              <property name="textInteractionFlags">
               <set>Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
@@ -399,10 +409,16 @@ background: none;
       <number>24</number>
      </property>
      <property name="bottomMargin">
-      <number>32</number>
+      <number>24</number>
      </property>
      <item>
       <widget class="QLabel" name="lblSignatureHeader">
+       <property name="minimumSize">
+        <size>
+         <width>488</width>
+         <height>0</height>
+        </size>
+       </property>
        <property name="focusPolicy">
         <enum>Qt::TabFocus</enum>
        </property>
@@ -416,20 +432,11 @@ background: none;
      </item>
      <item>
       <widget class="QTreeWidget" name="signatureView">
-       <property name="minimumSize">
-        <size>
-         <width>460</width>
-         <height>450</height>
-        </size>
-       </property>
        <property name="styleSheet">
         <string notr="true">QLabel {
-font-family: Roboto, Helvetica;
 font-size: 12px;
-color: #07142A;
 }
 QPushButton {
-font-family: Roboto, Helvetica;
 font-size: 12px;
 text-align: left;
 text-decoration: underline;
@@ -437,10 +444,9 @@ color: #2F70B6;
 border: none;
 }
 QHeaderView::section {
-font-family: Roboto, Helvetica;
-font-size: 14px;
-border: none;
-border-bottom: 1px solid #E7EAEF;
+border: 1px solid #E7EAEF;
+border-width: 0px 0px 1px 0px;
+padding: 0px 0px 8px 5px;
 background-color: #FFFFFF;
 }</string>
        </property>
@@ -457,7 +463,10 @@ background-color: #FFFFFF;
         <enum>QAbstractItemView::SelectRows</enum>
        </property>
        <property name="indentation">
-        <number>0</number>
+        <number>5</number>
+       </property>
+       <property name="rootIsDecorated">
+        <bool>false</bool>
        </property>
        <property name="columnCount">
         <number>2</number>
@@ -496,17 +505,11 @@ border-top: 1px solid #E7EAEF;
 background-color: #F3F5F7;
 }
 #title {
-font-family: Roboto, Helvetica;
-color: #07142A;
-font-size: 14px;
 font-weight: 700;
-}
-#navigationArea {
-border-top: 1px solid #E7EAEF;
-background-color: #F3F5F7;
 }
 QPushButton {
 padding: 10px 12px;
+border: 1px solid #2F70B6;
 border-radius: 4px;
 color: #ffffff;
 background-color: #2F70B6;
@@ -514,9 +517,11 @@ font-size: 12px;
 font-weight: 700;
 }
 QPushButton:hover, QPushButton:focus {
+border-color: #2B66A6;
 background-color: #2B66A6;
 }
 QPushButton:pressed {
+border-color: #215081;
 background-color: #215081;
 }</string>
      </property>
@@ -604,6 +609,9 @@ background-color: #215081;
         </property>
         <property name="text">
          <string>Close</string>
+        </property>
+        <property name="default">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
