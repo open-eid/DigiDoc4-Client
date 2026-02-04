@@ -171,11 +171,12 @@ X509Cert QSigner::cert() const
 	return X509Cert((const unsigned char*)der.constData(), size_t(der.size()), X509Cert::Der);
 }
 
-QByteArray QSigner::decrypt(std::function<QByteArray (QCryptoBackend *)> &&func)
+QByteArray QSigner::decrypt(std::function<QByteArray (QCryptoBackend *)> &&func, QCryptoBackend::PinStatus& pin_status)
 {
 	if(!d->lock.tryLockForWrite(10 * 1000))
 	{
 		Q_EMIT error(tr("Failed to decrypt document"), tr("Signing/decrypting is already in progress another window."));
+		pin_status = QCryptoBackend::GeneralError;
 		return {};
 	}
 
@@ -183,24 +184,27 @@ QByteArray QSigner::decrypt(std::function<QByteArray (QCryptoBackend *)> &&func)
 	{
 		Q_EMIT error(tr("Failed to decrypt document"), tr("Authentication certificate is not selected."));
 		d->lock.unlock();
+		pin_status = QCryptoBackend::GeneralError;
 		return {};
 	}
 
-	switch(auto status = QCryptoBackend::PinStatus(login(d->auth)))
+	switch(pin_status = QCryptoBackend::PinStatus(login(d->auth)))
 	{
 	case QCryptoBackend::PinOK: break;
 	case QCryptoBackend::PinCanceled: return {};
 	case QCryptoBackend::PinLocked:
-		Q_EMIT error(tr("Failed to decrypt document"), QCryptoBackend::errorString(status));
+		Q_EMIT error(tr("Failed to decrypt document"), QCryptoBackend::errorString(pin_status));
 		return {};
 	default:
-		Q_EMIT error(tr("Failed to decrypt document"), tr("Failed to login token") + ' ' + QCryptoBackend::errorString(status));
+		Q_EMIT error(tr("Failed to decrypt document"), tr("Failed to login token") + ' ' + QCryptoBackend::errorString(pin_status));
 		return {};
 	}
 	QByteArray result = waitFor(func, d->backend);
 	logout();
-	if(d->backend->lastError() == QCryptoBackend::PinCanceled)
+	if(d->backend->lastError() == QCryptoBackend::PinCanceled) {
+		pin_status = QCryptoBackend::PinCanceled;
 		return {};
+	}
 
 	if(result.isEmpty())
 		Q_EMIT error(tr("Failed to decrypt document"), {});

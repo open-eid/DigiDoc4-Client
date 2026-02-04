@@ -94,14 +94,32 @@ CDocSupport::getCDocFileList(QString filename)
 	return files;
 }
 
+static libcdoc::result_t
+getDecryptStatus(const std::vector<uint8_t>& result, QCryptoBackend::PinStatus pin_status)
+{
+	switch (pin_status) {
+	case QCryptoBackend::PinOK:
+		return (result.empty()) ? DDCryptoBackend::BACKEND_ERROR : libcdoc::OK;
+	case QCryptoBackend::PinCanceled:
+		return DDCryptoBackend::PIN_CANCELED;
+	case QCryptoBackend::PinIncorrect:
+		return DDCryptoBackend::PIN_INCORRECT;
+	case QCryptoBackend::PinLocked:
+		return DDCryptoBackend::PIN_LOCKED;
+	default:
+		return DDCryptoBackend::BACKEND_ERROR;
+	}
+}
+
 libcdoc::result_t
 DDCryptoBackend::decryptRSA(std::vector<uint8_t>& result, const std::vector<uint8_t> &data, bool oaep, unsigned int idx)
 {
+	QCryptoBackend::PinStatus pin_status;
 	QByteArray qkek = qApp->signer()->decrypt([qdata = toByteArray(data), &oaep](QCryptoBackend *backend) {
 		return backend->decrypt(qdata, oaep);
-	});
+	}, pin_status);
 	result.assign(qkek.cbegin(), qkek.cend());
-	return (result.empty()) ? BACKEND_ERROR : libcdoc::OK;
+	return getDecryptStatus(result, pin_status);
 }
 
 constexpr std::string_view SHA256_MTH {"http://www.w3.org/2001/04/xmlenc#sha256"};
@@ -115,22 +133,24 @@ libcdoc::result_t
 DDCryptoBackend::deriveConcatKDF(std::vector<uint8_t>& dst, const std::vector<uint8_t> &publicKey, const std::string &digest,
 								 const std::vector<uint8_t> &algorithmID, const std::vector<uint8_t> &partyUInfo, const std::vector<uint8_t> &partyVInfo, unsigned int idx)
 {
+	QCryptoBackend::PinStatus pin_status;
 	QByteArray decryptedKey = qApp->signer()->decrypt([&publicKey, &digest, &algorithmID, &partyUInfo, &partyVInfo](QCryptoBackend *backend) {
 		return backend->deriveConcatKDF(toByteArray(publicKey), SHA_MTH[digest],
 			toByteArray(algorithmID), toByteArray(partyUInfo), toByteArray(partyVInfo));
-	});
+	}, pin_status);
 	dst.assign(decryptedKey.cbegin(), decryptedKey.cend());
-	return (dst.empty()) ? BACKEND_ERROR : libcdoc::OK;
+	return getDecryptStatus(dst, pin_status);
 }
 
 libcdoc::result_t
 DDCryptoBackend::deriveHMACExtract(std::vector<uint8_t>& dst, const std::vector<uint8_t> &key_material, const std::vector<uint8_t> &salt, unsigned int idx)
 {
+	QCryptoBackend::PinStatus pin_status;
 	QByteArray qkekpm = qApp->signer()->decrypt([qkey_material = toByteArray(key_material), qsalt = toByteArray(salt)](QCryptoBackend *backend) {
 		return backend->deriveHMACExtract(qkey_material, qsalt, ECC_KEY_LEN);
-	});
+	}, pin_status);
 	dst = std::vector<uint8_t>(qkekpm.cbegin(), qkekpm.cend());
-	return (dst.empty()) ? BACKEND_ERROR : libcdoc::OK;
+	return getDecryptStatus(dst, pin_status);
 }
 
 libcdoc::result_t
@@ -143,8 +163,15 @@ DDCryptoBackend::getSecret(std::vector<uint8_t>& _secret, unsigned int idx)
 std::string
 DDCryptoBackend::getLastErrorStr(libcdoc::result_t code) const
 {
-	if (code == BACKEND_ERROR) {
-		return qApp->signer()->getLastErrorStr().toStdString();
+	switch (code) {
+		case PIN_CANCELED:
+			return "PIN entry canceled";
+		case PIN_INCORRECT:
+			return "PIN incorrect";
+		case PIN_LOCKED:
+			return "PIN locked";
+		case BACKEND_ERROR:
+			return qApp->signer()->getLastErrorStr().toStdString();
 	}
 	return libcdoc::CryptoBackend::getLastErrorStr(code);
 }

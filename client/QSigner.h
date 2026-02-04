@@ -23,10 +23,10 @@
 #include <digidocpp/crypto/Signer.h>
 
 #include <QCryptographicHash>
+#include <QCryptoBackend.h>
 
 #include <functional>
 
-class QCryptoBackend;
 class QSmartCard;
 class QSslKey;
 class TokenData;
@@ -41,7 +41,7 @@ public:
 
 	QList<TokenData> cache() const;
 	digidoc::X509Cert cert() const final;
-	QByteArray decrypt(std::function<QByteArray (QCryptoBackend *)> &&func);
+	QByteArray decrypt(std::function<QByteArray (QCryptoBackend *)> &&func, QCryptoBackend::PinStatus& pin_status);
 	QSslKey key() const;
 	void logout() const;
 	void selectCard(const TokenData &token);
