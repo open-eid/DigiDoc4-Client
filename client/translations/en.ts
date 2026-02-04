@@ -102,6 +102,10 @@
         <translation>Added</translation>
     </message>
     <message>
+        <source>Decrypt</source>
+        <translation>Decrypt</translation>
+    </message>
+    <message>
         <source>Add</source>
         <translation>Add</translation>
     </message>

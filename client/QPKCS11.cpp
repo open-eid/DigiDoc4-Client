@@ -20,21 +20,33 @@
 #include "QPKCS11_p.h"
 
 #include "Application.h"
-#include "Crypto.h"
+#include "CryptoDoc.h"
 #include "QPCSC.h"
 #include "SslCertificate.h"
 #include "TokenData.h"
+#include "Utils.h"
 #include "dialogs/PinPopup.h"
 
 #include <QtCore/QDebug>
+#include <QtCore/QtEndian>
+
+#include <cdoc/utils/memory.h>
+
+#include <openssl/err.h>
+#include <openssl/evp.h>
+#include <openssl/kdf.h>
 
 #include <array>
-#include <thread>
 
 template<class Container>
 static QString toQString(const Container &c)
 {
 	return QString::fromLatin1((const char*)std::data(c), std::size(c));
+}
+
+void QPKCS11::Private::run()
+{
+	result = f->C_Login(session, CKU_USER, nullptr, 0);
 }
 
 QByteArray QPKCS11::Private::attribute(CK_SESSION_HANDLE session, CK_OBJECT_HANDLE obj, CK_ATTRIBUTE_TYPE type) const
@@ -143,12 +155,53 @@ QByteArray QPKCS11::derive(const QByteArray &publicKey) const
 QByteArray QPKCS11::deriveConcatKDF(const QByteArray &publicKey, QCryptographicHash::Algorithm digest,
 	const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) const
 {
-	return Crypto::concatKDF(digest, derive(publicKey), algorithmID + partyUInfo + partyVInfo);
+	QByteArray z = derive(publicKey);
+	if(z.isEmpty())
+		return z;
+	QByteArray otherInfo = algorithmID + partyUInfo + partyVInfo;
+	quint32 keyDataLen = 32;
+	auto hashLen = quint32(QCryptographicHash::hashLength(digest));
+	auto reps = quint32(std::ceil(double(keyDataLen) / double(hashLen)));
+	QCryptographicHash md(digest);
+	QByteArray key;
+	for(quint32 i = 1; i <= reps; i++)
+	{
+		quint32 intToFourBytes = qToBigEndian(i);
+		md.reset();
+		md.addData((const char*)&intToFourBytes, 4);
+		md.addData(z);
+		md.addData(otherInfo);
+		key += md.result();
+	}
+	return key.left(int(keyDataLen));
 }
 
 QByteArray QPKCS11::deriveHMACExtract(const QByteArray &publicKey, const QByteArray &salt, int keySize) const
 {
-	return Crypto::extract(derive(publicKey), salt, keySize);
+	QByteArray key = derive(publicKey);
+	if(key.isEmpty())
+		return key;
+	auto ctx = libcdoc::make_unique_ptr<EVP_PKEY_CTX_free>(EVP_PKEY_CTX_new_id(EVP_PKEY_HKDF, nullptr));
+	QByteArray out(keySize, 0);
+	auto outlen = size_t(out.length());
+	auto isError = [](int err) {
+		if(err < 1)
+		{
+			unsigned long errorCode = 0;
+			while((errorCode = ERR_get_error()))
+				qCWarning(CRYPTO) << ERR_error_string(errorCode, nullptr);
+		}
+		return err < 1;
+	};
+	if(!ctx ||
+		isError(EVP_PKEY_derive_init(ctx.get())) ||
+		isError(EVP_PKEY_CTX_hkdf_mode(ctx.get(), EVP_PKEY_HKDEF_MODE_EXTRACT_ONLY)) ||
+		isError(EVP_PKEY_CTX_set_hkdf_md(ctx.get(), EVP_sha256())) ||
+		isError(EVP_PKEY_CTX_set1_hkdf_key(ctx.get(), (const unsigned char*)key.data(), int(key.size()))) ||
+		isError(EVP_PKEY_CTX_set1_hkdf_salt(ctx.get(), (const unsigned char*)salt.data(), int(salt.size()))) ||
+		isError(EVP_PKEY_derive(ctx.get(), (unsigned char*)out.data(), &outlen)))
+		out.clear();
+	return out;
 }
 
 bool QPKCS11::isLoaded() const
@@ -218,25 +271,25 @@ QPKCS11::PinStatus QPKCS11::login(const TokenData &t)
 	if(token.flags & CKF_USER_PIN_LOCKED) return PinLocked;
 	if(token.flags & CKF_USER_PIN_COUNT_LOW) f = PinPopup::PinCountLow;
 	if(token.flags & CKF_USER_PIN_FINAL_TRY) f = PinPopup::PinFinalTry;
-	if(token.flags & CKF_PROTECTED_AUTHENTICATION_PATH)
-	{
+	if(token.flags & CKF_PROTECTED_AUTHENTICATION_PATH) {
 		f |= PinPopup::PinpadFlag;
-		PinPopup p(isSign ? QSmartCardData::Pin2Type : QSmartCardData::Pin1Type, f, cert, Application::mainWindow());
-		std::thread([&err, &p, this] {
-			emit p.startTimer();
-			err = d->f->C_Login(d->session, CKU_USER, nullptr, 0);
-			p.accept();
-		}).detach();
-		p.exec();
-	}
-	else
-	{
-		PinPopup p(isSign ? QSmartCardData::Pin2Type : QSmartCardData::Pin1Type, f, cert, Application::mainWindow());
-		p.setPinLen(token.ulMinPinLen, token.ulMaxPinLen < 12 ? 12 : token.ulMaxPinLen);
-		if( !p.exec() )
-			return PinCanceled;
-		QByteArray pin = p.pin().toUtf8();
-		err = d->f->C_Login(d->session, CKU_USER, CK_UTF8CHAR_PTR(pin.constData()), CK_ULONG(pin.size()));
+		err = dispatchToMain([&]{
+			PinPopup p(isSign ? QSmartCardData::Pin2Type : QSmartCardData::Pin1Type, f, cert, Application::mainWindow());
+			connect(d, &Private::started, &p, &PinPopup::startTimer);
+			connect(d, &Private::finished, &p, &PinPopup::accept);
+			d->start();
+			p.exec();
+			return d->result;
+		});
+	} else {
+		err = dispatchToMain([&]{
+			PinPopup p(isSign ? QSmartCardData::Pin2Type : QSmartCardData::Pin1Type, f, cert, Application::mainWindow());
+			p.setPinLen(token.ulMinPinLen, token.ulMaxPinLen < 12 ? 12 : token.ulMaxPinLen);
+			if(!p.exec())
+				return CKR_FUNCTION_CANCELED;
+			QByteArray pin = p.pin().toUtf8();
+			return d->f->C_Login(d->session, CKU_USER, CK_UTF8CHAR_PTR(pin.constData()), CK_ULONG(pin.size()));
+		});
 	}
 
 	switch( err )

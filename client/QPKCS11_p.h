@@ -24,10 +24,11 @@
 #include "pkcs11.h"
 
 #include <QtCore/QLibrary>
+#include <QtCore/QThread>
 
 #include <vector>
 
-class QPKCS11::Private: public QObject
+class QPKCS11::Private: public QThread
 {
 	Q_OBJECT
 public:
@@ -40,4 +41,7 @@ public:
 	CK_SESSION_HANDLE session = 0;
 	QByteArray		id;
 	bool			isPSS = false;
+
+	void run() override;
+	CK_RV result = CKR_OK;
 };
