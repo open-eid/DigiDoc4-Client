@@ -1,8 +1,5 @@
-#ifndef __CDOCSUPPORT_H__
-#define __CDOCSUPPORT_H__
-
 /*
- * QDigiDocCrypto
+ * QDigiDoc4
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,6 +16,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
+
+#pragma once
 
 #include <QtCore/QObject>
 #include <QtCore/QIODevice>
@@ -52,27 +51,27 @@ struct DDConfiguration : public libcdoc::Configuration {
 // Bridges to qApp->signer()
 //
 
-struct DDCryptoBackend : public libcdoc::CryptoBackend {
+struct DDCryptoBackend final : public libcdoc::CryptoBackend {
 	static constexpr int BACKEND_ERROR = -303;
 	static constexpr int PIN_CANCELED = -304;
 	static constexpr int PIN_INCORRECT = -305;
 	static constexpr int PIN_LOCKED = -306;
 	libcdoc::result_t decryptRSA(std::vector<uint8_t> &result,
 								 const std::vector<uint8_t> &data, bool oaep,
-								 unsigned int idx) override final;
+								 unsigned int idx) final;
 	libcdoc::result_t deriveConcatKDF(std::vector<uint8_t> &dst,
 									  const std::vector<uint8_t> &publicKey,
 									  const std::string &digest,
 									  const std::vector<uint8_t> &algorithmID,
 									  const std::vector<uint8_t> &partyUInfo,
 									  const std::vector<uint8_t> &partyVInfo,
-									  unsigned int idx) override final;
+									  unsigned int idx) final;
 	libcdoc::result_t deriveHMACExtract(std::vector<uint8_t> &dst,
 										const std::vector<uint8_t> &publicKey,
 										const std::vector<uint8_t> &salt,
-										unsigned int idx) override final;
+										unsigned int idx) final;
 	libcdoc::result_t getSecret(std::vector<uint8_t> &secret,
-								unsigned int idx) override final;
+								unsigned int idx) final;
 	std::string getLastErrorStr(libcdoc::result_t code) const final;
 
 	std::vector<uint8_t> secret;
@@ -86,7 +85,7 @@ struct DDCryptoBackend : public libcdoc::CryptoBackend {
 // Bridges to QNetworkAccessManager
 //
 
-struct DDNetworkBackend : public libcdoc::NetworkBackend, private QObject {
+struct DDNetworkBackend final : public libcdoc::NetworkBackend, private QObject {
 	static constexpr int BACKEND_ERROR = -303;
 
 	std::string getLastErrorStr(libcdoc::result_t code) const final;
@@ -95,17 +94,17 @@ struct DDNetworkBackend : public libcdoc::NetworkBackend, private QObject {
 							  const std::vector<uint8_t> &rcpt_key,
 							  const std::vector<uint8_t> &key_material,
 							  const std::string &type,
-							  uint64_t expiry_ts) override final;
+							  uint64_t expiry_ts) final;
 	libcdoc::result_t
 	fetchKey(std::vector<uint8_t> &result, const std::string &keyserver_id,
-			 const std::string &transaction_id) override final;
+			 const std::string &transaction_id) final;
 
 	libcdoc::result_t
-	getClientTLSCertificate(std::vector<uint8_t> &dst) override final {
+	getClientTLSCertificate(std::vector<uint8_t> &dst) final {
 		return libcdoc::NOT_IMPLEMENTED;
 	}
 	libcdoc::result_t getPeerTLSCertificates(
-		std::vector<std::vector<uint8_t>> &dst) override final {
+		std::vector<std::vector<uint8_t>> &dst) final {
 		return libcdoc::NOT_IMPLEMENTED;
 	}
 
@@ -120,7 +119,7 @@ struct DDNetworkBackend : public libcdoc::NetworkBackend, private QObject {
 // Bridges to Qt logging system
 //
 
-class DDCDocLogger : private libcdoc::ILogger {
+class DDCDocLogger final : private libcdoc::ILogger {
   public:
 	static void setUpLogger();
 
@@ -128,7 +127,7 @@ class DDCDocLogger : private libcdoc::ILogger {
 	DDCDocLogger() = default;
 	~DDCDocLogger() = default;
 	void LogMessage(libcdoc::ILogger::LogLevel level, std::string_view file, int line,
-					std::string_view message) override final;
+					std::string_view message) final;
 };
 
 class CDocSupport {
@@ -147,7 +146,7 @@ struct IOEntry
 	std::unique_ptr<QIODevice> data;
 };
 
-struct TempListConsumer : public libcdoc::MultiDataConsumer {
+struct TempListConsumer final : public libcdoc::MultiDataConsumer {
 	static constexpr int64_t MAX_VEC_SIZE = 500L * 1024L * 1024L;
 
 	explicit TempListConsumer(size_t max_memory_size = 500L * 1024L * 1024L)
@@ -158,23 +157,21 @@ struct TempListConsumer : public libcdoc::MultiDataConsumer {
 	libcdoc::result_t close() noexcept final;
 	bool isError() noexcept final;
 	libcdoc::result_t open(const std::string &name,
-						   int64_t size) override final;
+						   int64_t size) final;
 
 	size_t _max_memory_size;
 	std::vector<IOEntry> files;
 };
 
-struct StreamListSource : public libcdoc::MultiDataSource {
+struct StreamListSource final : public libcdoc::MultiDataSource {
 	StreamListSource(const std::vector<IOEntry> &files);
 
 	libcdoc::result_t read(uint8_t *dst, size_t size) noexcept final;
 	bool isError() noexcept final;
 	bool isEof() noexcept final;
-	libcdoc::result_t getNumComponents() override final;
-	libcdoc::result_t next(std::string &name, int64_t &size) override final;
+	libcdoc::result_t getNumComponents() final;
+	libcdoc::result_t next(std::string &name, int64_t &size) final;
 
 	const std::vector<IOEntry> &_files;
 	int64_t _current = -1;
 };
-
-#endif // __CDOCSUPPORT_H__

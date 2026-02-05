@@ -55,27 +55,6 @@ auto toHex = [](const std::vector<uint8_t>& data) -> QString {
 struct CryptoDoc::Private
 {
 	bool isEncryptedWarning(const QString &title) const;
-	inline libcdoc::result_t decrypt(unsigned int lock_idx) {
-		TempListConsumer cons;
-		libcdoc::result_t result = waitFor([&]{
-			std::vector<uint8_t> fmk;
-			libcdoc::result_t result = reader->getFMK(fmk, lock_idx);
-			qCDebug(CRYPTO) << "getFMK result: " << result << " " << QString::fromStdString(reader->getLastErrorStr());
-			if (result != libcdoc::OK) return result;
-			result = reader->decrypt(fmk, &cons);
-			std::fill(fmk.begin(), fmk.end(), 0);
-			qCDebug(CRYPTO) << "Decryption result: " << result << " " << QString::fromStdString(reader->getLastErrorStr());
-			return result;
-		});
-		if (result == libcdoc::OK) {
-			files = std::move(cons.files);
-			// Success, immediately create writer from reader
-			keys.clear();
-			writer_last_error.clear();
-			reader.reset();
-		}
-		return result;
-	}
 
 	inline libcdoc::result_t encrypt() {
 		libcdoc::result_t res = waitFor([&]{
@@ -101,8 +80,7 @@ struct CryptoDoc::Private
 				}
 			}
 			if (!crypto.secret.empty()) {
-				auto key =
-					libcdoc::Recipient::makeSymmetric(label.toStdString(), kdf_iter);
+				auto key = libcdoc::Recipient::makeSymmetric(label.toStdString(), 65536);
 				enc_keys.push_back(key);
 			}
 			libcdoc::CDocWriter *writer = libcdoc::CDocWriter::createWriter(
@@ -133,7 +111,6 @@ struct CryptoDoc::Private
 	QStringList		tempFiles;
 	// Encryption data
 	QString label;
-	uint32_t kdf_iter;
 
 	// libcdoc handlers
 	DDConfiguration conf;
@@ -356,7 +333,7 @@ ContainerState CryptoDoc::state() const
 
 bool CryptoDoc::decrypt(const libcdoc::Lock *lock, const QByteArray& secret)
 {
-	if( d->fileName.isEmpty() )
+	if(!d->reader)
 	{
 		WarningDialog::create()
 			->withTitle(QSigner::tr("Failed to decrypt document"))
@@ -364,11 +341,9 @@ bool CryptoDoc::decrypt(const libcdoc::Lock *lock, const QByteArray& secret)
 			->open();
 		return false;
 	}
-	if (!d->reader)
-		return true;
 
 	int lock_idx = -1;
-	const std::vector<libcdoc::Lock> locks = d->reader->getLocks();
+	const std::vector<libcdoc::Lock> &locks = d->reader->getLocks();
 	if (lock == nullptr) {
 		QByteArray der = qApp->signer()->tokenauth().cert().toDer();
 		lock_idx = d->reader->getLockForCert(
@@ -423,7 +398,20 @@ bool CryptoDoc::decrypt(const libcdoc::Lock *lock, const QByteArray& secret)
 
 	d->crypto.secret.assign(secret.cbegin(), secret.cend());
 
-	libcdoc::result_t result = d->decrypt(lock_idx);
+	TempListConsumer cons;
+	libcdoc::result_t result = waitFor([&]{
+		std::vector<uint8_t> fmk;
+		auto scope = qScopeGuard([&] {
+			std::fill(fmk.begin(), fmk.end(), 0);
+		});
+		libcdoc::result_t result = d->reader->getFMK(fmk, lock_idx);
+		qCDebug(CRYPTO) << "getFMK result: " << result << " " << QString::fromStdString(d->reader->getLastErrorStr());
+		if (result != libcdoc::OK)
+			return result;
+		result = d->reader->decrypt(fmk, &cons);
+		qCDebug(CRYPTO) << "Decryption result: " << result << " " << QString::fromStdString(d->reader->getLastErrorStr());
+		return result;
+	});
 	if (result != libcdoc::OK) {
 		const std::string &msg = d->reader->getLastErrorStr();
 		WarningDialog::create()
@@ -434,12 +422,17 @@ bool CryptoDoc::decrypt(const libcdoc::Lock *lock, const QByteArray& secret)
 		return false;
 	}
 
+	d->files = std::move(cons.files);
+	// Success, immediately create writer from reader
+	d->keys.clear();
+	d->writer_last_error.clear();
+	d->reader.reset();
 	return !d->isEncrypted();
 }
 
 DocumentModel *CryptoDoc::documentModel() const { return d->documents; }
 
-bool CryptoDoc::encrypt( const QString &filename, const QString& label, const QByteArray& secret, uint32_t kdf_iter)
+bool CryptoDoc::encrypt( const QString &filename, const QString& label, const QByteArray& secret)
 {
 	if( !filename.isEmpty() )
 		d->fileName = filename;
@@ -457,7 +450,6 @@ bool CryptoDoc::encrypt( const QString &filename, const QString& label, const QB
 		// Encrypt with symmetric key
 		d->label = label;
 		d->crypto.secret.assign(secret.cbegin(), secret.cend());
-		d->kdf_iter = kdf_iter;
 	}
 	// Encrypt for address list
 	else if(d->keys.empty())

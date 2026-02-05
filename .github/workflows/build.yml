@@ -187,10 +187,10 @@ jobs:
         dotnet tool install -g wix --version 6.0.2
         wix extension -g add WixToolset.UI.wixext/6.0.2
     - name: Build
-      env:
-        VCPKG_MANIFEST_DIR: ${{ github.workspace }}/client/libcdoc
       run: |
-        cmake "-GNinja" -B build -S . -DCMAKE_BUILD_TYPE=RelWithDebInfo "-DCMAKE_TOOLCHAIN_FILE=${{ env.VCPKG_ROOT }}/scripts/buildsystems/vcpkg.cmake" -DVCPKG_MANIFEST_DIR=${{ github.workspace }}/client/libcdoc
+        cmake "-GNinja" -B build -S . -DCMAKE_BUILD_TYPE=RelWithDebInfo `
+          -DCMAKE_TOOLCHAIN_FILE=${{ env.VCPKG_ROOT }}/scripts/buildsystems/vcpkg.cmake `
+          -DVCPKG_MANIFEST_DIR=${{ github.workspace }}/client/libcdoc
         cmake --build build --target msi
         cmake --build build --target msishellext
         cmake --build build --target appx

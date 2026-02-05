@@ -167,5 +167,6 @@ void MainAction::showDropdown()
 void MainAction::update()
 {
 	hideDropdown();
-	ui->mainAction->setText(label(ui->actions[0]));
+	if(!ui->actions.isEmpty())
+		ui->mainAction->setText(label(ui->actions[0]));
 }

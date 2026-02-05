@@ -29,6 +29,7 @@
 #include "dialogs/AddRecipients.h"
 #include "dialogs/FileDialog.h"
 #include "dialogs/MobileDialog.h"
+#include "dialogs/PasswordDialog.h"
 #include "dialogs/SmartIDDialog.h"
 #include "dialogs/WarningDialog.h"
 #include "widgets/AddressItem.h"
@@ -53,6 +54,7 @@ ContainerPage::ContainerPage(QWidget *parent)
 , ui(new Ui::ContainerPage)
 {
 	ui->setupUi( this );
+	mainAction = new MainAction(this);
 	ui->leftPane->init(fileName);
 	ui->containerFile->installEventFilter(this);
 	ui->summary->hide();
@@ -61,6 +63,7 @@ ContainerPage::ContainerPage(QWidget *parent)
 		connect(btn, &QAbstractButton::clicked, this, [this,code] { emit action(code); });
 	};
 
+	connect(mainAction, &MainAction::action, this, &ContainerPage::handleAction);
 	connect(ui->cancel, &QPushButton::clicked, this, [this] {
 		window()->setWindowFilePath({});
 		window()->setWindowTitle(tr("DigiDoc4 Client"));
@@ -120,7 +123,7 @@ void ContainerPage::clear(int code)
 
 void ContainerPage::clearPopups()
 {
-	if(mainAction) mainAction->hideDropdown();
+	mainAction->hideDropdown();
 }
 
 void ContainerPage::elideFileName()
@@ -201,6 +204,14 @@ void ContainerPage::changeEvent(QEvent* event)
 	QWidget::changeEvent(event);
 }
 
+void ContainerPage::decrypt(CryptoDoc *container, const libcdoc::Lock *lock, const QByteArray &secret) {
+	WaitDialogHolder waitDialog(this, tr("Decrypting"));
+	if (!container->decrypt(lock, secret))
+		return;
+	transition(container, QSslCertificate{});
+	emit action(DecryptedContainer, {}, {});
+}
+
 template<class C>
 void ContainerPage::deleteConfirm(C *c, int index)
 {
@@ -234,11 +245,6 @@ void ContainerPage::setHeader(const QString &file)
 
 void ContainerPage::showMainAction(const QList<Actions> &actions)
 {
-	if(!mainAction)
-	{
-		mainAction = std::make_unique<MainAction>(this);
-		connect(mainAction.get(), &MainAction::action, this, &ContainerPage::handleAction);
-	}
 	mainAction->showActions(actions);
 	bool isSignCard = actions.contains(SignatureAdd) || actions.contains(SignatureToken);
 	bool isSignMobile = !isSignCard && (actions.contains(SignatureMobile) || actions.contains(SignatureSmartID));
@@ -255,8 +261,7 @@ void ContainerPage::showSigningButton()
 {
 	if (!isSupported)
 	{
-		if(mainAction)
-			mainAction->hide();
+		mainAction->hide();
 		ui->mainActionSpacer->changeSize(1, 20, QSizePolicy::Fixed);
 		ui->navigationArea->layout()->invalidate();
 	}
@@ -315,6 +320,11 @@ void ContainerPage::transition(CryptoDoc *container, const QSslCertificate &cert
 	connect(container, &CryptoDoc::destroyed, this, [this] {
 		clear(ClearCryptoWarning);
 	});
+	disconnect(mainAction, &MainAction::action, container, nullptr);
+	connect(mainAction, &MainAction::action, container, [container, this](int action) {
+		if(action == DecryptToken || action == DecryptContainer)
+			decrypt(container, nullptr, {});
+	});
 
 	clear(ClearCryptoWarning);
 	isSupported = container->state() & UnencryptedContainer || container->canDecrypt(cert);
@@ -326,7 +336,15 @@ void ContainerPage::transition(CryptoDoc *container, const QSslCertificate &cert
 		hasUnsupported = hasUnsupported || (key.rcpt_cert.isNull() && !key.lock.isValid());
 		AddressItem *addr = new AddressItem(key, AddressItem::Icon, ui->rightPane);
 		ui->rightPane->addWidget(addr);
-		connect(addr, &AddressItem::decrypt, this, [this, key] { emit decryptReq(&key.lock); });
+		connect(addr, &AddressItem::decrypt, container, [container, key, this] {
+			if (key.lock.type != libcdoc::Lock::Type::PASSWORD)
+				return;
+			PasswordDialog p(PasswordDialog::Mode::DECRYPT, this);
+			p.setLabel(QString::fromStdString(key.lock.label));
+			if (!p.exec())
+				return;
+			decrypt(container, &key.lock, p.secret());
+		});
 	}
 	if (hasUnsupported)
 		emit warning({UnsupportedCDocWarning});

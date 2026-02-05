@@ -59,7 +59,7 @@ public:
 	bool canDecrypt(const QSslCertificate &cert);
 	void clear(const QString &file = {});
 	bool decrypt(const libcdoc::Lock *lock, const QByteArray& secret);
-	bool encrypt(const QString &filename = {}, const QString& label = {}, const QByteArray& secret = {}, uint32_t kdf_iter = 0);
+	bool encrypt(const QString &filename = {}, const QString& label = {}, const QByteArray& secret = {});
 	DocumentModel* documentModel() const;
 	QString fileName() const;
 	const std::vector<CDKey>& keys() const;

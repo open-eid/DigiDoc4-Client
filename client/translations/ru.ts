@@ -238,13 +238,6 @@
     </message>
 </context>
 <context>
-    <name>CDoc2</name>
-    <message>
-        <source>CDoc contains additional payload data that is not part of content</source>
-        <translation>CDoc содержит дополнительные данные, которые не являются частью содержимого</translation>
-    </message>
-</context>
-<context>
     <name>CDocumentModel</name>
     <message>
         <source>Added file(s) exceeds the maximum size limit of the container (∼120MB). &lt;a href=&apos;https://www.id.ee/en/article/encrypting-large-120-mb-files/&apos;&gt;Read more about it&lt;/a&gt;</source>
@@ -478,6 +471,10 @@
         <translation>DigiDoc4 клиент</translation>
     </message>
     <message>
+        <source>Decrypting</source>
+        <translation>Расшифровка</translation>
+    </message>
+    <message>
         <source>You are about to delete the last file in the container</source>
         <translation>Вы собираетесь удалить последний файл в контейнере</translation>
     </message>
@@ -541,36 +538,20 @@
         <translation>Контейнер не открыт</translation>
     </message>
     <message>
-        <source>Key already exists</source>
-        <translation>Адресат уже добавлен</translation>
+        <source>Unsupported file format</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Failed to create temporary files&lt;br /&gt;%1</source>
-        <translation>Неудачное создание временных файлов&lt;br /&gt;%1</translation>
+        <source>Key already exists</source>
+        <translation>Адресат уже добавлен</translation>
     </message>
     <message>
         <source>You do not have the key to decrypt this document</source>
         <translation>У вас отсутствует ключ для расшифровки документа</translation>
     </message>
     <message>
-        <source>Error parsing document</source>
-        <translation>Ошибка анализа документа</translation>
-    </message>
-    <message>
         <source>No keys specified</source>
         <translation>Не выбрано ни одного получателя</translation>
-    </message>
-    <message>
-        <source>ID-CARD</source>
-        <translation>ID-КАРТА</translation>
-    </message>
-    <message>
-        <source>Digi-ID E-RESIDENT</source>
-        <translation>Digi-ID E-RESIDENT</translation>
-    </message>
-    <message>
-        <source>Digi-ID</source>
-        <translation>Digi-ID</translation>
     </message>
     <message>
         <source>Failed to add key</source>
@@ -599,10 +580,6 @@
     <message>
         <source>Failed to open document</source>
         <translation>Не удалось открыть документ</translation>
-    </message>
-    <message>
-        <source>An error occurred while opening the document</source>
-        <translation>Во время открытия конверта возникла ошибка</translation>
     </message>
     <message>
         <source>Don&apos;t show again</source>
@@ -1234,6 +1211,10 @@
         <translation>Получател</translation>
     </message>
     <message>
+        <source>Lock type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Expiry date</source>
         <translation>Дата окончания</translation>
     </message>
@@ -1325,6 +1306,10 @@ E-Seal</source>
     <message>
         <source>Encrypt</source>
         <translation>Зашифровать</translation>
+    </message>
+    <message>
+        <source>Encrypt long-term</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Decrypt</source>
@@ -1464,7 +1449,7 @@ ID-картой</translation>
     </message>
     <message>
         <source>Decrypting</source>
-        <translation>Расшифровка</translation>
+        <translation type="vanished">Расшифровка</translation>
     </message>
     <message>
         <source>My eID</source>
@@ -1742,6 +1727,53 @@ ID-картой</translation>
     <message>
         <source>The PCSC service, required for using the ID-card, is not working. Check your computer settings.</source>
         <translation>Необходимая для использования ID-карты услуга PCSC не работает. Проверьте настройки компьютера.</translation>
+    </message>
+</context>
+<context>
+    <name>PasswordDialog</name>
+    <message>
+        <source>Encrypt with password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Key label (recipient name or id)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Be sure to save the password in a secure place
+- without the password, you won’t be able to open the file again.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>• Length: 20–64 characters
+• Contains at least one number (0–9)
+• Contains at least one uppercase letter
+• Contains at least one lowercase letter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Repeat password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Отмена</translation>
+    </message>
+    <message>
+        <source>Encrypt</source>
+        <translation>Зашифровать</translation>
+    </message>
+    <message>
+        <source>Enter password to decrypt the document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Decrypt</source>
+        <translation>Расшифровать</translation>
+    </message>
+    <message>
+        <source>Enter a password to encrypt the document</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

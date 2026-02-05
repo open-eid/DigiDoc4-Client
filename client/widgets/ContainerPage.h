@@ -23,8 +23,6 @@
 #include "widgets/MainAction.h"
 #include "CryptoDoc.h"
 
-#include <memory>
-
 namespace Ui {
 class ContainerPage;
 }
@@ -60,11 +58,10 @@ Q_SIGNALS:
 	void removed(int row);
 	void warning(const WarningText &warningText);
 
-	void decryptReq(const libcdoc::Lock *key);
-
 private:
 	void changeEvent(QEvent* event) final;
 	void clear(int code);
+	void decrypt(CryptoDoc *container, const libcdoc::Lock *lock, const QByteArray &secret);
 	template<class C>
 	void deleteConfirm(C *c, int index);
 	void elideFileName();
@@ -77,7 +74,7 @@ private:
 	void translateLabels();
 
 	Ui::ContainerPage *ui;
-	std::unique_ptr<MainAction> mainAction;
+	MainAction *mainAction {};
 	QString idCode;
 	QString fileName;
 

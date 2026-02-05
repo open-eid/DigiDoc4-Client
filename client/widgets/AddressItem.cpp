@@ -75,20 +75,11 @@ AddressItem::AddressItem(const CDKey &key, Type type, QWidget *parent)
 		if (map.contains("server_exp")) {
 			ui->expireDate = QDateTime::fromSecsSinceEpoch(QString::fromStdString(map["server_exp"]).toLongLong());
 		}
-		if (ui->key.lock.isSymmetric()) {
-			ui->decrypt->show();
-			connect(ui->decrypt, &QToolButton::clicked, this, [this] {
-				emit decrypt(&ui->key.lock);
-			});
-		} else {
-			ui->decrypt->hide();
-		}
 	} else {
 		// No rcpt, lock is invalid = unsupported lock
 		unsupported = true;
 		ui->code.clear();
 		ui->label = tr("Unsupported cryptographic algorithm or recipient type");
-		ui->decrypt->hide();
 	}
 
 	if(!unsupported)
@@ -96,10 +87,14 @@ AddressItem::AddressItem(const CDKey &key, Type type, QWidget *parent)
 
 	connect(ui->add, &QToolButton::clicked, this, [this]{ emit add(this);});
 	connect(ui->remove, &QToolButton::clicked, this, [this]{ emit remove(this);});
+	connect(ui->decrypt, &QToolButton::clicked, this, [this] {
+		emit decrypt(&ui->key.lock);
+	});
 
 	setIdType();
 	ui->add->setVisible(type == Add);
 	ui->remove->setVisible(type != Add);
+	ui->decrypt->setVisible(ui->key.lock.type == libcdoc::Lock::PASSWORD);
 }
 
 AddressItem::~AddressItem()
@@ -126,9 +121,6 @@ const CDKey& AddressItem::getKey() const
 }
 
 void AddressItem::idChanged(const SslCertificate &cert) {
-	QByteArray qder = cert.toDer();
-	std::vector<uint8_t> sder = std::vector<uint8_t>(qder.cbegin(), qder.cend());
-
 	if (ui->key.lock.isValid()) {
 		QSslKey pkey = cert.publicKey();
 		QByteArray der = pkey.toDer();

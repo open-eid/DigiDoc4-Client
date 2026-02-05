@@ -19,7 +19,6 @@
 
 
 #include "AddRecipients.h"
-#include "dialogs/PasswordDialog.h"
 #include "ui_AddRecipients.h"
 
 #include "Application.h"
@@ -32,7 +31,6 @@
 #include "TokenData.h"
 #include "dialogs/WarningDialog.h"
 #include "effects/Overlay.h"
-#include "Crypto.h"
 #include "widgets/AddressItem.h"
 
 #include <QtCore/QDateTime>

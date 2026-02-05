@@ -1,31 +1,52 @@
+/*
+ * QDigiDoc4
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ *
+ */
+
 #include "PasswordDialog.h"
 #include "ui_PasswordDialog.h"
 
-#include <QRandomGenerator>
+#include <QRegularExpression>
 
-PasswordDialog::PasswordDialog(QWidget *parent)
-	: QDialog(parent), mode(Mode::DECRYPT), type(Type::PASSWORD)
+PasswordDialog::PasswordDialog(Mode mode, QWidget *parent)
+	: QDialog(parent)
 	, ui(new Ui::PasswordDialog)
 {
+	setWindowFlags(Qt::Dialog | Qt::CustomizeWindowHint);
 	ui->setupUi(this);
-	connect(ui->generateKey, &QPushButton::clicked, this, &PasswordDialog::genKeyClicked);
-	connect(ui->typeSelector, &QTabWidget::currentChanged, this, &PasswordDialog::typeChanged);
-	connect(ui->passwordLine, &QLineEdit::textChanged, this, &PasswordDialog::lineChanged);
-	connect(ui->password2Line, &QLineEdit::textChanged, this, &PasswordDialog::lineChanged);
-	connect(ui->keyEdit, &QPlainTextEdit::textChanged, this, &PasswordDialog::editChanged);
+	ui->labelLine->setReadOnly(mode == Mode::DECRYPT);
+	ui->infoWidget->setHidden(mode == Mode::DECRYPT);
+	ui->passwordHint->setHidden(mode == Mode::DECRYPT);
+	ui->password2Label->setHidden(mode == Mode::DECRYPT);
+	ui->password2Line->setHidden(mode == Mode::DECRYPT);
+	if(mode == DECRYPT) {
+		ui->passwordLabel->setText(tr("Enter password to decrypt the document"));
+		ui->ok->setText(tr("Decrypt"));
+	}
+	connect(ui->ok, &QPushButton::clicked, this, &QDialog::accept);
+	connect(ui->cancel, &QPushButton::clicked, this, &QDialog::reject);
+	connect(ui->passwordLine, &QLineEdit::textChanged, this, &PasswordDialog::updateOK);
+	connect(ui->password2Line, &QLineEdit::textChanged, this, &PasswordDialog::updateOK);
+	updateOK();
 }
 
 PasswordDialog::~PasswordDialog()
 {
 	delete ui;
-}
-
-void
-PasswordDialog::setMode(Mode _mode, Type _type)
-{
-	mode = _mode;
-	type = _type;
-	updateUI();
 }
 
 void
@@ -43,101 +64,20 @@ PasswordDialog::label()
 QByteArray
 PasswordDialog::secret() const
 {
-	if (type == Type::PASSWORD) {
-		return ui->passwordLine->text().toUtf8();
-	} else {
-		QString hex = ui->keyEdit->toPlainText();
-		return QByteArray::fromHex(hex.toUtf8());
-	}
-}
-
-void
-PasswordDialog::typeChanged(int index)
-{
-	Type new_type = static_cast<Type>(index);
-	if (new_type != type) setMode(mode, new_type);
-}
-
-void
-PasswordDialog::lineChanged(const QString& text)
-{
-	updateOK();
-}
-
-void
-PasswordDialog::editChanged()
-{
-	updateOK();
-}
-
-void
-PasswordDialog::genKeyClicked()
-{
-	QByteArray key(32, 0);
-	auto *g = QRandomGenerator::system();
-	for (int i = 0; i < key.size(); i += 4) {
-		const quint32 r = g->generate();
-		const int n = qMin(4, key.size() - i);
-		memcpy(key.data() + i, &r, n);
-	}
-	ui->keyEdit->clear();
-	ui->keyEdit->appendPlainText(key.toHex());
-}
-
-void
-PasswordDialog::updateUI()
-{
-	ui->typeSelector->setCurrentIndex(type);
-	if (mode == Mode::DECRYPT) {
-		ui->labelLine->setReadOnly(true);
-		if (type == Type::PASSWORD) {
-			ui->typeSelector->setTabEnabled(Type::PASSWORD, true);
-			ui->typeSelector->setTabEnabled(Type::KEY, false);
-			ui->passwordLabel->setText("Enter password to decrypt the document");
-			ui->passwordLine->setEchoMode(QLineEdit::EchoMode::Password);
-			ui->password2Label->hide();
-			ui->password2Line->hide();
-		} else {
-			ui->typeSelector->setTabEnabled(Type::PASSWORD, false);
-			ui->typeSelector->setTabEnabled(Type::KEY, true);
-			ui->keyLabel->setText("Enter key to decrypt the document");
-			ui->generateKey->hide();
-		}
-	} else {
-		ui->labelLine->setReadOnly(false);
-		if (type == Type::PASSWORD) {
-			ui->typeSelector->setTabEnabled(Type::PASSWORD, true);
-			ui->typeSelector->setTabEnabled(Type::KEY, true);
-			ui->passwordLabel->setText("Enter a password to encrypt the document");
-			ui->passwordLine->setEchoMode(QLineEdit::EchoMode::Password);
-			ui->password2Label->show();
-			ui->password2Line->show();
-		} else {
-			ui->typeSelector->setTabEnabled(Type::PASSWORD, true);
-			ui->typeSelector->setTabEnabled(Type::KEY, true);
-			ui->keyLabel->setText("Enter a key to encrypt the document");
-			ui->generateKey->show();
-		}
-	}
-	updateOK();
+	return ui->passwordLine->text().toUtf8();
 }
 
 void
 PasswordDialog::updateOK()
 {
 	bool active = false;
-	if (mode == Mode::DECRYPT) {
-		if (type == Type::PASSWORD) {
-			active = !ui->passwordLine->text().isEmpty();
-		} else {
-			active = !ui->keyEdit->toPlainText().isEmpty();
-		}
-	} else {
-		if (type == Type::PASSWORD) {
-			active = !ui->passwordLine->text().isEmpty() && ui->passwordLine->text() == ui->password2Line->text();
-		} else {
-			active = !ui->keyEdit->toPlainText().isEmpty();
-		}
+	if(ui->password2Line->isVisible())
+	{
+		static const QRegularExpression re(QStringLiteral(R"(^(?=.{20,64}$)(?=.*\d)(?=.*[A-Z])(?=.*[a-z]).*$)"));
+		active = re.match(ui->passwordLine->text()).hasMatch() &&
+			ui->passwordLine->text() == ui->password2Line->text();
 	}
-	ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(active);
+	else
+		active = !ui->passwordLine->text().isEmpty();
+	ui->ok->setEnabled(active);
 }
