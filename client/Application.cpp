@@ -294,7 +294,7 @@ public:
 	std::unique_ptr<MacMenuBar> bar;
 	QSigner		*signer {};
 
-	QTranslator	appTranslator, commonTranslator, qtTranslator;
+	QTranslator	appTranslator, qtTranslator;
 	QString		lang;
 	QTimer		lastWindowTimer;
 	volatile bool ready = false;
@@ -418,7 +418,6 @@ Application::Application( int &argc, char **argv )
 	});
 
 	installTranslator( &d->appTranslator );
-	installTranslator( &d->commonTranslator );
 	installTranslator( &d->qtTranslator );
 	loadTranslation(Settings::LANGUAGE);
 
@@ -671,7 +670,6 @@ void Application::loadTranslation( const QString &lang )
 	else QLocale::setDefault(QLocale(QLocale::Estonian, QLocale::Estonia));
 
 	void(d->appTranslator.load(QLatin1String(":/translations/%1.qm").arg(lang)));
-	void(d->commonTranslator.load(QLatin1String(":/translations/common_%1.qm").arg(lang)));
 	void(d->qtTranslator.load(QLatin1String(":/translations/qtbase_%1.qm").arg(lang)));
 	if( d->closeAction ) d->closeAction->setText( tr("Close Window") );
 	if( d->newClientAction ) d->newClientAction->setText( tr("New Window") );
