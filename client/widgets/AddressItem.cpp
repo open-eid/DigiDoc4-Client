@@ -17,16 +17,14 @@
  *
  */
 
-#include <QDebug>
-#include <qsslcertificate.h>
-#include <qsslkey.h>
-
 #include "AddressItem.h"
 #include "ui_AddressItem.h"
 
 #include "CryptoDoc.h"
 #include "SslCertificate.h"
 #include "dialogs/KeyDialog.h"
+
+#include <QSslKey>
 
 using namespace ria::qdigidoc4;
 

@@ -19,12 +19,11 @@
 
 #pragma once
 
-#include <memory>
-
 #include "widgets/Item.h"
-#include "cdoc/Lock.h"
 
 struct CDKey;
+
+namespace libcdoc { struct Lock; }
 
 class AddressItem final : public Item
 {

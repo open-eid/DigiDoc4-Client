@@ -160,9 +160,6 @@ void AddRecipients::addRecipient(const QSslCertificate& cert, bool select)
 	AddressItem *leftItem = itemListValue(ui->leftPane, key);
 	if(!leftItem)
 	{
-		QByteArray qder = cert.toDer();
-		std::vector<uint8_t> sder = std::vector<uint8_t>(qder.cbegin(), qder.cend());
-
 		leftItem = new AddressItem(key, AddressItem::Add, ui->leftPane);
 		ui->leftPane->addWidget(leftItem);
 

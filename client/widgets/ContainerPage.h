@@ -19,16 +19,16 @@
 
 #pragma once
 
-#include "common_enums.h"
-#include "widgets/MainAction.h"
-#include "CryptoDoc.h"
+#include <QWidget>
 
-namespace Ui {
-class ContainerPage;
-}
+#include "common_enums.h"
+
+namespace libcdoc { struct Lock; }
+namespace Ui { class ContainerPage; }
 
 class CryptoDoc;
 class DigiDoc;
+class MainAction;
 class QSslCertificate;
 class SignatureItem;
 class SslCertificate;

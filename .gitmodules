@@ -3,4 +3,4 @@
 	url = ../qt-common
 [submodule "client/libcdoc"]
 	path = client/libcdoc
-	url = git@github.com:open-eid/libcdoc.git
+	url = ../libcdoc

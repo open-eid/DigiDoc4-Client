@@ -33,6 +33,7 @@
 #include "dialogs/SmartIDDialog.h"
 #include "dialogs/WarningDialog.h"
 #include "widgets/AddressItem.h"
+#include "widgets/MainAction.h"
 #include "widgets/SignatureItem.h"
 #include "widgets/WarningItem.h"
 
@@ -534,4 +535,3 @@ void ContainerPage::translateLabels()
 	ui->cancel->setText(tr(cancelText));
 	ui->convert->setText(tr(convertText));
 }
-

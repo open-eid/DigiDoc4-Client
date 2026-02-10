@@ -154,7 +154,7 @@ icon: url(:/images/icon_remove_clicked.svg);
     </spacer>
    </item>
    <item row="0" column="4" rowspan="2">
-    <widget class="QToolButton" name="remove">
+    <widget class="QPushButton" name="remove">
      <property name="maximumSize">
       <size>
        <width>24</width>
@@ -168,7 +168,7 @@ icon: url(:/images/icon_remove_clicked.svg);
       <string>Remove</string>
      </property>
      <property name="styleSheet">
-      <string notr="true">border: none; background: none;</string>
+      <string notr="true">border: none</string>
      </property>
      <property name="icon">
       <iconset resource="../images/images.qrc">

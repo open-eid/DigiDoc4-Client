@@ -41,6 +41,8 @@ add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
 	main.cpp
 	Application.cpp
 	Application.h
+	CDocSupport.cpp
+	CDocSupport.h
 	CheckConnection.cpp
 	CheckConnection.h
 	CryptoDoc.cpp
@@ -84,8 +86,6 @@ add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
 	TokenData.cpp
 	TokenData.h
 	Utils.h
-	dialogs/PasswordDialog.h dialogs/PasswordDialog.cpp dialogs/PasswordDialog.ui
-	CDocSupport.cpp CDocSupport.h
 )
 qt_add_translations(${PROJECT_NAME} TS_FILES
 	translations/en.ts
@@ -129,7 +129,6 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 	MACOSX_BUNDLE_ICON_FILE Icon.icns
 	MACOSX_BUNDLE_GUI_IDENTIFIER "ee.ria.${PROJECT_NAME}"
 )
-target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR})
 
 target_compile_definitions(${PROJECT_NAME} PRIVATE
 	CDOC2_GET_URL="${CDOC2_GET_URL}"
