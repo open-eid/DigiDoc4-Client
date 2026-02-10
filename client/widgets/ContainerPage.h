@@ -65,6 +65,7 @@ private:
 	template<class C>
 	void deleteConfirm(C *c, int index);
 	void elideFileName();
+	void encrypt(CryptoDoc *container, bool longTerm);
 	bool eventFilter(QObject *o, QEvent *e) final;
 	void showMainAction(const QList<ria::qdigidoc4::Actions> &actions);
 	void showSigningButton();

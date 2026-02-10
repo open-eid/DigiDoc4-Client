@@ -20,9 +20,11 @@
 #include "ContainerPage.h"
 #include "ui_ContainerPage.h"
 
+#include "Application.h"
 #include "CryptoDoc.h"
 #include "DigiDoc.h"
 #include "PrintSheet.h"
+#include "QSigner.h"
 #include "Settings.h"
 #include "SslCertificate.h"
 #include "TokenData.h"
@@ -210,7 +212,7 @@ void ContainerPage::decrypt(CryptoDoc *container, const libcdoc::Lock *lock, con
 	if (!container->decrypt(lock, secret))
 		return;
 	transition(container, QSslCertificate{});
-	emit action(DecryptedContainer, {}, {});
+	emit action(DecryptContainerSuccess, {}, {});
 }
 
 template<class C>
@@ -234,6 +236,42 @@ void ContainerPage::deleteConfirm(C *c, int index)
 	if(QFile::exists(c->fileName()))
 		QFile::remove(c->fileName());
 	emit action(ContainerClose);
+}
+
+void ContainerPage::encrypt(CryptoDoc *container, bool longTerm)
+{
+	if(!FileDialog::fileIsWritable(container->fileName()))
+	{
+		auto *dlg = WarningDialog::create(this)
+			->withTitle(CryptoDoc::tr("Failed to encrypt document"))
+			->withText(tr("Cannot alter container %1. Save different location?").arg(FileDialog::normalized(container->fileName())))
+			->addButton(WarningDialog::YES, QMessageBox::Yes);
+		if(dlg->exec() != QMessageBox::Yes)
+			return;
+		QString to = FileDialog::getSaveFileName(this, FileDialog::tr("Save file"), container->fileName());
+		if(to.isNull() || !container->move(to))
+			return;
+		setHeader(to);
+	}
+
+	if(!longTerm) {
+		WaitDialogHolder waitDialog(this, tr("Encrypting"));
+		if(!container->encrypt(container->fileName(), {}, {}))
+			return;
+		transition(container, qApp->signer()->tokenauth().cert());
+		emit action(EncryptContainerSuccess, {}, {});
+		return;
+	}
+
+	PasswordDialog p(PasswordDialog::Mode::ENCRYPT, this);
+	if(!p.exec())
+		return;
+
+	WaitDialogHolder waitDialog(this, tr("Encrypting"));
+	if(!container->encrypt(container->fileName(), p.label(), p.secret()))
+		return;
+	transition(container, QSslCertificate{});
+	emit action(EncryptContainerSuccess, {}, {});
 }
 
 void ContainerPage::setHeader(const QString &file)
@@ -323,8 +361,20 @@ void ContainerPage::transition(CryptoDoc *container, const QSslCertificate &cert
 	});
 	disconnect(mainAction, &MainAction::action, container, nullptr);
 	connect(mainAction, &MainAction::action, container, [container, this](int action) {
-		if(action == DecryptToken || action == DecryptContainer)
+		switch (action)
+		{
+		case EncryptContainer:
+			encrypt(container, false);
+			break;
+		case EncryptLT:
+			encrypt(container, true);
+			break;
+		case DecryptToken:
+		case DecryptContainer:
 			decrypt(container, nullptr, {});
+			break;
+		default:
+		}
 	});
 
 	clear(ClearCryptoWarning);

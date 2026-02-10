@@ -42,9 +42,10 @@ enum Actions : unsigned char {
     ContainerEncrypt,
 
     EncryptContainer,
+    EncryptContainerSuccess,
     DecryptContainer,
     DecryptToken,
-	DecryptedContainer,
+    DecryptContainerSuccess,
 
     SignatureAdd,
     SignatureMobile,

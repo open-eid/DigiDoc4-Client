@@ -52,10 +52,10 @@ struct DDConfiguration : public libcdoc::Configuration {
 //
 
 struct DDCryptoBackend final : public libcdoc::CryptoBackend {
-	static constexpr int BACKEND_ERROR = -303;
-	static constexpr int PIN_CANCELED = -304;
-	static constexpr int PIN_INCORRECT = -305;
-	static constexpr int PIN_LOCKED = -306;
+	static constexpr int BACKEND_ERROR = -503;
+	static constexpr int PIN_CANCELED = -504;
+	static constexpr int PIN_INCORRECT = -505;
+	static constexpr int PIN_LOCKED = -506;
 	libcdoc::result_t decryptRSA(std::vector<uint8_t> &result,
 								 const std::vector<uint8_t> &data, bool oaep,
 								 unsigned int idx) final;

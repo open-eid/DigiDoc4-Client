@@ -223,38 +223,6 @@ QStringList MainWindow::dropEventFiles(QDropEvent *event)
 	return files;
 }
 
-bool MainWindow::encrypt(bool askForKey)
-{
-	if(!cryptoDoc)
-		return false;
-
-	if(!FileDialog::fileIsWritable(cryptoDoc->fileName()))
-	{
-		auto *dlg = WarningDialog::create(this)
-			->withTitle(CryptoDoc::tr("Failed to encrypt document"))
-			->withText(tr("Cannot alter container %1. Save different location?").arg(FileDialog::normalized(cryptoDoc->fileName())))
-			->addButton(WarningDialog::YES, QMessageBox::Yes);
-		if(dlg->exec() != QMessageBox::Yes)
-			return false;
-		QString to = FileDialog::getSaveFileName(this, FileDialog::tr("Save file"), cryptoDoc->fileName());
-		if(to.isNull() || !cryptoDoc->move(to))
-			return false;
-		ui->cryptoContainerPage->setHeader(to);
-	}
-
-	if(!askForKey) {
-		WaitDialogHolder waitDialog(this, tr("Encrypting"));
-		return cryptoDoc->encrypt();
-	}
-
-	PasswordDialog p(PasswordDialog::Mode::ENCRYPT, this);
-	if(!p.exec())
-		return false;
-
-	WaitDialogHolder waitDialog(this, tr("Encrypting"));
-	return cryptoDoc->encrypt(cryptoDoc->fileName(), p.label(), p.secret());
-}
-
 void MainWindow::mouseReleaseEvent(QMouseEvent *event)
 {
 	if(auto *cardPopup = findChild<CardPopup*>())
@@ -408,21 +376,11 @@ void MainWindow::onCryptoAction(int action, const QString &/*id*/, const QString
 		if(cryptoDoc && wrap(cryptoDoc->fileName(), false))
 			FadeInNotification::success(ui->topBar, tr("Converted to signed document!"));
 		break;
-	case DecryptedContainer:
+	case DecryptContainerSuccess:
 		FadeInNotification::success(ui->topBar, tr("Decryption succeeded!"));
 		break;
-	case EncryptContainer:
-		if(encrypt())
-		{
-			ui->cryptoContainerPage->transition(cryptoDoc.get(), qApp->signer()->tokenauth().cert());
-			FadeInNotification::success(ui->topBar, tr("Encryption succeeded!"));
-		}
-		break;
-	case EncryptLT:
-		if(encrypt(true)) {
-			ui->cryptoContainerPage->transition(cryptoDoc.get(), qApp->signer()->tokenauth().cert());
-			FadeInNotification::success(ui->topBar, tr("Encryption succeeded!"));
-		}
+	case EncryptContainerSuccess:
+		FadeInNotification::success(ui->topBar, tr("Encryption succeeded!"));
 		break;
 	case ClearCryptoWarning:
 		ui->crypto->warningIcon(false);
