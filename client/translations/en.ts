@@ -2923,6 +2923,14 @@ Additional licenses and components</translation>
         <translation>Please check your internet connection.</translation>
     </message>
     <message>
+        <source>The ID-card must be activated in order to authenticate</source>
+        <translation>The ID-card must be activated in order to authenticate</translation>
+    </message>
+    <message>
+        <source>The ID-card must be activated in order to sign</source>
+        <translation>The ID-card must be activated in order to sign</translation>
+    </message>
+    <message>
         <source>PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times.</source>
         <translation>PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times.</translation>
     </message>
@@ -3039,6 +3047,18 @@ Additional licenses and components</translation>
     <message>
         <source>https://www.id.ee/en/article/changing-id-card-pin-codes-and-puk-code/</source>
         <translation>https://www.id.ee/en/article/changing-id-card-pin-codes-and-puk-code/</translation>
+    </message>
+    <message>
+        <source>Authentication and signing with the ID-card isn&apos;t possible yet. ID-card must be activated in the Police and Border Guard Board’s self-service portal in order to use it.</source>
+        <translation>Authentication and signing with the ID-card isn&apos;t possible yet. ID-card must be activated in the Police and Border Guard Board’s self-service portal in order to use it.</translation>
+    </message>
+    <message>
+        <source>Activate ID-card</source>
+        <translation>Activate ID-card</translation>
+    </message>
+    <message>
+        <source>https://www.politsei.ee/en/self-service-portal/</source>
+        <translation>https://www.politsei.ee/en/self-service-portal/</translation>
     </message>
     <message>
         <source>This ASiC-S container contains XAdES signature. You are not allowed to add or remove signatures to this container.</source>

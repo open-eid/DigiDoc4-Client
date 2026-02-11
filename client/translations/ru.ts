@@ -2924,6 +2924,14 @@ Additional licenses and components</source>
         <translation>Пожалуйста проверьте подключение к интернету.</translation>
     </message>
     <message>
+        <source>The ID-card must be activated in order to authenticate</source>
+        <translation>Для аутентификации ID карту необходимо активировать</translation>
+    </message>
+    <message>
+        <source>The ID-card must be activated in order to sign</source>
+        <translation>Для подписания документов ID карту необходимо активировать</translation>
+    </message>
+    <message>
         <source>PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times.</source>
         <translation>PIN%1 заблокирован, потому что PIN%1-код был введен неверно 3 раза.</translation>
     </message>
@@ -3044,6 +3052,18 @@ Additional licenses and components</source>
     <message>
         <source>https://www.id.ee/en/article/changing-id-card-pin-codes-and-puk-code/</source>
         <translation>https://www.id.ee/ru/artikkel/poryadok-izmeneniya-pin-kodov-i-puk-koda-id-karty/</translation>
+    </message>
+    <message>
+        <source>Authentication and signing with the ID-card isn&apos;t possible yet. ID-card must be activated in the Police and Border Guard Board’s self-service portal in order to use it.</source>
+        <translation>Идентификация и подписание документов с помощью ID карты пока невозможны. Для использования удостоверения личности его необходимо активировать в системе самообслуживания Управления полиции и пограничной охраны.</translation>
+    </message>
+    <message>
+        <source>Activate ID-card</source>
+        <translation>Активировать ID карту</translation>
+    </message>
+    <message>
+        <source>https://www.politsei.ee/en/self-service-portal/</source>
+        <translation>https://www.politsei.ee/ru/samoobsluzhivanie/</translation>
     </message>
     <message>
         <source>This ASiC-S container contains XAdES signature. You are not allowed to add or remove signatures to this container.</source>

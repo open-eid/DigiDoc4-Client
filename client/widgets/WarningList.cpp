@@ -31,5 +31,5 @@ void WarningList::showWarning(WarningText warningText)
 void WarningList::updateWarnings(int page)
 {
 	for(auto *warning: findChildren<WarningItem*>())
-		warning->setVisible(warning->page() == page || warning->page() == ria::qdigidoc4::MyEid);
+		warning->setVisible(warning->page() == page || warning->page() == MainWindow::MyEid);
 }
