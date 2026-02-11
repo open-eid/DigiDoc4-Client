@@ -944,10 +944,9 @@ void Application::showClient(QStringList files, bool crypto, bool sign, bool new
 	if(files.isEmpty())
 		return;
 	QMetaObject::invokeMethod(w, [&] {
-		using enum ria::qdigidoc4::Pages;
 		if(sign)
 			sign = files.size() != 1 || !CONTAINER_EXT.contains(QFileInfo(files.value(0)).suffix(), Qt::CaseInsensitive);
-		w->selectPage(crypto && !sign ? CryptoIntro : SignIntro);
+		w->selectPage(crypto && !sign ? MainWindow::CryptoIntro : MainWindow::SignIntro);
 		w->openFiles(std::move(files), false, sign);
 	});
 }

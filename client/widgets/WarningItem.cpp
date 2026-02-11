@@ -64,7 +64,7 @@ void WarningItem::changeEvent(QEvent* event)
 void WarningItem::mousePressEvent(QMouseEvent */*event*/)
 {
 	// this warning should not be closed if there are zero-byte(empty) files in the container
-	if (warnText.type != EmptyFileWarning)
+	if (warnText.type != WarningText::EmptyFileWarning)
 		deleteLater();
 }
 
@@ -72,6 +72,8 @@ void WarningItem::lookupWarning()
 {
 	switch(warnText.type)
 	{
+		using enum WarningText::WarningType;
+		using enum MainWindow::Pages;
 	case CertExpiredError:
 		setObjectName("WarningItemError");
 		ui->warningText->setText(tr("Certificates have expired!"));
@@ -103,6 +105,13 @@ void WarningItem::lookupWarning()
 		ui->warningText->setText(tr("Signing with an ID-card isn't possible yet. PIN%1 code must be changed in order to sign.").arg(2));
 		ui->warningAction->setText(tr("Additional information"));
 		url = tr("https://www.id.ee/en/article/changing-id-card-pin-codes-and-puk-code/");
+		_page = MyEid;
+		break;
+	case LockedCardWarning:
+		ui->warningText->setText(tr("Authentication and signing with the ID-card isn't possible yet. "
+			"ID-card must be activated in the Police and Border Guard Board’s self-service portal in order to use it."));
+		ui->warningAction->setText(VerifyCert::tr("Activate ID-card"));
+		url = tr("https://www.politsei.ee/en/self-service-portal/");
 		_page = MyEid;
 		break;
 	// SignDetails
@@ -146,24 +155,25 @@ void WarningItem::lookupWarning()
 		url = tr("https://www.id.ee/en/article/digidoc-container-format-life-cycle-2/");
 		_page = SignDetails;
 		break;
-	case UnsupportedCDocWarning:
-		ui->warningText->setText(tr("The encrypted container contains a cryptographic algorithm or recipient type that is not supported in this DigiDoc4 application version. "
-			"Please make sure that you are using the latest DigiDoc4 application version."));
-		url = tr("https://www.id.ee/en/article/install-id-software/");
-		_page = CryptoDetails;
-		break;
 	case EmptyFileWarning:
 		ui->warningText->setText(tr("An empty file is attached to the container. "
 			"Remove the empty file from the container to sign."));
 		ui->warningAction->hide();
 		_page = SignDetails;
 		break;
+	// CryptoDetails
+	case UnsupportedCDocWarning:
+		ui->warningText->setText(tr("The encrypted container contains a cryptographic algorithm or recipient type that is not supported in this DigiDoc4 application version. "
+			"Please make sure that you are using the latest DigiDoc4 application version."));
+		url = tr("https://www.id.ee/en/article/install-id-software/");
+		_page = CryptoDetails;
+		break;
 	case NoWarning:
 		break;
 	}
 }
 
-WarningType WarningItem::warningType() const
+WarningText::WarningType WarningItem::warningType() const
 {
 	return warnText.type;
 }

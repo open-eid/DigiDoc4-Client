@@ -50,7 +50,7 @@ using namespace std::chrono;
 
 MainWindow::MainWindow( QWidget *parent )
 	: QWidget( parent )
-	, ui( new Ui::MainWindow )
+	, ui(std::make_unique<Ui::MainWindow>())
 {
 	setAttribute(Qt::WA_DeleteOnClose, true);
 	setAcceptDrops( true );
@@ -125,12 +125,7 @@ MainWindow::MainWindow( QWidget *parent )
 	updateMyEid(qApp->signer()->smartcard()->data());
 }
 
-MainWindow::~MainWindow()
-{
-	digiDoc.reset();
-	cryptoDoc.reset();
-	delete ui;
-}
+MainWindow::~MainWindow() noexcept = default;
 
 void MainWindow::adjustDrops()
 {
@@ -709,27 +704,34 @@ void MainWindow::updateMyEid(const QSmartCardData &data)
 		return;
 	bool pin1Blocked = data.retryCount(QSmartCardData::Pin1Type) == 0;
 	bool pin2Blocked = data.retryCount(QSmartCardData::Pin2Type) == 0;
+	bool pin1Locked = data.pinLocked(QSmartCardData::Pin1Type);
 	bool pin2Locked = data.pinLocked(QSmartCardData::Pin2Type);
 	ui->myEid->warningIcon(
-		pin1Blocked ||
+		pin1Blocked || pin1Locked ||
 		pin2Blocked || pin2Locked ||
 		data.retryCount(QSmartCardData::PukType) == 0);
 	ui->signContainerPage->cardChanged(data.signCert(), pin2Blocked || pin2Locked);
-	ui->cryptoContainerPage->cardChanged(data.authCert(), pin1Blocked);
+	ui->cryptoContainerPage->cardChanged(data.authCert(), pin1Blocked || pin1Locked);
 
-	if(pin1Blocked)
-		ui->warnings->showWarning({WarningType::UnblockPin1Warning, 0,
-			[this]{ changePinClicked(QSmartCardData::Pin1Type, QSmartCard::UnblockWithPuk); }});
+	using enum WarningText::WarningType;
+	if(pin1Locked)
+		ui->warnings->showWarning({LockedCardWarning});
+	else
+	{
+		if(pin1Blocked)
+			ui->warnings->showWarning({UnblockPin1Warning, 0,
+				[this]{ changePinClicked(QSmartCardData::Pin1Type, QSmartCard::UnblockWithPuk); }});
 
-	if(pin2Locked && pin2Blocked)
-		ui->warnings->showWarning({WarningType::ActivatePin2WithPUKWarning, 0,
-			[this]{ changePinClicked(QSmartCardData::Pin2Type, QSmartCard::ActivateWithPuk); }});
-	else if(pin2Blocked)
-		ui->warnings->showWarning({WarningType::UnblockPin2Warning, 0,
-			[this]{ changePinClicked(QSmartCardData::Pin2Type, QSmartCard::UnblockWithPuk); }});
-	else if(pin2Locked)
-		ui->warnings->showWarning({WarningType::ActivatePin2Warning, 0,
-			[this]{ changePinClicked(QSmartCardData::Pin2Type, QSmartCard::ActivateWithPin); }});
+		if(pin2Locked && pin2Blocked)
+			ui->warnings->showWarning({ActivatePin2WithPUKWarning, 0,
+				[this]{ changePinClicked(QSmartCardData::Pin2Type, QSmartCard::ActivateWithPuk); }});
+		else if(pin2Blocked)
+			ui->warnings->showWarning({UnblockPin2Warning, 0,
+				[this]{ changePinClicked(QSmartCardData::Pin2Type, QSmartCard::UnblockWithPuk); }});
+		else if(pin2Locked)
+			ui->warnings->showWarning({ActivatePin2Warning, 0,
+				[this]{ changePinClicked(QSmartCardData::Pin2Type, QSmartCard::ActivateWithPin); }});
+	}
 
 	const qint64 DAY = 24 * 60 * 60;
 	qint64 expiresIn = 106 * DAY;
@@ -741,12 +743,12 @@ void MainWindow::updateMyEid(const QSmartCardData &data)
 	if(expiresIn <= 0)
 	{
 		ui->myEid->invalidIcon(true);
-		ui->warnings->showWarning({WarningType::CertExpiredError});
+		ui->warnings->showWarning({CertExpiredError});
 	}
 	else if(expiresIn <= 105 * DAY)
 	{
 		ui->myEid->warningIcon(true);
-		ui->warnings->showWarning({WarningType::CertExpiryWarning});
+		ui->warnings->showWarning({CertExpiryWarning});
 	}
 }
 

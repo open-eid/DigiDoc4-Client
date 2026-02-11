@@ -21,10 +21,33 @@
 
 #include "StyledWidget.h"
 
+#include "MainWindow.h"
+
 namespace Ui { class WarningItem; }
 
 struct WarningText {
-	ria::qdigidoc4::WarningType type = ria::qdigidoc4::NoWarning;
+	enum WarningType : unsigned char {
+		NoWarning = 0,
+
+		CertExpiredError,
+		CertExpiryWarning,
+		UnblockPin1Warning,
+		UnblockPin2Warning,
+		ActivatePin2Warning,
+		ActivatePin1WithPUKWarning,
+		ActivatePin2WithPUKWarning,
+		LockedCardWarning,
+
+		InvalidSignatureError,
+		InvalidTimestampError,
+		UnknownSignatureWarning,
+		UnknownTimestampWarning,
+		UnsupportedAsicSWarning,
+		UnsupportedAsicCadesWarning,
+		UnsupportedDDocWarning,
+		UnsupportedCDocWarning,
+		EmptyFileWarning,
+	} type = NoWarning;
 	int counter = 0;
 	std::function<void()> cb;
 };
@@ -39,7 +62,7 @@ public:
 	~WarningItem() final;
 	
 	int page() const;
-	ria::qdigidoc4::WarningType warningType() const;
+	WarningText::WarningType warningType() const;
 
 private:
 	Q_DISABLE_COPY(WarningItem)
@@ -50,5 +73,5 @@ private:
 	Ui::WarningItem *ui;
 	WarningText warnText;
 	QString url;
-	ria::qdigidoc4::Pages _page = ria::qdigidoc4::MyEid;
+	MainWindow::Pages _page = MainWindow::MyEid;
 };

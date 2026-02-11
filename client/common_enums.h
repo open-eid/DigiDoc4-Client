@@ -53,34 +53,4 @@ enum Actions : unsigned char {
     ClearCryptoWarning,
 };
 
-enum Pages : unsigned char {
-    SignIntro,
-    SignDetails,
-    CryptoIntro,
-    CryptoDetails,
-    MyEid
-};
-
-enum WarningType : unsigned char {
-    NoWarning = 0,
-
-    CertExpiredError,
-    CertExpiryWarning,
-    UnblockPin1Warning,
-    UnblockPin2Warning,
-    ActivatePin2Warning,
-    ActivatePin1WithPUKWarning,
-    ActivatePin2WithPUKWarning,
-
-    InvalidSignatureError,
-    InvalidTimestampError,
-    UnknownSignatureWarning,
-    UnknownTimestampWarning,
-    UnsupportedAsicSWarning,
-    UnsupportedAsicCadesWarning,
-    UnsupportedDDocWarning,
-    UnsupportedCDocWarning,
-    EmptyFileWarning,
-};
-
 }

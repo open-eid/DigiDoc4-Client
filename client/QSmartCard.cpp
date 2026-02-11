@@ -480,7 +480,10 @@ bool THALESCard::updateCounters(QSmartCardDataPrivate *d) const
 		{
 			d->retry[QSmartCardData::PinType(type)] = quint8(retry.data[0]);
 			auto changed = info[0xDF2F];
-			d->locked[QSmartCardData::PinType(type)] = changed && changed.data[0] == 0;
+			d->locked[QSmartCardData::PinType(type)] = (changed && changed.data[0] == 0);
+			// FIXME: remove from production
+			if (type == QSmartCardData::Pin1Type && qEnvironmentVariableIsSet("PIN1_LOCKED"))
+				d->locked[QSmartCardData::PinType(type)] = true;
 		}
 		else
 			return false;
