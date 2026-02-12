@@ -1,7 +1,7 @@
-<?if $(sys.BUILDARCH) = x64 ?>
-  <?define OpenSSLSuffix = "-x64" ?>
-<?else?>
+<?if $(sys.BUILDARCH) = x86 ?>
   <?define OpenSSLSuffix = "" ?>
+<?else?>
+  <?define OpenSSLSuffix = "-$(sys.BUILDARCH)" ?>
 <?endif?>
 
 <?if $(env.VisualStudioVersion) = "17.0" ?>
@@ -18,7 +18,7 @@
 
 <Wix xmlns="http://wixtoolset.org/schemas/v4/wxs"
      xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
-  <Package Name="DigiDoc4 Client" UpgradeCode="67932072-aa9e-45e3-b697-d825349f273d"
+  <Package Name="DigiDoc4 Client $(sys.BUILDARCH)" UpgradeCode="67932072-aa9e-45e3-b697-d825349f273d"
       Language="1033" Version="!(bind.FileVersion.qdigidoc4.exe)" Manufacturer="RIA" Scope="perMachine">
     <MediaTemplate EmbedCab="yes" CompressionLevel="high" />
     <Icon Id="qdigidoc4.ico" SourceFile="$(var.ico_path)" />
@@ -38,7 +38,7 @@
     </StandardDirectory>
 
     <StandardDirectory Id="ProgramFiles6432Folder">
-      <Directory Id="INSTALLFOLDER" Name="!(bind.Property.ProductName)" FileSource="$(var.libs_path)">
+      <Directory Id="INSTALLFOLDER" Name="DigiDoc4 Client" FileSource="$(var.libs_path)">
         <Component Id="Application4">
           <File Id="qdigidoc4.exe" Source="$(var.client_path)" KeyPath="yes">
             <Shortcut Id="ClientStartMenu4" Advertise="yes" Name="DigiDoc4" Icon="qdigidoc4.ico"
@@ -92,9 +92,11 @@
         <File Source="$(var.qt_path)\Qt6PrintSupport$(var.qt_suffix).dll" />
         <File Source="$(var.qt_path)\Qt6Svg$(var.qt_suffix).dll" />
         <File Source="$(var.qt_path)\Qt6Widgets$(var.qt_suffix).dll" />
+        <File Source="$(var.qt_path)\Qt6SvgWidgets$(var.qt_suffix).dll" />
+<?if $(sys.BUILDARCH) != arm64 ?>
         <File Source="$(var.qt_path)\D3DCompiler_47.dll" />
         <File Source="$(var.qt_path)\opengl32sw.dll" />
-        <File Source="$(var.qt_path)\Qt6SvgWidgets$(var.qt_suffix).dll" />
+<?endif?>
         <File Subdirectory="platforms" Source="$(var.qt_path)\..\plugins\platforms\qwindows$(var.qt_suffix).dll" />
         <File Subdirectory="tls" Source="$(var.qt_path)\..\plugins\tls\qopensslbackend$(var.qt_suffix).dll" />
         <File Subdirectory="styles" Source="$(var.qt_path)\..\plugins\styles\qmodernwindowsstyle$(var.qt_suffix).dll" />

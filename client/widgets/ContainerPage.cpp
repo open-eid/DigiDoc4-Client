@@ -374,6 +374,7 @@ void ContainerPage::transition(CryptoDoc *container, const QSslCertificate &cert
 			decrypt(container, nullptr, {});
 			break;
 		default:
+			break;
 		}
 	});
 

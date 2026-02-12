@@ -1,5 +1,3 @@
-get_target_property(qtCore_install_prefix Qt6::qmake IMPORTED_LOCATION)
-get_filename_component(qtCore_install_prefix ${qtCore_install_prefix} DIRECTORY)
 get_filename_component(TSL_FILENAME ${TSL_URL} NAME_WLE)
 set(TSL_LIST ${TSL_FILENAME} ${TSL_INCLUDE})
 list(TRANSFORM TSL_LIST APPEND .xml)
@@ -9,14 +7,11 @@ if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${TSL_FILENAME}.xml)
 else()
 	set(TSL_DIR ${CMAKE_CURRENT_BINARY_DIR})
 	list(TRANSFORM TSL_LIST PREPEND ${TSL_DIR}/)
-	add_executable(TSLDownload TSLDownload.cpp)
-	target_link_libraries(TSLDownload Qt6::Network)
-	set_target_properties(TSLDownload PROPERTIES AUTOMOC OFF)
+	find_package(Python REQUIRED)
 	add_custom_command(
 		OUTPUT ${TSL_LIST}
-		DEPENDS TSLDownload
-		COMMAND $<TARGET_FILE:TSLDownload> ${CMAKE_CURRENT_BINARY_DIR} ${TSL_URL} ${TSL_INCLUDE}
-		WORKING_DIRECTORY ${qtCore_install_prefix}
+		DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/download_tsl.py
+		COMMAND ${Python_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/download_tsl.py ${CMAKE_CURRENT_BINARY_DIR} ${TSL_URL} ${TSL_INCLUDE}
 	)
 endif()
 
@@ -91,9 +86,6 @@ qt_add_translations(${PROJECT_NAME} TS_FILES
 	translations/en.ts
 	translations/et.ts
 	translations/ru.ts
-	../common/translations/common_en.ts
-	../common/translations/common_et.ts
-	../common/translations/common_ru.ts
 	../common/translations/qtbase_et.ts
 	../common/translations/qtbase_ru.ts
 	RESOURCE_PREFIX /translations
@@ -222,10 +214,11 @@ elseif(WIN32)
 		${CMAKE_SOURCE_DIR}/common/WelcomeDlg.wxs
 		${CMAKE_SOURCE_DIR}/common/WixUI_Minimal.wxs
 	)
+	get_filename_component(QT_BASE_DIR "${Qt6_DIR}/../../.." ABSOLUTE)
 	add_custom_target(msi DEPENDS ${PROJECT_NAME}
 		COMMAND ${WIX_CMD} -o "${MSI_FILE}.msi"
 		#Build MSI with QT
-		COMMAND ${WIX_CMD} -d qt_path=${qtCore_install_prefix} -o "${MSI_FILE}.qt.msi"
+		COMMAND ${WIX_CMD} -d qt_path=${QT_BASE_DIR}/bin -o "${MSI_FILE}.qt.msi"
 		WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
 	)
 	if(SIGNCERT)
@@ -242,11 +235,16 @@ elseif(WIN32)
 	endif()
 	set(PLATFORM $ENV{PLATFORM})
 	configure_file(${CMAKE_SOURCE_DIR}/AppxManifest.xml.cmake ${CMAKE_BINARY_DIR}/AppxManifest.xml)
-	if(CMAKE_SIZEOF_VOID_P EQUAL 8)
-		set(OPENSSL_SUFFIX "-x64")
-	else()
+	if(PLATFORM STREQUAL "x86")
 		set(OPENSSL_SUFFIX "")
+	else()
+		set(OPENSSL_SUFFIX "-${PLATFORM}")
 	endif()
+	set(QT_PATHS ${QT_BASE_DIR}/bin/qtpaths.exe)
+	if(EXISTS ${QT_BASE_DIR}/bin/host-qtpaths.bat)
+		set(QT_PATHS ${QT_BASE_DIR}/bin/host-qtpaths.bat)
+	endif()
+
 	add_custom_target(appx DEPENDS ${PROJECT_NAME}
 		COMMAND ${CMAKE_COMMAND} -E remove ${MSI_FILE}.appx
 		COMMAND ${CMAKE_COMMAND} -E remove_directory appx
@@ -264,7 +262,7 @@ elseif(WIN32)
 		COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/digidocpp.conf appx
 		COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/Assets appx/Assets
 		COMMAND ${CMAKE_COMMAND} -E copy_directory ${LIBS_PATH}/schema appx/schema
-		COMMAND Qt::windeployqt --no-translations --no-compiler-runtime --no-patchqt --force-openssl
+		COMMAND Qt::windeployqt --no-translations --no-compiler-runtime --no-patchqt --force-openssl --qtpaths ${QT_PATHS}
 			--skip-plugin-types generic,networkinformation,iconengines --exclude-plugins qjpeg,qico,qgif,qcertonlybackend,qschannelbackend appx
 		COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/digidoc-tool.exe appx
 		COMMAND makeappx.exe pack -d appx -p ${MSI_FILE}.appx

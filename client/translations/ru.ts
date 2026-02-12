@@ -457,6 +457,17 @@
     </message>
 </context>
 <context>
+    <name>Configuration</name>
+    <message>
+        <source>The configuration file located on the server cannot be validated.</source>
+        <translation>Находящийся на сервере конфигурационный файл не валидируется.</translation>
+    </message>
+    <message>
+        <source>Your computer&apos;s configuration file is later than the server has.</source>
+        <translation>Находящийся на Вашем компьютере конфигурационный файл новее файла на сервере.</translation>
+    </message>
+</context>
+<context>
     <name>ContainerPage</name>
     <message>
         <source>Container:</source>
