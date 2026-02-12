@@ -119,11 +119,10 @@ const CDKey& AddressItem::getKey() const
 }
 
 void AddressItem::idChanged(const SslCertificate &cert) {
-	if (ui->key.lock.isValid()) {
-		QSslKey pkey = cert.publicKey();
-		QByteArray der = pkey.toDer();
-		ui->yourself = ui->key.lock.hasTheSameKey(
-			std::vector<uint8_t>(der.cbegin(), der.cend()));
+	ui->yourself = false;
+	if (ui->key.lock.isPKI()) {
+		const auto &key = ui->key.lock.getBytes(libcdoc::Lock::RCPT_KEY);
+		ui->yourself = cert.publicKey().toDer() == QByteArray::fromRawData((const char*)key.data(), key.size());
 	}
 	setName();
 }
@@ -189,18 +188,15 @@ void AddressItem::setIdType() {
 
 	if (!ui->key.rcpt_cert.isNull()) {
 		// Recipient certificate
-		SslCertificate cert(ui->key.rcpt_cert);
-		setIdType(cert);
+		setIdType(SslCertificate(ui->key.rcpt_cert));
 	} else if (ui->key.lock.isValid()) {
 		// Known lock type
 		// Needed to include translation for "ID-CARD"
 		void(QT_TR_NOOP("ID-CARD"));
 		auto items = libcdoc::Recipient::parseLabel(ui->key.lock.label);
-		if (ui->key.lock.isCertificate()) {
-			auto bytes = ui->key.lock.getBytes(libcdoc::Lock::CERT);
-			QByteArray qbytes((const char *)bytes.data(), bytes.size());
-			SslCertificate cert(qbytes, QSsl::Der);
-			setIdType(cert);
+		if (ui->key.lock.isCDoc1()) {
+			const auto &bytes = ui->key.lock.getBytes(libcdoc::Lock::CERT);
+			setIdType(SslCertificate(QByteArray::fromRawData((const char *)bytes.data(), bytes.size()), QSsl::Der));
 		} else {
 			ui->idType->setText(tr(items["type"].data()));
 		}

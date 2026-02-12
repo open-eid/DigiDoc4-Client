@@ -63,8 +63,8 @@ KeyDialog::KeyDialog(const CDKey &k, QWidget *parent )
 	QSslCertificate cert;
 	if (!k.rcpt_cert.isNull()) {
 		cert = k.rcpt_cert;
-	} else if (k.lock.isCertificate()) {
-		std::vector<uint8_t> certData = k.lock.getBytes(libcdoc::Lock::Params::CERT);
+	} else if (k.lock.isCDoc1()) {
+		const std::vector<uint8_t> &certData = k.lock.getBytes(libcdoc::Lock::Params::CERT);
 		cert = QSslCertificate(QByteArray::fromRawData(reinterpret_cast<const char *>(certData.data()), certData.size()), QSsl::Der);
 	}
 	if (!cert.isNull()) {
