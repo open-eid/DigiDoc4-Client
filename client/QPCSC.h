@@ -97,7 +97,8 @@ public:
 	};
 
 	explicit QPCSCReader( const QString &reader, QPCSC *parent );
-	~QPCSCReader() final;
+	QPCSCReader(QPCSCReader &&) noexcept;
+	~QPCSCReader() noexcept final;
 
 	QByteArray atr() const;
 	bool isPinPad() const;
