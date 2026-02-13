@@ -1,5 +1,5 @@
 /*
- * QDigiDocClient
+ * QDigiDoc4
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,27 +19,32 @@
 
 #pragma once
 
-#include "CryptoDoc.h"
+#include <QDialog>
 
-#include <QtCore/QFile>
+namespace Ui {
+class PasswordDialog;
+}
 
-class CDoc2 final: public CDoc, private QFile {
+class PasswordDialog : public QDialog
+{
+	Q_OBJECT
+
 public:
-	explicit CDoc2() = default;
-	explicit CDoc2(const QString &path);
+	enum Mode {
+		ENCRYPT,
+		DECRYPT
+	};
 
-	CKey canDecrypt(const QSslCertificate &cert) const final;
-	bool decryptPayload(const QByteArray &fmk) final;
-	QByteArray deriveFMK(const QByteArray &priv, const CKey &key);
-	bool isSupported();
-	bool save(const QString &path) final;
-	QByteArray transportKey(const CKey &key) final;
-	int version() final;
+	explicit PasswordDialog(Mode mode, QWidget *parent = nullptr);
+	~PasswordDialog();
+
+	void setLabel(const QString& label);
+	QString label();
+	QByteArray secret() const;
 
 private:
-	QByteArray header_data, headerHMAC;
-	qint64 noncePos = -1;
+	Ui::PasswordDialog *ui;
 
-	static const QByteArray LABEL, CEK, HMAC, KEK, KEKPREMASTER, PAYLOAD, SALT;
-	static constexpr int KEY_LEN = 32, NONCE_LEN = 12;
+	void genKeyClicked();
+	void updateOK();
 };

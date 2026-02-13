@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>619</width>
-    <height>52</height>
+    <height>54</height>
    </rect>
   </property>
   <property name="styleSheet">
@@ -47,7 +47,7 @@ QLabel[label=&quot;good&quot;] {
 color: #1A641B;
 background: #EAF8EA;
 }
-#add {
+#add, #decrypt {
 padding: 9px 8px;
 font-size: 12px;
 font-weight: 700;
@@ -55,10 +55,11 @@ border-radius: 4px;
 border: none;
 color: #2F70B6;
 }
-#add:hover, #add:focus {
+#add:hover, #add:focus,
+#decrypt:hover, #decrypt:focus {
 background-color: #EAF1F8;
 }
-#add:pressed {
+#add:pressed, #decrypt:pressed {
 background-color: #BFD3E8;
 }
 #remove:hover, #remove:focus {
@@ -188,6 +189,16 @@ icon: url(:/images/icon_remove_clicked.svg);
      </property>
      <property name="text">
       <string>Add</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="6" rowspan="2">
+    <widget class="QToolButton" name="decrypt">
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
+     <property name="text">
+      <string>Decrypt</string>
      </property>
     </widget>
    </item>
