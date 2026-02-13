@@ -70,6 +70,19 @@ background-color: #2B66A6;
 #changePIN[active=&quot;true&quot;]:pressed {
 border-color: #215081;
 background-color: #215081;
+}
+#links &gt; QToolButton {
+color: #2F70B6;
+border: none;
+font-family: Roboto, Helvetica;
+font-size: 14px;
+text-decoration: underline solid;
+}
+#links &gt; QToolButton:hover, #links &gt; QToolButton:focus {
+background-color: #EAF1F8;
+}
+#links &gt; QToolButton:pressed {
+background-color: #BFD3E8;
 }</string>
   </property>
   <layout class="QVBoxLayout" name="VerifyCertLayout">
@@ -94,54 +107,52 @@ background-color: #215081;
       <number>0</number>
      </property>
      <item>
-      <widget class="QWidget" name="nameLeft" native="true">
-       <layout class="QHBoxLayout" name="nameRightLayout">
-        <property name="spacing">
-         <number>0</number>
-        </property>
-        <property name="leftMargin">
-         <number>0</number>
-        </property>
-        <property name="topMargin">
-         <number>0</number>
-        </property>
-        <property name="rightMargin">
-         <number>0</number>
-        </property>
-        <property name="bottomMargin">
-         <number>0</number>
-        </property>
-        <item>
-         <spacer name="nameRightSpacer">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>0</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
-         <widget class="QSvgWidget" name="nameIcon" native="true">
-          <property name="minimumSize">
-           <size>
-            <width>24</width>
-            <height>24</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>24</width>
-            <height>24</height>
-           </size>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
+      <layout class="QHBoxLayout" name="nameRightLayout">
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <spacer name="nameRightSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>0</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QSvgWidget" name="nameIcon" native="true">
+         <property name="minimumSize">
+          <size>
+           <width>24</width>
+           <height>24</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>24</width>
+           <height>24</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
      <item>
       <widget class="QLabel" name="name">
@@ -265,22 +276,7 @@ background-color: #215081;
        <height>57</height>
       </size>
      </property>
-     <property name="styleSheet">
-      <string notr="true">QToolButton {
-color: #2F70B6;
-border: none;
-font-family: Roboto, Helvetica;
-font-size: 14px;
-text-decoration: underline solid;
-}
-QToolButton:hover, QToolButton:focus {
-background-color: #EAF1F8;
-}
-QToolButton:pressed {
-background-color: #BFD3E8;
-}</string>
-     </property>
-     <layout class="QVBoxLayout" name="widgetLayout">
+     <layout class="QVBoxLayout" name="linksLayout">
       <property name="spacing">
        <number>0</number>
       </property>
