@@ -44,11 +44,6 @@ static QString toQString(const Container &c)
 	return QString::fromLatin1((const char*)std::data(c), std::size(c));
 }
 
-void QPKCS11::Private::run()
-{
-	result = f->C_Login(session, CKU_USER, nullptr, 0);
-}
-
 QByteArray QPKCS11::Private::attribute(CK_SESSION_HANDLE session, CK_OBJECT_HANDLE obj, CK_ATTRIBUTE_TYPE type) const
 {
 	QByteArray data;
@@ -264,33 +259,28 @@ QPKCS11::PinStatus QPKCS11::login(const TokenData &t)
 	if(!d->isFinDriver && !(token.flags & CKF_LOGIN_REQUIRED))
 		return PinOK;
 
-	CK_RV err = CKR_OK;
 	SslCertificate cert(t.cert());
 	bool isSign = cert.keyUsage().keys().contains(SslCertificate::NonRepudiation);
 	PinPopup::TokenFlags f;
 	if(token.flags & CKF_USER_PIN_LOCKED) return PinLocked;
 	if(token.flags & CKF_USER_PIN_COUNT_LOW) f = PinPopup::PinCountLow;
 	if(token.flags & CKF_USER_PIN_FINAL_TRY) f = PinPopup::PinFinalTry;
-	if(token.flags & CKF_PROTECTED_AUTHENTICATION_PATH) {
-		f |= PinPopup::PinpadFlag;
-		err = dispatchToMain([&]{
+	CK_RV err = dispatchToMain([&]{
+		if(token.flags & CKF_PROTECTED_AUTHENTICATION_PATH) {
+			f |= PinPopup::PinpadFlag;
 			PinPopup p(isSign ? QSmartCardData::Pin2Type : QSmartCardData::Pin1Type, f, cert, Application::mainWindow());
-			connect(d, &Private::started, &p, &PinPopup::startTimer);
-			connect(d, &Private::finished, &p, &PinPopup::accept);
-			d->start();
-			p.exec();
-			return d->result;
-		});
-	} else {
-		err = dispatchToMain([&]{
+			p.open();
+			p.startTimer();
+			return waitFor(d->f->C_Login, d->session, CKU_USER, nullptr, 0);
+		} else {
 			PinPopup p(isSign ? QSmartCardData::Pin2Type : QSmartCardData::Pin1Type, f, cert, Application::mainWindow());
 			p.setPinLen(token.ulMinPinLen, token.ulMaxPinLen < 12 ? 12 : token.ulMaxPinLen);
 			if(!p.exec())
 				return CKR_FUNCTION_CANCELED;
 			QByteArray pin = p.pin().toUtf8();
 			return d->f->C_Login(d->session, CKU_USER, CK_UTF8CHAR_PTR(pin.constData()), CK_ULONG(pin.size()));
-		});
-	}
+		}
+	});
 
 	switch( err )
 	{

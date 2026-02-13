@@ -110,6 +110,6 @@ Q_SIGNALS:
 private:
 	Q_DISABLE_COPY_MOVE(QSmartCard)
 
-	class Private;
+	struct Private;
 	std::unique_ptr<Private> d;
 };

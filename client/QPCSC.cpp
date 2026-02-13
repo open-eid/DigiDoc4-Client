@@ -210,7 +210,13 @@ QPCSCReader::QPCSCReader( const QString &reader, QPCSC *parent )
 		SC(GetStatusChange, d->d->context, 0, &d->state, 1U);
 }
 
-QPCSCReader::~QPCSCReader()
+QPCSCReader::QPCSCReader(QPCSCReader &&other) noexcept
+	: d(other.d)
+{
+	other.d = new Private;
+}
+
+QPCSCReader::~QPCSCReader() noexcept
 {
 	if(d->isTransacted)
 		SC(EndTransaction, d->card, SCARD_LEAVE_CARD);
