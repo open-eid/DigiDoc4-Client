@@ -306,21 +306,22 @@ DDNetworkBackend::fetchKey(std::vector<uint8_t> &result,
 Q_DECLARE_LOGGING_CATEGORY(LOG_CDOC)
 Q_LOGGING_CATEGORY(LOG_CDOC, "libcdoc")
 
-void DDCDocLogger::LogMessage(libcdoc::ILogger::LogLevel level, std::string_view file, int line, std::string_view message) {
+void DDCDocLogger::logMessage(libcdoc::LogLevel level, std::string_view file, int line, std::string_view message) {
 	switch (level) {
-	case libcdoc::ILogger::LogLevel::LEVEL_FATAL:
+		using enum libcdoc::LogLevel;
+	case LEVEL_FATAL:
 		Q_FATAL(message);
 		break;
-	case libcdoc::ILogger::LogLevel::LEVEL_ERROR:
+	case LEVEL_ERROR:
 		qCCritical(LOG_CDOC) << message;
 		break;
-	case libcdoc::ILogger::LogLevel::LEVEL_WARNING:
+	case LEVEL_WARNING:
 		qCWarning(LOG_CDOC) << message;
 		break;
-	case libcdoc::ILogger::LogLevel::LEVEL_INFO:
+	case LEVEL_INFO:
 		qCInfo(LOG_CDOC) << message;
 		break;
-	case libcdoc::ILogger::LogLevel::LEVEL_DEBUG:
+	case LEVEL_DEBUG:
 		qCDebug(LOG_CDOC) << message;
 		break;
 	default:
@@ -334,8 +335,8 @@ void DDCDocLogger::setUpLogger() {
 	static DDCDocLogger *logger = nullptr;
 	if (!logger) {
 		logger = new DDCDocLogger();
-		logger->SetMinLogLevel(libcdoc::ILogger::LogLevel::LEVEL_TRACE);
-		libcdoc::ILogger::addLogger(logger);
+		logger->setMinLogLevel(libcdoc::LEVEL_TRACE);
+		libcdoc::setLogger(logger);
 	}
 }
 

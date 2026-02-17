@@ -24,7 +24,7 @@
 
 #include <cdoc/Configuration.h>
 #include <cdoc/CryptoBackend.h>
-#include <cdoc/ILogger.h>
+#include <cdoc/Logger.h>
 #include <cdoc/NetworkBackend.h>
 #include <cdoc/Io.h>
 
@@ -119,15 +119,14 @@ struct DDNetworkBackend final : public libcdoc::NetworkBackend, private QObject 
 // Bridges to Qt logging system
 //
 
-class DDCDocLogger final : private libcdoc::ILogger {
+class DDCDocLogger final : private libcdoc::Logger {
   public:
 	static void setUpLogger();
 
   private:
 	DDCDocLogger() = default;
 	~DDCDocLogger() = default;
-	void LogMessage(libcdoc::ILogger::LogLevel level, std::string_view file, int line,
-					std::string_view message) final;
+	void logMessage(libcdoc::LogLevel level, std::string_view file, int line, std::string_view message) final;
 };
 
 class CDocSupport {
