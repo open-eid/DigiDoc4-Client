@@ -28,6 +28,19 @@
 
 class RoleAddressDialog::Private: public Ui::RoleAddressDialog {};
 
+static QString cleanUp(const QString& src) {
+	QString dst;
+	dst.reserve(src.size());
+	size_t dlen = 0;
+	for (auto s = src.cbegin(); s != src.cend(); s++) {
+		if ((*s <= ' ') &&  (*s != QChar(0x9)) && (*s != QChar(0xa)) && (*s != QChar(0xd))) continue;
+		if ((*s == QChar(0xfffe)) || (*s == QChar(0xffff))) continue;
+		dst.append(*s);
+	}
+	dst.resize(dlen);
+	return dst;
+}
+
 RoleAddressDialog::RoleAddressDialog(QWidget *parent)
 	: QDialog(parent)
 	, d(new Private)
@@ -57,8 +70,9 @@ RoleAddressDialog::RoleAddressDialog(QWidget *parent)
 		line->setCompleter(completer);
 		connect(line, &QLineEdit::editingFinished, this, [line, s = std::move(s)] {
 			QStringList list = s;
-			list.removeAll(line->text());
-			list.insert(0, line->text());
+			QString text = cleanUp(line->text());
+			list.removeAll(text);
+			list.insert(0, text);
 			if(list.size() > 10)
 				list.removeLast();
 			s.clear(); // Uses on Windows MULTI_STRING registry
@@ -81,10 +95,10 @@ int RoleAddressDialog::get(QString &city, QString &country, QString &state, QStr
 	int result = QDialog::exec();
 	if(result == QDialog::Rejected)
 		return result;
-	role = d->Role->text();
-	city = d->City->text();
-	state = d->State->text();
-	country = d->Country->text();
-	zip = d->Zip->text();
+	role = cleanUp(d->Role->text());
+	city = cleanUp(d->City->text());
+	state = cleanUp(d->State->text());
+	country = cleanUp(d->Country->text());
+	zip = cleanUp(d->Zip->text());
 	return result;
 }

@@ -19,18 +19,16 @@
 
 #pragma once
 
+#include <QWidget>
+
 #include "common_enums.h"
-#include "widgets/MainAction.h"
 
-#include <memory>
+namespace libcdoc { struct Lock; }
+namespace Ui { class ContainerPage; }
 
-namespace Ui {
-class ContainerPage;
-}
-
-class CKey;
 class CryptoDoc;
 class DigiDoc;
+class MainAction;
 class QSslCertificate;
 class SignatureItem;
 class SslCertificate;
@@ -63,19 +61,21 @@ Q_SIGNALS:
 private:
 	void changeEvent(QEvent* event) final;
 	void clear(int code);
+	void decrypt(CryptoDoc *container, const libcdoc::Lock *lock, const QByteArray &secret);
 	template<class C>
 	void deleteConfirm(C *c, int index);
 	void elideFileName();
+	void encrypt(CryptoDoc *container, bool longTerm);
 	bool eventFilter(QObject *o, QEvent *e) final;
 	void showMainAction(const QList<ria::qdigidoc4::Actions> &actions);
 	void showSigningButton();
 	void handleAction(int type);
 	void updateDecryptionButton();
-	void updatePanes(ria::qdigidoc4::ContainerState state);
+	void updatePanes(ria::qdigidoc4::ContainerState state, CryptoDoc *crypto_container);
 	void translateLabels();
 
 	Ui::ContainerPage *ui;
-	std::unique_ptr<MainAction> mainAction;
+	MainAction *mainAction {};
 	QString idCode;
 	QString fileName;
 

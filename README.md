@@ -64,7 +64,7 @@
 3. Configure
 
         cmake -B build -S . \
-          -DCMAKE_PREFIX_PATH=~/cmake_builds/Qt-6.6.3-OpenSSL
+          -DCMAKE_PREFIX_PATH=~/cmake_builds/Qt-6.10.2-OpenSSL
           -DOPENSSL_ROOT_DIR=~/cmake_build/OpenSSL \
           -DLDAP_ROOT=~/cmake_build/OpenLDAP \
           -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64"
@@ -81,10 +81,11 @@
 ### Windows
 
 1. Install dependencies from
-    * [Visual Studio Community 2019](https://www.visualstudio.com/downloads/)
+    * [Visual Studio Community 2022](https://www.visualstudio.com/downloads/)
     * [http://www.cmake.org](http://www.cmake.org)
     * [http://qt-project.org](http://qt-project.org)
     * [libdigidocpp-*.msi](https://github.com/open-eid/libdigidocpp/releases)
+    * [vcpkg](https://vcpkg.io/)
 
 2. Fetch the source
 
@@ -93,7 +94,10 @@
 
 3. Configure
 
-        cmake -G"NMAKE Makefiles" -DCMAKE_PREFIX_PATH=C:\Qt\6.6.3\msvc2019_x64  -DLibDigiDocpp_ROOT="C:\Program Files (x86)\libdigidocpp" -B build -S .
+        cmake -G"NMAKE Makefiles" -B build -S . `
+          -DCMAKE_PREFIX_PATH=C:\Qt\6.10.2\msvc2022_x64 `
+          -DLibDigiDocpp_ROOT="C:\Program Files (x86)\libdigidocpp" `
+          -DVCPKG_MANIFEST_DIR=client/libcdoc
 
 4. Build
 

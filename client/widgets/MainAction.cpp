@@ -107,6 +107,7 @@ QString MainAction::label(Actions action)
 	case SignatureSmartID: return tr("Sign with\nSmart-ID");
 	case SignatureToken: return tr("Sign with\nE-Seal");
 	case EncryptContainer: return tr("Encrypt");
+	case EncryptLT: return tr("Encrypt long-term");
 	case DecryptContainer: return tr("Decrypt with\nID-Card");
 	case DecryptToken: return tr("Decrypt");
 	default: return tr("Sign with\nID-Card");
@@ -166,5 +167,6 @@ void MainAction::showDropdown()
 void MainAction::update()
 {
 	hideDropdown();
-	ui->mainAction->setText(label(ui->actions[0]));
+	if(!ui->actions.isEmpty())
+		ui->mainAction->setText(label(ui->actions[0]));
 }

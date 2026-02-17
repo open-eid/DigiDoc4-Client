@@ -24,11 +24,12 @@
 #include "effects/Overlay.h"
 #include "dialogs/CertificateDetails.h"
 
-KeyDialog::KeyDialog( const CKey &k, QWidget *parent )
+KeyDialog::KeyDialog(const CDKey &k, QWidget *parent )
 	: QDialog( parent )
 {
 	Ui::KeyDialog d;
 	d.setupUi(this);
+	d.showCert->hide();
 #if defined (Q_OS_WIN)
 	d.buttonLayout->setDirection(QBoxLayout::RightToLeft);
 #endif
@@ -37,10 +38,6 @@ KeyDialog::KeyDialog( const CKey &k, QWidget *parent )
 	new Overlay(this);
 
 	connect(d.close, &QPushButton::clicked, this, &KeyDialog::accept);
-	connect(d.showCert, &QPushButton::clicked, this, [this, cert=k.cert] {
-		CertificateDetails::showCertificate(cert, this);
-	});
-	d.showCert->setHidden(k.cert.isNull());
 
 	auto addItem = [view = d.view](const QString &parameter, const QString &value) {
 		if(value.isEmpty())
@@ -51,12 +48,41 @@ KeyDialog::KeyDialog( const CKey &k, QWidget *parent )
 		view->addTopLevelItem(i);
 	};
 
-	addItem(tr("Recipient"), k.recipient);
-	addItem(tr("ConcatKDF digest method"), k.concatDigest);
-	addItem(tr("Key server ID"), k.keyserver_id);
-	addItem(tr("Transaction ID"), k.transaction_id);
-	addItem(tr("Expiry date"), k.cert.expiryDate().toLocalTime().toString(QStringLiteral("dd.MM.yyyy hh:mm:ss")));
-	addItem(tr("Issuer"), k.cert.issuerInfo(QSslCertificate::CommonName).join(' '));
+	addItem(tr("Recipient"), QString::fromStdString(k.lock.label));
+	addItem(tr("Lock type"), [type = k.lock.type] {
+		switch(type) {
+		case libcdoc::Lock::SYMMETRIC_KEY: return QStringLiteral("SYMMETRIC_KEY");
+		case libcdoc::Lock::PASSWORD: return QStringLiteral("PASSWORD");
+		case libcdoc::Lock::PUBLIC_KEY: return QStringLiteral("PUBLIC_KEY");
+		case libcdoc::Lock::CDOC1: return QStringLiteral("CDOC1");
+		case libcdoc::Lock::SERVER: return QStringLiteral("SERVER");
+		case libcdoc::Lock::SHARE_SERVER: return QStringLiteral("SHARE_SERVER");
+		default: return QStringLiteral("INVALID");
+		}
+	}());
+	QSslCertificate cert;
+	if (!k.rcpt_cert.isNull()) {
+		cert = k.rcpt_cert;
+	} else if (k.lock.isCDoc1()) {
+		const std::vector<uint8_t> &certData = k.lock.getBytes(libcdoc::Lock::Params::CERT);
+		cert = QSslCertificate(QByteArray::fromRawData(reinterpret_cast<const char *>(certData.data()), certData.size()), QSsl::Der);
+	}
+	if (!cert.isNull()) {
+		connect(d.showCert, &QPushButton::clicked, this, [this, cert] {
+			CertificateDetails::showCertificate(cert, this);
+		});
+		d.showCert->show();
+		if (k.lock.isCDoc1()) {
+			std::string cdigest = k.lock.getString(libcdoc::Lock::Params::CONCAT_DIGEST);
+			addItem(tr("ConcatKDF digest method"), QString::fromStdString(cdigest));
+		}
+		addItem(tr("Expiry date"), cert.expiryDate().toLocalTime().toString(QStringLiteral("dd.MM.yyyy hh:mm:ss")));
+		addItem(tr("Issuer"), cert.issuerInfo(QSslCertificate::CommonName).join(" "));
+		d.view->resizeColumnToContents(0);
+	} else if (k.lock.type == libcdoc::Lock::SERVER) {
+		addItem(tr("Key server ID"), QString::fromUtf8(k.lock.getString(libcdoc::Lock::Params::KEYSERVER_ID)));
+		addItem(tr("Transaction ID"), QString::fromUtf8(k.lock.getString(libcdoc::Lock::Params::TRANSACTION_ID)));
+	}
 	d.view->resizeColumnToContents( 0 );
 	adjustSize();
 }

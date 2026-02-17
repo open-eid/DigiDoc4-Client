@@ -102,6 +102,10 @@
         <translation>Added</translation>
     </message>
     <message>
+        <source>Decrypt</source>
+        <translation>Decrypt</translation>
+    </message>
+    <message>
         <source>Add</source>
         <translation>Add</translation>
     </message>
@@ -231,13 +235,6 @@
     <message>
         <source>Start downloading</source>
         <translation>Start downloading</translation>
-    </message>
-</context>
-<context>
-    <name>CDoc2</name>
-    <message>
-        <source>CDoc contains additional payload data that is not part of content</source>
-        <translation>CDoc contains additional payload data that is not part of content</translation>
     </message>
 </context>
 <context>
@@ -485,6 +482,10 @@
         <translation>DigiDoc4 Client</translation>
     </message>
     <message>
+        <source>Decrypting</source>
+        <translation>Decrypting</translation>
+    </message>
+    <message>
         <source>You are about to delete the last file in the container</source>
         <translation>You are about to delete the last file in the container</translation>
     </message>
@@ -548,36 +549,20 @@
         <translation>Container is not open</translation>
     </message>
     <message>
-        <source>Key already exists</source>
-        <translation>Key already exists</translation>
+        <source>Unsupported file format</source>
+        <translation>Unsupported file format</translation>
     </message>
     <message>
-        <source>Failed to create temporary files&lt;br /&gt;%1</source>
-        <translation>Failed to create temporary files&lt;br /&gt;%1</translation>
+        <source>Key already exists</source>
+        <translation>Key already exists</translation>
     </message>
     <message>
         <source>You do not have the key to decrypt this document</source>
         <translation>You do not have the key to decrypt this document</translation>
     </message>
     <message>
-        <source>Error parsing document</source>
-        <translation>Error parsing document</translation>
-    </message>
-    <message>
         <source>No keys specified</source>
         <translation>No recipients specified</translation>
-    </message>
-    <message>
-        <source>ID-CARD</source>
-        <translation>ID-CARD</translation>
-    </message>
-    <message>
-        <source>Digi-ID E-RESIDENT</source>
-        <translation>Digi-ID E-RESIDENT</translation>
-    </message>
-    <message>
-        <source>Digi-ID</source>
-        <translation>Digi-ID</translation>
     </message>
     <message>
         <source>Failed to add key</source>
@@ -606,10 +591,6 @@
     <message>
         <source>Failed to open document</source>
         <translation>Failed to open document</translation>
-    </message>
-    <message>
-        <source>An error occurred while opening the document</source>
-        <translation>An error occurred while opening the document</translation>
     </message>
     <message>
         <source>Don&apos;t show again</source>
@@ -1241,6 +1222,10 @@
         <translation>Recipient</translation>
     </message>
     <message>
+        <source>Lock type</source>
+        <translation>Lock type</translation>
+    </message>
+    <message>
         <source>Expiry date</source>
         <translation>Expiry date</translation>
     </message>
@@ -1332,6 +1317,10 @@ E-Seal</translation>
     <message>
         <source>Encrypt</source>
         <translation>Encrypt</translation>
+    </message>
+    <message>
+        <source>Encrypt long-term</source>
+        <translation>Encrypt long-term</translation>
     </message>
     <message>
         <source>Decrypt</source>
@@ -1471,7 +1460,7 @@ ID-Card</translation>
     </message>
     <message>
         <source>Decrypting</source>
-        <translation>Decrypting</translation>
+        <translation type="vanished">Decrypting</translation>
     </message>
     <message>
         <source>My eID</source>
@@ -1749,6 +1738,57 @@ ID-Card</translation>
     <message>
         <source>The PCSC service, required for using the ID-card, is not working. Check your computer settings.</source>
         <translation>The PCSC service, required for using the ID-card, is not working. Check your computer settings.</translation>
+    </message>
+</context>
+<context>
+    <name>PasswordDialog</name>
+    <message>
+        <source>Encrypt with password</source>
+        <translation>Encrypt with password</translation>
+    </message>
+    <message>
+        <source>Key label (recipient name or id)</source>
+        <translation>Key label (recipient name or id)</translation>
+    </message>
+    <message>
+        <source>Be sure to save the password in a secure place
+- without the password, you won’t be able to open the file again.</source>
+        <translation>Be sure to save the password in a secure place
+- without the password, you won’t be able to open the file again.</translation>
+    </message>
+    <message>
+        <source>• Length: 20–64 characters
+• Contains at least one number (0–9)
+• Contains at least one uppercase letter
+• Contains at least one lowercase letter</source>
+        <translation>• Length: 20–64 characters
+• Contains at least one number (0–9)
+• Contains at least one uppercase letter
+• Contains at least one lowercase letter</translation>
+    </message>
+    <message>
+        <source>Repeat password</source>
+        <translation>Repeat password</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Cancel</translation>
+    </message>
+    <message>
+        <source>Encrypt</source>
+        <translation>Encrypt</translation>
+    </message>
+    <message>
+        <source>Enter password to decrypt the document</source>
+        <translation>Enter password to decrypt the document</translation>
+    </message>
+    <message>
+        <source>Decrypt</source>
+        <translation>Decrypt</translation>
+    </message>
+    <message>
+        <source>Enter a password to encrypt the document</source>
+        <translation>Enter a password to encrypt the document</translation>
     </message>
 </context>
 <context>

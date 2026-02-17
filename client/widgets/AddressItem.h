@@ -21,7 +21,9 @@
 
 #include "widgets/Item.h"
 
-class CKey;
+struct CDKey;
+
+namespace libcdoc { struct Lock; }
 
 class AddressItem final : public Item
 {
@@ -35,20 +37,24 @@ public:
 		Icon,
 	};
 
-	explicit AddressItem(CKey &&k, Type type, QWidget *parent = {});
+	explicit AddressItem(const CDKey &k, Type type, QWidget *parent = {});
 	~AddressItem() final;
 
-	const CKey& getKey() const;
+	const CDKey& getKey() const;
 	void idChanged(const SslCertificate &cert) final;
 	void initTabOrder(QWidget *item) final;
 	QWidget* lastTabWidget() final;
 	void stateChange(ria::qdigidoc4::ContainerState state) final;
+
+signals:
+	void decrypt(const libcdoc::Lock *lock);
 
 private:
 	void changeEvent(QEvent *event) final;
 	void mouseReleaseEvent(QMouseEvent *event) final;
 	void setName();
 	void setIdType();
+	void setIdType(const SslCertificate& cert);
 
 	class Private;
 	Private *ui;

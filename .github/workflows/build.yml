@@ -5,13 +5,13 @@ permissions:
 env:
   BUILD_NUMBER: ${{ github.run_number }}
   CMAKE_BUILD_PARALLEL_LEVEL: 4
-  UBUNTU_DEPS: ./libdigidocpp-pkg/*.deb cmake libldap2-dev gettext libpcsclite-dev libssl-dev libgl-dev libqt6svg6-dev qt6-tools-dev qt6-tools-dev-tools qt6-l10n-tools libflatbuffers-dev zlib1g-dev
+  UBUNTU_DEPS: ./libdigidocpp-pkg/*.deb cmake libldap2-dev gettext libpcsclite-dev libssl-dev libgl-dev libqt6svg6-dev qt6-tools-dev qt6-tools-dev-tools qt6-l10n-tools libflatbuffers-dev libxml2-dev zlib1g-dev
 jobs:
   macos:
     name: Build on macOS
     runs-on: macos-latest
     env:
-      MACOSX_DEPLOYMENT_TARGET: 13.0
+      MACOSX_DEPLOYMENT_TARGET: 13.3
       LIBS_PATH: ${{ github.workspace }}/cache
     steps:
     - &Checkout
@@ -186,7 +186,8 @@ jobs:
         VCPKG_BINARY_SOURCES: clear;files,${{ github.workspace }}/vcpkg_cache,readwrite
       run: |
         cmake "-GNinja" -B build -S . -DCMAKE_BUILD_TYPE=RelWithDebInfo `
-          -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake
+          -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake `
+          -DVCPKG_MANIFEST_DIR=${{ github.workspace }}/client/libcdoc
         cmake --build build --target msi
         cmake --build build --target msishellext
         cmake --build build --target appx
