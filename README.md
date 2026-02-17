@@ -2,7 +2,7 @@
 
 ![European Regional Development Fund](client/images/EL_Regionaalarengu_Fond.png "European Regional Development Fund - DO NOT REMOVE THIS IMAGE BEFORE 05.03.2020")
 
- * License: LGPL 2.1
+ * License: LGPL 2.1 or later
  * &copy; Estonian Information System Authority
  * [Architecture of ID-software](http://open-eid.github.io)
 
