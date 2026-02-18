@@ -21,6 +21,8 @@
 
 #include "widgets/Item.h"
 
+#include "widgets/WarningItem.h"
+
 class DigiDocSignature;
 
 class SignatureItem final : public Item
@@ -31,7 +33,7 @@ public:
 	explicit SignatureItem(DigiDocSignature s, QWidget *parent = nullptr);
 	~SignatureItem() final;
 
-	ria::qdigidoc4::WarningType getError() const;
+	WarningText::WarningType getError() const;
 	void initTabOrder(QWidget *item) final;
 	bool isSelfSigned(const QString& cardCode) const;
 	QWidget* lastTabWidget() final;

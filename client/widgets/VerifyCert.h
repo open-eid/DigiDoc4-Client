@@ -36,7 +36,7 @@ public:
 
 	void clear();
 	void update(QSmartCardData::PinType type, const QSmartCardData &data);
-	void update(QSmartCardData::PinType type, const SslCertificate &cert);
+	void update(QSmartCardData::PinType type, SslCertificate cert);
 
 signals:
 	void changePinClicked(QSmartCard::PinAction);

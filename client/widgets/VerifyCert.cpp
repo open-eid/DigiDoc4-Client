@@ -48,7 +48,7 @@ VerifyCert::VerifyCert(QWidget *parent)
 		CertificateDetails::showCertificate(c, this,
 			pinType == QSmartCardData::Pin1Type ? QStringLiteral("-auth") : QStringLiteral("-sign"));
 	});
-	connect(ui->checkCert, &QToolButton::clicked, this, [this]{
+	connect(ui->checkCert, &QToolButton::clicked, this, [this] {
 		auto *dlg = WarningDialog::create(this);
 		QString readMore = tr("Read more <a href=\"https://www.id.ee/en/article/validity-of-id-card-certificates/\">here</a>.");
 		switch(c.validateOnline())
@@ -118,10 +118,10 @@ void VerifyCert::update(QSmartCardData::PinType type, const QSmartCardData &data
 	update();
 }
 
-void VerifyCert::update(QSmartCardData::PinType type, const SslCertificate &cert)
+void VerifyCert::update(QSmartCardData::PinType type, SslCertificate cert)
 {
 	pinType = type;
-	c = cert;
+	c = std::move(cert);
 	update();
 }
 
@@ -129,6 +129,7 @@ void VerifyCert::update()
 {
 	if(cardData.isNull() && c.isNull())
 		return clear();
+	bool isLockedCard = !cardData.isNull() && cardData.pinLocked(QSmartCardData::Pin1Type);
 	bool isLockedPin = !cardData.isNull() && pinType == QSmartCardData::Pin2Type && cardData.pinLocked(pinType);
 	bool isBlockedPin = !cardData.isNull() && cardData.retryCount(pinType) == 0;
 	bool isBlockedPuk = !cardData.isNull() && cardData.retryCount(QSmartCardData::PukType) == 0;
@@ -183,6 +184,9 @@ void VerifyCert::update()
 		{
 			ui->validUntil->setText(tr("Certificate has expired!"));
 			ui->validUntil->setLabel(QStringLiteral("error"));
+			icon = QStringLiteral(":/images/icon_alert_large_error.svg");
+			ui->info->setLabel(QStringLiteral("error"));
+			ui->info->setText(tr("PIN%1 can not be used because the certificate has expired.").arg(pinType));
 		}
 		else if(qint64 leftDays = std::max<qint64>(0, QDateTime::currentDateTime().daysTo(c.expiryDate().toLocalTime())); leftDays <= 105 && !c.isNull())
 		{
@@ -194,18 +198,20 @@ void VerifyCert::update()
 
 		ui->changePIN->setText(tr("Change PIN%1").arg(pinType));
 		ui->forgotPinLink->setText(tr("Change with PUK code"));
-		ui->changePIN->setHidden((isBlockedPin && isBlockedPuk) || isTempelType);
+		ui->changePIN->setHidden(isLockedCard || (isBlockedPin && isBlockedPuk) || isTempelType);
 
 		if(isTempelType)
 		{
 			ui->info->setLabel({});
 			ui->info->setText(tr("PIN can be changed only using eToken utility"));
 		}
-		else if(isInvalidCert)
+		else if(isLockedCard)
 		{
-			icon = QStringLiteral(":/images/icon_alert_large_error.svg");
-			ui->info->setLabel(QStringLiteral("error"));
-			ui->info->setText(tr("PIN%1 can not be used because the certificate has expired.").arg(pinType));
+			icon = QStringLiteral(":/images/icon_alert_large_warning.svg");
+			ui->info->setLabel(QStringLiteral("warning"));
+			ui->info->setText(pinType == QSmartCardData::Pin1Type ?
+				tr("The ID-card must be activated in order to authenticate") :
+				tr("The ID-card must be activated in order to sign"));
 		}
 		else if(isBlockedPin)
 		{
@@ -234,9 +240,9 @@ void VerifyCert::update()
 	if(!icon.isEmpty())
 		ui->nameIcon->load(icon);
 
-	ui->links->setHidden(pinType == QSmartCardData::PukType && (isBlockedPuk || !isPUKReplacable)); // Keep visible in PUK to align fields equaly
+	ui->links->setHidden(pinType == QSmartCardData::PukType && ui->changePIN->isHidden());
 	ui->details->setHidden(pinType == QSmartCardData::PukType);
-	ui->forgotPinLink->setHidden(pinType == QSmartCardData::PukType || isBlockedPin || isBlockedPuk || isTempelType);
+	ui->forgotPinLink->setHidden(pinType == QSmartCardData::PukType || isLockedCard || isBlockedPin || isBlockedPuk || isTempelType);
 	ui->checkCert->setHidden(pinType == QSmartCardData::PukType || isInvalidCert);
 }
 

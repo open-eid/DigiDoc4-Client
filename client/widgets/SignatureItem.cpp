@@ -34,7 +34,7 @@ struct SignatureItem::Private: public Ui::SignatureItem
 {
 	DigiDocSignature signature;
 
-	ria::qdigidoc4::WarningType error = ria::qdigidoc4::NoWarning;
+	WarningText::WarningType error = WarningText::NoWarning;
 	QString serial;
 	QString roleText;
 };
@@ -77,8 +77,9 @@ void SignatureItem::init()
 {
 	const SslCertificate cert = ui->signature.cert();
 
+	using enum WarningText::WarningType;
 	ui->serial.clear();
-	ui->error = ria::qdigidoc4::NoWarning;
+	ui->error = NoWarning;
 	QString nameText;
 	if(!cert.isNull())
 	{
@@ -120,12 +121,12 @@ void SignatureItem::init()
 	case DigiDocSignature::Invalid:
 		ui->status->setLabel(QStringLiteral("error"));
 		ui->status->setText(isSignature ? tr("Signature is not valid") : tr("Timestamp is not valid"));
-		ui->error = isSignature ? ria::qdigidoc4::InvalidSignatureError : ria::qdigidoc4::InvalidTimestampError;
+		ui->error = isSignature ? InvalidSignatureError : InvalidTimestampError;
 		break;
 	case DigiDocSignature::Unknown:
 		ui->status->setLabel(QStringLiteral("error"));
 		ui->status->setText(isSignature ? tr("Signature is unknown") : tr("Timestamp is unknown"));
-		ui->error = isSignature ? ria::qdigidoc4::UnknownSignatureWarning : ria::qdigidoc4::UnknownTimestampWarning;
+		ui->error = isSignature ? UnknownSignatureWarning : UnknownTimestampWarning;
 		break;
 	}
 
@@ -183,7 +184,7 @@ bool SignatureItem::eventFilter(QObject *o, QEvent *e)
 	return Item::eventFilter(o, e);
 }
 
-ria::qdigidoc4::WarningType SignatureItem::getError() const
+WarningText::WarningType SignatureItem::getError() const
 {
 	return ui->error;
 }
