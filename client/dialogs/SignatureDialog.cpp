@@ -128,22 +128,22 @@ SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *par
 		lbl->setFocusPolicy(cnt->text().isEmpty() ? Qt::NoFocus : Qt::TabFocus);
 		cnt->setFocusPolicy(cnt->text().isEmpty() ? Qt::NoFocus : Qt::TabFocus);
 	};
-	setFocus(d->lblSigningCity, d->signerCity);
-	setFocus(d->lblSigningState, d->signerState);
-	setFocus(d->lblSigningCountry, d->signerCountry);
-	setFocus(d->lblSigningZip, d->signerZip);
-	setFocus(d->lblRole, d->signerRoles);
+	setFocus(d->labelCity, d->signerCity);
+	setFocus(d->labelState, d->signerState);
+	setFocus(d->labelCountry, d->signerCountry);
+	setFocus(d->labelZip, d->signerZip);
+	setFocus(d->labelRoles, d->signerRoles);
 
 	// Certificate info
 	QTreeWidget *t = d->signatureView;
 	t->header()->setSectionResizeMode(0, QHeaderView::Fixed);
 	t->header()->resizeSection(0, 244);
 
-	auto addCert = [this](QTreeWidget *t, const QString &title, const QString &title2, const SslCertificate &cert) {
+	auto addCert = [this](QTreeWidget *t, const QString &title, const QString &title2, const QSslCertificate &cert) {
 		if(cert.isNull())
 			return;
 		addItem(t, title, cert);
-		addItem(t, title2, cert.issuerInfo(QSslCertificate::CommonName));
+		addItem(t, title2, cert.issuerInfo(QSslCertificate::CommonName).join(' '));
 	};
 	auto addTime = [this](QTreeWidget *t, const QString &title, const QDateTime &time) {
 		if(time.isNull())
