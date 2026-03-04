@@ -362,6 +362,14 @@ bool CryptoDoc::decrypt(const libcdoc::Lock *lock, const QByteArray& secret)
 	d->files = std::move(cons.files);
 	// Success, immediately create writer from reader
 	d->keys.clear();
+	for(const libcdoc::Lock &lock: d->reader->getLocks())
+	{
+		if(!lock.isCDoc1())
+			continue;
+		const auto &der = lock.getBytes(libcdoc::Lock::CERT);
+		auto &rcpt = d->keys.emplace_back();
+		rcpt.rcpt_cert = QSslCertificate(QByteArray::fromRawData((const char*)der.data(), der.size()), QSsl::Der);
+	}
 	d->reader.reset();
 	return !d->isEncrypted();
 }
