@@ -27,10 +27,8 @@
 
 #include <vector>
 
-class QPKCS11::Private: public QObject
+struct QPKCS11::Private
 {
-	Q_OBJECT
-public:
 	QByteArray attribute( CK_SESSION_HANDLE session, CK_OBJECT_HANDLE obj, CK_ATTRIBUTE_TYPE type ) const;
 	std::vector<CK_OBJECT_HANDLE> findObject(CK_SESSION_HANDLE session, CK_OBJECT_CLASS cls, const QByteArray &id = {}) const;
 
