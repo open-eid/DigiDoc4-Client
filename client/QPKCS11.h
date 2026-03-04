@@ -42,6 +42,6 @@ public:
 	QByteArray sign(QCryptographicHash::Algorithm type, const QByteArray &digest) const final;
 	QList<TokenData> tokens() const final;
 private:
-	class Private;
+	struct Private;
 	Private *d;
 };
