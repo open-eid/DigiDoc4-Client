@@ -225,19 +225,21 @@ CryptoDoc::supportsSymmetricKeys() const
 	return !d->reader && Settings::CDOC2_DEFAULT;
 }
 
-bool CryptoDoc::addEncryptionKey(const QSslCertificate &cert) {
+bool CryptoDoc::addEncryptionKey(const CDKey& key) {
 	if(d->isEncryptedWarning(tr("Failed to add key")))
 		return false;
-	for (auto &k : d->keys) {
-		if (k.rcpt_cert == cert) {
-			WarningDialog::create()
-				->withTitle(tr("Failed to add key"))
-				->withText(tr("Key already exists"))
-				->open();
-			return false;
+	if (!key.rcpt_cert.isNull()) {
+		for (auto &k : d->keys) {
+			if (k.rcpt_cert == key.rcpt_cert) {
+				WarningDialog::create()
+					->withTitle(tr("Failed to add key"))
+					->withText(tr("Key already exists"))
+					->open();
+				return false;
+			}
 		}
 	}
-	d->keys.push_back({{}, cert});
+	d->keys.push_back(key);
 	return true;
 }
 
@@ -364,11 +366,10 @@ bool CryptoDoc::decrypt(const libcdoc::Lock *lock, const QByteArray& secret)
 	d->keys.clear();
 	for(const libcdoc::Lock &lock: d->reader->getLocks())
 	{
-		if(!lock.isCDoc1())
+		if(!lock.isPKI())
 			continue;
-		const auto &der = lock.getBytes(libcdoc::Lock::CERT);
-		auto &rcpt = d->keys.emplace_back();
-		rcpt.rcpt_cert = QSslCertificate(QByteArray::fromRawData((const char*)der.data(), der.size()), QSsl::Der);
+		auto &key = d->keys.emplace_back();
+		key.lock = lock;
 	}
 	d->reader.reset();
 	return !d->isEncrypted();
@@ -413,10 +414,17 @@ bool CryptoDoc::encrypt( const QString &filename, const QString& label, const QB
 		}
 		// Encrypt for address list
 		for (const auto &key : d->keys) {
-			QByteArray ba = key.rcpt_cert.toDer();
-			enc_keys.push_back(keyserver_id.empty() ?
-				libcdoc::Recipient::makeCertificate({}, {ba.cbegin(), ba.cend()}) :
-				libcdoc::Recipient::makeServer({}, {ba.cbegin(), ba.cend()}, keyserver_id));
+			if (!key.rcpt_cert.isNull()) {
+				QByteArray ba = key.rcpt_cert.toDer();
+				enc_keys.push_back(keyserver_id.empty() ?
+					libcdoc::Recipient::makeCertificate({}, {ba.cbegin(), ba.cend()}) :
+					libcdoc::Recipient::makeServer({}, {ba.cbegin(), ba.cend()}, keyserver_id));
+			} else {
+				libcdoc::Recipient rcpt = makeFromLock(key.lock, keyserver_id);
+				if (!rcpt.isEmpty()) {
+					enc_keys.push_back(rcpt);
+				}
+			}
 		}
 		// Encrypt with symmetric key
 		if (!secret.isEmpty()) {

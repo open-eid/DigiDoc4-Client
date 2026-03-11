@@ -327,7 +327,7 @@ void ContainerPage::transition(CryptoDoc *container, const QSslCertificate &cert
 		ui->rightPane->clear();
 		for(auto &key: dlg.keys())
 		{
-			container->addEncryptionKey(key.rcpt_cert);
+			container->addEncryptionKey(key);
 			ui->rightPane->addWidget(new AddressItem(key, AddressItem::Icon, ui->rightPane));
 		}
 		showMainAction({ EncryptContainer });

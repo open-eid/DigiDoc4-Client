@@ -36,6 +36,8 @@
 #include "Utils.h"
 #include "effects/FadeInNotification.h"
 #include <cdoc/CDocReader.h>
+#include <cdoc/Lock.h>
+#include <cdoc/Recipient.h>
 
 #include "CDocSupport.h"
 
@@ -432,4 +434,23 @@ StreamListSource::next(std::string& name, int64_t& size)
 	name = _files[_current].name;
 	size = _files[_current].size;
 	return libcdoc::OK;
+}
+
+libcdoc::Recipient
+makeFromLock(const libcdoc::Lock& lock, const std::string& server_id)
+{
+	switch (lock.type) {
+	case libcdoc::Lock::CDOC1:
+		return libcdoc::Recipient::makeCertificate(lock.label, lock.getBytes(libcdoc::Lock::CERT));
+	case libcdoc::Lock::PUBLIC_KEY:
+	case libcdoc::Lock::SERVER:
+		if (!server_id.empty()) {
+			return libcdoc::Recipient::makeServer(lock.label, lock.getBytes(libcdoc::Lock::RCPT_KEY), server_id);
+		} else {
+			libcdoc::Recipient::PKType rcpt_type = (lock.pk_type == libcdoc::Lock::RSA) ? libcdoc::Recipient::RSA : libcdoc::Recipient::ECC;
+			return libcdoc::Recipient::makePublicKey(lock.label, lock.getBytes(libcdoc::Lock::RCPT_KEY), rcpt_type);
+		}
+	default:
+		return {};
+	}
 }

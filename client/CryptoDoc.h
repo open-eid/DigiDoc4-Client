@@ -55,7 +55,7 @@ public:
 	~CryptoDoc() final;
 
 	bool supportsSymmetricKeys() const;
-    bool addEncryptionKey(const QSslCertificate& cert);
+    bool addEncryptionKey(const CDKey& key);
 	bool canDecrypt(const QSslCertificate &cert);
 	void clear(const QString &file = {});
 	bool decrypt(const libcdoc::Lock *lock, const QByteArray& secret);
