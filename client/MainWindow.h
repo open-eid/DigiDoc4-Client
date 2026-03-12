@@ -58,8 +58,6 @@ private:
 	void changePinClicked(QSmartCardData::PinType type, QSmartCard::PinAction action);
 	void convertToCDoc();
 	ria::qdigidoc4::ContainerState currentState();
-	bool encrypt();
-	void loadPicture();
 	void navigateToPage( ria::qdigidoc4::Pages page, const QStringList &files = QStringList(), bool create = true );
 	void onCryptoAction(int action, const QString &id, const QString &phone);
 	void onSignAction(int action, const QString &idCode, const QString &info2);

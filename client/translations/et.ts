@@ -102,6 +102,10 @@
         <translation>Lisatud</translation>
     </message>
     <message>
+        <source>Decrypt</source>
+        <translation>Dekrüpteeri</translation>
+    </message>
+    <message>
         <source>Add</source>
         <translation>Lisa</translation>
     </message>
@@ -231,13 +235,6 @@
     <message>
         <source>Start downloading</source>
         <translation>Alusta paigaldust</translation>
-    </message>
-</context>
-<context>
-    <name>CDoc2</name>
-    <message>
-        <source>CDoc contains additional payload data that is not part of content</source>
-        <translation>CDoc sisaldab lisanduvat andmehulka, mis ei ole osa sisust</translation>
     </message>
 </context>
 <context>
@@ -485,6 +482,10 @@
         <translation>DigiDoc4 klient</translation>
     </message>
     <message>
+        <source>Decrypting</source>
+        <translation>Dekrüpteerin</translation>
+    </message>
+    <message>
         <source>You are about to delete the last file in the container</source>
         <translation>Oled kustutamas viimast faili ümbrikus</translation>
     </message>
@@ -548,36 +549,20 @@
         <translation>Turvaümbrik ei ole avatud</translation>
     </message>
     <message>
-        <source>Key already exists</source>
-        <translation>Adressaat on juba lisatud</translation>
+        <source>Unsupported file format</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Failed to create temporary files&lt;br /&gt;%1</source>
-        <translation>Ajutiste failde loomine ebaõnnestus&lt;br /&gt;%1</translation>
+        <source>Key already exists</source>
+        <translation>Adressaat on juba lisatud</translation>
     </message>
     <message>
         <source>You do not have the key to decrypt this document</source>
         <translation>Sul puudub võti millega dekrüpteerida seda turvaümbrikut</translation>
     </message>
     <message>
-        <source>Error parsing document</source>
-        <translation>Viga dokumendi parsimisel</translation>
-    </message>
-    <message>
         <source>No keys specified</source>
         <translation>Ühtegi adressaati ei ole lisatud</translation>
-    </message>
-    <message>
-        <source>ID-CARD</source>
-        <translation>ID-KAART</translation>
-    </message>
-    <message>
-        <source>Digi-ID E-RESIDENT</source>
-        <translation>Digi-ID E-RESIDENT</translation>
-    </message>
-    <message>
-        <source>Digi-ID</source>
-        <translation>Digi-ID</translation>
     </message>
     <message>
         <source>Failed to add key</source>
@@ -606,10 +591,6 @@
     <message>
         <source>Failed to open document</source>
         <translation>Dokumendi avamine ebaõnnestus</translation>
-    </message>
-    <message>
-        <source>An error occurred while opening the document</source>
-        <translation>Ümbriku avamisel tekkis viga</translation>
     </message>
     <message>
         <source>Don&apos;t show again</source>
@@ -1241,6 +1222,10 @@
         <translation>Adressaat</translation>
     </message>
     <message>
+        <source>Lock type</source>
+        <translation>Luku tüüp</translation>
+    </message>
+    <message>
         <source>Expiry date</source>
         <translation>Aegumiskuupäev</translation>
     </message>
@@ -1332,6 +1317,10 @@ E-templiga</translation>
     <message>
         <source>Encrypt</source>
         <translation>Krüpteeri</translation>
+    </message>
+    <message>
+        <source>Encrypt long-term</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Decrypt</source>
@@ -1471,7 +1460,7 @@ ID-kaardiga</translation>
     </message>
     <message>
         <source>Decrypting</source>
-        <translation>Dekrüpteerin</translation>
+        <translation type="vanished">Dekrüpteerin</translation>
     </message>
     <message>
         <source>My eID</source>
@@ -1749,6 +1738,57 @@ ID-kaardiga</translation>
     <message>
         <source>The PCSC service, required for using the ID-card, is not working. Check your computer settings.</source>
         <translation>ID-kaardi kasutamiseks vajalik PCSC teenus ei tööta. Kontrolli arvuti seadeid.</translation>
+    </message>
+</context>
+<context>
+    <name>PasswordDialog</name>
+    <message>
+        <source>Encrypt with password</source>
+        <translation>Krüpteeri parooliga</translation>
+    </message>
+    <message>
+        <source>Key label (recipient name or id)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Be sure to save the password in a secure place
+- without the password, you won’t be able to open the file again.</source>
+        <translation>Salvesta parool kindlasti turvalisse kohta
+- ilma paroolita ei saa faili enam avada.</translation>
+    </message>
+    <message>
+        <source>• Length: 20–64 characters
+• Contains at least one number (0–9)
+• Contains at least one uppercase letter
+• Contains at least one lowercase letter</source>
+        <translation>• Pikkus: 20 - 64 tähemärki
+• Sisaldab vähemalt ühte numbrit (0-9)
+• Sisaldab vähemalt ühte suurtähte
+• Sisaldab vähemalt ühte väiketähte</translation>
+    </message>
+    <message>
+        <source>Repeat password</source>
+        <translation>Parool uuesti</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Katkesta</translation>
+    </message>
+    <message>
+        <source>Encrypt</source>
+        <translation>Krüpteeri</translation>
+    </message>
+    <message>
+        <source>Enter password to decrypt the document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Decrypt</source>
+        <translation>Dekrüpteeri</translation>
+    </message>
+    <message>
+        <source>Enter a password to encrypt the document</source>
+        <translation>Loo ümbrikule parool</translation>
     </message>
 </context>
 <context>

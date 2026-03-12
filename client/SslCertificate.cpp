@@ -20,7 +20,6 @@
 #include "SslCertificate.h"
 
 #include "Common.h"
-#include "Crypto.h"
 
 #include <digidocpp/Exception.h>
 #include <digidocpp/crypto/X509Cert.h>
@@ -32,6 +31,7 @@
 #include <QtNetwork/QNetworkRequest>
 #include <QtNetwork/QSslKey>
 
+#include <openssl/core_names.h>
 #include <openssl/ocsp.h>
 #include <openssl/x509v3.h>
 
@@ -60,7 +60,8 @@ struct free_argument<R (&)(T *)>
 };
 
 template<auto F, typename T>
-constexpr auto make_unique_ptr(T *t)
+[[nodiscard]]
+constexpr auto make_unique_ptr(T *t) noexcept
 {
 	return std::unique_ptr<T, free_deleter<F>>(t);
 }
@@ -71,15 +72,15 @@ static auto toQByteArray(T &x)
 	return QByteArray((const char*)x->data, x->length);
 }
 
-template <typename Func, typename Arg>
-static QByteArray i2dDer(Func func, Arg arg)
+template <auto Func, typename Arg>
+static QByteArray i2dDer(Arg arg)
 {
+	QByteArray der;
 	if(!arg)
-		return {};
-	QByteArray der(func(arg, nullptr), 0);
-	auto *p = (unsigned char*)der.data();
-	if(der.isEmpty() || func(arg, &p) != der.size())
-		return {};
+		return der;
+	der.resize(Func(arg, nullptr));
+	if(auto *p = (unsigned char*)der.data(); der.isEmpty() || Func(arg, &p) != der.size())
+		der.clear();
 	return der;
 }
 
@@ -109,7 +110,7 @@ template<auto D>
 auto SslCertificate::extension(int nid) const
 {
 	using T = typename free_argument<decltype(D)>::type;
-	return std::unique_ptr<T, free_deleter<D>>(static_cast<T*>(handle() ? X509_get_ext_d2i((X509*)handle(), nid, nullptr, nullptr) : nullptr));
+	return make_unique_ptr<D>(static_cast<T*>(handle() ? X509_get_ext_d2i((X509*)handle(), nid, nullptr, nullptr) : nullptr));
 }
 
 QMultiHash<SslCertificate::AuthorityInfoAccess, QString> SslCertificate::authorityInfoAccess() const
@@ -188,7 +189,16 @@ QString SslCertificate::keyName() const
 	default:
 #ifndef OPENSSL_NO_ECDSA
 		if(X509 *c = (X509*)handle())
-			return Crypto::curve_oid(X509_get0_pubkey(c));
+		{
+			QByteArray group(64, 0);
+			size_t size = group.size();
+			EVP_PKEY *key = X509_get0_pubkey(c);
+			if(EVP_PKEY_get_utf8_string_param(key, OSSL_PKEY_PARAM_GROUP_NAME, group.data(), group.size(), &size) == 1)
+			{
+				group.resize(size);
+				return group;
+			}
+		}
 #endif
 	}
 	return tr("Unknown");
@@ -376,7 +386,7 @@ SslCertificate::Validity SslCertificate::validateOnline() const
 	// Send request
 	r.setUrl(urls.values(SslCertificate::ad_OCSP).first());
 	r.setHeader(QNetworkRequest::ContentTypeHeader, "application/ocsp-request");
-	repl = m.post(r, i2dDer(i2d_OCSP_REQUEST, ocspReq.get()));
+	repl = m.post(r, i2dDer<i2d_OCSP_REQUEST>(ocspReq.get()));
 	e.exec();
 
 	// Parse response

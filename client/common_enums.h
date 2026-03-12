@@ -42,8 +42,10 @@ enum Actions : unsigned char {
     ContainerEncrypt,
 
     EncryptContainer,
+    EncryptContainerSuccess,
     DecryptContainer,
     DecryptToken,
+    DecryptContainerSuccess,
 
     SignatureAdd,
     SignatureMobile,
@@ -51,6 +53,7 @@ enum Actions : unsigned char {
     SignatureToken,
     ClearSignatureWarning,
     ClearCryptoWarning,
+    EncryptLT
 };
 
 enum Pages : unsigned char {

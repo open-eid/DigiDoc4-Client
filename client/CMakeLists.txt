@@ -15,6 +15,9 @@ else()
 	)
 endif()
 
+set(BUILD_SHARED_LIBS NO)
+add_subdirectory(libcdoc EXCLUDE_FROM_ALL)
+
 file(GLOB WIDGETS CONFIGURE_DEPENDS
 	"dialogs/*.cpp" "dialogs/*.h" "dialogs/*.ui"
 	"effects/*.cpp" "effects/*.h" "effects/*.ui"
@@ -33,14 +36,10 @@ add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
 	main.cpp
 	Application.cpp
 	Application.h
-	CDoc1.cpp
-	CDoc1.h
-	CDoc2.cpp
-	CDoc2.h
+	CDocSupport.cpp
+	CDocSupport.h
 	CheckConnection.cpp
 	CheckConnection.h
-	Crypto.cpp
-	Crypto.h
 	CryptoDoc.cpp
 	CryptoDoc.h
 	DateTime.cpp
@@ -104,8 +103,7 @@ target_link_libraries(${PROJECT_NAME}
 	Qt6::SvgWidgets
 	digidocpp::digidocpp
 	${LDAP_LIBRARIES}
-	$<TARGET_NAME_IF_EXISTS:flatbuffers::flatbuffers>
-	ZLIB::ZLIB
+	cdoc
 )
 
 if(NOT BUILD_DATE)
@@ -123,6 +121,7 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 	MACOSX_BUNDLE_ICON_FILE Icon.icns
 	MACOSX_BUNDLE_GUI_IDENTIFIER "ee.ria.${PROJECT_NAME}"
 )
+
 target_compile_definitions(${PROJECT_NAME} PRIVATE
 	CDOC2_GET_URL="${CDOC2_GET_URL}"
 	CDOC2_POST_URL="${CDOC2_POST_URL}"
@@ -132,25 +131,6 @@ target_compile_definitions(${PROJECT_NAME} PRIVATE
 	VERSION=${PROJECT_VERSION_MAJOR},${PROJECT_VERSION_MINOR},${PROJECT_VERSION_PATCH},${BUILD_NUMBER}
 	VERSION_STR="${VERSION}"
 )
-
-foreach(SCHEMA ${SCHEMAS})
-	get_filename_component(stem ${SCHEMA} NAME_WE)
-	get_filename_component(name ${SCHEMA} NAME)
-	set(GENERATED_INCLUDE ${CMAKE_CURRENT_BINARY_DIR}/${stem}_generated.h)
-	add_custom_command(
-		OUTPUT ${GENERATED_INCLUDE}
-		COMMENT "Compiling flatbuffer for ${name}"
-		COMMAND flatbuffers::flatc
-			--cpp
-			--scoped-enums
-			-o ${CMAKE_CURRENT_BINARY_DIR}
-			-I ${CMAKE_CURRENT_SOURCE_DIR}
-			${SCHEMA}
-		DEPENDS flatbuffers::flatc ${SCHEMA}
-		WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-	)
-	target_sources(${PROJECT_NAME} PRIVATE ${SCHEMA} ${GENERATED_INCLUDE})
-endforeach()
 
 if( APPLE )
 	file(GLOB RESOURCE_FILES mac/*.icns mac/*.lproj)

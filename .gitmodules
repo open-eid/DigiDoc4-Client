@@ -1,3 +1,6 @@
 [submodule "common"]
 	path = common
 	url = ../qt-common
+[submodule "client/libcdoc"]
+	path = client/libcdoc
+	url = ../libcdoc
