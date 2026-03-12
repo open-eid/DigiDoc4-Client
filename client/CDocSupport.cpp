@@ -193,28 +193,26 @@ std::string
 DDConfiguration::getValue(std::string_view domain, std::string_view param) const
 {
 	std::string def = Settings::CDOC2_DEFAULT_KEYSERVER;
-	if (domain == def) {
-		if (param == libcdoc::Configuration::KEYSERVER_SEND_URL) {
+	if (param == libcdoc::Configuration::KEYSERVER_SEND_URL) {
 #ifdef CONFIG_URL
-			QJsonObject list = Application::confValue(QLatin1String("CDOC2-CONF")).toObject();
-			QJsonObject data = list.value(QLatin1String(domain.data(), domain.size())).toObject();
-			QString url = data.value(QLatin1String("POST")).toString(Settings::CDOC2_POST);
-			return url.toStdString();
+		QJsonObject list = Application::confValue(QLatin1String("CDOC2-CONF")).toObject();
+		QJsonObject data = list.value(QLatin1String(domain.data(), domain.size())).toObject();
+		QString url = data.value(QLatin1String("POST")).toString(Settings::CDOC2_POST);
+		return url.toStdString();
 #else
-			QString url = Settings::CDOC2_POST;
-			return url.toStdString();
+		QString url = Settings::CDOC2_POST;
+		return url.toStdString();
 #endif
-		} else if (param == libcdoc::Configuration::KEYSERVER_FETCH_URL) {
+	} else if (param == libcdoc::Configuration::KEYSERVER_FETCH_URL) {
 #ifdef CONFIG_URL
-			QJsonObject list = Application::confValue(QLatin1String("CDOC2-CONF")).toObject();
-			QJsonObject data = list.value(QLatin1String(domain.data(), domain.size())).toObject();
-			QString url = data.value(QLatin1String("FETCH")).toString(Settings::CDOC2_GET);
-			return url.toStdString();
+		QJsonObject list = Application::confValue(QLatin1String("CDOC2-CONF")).toObject();
+		QJsonObject data = list.value(QLatin1String(domain.data(), domain.size())).toObject();
+		QString url = data.value(QLatin1String("FETCH")).toString(Settings::CDOC2_GET);
+		return url.toStdString();
 #else
-			QString url = Settings::CDOC2_GET;
-			return url.toStdString();
+		QString url = Settings::CDOC2_GET;
+		return url.toStdString();
 #endif
-		}
 	}
 	return {};
 }
@@ -305,41 +303,54 @@ DDNetworkBackend::fetchKey(std::vector<uint8_t> &result,
 	return libcdoc::OK;
 }
 
-Q_DECLARE_LOGGING_CATEGORY(LOG_CDOC)
-Q_LOGGING_CATEGORY(LOG_CDOC, "libcdoc")
-
-void DDCDocLogger::logMessage(libcdoc::LogLevel level, std::string_view file, int line, std::string_view message) {
-	switch (level) {
-		using enum libcdoc::LogLevel;
-	case LEVEL_FATAL:
-		Q_FATAL(message);
-		break;
-	case LEVEL_ERROR:
-		qCCritical(LOG_CDOC) << message;
-		break;
-	case LEVEL_WARNING:
-		qCWarning(LOG_CDOC) << message;
-		break;
-	case LEVEL_INFO:
-		qCInfo(LOG_CDOC) << message;
-		break;
-	case LEVEL_DEBUG:
-		qCDebug(LOG_CDOC) << message;
-		break;
-	default:
-		// Trace, if present goes to debug categrory
-		qCDebug(LOG_CDOC) << message;
-		break;
+DDCDocLogger::~DDCDocLogger()
+{
+	if (ofs.is_open()) {
+		ofs.close();
 	}
 }
 
-void DDCDocLogger::setUpLogger() {
-	static DDCDocLogger *logger = nullptr;
-	if (!logger) {
-		logger = new DDCDocLogger();
-		logger->setMinLogLevel(libcdoc::LEVEL_TRACE);
-		libcdoc::setLogger(logger);
+static std::string_view
+level2Str(libcdoc::LogLevel level)
+{
+	static const char *levels[] = {"FATAL", "ERROR", "WARNING", "INFO", "DEBUG", "TRACE"};
+	unsigned int val = (int) level;
+	if (val >= libcdoc::LEVEL_TRACE) return "UNKNWON";
+	return levels[val];
+}
+
+void DDCDocLogger::logMessage(libcdoc::LogLevel level, std::string_view file, int line, std::string_view message) {
+	if (!ofs.is_open()) {
+		ofs.open(path, std::ios_base::app);
 	}
+	std::time_t result = std::time(nullptr);
+	std::tm *tm = std::localtime(&result);
+	std::filesystem::path path(file);
+ 
+	ofs << "[" << tm->tm_year << " " << tm->tm_mon << " " << tm->tm_mday << " " << tm->tm_hour << ":" << tm->tm_min << ":" << tm->tm_sec << "] " <<
+		level2Str(level) << " " << path.filename().string() << ":" << line << " " << message << std::endl;
+	ofs.flush();
+}
+
+DDCDocLogger *
+DDCDocLogger::getLogger()
+{
+	static DDCDocLogger logger;
+	return &logger;
+}
+
+void DDCDocLogger::setUpLogger(const std::string& path)
+{
+	DDCDocLogger *logger = getLogger();
+	logger->setMinLogLevel(libcdoc::LEVEL_WARNING);
+	libcdoc::setLogger(logger);
+	logger->path = path;
+}
+
+void DDCDocLogger::setLogLevel(libcdoc::LogLevel level)
+{
+	DDCDocLogger *logger = getLogger();
+	logger->setMinLogLevel(level);
 }
 
 TempListConsumer::~TempListConsumer()
@@ -382,7 +393,10 @@ TempListConsumer::isError() noexcept
 libcdoc::result_t
 TempListConsumer::open(const std::string& name, int64_t size)
 {
-	IOEntry io({name, "application/octet-stream", 0, {}});
+	std::string truncated = name;
+	if (truncated.starts_with("./PaxHeaders.X/"))
+		truncated = truncated.substr(15);
+	IOEntry io({truncated, "application/octet-stream", 0, {}});
 	if ((size < 0) || (size > MAX_VEC_SIZE)) {
 		io.data = std::make_unique<QTemporaryFile>();
 	} else {

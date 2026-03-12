@@ -422,7 +422,6 @@ bool QPKCS11::reload()
 		if(!r.isPresent())
 			continue;
 		QByteArray atr = r.atr();
-		qDebug() << atr;
 		for(auto i = drivers.cbegin(); i != drivers.cend(); ++i) {
 			if(i.value() == atr && load(i.key()))
 				return true;

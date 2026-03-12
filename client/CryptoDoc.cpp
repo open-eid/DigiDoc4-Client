@@ -246,6 +246,8 @@ bool CryptoDoc::addEncryptionKey(const CDKey& key) {
 bool CryptoDoc::canDecrypt(const QSslCertificate &cert) {
 	if (!d->reader)
 		return false;
+	if (cert.isNull())
+		return false;
 	QByteArray der = cert.toDer();
 	return d->reader->getLockForCert(
 		std::vector<uint8_t>(der.cbegin(), der.cend())) >= 0;

@@ -221,10 +221,13 @@ private:
 
 	void enableLog(bool enable)
 	{
-		if(enable)
+		if(enable) {
 			log = QStringLiteral("%1/libdigidocpp.log").arg(QDir::tempPath()).toStdString();
-		else
+			DDCDocLogger::setLogLevel(libcdoc::LEVEL_DEBUG);
+		} else {
 			log.reset();
+			DDCDocLogger::setLogLevel(libcdoc::LEVEL_WARNING);
+		}
 	}
 
 	template<class T>
@@ -449,6 +452,7 @@ Application::Application( int &argc, char **argv )
 	d->helpAction = d->bar->helpMenu()->addAction(tr("DigiDoc4 Client Help"), this, &Application::openHelp);
 #endif
 
+	DDCDocLogger::setUpLogger(QStringLiteral("%1/libcdoc.log").arg(QDir::tempPath()).toStdString());
 	try
 	{
 		digidoc::Conf::init( new DigidocConf );
@@ -472,7 +476,6 @@ Application::Application( int &argc, char **argv )
 		setQuitOnLastWindowClosed( true );
 		return;
 	}
-	DDCDocLogger::setUpLogger();
 
 	QMetaObject::invokeMethod(this, [this] {
 #ifdef Q_OS_MAC

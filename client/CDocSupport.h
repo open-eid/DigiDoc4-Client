@@ -21,6 +21,7 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QIODevice>
+#include <QtCore/QFile>
 
 #include <cdoc/Configuration.h>
 #include <cdoc/CryptoBackend.h>
@@ -122,12 +123,16 @@ struct DDNetworkBackend final : public libcdoc::NetworkBackend, private QObject 
 
 class DDCDocLogger final : private libcdoc::Logger {
   public:
-	static void setUpLogger();
+	static void setUpLogger(const std::string& path);
+	static void setLogLevel(libcdoc::LogLevel level);
 
   private:
 	DDCDocLogger() = default;
-	~DDCDocLogger() = default;
+	~DDCDocLogger();
+	static DDCDocLogger *getLogger();
 	void logMessage(libcdoc::LogLevel level, std::string_view file, int line, std::string_view message) final;
+	std::string path;
+	std::ofstream ofs;
 };
 
 class CDocSupport {
