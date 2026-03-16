@@ -45,9 +45,6 @@
 QDebug operator<<(QDebug d, std::string_view str) {
 	return d << QUtf8StringView(str);
 }
-#define Q_FATAL(m) qFatal("%s", std::string(m).c_str())
-#else
-#define Q_FATAL(m) qCFatal(LOG_CDOC) << (m)
 #endif
 
 static QByteArray toByteArray(const std::vector<uint8_t> &data) {
@@ -55,24 +52,24 @@ static QByteArray toByteArray(const std::vector<uint8_t> &data) {
 }
 
 std::vector<libcdoc::FileInfo>
-CDocSupport::getCDocFileList(QString filename)
+CDocSupport::getCDocFileList(const QString &filename)
 {
 	std::vector<libcdoc::FileInfo> files;
-	int version = libcdoc::CDocReader::getCDocFileVersion(filename.toStdString());
-	if (version != 1) return files;
+	if (libcdoc::CDocReader::getCDocFileVersion(filename.toStdString()) != 1)
+		return files;
 	QFile ifs(filename);
 	if(!ifs.open(QIODevice::ReadOnly))
 		return files;
 	QXmlStreamReader xml(&ifs);
 	while (xml.readNextStartElement()) {
-		if (xml.name() == QStringLiteral("EncryptedData")) {
+		if (xml.name() == QLatin1String("EncryptedData")) {
 			while (xml.readNextStartElement()) {
-				if (xml.name() == QStringLiteral("EncryptionProperties")) {
+				if (xml.name() == QLatin1String("EncryptionProperties")) {
 					while (xml.readNextStartElement()) {
-						if (xml.name() == QStringLiteral("EncryptionProperty")) {
-							if (xml.attributes().value(QStringLiteral("Name")) == QStringLiteral("orig_file")) {
+						if (xml.name() == QLatin1String("EncryptionProperty")) {
+							if (xml.attributes().value(QStringLiteral("Name")) == QLatin1String("orig_file")) {
 								QString content = xml.readElementText();
-								auto list = content.split("|");
+								auto list = content.split('|');
 								files.push_back({list.at(0).toStdString(), list.at(1).toInt()});
 							} else {
 								xml.skipCurrentElement();
@@ -89,7 +86,6 @@ CDocSupport::getCDocFileList(QString filename)
 			xml.skipCurrentElement();
 		}
 	}
-	ifs.close();
 
 	return files;
 }
@@ -122,20 +118,18 @@ DDCryptoBackend::decryptRSA(std::vector<uint8_t>& result, const std::vector<uint
 	return getDecryptStatus(result, pin_status);
 }
 
-constexpr std::string_view SHA256_MTH {"http://www.w3.org/2001/04/xmlenc#sha256"};
-constexpr std::string_view SHA384_MTH {"http://www.w3.org/2001/04/xmlenc#sha384"};
-constexpr std::string_view SHA512_MTH {"http://www.w3.org/2001/04/xmlenc#sha512"};
-const QHash<std::string_view, QCryptographicHash::Algorithm> SHA_MTH{
-	{SHA256_MTH, QCryptographicHash::Sha256}, {SHA384_MTH, QCryptographicHash::Sha384}, {SHA512_MTH, QCryptographicHash::Sha512}
-};
-
 libcdoc::result_t
 DDCryptoBackend::deriveConcatKDF(std::vector<uint8_t>& dst, const std::vector<uint8_t> &publicKey, const std::string &digest,
 								 const std::vector<uint8_t> &algorithmID, const std::vector<uint8_t> &partyUInfo, const std::vector<uint8_t> &partyVInfo, unsigned int idx)
 {
 	QCryptoBackend::PinStatus pin_status;
 	QByteArray decryptedKey = qApp->signer()->decrypt([&publicKey, &digest, &algorithmID, &partyUInfo, &partyVInfo](QCryptoBackend *backend) {
-		return backend->deriveConcatKDF(toByteArray(publicKey), SHA_MTH[digest],
+		static const QHash<std::string_view, QCryptographicHash::Algorithm> SHA_MTH{
+			{"http://www.w3.org/2001/04/xmlenc#sha256", QCryptographicHash::Sha256},
+			{"http://www.w3.org/2001/04/xmlenc#sha384", QCryptographicHash::Sha384},
+			{"http://www.w3.org/2001/04/xmlenc#sha512", QCryptographicHash::Sha512}
+		};
+		return backend->deriveConcatKDF(toByteArray(publicKey), SHA_MTH.value(digest),
 			toByteArray(algorithmID), toByteArray(partyUInfo), toByteArray(partyVInfo));
 	}, pin_status);
 	dst.assign(decryptedKey.cbegin(), decryptedKey.cend());
@@ -176,7 +170,7 @@ DDCryptoBackend::getLastErrorStr(libcdoc::result_t code) const
 	return libcdoc::CryptoBackend::getLastErrorStr(code);
 }
 
-bool
+static bool
 checkConnection()
 {
 	if(CheckConnection().check()) {
@@ -265,7 +259,7 @@ libcdoc::result_t DDNetworkBackend::sendKey(
 	dst.transaction_id = tr_id.toStdString();
 
 	if (const QByteArray &expiry = reply->rawHeader("x-expiry-time"); !expiry.isEmpty()) {
-		dst.expiry_time = QDateTime::fromString(QLatin1String(expiry)).toSecsSinceEpoch();
+		dst.expiry_time = QDateTime::fromString(QLatin1String(expiry), Qt::ISODate).toSecsSinceEpoch();
 	} else {
 		dst.expiry_time = expiry_ts;
 	}
@@ -310,26 +304,30 @@ DDCDocLogger::~DDCDocLogger()
 	}
 }
 
-static std::string_view
-level2Str(libcdoc::LogLevel level)
+static constexpr std::string_view
+level2Str(libcdoc::LogLevel level) noexcept
 {
-	static const char *levels[] = {"FATAL", "ERROR", "WARNING", "INFO", "DEBUG", "TRACE"};
-	unsigned int val = (int) level;
-	if (val >= libcdoc::LEVEL_TRACE) return "UNKNWON";
-	return levels[val];
+	switch (level) {
+		using enum libcdoc::LogLevel;
+	case LEVEL_FATAL: return "FATAL";
+	case LEVEL_ERROR: return "ERROR";
+	case LEVEL_WARNING: return "WARNING";
+	case LEVEL_INFO: return "INFO";
+	case LEVEL_DEBUG: return "DEBUG";
+	case LEVEL_TRACE: return "TRACE";
+	default: return "UNKNWON";
+	}
 }
 
 void DDCDocLogger::logMessage(libcdoc::LogLevel level, std::string_view file, int line, std::string_view message) {
 	if (!ofs.is_open()) {
-		ofs.open(path, std::ios_base::app);
+		return;
 	}
-	std::time_t result = std::time(nullptr);
-	std::tm *tm = std::localtime(&result);
-	std::filesystem::path path(file);
+	auto time = QDateTime::currentDateTime().toString(QStringLiteral("[yyyy-MM-dd hh:mm:ss] "));
+	if (auto pos = file.find_last_of("\\/"); pos != std::string_view::npos)
+		file = file.substr(pos);
  
-	ofs << "[" << tm->tm_year << " " << tm->tm_mon << " " << tm->tm_mday << " " << tm->tm_hour << ":" << tm->tm_min << ":" << tm->tm_sec << "] " <<
-		level2Str(level) << " " << path.filename().string() << ":" << line << " " << message << std::endl;
-	ofs.flush();
+	ofs << time.toStdString() << level2Str(level) << ' ' << file << ':' << line << ' ' << message << std::endl;
 }
 
 DDCDocLogger *
@@ -343,8 +341,8 @@ void DDCDocLogger::setUpLogger(const std::string& path)
 {
 	DDCDocLogger *logger = getLogger();
 	logger->setMinLogLevel(libcdoc::LEVEL_WARNING);
+	logger->ofs.open(path, std::ios_base::app);
 	libcdoc::setLogger(logger);
-	logger->path = path;
 }
 
 void DDCDocLogger::setLogLevel(libcdoc::LogLevel level)

@@ -131,13 +131,12 @@ class DDCDocLogger final : private libcdoc::Logger {
 	~DDCDocLogger();
 	static DDCDocLogger *getLogger();
 	void logMessage(libcdoc::LogLevel level, std::string_view file, int line, std::string_view message) final;
-	std::string path;
 	std::ofstream ofs;
 };
 
 class CDocSupport {
 public:
-	static std::vector<libcdoc::FileInfo> getCDocFileList(QString filename);
+	static std::vector<libcdoc::FileInfo> getCDocFileList(const QString &filename);
 };
 
 //
