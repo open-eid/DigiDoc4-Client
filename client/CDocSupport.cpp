@@ -26,6 +26,7 @@
 #include <QtNetwork/QSslKey>
 #include <QLoggingCategory>
 #include <QXmlStreamReader>
+#include <utility>
 
 #include "Application.h"
 #include "CheckConnection.h"
@@ -365,8 +366,8 @@ libcdoc::result_t TempListConsumer::write(const uint8_t *src, size_t size) noexc
 	IOEntry &file = files.back();
 	if (!file.data->isWritable())
 		return libcdoc::OUTPUT_ERROR;
-	if (file.data->write((const char *)src, size) != size)
-		return libcdoc::OUTPUT_STREAM_ERROR;
+	if (auto result = file.data->write((const char *)src, size); std::cmp_not_equal(result , size))
+		return result;
 	file.size += size;
 	return size;
 }
