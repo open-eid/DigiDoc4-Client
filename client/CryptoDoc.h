@@ -41,10 +41,15 @@ Q_DECLARE_LOGGING_CATEGORY(CRYPTO)
 // - recipient certificate for encryption
 //
 
-struct CDKey {
-    libcdoc::Lock lock;
+class CDKey {
+public:
+	CDKey(const libcdoc::Lock& _lock) : lock(_lock) {}
+	CDKey(QSslCertificate rcpt_cert);
+
+	libcdoc::Lock lock;
     QSslCertificate rcpt_cert;
-	bool operator== (const CDKey& rhs) const = default;
+
+	bool operator== (const CDKey& rhs) const;
 };
 
 class CryptoDoc final: public QObject
@@ -57,7 +62,7 @@ public:
 	bool supportsSymmetricKeys() const;
     bool addEncryptionKey(const CDKey& key);
 	bool canDecrypt(const QSslCertificate &cert);
-	void clear(const QString &file = {});
+	void clear(const QString &file = {}, int version = -1);
 	bool decrypt(const libcdoc::Lock *lock, const QByteArray& secret);
 	bool encrypt(const QString &filename = {}, const QString& label = {}, const QByteArray& secret = {});
 	DocumentModel* documentModel() const;

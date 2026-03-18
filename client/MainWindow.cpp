@@ -26,6 +26,7 @@
 #include "DigiDoc.h"
 #include "QPCSC.h"
 #include "QSigner.h"
+#include "Settings.h"
 #include "SslCertificate.h"
 #include "TokenData.h"
 #include "effects/FadeInNotification.h"
@@ -268,7 +269,7 @@ void MainWindow::navigateToPage( Pages page, const QStringList &files, bool crea
 			QString filename = FileDialog::createNewFileName(files[0], false, this);
 			if(!filename.isNull())
 			{
-				cryptoContainer->clear(filename);
+				cryptoContainer->clear(filename, Settings::CDOC2_DEFAULT ? 2 : 1);
 				for(const auto &file: files)
 				{
 					if(cryptoContainer->documentModel()->addFile(file))
@@ -341,7 +342,7 @@ void MainWindow::convertToCDoc()
 		return;
 
 	auto cryptoContainer = std::make_unique<CryptoDoc>(this);
-	cryptoContainer->clear(filename);
+	cryptoContainer->clear(filename, Settings::CDOC2_DEFAULT ? 2 : 1);
 
 	// If signed, add whole signed document to cryptocontainer; otherwise
 	// content only
@@ -352,7 +353,7 @@ void MainWindow::convertToCDoc()
 
 	auto cardData = qApp->signer()->tokenauth();
 	if (!cardData.cert().isNull()) {
-		cryptoContainer->addEncryptionKey({{}, cardData.cert()});
+		cryptoContainer->addEncryptionKey(CDKey(cardData.cert()));
 	}
 
 	cryptoDoc = std::move(cryptoContainer);

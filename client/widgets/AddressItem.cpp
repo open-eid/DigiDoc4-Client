@@ -31,6 +31,8 @@ using namespace ria::qdigidoc4;
 class AddressItem::Private: public Ui::AddressItem
 {
 public:
+	Private(const CDKey& _key) : key(_key) {}
+
 	QString code;
 	CDKey key;
 	QString label;
@@ -40,7 +42,7 @@ public:
 
 AddressItem::AddressItem(const CDKey &key, Type type, QWidget *parent)
 	: Item(parent)
-	, ui(new Private)
+	, ui(new Private(key))
 {
 	ui->key = key;
 	ui->setupUi(this);

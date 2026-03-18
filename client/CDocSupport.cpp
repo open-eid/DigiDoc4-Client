@@ -454,15 +454,20 @@ makeFromLock(const libcdoc::Lock& lock, const std::string& server_id)
 {
 	switch (lock.type) {
 	case libcdoc::Lock::CDOC1:
-		return libcdoc::Recipient::makeCertificate(lock.label, lock.getBytes(libcdoc::Lock::CERT));
-	case libcdoc::Lock::PUBLIC_KEY:
-	case libcdoc::Lock::SERVER:
 		if (!server_id.empty()) {
-			return libcdoc::Recipient::makeServer(lock.label, lock.getBytes(libcdoc::Lock::RCPT_KEY), server_id);
+			return libcdoc::Recipient::makeServer(lock.label, lock.getBytes(libcdoc::Lock::CERT), server_id);
 		} else {
-			libcdoc::Recipient::PKType rcpt_type = (lock.pk_type == libcdoc::Lock::RSA) ? libcdoc::Recipient::RSA : libcdoc::Recipient::ECC;
+			return libcdoc::Recipient::makeCertificate(lock.label, lock.getBytes(libcdoc::Lock::CERT));
+		}
+	case libcdoc::Lock::PUBLIC_KEY:
+	case libcdoc::Lock::SERVER: {
+		libcdoc::Recipient::PKType rcpt_type = (lock.pk_type == libcdoc::Lock::RSA) ? libcdoc::Recipient::RSA : libcdoc::Recipient::ECC;
+		if (!server_id.empty()) {
+			return libcdoc::Recipient::makeServer(lock.label, lock.getBytes(libcdoc::Lock::RCPT_KEY), rcpt_type, server_id);
+		} else {
 			return libcdoc::Recipient::makePublicKey(lock.label, lock.getBytes(libcdoc::Lock::RCPT_KEY), rcpt_type);
 		}
+	}
 	default:
 		return {};
 	}

@@ -106,6 +106,8 @@ public:
 	CertType	type() const;
 	Validity	validateOnline() const;
 
+	QByteArray	publicKeyDer();
+
 private:
 	template<auto D>
 	auto extension(int nid) const;
