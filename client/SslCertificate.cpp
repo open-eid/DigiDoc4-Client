@@ -417,7 +417,7 @@ SslCertificate::publicKeyDer()
 	const uint8_t *p = (uint8_t *) der.data();
 	auto pkey = make_unique_ptr<EVP_PKEY_free>(d2i_PUBKEY(nullptr, &p, (long) der.size()));
 	if(!pkey) return {};
-	der.resize(i2d_PublicKey(pkey.get(), nullptr), 0);
+	der.resize(i2d_PublicKey(pkey.get(), nullptr));
     uint8_t *q = (uint8_t *) der.data();
     if(i2d_PublicKey(pkey.get(), &q) != der.size())
         der.clear();

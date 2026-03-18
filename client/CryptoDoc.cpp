@@ -389,11 +389,11 @@ bool CryptoDoc::decrypt(const libcdoc::Lock *lock, const QByteArray& secret)
 	d->files = std::move(cons.files);
 	// Success, immediately create writer from reader
 	d->keys.clear();
-	for(const libcdoc::Lock &lock: d->reader->getLocks())
+	for(const libcdoc::Lock &l: d->reader->getLocks())
 	{
-		if(!lock.isPKI())
+		if(!l.isPKI())
 			continue;
-		auto &key = d->keys.emplace_back(lock);
+		d->keys.emplace_back(l);
 	}
 	d->reader.reset();
 	return !d->isEncrypted();
