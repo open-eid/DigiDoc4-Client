@@ -41,7 +41,7 @@ Q_DECLARE_LOGGING_CATEGORY(CRYPTO)
 // - recipient certificate for encryption
 //
 
-class CDKey {
+struct CDKey {
 public:
 	CDKey(const libcdoc::Lock& _lock) : lock(_lock) {}
 	CDKey(QSslCertificate rcpt_cert);
