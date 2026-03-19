@@ -40,6 +40,8 @@
 #include <QtNetwork/QSslKey>
 #include <QtWidgets/QMessageBox>
 
+#include <filesystem>
+
 #include <cdoc/CDocReader.h>
 #include <cdoc/CDocWriter.h>
 #include <cdoc/Certificate.h>
@@ -533,9 +535,12 @@ void CryptoDoc::clearKeys()
 
 bool CryptoDoc::saveCopy(const QString &filename)
 {
-	if(QFileInfo(filename) == QFileInfo(d->fileName))
+	QFileInfo src(d->fileName);
+	QFileInfo dst(filename);
+	if(src == dst)
 		return true;
-	if(QFile::exists(filename))
-		QFile::remove(filename);
-	return QFile::copy(d->fileName, filename);
+	std::error_code ec;
+	std::filesystem::copy_file(src.filesystemFilePath(), dst.filesystemFilePath(),
+		std::filesystem::copy_options::overwrite_existing, ec);
+	return !ec;
 }
