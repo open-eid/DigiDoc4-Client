@@ -238,6 +238,13 @@
     </message>
 </context>
 <context>
+    <name>C</name>
+    <message>
+        <source>DigiDoc4 Client</source>
+        <translation type="unfinished">DigiDoc4 Client</translation>
+    </message>
+</context>
+<context>
     <name>CDocumentModel</name>
     <message>
         <source>Added file(s) exceeds the maximum size limit of the container (∼120MB). &lt;a href=&apos;https://www.id.ee/en/article/encrypting-large-120-mb-files/&apos;&gt;Read more about it&lt;/a&gt;</source>
@@ -487,11 +494,11 @@
     </message>
     <message>
         <source>You are about to delete the last file in the container</source>
-        <translation>You are about to delete the last file in the container</translation>
+        <translation type="vanished">You are about to delete the last file in the container</translation>
     </message>
     <message>
         <source>It is removed along with the container.</source>
-        <translation>It is removed along with the container.</translation>
+        <translation type="vanished">It is removed along with the container.</translation>
     </message>
     <message>
         <source>In order to view Validity Confirmation Sheet there has to be at least one printer installed!</source>
@@ -536,6 +543,14 @@
     <message>
         <source>Continue signing</source>
         <translation>Continue signing</translation>
+    </message>
+    <message>
+        <source>Cannot alter container %1. Save different location?</source>
+        <translation type="unfinished">Cannot alter container %1. Save to different location?</translation>
+    </message>
+    <message>
+        <source>Encrypting</source>
+        <translation type="unfinished">Encrypting</translation>
     </message>
 </context>
 <context>
@@ -595,6 +610,22 @@
     <message>
         <source>Don&apos;t show again</source>
         <translation>Don&apos;t show again</translation>
+    </message>
+    <message>
+        <source>Wrong password.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wrong key.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Corrupted or tampered file.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot read file.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -669,27 +700,27 @@
     </message>
     <message>
         <source>Unknown - error %1</source>
-        <translation>Unknown - error %1</translation>
+        <translation type="vanished">Unknown - error %1</translation>
     </message>
     <message>
         <source>User</source>
-        <translation>User</translation>
+        <translation type="vanished">User</translation>
     </message>
     <message>
         <source>Administrator</source>
-        <translation>Administrator</translation>
+        <translation type="vanished">Administrator</translation>
     </message>
     <message>
         <source>User rights: </source>
-        <translation>User rights: </translation>
+        <translation type="vanished">User rights: </translation>
     </message>
     <message>
         <source>Not found</source>
-        <translation>Not found</translation>
+        <translation type="vanished">Not found</translation>
     </message>
     <message>
         <source>Certificate Propagation service status: </source>
-        <translation>Certificate Propagation service status: </translation>
+        <translation type="vanished">Certificate Propagation service status: </translation>
     </message>
     <message>
         <source>is set manually</source>
@@ -1419,7 +1450,7 @@ ID-Card</translation>
     </message>
     <message>
         <source>Encrypting</source>
-        <translation>Encrypting</translation>
+        <translation type="vanished">Encrypting</translation>
     </message>
     <message>
         <source>Signing</source>
@@ -3004,6 +3035,14 @@ Additional licenses and components</translation>
     <message>
         <source>Remove</source>
         <translation>Remove</translation>
+    </message>
+    <message>
+        <source>You are about to delete the last file in the container</source>
+        <translation type="unfinished">You are about to delete the last file in the container</translation>
+    </message>
+    <message>
+        <source>It is removed along with the container.</source>
+        <translation type="unfinished">It is removed along with the container.</translation>
     </message>
 </context>
 <context>

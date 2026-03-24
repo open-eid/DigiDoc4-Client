@@ -238,6 +238,13 @@
     </message>
 </context>
 <context>
+    <name>C</name>
+    <message>
+        <source>DigiDoc4 Client</source>
+        <translation type="unfinished">DigiDoc4 клиент</translation>
+    </message>
+</context>
+<context>
     <name>CDocumentModel</name>
     <message>
         <source>Added file(s) exceeds the maximum size limit of the container (∼120MB). &lt;a href=&apos;https://www.id.ee/en/article/encrypting-large-120-mb-files/&apos;&gt;Read more about it&lt;/a&gt;</source>
@@ -487,11 +494,11 @@
     </message>
     <message>
         <source>You are about to delete the last file in the container</source>
-        <translation>Вы собираетесь удалить последний файл в контейнере</translation>
+        <translation type="vanished">Вы собираетесь удалить последний файл в контейнере</translation>
     </message>
     <message>
         <source>It is removed along with the container.</source>
-        <translation>Он удаляется вместе с контейнером.</translation>
+        <translation type="vanished">Он удаляется вместе с контейнером.</translation>
     </message>
     <message>
         <source>In order to view Validity Confirmation Sheet there has to be at least one printer installed!</source>
@@ -536,6 +543,14 @@
     <message>
         <source>Continue signing</source>
         <translation>Подписать</translation>
+    </message>
+    <message>
+        <source>Cannot alter container %1. Save different location?</source>
+        <translation type="unfinished">Сохранение контейнера %1 не удалось. Сохранить в другой каталог?</translation>
+    </message>
+    <message>
+        <source>Encrypting</source>
+        <translation type="unfinished">Зашифровывание</translation>
     </message>
 </context>
 <context>
@@ -595,6 +610,22 @@
     <message>
         <source>Don&apos;t show again</source>
         <translation>Больше не показывать</translation>
+    </message>
+    <message>
+        <source>Wrong password.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wrong key.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Corrupted or tampered file.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot read file.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -669,27 +700,27 @@
     </message>
     <message>
         <source>Unknown - error %1</source>
-        <translation>Неизвестная - ошибка %1</translation>
+        <translation type="vanished">Неизвестная - ошибка %1</translation>
     </message>
     <message>
         <source>User</source>
-        <translation>Пользователь</translation>
+        <translation type="vanished">Пользователь</translation>
     </message>
     <message>
         <source>Administrator</source>
-        <translation>Администратор</translation>
+        <translation type="vanished">Администратор</translation>
     </message>
     <message>
         <source>User rights: </source>
-        <translation>Права пользователя: </translation>
+        <translation type="vanished">Права пользователя: </translation>
     </message>
     <message>
         <source>Not found</source>
-        <translation>Не найдено</translation>
+        <translation type="vanished">Не найдено</translation>
     </message>
     <message>
         <source>Certificate Propagation service status: </source>
-        <translation>Статус Certificate Propagation сервиса: </translation>
+        <translation type="vanished">Статус Certificate Propagation сервиса: </translation>
     </message>
     <message>
         <source>is set manually</source>
@@ -1419,7 +1450,7 @@ ID-картой</translation>
     </message>
     <message>
         <source>Encrypting</source>
-        <translation>Зашифровывание</translation>
+        <translation type="vanished">Зашифровывание</translation>
     </message>
     <message>
         <source>Signing</source>
@@ -3001,6 +3032,14 @@ Additional licenses and components</source>
     <message>
         <source>Remove</source>
         <translation>Удалить</translation>
+    </message>
+    <message>
+        <source>You are about to delete the last file in the container</source>
+        <translation type="unfinished">Вы собираетесь удалить последний файл в контейнере</translation>
+    </message>
+    <message>
+        <source>It is removed along with the container.</source>
+        <translation type="unfinished">Он удаляется вместе с контейнером.</translation>
     </message>
 </context>
 <context>

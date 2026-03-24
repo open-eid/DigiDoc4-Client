@@ -379,10 +379,27 @@ bool CryptoDoc::decrypt(const libcdoc::Lock *lock, const QByteArray& secret)
 		return result;
 	});
 	if (result != libcdoc::OK) {
+		QString str;
 		const std::string &msg = d->reader->getLastErrorStr();
+		switch (result) {
+		case libcdoc::WRONG_KEY:
+			str = (lock->type == libcdoc::Lock::PASSWORD) ? tr("Wrong password.") : tr("Wrong key.");
+			break;
+		case libcdoc::HASH_MISMATCH:
+		case libcdoc::DATA_FORMAT_ERROR:
+			str = tr("Corrupted or tampered file.");
+			break;
+		case libcdoc::INPUT_ERROR:
+		case libcdoc::INPUT_STREAM_ERROR:
+			str = tr("Cannot read file.");
+			break;
+		default:
+			str = tr("Please check your internet connection and network settings.");
+			break;
+		}
 		WarningDialog::create()
 			->withTitle(QSigner::tr("Failed to decrypt document"))
-			->withText(tr("Please check your internet connection and network settings."))
+			->withText(str)
 			->withDetails(QString::fromStdString(msg))
 			->open();
 		return false;
