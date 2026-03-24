@@ -68,6 +68,7 @@ private:
 	void encrypt(CryptoDoc *container, bool longTerm);
 	bool eventFilter(QObject *o, QEvent *e) final;
 	void showMainAction(const QList<ria::qdigidoc4::Actions> &actions);
+	void showEncryptAction(CryptoDoc *container);
 	void showSigningButton();
 	void handleAction(int type);
 	void updateDecryptionButton();

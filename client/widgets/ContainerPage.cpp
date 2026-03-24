@@ -296,6 +296,24 @@ void ContainerPage::showMainAction(const QList<Actions> &actions)
 	ui->navigationArea->layout()->invalidate();
 }
 
+void ContainerPage::showEncryptAction(CryptoDoc *container)
+{
+	if (!container->keys().empty()) {
+		mainAction->showActions({EncryptContainer});
+		mainAction->setButtonEnabled(true);
+	} else {
+		if (container->supportsSymmetricKeys()) {
+			mainAction->showActions({EncryptLT});
+			mainAction->setButtonEnabled(true);
+		} else {
+			mainAction->showActions({EncryptContainer});
+			mainAction->setButtonEnabled(false);
+		}
+	}
+	ui->mainActionSpacer->changeSize(198, 20, QSizePolicy::Fixed);
+	ui->navigationArea->layout()->invalidate();
+}
+
 void ContainerPage::showSigningButton()
 {
 	if (!isSupported)
@@ -330,13 +348,13 @@ void ContainerPage::transition(CryptoDoc *container, const QSslCertificate &cert
 			container->addEncryptionKey(key);
 			ui->rightPane->addWidget(new AddressItem(key, AddressItem::Icon, ui->rightPane));
 		}
-		showMainAction({ EncryptContainer });
+		showEncryptAction(container);
 	});
 	disconnect(ui->rightPane, &ItemList::removed, container, nullptr);
 	connect(ui->rightPane, &ItemList::removed, container, [this, container](int index) {
 		container->removeKey(index);
 		ui->rightPane->removeItem(index);
-		showMainAction({ EncryptContainer });
+		showEncryptAction(container);
 	});
 	disconnect(this, &ContainerPage::certChanged, container, nullptr);
 	connect(this, &ContainerPage::certChanged, container, [this, container](const SslCertificate &cert) {
@@ -553,11 +571,7 @@ void ContainerPage::updatePanes(ria::qdigidoc4::ContainerState state, CryptoDoc 
 	case UnencryptedContainer:
 		cancelText = QT_TR_NOOP("Start");
 		convertText = QT_TR_NOOP("Sign");
-		if (crypto_container && crypto_container->supportsSymmetricKeys()) {
-			showMainAction({ EncryptContainer, EncryptLT });
-		} else {
-			showMainAction({ EncryptContainer });
-		}
+		showEncryptAction(crypto_container);
 		setButtonsVisible({ ui->changeLocation, ui->convert }, true);
 		setButtonsVisible({ ui->saveAs, ui->email }, false);
 		break;
