@@ -1803,6 +1803,18 @@ ID-kaardiga</translation>
         <translation>Dekrüpteeri</translation>
     </message>
     <message>
+        <source>Password is empty</source>
+        <translation>Parool on tühi</translation>
+    </message>
+    <message>
+        <source>Password does not meet complexity requirements</source>
+        <translation>Parool ei vasta keerukusnõuetele</translation>
+    </message>
+    <message>
+        <source>Passwords do not match</source>
+        <translation>Paroolid ei ühti</translation>
+    </message>
+    <message>
         <source>Enter a password to encrypt the document</source>
         <translation>Loo ümbrikule parool</translation>
     </message>

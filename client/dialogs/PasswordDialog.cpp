@@ -31,17 +31,38 @@ PasswordDialog::PasswordDialog(Mode mode, QWidget *parent)
 	ui->labelLine->setReadOnly(mode == Mode::DECRYPT);
 	ui->infoWidget->setHidden(mode == Mode::DECRYPT);
 	ui->passwordHint->setHidden(mode == Mode::DECRYPT);
+	ui->passwordError->hide();
 	ui->password2Label->setHidden(mode == Mode::DECRYPT);
 	ui->password2Line->setHidden(mode == Mode::DECRYPT);
+	ui->password2Error->hide();
 	if(mode == DECRYPT) {
 		ui->passwordLabel->setText(tr("Enter password to decrypt the document"));
 		ui->ok->setText(tr("Decrypt"));
 	}
-	connect(ui->ok, &QPushButton::clicked, this, &QDialog::accept);
+	auto setError = [this](LineEdit *input, QLabel *error, const QString &msg) {
+		input->setLabel(msg.isEmpty() ? QString() : QStringLiteral("error"));
+		error->setFocusPolicy(msg.isEmpty() ? Qt::NoFocus : Qt::TabFocus);
+		error->setText(msg);
+		error->setHidden(msg.isEmpty());
+	};
+	connect(ui->passwordLine, &QLineEdit::textEdited, ui->passwordError, [this, setError] {
+		setError(ui->passwordLine, ui->passwordError, {});
+	});
+	connect(ui->password2Line, &QLineEdit::textEdited, ui->password2Error, [this, setError] {
+		setError(ui->password2Line, ui->password2Error, {});
+	});
+	connect(ui->ok, &QPushButton::clicked, this, [this, setError] {
+		if(ui->passwordLine->text().isEmpty())
+			return setError(ui->passwordLine, ui->passwordError, tr("Password is empty"));
+		if(static const QRegularExpression re(QStringLiteral(R"(^(?=.{20,64}$)(?=.*\d)(?=.*[A-Z])(?=.*[a-z]).*$)"));
+			ui->password2Line->isVisible() && !re.match(ui->passwordLine->text()).hasMatch())
+			return setError(ui->passwordLine, ui->passwordError, tr("Password does not meet complexity requirements"));
+		if(ui->password2Line->isVisible() &&
+			ui->passwordLine->text() != ui->password2Line->text())
+			return setError(ui->password2Line, ui->password2Error, tr("Passwords do not match"));
+		accept();
+	});
 	connect(ui->cancel, &QPushButton::clicked, this, &QDialog::reject);
-	connect(ui->passwordLine, &QLineEdit::textChanged, this, &PasswordDialog::updateOK);
-	connect(ui->password2Line, &QLineEdit::textChanged, this, &PasswordDialog::updateOK);
-	updateOK();
 }
 
 PasswordDialog::~PasswordDialog()
@@ -65,19 +86,4 @@ QByteArray
 PasswordDialog::secret() const
 {
 	return ui->passwordLine->text().toUtf8();
-}
-
-void
-PasswordDialog::updateOK()
-{
-	bool active = false;
-	if(ui->password2Line->isVisible())
-	{
-		static const QRegularExpression re(QStringLiteral(R"(^(?=.{20,64}$)(?=.*\d)(?=.*[A-Z])(?=.*[a-z]).*$)"));
-		active = re.match(ui->passwordLine->text()).hasMatch() &&
-			ui->passwordLine->text() == ui->password2Line->text();
-	}
-	else
-		active = !ui->passwordLine->text().isEmpty();
-	ui->ok->setEnabled(active);
 }
