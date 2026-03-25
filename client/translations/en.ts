@@ -1803,6 +1803,18 @@ ID-Card</translation>
         <translation>Decrypt</translation>
     </message>
     <message>
+        <source>Password is empty</source>
+        <translation>Password is empty</translation>
+    </message>
+    <message>
+        <source>Password does not meet complexity requirements</source>
+        <translation>Password does not meet complexity requirements</translation>
+    </message>
+    <message>
+        <source>Passwords do not match</source>
+        <translation>Passwords do not match</translation>
+    </message>
+    <message>
         <source>Enter a password to encrypt the document</source>
         <translation>Enter a password to encrypt the document</translation>
     </message>

@@ -25,18 +25,18 @@ namespace Ui {
 class PasswordDialog;
 }
 
-class PasswordDialog : public QDialog
+class PasswordDialog final : public QDialog
 {
 	Q_OBJECT
 
 public:
-	enum Mode {
+	enum Mode : quint8 {
 		ENCRYPT,
 		DECRYPT
 	};
 
 	explicit PasswordDialog(Mode mode, QWidget *parent = nullptr);
-	~PasswordDialog();
+	~PasswordDialog() final;
 
 	void setLabel(const QString& label);
 	QString label();
@@ -44,7 +44,4 @@ public:
 
 private:
 	Ui::PasswordDialog *ui;
-
-	void genKeyClicked();
-	void updateOK();
 };

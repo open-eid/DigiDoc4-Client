@@ -558,7 +558,7 @@
     </message>
     <message>
         <source>Unsupported file format</source>
-        <translation type="unfinished"></translation>
+        <translation>Неподдерживаемый формат файла</translation>
     </message>
     <message>
         <source>Key already exists</source>
@@ -606,19 +606,19 @@
     </message>
     <message>
         <source>Wrong password.</source>
-        <translation type="unfinished"></translation>
+        <translation>Неверный пароль.</translation>
     </message>
     <message>
         <source>Wrong key.</source>
-        <translation type="unfinished"></translation>
+        <translation>Неверный ключ.</translation>
     </message>
     <message>
         <source>Corrupted or tampered file.</source>
-        <translation type="unfinished"></translation>
+        <translation>Файл повреждён или был изменён.</translation>
     </message>
     <message>
         <source>Cannot read file.</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удаётся прочитать файл.</translation>
     </message>
 </context>
 <context>
@@ -1247,7 +1247,7 @@
     </message>
     <message>
         <source>Lock type</source>
-        <translation type="unfinished"></translation>
+        <translation>Тип блокировки</translation>
     </message>
     <message>
         <source>Expiry date</source>
@@ -1344,7 +1344,7 @@ E-Seal</source>
     </message>
     <message>
         <source>Encrypt long-term</source>
-        <translation type="unfinished"></translation>
+        <translation>Зашифровать долгосрочно</translation>
     </message>
     <message>
         <source>Decrypt</source>
@@ -1760,27 +1760,31 @@ ID-картой</translation>
     <name>PasswordDialog</name>
     <message>
         <source>Encrypt with password</source>
-        <translation type="unfinished"></translation>
+        <translation>Зашифровать с паролем</translation>
     </message>
     <message>
         <source>Key label (recipient name or id)</source>
-        <translation type="unfinished"></translation>
+        <translation>Метка ключа (имя или идентификатор получателя)</translation>
     </message>
     <message>
         <source>Be sure to save the password in a secure place
 - without the password, you won’t be able to open the file again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Обязательно сохраните пароль в надёжном месте
+- без пароля вы не сможете открыть файл снова.</translation>
     </message>
     <message>
         <source>• Length: 20–64 characters
 • Contains at least one number (0–9)
 • Contains at least one uppercase letter
 • Contains at least one lowercase letter</source>
-        <translation type="unfinished"></translation>
+        <translation>• Длина: 20–64 символа
+• Содержит хотя бы одну цифру (0–9)
+• Содержит хотя бы одну заглавную букву
+• Содержит хотя бы одну строчную букву</translation>
     </message>
     <message>
         <source>Repeat password</source>
-        <translation type="unfinished"></translation>
+        <translation>Повторите пароль</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -1792,15 +1796,27 @@ ID-картой</translation>
     </message>
     <message>
         <source>Enter password to decrypt the document</source>
-        <translation type="unfinished"></translation>
+        <translation>Введите пароль для расшифровки документа</translation>
     </message>
     <message>
         <source>Decrypt</source>
         <translation>Расшифровать</translation>
     </message>
     <message>
+        <source>Password is empty</source>
+        <translation>Пароль пустой</translation>
+    </message>
+    <message>
+        <source>Password does not meet complexity requirements</source>
+        <translation>Пароль не соответствует требованиям сложности</translation>
+    </message>
+    <message>
+        <source>Passwords do not match</source>
+        <translation>Пароли не совпадают</translation>
+    </message>
+    <message>
         <source>Enter a password to encrypt the document</source>
-        <translation type="unfinished"></translation>
+        <translation>Введите пароль для шифрования документа</translation>
     </message>
 </context>
 <context>
@@ -2520,11 +2536,11 @@ Additional licenses and components</source>
     </message>
     <message>
         <source>Fetch URL</source>
-        <translation type="unfinished"></translation>
+        <translation>URL для получения данных</translation>
     </message>
     <message>
         <source>Post URL</source>
-        <translation type="unfinished"></translation>
+        <translation>URL для отправки данных</translation>
     </message>
 </context>
 <context>
