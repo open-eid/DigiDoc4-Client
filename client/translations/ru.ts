@@ -238,13 +238,6 @@
     </message>
 </context>
 <context>
-    <name>C</name>
-    <message>
-        <source>DigiDoc4 Client</source>
-        <translation type="unfinished">DigiDoc4 клиент</translation>
-    </message>
-</context>
-<context>
     <name>CDocumentModel</name>
     <message>
         <source>Added file(s) exceeds the maximum size limit of the container (∼120MB). &lt;a href=&apos;https://www.id.ee/en/article/encrypting-large-120-mb-files/&apos;&gt;Read more about it&lt;/a&gt;</source>
@@ -494,11 +487,11 @@
     </message>
     <message>
         <source>You are about to delete the last file in the container</source>
-        <translation type="vanished">Вы собираетесь удалить последний файл в контейнере</translation>
+        <translation>Вы собираетесь удалить последний файл в контейнере</translation>
     </message>
     <message>
         <source>It is removed along with the container.</source>
-        <translation type="vanished">Он удаляется вместе с контейнером.</translation>
+        <translation>Он удаляется вместе с контейнером.</translation>
     </message>
     <message>
         <source>In order to view Validity Confirmation Sheet there has to be at least one printer installed!</source>
@@ -546,11 +539,11 @@
     </message>
     <message>
         <source>Cannot alter container %1. Save different location?</source>
-        <translation type="unfinished">Сохранение контейнера %1 не удалось. Сохранить в другой каталог?</translation>
+        <translation>Сохранение контейнера %1 не удалось. Сохранить в другой каталог?</translation>
     </message>
     <message>
         <source>Encrypting</source>
-        <translation type="unfinished">Зашифровывание</translation>
+        <translation>Зашифровывание</translation>
     </message>
 </context>
 <context>
@@ -1449,10 +1442,6 @@ ID-картой</translation>
         <translation>Подключите устройство чтения карт к компьютеру и вставьте ID-карту в устройство чтения</translation>
     </message>
     <message>
-        <source>Encrypting</source>
-        <translation type="vanished">Зашифровывание</translation>
-    </message>
-    <message>
         <source>Signing</source>
         <translation>Подписывание</translation>
     </message>
@@ -1488,10 +1477,6 @@ ID-картой</translation>
     <message>
         <source>The card in the card reader is not an Estonian ID-card</source>
         <translation>Карта в считывателе не является эстонской ID-картой</translation>
-    </message>
-    <message>
-        <source>Decrypting</source>
-        <translation type="vanished">Расшифровка</translation>
     </message>
     <message>
         <source>My eID</source>
@@ -3032,14 +3017,6 @@ Additional licenses and components</source>
     <message>
         <source>Remove</source>
         <translation>Удалить</translation>
-    </message>
-    <message>
-        <source>You are about to delete the last file in the container</source>
-        <translation type="unfinished">Вы собираетесь удалить последний файл в контейнере</translation>
-    </message>
-    <message>
-        <source>It is removed along with the container.</source>
-        <translation type="unfinished">Он удаляется вместе с контейнером.</translation>
     </message>
 </context>
 <context>

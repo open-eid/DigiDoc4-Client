@@ -238,13 +238,6 @@
     </message>
 </context>
 <context>
-    <name>C</name>
-    <message>
-        <source>DigiDoc4 Client</source>
-        <translation>DigiDoc4 klient</translation>
-    </message>
-</context>
-<context>
     <name>CDocumentModel</name>
     <message>
         <source>Added file(s) exceeds the maximum size limit of the container (∼120MB). &lt;a href=&apos;https://www.id.ee/en/article/encrypting-large-120-mb-files/&apos;&gt;Read more about it&lt;/a&gt;</source>
@@ -494,11 +487,11 @@
     </message>
     <message>
         <source>You are about to delete the last file in the container</source>
-        <translation type="vanished">Oled kustutamas viimast faili ümbrikus</translation>
+        <translation>Oled kustutamas viimast faili ümbrikus</translation>
     </message>
     <message>
         <source>It is removed along with the container.</source>
-        <translation type="vanished">Koos sellega eemaldatakse ka ümbrik.</translation>
+        <translation>Koos sellega eemaldatakse ka ümbrik.</translation>
     </message>
     <message>
         <source>In order to view Validity Confirmation Sheet there has to be at least one printer installed!</source>
@@ -1449,10 +1442,6 @@ ID-kaardiga</translation>
         <translation>Ühenda kaardilugeja arvutiga ja sisesta ID-kaart lugejasse</translation>
     </message>
     <message>
-        <source>Encrypting</source>
-        <translation type="vanished">Krüpteerin</translation>
-    </message>
-    <message>
         <source>Signing</source>
         <translation>Allkirjastamine</translation>
     </message>
@@ -1488,10 +1477,6 @@ ID-kaardiga</translation>
     <message>
         <source>The card in the card reader is not an Estonian ID-card</source>
         <translation>Lugejas olev kaart ei ole Eesti ID-kaart</translation>
-    </message>
-    <message>
-        <source>Decrypting</source>
-        <translation type="vanished">Dekrüpteerin</translation>
     </message>
     <message>
         <source>My eID</source>
@@ -3035,14 +3020,6 @@ Täiendavad litsentsid ja komponendid</translation>
     <message>
         <source>Remove</source>
         <translation>Eemalda</translation>
-    </message>
-    <message>
-        <source>You are about to delete the last file in the container</source>
-        <translation>Oled kustutamas viimast faili ümbrikus</translation>
-    </message>
-    <message>
-        <source>It is removed along with the container.</source>
-        <translation>Koos sellega eemaldatakse ka ümbrik.</translation>
     </message>
 </context>
 <context>

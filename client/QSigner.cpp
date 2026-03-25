@@ -241,10 +241,12 @@ quint8 QSigner::login(const TokenData &token) const
 	{
 	case QCryptoBackend::PinOK: return status;
 	case QCryptoBackend::PinIncorrect:
-		WarningDialog::create()
-			->withTitle(SslCertificate(token.cert()).keyUsage().contains(SslCertificate::NonRepudiation) ? tr("Failed to sign document") : tr("Failed to decrypt document"))
-			->withText(QCryptoBackend::errorString(status))
-			->exec();
+		dispatchToMain([&]{
+			WarningDialog::create()
+				->withTitle(SslCertificate(token.cert()).keyUsage().contains(SslCertificate::NonRepudiation) ? tr("Failed to sign document") : tr("Failed to decrypt document"))
+				->withText(QCryptoBackend::errorString(status))
+				->exec();
+		});
 		return login(token);
 	default:
 		d->lock.unlock();
