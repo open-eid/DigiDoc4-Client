@@ -66,7 +66,7 @@ AddressItem::AddressItem(const CDKey &key, Type type, QWidget *parent)
 	} else if (ui->key.lock.isValid()) {
 		// Known lock type
 		ui->code.clear();
-		auto map = libcdoc::Recipient::parseLabel(ui->key.lock.label);
+		auto map = libcdoc::Lock::parseLabel(ui->key.lock.label);
 		if (map.contains("cn")) {
 			ui->label = QString::fromStdString(map["cn"]);
 		} else {
@@ -195,7 +195,7 @@ void AddressItem::setIdType() {
 		// Known lock type
 		// Needed to include translation for "ID-CARD"
 		void(QT_TR_NOOP("ID-CARD"));
-		auto items = libcdoc::Recipient::parseLabel(ui->key.lock.label);
+		auto items = libcdoc::Lock::parseLabel(ui->key.lock.label);
 		if (ui->key.lock.isCDoc1()) {
 			const auto &bytes = ui->key.lock.getBytes(libcdoc::Lock::CERT);
 			setIdType(SslCertificate(QByteArray::fromRawData((const char *)bytes.data(), bytes.size()), QSsl::Der));
