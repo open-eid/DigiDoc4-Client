@@ -2839,6 +2839,14 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>Muuda PUK-koodiga</translation>
     </message>
     <message>
+        <source>The ID-card must be activated in order to authenticate</source>
+        <translation>Autentimiseks tuleb ID-kaart aktiveerida</translation>
+    </message>
+    <message>
+        <source>The ID-card must be activated in order to sign</source>
+        <translation>Allkirjastamiseks tuleb ID-kaart aktiveerida</translation>
+    </message>
+    <message>
         <source>PIN%1 code must be changed in order to authenticate</source>
         <translation>Autentimiseks tuleb PIN%1-koodi muuta</translation>
     </message>
@@ -3039,6 +3047,18 @@ Täiendavad litsentsid ja komponendid</translation>
     <message>
         <source>https://www.id.ee/en/article/changing-id-card-pin-codes-and-puk-code/</source>
         <translation>https://www.id.ee/artikkel/id-kaardi-pin-ja-puk-koodide-muutmine/</translation>
+    </message>
+    <message>
+        <source>Authentication and signing with the ID-card isn&apos;t possible yet. ID-card must be activated in the Police and Border Guard Board’s self-service portal in order to use it.</source>
+        <translation>ID-kaardiga isikutuvastamine ja allkirjastamine ei ole veel võimalik. ID-kaardi kasutamiseks tuleb see aktiveerida Politsei- ja Piirivalveameti iseteeninduses.</translation>
+    </message>
+    <message>
+        <source>Activate ID-card</source>
+        <translation>Aktiveeri ID-kaart</translation>
+    </message>
+    <message>
+        <source>https://www.politsei.ee/en/self-service-portal/</source>
+        <translation>https://www.politsei.ee/et/iseteenindus/</translation>
     </message>
     <message>
         <source>This ASiC-S container contains XAdES signature. You are not allowed to add or remove signatures to this container.</source>
