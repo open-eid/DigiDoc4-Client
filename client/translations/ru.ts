@@ -1795,6 +1795,10 @@ ID-картой</translation>
         <translation>Зашифровать</translation>
     </message>
     <message>
+        <source>Decrypt with password</source>
+        <translation>Расшифровать с паролем</translation>
+    </message>
+    <message>
         <source>Enter password to decrypt the document</source>
         <translation>Введите пароль для расшифровки документа</translation>
     </message>

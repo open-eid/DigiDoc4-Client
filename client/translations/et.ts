@@ -1795,6 +1795,10 @@ ID-kaardiga</translation>
         <translation>Krüpteeri</translation>
     </message>
     <message>
+        <source>Decrypt with password</source>
+        <translation>Dekrüpteeri parooliga</translation>
+    </message>
+    <message>
         <source>Enter password to decrypt the document</source>
         <translation>Sisestage parool dokumendi dekrüpteerimiseks</translation>
     </message>

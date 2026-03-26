@@ -1795,6 +1795,10 @@ ID-Card</translation>
         <translation>Encrypt</translation>
     </message>
     <message>
+        <source>Decrypt with password</source>
+        <translation>Decrypt with password</translation>
+    </message>
+    <message>
         <source>Enter password to decrypt the document</source>
         <translation>Enter password to decrypt the document</translation>
     </message>
