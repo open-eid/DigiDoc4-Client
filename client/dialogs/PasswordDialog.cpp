@@ -36,8 +36,10 @@ PasswordDialog::PasswordDialog(Mode mode, QWidget *parent)
 	ui->password2Line->setHidden(mode == Mode::DECRYPT);
 	ui->password2Error->hide();
 	if(mode == DECRYPT) {
+		ui->title->setText(tr("Decrypt with password"));
 		ui->passwordLabel->setText(tr("Enter password to decrypt the document"));
 		ui->ok->setText(tr("Decrypt"));
+		ui->passwordLine->setFocus();
 	}
 	auto setError = [this](LineEdit *input, QLabel *error, const QString &msg) {
 		input->setLabel(msg.isEmpty() ? QString() : QStringLiteral("error"));
