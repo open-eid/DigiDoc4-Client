@@ -436,6 +436,13 @@ text-decoration: underline;
 color: #2F70B6;
 border: none;
 }
+QTreeWidget {
+background-color: #FFFFFF;
+}
+QTreeWidget::item:selected {
+background-color: #E7EAEF;
+color: #07142A;
+}
 QHeaderView::section {
 font-family: Roboto, Helvetica;
 font-size: 14px;

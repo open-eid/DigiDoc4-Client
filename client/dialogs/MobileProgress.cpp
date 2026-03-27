@@ -228,8 +228,8 @@ bool MobileProgress::init(const QString &ssid, const QString &cell)
 	if(!d->UUID.isEmpty() && QUuid(d->UUID).isNull())
 	{
 		WarningDialog::create(d->parentWidget())
-			->withTitle(QCoreApplication::translate("DigiDoc", "Failed to sign container"))
 			->withText(tr("Failed to send request. Check your %1 service access settings.").arg(tr("mobile-ID")))
+			->withTitle(QCoreApplication::translate("DigiDoc", "Failed to sign container"))
 			->open();
 		return false;
 	}

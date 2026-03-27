@@ -416,14 +416,15 @@ void ContainerPage::transition(CryptoDoc *container, const QSslCertificate &cert
 			decrypt(container, &key.lock, p.secret());
 		});
 	}
-	if (hasUnsupported)
-		emit warning({UnsupportedCDocWarning});
+	if(hasUnsupported)
+		emit warning({WarningText::UnsupportedCDocWarning});
 	ui->leftPane->setModel(container->documentModel());
 	updatePanes(container->state(), container);
 }
 
 void ContainerPage::transition(DigiDoc* container)
 {
+	using enum WarningText::WarningType;
 	disconnect(ui->leftPane, &ItemList::removed, container, nullptr);
 	connect(ui->leftPane, &ItemList::removed, container, [this, container](int index) {
 		deleteConfirm(container, index);
@@ -475,7 +476,7 @@ void ContainerPage::transition(DigiDoc* container)
 	});
 
 	clear(ClearSignatureWarning);
-	std::map<ria::qdigidoc4::WarningType, int> errors;
+	std::map<WarningText::WarningType, int> errors;
 	setHeader(container->fileName());
 	ui->leftPane->init(fileName, QT_TRANSLATE_NOOP("ItemList", "Container files"));
 

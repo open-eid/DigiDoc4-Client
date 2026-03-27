@@ -37,11 +37,18 @@ class MainWindow final : public QWidget
 	Q_OBJECT
 
 public:
+	enum Pages : unsigned char {
+		SignIntro,
+		SignDetails,
+		CryptoIntro,
+		CryptoDetails,
+		MyEid
+	};
 	explicit MainWindow(QWidget *parent = nullptr);
-	~MainWindow() final;
+	~MainWindow() noexcept final;
 
 	void openFiles(QStringList files, bool addFile = false, bool forceCreate = false);
-	void selectPage(ria::qdigidoc4::Pages page);
+	void selectPage(Pages page);
 	void showSettings(int page);
 
 protected:
@@ -58,7 +65,7 @@ private:
 	void changePinClicked(QSmartCardData::PinType type, QSmartCard::PinAction action);
 	void convertToCDoc();
 	ria::qdigidoc4::ContainerState currentState();
-	void navigateToPage( ria::qdigidoc4::Pages page, const QStringList &files = QStringList(), bool create = true );
+	void navigateToPage(Pages page, const QStringList &files = QStringList(), bool create = true);
 	void onCryptoAction(int action, const QString &id, const QString &phone);
 	void onSignAction(int action, const QString &idCode, const QString &info2);
 	void openContainer(bool signature);
@@ -76,5 +83,5 @@ private:
 
 	std::unique_ptr<CryptoDoc> cryptoDoc;
 	std::unique_ptr<DigiDoc> digiDoc;
-	Ui::MainWindow *ui;
+	std::unique_ptr<Ui::MainWindow> ui;
 };
