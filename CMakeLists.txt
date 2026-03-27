@@ -71,3 +71,4 @@ endif()
 
 add_subdirectory( common )
 add_subdirectory( client )
+include(cmake/sbom.cmake)
