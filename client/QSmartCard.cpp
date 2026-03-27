@@ -480,7 +480,7 @@ bool THALESCard::updateCounters(QSmartCardDataPrivate *d) const
 		{
 			d->retry[QSmartCardData::PinType(type)] = quint8(retry.data[0]);
 			auto changed = info[0xDF2F];
-			d->locked[QSmartCardData::PinType(type)] = changed && changed.data[0] == 0;
+			d->locked[QSmartCardData::PinType(type)] = (changed && changed.data[0] == 0);
 		}
 		else
 			return false;

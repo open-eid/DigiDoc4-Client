@@ -75,6 +75,7 @@ background-color: #FFFFFF;
 font-family: Roboto, Helvetica;
 font-size: 12px;
 color: #07142A;
+background-color: #FFFFFF;
 }
 QHeaderView::section {
 font-family: Roboto, Helvetica;
@@ -82,6 +83,10 @@ font-size: 14px;
 border: none;
 border-bottom: 1px solid #E7EAEF;
 background-color: #FFFFFF;
+}
+QTreeWidget::item:selected {
+background-color: #E7EAEF;
+color: #07142A;
 }
 QHeaderView::up-arrow,
 QHeaderView::down-arrow {
@@ -139,7 +144,7 @@ QHeaderView::down-arrow {
          <string>Expiry date</string>
         </property>
         <property name="textAlignment">
-         <set>AlignCenter</set>
+         <set>AlignLeading|AlignVCenter</set>
         </property>
        </column>
       </widget>

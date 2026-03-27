@@ -84,6 +84,9 @@ background-color: #82A9D3;
    </property>
    <item>
     <widget class="QTreeWidget" name="view">
+     <property name="styleSheet">
+      <string notr="true">QWidget { background-color: #FFFFFF; }</string>
+     </property>
      <property name="frameShape">
       <enum>QFrame::NoFrame</enum>
      </property>
