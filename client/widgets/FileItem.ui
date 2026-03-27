@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- SPDX-FileCopyrightText: Estonian Information System Authority -->
+<!-- SPDX-License-Identifier: LGPL-2.1-or-later -->
 <ui version="4.0">
  <class>FileItem</class>
  <widget class="QWidget" name="FileItem">

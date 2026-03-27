@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Estonian Information System Authority
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 cmake_minimum_required(VERSION 3.16)
 project(EsteidShellExtension VERSION 3.13.9)
 add_library(${PROJECT_NAME} SHARED

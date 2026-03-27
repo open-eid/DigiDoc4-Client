@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Estonian Information System Authority
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 .\" Manpage for qdigidoc4
 .TH qdigidoc4 1 "${BUILD_DATE}" "${VERSION}" "qdigidoc4 man page"
 .SH NAME
