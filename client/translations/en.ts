@@ -1174,8 +1174,8 @@
     </message>
     <message>
         <source>RECIPIENT_MESSAGE</source>
-        <translation>&lt;p align=center&gt;Who is recipient?&lt;/p&gt;
-        &lt;p align=center&gt;The recipient is a physical person or legal entity for whom the document can be encrypted. If the document is encrypted, only the specified recipient can see its content.&lt;/p&gt;</translation>
+        <translation>&lt;p align=&quot;left&quot;&gt;Who is recipient?&lt;/p&gt;
+&lt;p align=&quot;left&quot;&gt;The recipient is a physical person or legal entity for whom the document can be encrypted. If the document is encrypted, only the specified recipient can see its content.&lt;/p&gt;</translation>
     </message>
     <message>
         <source>Add recipients</source>

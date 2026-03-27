@@ -174,13 +174,11 @@ icon: url(:/images/icon_download_clicked.svg);
            </property>
            <property name="styleSheet">
             <string notr="true">QToolTip { 
-	color: #fcfcfc; 
-	background-color: #474747;
-	border-radius: 2px;
-	text-align: center;
-	font-weight: 400; 
-	text-decoration: none solid #fcfcfc;
-	padding: 5px; font-size: 13px;
+color: #fcfcfc; 
+background-color: #474747;
+border-radius: 4px;
+text-decoration: none solid #fcfcfc;
+padding: 5px;
 }</string>
            </property>
           </widget>
