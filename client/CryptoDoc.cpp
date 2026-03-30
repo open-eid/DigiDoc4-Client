@@ -472,7 +472,9 @@ bool CryptoDoc::encrypt(const QString &filename, const QString& label, const QBy
 		if (!secret.isEmpty()) {
 			// NIST recommends at least 600000 iterations for PBKDF2 with SHA-256, see https://csrc.nist.gov/publications/detail/sp/800-132/final
 			d->crypto.secret.assign(secret.cbegin(), secret.cend());
-			enc_keys.push_back(libcdoc::Recipient::makeSymmetric(label.toStdString(), 600000));
+			libcdoc::Recipient rcpt = libcdoc::Recipient::makeSymmetric({}, 600000);
+			rcpt.setLabelValue(libcdoc::CDoc2::Label::LABEL, label.toStdString());
+			enc_keys.push_back(rcpt);
 		}
 		StreamListSource slsrc(d->files);
 		libcdoc::result_t result = writer->encrypt(slsrc, enc_keys);
