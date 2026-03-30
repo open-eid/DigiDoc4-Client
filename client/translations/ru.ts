@@ -134,6 +134,10 @@
         <translation>Неподдерживаемый криптографический алгоритм или тип получателя</translation>
     </message>
     <message>
+        <source>pw</source>
+        <translation>Пароль</translation>
+    </message>
+    <message>
         <source>Decryption is possible until:</source>
         <translation>Расшифровка возможна до:</translation>
     </message>
@@ -1343,10 +1347,6 @@ E-Seal</source>
         <translation>Зашифровать</translation>
     </message>
     <message>
-        <source>Encrypt long-term</source>
-        <translation>Зашифровать долгосрочно</translation>
-    </message>
-    <message>
         <source>Decrypt</source>
         <translation>Расшифровать</translation>
     </message>
@@ -1355,6 +1355,12 @@ E-Seal</source>
 ID-Card</source>
         <translation>Расшифровать
 с ID-картой</translation>
+    </message>
+    <message>
+        <source>Encrypt
+long-term</source>
+        <translation>Зашифровать
+долгосрочно</translation>
     </message>
     <message>
         <source>Sign with

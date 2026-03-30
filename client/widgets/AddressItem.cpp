@@ -69,6 +69,8 @@ AddressItem::AddressItem(const CDKey &key, Type type, QWidget *parent)
 		auto map = libcdoc::Lock::parseLabel(ui->key.lock.label);
 		if (map.contains("cn")) {
 			ui->label = QString::fromStdString(map["cn"]);
+		} else if (map.contains("label")) {
+			ui->label = QString::fromStdString(map["label"]);
 		} else {
 			ui->label = QString::fromStdString(ui->key.lock.label);
 		}
@@ -195,6 +197,7 @@ void AddressItem::setIdType() {
 		// Known lock type
 		// Needed to include translation for "ID-CARD"
 		void(QT_TR_NOOP("ID-CARD"));
+		void(QT_TR_NOOP("pw"));
 		auto items = libcdoc::Lock::parseLabel(ui->key.lock.label);
 		if (ui->key.lock.isCDoc1()) {
 			const auto &bytes = ui->key.lock.getBytes(libcdoc::Lock::CERT);

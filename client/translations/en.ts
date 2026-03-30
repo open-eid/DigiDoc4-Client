@@ -134,6 +134,10 @@
         <translation>Unsupported cryptographic algorithm or recipient type</translation>
     </message>
     <message>
+        <source>pw</source>
+        <translation>Password</translation>
+    </message>
+    <message>
         <source>Decryption is possible until:</source>
         <translation>Decryption is possible until:</translation>
     </message>
@@ -1343,10 +1347,6 @@ E-Seal</translation>
         <translation>Encrypt</translation>
     </message>
     <message>
-        <source>Encrypt long-term</source>
-        <translation>Encrypt long-term</translation>
-    </message>
-    <message>
         <source>Decrypt</source>
         <translation>Decrypt</translation>
     </message>
@@ -1355,6 +1355,12 @@ E-Seal</translation>
 ID-Card</source>
         <translation>Decrypt with
 ID-Card</translation>
+    </message>
+    <message>
+        <source>Encrypt
+long-term</source>
+        <translation>Encrypt
+long-term</translation>
     </message>
     <message>
         <source>Sign with

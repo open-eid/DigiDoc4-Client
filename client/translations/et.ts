@@ -134,6 +134,10 @@
         <translation>Mittetoetatud krüptograafiline algoritm või adressaadi tüüp</translation>
     </message>
     <message>
+        <source>pw</source>
+        <translation>Parool</translation>
+    </message>
+    <message>
         <source>Decryption is possible until:</source>
         <translation>Dekrüpteerimine on võimalik kuni:</translation>
     </message>
@@ -1343,10 +1347,6 @@ E-templiga</translation>
         <translation>Krüpteeri</translation>
     </message>
     <message>
-        <source>Encrypt long-term</source>
-        <translation>Krüpteeri säilitamiseks</translation>
-    </message>
-    <message>
         <source>Decrypt</source>
         <translation>Dekrüpteeri</translation>
     </message>
@@ -1355,6 +1355,12 @@ E-templiga</translation>
 ID-Card</source>
         <translation>Dekrüpteeri
 ID-kaardiga</translation>
+    </message>
+    <message>
+        <source>Encrypt
+long-term</source>
+        <translation>Krüpteeri
+säilitamiseks</translation>
     </message>
     <message>
         <source>Sign with

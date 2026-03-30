@@ -53,7 +53,7 @@ Q_LOGGING_CATEGORY(CRYPTO, "CRYPTO")
 
 CDKey::CDKey(QSslCertificate _rcpt_cert) : lock(libcdoc::Lock::PUBLIC_KEY), rcpt_cert(_rcpt_cert) {
 	SslCertificate ssl(rcpt_cert);
-	lock.pk_type = (rcpt_cert.publicKey().algorithm() == QSsl::Ec) ? libcdoc::Lock::ECC : libcdoc::Lock::RSA;
+	lock.pk_type = (rcpt_cert.publicKey().algorithm() == QSsl::Ec) ? libcdoc::PKType::ECC : libcdoc::PKType::RSA;
 	QByteArray der = ssl.publicKeyDer();
 	lock.setBytes(libcdoc::Lock::RCPT_KEY, std::vector<uint8_t>(der.cbegin(), der.cend()));
 	der = rcpt_cert.toDer();
@@ -462,9 +462,20 @@ bool CryptoDoc::encrypt(const QString &filename, const QString& label, const QBy
 					libcdoc::Recipient::makeCertificate({}, {ba.cbegin(), ba.cend()}) :
 					libcdoc::Recipient::makeServer({}, {ba.cbegin(), ba.cend()}, keyserver_id));
 			} else {
-				libcdoc::Recipient rcpt = makeFromLock(key.lock, keyserver_id);
-				if (!rcpt.isEmpty()) {
-					enc_keys.push_back(rcpt);
+				switch (key.lock.type) {
+				case libcdoc::Lock::CDOC1:
+					enc_keys.push_back(libcdoc::Recipient::makePublicKey(key.lock));
+					break;
+				case libcdoc::Lock::PUBLIC_KEY:
+				case libcdoc::Lock::SERVER:
+					if (keyserver_id.empty()) {
+						enc_keys.push_back(libcdoc::Recipient::makePublicKey(key.lock));
+					} else {
+						enc_keys.push_back(libcdoc::Recipient::makeServer(key.lock, keyserver_id));
+					}
+					break;
+				default:
+					break;
 				}
 			}
 		}
@@ -474,7 +485,7 @@ bool CryptoDoc::encrypt(const QString &filename, const QString& label, const QBy
 			d->crypto.secret.assign(secret.cbegin(), secret.cend());
 			libcdoc::Recipient rcpt = libcdoc::Recipient::makeSymmetric({}, 600000);
 			rcpt.setLabelValue(libcdoc::CDoc2::Label::LABEL, label.toStdString());
-			enc_keys.push_back(rcpt);
+			enc_keys.push_back(std::move(rcpt));
 		}
 		StreamListSource slsrc(d->files);
 		libcdoc::result_t result = writer->encrypt(slsrc, enc_keys);

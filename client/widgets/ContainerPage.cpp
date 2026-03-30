@@ -402,15 +402,16 @@ void ContainerPage::transition(CryptoDoc *container, const QSslCertificate &cert
 	ui->leftPane->init(fileName, QT_TRANSLATE_NOOP("ItemList", "Encrypted files"));
 	ui->rightPane->init(ItemList::ItemAddress, QT_TRANSLATE_NOOP("ItemList", "Recipients"));
 	bool hasUnsupported = false;
-	for (auto &key : container->keys()) {
+	for (const auto &key : container->keys()) {
 		hasUnsupported = hasUnsupported || (key.rcpt_cert.isNull() && !key.lock.isValid());
-		AddressItem *addr = new AddressItem(key, AddressItem::Icon, ui->rightPane);
+		auto *addr = new AddressItem(key, AddressItem::Icon, ui->rightPane);
 		ui->rightPane->addWidget(addr);
 		connect(addr, &AddressItem::decrypt, container, [container, key, this] {
 			if (key.lock.type != libcdoc::Lock::Type::PASSWORD)
 				return;
 			PasswordDialog p(PasswordDialog::Mode::DECRYPT, this);
-			p.setLabel(QString::fromStdString(key.lock.label));
+			auto params = libcdoc::Lock::parseLabel(key.lock.label);
+			p.setLabel(QString::fromStdString(params.contains("label") ? params["label"] : key.lock.label));
 			if (!p.exec())
 				return;
 			decrypt(container, &key.lock, p.secret());

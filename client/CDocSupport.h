@@ -179,5 +179,3 @@ struct StreamListSource final : public libcdoc::MultiDataSource {
 	const std::vector<IOEntry> &_files;
 	int64_t _current = -1;
 };
-
-libcdoc::Recipient makeFromLock(const libcdoc::Lock& lock, const std::string& server_id);

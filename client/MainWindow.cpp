@@ -33,7 +33,6 @@
 #include "effects/Overlay.h"
 #include "dialogs/FileDialog.h"
 #include "dialogs/MobileProgress.h"
-#include "dialogs/PasswordDialog.h"
 #include "dialogs/RoleAddressDialog.h"
 #include "dialogs/SettingsDialog.h"
 #include "dialogs/SmartIDProgress.h"
