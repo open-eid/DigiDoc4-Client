@@ -451,7 +451,7 @@ StreamListSource::next(std::string& name, int64_t& size)
 }
 
 static void
-recode_label(std::string& label, uint64_t& expiry)
+recode_label(libcdoc::Recipient& rcpt, std::string& label, uint64_t& expiry)
 {
 	if(!label.starts_with("data:")) return;
 	auto values = libcdoc::Lock::parseLabel(label);
@@ -463,16 +463,10 @@ recode_label(std::string& label, uint64_t& expiry)
 	std::string expiry_str = values.at("server_exp");
 	values.erase("server_exp");
 	if (!expiry_str.empty()) expiry = std::stoll(expiry_str);
-	QUrlQuery q;
-	q.setQueryItems({
-		{QStringLiteral("v"), QString::number(1)},
-		{QStringLiteral("type"), QString::fromStdString(type)}
-	});
 	for (const auto& [key, value] : values) {
 		if (!value.empty())
-			q.addQueryItem(QString::fromStdString(key), QString::fromStdString(value));
+			rcpt.setLabelValue(key, value);
 	}
-	label = "data:" + q.query(QUrl::FullyEncoded).toStdString();
 }
 
 libcdoc::Recipient
@@ -480,23 +474,28 @@ makeFromLock(const libcdoc::Lock& lock, const std::string& server_id)
 {
 	uint64_t expiry_ts = 0;
 	std::string label = lock.label;
-	recode_label(label, expiry_ts);
 	switch (lock.type) {
 	case libcdoc::Lock::CDOC1:
 		if (!server_id.empty()) {
-			return libcdoc::Recipient::makeServer(label, lock.getBytes(libcdoc::Lock::CERT), server_id);
+			libcdoc::Recipient rcpt = libcdoc::Recipient::makeServer(label, lock.getBytes(libcdoc::Lock::CERT), server_id);
+			recode_label(rcpt, label, expiry_ts);
+			return rcpt;
 		} else {
-			return libcdoc::Recipient::makeCertificate(label, lock.getBytes(libcdoc::Lock::CERT));
+			libcdoc::Recipient rcpt = libcdoc::Recipient::makeCertificate(label, lock.getBytes(libcdoc::Lock::CERT));
+			recode_label(rcpt, label, expiry_ts);
+			return rcpt;
 		}
 	case libcdoc::Lock::PUBLIC_KEY:
 	case libcdoc::Lock::SERVER: {
 		libcdoc::Recipient::PKType rcpt_type = (lock.pk_type == libcdoc::Lock::RSA) ? libcdoc::Recipient::RSA : libcdoc::Recipient::ECC;
 		if (!server_id.empty()) {
 			libcdoc::Recipient rcpt = libcdoc::Recipient::makeServer(label, lock.getBytes(libcdoc::Lock::RCPT_KEY), rcpt_type, server_id);
+			recode_label(rcpt, label, expiry_ts);
 			rcpt.expiry_ts = expiry_ts;
 			return rcpt;
 		} else {
 			libcdoc::Recipient rcpt = libcdoc::Recipient::makePublicKey(label, lock.getBytes(libcdoc::Lock::RCPT_KEY), rcpt_type);
+			recode_label(rcpt, label, expiry_ts);
 			rcpt.expiry_ts = expiry_ts;
 			return rcpt;
 		}

@@ -478,10 +478,9 @@ bool CryptoDoc::encrypt(const QString &filename, const QString& label, const QBy
 		libcdoc::result_t result = writer->encrypt(slsrc, enc_keys);
 		writer_last_error = QString::fromStdString(writer->getLastErrorStr());
 		qCDebug(CRYPTO) << "Encryption result: " << result << ' ' << writer_last_error;
-		if (result == libcdoc::OK) // Encryption successful, open new reader
-			d->createCDocReader(d->fileName);
-		else if(QFile::exists(d->fileName))
-			QFile::remove(d->fileName);
+		if (result != libcdoc::OK)
+			if(QFile::exists(d->fileName))
+				QFile::remove(d->fileName);
 		return result;
 	});
 	d->crypto.secret.clear();
@@ -491,14 +490,10 @@ bool CryptoDoc::encrypt(const QString &filename, const QString& label, const QBy
 			->withText(tr("Please check your internet connection and network settings."))
 			->withDetails(writer_last_error)
 			->open();
-	} else if(!d->reader) {
-		WarningDialog::create()
-			->withTitle(CryptoDoc::tr("Failed to open document"))
-			->withText(CryptoDoc::tr("Unsupported file format"))
-			->open();
-		return false;
+	} else {
+		this->clear(d->fileName);
+		this->open(d->fileName);
 	}
-
 	return d->isEncrypted();
 }
 
