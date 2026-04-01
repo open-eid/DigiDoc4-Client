@@ -23,23 +23,24 @@
 #include "Settings.h"
 #include "effects/Overlay.h"
 
+#include <QtGui/QValidator>
 #include <QtWidgets/QCompleter>
 #include <QtWidgets/QListView>
 
 class RoleAddressDialog::Private: public Ui::RoleAddressDialog {};
 
-static QString cleanUp(const QString& src) {
-	QString dst;
-	dst.reserve(src.size());
-	size_t dlen = 0;
-	for (auto s = src.cbegin(); s != src.cend(); s++) {
-		if ((*s <= ' ') &&  (*s != QChar(0x9)) && (*s != QChar(0xa)) && (*s != QChar(0xd))) continue;
-		if ((*s == QChar(0xfffe)) || (*s == QChar(0xffff))) continue;
-		dst.append(*s);
+class SanitizingValidator: public QValidator {
+public:
+	using QValidator::QValidator;
+	State validate(QString &input, int &pos) const override {
+		static const QRegularExpression invalid(
+			QStringLiteral("[\\x00-\\x08\\x0B\\x0C\\x0E-\\x1F\\x{FFFE}\\x{FFFF}]"));
+		int before = input.size();
+		input.remove(invalid);
+		pos = qMax(0, pos - (before - input.size()));
+		return Acceptable;
 	}
-	dst.resize(dlen);
-	return dst;
-}
+};
 
 RoleAddressDialog::RoleAddressDialog(QWidget *parent)
 	: QDialog(parent)
@@ -50,17 +51,18 @@ RoleAddressDialog::RoleAddressDialog(QWidget *parent)
 	d->buttonLayout->setDirection(QBoxLayout::RightToLeft);
 #endif
 	setWindowFlags(Qt::Dialog | Qt::CustomizeWindowHint);
-	for(QLineEdit *w: findChildren<QLineEdit*>())
-		w->setAttribute(Qt::WA_MacShowFocusRect, false);
 
 	connect( d->cancel, &QPushButton::clicked, this, &RoleAddressDialog::reject );
 	connect( d->sign, &QPushButton::clicked, this, &RoleAddressDialog::accept );
 
+	auto *validator = new SanitizingValidator(this);
 	auto list = findChildren<QLineEdit*>();
 	if(!list.isEmpty())
 		list.first()->setFocus();
 	for(QLineEdit *line: list)
 	{
+		line->setAttribute(Qt::WA_MacShowFocusRect, false);
+		line->setValidator(validator);
 		Settings::Option<QStringList> s{line->objectName(), {}};
 		auto *completer = new QCompleter(s, line);
 		completer->setMaxVisibleItems(10);
@@ -70,9 +72,8 @@ RoleAddressDialog::RoleAddressDialog(QWidget *parent)
 		line->setCompleter(completer);
 		connect(line, &QLineEdit::editingFinished, this, [line, s = std::move(s)] {
 			QStringList list = s;
-			QString text = cleanUp(line->text());
-			list.removeAll(text);
-			list.insert(0, text);
+			list.removeAll(line->text());
+			list.insert(0, line->text());
 			if(list.size() > 10)
 				list.removeLast();
 			s.clear(); // Uses on Windows MULTI_STRING registry
@@ -95,10 +96,10 @@ int RoleAddressDialog::get(QString &city, QString &country, QString &state, QStr
 	int result = QDialog::exec();
 	if(result == QDialog::Rejected)
 		return result;
-	role = cleanUp(d->Role->text());
-	city = cleanUp(d->City->text());
-	state = cleanUp(d->State->text());
-	country = cleanUp(d->Country->text());
-	zip = cleanUp(d->Zip->text());
+	role = d->Role->text();
+	city = d->City->text();
+	state = d->State->text();
+	country = d->Country->text();
+	zip = d->Zip->text();
 	return result;
 }
