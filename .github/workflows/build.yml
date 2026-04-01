@@ -70,7 +70,7 @@ jobs:
     container: ubuntu:${{ matrix.container }}
     strategy:
       matrix:
-        container: ['22.04', '24.04', '25.04', '25.10']
+        container: ['22.04', '24.04', '25.10', '26.04']
         arch: ['amd64', 'arm64']
     env:
       DEBIAN_FRONTEND: noninteractive
@@ -116,7 +116,7 @@ jobs:
     container: fedora:${{ matrix.container }}
     strategy:
       matrix:
-        container: [42, 43]
+        container: [42, 43, 44]
     steps:
     - name: Download artifact
       uses: dawidd6/action-download-artifact@v11
