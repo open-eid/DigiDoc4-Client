@@ -211,15 +211,29 @@ QByteArray QSigner::decrypt(std::function<QByteArray (QCryptoBackend *)> &&func,
 	return result;
 }
 
-QSslKey QSigner::key() const
+QSslKey QSigner::key(QCryptoBackend::PinStatus& pin_status)
 {
 	QSslKey key = d->auth.cert().publicKey();
-	if(!key.handle())
+	if(!key.handle()) {
+		pin_status = QCryptoBackend::GeneralError;
 		return {};
-	if(!d->lock.tryLockForWrite(10 * 1000))
+	}
+	if(!d->lock.tryLockForWrite(10 * 1000)) {
+		Q_EMIT error(tr("Failed to decrypt document"), tr("Signing/decrypting is already in progress another window."));
+		pin_status = QCryptoBackend::GeneralError;
 		return {};
-	if(login(d->auth) != QCryptoBackend::PinOK)
+	}
+	switch(pin_status = QCryptoBackend::PinStatus(login(d->auth)))
+	{
+	case QCryptoBackend::PinOK: break;
+	case QCryptoBackend::PinCanceled: return {};
+	case QCryptoBackend::PinLocked:
+		Q_EMIT error(tr("Failed to decrypt document"), QCryptoBackend::errorString(pin_status));
 		return {};
+	default:
+		Q_EMIT error(tr("Failed to decrypt document"), tr("Failed to login token") + ' ' + QCryptoBackend::errorString(pin_status));
+		return {};
+	}
 	if(key.algorithm() == QSsl::Ec)
 	{
 		auto *ec = (EC_KEY*)key.handle();

@@ -216,7 +216,17 @@ DDConfiguration::getValue(std::string_view domain, std::string_view param) const
 std::string
 DDNetworkBackend::getLastErrorStr(libcdoc::result_t code) const
 {
-	if (code == BACKEND_ERROR) return last_error;
+	switch (code) {
+		case DDCryptoBackend::PIN_CANCELED:
+			return "PIN entry canceled";
+		case DDCryptoBackend::PIN_INCORRECT:
+			return "PIN incorrect";
+		case DDCryptoBackend::PIN_LOCKED:
+			return "PIN locked";
+		case BACKEND_ERROR:
+		case DDCryptoBackend::BACKEND_ERROR:
+			return last_error;
+	}
 	return libcdoc::NetworkBackend::getLastErrorStr(code);
 }
 
@@ -278,7 +288,14 @@ DDNetworkBackend::fetchKey(std::vector<uint8_t> &result,
 		last_error = "No connection";
 		return BACKEND_ERROR;
 	}
-	auto authKey = dispatchToMain(&QSigner::key, qApp->signer());
+	QCryptoBackend::PinStatus pin_status;
+	auto authKey =  dispatchToMain([&] {
+		return qApp->signer()->key(pin_status);
+	});
+	if (!authKey.handle()) {
+		last_error = qApp->signer()->getLastErrorStr().toStdString();
+		return getDecryptStatus(result, pin_status);
+	}
 	QScopedPointer<QNetworkAccessManager,QScopedPointerDeleteLater> nam(
 				CheckConnection::setupNAM(req, qApp->signer()->tokenauth().cert(), authKey, Settings::CDOC2_GET_CERT));
 	QEventLoop e;
