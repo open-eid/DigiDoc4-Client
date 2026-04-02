@@ -1,3 +1,7 @@
 [submodule "common"]
 	path = common
 	url = ../qt-common
+[submodule "cmake/cmake-sbom"]
+	path = cmake/cmake-sbom
+	url = https://github.com/DEMCON/cmake-sbom.git
+	branch = v1.4.0

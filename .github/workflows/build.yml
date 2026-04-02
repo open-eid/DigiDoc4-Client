@@ -20,7 +20,7 @@ jobs:
       with:
         submodules: recursive
     - name: Download artifact
-      uses: dawidd6/action-download-artifact@v11
+      uses: dawidd6/action-download-artifact@v19
       with:
         workflow: build.yml
         branch: master
@@ -60,11 +60,14 @@ jobs:
         cmake --build build --target zipdebug
         cmake --build build --target macdeployqt
         cmake --build build --target zip
+        cmake --install build/sbom
     - name: Archive artifacts
       uses: actions/upload-artifact@v6
       with:
         name: macOS
-        path: build/qdigidoc4*.zip
+        path: |
+          build/qdigidoc4*.zip
+          build/qdigidoc4*.spdx
   ubuntu:
     name: Build on Ubuntu ${{ matrix.container }} ${{ matrix.arch }}
     runs-on: ubuntu-24.04${{ matrix.arch == 'arm64' && '-arm' || '' }}
@@ -79,7 +82,7 @@ jobs:
       DEBEMAIL: github-actions@github.com
     steps:
     - name: Download artifact
-      uses: dawidd6/action-download-artifact@v11
+      uses: dawidd6/action-download-artifact@v19
       with:
         workflow: build.yml
         branch: master
@@ -104,13 +107,18 @@ jobs:
       run: |
         dpkg-buildpackage -us -uc
         mv ../qdigidoc4*.* .
+        cmake -B build -S .
+        cmake --install build/sbom
+        mv build/qdigidoc4*.spdx .
     - name: Lintian
       run: lintian *.deb;
     - name: Archive artifacts
       uses: actions/upload-artifact@v6
       with:
         name: ubuntu_${{ matrix.container }}_${{ matrix.arch }}
-        path: qdigidoc4*.*
+        path: |
+          qdigidoc4*.*
+          qdigidoc4*.spdx
   fedora:
     name: Build on Fedora ${{ matrix.container }}
     runs-on: ubuntu-latest
@@ -120,7 +128,7 @@ jobs:
         container: [42, 43]
     steps:
     - name: Download artifact
-      uses: dawidd6/action-download-artifact@v11
+      uses: dawidd6/action-download-artifact@v19
       with:
         workflow: build.yml
         branch: master
@@ -134,11 +142,14 @@ jobs:
       run: |
         cmake -DCMAKE_INSTALL_PREFIX=/usr -B build -S .
         cmake --build build --target all package
+        cmake --install build/sbom
     - name: Archive artifacts
       uses: actions/upload-artifact@v6
       with:
         name: fedora_${{ matrix.container }}
-        path: build/qdigidoc4*.rpm
+        path: |
+          build/qdigidoc4*.rpm
+          build/qdigidoc4*.spdx
   windows:
     name: Build on Windows
     runs-on: ${{ matrix.platform == 'arm64' && 'windows-11-arm' || 'windows-2025' }}
@@ -151,7 +162,7 @@ jobs:
     steps:
     - *Checkout
     - name: Download artifact
-      uses: dawidd6/action-download-artifact@v11
+      uses: dawidd6/action-download-artifact@v19
       with:
         workflow: build.yml
         branch: master
@@ -190,6 +201,7 @@ jobs:
         cmake --build build --target msi
         cmake --build build --target msishellext
         cmake --build build --target appx
+        cmake --install build/sbom
     - name: Archive artifacts
       uses: actions/upload-artifact@v6
       with:
@@ -197,6 +209,7 @@ jobs:
         path: |
           build/*.msi
           build/*.appx
+          build/*.spdx
   coverity:
     name: Run Coverity tests
     if: github.repository == 'open-eid/DigiDoc4-Client' && contains(github.ref, 'coverity_scan')
@@ -207,7 +220,7 @@ jobs:
     steps:
     - *Checkout
     - name: Download artifact
-      uses: dawidd6/action-download-artifact@v11
+      uses: dawidd6/action-download-artifact@v19
       with:
         workflow: build.yml
         branch: master
@@ -246,7 +259,7 @@ jobs:
     steps:
     - *Checkout
     - name: Download artifact
-      uses: dawidd6/action-download-artifact@v11
+      uses: dawidd6/action-download-artifact@v19
       with:
         workflow: build.yml
         branch: master

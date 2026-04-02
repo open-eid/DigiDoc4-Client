@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Estonian Information System Authority
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 cmake_minimum_required(VERSION 3.22)
 if(NOT EXISTS ${CMAKE_SOURCE_DIR}/common/CMakeLists.txt)
     message(FATAL_ERROR "common submodule directory empty, did you 'git clone --recursive'?")
@@ -67,3 +70,4 @@ endif()
 
 add_subdirectory( common )
 add_subdirectory( client )
+include(cmake/sbom.cmake)

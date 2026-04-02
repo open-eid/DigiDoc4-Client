@@ -1,4 +1,7 @@
-﻿<?if $(sys.BUILDARCH) = x64 ?>
+<!-- SPDX-FileCopyrightText: Estonian Information System Authority -->
+<!-- SPDX-License-Identifier: LGPL-2.1-or-later -->
+
+<?if $(sys.BUILDARCH) = x64 ?>
   <!-- Separate upgrade code / component ID created for x64 installer because both 32-
        and 64-bit shell extensions are installed on x64 machine and x64 installer
        removes x86 component installed directly before it if same guids are used.

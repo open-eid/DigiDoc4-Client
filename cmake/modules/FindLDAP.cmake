@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Estonian Information System Authority
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # - Try to find the LDAP client libraries
 # Once done this will define
 #
