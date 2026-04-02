@@ -24,7 +24,7 @@
 #include "effects/Overlay.h"
 #include "dialogs/CertificateDetails.h"
 
-KeyDialog::KeyDialog(const CDKey &k, QWidget *parent )
+KeyDialog::KeyDialog(const CKey &k, QWidget *parent )
 	: QDialog( parent )
 {
 	Ui::KeyDialog d;

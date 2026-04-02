@@ -31,16 +31,16 @@ using namespace ria::qdigidoc4;
 class AddressItem::Private: public Ui::AddressItem
 {
 public:
-	Private(const CDKey& _key) : key(_key) {}
+	Private(const CKey& _key) : key(_key) {}
 
 	QString code;
-	CDKey key;
+	CKey key;
 	QString label;
 	QDateTime expireDate;
 	bool yourself = false;
 };
 
-AddressItem::AddressItem(const CDKey &key, Type type, QWidget *parent)
+AddressItem::AddressItem(const CKey &key, Type type, QWidget *parent)
 	: Item(parent)
 	, ui(new Private(key))
 {
@@ -117,7 +117,7 @@ void AddressItem::changeEvent(QEvent* event)
 	QWidget::changeEvent(event);
 }
 
-const CDKey& AddressItem::getKey() const
+const CKey& AddressItem::getKey() const
 {
 	return ui->key;
 }

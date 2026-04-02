@@ -156,16 +156,13 @@ void AddRecipients::addRecipientFromHistory()
 
 void AddRecipients::addRecipient(const QSslCertificate& cert, bool select)
 {
-	CDKey key(cert);
+	CKey key(cert);
 	AddressItem *leftItem = itemListValue(ui->leftPane, key);
 	if(!leftItem)
 	{
 		leftItem = new AddressItem(key, AddressItem::Add, ui->leftPane);
 		ui->leftPane->addWidget(leftItem);
-
-		bool contains = rightList.contains(key);
-		leftItem->setDisabled(contains);
-
+		leftItem->setDisabled(rightList.contains(key));
 		connect(leftItem, &AddressItem::add, this, [this](Item *item) { addRecipientToRightPane(item); });
 		if(auto *add = ui->leftPane->findChild<QWidget*>(QStringLiteral("add")))
 			add->setVisible(true);
@@ -177,8 +174,8 @@ void AddRecipients::addRecipient(const QSslCertificate& cert, bool select)
 void AddRecipients::addRecipientToRightPane(Item *item, bool update)
 {
 	auto *address = qobject_cast<AddressItem*>(item);
-	const CDKey& key = address->getKey();
 	if(!address) return;
+	const CKey& key = address->getKey();
 	if (rightList.contains(key)) return;
 
 	if(update)
@@ -240,7 +237,7 @@ bool AddRecipients::isUpdated() const
 	return ui->confirm->isEnabled();
 }
 
-AddressItem* AddRecipients::itemListValue(ItemList *list, const CDKey &key)
+AddressItem* AddRecipients::itemListValue(ItemList *list, const CKey &key)
 {
 	for(auto *item: list->items)
 	{
@@ -250,9 +247,9 @@ AddressItem* AddRecipients::itemListValue(ItemList *list, const CDKey &key)
 	return nullptr;
 }
 
-QList<CDKey> AddRecipients::keys() const
+QList<CKey> AddRecipients::keys() const
 {
-	QList<CDKey> recipients;
+	QList<CKey> recipients;
 	for(auto *item: ui->rightPane->items)
 	{
 		if(auto *address = qobject_cast<AddressItem *>(item))

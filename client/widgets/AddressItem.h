@@ -21,7 +21,7 @@
 
 #include "widgets/Item.h"
 
-struct CDKey;
+struct CKey;
 
 namespace libcdoc { struct Lock; }
 
@@ -37,10 +37,10 @@ public:
 		Icon,
 	};
 
-	explicit AddressItem(const CDKey &k, Type type, QWidget *parent = {});
+	explicit AddressItem(const CKey &k, Type type, QWidget *parent = {});
 	~AddressItem() final;
 
-	const CDKey& getKey() const;
+	const CKey& getKey() const;
 	void idChanged(const SslCertificate &cert) final;
 	void initTabOrder(QWidget *item) final;
 	QWidget* lastTabWidget() final;

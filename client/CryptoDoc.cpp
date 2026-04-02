@@ -51,7 +51,7 @@ using namespace ria::qdigidoc4;
 
 Q_LOGGING_CATEGORY(CRYPTO, "CRYPTO")
 
-CDKey::CDKey(QSslCertificate _rcpt_cert) : lock(libcdoc::Lock::PUBLIC_KEY), rcpt_cert(_rcpt_cert) {
+CKey::CKey(QSslCertificate _rcpt_cert) : lock(libcdoc::Lock::PUBLIC_KEY), rcpt_cert(_rcpt_cert) {
 	SslCertificate ssl(rcpt_cert);
 	lock.pk_type = (rcpt_cert.publicKey().algorithm() == QSsl::Ec) ? libcdoc::PKType::ECC : libcdoc::PKType::RSA;
 	QByteArray der = ssl.publicKeyDer();
@@ -61,7 +61,7 @@ CDKey::CDKey(QSslCertificate _rcpt_cert) : lock(libcdoc::Lock::PUBLIC_KEY), rcpt
 }
 
 bool
-CDKey::operator==(const CDKey& rhs) const
+CKey::operator==(const CKey& rhs) const
 {
 	if (!lock.isPKI() || !rhs.lock.isPKI()) return false;
 	return lock.getBytes(libcdoc::Lock::RCPT_KEY) == rhs.lock.getBytes(libcdoc::Lock::RCPT_KEY);
@@ -82,7 +82,7 @@ struct CryptoDoc::Private
 	DDNetworkBackend network;
 
 	std::vector<IOEntry> files;
-	std::vector<CDKey> keys;
+	std::vector<CKey> keys;
 
 	bool isEncryptedWarning(const QString &title) const;
 
@@ -251,7 +251,7 @@ CryptoDoc::supportsSymmetricKeys() const
 	return !d->reader && (d->version == 2);
 }
 
-bool CryptoDoc::addEncryptionKey(const CDKey& key) {
+bool CryptoDoc::addEncryptionKey(const CKey& key) {
 	if(d->isEncryptedWarning(tr("Failed to add key")))
 		return false;
 	for (auto &k : d->keys) {
@@ -521,7 +521,7 @@ bool CryptoDoc::encrypt(const QString &filename, const QString& label, const QBy
 
 QString CryptoDoc::fileName() const { return d->fileName; }
 
-const std::vector<CDKey>&
+const std::vector<CKey>&
 CryptoDoc::keys() const
 {
 	return d->keys;

@@ -347,7 +347,7 @@ void MainWindow::convertToCDoc()
 
 	auto cardData = qApp->signer()->tokenauth();
 	if (!cardData.cert().isNull()) {
-		cryptoContainer->addEncryptionKey(CDKey(cardData.cert()));
+		cryptoContainer->addEncryptionKey(CKey(cardData.cert()));
 	}
 
 	cryptoDoc = std::move(cryptoContainer);

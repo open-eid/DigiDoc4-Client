@@ -21,12 +21,12 @@
 
 #include <QDialog>
 
-struct CDKey;
+struct CKey;
 
 class KeyDialog final: public QDialog
 {
 	Q_OBJECT
 
 public:
-	KeyDialog(const CDKey &key, QWidget *parent = nullptr);
+	KeyDialog(const CKey &key, QWidget *parent = nullptr);
 };
