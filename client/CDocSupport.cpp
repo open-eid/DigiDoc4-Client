@@ -237,6 +237,8 @@ libcdoc::result_t DDNetworkBackend::sendKey(
 	QNetworkRequest req(QString::fromStdString(url + "/key-capsules"));
 	req.setHeader(QNetworkRequest::ContentTypeHeader, QStringLiteral("application/json"));
 	if (expiry_ts) {
+		uint64_t expiry = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now() + std::chrono::months(6));
+		expiry_ts = std::min(expiry_ts, expiry);
 		req.setRawHeader("x-expiry-time", QDateTime::fromSecsSinceEpoch(expiry_ts).toString(Qt::ISODate).toLatin1());
 	}
 	if (!checkConnection()) {
