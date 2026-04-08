@@ -21,7 +21,7 @@ BEGIN
 			VALUE "FileDescription", "DigiDoc4"
 			VALUE "FileVersion", VERSION_STR
 			VALUE "InternalName", "qdigidoc4"
-			VALUE "LegalCopyright", "Copyright (C) 2017-2025 Estonian Information System Authority"
+			VALUE "LegalCopyright", "Copyright (C) 2017-2026 Estonian Information System Authority"
 			VALUE "OriginalFilename", "qdigidoc4.exe"
 			VALUE "ProductName", "DigiDoc4"
 			VALUE "ProductVersion", VERSION_STR
@@ -32,7 +32,7 @@ BEGIN
 			VALUE "FileDescription", "DigiDoc4"
 			VALUE "FileVersion", VERSION_STR
 			VALUE "InternalName", "qdigidoc4"
-			VALUE "LegalCopyright", "Copyright (C) 2017-2025 Riigi Infosüsteemi Amet"
+			VALUE "LegalCopyright", "Copyright (C) 2017-2026 Riigi Infosüsteemi Amet"
 			VALUE "OriginalFilename", "qdigidoc4.exe"
 			VALUE "ProductName", "DigiDoc4"
 			VALUE "ProductVersion", VERSION_STR

@@ -20,7 +20,7 @@ jobs:
       with:
         submodules: recursive
     - name: Download artifact
-      uses: dawidd6/action-download-artifact@v11
+      uses: dawidd6/action-download-artifact@v20
       with:
         workflow: build.yml
         branch: master
@@ -61,7 +61,7 @@ jobs:
         cmake --build build --target macdeployqt
         cmake --build build --target zip
     - name: Archive artifacts
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       with:
         name: macOS
         path: build/qdigidoc4*.zip
@@ -71,7 +71,7 @@ jobs:
     container: ubuntu:${{ matrix.container }}
     strategy:
       matrix:
-        container: ['22.04', '24.04', '25.10']
+        container: ['22.04', '24.04', '25.10', '26.04']
         arch: ['amd64', 'arm64']
     env:
       DEBIAN_FRONTEND: noninteractive
@@ -79,7 +79,7 @@ jobs:
       DEBEMAIL: github-actions@github.com
     steps:
     - name: Download artifact
-      uses: dawidd6/action-download-artifact@v11
+      uses: dawidd6/action-download-artifact@v20
       with:
         workflow: build.yml
         branch: master
@@ -107,7 +107,7 @@ jobs:
     - name: Lintian
       run: lintian *.deb;
     - name: Archive artifacts
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       with:
         name: ubuntu_${{ matrix.container }}_${{ matrix.arch }}
         path: qdigidoc4*.*
@@ -117,10 +117,10 @@ jobs:
     container: fedora:${{ matrix.container }}
     strategy:
       matrix:
-        container: [42, 43]
+        container: [42, 43, 44]
     steps:
     - name: Download artifact
-      uses: dawidd6/action-download-artifact@v11
+      uses: dawidd6/action-download-artifact@v20
       with:
         workflow: build.yml
         branch: master
@@ -135,7 +135,7 @@ jobs:
         cmake -DCMAKE_INSTALL_PREFIX=/usr -B build -S .
         cmake --build build --target all package
     - name: Archive artifacts
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       with:
         name: fedora_${{ matrix.container }}
         path: build/qdigidoc4*.rpm
@@ -151,7 +151,7 @@ jobs:
     steps:
     - *Checkout
     - name: Download artifact
-      uses: dawidd6/action-download-artifact@v11
+      uses: dawidd6/action-download-artifact@v20
       with:
         workflow: build.yml
         branch: master
@@ -191,7 +191,7 @@ jobs:
         cmake --build build --target msishellext
         cmake --build build --target appx
     - name: Archive artifacts
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       with:
         name: msi_${{ matrix.vcver }}_${{ matrix.platform }}
         path: |
@@ -207,7 +207,7 @@ jobs:
     steps:
     - *Checkout
     - name: Download artifact
-      uses: dawidd6/action-download-artifact@v11
+      uses: dawidd6/action-download-artifact@v20
       with:
         workflow: build.yml
         branch: master
@@ -246,7 +246,7 @@ jobs:
     steps:
     - *Checkout
     - name: Download artifact
-      uses: dawidd6/action-download-artifact@v11
+      uses: dawidd6/action-download-artifact@v20
       with:
         workflow: build.yml
         branch: master
