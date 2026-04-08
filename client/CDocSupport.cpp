@@ -318,37 +318,33 @@ DDNetworkBackend::fetchKey(std::vector<uint8_t> &result,
 	return libcdoc::OK;
 }
 
-DDCDocLogger::~DDCDocLogger()
-{
-	if (ofs.is_open()) {
-		ofs.close();
-	}
-}
-
-static constexpr std::string_view
+static constexpr QLatin1String
 level2Str(libcdoc::LogLevel level) noexcept
 {
 	switch (level) {
 		using enum libcdoc::LogLevel;
-	case LEVEL_FATAL: return "FATAL";
-	case LEVEL_ERROR: return "ERROR";
-	case LEVEL_WARNING: return "WARNING";
-	case LEVEL_INFO: return "INFO";
-	case LEVEL_DEBUG: return "DEBUG";
-	case LEVEL_TRACE: return "TRACE";
-	default: return "UNKNWON";
+	case LEVEL_FATAL: return QLatin1String("FATAL");
+	case LEVEL_ERROR: return QLatin1String("ERROR");
+	case LEVEL_WARNING: return QLatin1String("WARNING");
+	case LEVEL_INFO: return QLatin1String("INFO");
+	case LEVEL_DEBUG: return QLatin1String("DEBUG");
+	case LEVEL_TRACE: return QLatin1String("TRACE");
+	default: return QLatin1String("UNKNWON");
 	}
 }
 
 void DDCDocLogger::logMessage(libcdoc::LogLevel level, std::string_view file, int line, std::string_view message) {
-	if (!ofs.is_open()) {
+	if (!ofs.isOpen()) {
 		return;
 	}
-	auto time = QDateTime::currentDateTime().toString(QStringLiteral("[yyyy-MM-dd hh:mm:ss] "));
+	auto time = QDateTime::currentDateTime().toString(QStringLiteral("[yyyy-MM-dd hh:mm:ss]"));
 	if (auto pos = file.find_last_of("\\/"); pos != std::string_view::npos)
 		file = file.substr(pos);
  
-	ofs << time.toStdString() << level2Str(level) << ' ' << file << ':' << line << ' ' << message << std::endl;
+	ofs.write(QStringLiteral("%1 %2 %3:%4 %5\n")
+		.arg(time, level2Str(level), file)
+		.arg(line)
+		.arg(message).toUtf8());
 }
 
 DDCDocLogger *
@@ -358,12 +354,13 @@ DDCDocLogger::getLogger()
 	return &logger;
 }
 
-void DDCDocLogger::setUpLogger(const std::string& path)
+void DDCDocLogger::setUpLogger(const QString &path)
 {
 	DDCDocLogger *logger = getLogger();
 	logger->setMinLogLevel(libcdoc::LEVEL_WARNING);
-	logger->ofs.open(path, std::ios_base::app);
-	libcdoc::setLogger(logger);
+	logger->ofs.setFileName(path);
+	if(logger->ofs.open(QFile::WriteOnly|QFile::Append))
+		libcdoc::setLogger(logger);
 }
 
 void DDCDocLogger::setLogLevel(libcdoc::LogLevel level)

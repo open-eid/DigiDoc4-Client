@@ -452,7 +452,7 @@ Application::Application( int &argc, char **argv )
 	d->helpAction = d->bar->helpMenu()->addAction(tr("DigiDoc4 Client Help"), this, &Application::openHelp);
 #endif
 
-	DDCDocLogger::setUpLogger(QStringLiteral("%1/libcdoc.log").arg(QDir::tempPath()).toStdString());
+	DDCDocLogger::setUpLogger(QStringLiteral("%1/libcdoc.log").arg(QDir::tempPath()));
 	try
 	{
 		digidoc::Conf::init( new DigidocConf );
