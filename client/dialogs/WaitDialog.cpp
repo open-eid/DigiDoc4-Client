@@ -52,7 +52,7 @@ WaitDialog::WaitDialog(QWidget *parent)
 	ui.setupUi(this);
 	ui.movie->load(QStringLiteral(":/images/wait.svg"));
 	ui.label->setFocusPolicy(Qt::TabFocus);
-	move(parent->geometry().center() - geometry().center());
+	move(parent->topLevelWidget()->geometry().center() - geometry().center());
 	timer.setSingleShot(true);
 	connect(&timer, &QTimer::timeout, this, &WaitDialog::show);
 }
