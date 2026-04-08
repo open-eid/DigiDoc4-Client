@@ -85,6 +85,26 @@ void WarningItem::lookupWarning()
 		url = tr("https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult/");
 		_page = MyEid;
 		break;
+	case Pin1PukBlockedWarning:
+		ui->warningText->setText(VerifyCert::tr("PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times.").arg(1));
+		url = tr("https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult/");
+		_page = MyEid;
+		break;
+	case Pin1PukBlockedResetWarning:
+		ui->warningText->setText(VerifyCert::tr("PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times.").arg(1));
+		url = tr("https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult/reminders-for-id-card-holders/");
+		_page = MyEid;
+		break;
+	case Pin2PukBlockedWarning:
+		ui->warningText->setText(VerifyCert::tr("PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times.").arg(2));
+		url = tr("https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult/");
+		_page = MyEid;
+		break;
+	case Pin2PukBlockedResetWarning:
+		ui->warningText->setText(VerifyCert::tr("PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times.").arg(2));
+		url = tr("https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult/reminders-for-id-card-holders/");
+		_page = MyEid;
+		break;
 	case ActivatePin1WithPUKWarning:
 	case UnblockPin1Warning:
 		ui->warningText->setText(QStringLiteral("%1 %2").arg(
