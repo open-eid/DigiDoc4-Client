@@ -342,9 +342,9 @@ void DDCDocLogger::logMessage(libcdoc::LogLevel level, std::string_view file, in
 		file = file.substr(pos);
  
 	ofs.write(QStringLiteral("%1 %2 %3:%4 %5\n")
-		.arg(time, level2Str(level), file)
+		.arg(time, level2Str(level), QLatin1String(file.data(), file.size()))
 		.arg(line)
-		.arg(message).toUtf8());
+		.arg(QLatin1String(message.data(), message.size())).toUtf8());
 }
 
 DDCDocLogger *
