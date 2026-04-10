@@ -57,7 +57,9 @@ KeyDialog::KeyDialog(const CKey &k, QWidget *parent )
 		case PUBLIC_KEY: return QStringLiteral("PUBLIC_KEY");
 		case CDOC1: return QStringLiteral("CDOC1");
 		case SERVER: return QStringLiteral("SERVER");
+#if 0
 		case SHARE_SERVER: return QStringLiteral("SHARE_SERVER");
+#endif
 		case UNKNOWN:
 		default: return QStringLiteral("UNKNOWN");
 		}

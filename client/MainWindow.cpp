@@ -130,7 +130,17 @@ MainWindow::~MainWindow() noexcept = default;
 
 void MainWindow::adjustDrops()
 {
-	setAcceptDrops(currentState() != SignedContainer);
+	setAcceptDrops([this] {
+		switch(ui->startScreen->currentIndex())
+		{
+		case SignIntro: return true;
+		case SignDetails: return !digiDoc || digiDoc->signatures().isEmpty();
+		case CryptoIntro: return true;
+		case CryptoDetails: return !cryptoDoc || cryptoDoc->state() == UnencryptedContainer;
+		case MyEid: return false;
+		}
+		return false;
+	}());
 }
 
 void MainWindow::changeEvent(QEvent* event)
@@ -157,20 +167,6 @@ void MainWindow::closeEvent(QCloseEvent * /*event*/)
 	cryptoDoc.reset();
 	resetDigiDoc({});
 	ui->startScreen->setCurrentIndex(SignIntro);
-}
-
-ContainerState MainWindow::currentState()
-{
-	auto current = ui->startScreen->currentIndex();
-
-	if(current == CryptoIntro || current == CryptoDetails)
-	{
-		if(cryptoDoc)
-			return cryptoDoc->state();
-	}
-	else if(digiDoc)
-		return digiDoc->state();
-	return ContainerState::Uninitialized;
 }
 
 void MainWindow::dragEnterEvent(QDragEnterEvent *event)
@@ -327,6 +323,7 @@ void MainWindow::onSignAction(int action, const QString &idCode, const QString &
 	default:
 		break;
 	}
+	adjustDrops();
 }
 
 void MainWindow::convertToCDoc()
@@ -384,6 +381,7 @@ void MainWindow::onCryptoAction(int action, const QString &/*id*/, const QString
 	default:
 		break;
 	}
+	adjustDrops();
 }
 
 void MainWindow::openFiles(QStringList files, bool addFile, bool forceCreate)
@@ -404,7 +402,16 @@ void MainWindow::openFiles(QStringList files, bool addFile, bool forceCreate)
 		- else open file in another view
 */
 	auto current = ui->startScreen->currentIndex();
-	ContainerState state = currentState();
+	ContainerState state = ContainerState::Uninitialized;
+
+	if(current == CryptoIntro || current == CryptoDetails)
+	{
+		if(cryptoDoc)
+			state = cryptoDoc->state();
+	}
+	else if(digiDoc)
+		state = digiDoc->state();
+
 	Pages page = (current == CryptoIntro) ? CryptoDetails : SignDetails;
 	bool create = true;
 	switch(state)
@@ -573,7 +580,7 @@ void MainWindow::sign(F &&sign)
 	ui->signContainerPage->transition(digiDoc.get());
 
 	FadeInNotification::success(ui->topBar, tr("The container has been successfully signed!"));
-	adjustDrops();
+	setAcceptDrops(false);
 }
 
 void MainWindow::removeSignature(int index)
