@@ -92,10 +92,10 @@ struct EsteidShellExtension : public winrt::implements<EsteidShellExtension<IsCr
 		else parameters += L"\"-sign\" ";
 		for (DWORD i = 0; i < count; ++i)
 		{
-			IShellItem* psi = nullptr;
+			IShellItem* psi{};
 			if(auto hr = psiItemArray->GetItemAt(i, &psi); FAILED(hr))
 				return hr;
-			LPWSTR path;
+			LPWSTR path{};
 			auto hr = psi->GetDisplayName(SIGDN_FILESYSPATH, &path);
 			psi->Release();
 			if(FAILED(hr))

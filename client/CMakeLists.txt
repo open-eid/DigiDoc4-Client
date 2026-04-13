@@ -224,18 +224,21 @@ elseif(WIN32)
 	set(WIX_CMD wix.exe build -nologo
 		-arch $ENV{PLATFORM}
 		-ext WixToolset.UI.wixext
+		-ext WixToolset.Util.wixext
 		-bv WixUIDialogBmp=${CMAKE_SOURCE_DIR}/common/dlgbmp.bmp
 		-bv WixUIBannerBmp=${CMAKE_SOURCE_DIR}/common/banner.bmp
 		-d ico_path=${CMAKE_CURRENT_SOURCE_DIR}/images/digidoc.ico
 		-d libs_path=${LIBS_PATH}
 		-d client_path=$<TARGET_FILE:${PROJECT_NAME}>
+		-d shellext_v2=$<TARGET_FILE:EsteidShellExtensionV2>
+		-d shellext_msix=${CMAKE_BINARY_DIR}/${SHELLEXT_MSIX_FILE}
 		-d qt_suffix=$<$<CONFIG:Debug>:d>
 		${CMAKE_SOURCE_DIR}/${PROJECT_NAME}.wxs
 		${CMAKE_SOURCE_DIR}/common/WelcomeDlg.wxs
 		${CMAKE_SOURCE_DIR}/common/WixUI_Minimal.wxs
 	)
 	get_filename_component(QT_BASE_DIR "${Qt6_DIR}/../../.." ABSOLUTE)
-	add_custom_target(msi DEPENDS ${PROJECT_NAME}
+	add_custom_target(msi DEPENDS ${PROJECT_NAME} msixshellext
 		COMMAND ${WIX_CMD} -o "${MSI_FILE}.msi"
 		#Build MSI with QT
 		COMMAND ${WIX_CMD} -d qt_path=${QT_BASE_DIR}/bin -o "${MSI_FILE}.qt.msi"
