@@ -132,14 +132,14 @@ QByteArray QPKCS11::derive(const QByteArray &publicKey) const
 	CK_OBJECT_CLASS newkey_class = CKO_SECRET_KEY;
 	CK_KEY_TYPE newkey_type = CKK_GENERIC_SECRET;
 	CK_ULONG value_len = (publicKey.size() - 1) / 2;
-	std::array newkey_template{
-		CK_ATTRIBUTE{CKA_TOKEN, &_false, sizeof(_false)},
-		CK_ATTRIBUTE{CKA_CLASS, &newkey_class, sizeof(newkey_class)},
-		CK_ATTRIBUTE{CKA_KEY_TYPE, &newkey_type, sizeof(newkey_type)},
-		CK_ATTRIBUTE{CKA_SENSITIVE, &_false, sizeof(_false)},
-		CK_ATTRIBUTE{CKA_EXTRACTABLE, &_true, sizeof(_true)},
-		CK_ATTRIBUTE{CKA_VALUE_LEN, &value_len, sizeof(value_len)},
-	};
+	auto newkey_template = std::to_array<CK_ATTRIBUTE>({
+		{CKA_TOKEN, &_false, sizeof(_false)},
+		{CKA_CLASS, &newkey_class, sizeof(newkey_class)},
+		{CKA_KEY_TYPE, &newkey_type, sizeof(newkey_type)},
+		{CKA_SENSITIVE, &_false, sizeof(_false)},
+		{CKA_EXTRACTABLE, &_true, sizeof(_true)},
+		{CKA_VALUE_LEN, &value_len, sizeof(value_len)},
+	});
 	CK_OBJECT_HANDLE newkey = CK_INVALID_HANDLE;
 	if(d->f->C_DeriveKey(d->session, &mech, key.front(), newkey_template.data(), CK_ULONG(newkey_template.size()), &newkey) != CKR_OK)
 		return {};
@@ -374,8 +374,8 @@ bool QPKCS11::reload()
 		{ QApplication::applicationDirPath() + "/opensc-pkcs11.so", {} },
 		{ "/Library/latvia-eid/lib/eidlv-pkcs11.bundle/Contents/MacOS/eidlv-pkcs11", "3BDB960080B1FE451F830012428F536549440F900020" }, // LV-G2
 		{ "/Library/latvia-eid/lib/eidlv-pkcs11.bundle/Contents/MacOS/eidlv-pkcs11", "3BDC960080B1FE451F830012428F54654944320F900012" }, // LV-G2.1
-		{ "/Library/mCard/lib/mcard-pkcs11.so", "3B9D188131FC358031C0694D54434F5373020505D3" }, // LT-G3
-		{ "/Library/mCard/lib/mcard-pkcs11.so", "3B9D188131FC358031C0694D54434F5373020604D1" }, // LT-G3.1
+		{ "/Library/mCard/lib/mcard-pkcs11.so", "3B9D188131FC358031C0694D54434F5373020604D1" }, // LT MaskTech 2.6.4
+		{ "/Library/mCard/lib/mcard-pkcs11.so", "3B9D188131FC358031C0694D54434F5373020605D0" }, // LT MaskTech 2.6.5
 		{ "/Library/Atostek ID/Atostek-ID-PKCS11.dylib", "3B7F9600008031B865B08504021B1200F6829000" }, // FI-G3.1
 		{ "/Library/Atostek ID/Atostek-ID-PKCS11.dylib", "3B7F9600008031B865B085050011122460829000" }, // FI-G4
 		{ "/Library/Atostek ID/Atostek-ID-PKCS11.dylib", "3B7F9600008031B865B085051024122460829000" }, // FI-G4.1
@@ -394,8 +394,8 @@ bool QPKCS11::reload()
 #if defined(Q_OS_LINUX)
 		{ "/opt/latvia-eid/lib/eidlv-pkcs11.so", "3BDB960080B1FE451F830012428F536549440F900020" }, // LV-G2
 		{ "/opt/latvia-eid/lib/eidlv-pkcs11.so", "3BDC960080B1FE451F830012428F54654944320F900012" }, // LV-G2.1
-		{ "mcard-pkcs11.so", "3B9D188131FC358031C0694D54434F5373020505D3" }, // LT-G3
-		{ "mcard-pkcs11.so", "3B9D188131FC358031C0694D54434F5373020604D1" }, // LT-G3.1
+		{ "mcard-pkcs11.so", "3B9D188131FC358031C0694D54434F5373020604D1" }, // LT MaskTech 2.6.4
+		{ "mcard-pkcs11.so", "3B9D188131FC358031C0694D54434F5373020605D0" }, // LT MaskTech 2.6.5
 #if Q_PROCESSOR_WORDSIZE == 8
 		{ "/usr/lib/Atostek-ID-PKCS11.so", "3B7F9600008031B865B08504021B1200F6829000" }, // FI-G3.1
 		{ "/usr/lib/Atostek-ID-PKCS11.so", "3B7F9600008031B865B085050011122460829000" }, // FI-G4
