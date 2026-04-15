@@ -65,7 +65,7 @@ SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *par
 		d->lblNotice->setLabel(QStringLiteral("warning"));
 		if(!s.lastError().isEmpty())
 			d->error->setPlainText( s.lastError() );
-		if(s.warning() & DigiDocSignature::DigestWeak )
+		if(s.warning() & DigiDocSignature::DigestWeak)
 			d->info->setText(tr(
 				"The signature is technically correct, but it is based on the currently weak hash algorithm SHA-1, "
 				"therefore it is not protected against forgery or alteration."));
@@ -84,6 +84,8 @@ SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *par
 		d->info->setText( tr(
 			"This e-Signature is not equivalent with handwritten signature and therefore "
 			"can be used only in transactions where Qualified e-Signature is not required.") );
+		if(!s.lastError().isEmpty())
+			d->error->setPlainText(s.lastError());
 		break;
 	case DigiDocSignature::Invalid:
 		d->status->setLabel(QStringLiteral("error"));

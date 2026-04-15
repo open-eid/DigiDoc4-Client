@@ -73,7 +73,7 @@ public:
 	int warning() const;
 
 private:
-	SignatureStatus status(const digidoc::Exception &e);
+	SignatureStatus status(DigiDocSignature::SignatureStatus result, const digidoc::Exception &e);
 	SignatureStatus validate(bool qscd = true);
 	static QSslCertificate toCertificate(const std::vector<unsigned char> &der) ;
 	static QDateTime toTime(const std::string &time) ;
