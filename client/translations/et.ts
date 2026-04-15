@@ -102,6 +102,10 @@
         <translation>Lisatud</translation>
     </message>
     <message>
+        <source>Decrypt</source>
+        <translation>Dekrüpteeri</translation>
+    </message>
+    <message>
         <source>Add</source>
         <translation>Lisa</translation>
     </message>
@@ -128,6 +132,10 @@
     <message>
         <source>Unsupported cryptographic algorithm or recipient type</source>
         <translation>Mittetoetatud krüptograafiline algoritm või adressaadi tüüp</translation>
+    </message>
+    <message>
+        <source>pw</source>
+        <translation>Parool</translation>
     </message>
     <message>
         <source>Decryption is possible until:</source>
@@ -231,13 +239,6 @@
     <message>
         <source>Start downloading</source>
         <translation>Alusta paigaldust</translation>
-    </message>
-</context>
-<context>
-    <name>CDoc2</name>
-    <message>
-        <source>CDoc contains additional payload data that is not part of content</source>
-        <translation>CDoc sisaldab lisanduvat andmehulka, mis ei ole osa sisust</translation>
     </message>
 </context>
 <context>
@@ -485,6 +486,10 @@
         <translation>DigiDoc4 klient</translation>
     </message>
     <message>
+        <source>Decrypting</source>
+        <translation>Dekrüpteerin</translation>
+    </message>
+    <message>
         <source>You are about to delete the last file in the container</source>
         <translation>Oled kustutamas viimast faili ümbrikus</translation>
     </message>
@@ -536,6 +541,14 @@
         <source>Continue signing</source>
         <translation>Jätka allkirjastamisega</translation>
     </message>
+    <message>
+        <source>Cannot alter container %1. Save different location?</source>
+        <translation>Ümbriku %1 salvestamine ebaõnnestus. Salvestada teise asukohta?</translation>
+    </message>
+    <message>
+        <source>Encrypting</source>
+        <translation>Krüpteerin</translation>
+    </message>
 </context>
 <context>
     <name>CryptoDoc</name>
@@ -548,36 +561,20 @@
         <translation>Turvaümbrik ei ole avatud</translation>
     </message>
     <message>
-        <source>Key already exists</source>
-        <translation>Adressaat on juba lisatud</translation>
+        <source>Unsupported file format</source>
+        <translation>Tundmatu failiformaat</translation>
     </message>
     <message>
-        <source>Failed to create temporary files&lt;br /&gt;%1</source>
-        <translation>Ajutiste failde loomine ebaõnnestus&lt;br /&gt;%1</translation>
+        <source>Key already exists</source>
+        <translation>Adressaat on juba lisatud</translation>
     </message>
     <message>
         <source>You do not have the key to decrypt this document</source>
         <translation>Sul puudub võti millega dekrüpteerida seda turvaümbrikut</translation>
     </message>
     <message>
-        <source>Error parsing document</source>
-        <translation>Viga dokumendi parsimisel</translation>
-    </message>
-    <message>
         <source>No keys specified</source>
         <translation>Ühtegi adressaati ei ole lisatud</translation>
-    </message>
-    <message>
-        <source>ID-CARD</source>
-        <translation>ID-KAART</translation>
-    </message>
-    <message>
-        <source>Digi-ID E-RESIDENT</source>
-        <translation>Digi-ID E-RESIDENT</translation>
-    </message>
-    <message>
-        <source>Digi-ID</source>
-        <translation>Digi-ID</translation>
     </message>
     <message>
         <source>Failed to add key</source>
@@ -608,12 +605,24 @@
         <translation>Dokumendi avamine ebaõnnestus</translation>
     </message>
     <message>
-        <source>An error occurred while opening the document</source>
-        <translation>Ümbriku avamisel tekkis viga</translation>
-    </message>
-    <message>
         <source>Don&apos;t show again</source>
         <translation>Ära rohkem näita</translation>
+    </message>
+    <message>
+        <source>Wrong password.</source>
+        <translation>Vale parool.</translation>
+    </message>
+    <message>
+        <source>Wrong key.</source>
+        <translation>Vale võti.</translation>
+    </message>
+    <message>
+        <source>Corrupted or tampered file.</source>
+        <translation>Vigane või muudetud fail.</translation>
+    </message>
+    <message>
+        <source>Cannot read file.</source>
+        <translation>Faili ei saa lugeda.</translation>
     </message>
 </context>
 <context>
@@ -688,27 +697,27 @@
     </message>
     <message>
         <source>Unknown - error %1</source>
-        <translation>Teadmata - viga %1</translation>
+        <translation type="vanished">Teadmata - viga %1</translation>
     </message>
     <message>
         <source>User</source>
-        <translation>Kasutaja</translation>
+        <translation type="vanished">Kasutaja</translation>
     </message>
     <message>
         <source>Administrator</source>
-        <translation>Administraator</translation>
+        <translation type="vanished">Administraator</translation>
     </message>
     <message>
         <source>User rights: </source>
-        <translation>Kasutajaõigused: </translation>
+        <translation type="vanished">Kasutajaõigused: </translation>
     </message>
     <message>
         <source>Not found</source>
-        <translation>Ei leitud</translation>
+        <translation type="vanished">Ei leitud</translation>
     </message>
     <message>
         <source>Certificate Propagation service status: </source>
-        <translation>Certificate Propagation teenuse staatus: </translation>
+        <translation type="vanished">Certificate Propagation teenuse staatus: </translation>
     </message>
     <message>
         <source>is set manually</source>
@@ -1241,6 +1250,10 @@
         <translation>Adressaat</translation>
     </message>
     <message>
+        <source>Lock type</source>
+        <translation>Luku tüüp</translation>
+    </message>
+    <message>
         <source>Expiry date</source>
         <translation>Aegumiskuupäev</translation>
     </message>
@@ -1344,6 +1357,12 @@ ID-Card</source>
 ID-kaardiga</translation>
     </message>
     <message>
+        <source>Encrypt
+long-term</source>
+        <translation>Krüpteeri
+säilitamiseks</translation>
+    </message>
+    <message>
         <source>Sign with
 ID-Card</source>
         <translation>Allkirjasta
@@ -1429,10 +1448,6 @@ ID-kaardiga</translation>
         <translation>Ühenda kaardilugeja arvutiga ja sisesta ID-kaart lugejasse</translation>
     </message>
     <message>
-        <source>Encrypting</source>
-        <translation>Krüpteerin</translation>
-    </message>
-    <message>
         <source>Signing</source>
         <translation>Allkirjastamine</translation>
     </message>
@@ -1468,10 +1483,6 @@ ID-kaardiga</translation>
     <message>
         <source>The card in the card reader is not an Estonian ID-card</source>
         <translation>Lugejas olev kaart ei ole Eesti ID-kaart</translation>
-    </message>
-    <message>
-        <source>Decrypting</source>
-        <translation>Dekrüpteerin</translation>
     </message>
     <message>
         <source>My eID</source>
@@ -1749,6 +1760,73 @@ ID-kaardiga</translation>
     <message>
         <source>The PCSC service, required for using the ID-card, is not working. Check your computer settings.</source>
         <translation>ID-kaardi kasutamiseks vajalik PCSC teenus ei tööta. Kontrolli arvuti seadeid.</translation>
+    </message>
+</context>
+<context>
+    <name>PasswordDialog</name>
+    <message>
+        <source>Encrypt with password</source>
+        <translation>Krüpteeri parooliga</translation>
+    </message>
+    <message>
+        <source>Key label (recipient name or id)</source>
+        <translation>Võtme nimi (saaja nimi või kood)</translation>
+    </message>
+    <message>
+        <source>Be sure to save the password in a secure place
+- without the password, you won’t be able to open the file again.</source>
+        <translation>Salvesta parool kindlasti turvalisse kohta
+- ilma paroolita ei saa faili enam avada.</translation>
+    </message>
+    <message>
+        <source>• Length: 20–64 characters
+• Contains at least one number (0–9)
+• Contains at least one uppercase letter
+• Contains at least one lowercase letter</source>
+        <translation>• Pikkus: 20 - 64 tähemärki
+• Sisaldab vähemalt ühte numbrit (0-9)
+• Sisaldab vähemalt ühte suurtähte
+• Sisaldab vähemalt ühte väiketähte</translation>
+    </message>
+    <message>
+        <source>Repeat password</source>
+        <translation>Parool uuesti</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Katkesta</translation>
+    </message>
+    <message>
+        <source>Encrypt</source>
+        <translation>Krüpteeri</translation>
+    </message>
+    <message>
+        <source>Decrypt with password</source>
+        <translation>Dekrüpteeri parooliga</translation>
+    </message>
+    <message>
+        <source>Enter password to decrypt the document</source>
+        <translation>Sisestage parool dokumendi dekrüpteerimiseks</translation>
+    </message>
+    <message>
+        <source>Decrypt</source>
+        <translation>Dekrüpteeri</translation>
+    </message>
+    <message>
+        <source>Password is empty</source>
+        <translation>Parool on tühi</translation>
+    </message>
+    <message>
+        <source>Password does not meet complexity requirements</source>
+        <translation>Parool ei vasta keerukusnõuetele</translation>
+    </message>
+    <message>
+        <source>Passwords do not match</source>
+        <translation>Paroolid ei ühti</translation>
+    </message>
+    <message>
+        <source>Enter a password to encrypt the document</source>
+        <translation>Loo ümbrikule parool</translation>
     </message>
 </context>
 <context>
@@ -2467,11 +2545,11 @@ Täiendavad litsentsid ja komponendid</translation>
     </message>
     <message>
         <source>Fetch URL</source>
-        <translation type="unfinished"></translation>
+        <translation>Vastuvõtmise URL</translation>
     </message>
     <message>
         <source>Post URL</source>
-        <translation type="unfinished"></translation>
+        <translation>Saatmise URL</translation>
     </message>
 </context>
 <context>

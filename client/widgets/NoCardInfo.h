@@ -25,7 +25,7 @@ namespace Ui {
 class NoCardInfo;
 }
 
-class NoCardInfo : public QWidget
+class NoCardInfo final : public QWidget
 {
 	Q_OBJECT
 

@@ -102,6 +102,10 @@
         <translation>Added</translation>
     </message>
     <message>
+        <source>Decrypt</source>
+        <translation>Decrypt</translation>
+    </message>
+    <message>
         <source>Add</source>
         <translation>Add</translation>
     </message>
@@ -128,6 +132,10 @@
     <message>
         <source>Unsupported cryptographic algorithm or recipient type</source>
         <translation>Unsupported cryptographic algorithm or recipient type</translation>
+    </message>
+    <message>
+        <source>pw</source>
+        <translation>Password</translation>
     </message>
     <message>
         <source>Decryption is possible until:</source>
@@ -231,13 +239,6 @@
     <message>
         <source>Start downloading</source>
         <translation>Start downloading</translation>
-    </message>
-</context>
-<context>
-    <name>CDoc2</name>
-    <message>
-        <source>CDoc contains additional payload data that is not part of content</source>
-        <translation>CDoc contains additional payload data that is not part of content</translation>
     </message>
 </context>
 <context>
@@ -485,6 +486,10 @@
         <translation>DigiDoc4 Client</translation>
     </message>
     <message>
+        <source>Decrypting</source>
+        <translation>Decrypting</translation>
+    </message>
+    <message>
         <source>You are about to delete the last file in the container</source>
         <translation>You are about to delete the last file in the container</translation>
     </message>
@@ -536,6 +541,14 @@
         <source>Continue signing</source>
         <translation>Continue signing</translation>
     </message>
+    <message>
+        <source>Cannot alter container %1. Save different location?</source>
+        <translation>Cannot alter container %1. Save to different location?</translation>
+    </message>
+    <message>
+        <source>Encrypting</source>
+        <translation>Encrypting</translation>
+    </message>
 </context>
 <context>
     <name>CryptoDoc</name>
@@ -548,36 +561,20 @@
         <translation>Container is not open</translation>
     </message>
     <message>
-        <source>Key already exists</source>
-        <translation>Key already exists</translation>
+        <source>Unsupported file format</source>
+        <translation>Unsupported file format</translation>
     </message>
     <message>
-        <source>Failed to create temporary files&lt;br /&gt;%1</source>
-        <translation>Failed to create temporary files&lt;br /&gt;%1</translation>
+        <source>Key already exists</source>
+        <translation>Key already exists</translation>
     </message>
     <message>
         <source>You do not have the key to decrypt this document</source>
         <translation>You do not have the key to decrypt this document</translation>
     </message>
     <message>
-        <source>Error parsing document</source>
-        <translation>Error parsing document</translation>
-    </message>
-    <message>
         <source>No keys specified</source>
         <translation>No recipients specified</translation>
-    </message>
-    <message>
-        <source>ID-CARD</source>
-        <translation>ID-CARD</translation>
-    </message>
-    <message>
-        <source>Digi-ID E-RESIDENT</source>
-        <translation>Digi-ID E-RESIDENT</translation>
-    </message>
-    <message>
-        <source>Digi-ID</source>
-        <translation>Digi-ID</translation>
     </message>
     <message>
         <source>Failed to add key</source>
@@ -608,12 +605,24 @@
         <translation>Failed to open document</translation>
     </message>
     <message>
-        <source>An error occurred while opening the document</source>
-        <translation>An error occurred while opening the document</translation>
-    </message>
-    <message>
         <source>Don&apos;t show again</source>
         <translation>Don&apos;t show again</translation>
+    </message>
+    <message>
+        <source>Wrong password.</source>
+        <translation>Wrong password.</translation>
+    </message>
+    <message>
+        <source>Wrong key.</source>
+        <translation>Wrong key.</translation>
+    </message>
+    <message>
+        <source>Corrupted or tampered file.</source>
+        <translation>Corrupted or tampered file.</translation>
+    </message>
+    <message>
+        <source>Cannot read file.</source>
+        <translation>Cannot read file.</translation>
     </message>
 </context>
 <context>
@@ -688,27 +697,27 @@
     </message>
     <message>
         <source>Unknown - error %1</source>
-        <translation>Unknown - error %1</translation>
+        <translation type="vanished">Unknown - error %1</translation>
     </message>
     <message>
         <source>User</source>
-        <translation>User</translation>
+        <translation type="vanished">User</translation>
     </message>
     <message>
         <source>Administrator</source>
-        <translation>Administrator</translation>
+        <translation type="vanished">Administrator</translation>
     </message>
     <message>
         <source>User rights: </source>
-        <translation>User rights: </translation>
+        <translation type="vanished">User rights: </translation>
     </message>
     <message>
         <source>Not found</source>
-        <translation>Not found</translation>
+        <translation type="vanished">Not found</translation>
     </message>
     <message>
         <source>Certificate Propagation service status: </source>
-        <translation>Certificate Propagation service status: </translation>
+        <translation type="vanished">Certificate Propagation service status: </translation>
     </message>
     <message>
         <source>is set manually</source>
@@ -1241,6 +1250,10 @@
         <translation>Recipient</translation>
     </message>
     <message>
+        <source>Lock type</source>
+        <translation>Lock type</translation>
+    </message>
+    <message>
         <source>Expiry date</source>
         <translation>Expiry date</translation>
     </message>
@@ -1344,6 +1357,12 @@ ID-Card</source>
 ID-Card</translation>
     </message>
     <message>
+        <source>Encrypt
+long-term</source>
+        <translation>Encrypt
+long-term</translation>
+    </message>
+    <message>
         <source>Sign with
 ID-Card</source>
         <translation>Sign with
@@ -1429,10 +1448,6 @@ ID-Card</translation>
         <translation>Connect the card reader to your computer and insert your ID-card into the reader</translation>
     </message>
     <message>
-        <source>Encrypting</source>
-        <translation>Encrypting</translation>
-    </message>
-    <message>
         <source>Signing</source>
         <translation>Signing</translation>
     </message>
@@ -1468,10 +1483,6 @@ ID-Card</translation>
     <message>
         <source>The card in the card reader is not an Estonian ID-card</source>
         <translation>The card in the card reader is not an Estonian ID-card</translation>
-    </message>
-    <message>
-        <source>Decrypting</source>
-        <translation>Decrypting</translation>
     </message>
     <message>
         <source>My eID</source>
@@ -1749,6 +1760,73 @@ ID-Card</translation>
     <message>
         <source>The PCSC service, required for using the ID-card, is not working. Check your computer settings.</source>
         <translation>The PCSC service, required for using the ID-card, is not working. Check your computer settings.</translation>
+    </message>
+</context>
+<context>
+    <name>PasswordDialog</name>
+    <message>
+        <source>Encrypt with password</source>
+        <translation>Encrypt with password</translation>
+    </message>
+    <message>
+        <source>Key label (recipient name or id)</source>
+        <translation>Key label (recipient name or id)</translation>
+    </message>
+    <message>
+        <source>Be sure to save the password in a secure place
+- without the password, you won’t be able to open the file again.</source>
+        <translation>Be sure to save the password in a secure place
+- without the password, you won’t be able to open the file again.</translation>
+    </message>
+    <message>
+        <source>• Length: 20–64 characters
+• Contains at least one number (0–9)
+• Contains at least one uppercase letter
+• Contains at least one lowercase letter</source>
+        <translation>• Length: 20–64 characters
+• Contains at least one number (0–9)
+• Contains at least one uppercase letter
+• Contains at least one lowercase letter</translation>
+    </message>
+    <message>
+        <source>Repeat password</source>
+        <translation>Repeat password</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Cancel</translation>
+    </message>
+    <message>
+        <source>Encrypt</source>
+        <translation>Encrypt</translation>
+    </message>
+    <message>
+        <source>Decrypt with password</source>
+        <translation>Decrypt with password</translation>
+    </message>
+    <message>
+        <source>Enter password to decrypt the document</source>
+        <translation>Enter password to decrypt the document</translation>
+    </message>
+    <message>
+        <source>Decrypt</source>
+        <translation>Decrypt</translation>
+    </message>
+    <message>
+        <source>Password is empty</source>
+        <translation>Password is empty</translation>
+    </message>
+    <message>
+        <source>Password does not meet complexity requirements</source>
+        <translation>Password does not meet complexity requirements</translation>
+    </message>
+    <message>
+        <source>Passwords do not match</source>
+        <translation>Passwords do not match</translation>
+    </message>
+    <message>
+        <source>Enter a password to encrypt the document</source>
+        <translation>Enter a password to encrypt the document</translation>
     </message>
 </context>
 <context>
@@ -2467,11 +2545,11 @@ Additional licenses and components</translation>
     </message>
     <message>
         <source>Fetch URL</source>
-        <translation type="unfinished"></translation>
+        <translation>Fetch URL</translation>
     </message>
     <message>
         <source>Post URL</source>
-        <translation type="unfinished"></translation>
+        <translation>Post URL</translation>
     </message>
 </context>
 <context>

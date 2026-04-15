@@ -85,6 +85,7 @@
     * [http://www.cmake.org](http://www.cmake.org)
     * [http://qt-project.org](http://qt-project.org)
     * [libdigidocpp-*.msi](https://github.com/open-eid/libdigidocpp/releases)
+    * [vcpkg](https://vcpkg.io/)
 
 2. Fetch the source
 
@@ -93,7 +94,10 @@
 
 3. Configure
 
-        cmake -G"NMAKE Makefiles" -DCMAKE_PREFIX_PATH=C:\Qt\6.10.2\msvc2022_x64 -DLibDigiDocpp_ROOT="C:\Program Files (x86)\libdigidocpp" -B build -S .
+        cmake -G"NMAKE Makefiles" -B build -S . `
+          -DCMAKE_PREFIX_PATH=C:\Qt\6.10.2\msvc2022_x64 `
+          -DLibDigiDocpp_ROOT="C:\Program Files (x86)\libdigidocpp" `
+          -DVCPKG_MANIFEST_DIR=client/libcdoc
 
 4. Build
 

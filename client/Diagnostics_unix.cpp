@@ -21,6 +21,8 @@
 
 #include "Common.h"
 
+#include "CDoc.h"
+
 #include <QtCore/QCoreApplication>
 #include <QtCore/QFile>
 #include <QtCore/QRegularExpression>
@@ -116,10 +118,13 @@ void Diagnostics::run()
 	emit update( info );
 	info.clear();
 
+	auto libcdocVer = libcdoc::getVersion();
+
 	s << "<b>" << tr("Libraries") << ":</b><br />"
 		<< "QT (" << qVersion() << ")<br />"
 		<< "OpenSSL build (" << QSslSocket::sslLibraryBuildVersionString() << ")<br />"
 		<< "OpenSSL current (" << QSslSocket::sslLibraryVersionString() << ")<br />"
+		<< "libcdoc (" << QLatin1String(libcdocVer.data(), libcdocVer.size()) << ")<br />"
 		<< packages({
 #ifdef Q_OS_DARWIN
 		"digidocpp"

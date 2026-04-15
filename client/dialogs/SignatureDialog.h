@@ -32,7 +32,7 @@ class QLabel;
 class QTreeWidget;
 class SslCertificate;
 
-class SignatureDialog : public QDialog
+class SignatureDialog final : public QDialog
 {
 	Q_OBJECT
 

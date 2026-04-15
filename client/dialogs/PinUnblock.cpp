@@ -103,7 +103,7 @@ PinUnblock::PinUnblock(QSmartCardData::PinType type, QSmartCard::PinAction actio
 	ui->repeat->setValidator(new QRegularExpressionValidator(regexpNewCode, ui->repeat));
 	ui->puk->setValidator(new QRegularExpressionValidator(regexpValidateCode, ui->puk));
 
-	auto setError = [this](LineEdit *input, QLabel *error, const QString &msg) {
+	auto setError = [](LineEdit *input, QLabel *error, const QString &msg) {
 		input->setLabel(msg.isEmpty() ? QString() : QStringLiteral("error"));
 		error->setFocusPolicy(msg.isEmpty() ? Qt::NoFocus : Qt::TabFocus);
 		error->setText(msg);

@@ -26,6 +26,7 @@
 #include "DigiDoc.h"
 #include "QPCSC.h"
 #include "QSigner.h"
+#include "Settings.h"
 #include "SslCertificate.h"
 #include "TokenData.h"
 #include "effects/FadeInNotification.h"
@@ -129,7 +130,17 @@ MainWindow::~MainWindow() noexcept = default;
 
 void MainWindow::adjustDrops()
 {
-	setAcceptDrops(currentState() != SignedContainer);
+	setAcceptDrops([this] {
+		switch(ui->startScreen->currentIndex())
+		{
+		case SignIntro: return true;
+		case SignDetails: return !digiDoc || digiDoc->signatures().isEmpty();
+		case CryptoIntro: return true;
+		case CryptoDetails: return !cryptoDoc || cryptoDoc->state() == UnencryptedContainer;
+		case MyEid: return false;
+		}
+		return false;
+	}());
 }
 
 void MainWindow::changeEvent(QEvent* event)
@@ -156,20 +167,6 @@ void MainWindow::closeEvent(QCloseEvent * /*event*/)
 	cryptoDoc.reset();
 	resetDigiDoc({});
 	ui->startScreen->setCurrentIndex(SignIntro);
-}
-
-ContainerState MainWindow::currentState()
-{
-	auto current = ui->startScreen->currentIndex();
-
-	if(current == CryptoIntro || current == CryptoDetails)
-	{
-		if(cryptoDoc)
-			return cryptoDoc->state();
-	}
-	else if(digiDoc)
-		return digiDoc->state();
-	return ContainerState::Uninitialized;
 }
 
 void MainWindow::dragEnterEvent(QDragEnterEvent *event)
@@ -217,30 +214,6 @@ QStringList MainWindow::dropEventFiles(QDropEvent *event)
 	return files;
 }
 
-bool MainWindow::encrypt()
-{
-	if(!cryptoDoc)
-		return false;
-
-	while (!FileDialog::fileIsWritable(cryptoDoc->fileName()))
-	{
-		auto *dlg = WarningDialog::create(this)
-			->withTitle(CryptoDoc::tr("Failed to encrypt document"))
-			->withText(tr("Cannot alter container %1. Save different location?").arg(FileDialog::normalized(cryptoDoc->fileName())))
-			->addButton(WarningDialog::YES, QMessageBox::Yes);
-		if(dlg->exec() != QMessageBox::Yes)
-			return false;
-		QString to = FileDialog::getSaveFileName(this, FileDialog::tr("Save file"), cryptoDoc->fileName());
-		if(to.isNull() || !cryptoDoc->move(to))
-			return false;
-		ui->cryptoContainerPage->setHeader(to);
-	}
-
-	WaitDialogHolder waitDialog(this, tr("Encrypting"));
-
-	return cryptoDoc->encrypt();
-}
-
 void MainWindow::mouseReleaseEvent(QMouseEvent *event)
 {
 	if(auto *cardPopup = findChild<CardPopup*>())
@@ -286,7 +259,7 @@ void MainWindow::navigateToPage( Pages page, const QStringList &files, bool crea
 			QString filename = FileDialog::createNewFileName(files[0], false, this);
 			if(!filename.isNull())
 			{
-				cryptoContainer->clear(filename);
+				cryptoContainer->clear(filename, Settings::CDOC2_DEFAULT ? 2 : 1);
 				for(const auto &file: files)
 				{
 					if(cryptoContainer->documentModel()->addFile(file))
@@ -350,6 +323,7 @@ void MainWindow::onSignAction(int action, const QString &idCode, const QString &
 	default:
 		break;
 	}
+	adjustDrops();
 }
 
 void MainWindow::convertToCDoc()
@@ -359,17 +333,19 @@ void MainWindow::convertToCDoc()
 		return;
 
 	auto cryptoContainer = std::make_unique<CryptoDoc>(this);
-	cryptoContainer->clear(filename);
+	cryptoContainer->clear(filename, Settings::CDOC2_DEFAULT ? 2 : 1);
 
-	// If signed, add whole signed document to cryptocontainer; otherwise content only
-	if(digiDoc->state() == SignedContainer)
+	// If signed, add whole signed document to cryptocontainer; otherwise
+	// content only
+	if (digiDoc->state() == SignedContainer)
 		cryptoContainer->documentModel()->addFile(digiDoc->fileName());
 	else
 		cryptoContainer->documentModel()->addTempFiles(digiDoc->documentModel()->tempFiles());
 
 	auto cardData = qApp->signer()->tokenauth();
-	if(!cardData.cert().isNull())
-		cryptoContainer->addKey(CKey(cardData.cert()));
+	if (!cardData.cert().isNull()) {
+		cryptoContainer->addEncryptionKey(CKey(cardData.cert()));
+	}
 
 	cryptoDoc = std::move(cryptoContainer);
 	digiDoc.reset();
@@ -392,25 +368,11 @@ void MainWindow::onCryptoAction(int action, const QString &/*id*/, const QString
 		if(cryptoDoc && wrap(cryptoDoc->fileName(), false))
 			FadeInNotification::success(ui->topBar, tr("Converted to signed document!"));
 		break;
-	case DecryptContainer:
-	case DecryptToken:
-	{
-		if(!cryptoDoc)
-			break;
-		WaitDialogHolder waitDialog(this, tr("Decrypting"));
-		if(cryptoDoc->decrypt())
-		{
-			ui->cryptoContainerPage->transition(cryptoDoc.get(), qApp->signer()->tokenauth().cert());
-			FadeInNotification::success(ui->topBar, tr("Decryption succeeded!"));
-		}
+	case DecryptContainerSuccess:
+		FadeInNotification::success(ui->topBar, tr("Decryption succeeded!"));
 		break;
-	}
-	case EncryptContainer:
-		if(encrypt())
-		{
-			ui->cryptoContainerPage->transition(cryptoDoc.get(), qApp->signer()->tokenauth().cert());
-			FadeInNotification::success(ui->topBar, tr("Encryption succeeded!"));
-		}
+	case EncryptContainerSuccess:
+		FadeInNotification::success(ui->topBar, tr("Encryption succeeded!"));
 		break;
 	case ClearCryptoWarning:
 		ui->crypto->warningIcon(false);
@@ -419,6 +381,7 @@ void MainWindow::onCryptoAction(int action, const QString &/*id*/, const QString
 	default:
 		break;
 	}
+	adjustDrops();
 }
 
 void MainWindow::openFiles(QStringList files, bool addFile, bool forceCreate)
@@ -439,7 +402,16 @@ void MainWindow::openFiles(QStringList files, bool addFile, bool forceCreate)
 		- else open file in another view
 */
 	auto current = ui->startScreen->currentIndex();
-	ContainerState state = currentState();
+	ContainerState state = ContainerState::Uninitialized;
+
+	if(current == CryptoIntro || current == CryptoDetails)
+	{
+		if(cryptoDoc)
+			state = cryptoDoc->state();
+	}
+	else if(digiDoc)
+		state = digiDoc->state();
+
 	Pages page = (current == CryptoIntro) ? CryptoDetails : SignDetails;
 	bool create = true;
 	switch(state)
@@ -608,7 +580,7 @@ void MainWindow::sign(F &&sign)
 	ui->signContainerPage->transition(digiDoc.get());
 
 	FadeInNotification::success(ui->topBar, tr("The container has been successfully signed!"));
-	adjustDrops();
+	setAcceptDrops(false);
 }
 
 void MainWindow::removeSignature(int index)

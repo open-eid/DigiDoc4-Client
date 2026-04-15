@@ -32,12 +32,12 @@
 #include "dialogs/WarningDialog.h"
 #include "effects/Overlay.h"
 #include "widgets/AddressItem.h"
-#include "widgets/ItemList.h"
 
 #include <QtCore/QDateTime>
 #include <QtCore/QJsonArray>
 #include <QtNetwork/QSslConfiguration>
 #include <QtNetwork/QSslError>
+#include <QtNetwork/QSslKey>
 #include <QtWidgets/QMessageBox>
 
 AddRecipients::AddRecipients(ItemList* itemList, QWidget *parent)
@@ -105,7 +105,6 @@ AddRecipients::~AddRecipients()
 	delete ui;
 }
 
-
 void AddRecipients::addRecipientFromFile()
 {
 	QString file = FileDialog::getOpenFileName(this, windowTitle(), {},
@@ -157,12 +156,13 @@ void AddRecipients::addRecipientFromHistory()
 
 void AddRecipients::addRecipient(const QSslCertificate& cert, bool select)
 {
-	AddressItem *leftItem = itemListValue(ui->leftPane, cert);
+	CKey key(cert);
+	AddressItem *leftItem = itemListValue(ui->leftPane, key);
 	if(!leftItem)
 	{
-		leftItem = new AddressItem(cert, AddressItem::Add, ui->leftPane);
+		leftItem = new AddressItem(key, AddressItem::Add, ui->leftPane);
 		ui->leftPane->addWidget(leftItem);
-		leftItem->setDisabled(rightList.contains(cert));
+		leftItem->setDisabled(rightList.contains(key));
 		connect(leftItem, &AddressItem::add, this, [this](Item *item) { addRecipientToRightPane(item); });
 		if(auto *add = ui->leftPane->findChild<QWidget*>(QStringLiteral("add")))
 			add->setVisible(true);
@@ -174,13 +174,13 @@ void AddRecipients::addRecipient(const QSslCertificate& cert, bool select)
 void AddRecipients::addRecipientToRightPane(Item *item, bool update)
 {
 	auto *address = qobject_cast<AddressItem*>(item);
-	if(!address || rightList.contains(address->getKey()))
-		return;
+	if(!address) return;
+	const CKey& key = address->getKey();
+	if (rightList.contains(key)) return;
 
-	const auto &key = address->getKey();
 	if(update)
 	{
-		if(auto expiryDate = key.cert.expiryDate(); expiryDate <= QDateTime::currentDateTime())
+		if(auto expiryDate = key.rcpt_cert.expiryDate(); expiryDate <= QDateTime::currentDateTime())
 		{
 			if(Settings::CDOC2_DEFAULT && Settings::CDOC2_USE_KEYSERVER)
 			{
@@ -201,9 +201,9 @@ void AddRecipients::addRecipientToRightPane(Item *item, bool update)
 		}
 		QSslConfiguration backup = QSslConfiguration::defaultConfiguration();
 		QSslConfiguration::setDefaultConfiguration(CheckConnection::sslConfiguration());
-		QList<QSslError> errors = QSslCertificate::verify({ key.cert });
+		QList<QSslError> errors = QSslCertificate::verify({key.rcpt_cert});
 		QSslConfiguration::setDefaultConfiguration(backup);
-		errors.removeAll(QSslError(QSslError::CertificateExpired, key.cert));
+		errors.removeAll(QSslError(QSslError::CertificateExpired, key.rcpt_cert));
 		if(!errors.isEmpty())
 		{
 			auto *dlg = WarningDialog::create(this)
@@ -217,17 +217,17 @@ void AddRecipients::addRecipientToRightPane(Item *item, bool update)
 
 	rightList.append(key);
 
-	auto *rightItem = new AddressItem(CKey(key), AddressItem::Remove, ui->rightPane);
+	auto *rightItem = new AddressItem(key, AddressItem::Remove, ui->rightPane);
 	connect(rightItem, &AddressItem::remove, this, [this](Item *item) {
 		auto *rightItem = qobject_cast<AddressItem*>(item);
-		if(auto *leftItem = itemListValue(ui->leftPane, rightItem->getKey().cert))
+		if(auto *leftItem = itemListValue(ui->leftPane, rightItem->getKey()))
 			leftItem->setDisabled(false);
 		rightList.removeAll(rightItem->getKey());
 		ui->confirm->setDisabled(rightList.isEmpty());
 	});
 	ui->rightPane->addWidget(rightItem);
 	ui->confirm->setEnabled(true);
-	historyCertData.addAndSave(key.cert);
+	historyCertData.addAndSave(key.rcpt_cert);
 	if(auto *leftItem = itemListValue(ui->leftPane, key))
 		leftItem->setDisabled(true);
 }
@@ -237,11 +237,11 @@ bool AddRecipients::isUpdated() const
 	return ui->confirm->isEnabled();
 }
 
-AddressItem* AddRecipients::itemListValue(ItemList *list, const CKey &cert)
+AddressItem* AddRecipients::itemListValue(ItemList *list, const CKey &key)
 {
 	for(auto *item: list->items)
 	{
-		if(auto *address = qobject_cast<AddressItem*>(item); address && address->getKey() == cert)
+		if(auto *address = qobject_cast<AddressItem*>(item); address && (key == address->getKey()))
 			return address;
 	}
 	return nullptr;
