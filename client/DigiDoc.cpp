@@ -142,9 +142,8 @@ QDateTime DigiDocSignature::ocspTime() const
 	return toTime(s->OCSPProducedAt());
 }
 
-DigiDocSignature::SignatureStatus DigiDocSignature::status(const digidoc::Exception &e)
+DigiDocSignature::SignatureStatus DigiDocSignature::status(DigiDocSignature::SignatureStatus result, const digidoc::Exception &e)
 {
-	DigiDocSignature::SignatureStatus result = Valid;
 	for(const Exception &child: e.causes())
 	{
 		switch( child.code() )
@@ -172,7 +171,7 @@ DigiDocSignature::SignatureStatus DigiDocSignature::status(const digidoc::Except
 		default:
 			result = std::max( result, Invalid );
 		}
-		result = std::max(result, status(child));
+		result = std::max(result, status(result, child));
 	}
 	return result;
 }
@@ -261,10 +260,12 @@ DigiDocSignature::SignatureStatus DigiDocSignature::validate(bool qscd)
 {
 	if(!s)
 		return Invalid;
+	m_lastError.clear();
+	auto result = qscd ? Valid : NonQSCD;
 	try
 	{
 		s->validate(qscd ? digidoc::Signature::POLv2 : digidoc::Signature::POLv1);
-		return qscd ? Valid : NonQSCD;
+		return result;
 	}
 	catch(const Exception &e)
 	{
@@ -273,7 +274,7 @@ DigiDocSignature::SignatureStatus DigiDocSignature::validate(bool qscd)
 		m_lastError = code == Exception::OCSPBeforeTimeStamp ?
 			DigiDoc::tr("The timestamp added to the signature must be taken before validity confirmation.") :
 			causes.join('\n');
-		auto result = status(e);
+		result = status(result, e);
 		return qscd && result == Unknown ? validate(false) : result;
 	}
 }
