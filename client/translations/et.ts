@@ -3119,6 +3119,10 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>Sertifikaadid on aegunud!</translation>
     </message>
     <message>
+        <source>https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult/reminders-for-id-card-holders/</source>
+        <translation>https://www.politsei.ee/et/juhend/id-kaardi-taotlemine-taeiskasvanule/id-kaardi-kasutaja-meelespea/</translation>
+    </message>
+    <message>
         <source>Additional information</source>
         <translation>Lisainfo</translation>
     </message>

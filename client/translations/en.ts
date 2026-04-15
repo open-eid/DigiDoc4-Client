@@ -3119,6 +3119,10 @@ Additional licenses and components</translation>
         <translation>Certificates expire soon!</translation>
     </message>
     <message>
+        <source>https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult/reminders-for-id-card-holders/</source>
+        <translation>https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult/reminders-for-id-card-holders/</translation>
+    </message>
+    <message>
         <source>Additional information</source>
         <translation>Additional information</translation>
     </message>

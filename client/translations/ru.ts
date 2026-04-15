@@ -3124,6 +3124,10 @@ Additional licenses and components</source>
         <translation>Срок действия сертификатов скоро истекает!</translation>
     </message>
     <message>
+        <source>https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult/reminders-for-id-card-holders/</source>
+        <translation>https://www.politsei.ee/ru/instruktsii/hodataystvo-o-vydache-id-karty-vzroslomu/pamyatka-dlya-polzovatelya-id-karti/</translation>
+    </message>
+    <message>
         <source>Additional information</source>
         <translation>Дополнительная информация</translation>
     </message>
