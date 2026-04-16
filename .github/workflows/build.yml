@@ -86,7 +86,14 @@ jobs:
         path: libdigidocpp-pkg
         repo: open-eid/libdigidocpp
     - name: Install dependencies
-      run: apt update -qq && apt install --no-install-recommends -y git lsb-release build-essential devscripts debhelper pkg-config lintian ${UBUNTU_DEPS}
+      run: |
+        for f in /etc/apt/sources.list /etc/apt/sources.list.d/*.list /etc/apt/sources.list.d/*.sources; do
+          [ -f "$f" ] && sed -i 's|http://archive.ubuntu.com|http://azure.archive.ubuntu.com|g; s|http://security.ubuntu.com|http://azure.archive.ubuntu.com|g' "$f"
+        done
+        echo 'path-exclude=/usr/share/man/*'      >  /etc/dpkg/dpkg.cfg.d/99-nodocs
+        echo 'path-exclude=/usr/share/doc/*'      >> /etc/dpkg/dpkg.cfg.d/99-nodocs
+        echo 'path-exclude=/usr/share/doc-base/*' >> /etc/dpkg/dpkg.cfg.d/99-nodocs
+        apt update -qq && apt install --no-install-recommends -y git lsb-release build-essential devscripts debhelper pkg-config lintian ${UBUNTU_DEPS}
     - name: Install gcc 12
       if: matrix.container == '22.04'
       run: |
