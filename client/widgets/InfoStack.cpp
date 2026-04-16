@@ -111,6 +111,8 @@ void InfoStack::update(const QSmartCardData &t)
 	certType = t.authCert().type();
 	expiry = t.data(QSmartCardData::Expiry).toDateTime();
 	ui->valueGivenNames->setText(t.data(QSmartCardData::FirstName).toString());
+	ui->valueGivenNames->setHidden(ui->valueGivenNames->text().isEmpty());
+	ui->labelGivenNames->setHidden(ui->valueGivenNames->text().isEmpty());
 	ui->valueSurname->setText(t.data(QSmartCardData::SurName).toString());
 	ui->valuePersonalCode->setText(t.data(QSmartCardData::Id).toString());
 	ui->valueCitizenship->setText(t.data(QSmartCardData::Citizen).toString());

@@ -262,7 +262,9 @@ QStringList SslCertificate::policies() const
 }
 
 bool SslCertificate::showCN() const
-{ return subjectInfo( "GN" ).isEmpty() && subjectInfo( "SN" ).isEmpty(); }
+{
+	return subjectInfo("GN").isEmpty() || subjectInfo("SN").isEmpty();
+}
 
 QString SslCertificate::signatureAlgorithm() const
 {
