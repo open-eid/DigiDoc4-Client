@@ -3,13 +3,11 @@
 	<mime-type type="application/vnd.lt.archyvai.adoc-2008">
 		<comment>DigiDoc signed document</comment>
 		<comment xml:lang="et">DigiDoc allkirjastatud dokument</comment>
-		<comment xml:lang="ru">Подписанный DigiDoc документ</comment>
 		<glob pattern="*.adoc"/>
 	</mime-type>
 	<mime-type type="application/vnd.etsi.asic-e+zip">
 		<comment>DigiDoc signed document</comment>
 		<comment xml:lang="et">DigiDoc allkirjastatud dokument</comment>
-		<comment xml:lang="ru">Подписанный DigiDoc документ</comment>
 		<glob pattern="*.bdoc"/>
 		<glob pattern="*.asice"/>
 		<glob pattern="*.sce"/>
@@ -18,26 +16,22 @@
 	<mime-type type="application/x-ddoc">
 		<comment>DigiDoc signed document</comment>
 		<comment xml:lang="et">DigiDoc allkirjastatud dokument</comment>
-		<comment xml:lang="ru">Подписанный DigiDoc документ</comment>
 		<glob pattern="*.ddoc"/>
 	</mime-type>
 	<mime-type type="application/vnd.etsi.asic-s+zip">
 		<comment>DigiDoc timestamped document</comment>
 		<comment xml:lang="et">DigiDoc ajatembeldatud dokument</comment>
-		<comment xml:lang="ru">DigiDoc документ с временным штампом</comment>
 		<glob pattern="*.asics"/>
 		<glob pattern="*.scs"/>
 	</mime-type>
 	<mime-type type="application/x-cdoc">
 		<comment>DigiDoc encrypted container</comment>
 		<comment xml:lang="et">DigiDoc turvaümbrik</comment>
-		<comment xml:lang="ru">Зашифрованный DigiDoc контейнер</comment>
 		<glob pattern="*.cdoc"/>
 	</mime-type>
 	<mime-type type="application/x-cdoc2">
 		<comment>DigiDoc encrypted container</comment>
 		<comment xml:lang="et">DigiDoc turvaümbrik</comment>
-		<comment xml:lang="ru">Зашифрованный DigiDoc контейнер</comment>
 		<glob pattern="*.cdoc2"/>
 	</mime-type>
 </mime-info>

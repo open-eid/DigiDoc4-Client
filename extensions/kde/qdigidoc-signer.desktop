@@ -12,6 +12,5 @@ X-KDE-PluginInfo-Version=1.0
 [Desktop Action sign]
 Name=Sign digitally
 Name[et]=Allkirjasta digitaalselt
-Name[ru]=Подписать дигитально
 Icon=qdigidoc4
 Exec=qdigidoc4 -sign %U

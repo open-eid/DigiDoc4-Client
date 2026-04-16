@@ -237,10 +237,6 @@ STDMETHODIMP CEsteidShlExt::QueryContextMenu(
 		sign = L"Allkirjasta digitaalselt";
 		encrypt = L"Krüpteeri";
 		break;
-	case LANG_RUSSIAN:
-		sign = L"Подписать дигитально";
-		encrypt = L"Зашифровать";
-		break;
 	default: break;
 	}
 
@@ -270,9 +266,6 @@ STDMETHODIMP CEsteidShlExt::GetCommandString(
 			{
 			case LANG_ESTONIAN:
 				szText = idCmd == MENU_ENCRYPT ? L"Krüpteeri valitud failid" : L"Allkirjasta valitud failid digitaalselt";
-				break;
-			case LANG_RUSSIAN:
-				szText = idCmd == MENU_ENCRYPT ? L"Зашифровать выбранные файлы" : L"Цифровая подпись выбранных файлов";
 				break;
 			default: break;
 			}
