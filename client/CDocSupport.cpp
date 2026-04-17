@@ -302,12 +302,10 @@ DDNetworkBackend::fetchKey(std::vector<uint8_t> &result, const std::string &url,
 	TokenData auth = qApp->signer()->tokenauth();
 	auto backend = QCryptoBackend::getBackend(auth);
 
-	QCryptoBackend::PinStatus pin_status;
-	auto authKey = backend->key(pin_status);
-
+	auto authKey = backend->getKey();
 	if (!authKey.handle()) {
-		last_error = qApp->signer()->getLastErrorStr().toStdString();
-		return getDecryptStatus(result, pin_status);
+		last_error = "Cannot create authentication key";
+		return BACKEND_ERROR;
 	}
 	QScopedPointer<QNetworkAccessManager,QScopedPointerDeleteLater> nam(
 				CheckConnection::setupNAM(req, qApp->signer()->tokenauth().cert(), authKey, Settings::CDOC2_GET_CERT));
@@ -315,9 +313,6 @@ DDNetworkBackend::fetchKey(std::vector<uint8_t> &result, const std::string &url,
 	QNetworkReply *reply = nam->get(req);
 	connect(reply, &QNetworkReply::finished, &e, &QEventLoop::quit);
 	e.exec();
-	if(authKey.handle()) {
-		qApp->signer()->logout();
-	}
 
 	if(reply->error() != QNetworkReply::NoError && reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() != 201) {
 		last_error = reply->errorString().toStdString();

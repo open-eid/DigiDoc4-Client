@@ -57,7 +57,6 @@ Q_SIGNALS:
 	void error(const QString &title, const QString &text);
 
 private:
-	quint8 login(const TokenData &token) const;
 	static QCryptographicHash::Algorithm methodToNID(const std::string &method);
 	void run() final;
 
