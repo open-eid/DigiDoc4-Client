@@ -23,9 +23,8 @@
 
 class QPKCS11 final: public QCryptoBackend
 {
-	Q_OBJECT
 public:
-	explicit QPKCS11(QObject *parent = nullptr);
+	explicit QPKCS11();
 	~QPKCS11() final;
 
 	QByteArray decrypt(const QByteArray &data, bool oaep) const final;
@@ -33,15 +32,10 @@ public:
 	QByteArray deriveConcatKDF(const QByteArray &publicKey, QCryptographicHash::Algorithm digest,
 		const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) const final;
 	QByteArray deriveHMACExtract(const QByteArray &publicKey, const QByteArray &salt, int keySize) const final;
-	bool isLoaded() const;
-	bool load( const QString &driver );
-	void unload();
 	PinStatus login(const TokenData &t) final;
 	void logout() final;
-	bool reload();
+	bool reload() final;
 	QByteArray sign(QCryptographicHash::Algorithm type, const QByteArray &digest) const final;
-	QList<TokenData> tokens() const final;
-private:
-	class Private;
-	Private *d;
+
+	static QList<TokenData> tokens();
 };

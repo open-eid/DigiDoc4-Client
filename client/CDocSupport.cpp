@@ -110,43 +110,52 @@ getDecryptStatus(const std::vector<uint8_t>& result, QCryptoBackend::PinStatus p
 }
 
 libcdoc::result_t
-DDCryptoBackend::decryptRSA(std::vector<uint8_t>& result, const std::vector<uint8_t> &data, bool oaep, unsigned int idx)
+DDCryptoBackend::decryptRSA(std::vector<uint8_t>& dst, const std::vector<uint8_t> &data, bool oaep, unsigned int idx)
 {
-	QCryptoBackend::PinStatus pin_status;
-	QByteArray qkek = qApp->signer()->decrypt([qdata = toByteArray(data), &oaep](QCryptoBackend *backend) {
-		return backend->decrypt(qdata, oaep);
-	}, pin_status);
-	result.assign(qkek.cbegin(), qkek.cend());
-	return getDecryptStatus(result, pin_status);
+	auto backend = QCryptoBackend::getBackend(qApp->signer()->tokenauth());
+	if (backend->status != QCryptoBackend::PinOK) {
+		return getDecryptStatus({}, backend->status);
+	}
+	// fixme: Locking
+	// fixme: missing token
+	QByteArray decryptedKey = backend->decrypt(toByteArray(data), oaep);
+	dst.assign(decryptedKey.cbegin(), decryptedKey.cend());
+	return getDecryptStatus(dst, QCryptoBackend::PinOK);
 }
 
 libcdoc::result_t
 DDCryptoBackend::deriveConcatKDF(std::vector<uint8_t>& dst, const std::vector<uint8_t> &publicKey, const std::string &digest,
 								 const std::vector<uint8_t> &algorithmID, const std::vector<uint8_t> &partyUInfo, const std::vector<uint8_t> &partyVInfo, unsigned int idx)
 {
-	QCryptoBackend::PinStatus pin_status;
-	QByteArray decryptedKey = qApp->signer()->decrypt([&publicKey, &digest, &algorithmID, &partyUInfo, &partyVInfo](QCryptoBackend *backend) {
-		static const QHash<std::string_view, QCryptographicHash::Algorithm> SHA_MTH{
-			{"http://www.w3.org/2001/04/xmlenc#sha256", QCryptographicHash::Sha256},
-			{"http://www.w3.org/2001/04/xmlenc#sha384", QCryptographicHash::Sha384},
-			{"http://www.w3.org/2001/04/xmlenc#sha512", QCryptographicHash::Sha512}
-		};
-		return backend->deriveConcatKDF(toByteArray(publicKey), SHA_MTH.value(digest),
-			toByteArray(algorithmID), toByteArray(partyUInfo), toByteArray(partyVInfo));
-	}, pin_status);
+	static const QHash<std::string_view, QCryptographicHash::Algorithm> SHA_MTH{
+		{"http://www.w3.org/2001/04/xmlenc#sha256", QCryptographicHash::Sha256},
+		{"http://www.w3.org/2001/04/xmlenc#sha384", QCryptographicHash::Sha384},
+		{"http://www.w3.org/2001/04/xmlenc#sha512", QCryptographicHash::Sha512}
+	};
+	auto backend = QCryptoBackend::getBackend(qApp->signer()->tokenauth());
+	if (backend->status != QCryptoBackend::PinOK) {
+		return getDecryptStatus({}, backend->status);
+	}
+	// fixme: Locking
+	// fixme: missing token
+	QByteArray decryptedKey = backend->deriveConcatKDF(toByteArray(publicKey), SHA_MTH.value(digest),
+		toByteArray(algorithmID), toByteArray(partyUInfo), toByteArray(partyVInfo));
 	dst.assign(decryptedKey.cbegin(), decryptedKey.cend());
-	return getDecryptStatus(dst, pin_status);
+	return getDecryptStatus(dst, QCryptoBackend::PinOK);
 }
 
 libcdoc::result_t
 DDCryptoBackend::deriveHMACExtract(std::vector<uint8_t>& dst, const std::vector<uint8_t> &key_material, const std::vector<uint8_t> &salt, unsigned int idx)
 {
-	QCryptoBackend::PinStatus pin_status;
-	QByteArray qkekpm = qApp->signer()->decrypt([qkey_material = toByteArray(key_material), qsalt = toByteArray(salt)](QCryptoBackend *backend) {
-		return backend->deriveHMACExtract(qkey_material, qsalt, ECC_KEY_LEN);
-	}, pin_status);
-	dst = std::vector<uint8_t>(qkekpm.cbegin(), qkekpm.cend());
-	return getDecryptStatus(dst, pin_status);
+	auto backend = QCryptoBackend::getBackend(qApp->signer()->tokenauth());
+	if (backend->status != QCryptoBackend::PinOK) {
+		return getDecryptStatus({}, backend->status);
+	}
+	// fixme: Locking
+	// fixme: missing token
+	QByteArray decryptedKey = backend->deriveHMACExtract(toByteArray(key_material), toByteArray(salt), ECC_KEY_LEN);
+	dst.assign(decryptedKey.cbegin(), decryptedKey.cend());
+	return getDecryptStatus(dst, QCryptoBackend::PinOK);
 }
 
 libcdoc::result_t
@@ -281,19 +290,21 @@ libcdoc::result_t DDNetworkBackend::sendKey(
 };
 
 libcdoc::result_t
-DDNetworkBackend::fetchKey(std::vector<uint8_t> &result,
-						   const std::string &url,
-						   const std::string &transaction_id) {
+DDNetworkBackend::fetchKey(std::vector<uint8_t> &result, const std::string &url, const std::string &transaction_id)
+{
 	QNetworkRequest req(QStringLiteral("%1/key-capsules/%2").arg(QString::fromStdString(url), QLatin1String(transaction_id.c_str())));
 	req.setHeader(QNetworkRequest::ContentTypeHeader, QStringLiteral("application/json"));
 	if(!checkConnection()) {
 		last_error = "No connection";
 		return BACKEND_ERROR;
 	}
+
+	TokenData auth = qApp->signer()->tokenauth();
+	auto backend = QCryptoBackend::getBackend(auth);
+
 	QCryptoBackend::PinStatus pin_status;
-	auto authKey =  dispatchToMain([&] {
-		return qApp->signer()->key(pin_status);
-	});
+	auto authKey = backend->key(pin_status);
+
 	if (!authKey.handle()) {
 		last_error = qApp->signer()->getLastErrorStr().toStdString();
 		return getDecryptStatus(result, pin_status);
