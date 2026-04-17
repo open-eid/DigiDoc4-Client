@@ -46,14 +46,12 @@ public:
 	virtual QByteArray deriveConcatKDF(const QByteArray &publicKey, QCryptographicHash::Algorithm digest,
 		const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) const = 0;
 	virtual QByteArray deriveHMACExtract(const QByteArray &publicKey, const QByteArray &salt, int keySize) const = 0;
+	QSslKey getKey();
+
 	virtual PinStatus lastError() const { return PinOK; }
 	virtual PinStatus login(const TokenData &cert) = 0;
 	virtual void logout() = 0;
 	virtual QByteArray sign(QCryptographicHash::Algorithm method, const QByteArray &digest) const = 0;
-
-	QSslKey key(PinStatus& pin_status);
-
-	virtual bool reload() { return true; }
 
 	static QCryptoBackend* getBackend();
 	static std::unique_ptr<QCryptoBackend> getBackend(const TokenData& token);

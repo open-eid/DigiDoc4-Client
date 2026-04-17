@@ -49,7 +49,6 @@ static Q_LOGGING_CATEGORY(SLog, "qdigidoc4.QSigner")
 class QSigner::Private final
 {
 public:
-	QCryptoBackend	*backend {};
 	QSmartCard		*smartcard {};
 	TokenData		auth, sign;
 	QList<TokenData> cache;
@@ -123,30 +122,8 @@ X509Cert QSigner::cert() const
 	return X509Cert((const unsigned char*)der.constData(), size_t(der.size()), X509Cert::Der);
 }
 
-quint8 QSigner::login(const TokenData &token) const
-{
-	switch(auto status = d->backend->login(token))
-	{
-	case QCryptoBackend::PinOK: return status;
-	case QCryptoBackend::PinIncorrect:
-		dispatchToMain([&]{
-			WarningDialog::create()
-				->withTitle(SslCertificate(token.cert()).keyUsage().contains(SslCertificate::NonRepudiation) ? tr("Failed to sign document") : tr("Failed to decrypt document"))
-				->withText(QCryptoBackend::errorString(status))
-				->exec();
-		});
-		return login(token);
-	default:
-		d->lock.unlock();
-		// QSmartCard should also know that PIN is blocked.
-		d->smartcard->reloadCard(d->smartcard->tokenData(), true);
-		return status;
-	}
-}
-
 void QSigner::logout() const
 {
-	d->backend->logout();
 	d->lock.unlock();
 	// QSmartCard should also know that PIN1 info is updated
 	d->smartcard->reloadCard(d->smartcard->tokenData(), true);
@@ -177,21 +154,9 @@ void QSigner::run()
 {
 	d->auth.clear();
 	d->sign.clear();
-#ifdef Q_OS_WIN
-	d->backend = new QCNG(this);
-#else
-	d->backend = new QPKCS11();
-#endif
 
-	while(!isInterruptionRequested())
-	{
-		if(d->lock.tryLockForRead())
-		{
-			if (!d->backend->reload()) {
-				Q_EMIT error(tr("Failed to load PKCS#11 module"), {});
-				return;
-			}
-
+	while(!isInterruptionRequested()) {
+		if(d->lock.tryLockForRead()) {
 			QList<TokenData> acards, scards;
 			QList<TokenData> cache = QCryptoBackend::getTokens();
 			if(cache != d->cache)
@@ -288,23 +253,32 @@ std::vector<unsigned char> QSigner::sign(const std::string &method, const std::v
 		throwException(tr("Signing certificate is not selected."), Exception::General)
 	}
 
-	switch(auto status = QCryptoBackend::PinStatus(login(d->sign)))
-	{
-	case QCryptoBackend::PinOK: break;
-	case QCryptoBackend::PinCanceled:
-		throwException((tr("Failed to login token") + ' ' + QCryptoBackend::errorString(status)), Exception::PINCanceled);
-	case QCryptoBackend::PinLocked:
-		throwException((tr("Failed to login token") + ' ' + QCryptoBackend::errorString(status)), Exception::PINLocked);
-	default:
-		throwException((tr("Failed to login token") + ' ' + QCryptoBackend::errorString(status)), Exception::PINFailed);
+	auto backend = QCryptoBackend::getBackend(d->sign);
+	while (backend->status == QCryptoBackend::PinIncorrect) {
+		dispatchToMain([&]{
+			WarningDialog::create()
+				->withTitle(SslCertificate(d->sign.cert()).keyUsage().contains(SslCertificate::NonRepudiation) ? tr("Failed to sign document") : tr("Failed to decrypt document"))
+				->withText(QCryptoBackend::errorString(backend->status))
+				->exec();
+		});
+		backend->login(d->sign);
 	}
-	QByteArray sig = waitFor(&QCryptoBackend::sign, d->backend,
+	if (backend->status != QCryptoBackend::PinOK) {
+		switch(backend->status) {
+		case QCryptoBackend::PinCanceled:
+			throwException((tr("Failed to login token") + ' ' + QCryptoBackend::errorString(backend->status)), Exception::PINCanceled);
+		case QCryptoBackend::PinLocked:
+			throwException((tr("Failed to login token") + ' ' + QCryptoBackend::errorString(backend->status)), Exception::PINLocked);
+		default:
+			throwException((tr("Failed to login token") + ' ' + QCryptoBackend::errorString(backend->status)), Exception::PINFailed);
+		}
+	}
+	QByteArray sig = waitFor(&QCryptoBackend::sign, backend.get(),
 		methodToNID(method), QByteArray::fromRawData((const char*)digest.data(), int(digest.size())));
-	logout();
-	if(d->backend->lastError() == QCryptoBackend::PinCanceled)
+	if (backend->lastError() == QCryptoBackend::PinCanceled)
 		throwException(tr("Failed to login token"), Exception::PINCanceled)
 
-	if( sig.isEmpty() )
+	if (sig.isEmpty())
 		throwException(tr("Failed to sign document"), Exception::General)
 	return {sig.constBegin(), sig.constEnd()};
 }
@@ -316,6 +290,5 @@ TokenData QSigner::tokensign() const { return d->sign; }
 QString
 QSigner::getLastErrorStr() const
 {
-	QCryptoBackend::PinStatus status = d->backend->lastError();
-	return d->backend->errorString(status);
+	return "Backend error";
 }

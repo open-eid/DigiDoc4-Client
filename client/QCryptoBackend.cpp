@@ -55,7 +55,9 @@ QCryptoBackend::getBackend(const TokenData& token) {
 	auto backend = std::make_unique<QPKCS11>();
 #endif
 	backend.get()->cert = token.cert();
-	backend->login(token);
+	do {
+		backend.get()->status = backend->login(token);
+	} while (backend.get()->status == PinIncorrect);
 	return std::move(backend);
 }
 
@@ -152,26 +154,12 @@ static EC_KEY_METHOD *get_ec_method(bool release = false)
 }
 
 QSslKey
-QCryptoBackend::key(QCryptoBackend::PinStatus& pin_status)
+QCryptoBackend::getKey()
 {
 	QSslKey key = cert.publicKey();
 	if(!key.handle()) {
-		pin_status = QCryptoBackend::GeneralError;
 		return {};
 	}
-#if 0
-	switch(pin_status = QCryptoBackend::PinStatus(login(d->auth)))
-	{
-	case QCryptoBackend::PinOK: break;
-	case QCryptoBackend::PinCanceled: return {};
-	case QCryptoBackend::PinLocked:
-		Q_EMIT error(tr("Failed to decrypt document"), QCryptoBackend::errorString(pin_status));
-		return {};
-	default:
-		Q_EMIT error(tr("Failed to decrypt document"), tr("Failed to login token") + ' ' + QCryptoBackend::errorString(pin_status));
-		return {};
-	}
-#endif
 	if(key.algorithm() == QSsl::Ec)
 	{
 		auto *ec = (EC_KEY*)key.handle();

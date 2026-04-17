@@ -364,6 +364,7 @@ void QPKCS11::logout()
 QList<TokenData> QPKCS11::tokens()
 {
 	QList<TokenData> list;
+	reload();
 	QPKCS11Private *d = getPrivate();
 	if(!d->f)
 		return list;
