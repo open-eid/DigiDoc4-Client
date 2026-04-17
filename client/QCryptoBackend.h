@@ -21,12 +21,13 @@
 
 #include <QObject>
 #include <QCryptographicHash>
+#include <QtNetwork/QSslKey>
+#include <QtNetwork/QSslCertificate>
 
 class TokenData;
 
-class QCryptoBackend: public QObject
+class QCryptoBackend
 {
-	Q_OBJECT
 public:
 	enum PinStatus : quint8
 	{
@@ -39,9 +40,8 @@ public:
 		UnknownError
 	};
 
-	using QObject::QObject;
+	virtual ~QCryptoBackend() {};
 
-	virtual QList<TokenData> tokens() const = 0;
 	virtual QByteArray decrypt(const QByteArray &data, bool oaep) const = 0;
 	virtual QByteArray deriveConcatKDF(const QByteArray &publicKey, QCryptographicHash::Algorithm digest,
 		const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) const = 0;
@@ -51,5 +51,17 @@ public:
 	virtual void logout() = 0;
 	virtual QByteArray sign(QCryptographicHash::Algorithm method, const QByteArray &digest) const = 0;
 
+	QSslKey key(PinStatus& pin_status);
+
+	virtual bool reload() { return true; }
+
+	static QCryptoBackend* getBackend();
+	static std::unique_ptr<QCryptoBackend> getBackend(const TokenData& token);
+	static void shutDown();
+	static QList<TokenData> getTokens();
+
 	static QString errorString( PinStatus error );
+
+	QSslCertificate cert;
+	PinStatus status = PinOK;
 };
