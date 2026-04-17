@@ -22,25 +22,19 @@
 
 #include "Item.h"
 
-#include <QKeyEvent>
-
 using namespace ria::qdigidoc4;
-
 
 ItemList::ItemList(QWidget *parent)
 	: QScrollArea(parent)
 	, ui(new Ui::ItemList)
 {
 	ui->setupUi(this);
-	ui->findGroup->hide();
 	ui->download->hide();
 	ui->count->hide();
 	ui->infoIcon->hide();
 	ui->add->hide();
-	ui->txtFind->setAttribute(Qt::WA_MacShowFocusRect, false);
 	connect(ui->add, &QToolButton::clicked, this, &ItemList::add);
 	connect(this, &ItemList::idChanged, this, [this](const SslCertificate &cert){ this->cert = cert; });
-	ui->txtFind->installEventFilter(this);
 }
 
 ItemList::~ItemList()
@@ -59,6 +53,13 @@ void ItemList::addHeader(const char *label)
 	setTabOrder(header, ui->header);
 }
 
+void ItemList::addTopWidget(QWidget *widget, QWidget *firstTab, QWidget *lastTab)
+{
+	topWidget = lastTab ? lastTab : widget;
+	ui->itemLayout->insertWidget(1, widget);
+	setTabOrder(ui->listHeader, firstTab ? firstTab : widget);
+}
+
 void ItemList::addHeaderWidget(Item *widget)
 {
 	addWidget(widget, ui->itemLayout->indexOf(ui->header), header);
@@ -72,7 +73,7 @@ void ItemList::addWidget(Item *widget, int index, QWidget *tabIndex)
 		if(Item *prev = qobject_cast<Item*>(ui->itemLayout->itemAt(index - 1)->widget()))
 			tabIndex = prev->lastTabWidget();
 		else
-			tabIndex = ui->btnFind;
+			tabIndex = topWidget ? topWidget : ui->listHeader;
 	}
 	ui->itemLayout->insertWidget(index, widget);
 	connect(widget, &Item::remove, this, &ItemList::remove);
@@ -118,21 +119,6 @@ void ItemList::clear()
 		(*it)->deleteLater();
 }
 
-bool ItemList::eventFilter(QObject *o, QEvent *e)
-{
-	if (o == ui->txtFind && e->type() == QEvent::KeyPress)
-	{
-		QKeyEvent *keyEvent = static_cast<QKeyEvent *>(e);
-		// To avoid dialog default button trigger
-		if (keyEvent->key() == Qt::Key_Return || keyEvent->key() == Qt::Key_Enter)
-		{
-			ui->btnFind->click();
-			return true;
-		}
-	}
-	return QScrollArea::eventFilter(o, e);
-}
-
 int ItemList::index(Item *item) const
 {
 	return items.indexOf(item);
@@ -148,19 +134,6 @@ void ItemList::init(ListType item, const char *header)
 		break;
 	case ToAddAdresses:
 		addTitle = QT_TR_NOOP("Add all");
-		ui->findGroup->show();
-		connect(ui->txtFind, &QLineEdit::returnPressed, this, [this]{
-			if(!ui->txtFind->text().trimmed().isEmpty())
-				emit search(ui->txtFind->text());
-		});
-		connect(ui->btnFind, &QPushButton::clicked, this, [this]{ emit search(ui->txtFind->text()); });
-		ui->btnFind->setDisabled(ui->txtFind->text().trimmed().isEmpty());
-		connect(ui->txtFind, &QLineEdit::textChanged, this, [this](const QString &text){
-			const auto isEmpty = text.trimmed().isEmpty();
-			ui->btnFind->setDisabled(isEmpty);
-			ui->btnFind->setDefault(isEmpty);
-			ui->btnFind->setAutoDefault(isEmpty);
-		});
 		break;
 	case ItemAddress:
 		addTitle = QT_TR_NOOP("+ Add recipient");

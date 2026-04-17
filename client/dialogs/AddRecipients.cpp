@@ -35,14 +35,25 @@
 
 #include <QtCore/QDateTime>
 #include <QtCore/QJsonArray>
+#include <QtGui/QKeyEvent>
 #include <QtNetwork/QSslConfiguration>
 #include <QtNetwork/QSslError>
 #include <QtNetwork/QSslKey>
+#include <QtWidgets/QGridLayout>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QLineEdit>
 #include <QtWidgets/QMessageBox>
+#include <QtWidgets/QPushButton>
+
+struct AddRecipients::Private: public Ui::AddRecipients
+{
+	QLineEdit *txtFind;
+	QPushButton *btnFind;
+};
 
 AddRecipients::AddRecipients(ItemList* itemList, QWidget *parent)
 	: QDialog(parent)
-	, ui(new Ui::AddRecipients)
+	, ui(new Private)
 	, ldap_corp(new LdapSearch(Application::confValue(QLatin1String("LDAP-CORP-URL")).toString(QStringLiteral("ldaps://k3.ldap.sk.ee")), this))
 {
 	for(const auto list = Application::confValue(QLatin1String("LDAP-PERSON-URLS")).toArray(); auto url: list) {
@@ -54,7 +65,43 @@ AddRecipients::AddRecipients(ItemList* itemList, QWidget *parent)
 	}
 
 	ui->setupUi(this);
-#if defined (Q_OS_WIN)
+
+	auto *findGroup = new QWidget(ui->leftPane);
+	auto *findLayout = new QGridLayout(findGroup);
+	findLayout->setContentsMargins(0, 8, 0, 16);
+	findLayout->setHorizontalSpacing(24);
+	findLayout->setVerticalSpacing(6);
+	auto *lblFind = new QLabel(tr("Enter the personal code, institution or registry code"), findGroup);
+	ui->txtFind = new QLineEdit(findGroup);
+	ui->txtFind->setAttribute(Qt::WA_MacShowFocusRect, false);
+	ui->txtFind->setStyleSheet(QStringLiteral("QLineEdit {"
+		"padding: 10px 14px;"
+		"border: 1px solid #C4CBD8;"
+		"border-radius: 4px;"
+		"background-color: white;"
+		"placeholder-text-color: #607496;"
+		"font-size: 16px;}"
+	));
+	ui->btnFind = new QPushButton(tr("Search"), findGroup);
+	ui->btnFind->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Preferred);
+	ui->btnFind->setCursor(Qt::PointingHandCursor);
+	ui->btnFind->setStyleSheet(QStringLiteral("QPushButton {"
+		"padding: 12px 12px;"
+		"border-radius: 4px;"
+		"color: #ffffff;"
+		"font-weight: 700;"
+		"background-color: #2F70B6;}"
+		"QPushButton:hover, QPushButton:focus {background-color: #2B66A6;}"
+		"QPushButton:pressed {background-color: #215081;}"
+		"QPushButton:disabled {background-color: #82A9D3;}"
+	));
+	lblFind->setBuddy(ui->txtFind);
+	findLayout->addWidget(lblFind, 0, 0, 1, 2);
+	findLayout->addWidget(ui->txtFind, 1, 0);
+	findLayout->addWidget(ui->btnFind, 1, 1);
+	ui->leftPane->addTopWidget(findGroup, ui->txtFind, ui->btnFind);
+	setTabOrder(ui->txtFind, ui->btnFind);
+#ifdef Q_OS_WIN
 	ui->actionLayout->setDirection(QBoxLayout::RightToLeft);
 #endif
 	setWindowFlags( Qt::Dialog | Qt::CustomizeWindowHint );
@@ -65,11 +112,17 @@ AddRecipients::AddRecipients(ItemList* itemList, QWidget *parent)
 
 	connect(ui->confirm, &QPushButton::clicked, this, &AddRecipients::accept);
 	connect(ui->cancel, &QPushButton::clicked, this, &AddRecipients::reject);
-	connect(ui->leftPane, &ItemList::search, this, [&](const QString &term) {
+	ui->btnFind->setDisabled(true);
+	ui->txtFind->installEventFilter(this);
+	ui->btnFind->installEventFilter(this);
+	connect(ui->btnFind, &QPushButton::clicked, this, [this] {
 		ui->leftPane->clear();
-		search(term);
+		search(ui->txtFind->text());
 	});
-	for(auto ldap: ldap_person) {
+	connect(ui->txtFind, &QLineEdit::textChanged, this, [this](const QString &text) {
+		ui->btnFind->setDisabled(text.trimmed().isEmpty());
+	});
+	for(auto *ldap: ldap_person) {
 		connect(ldap, &LdapSearch::searchResult, this, &AddRecipients::showResult);
 		connect(ldap, &LdapSearch::error, this, &AddRecipients::showError);
 	}
@@ -103,6 +156,18 @@ AddRecipients::~AddRecipients()
 {
 	QApplication::restoreOverrideCursor();
 	delete ui;
+}
+
+bool AddRecipients::eventFilter(QObject *o, QEvent *e)
+{
+	if ((o == ui->txtFind || o == ui->btnFind) && e->type() == QEvent::KeyPress) {
+		const auto *key = static_cast<QKeyEvent *>(e);
+		if (key->key() == Qt::Key_Return || key->key() == Qt::Key_Enter) {
+			ui->btnFind->click();
+			return true;
+		}
+	}
+	return QDialog::eventFilter(o, e);
 }
 
 void AddRecipients::addRecipientFromFile()

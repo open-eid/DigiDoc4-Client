@@ -45,17 +45,19 @@ public:
 	bool isUpdated() const;
 
 private:
+	bool eventFilter(QObject *o, QEvent *e) override;
 	void addRecipientFromFile();
 	void addRecipientFromHistory();
 	void addRecipient(const QSslCertificate& cert, bool select = true);
 	void addRecipientToRightPane(Item *item, bool update = true);
 
-	AddressItem* itemListValue(ItemList *list, const CKey &key);
+	static AddressItem* itemListValue(ItemList *list, const CKey &key);
 	void search(const QString &term, bool select = false, const QString &type = {});
 	void showError(const QString &title, const QString &details);
 	void showResult(const QList<QSslCertificate> &result, int resultCount, const QVariantMap &userData);
 
-	Ui::AddRecipients *ui;
+	struct Private;
+	Private *ui;
 	QList<CKey> rightList;
 	QList<LdapSearch*> ldap_person;
 	LdapSearch *ldap_corp;
