@@ -313,6 +313,7 @@ Application::Application( int &argc, char **argv )
 {
 	setApplicationName(QStringLiteral("qdigidoc4"));
 	setApplicationVersion(QStringLiteral(VERSION_STR));
+	setDesktopFileName("ee.ria.qdigidoc4");
 	setOrganizationDomain(QStringLiteral("ria.ee"));
 	setOrganizationName(QStringLiteral("RIA"));
 	setWindowIcon(QIcon(QStringLiteral(":/images/Icon.svg")));
