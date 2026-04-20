@@ -93,11 +93,11 @@ CDocSupport::getCDocFileList(const QString &filename)
 }
 
 static libcdoc::result_t
-getDecryptStatus(const std::vector<uint8_t>& result, QCryptoBackend::PinStatus pin_status)
+getDecryptStatus(QCryptoBackend::Status pin_status)
 {
 	switch (pin_status) {
 	case QCryptoBackend::PinOK:
-		return (result.empty()) ? DDCryptoBackend::BACKEND_ERROR : libcdoc::OK;
+		return libcdoc::OK;
 	case QCryptoBackend::PinCanceled:
 		return DDCryptoBackend::PIN_CANCELED;
 	case QCryptoBackend::PinIncorrect:
@@ -112,15 +112,15 @@ getDecryptStatus(const std::vector<uint8_t>& result, QCryptoBackend::PinStatus p
 libcdoc::result_t
 DDCryptoBackend::decryptRSA(std::vector<uint8_t>& dst, const std::vector<uint8_t> &data, bool oaep, unsigned int idx)
 {
-	auto backend = QCryptoBackend::getBackend(qApp->signer()->tokenauth());
-	if (backend->status != QCryptoBackend::PinOK) {
-		return getDecryptStatus({}, backend->status);
-	}
+	auto val = QCryptoBackend::getBackend(qApp->signer()->tokenauth());
+	if (!val.value())
+		return getDecryptStatus(val.error());
+	std::unique_ptr<QCryptoBackend> backend(val.value());
 	// fixme: Locking
 	// fixme: missing token
 	QByteArray decryptedKey = backend->decrypt(toByteArray(data), oaep);
 	dst.assign(decryptedKey.cbegin(), decryptedKey.cend());
-	return getDecryptStatus(dst, QCryptoBackend::PinOK);
+	return (dst.empty() ? BACKEND_ERROR : libcdoc::OK);
 }
 
 libcdoc::result_t
@@ -132,30 +132,30 @@ DDCryptoBackend::deriveConcatKDF(std::vector<uint8_t>& dst, const std::vector<ui
 		{"http://www.w3.org/2001/04/xmlenc#sha384", QCryptographicHash::Sha384},
 		{"http://www.w3.org/2001/04/xmlenc#sha512", QCryptographicHash::Sha512}
 	};
-	auto backend = QCryptoBackend::getBackend(qApp->signer()->tokenauth());
-	if (backend->status != QCryptoBackend::PinOK) {
-		return getDecryptStatus({}, backend->status);
-	}
+	auto val = QCryptoBackend::getBackend(qApp->signer()->tokenauth());
+	if (!val.value())
+		return getDecryptStatus(val.error());
+	std::unique_ptr<QCryptoBackend> backend(val.value());
 	// fixme: Locking
 	// fixme: missing token
 	QByteArray decryptedKey = backend->deriveConcatKDF(toByteArray(publicKey), SHA_MTH.value(digest),
 		toByteArray(algorithmID), toByteArray(partyUInfo), toByteArray(partyVInfo));
 	dst.assign(decryptedKey.cbegin(), decryptedKey.cend());
-	return getDecryptStatus(dst, QCryptoBackend::PinOK);
+	return (dst.empty() ? BACKEND_ERROR : libcdoc::OK);
 }
 
 libcdoc::result_t
 DDCryptoBackend::deriveHMACExtract(std::vector<uint8_t>& dst, const std::vector<uint8_t> &key_material, const std::vector<uint8_t> &salt, unsigned int idx)
 {
-	auto backend = QCryptoBackend::getBackend(qApp->signer()->tokenauth());
-	if (backend->status != QCryptoBackend::PinOK) {
-		return getDecryptStatus({}, backend->status);
-	}
+	auto val = QCryptoBackend::getBackend(qApp->signer()->tokenauth());
+	if (!val.value())
+		return getDecryptStatus(val.error());
+	std::unique_ptr<QCryptoBackend> backend(val.value());
 	// fixme: Locking
 	// fixme: missing token
 	QByteArray decryptedKey = backend->deriveHMACExtract(toByteArray(key_material), toByteArray(salt), ECC_KEY_LEN);
 	dst.assign(decryptedKey.cbegin(), decryptedKey.cend());
-	return getDecryptStatus(dst, QCryptoBackend::PinOK);
+	return (dst.empty() ? BACKEND_ERROR : libcdoc::OK);
 }
 
 libcdoc::result_t
@@ -300,7 +300,10 @@ DDNetworkBackend::fetchKey(std::vector<uint8_t> &result, const std::string &url,
 	}
 
 	TokenData auth = qApp->signer()->tokenauth();
-	auto backend = QCryptoBackend::getBackend(auth);
+	auto val = QCryptoBackend::getBackend(qApp->signer()->tokenauth());
+	if (!val.value())
+		return getDecryptStatus(val.error());
+	std::unique_ptr<QCryptoBackend> backend(val.value());
 
 	auto authKey = backend->getKey();
 	if (!authKey.handle()) {

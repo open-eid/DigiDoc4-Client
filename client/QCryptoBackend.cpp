@@ -28,26 +28,14 @@
 #include <QtNetwork/QSslKey>
 #include <QtNetwork/QSslCertificate>
 
+// TODO: Port everything to the new OpenSSL API
+#define OPENSSL_SUPPRESS_DEPRECATED
+
 #include <openssl/ecdsa.h>
 #include <openssl/obj_mac.h>
 #include <openssl/rsa.h>
 
-static QCryptoBackend *static_backend = nullptr;
-
-static QCryptoBackend *
-getBackend()
-{
-	if(!static_backend) {
-#ifdef Q_OS_WIN
-		backend = new QCNG();
-#else
-		static_backend = new QPKCS11();
-#endif
-	}
-	return static_backend;
-}
-
-std::unique_ptr<QCryptoBackend>
+std::expected<QCryptoBackend *,QCryptoBackend::Status>
 QCryptoBackend::getBackend(const TokenData& token) {
 #ifdef Q_OS_WIN
 	auto backend = std::make_unique<QCNG>();
@@ -55,10 +43,12 @@ QCryptoBackend::getBackend(const TokenData& token) {
 	auto backend = std::make_unique<QPKCS11>();
 #endif
 	backend.get()->cert = token.cert();
+	Status status;
 	do {
-		backend.get()->status = backend->login(token);
-	} while (backend.get()->status == PinIncorrect);
-	return std::move(backend);
+		status = backend->login(token);
+	} while (status == PinIncorrect);
+	if (status != PinOK) return std::unexpected(status);
+	return backend.release();
 }
 
 QList<TokenData>
@@ -71,7 +61,7 @@ QCryptoBackend::getTokens()
 #endif
 }
 
-QString QCryptoBackend::errorString(PinStatus error)
+QString QCryptoBackend::errorString(Status error)
 {
 	switch( error )
 	{
@@ -178,8 +168,6 @@ QCryptoBackend::getKey()
 void
 QCryptoBackend::shutDown()
 {
-	delete static_backend;
-	static_backend = nullptr;
 	get_rsa_method(true);
 	get_ec_method(true);
 }

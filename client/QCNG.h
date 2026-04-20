@@ -36,8 +36,8 @@ public:
 	QByteArray deriveConcatKDF(const QByteArray &publicKey, QCryptographicHash::Algorithm digest,
 		const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) const final;
 	QByteArray deriveHMACExtract(const QByteArray &publicKey, const QByteArray &salt, int keySize) const final;
-	PinStatus lastError() const final;
-	PinStatus login(const TokenData &token) final;
+	Status lastError() const final;
+	Status login(const TokenData &token) final;
 	void logout() final {}
 	QByteArray sign(QCryptographicHash::Algorithm type, const QByteArray &digest) const final;
 

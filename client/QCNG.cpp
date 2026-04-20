@@ -45,7 +45,7 @@ class QCNG::Private
 {
 public:
 	TokenData token;
-	QCNG::PinStatus err = QCNG::PinOK;
+	QCNG::Status err = QCNG::PinOK;
 };
 
 QCNG::QCNG( QObject *parent )
@@ -179,7 +179,7 @@ QByteArray QCNG::exec(F &&func) const
 	}
 }
 
-QCNG::PinStatus QCNG::lastError() const { return d->err; }
+QCNG::Status QCNG::lastError() const { return d->err; }
 
 QList<TokenData> QCNG::tokens() const
 {
@@ -275,7 +275,7 @@ QList<TokenData> QCNG::tokens() const
 	return result;
 }
 
-QCNG::PinStatus QCNG::login(const TokenData &token)
+QCNG::Status QCNG::login(const TokenData &token)
 {
 	d->token = token;
 	return d->err = QCNG::PinOK;

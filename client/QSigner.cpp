@@ -253,31 +253,21 @@ std::vector<unsigned char> QSigner::sign(const std::string &method, const std::v
 		throwException(tr("Signing certificate is not selected."), Exception::General)
 	}
 
-	auto backend = QCryptoBackend::getBackend(d->sign);
-	while (backend->status == QCryptoBackend::PinIncorrect) {
-		dispatchToMain([&]{
-			WarningDialog::create()
-				->withTitle(SslCertificate(d->sign.cert()).keyUsage().contains(SslCertificate::NonRepudiation) ? tr("Failed to sign document") : tr("Failed to decrypt document"))
-				->withText(QCryptoBackend::errorString(backend->status))
-				->exec();
-		});
-		backend->login(d->sign);
-	}
-	if (backend->status != QCryptoBackend::PinOK) {
-		switch(backend->status) {
+	auto val = QCryptoBackend::getBackend(qApp->signer()->tokenauth());
+	if (!val.value()) {
+		switch(val.error()) {
 		case QCryptoBackend::PinCanceled:
-			throwException((tr("Failed to login token") + ' ' + QCryptoBackend::errorString(backend->status)), Exception::PINCanceled);
+			throwException((tr("Failed to login token") + ' ' + QCryptoBackend::errorString(val.error())), Exception::PINCanceled);
 		case QCryptoBackend::PinLocked:
-			throwException((tr("Failed to login token") + ' ' + QCryptoBackend::errorString(backend->status)), Exception::PINLocked);
+			throwException((tr("Failed to login token") + ' ' + QCryptoBackend::errorString(val.error())), Exception::PINLocked);
 		default:
-			throwException((tr("Failed to login token") + ' ' + QCryptoBackend::errorString(backend->status)), Exception::PINFailed);
+			throwException((tr("Failed to login token") + ' ' + QCryptoBackend::errorString(val.error())), Exception::PINFailed);
 		}
 	}
+	std::unique_ptr<QCryptoBackend> backend(val.value());
+
 	QByteArray sig = waitFor(&QCryptoBackend::sign, backend.get(),
 		methodToNID(method), QByteArray::fromRawData((const char*)digest.data(), int(digest.size())));
-	if (backend->lastError() == QCryptoBackend::PinCanceled)
-		throwException(tr("Failed to login token"), Exception::PINCanceled)
-
 	if (sig.isEmpty())
 		throwException(tr("Failed to sign document"), Exception::General)
 	return {sig.constBegin(), sig.constEnd()};
