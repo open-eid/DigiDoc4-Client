@@ -287,7 +287,7 @@ QPKCS11::deriveHMACExtract(const QByteArray &publicKey, const QByteArray &salt, 
 	return out;
 }
 
-QPKCS11::PinStatus
+QPKCS11::Status
 QPKCS11::login(const TokenData &t)
 {
 	logout();
