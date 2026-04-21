@@ -68,7 +68,7 @@
           </ProgId>
           <RegistryValue Root="HKCR" Key=".pdf\OpenWithProgids" Name="qdigidoc4.document" Value="" Type="string" />
         </Component>
-        <File Name="zlib$(var.qt_suffix)1.dll" />
+        <File Name="z$(var.qt_suffix).dll" />
         <File Name="libxml2.dll" />
         <File Name="libxmlsec1.dll" />
         <File Name="libxmlsec1-openssl.dll" />
