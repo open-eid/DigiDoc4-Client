@@ -253,7 +253,7 @@ std::vector<unsigned char> QSigner::sign(const std::string &method, const std::v
 		throwException(tr("Signing certificate is not selected."), Exception::General)
 	}
 
-	auto val = QCryptoBackend::getBackend(qApp->signer()->tokenauth());
+	auto val = QCryptoBackend::getBackend(d->sign);
 	if (!val.value()) {
 		switch(val.error()) {
 		case QCryptoBackend::PinCanceled:

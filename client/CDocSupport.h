@@ -19,6 +19,8 @@
 
 #pragma once
 
+#include "QCryptoBackend.h"
+
 #include <QtCore/QObject>
 #include <QtCore/QIODevice>
 #include <QtCore/QFile>
@@ -76,9 +78,14 @@ struct DDCryptoBackend final : public libcdoc::CryptoBackend {
 								unsigned int idx) final;
 	std::string getLastErrorStr(libcdoc::result_t code) const final;
 
+	std::unique_ptr<QCryptoBackend> backend;
 	std::vector<uint8_t> secret;
 
 	explicit DDCryptoBackend() = default;
+
+	void setBackend(QCryptoBackend *backend) {
+		this->backend.reset(backend);
+	}
 };
 
 //
@@ -110,8 +117,9 @@ struct DDNetworkBackend final : public libcdoc::NetworkBackend, private QObject 
 		return libcdoc::NOT_IMPLEMENTED;
 	}
 
-	explicit DDNetworkBackend() = default;
+	explicit DDNetworkBackend(DDCryptoBackend &_crypto) : crypto(_crypto) {}
 
+	DDCryptoBackend &crypto;
 	std::string last_error;
 };
 

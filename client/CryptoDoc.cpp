@@ -84,6 +84,7 @@ struct CryptoDoc::Private
 	std::vector<IOEntry> files;
 	std::vector<CKey> keys;
 
+	explicit Private() : network(crypto) {}
 	bool isEncryptedWarning(const QString &title) const;
 
 	bool isEncrypted() const {
