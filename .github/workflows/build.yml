@@ -41,12 +41,12 @@ jobs:
         key: vcpkg-macOS-${{ hashFiles('prepare_osx_build_environment.sh') }}
     - name: Build libraries
       run: |
-        mkdir -p ${LIBS_PATH}/Qt-6.10.2-OpenSSL
+        mkdir -p ${LIBS_PATH}/Qt-6.11.0-OpenSSL
         ./prepare_osx_build_environment.sh -p ${LIBS_PATH}
     - name: Install Qt
       uses: jurplel/install-qt-action@v4
       with:
-        version: 6.10.2
+        version: 6.11.0
         arch: clang_64
         cache: true
     - name: Build
@@ -140,7 +140,7 @@ jobs:
         path: build/qdigidoc4*.rpm
   windows:
     name: Build on Windows
-    runs-on: ${{ matrix.platform == 'arm64' && 'windows-11-arm' || 'windows-2025' }}
+    runs-on: 'windows-2025'
     strategy:
       matrix:
         vcver: [143]
@@ -160,7 +160,8 @@ jobs:
     - name: Install artifact
       run: |
         Rename-Item "libdigidocpp*.msi" libdigidocpp.msi
-        msiexec /qn /i libdigidocpp.msi
+        $r = Start-Process msiexec -ArgumentList '/a', 'libdigidocpp.msi', '/qn', "TARGETDIR=$env:GITHUB_WORKSPACE\libs", '/l*v', 'install.log' -Wait -PassThru
+        if ($r.ExitCode -ne 0) { Get-Content install.log; exit $r.ExitCode }
     - name: Cache vcpkg
       uses: actions/cache@v5
       with:
@@ -169,24 +170,26 @@ jobs:
     - name: Install Qt
       uses: jurplel/install-qt-action@v4
       with:
-        version: 6.10.2
-        arch: ${{ matrix.platform == 'arm64' && 'win64_msvc2022_arm64' || 'win64_msvc2022_64' }}
+        version: 6.11.0
+        arch: ${{ matrix.platform == 'arm64' && 'win64_msvc2022_arm64_cross_compiled' || 'win64_msvc2022_64' }}
         cache: true
-    - name: Setup dev env
-      uses: ilammy/msvc-dev-cmd@v1
-      with:
-        arch: ${{ matrix.platform }}
+        aqtsource: git+https://github.com/miurahr/aqtinstall.git
     - name: Install WiX
       run: |
         dotnet tool install -g wix --version 6.0.2
         wix extension -g add WixToolset.UI.wixext/6.0.2
     - name: Build
+      shell: cmd
       env:
         VCPKG_BINARY_SOURCES: clear;files,${{ github.workspace }}/vcpkg_cache,readwrite
       run: |
-        cmake "-GNinja" -B build -S . -DCMAKE_BUILD_TYPE=RelWithDebInfo `
-          -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake `
-          -DVCPKG_MANIFEST_DIR=${{ github.workspace }}/client/libcdoc
+        for /f "usebackq tokens=*" %%i in (`"%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe" -latest -find VC\Auxiliary\Build\vcvarsall.bat`) do call "%%i" ${{ matrix.platform == 'arm64' && 'amd64_arm64' || 'amd64' }}
+        set QT_HOST_PATH=%QT_HOST_PATH:\=/%
+        cmake -GNinja -B build -S . -DCMAKE_BUILD_TYPE=RelWithDebInfo ^
+          -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake ^
+          -DVCPKG_MANIFEST_DIR=${{ github.workspace }}/client/libcdoc ^
+          -Dlibdigidocpp_ROOT=${{ github.workspace }}/libs/PFiles64 ^
+          ${{ matrix.platform == 'arm64' && '-DQT_HOST_PATH=%QT_HOST_PATH%' || '' }}
         cmake --build build --target msi
         cmake --build build --target msishellext
         cmake --build build --target appx
