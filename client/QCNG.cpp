@@ -51,11 +51,11 @@ QCNG::~QCNG()
 
 QCNG::Status QCNG::login(const TokenData &_token)
 {
-	token = std::make_unique<TokenData>(_token);
+	token = _token;
 	return PinOK;
 }
 
-QByteArray QCNG::decrypt(const QByteArray &data, bool oaep)
+QByteArray QCNG::decrypt(const QByteArray &data, bool oaep) const
 {
 	Status status = PinOK;
 	return exec([&](NCRYPT_PROV_HANDLE prov, NCRYPT_KEY_HANDLE key, QByteArray &result) {
@@ -77,7 +77,7 @@ QByteArray QCNG::decrypt(const QByteArray &data, bool oaep)
 }
 
 template<typename F>
-QByteArray QCNG::derive(const QByteArray &publicKey, F &&func)
+QByteArray QCNG::derive(const QByteArray &publicKey, F &&func) const
 {
 	return exec([&](NCRYPT_PROV_HANDLE prov, NCRYPT_KEY_HANDLE key, QByteArray &derived) {
 		BCRYPT_ECCKEY_BLOB oh { BCRYPT_ECDH_PUBLIC_P384_MAGIC, ULONG((publicKey.size() - 1) / 2) };
@@ -101,7 +101,7 @@ QByteArray QCNG::derive(const QByteArray &publicKey, F &&func)
 }
 
 QByteArray QCNG::deriveConcatKDF(const QByteArray &publicKey, QCryptographicHash::Algorithm digest,
-	const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo)
+	const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) const
 {
 	return derive(publicKey, [&](NCRYPT_SECRET_HANDLE sharedSecret, QByteArray &derived) {
 		std::array paramValues{
@@ -131,7 +131,7 @@ QByteArray QCNG::deriveConcatKDF(const QByteArray &publicKey, QCryptographicHash
 	});
 }
 
-QByteArray QCNG::deriveHMACExtract(const QByteArray &publicKey, const QByteArray &salt, int keySize)
+QByteArray QCNG::deriveHMACExtract(const QByteArray &publicKey, const QByteArray &salt, int keySize) const
 {
 	return derive(publicKey, [&](NCRYPT_SECRET_HANDLE sharedSecret, QByteArray &derived) {
 		std::array paramValues{
@@ -151,15 +151,15 @@ QByteArray QCNG::deriveHMACExtract(const QByteArray &publicKey, const QByteArray
 }
 
 template<typename F>
-QByteArray QCNG::exec(F &&func)
+QByteArray QCNG::exec(F &&func) const
 {
 	status = UnknownError;
 	SCOPE<NCRYPT_PROV_HANDLE> prov;
-	if(FAILED(NCryptOpenStorageProvider(&prov, LPCWSTR(token->data(u"provider"_s).toString().utf16()), 0)))
+	if(FAILED(NCryptOpenStorageProvider(&prov, LPCWSTR(token.data(u"provider"_s).toString().utf16()), 0)))
 		return {};
 	SCOPE<NCRYPT_KEY_HANDLE> key;
-	if(FAILED(NCryptOpenKey(prov, &key, LPWSTR(token->data(u"key"_s).toString().utf16()),
-		token->data(u"spec"_s).value<DWORD>(), 0)))
+	if(FAILED(NCryptOpenKey(prov, &key, LPWSTR(token.data(u"key"_s).toString().utf16()),
+		token.data(u"spec"_s).value<DWORD>(), 0)))
 		return {};
 	// https://docs.microsoft.com/en-us/archive/blogs/alejacma/smart-cards-pin-gets-cached
 	NCryptSetProperty(key, NCRYPT_PIN_PROPERTY, nullptr, 0, 0);
@@ -271,7 +271,7 @@ QList<TokenData> QCNG::tokens()
 	return result;
 }
 
-QByteArray QCNG::sign(QCryptographicHash::Algorithm type, const QByteArray &digest)
+QByteArray QCNG::sign(QCryptographicHash::Algorithm type, const QByteArray &digest) const
 {
 	return exec([&](NCRYPT_PROV_HANDLE prov, NCRYPT_KEY_HANDLE key, QByteArray &result) {
 		BCRYPT_PSS_PADDING_INFO rsaPSS { NCRYPT_SHA256_ALGORITHM, 32 };
@@ -291,7 +291,7 @@ QByteArray QCNG::sign(QCryptographicHash::Algorithm type, const QByteArray &dige
 		bool isRSA = algo == QLatin1String("RSA");
 		DWORD padding {};
 		PVOID paddingInfo {};
-		if(isRSA && token->data(u"PSS"_s).toBool())
+		if(isRSA && token.data(u"PSS"_s).toBool())
 		{
 			padding = BCRYPT_PAD_PSS;
 			paddingInfo = &rsaPSS;

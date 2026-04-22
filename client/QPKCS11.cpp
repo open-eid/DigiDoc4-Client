@@ -179,7 +179,7 @@ QPKCS11::~QPKCS11()
 }
 
 QByteArray
-QPKCS11::decrypt(const QByteArray &data, bool oaep)
+QPKCS11::decrypt(const QByteArray &data, bool oaep) const
 {
 	QPKCS11Private *d = getPrivate();
 	auto key = d->findObject(d->session, CKO_PRIVATE_KEY, d->id);
@@ -212,7 +212,7 @@ QPKCS11::decrypt(const QByteArray &data, bool oaep)
 }
 
 QByteArray
-QPKCS11::derive(const QByteArray &publicKey)
+QPKCS11::derive(const QByteArray &publicKey) const
 {
 	QPKCS11Private *d = getPrivate();
 	std::vector<CK_OBJECT_HANDLE> key = d->findObject(d->session, CKO_PRIVATE_KEY, d->id);
@@ -247,7 +247,7 @@ QPKCS11::derive(const QByteArray &publicKey)
 
 QByteArray
 QPKCS11::deriveConcatKDF(const QByteArray &publicKey, QCryptographicHash::Algorithm digest,
-	const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo)
+	const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) const
 {
 	QByteArray z = derive(publicKey);
 	if(z.isEmpty())
@@ -271,7 +271,7 @@ QPKCS11::deriveConcatKDF(const QByteArray &publicKey, QCryptographicHash::Algori
 }
 
 QByteArray
-QPKCS11::deriveHMACExtract(const QByteArray &publicKey, const QByteArray &salt, int keySize)
+QPKCS11::deriveHMACExtract(const QByteArray &publicKey, const QByteArray &salt, int keySize) const
 {
 	QByteArray key = derive(publicKey);
 	if(key.isEmpty())
@@ -497,7 +497,7 @@ bool QPKCS11::reload()
 	return QPKCS11Private::load(drivers.key({}));
 }
 
-QByteArray QPKCS11::sign(QCryptographicHash::Algorithm type, const QByteArray &digest)
+QByteArray QPKCS11::sign(QCryptographicHash::Algorithm type, const QByteArray &digest) const
 {
 	QPKCS11Private *d = getPrivate();
 	std::vector<CK_OBJECT_HANDLE> key = d->findObject(d->session, CKO_PRIVATE_KEY, d->id);

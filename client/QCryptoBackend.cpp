@@ -25,6 +25,7 @@
 #endif
 #include "QPKCS11.h"
 
+#include <QtCore/QCoreApplication>
 #include <QtNetwork/QSslKey>
 #include <QtNetwork/QSslCertificate>
 
@@ -66,12 +67,12 @@ QString QCryptoBackend::errorString(Status error)
 	switch( error )
 	{
 	case PinOK: return QString();
-	case PinCanceled: return QObject::tr("PIN Canceled");
-	case PinLocked: return QObject::tr("PIN locked");
-	case PinIncorrect: return QObject::tr("PIN Incorrect");
-	case GeneralError: return QObject::tr("PKCS11 general error");
-	case DeviceError: return QObject::tr("PKCS11 device error");
-	default: return QObject::tr("Unknown error");
+	case PinCanceled: return QCoreApplication::translate("QCryptoBackend", "PIN Canceled");
+	case PinLocked: return QCoreApplication::translate("QCryptoBackend", "PIN locked");
+	case PinIncorrect: return QCoreApplication::translate("QCryptoBackend", "PIN Incorrect");
+	case GeneralError: return QCoreApplication::translate("QCryptoBackend", "PKCS11 general error");
+	case DeviceError: return QCoreApplication::translate("QCryptoBackend", "PKCS11 device error");
+	default: return QCoreApplication::translate("QCryptoBackend", "Unknown error");
 	}
 }
 
@@ -144,7 +145,7 @@ static EC_KEY_METHOD *get_ec_method(bool release = false)
 }
 
 QSslKey
-QCryptoBackend::getKey()
+QCryptoBackend::getKey() const
 {
 	QSslKey key = cert.publicKey();
 	if(!key.handle()) {
@@ -155,13 +156,13 @@ QCryptoBackend::getKey()
 	{
 		auto *ec = (EC_KEY*)key.handle();
 		EC_KEY_set_method(ec, get_ec_method());
-		EC_KEY_set_ex_data(ec, 0, this);
+		EC_KEY_set_ex_data(ec, 0, (void *) this);
 	}
 	else
 	{
 		RSA *rsa = (RSA*)key.handle();
 		RSA_set_method(rsa, get_rsa_method());
-		RSA_set_ex_data(rsa, 0, this);
+		RSA_set_ex_data(rsa, 0, (void *) this);
 	}
 	return key;
 }

@@ -118,8 +118,6 @@ DDCryptoBackend::decryptRSA(std::vector<uint8_t>& dst, const std::vector<uint8_t
 			return getDecryptStatus(val.error());
 		backend.reset(val.value());
 	}
-	// fixme: Locking
-	// fixme: missing token
 	QByteArray decryptedKey = backend->decrypt(toByteArray(data), oaep);
 	dst.assign(decryptedKey.cbegin(), decryptedKey.cend());
 	backend.reset();
@@ -141,8 +139,6 @@ DDCryptoBackend::deriveConcatKDF(std::vector<uint8_t>& dst, const std::vector<ui
 			return getDecryptStatus(val.error());
 		backend.reset(val.value());
 	}
-	// fixme: Locking
-	// fixme: missing token
 	QByteArray decryptedKey = backend->deriveConcatKDF(toByteArray(publicKey), SHA_MTH.value(digest),
 		toByteArray(algorithmID), toByteArray(partyUInfo), toByteArray(partyVInfo));
 	dst.assign(decryptedKey.cbegin(), decryptedKey.cend());
@@ -159,8 +155,6 @@ DDCryptoBackend::deriveHMACExtract(std::vector<uint8_t>& dst, const std::vector<
 			return getDecryptStatus(val.error());
 		backend.reset(val.value());
 	}
-	// fixme: Locking
-	// fixme: missing token
 	QByteArray decryptedKey = backend->deriveHMACExtract(toByteArray(key_material), toByteArray(salt), ECC_KEY_LEN);
 	dst.assign(decryptedKey.cbegin(), decryptedKey.cend());
 	backend.reset();
