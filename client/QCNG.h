@@ -26,27 +26,25 @@
 
 class QCNG final: public QCryptoBackend
 {
-	Q_OBJECT
 public:
-	explicit QCNG(QObject *parent = nullptr);
+	explicit QCNG();
 	~QCNG() final;
 
-	QList<TokenData> tokens() const final;
-	QByteArray decrypt(const QByteArray &data, bool oaep) const final;
-	QByteArray deriveConcatKDF(const QByteArray &publicKey, QCryptographicHash::Algorithm digest,
-		const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) const final;
-	QByteArray deriveHMACExtract(const QByteArray &publicKey, const QByteArray &salt, int keySize) const final;
-	Status lastError() const final;
 	Status login(const TokenData &token) final;
 	void logout() final {}
-	QByteArray sign(QCryptographicHash::Algorithm type, const QByteArray &digest) const final;
 
+	QByteArray decrypt(const QByteArray &data, bool oaep) final;
+	QByteArray deriveConcatKDF(const QByteArray &publicKey, QCryptographicHash::Algorithm digest,
+		const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) final;
+	QByteArray deriveHMACExtract(const QByteArray &publicKey, const QByteArray &salt, int keySize) final;
+	QByteArray sign(QCryptographicHash::Algorithm type, const QByteArray &digest) final;
+
+	static QList<TokenData> tokens();
 private:
 	template<typename F>
-	QByteArray derive(const QByteArray &publicKey, F &&func) const;
+	QByteArray derive(const QByteArray &publicKey, F &&func);
 	template<typename F>
-	QByteArray exec(F &&func) const;
+	QByteArray exec(F &&func);
 
-	class Private;
-	Private *d;
+	std::unique_ptr<TokenData> token;
 };
