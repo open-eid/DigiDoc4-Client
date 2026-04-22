@@ -20,6 +20,7 @@
 #pragma once
 
 #include "QCryptoBackend.h"
+#include "TokenData.h"
 
 #include <qt_windows.h>
 #include <ncrypt.h>
