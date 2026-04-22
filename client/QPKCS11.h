@@ -27,15 +27,16 @@ public:
 	explicit QPKCS11();
 	~QPKCS11() final;
 
-	QByteArray decrypt(const QByteArray &data, bool oaep) const final;
-	QByteArray derive(const QByteArray &publicKey) const;
+	QByteArray decrypt(const QByteArray &data, bool oaep) final;
+	QByteArray derive(const QByteArray &publicKey);
 	QByteArray deriveConcatKDF(const QByteArray &publicKey, QCryptographicHash::Algorithm digest,
-		const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) const final;
-	QByteArray deriveHMACExtract(const QByteArray &publicKey, const QByteArray &salt, int keySize) const final;
+		const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) final;
+	QByteArray deriveHMACExtract(const QByteArray &publicKey, const QByteArray &salt, int keySize) final;
+	QByteArray sign(QCryptographicHash::Algorithm type, const QByteArray &digest) final;
+
 	Status login(const TokenData &t) final;
 	void logout() final;
 	static bool reload();
-	QByteArray sign(QCryptographicHash::Algorithm type, const QByteArray &digest) const final;
 
 	static QList<TokenData> tokens();
 };

@@ -44,11 +44,11 @@ public:
 
 	virtual ~QCryptoBackend() {};
 
-	virtual QByteArray decrypt(const QByteArray &data, bool oaep) const = 0;
+	virtual QByteArray decrypt(const QByteArray &data, bool oaep) = 0;
 	virtual QByteArray deriveConcatKDF(const QByteArray &publicKey, QCryptographicHash::Algorithm digest,
-		const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) const = 0;
-	virtual QByteArray deriveHMACExtract(const QByteArray &publicKey, const QByteArray &salt, int keySize) const = 0;
-	virtual QByteArray sign(QCryptographicHash::Algorithm method, const QByteArray &digest) const = 0;
+		const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) = 0;
+	virtual QByteArray deriveHMACExtract(const QByteArray &publicKey, const QByteArray &salt, int keySize) = 0;
+	virtual QByteArray sign(QCryptographicHash::Algorithm method, const QByteArray &digest) = 0;
 
 	/**
 	 * @brief Get the SSL key for the certificate
@@ -69,6 +69,12 @@ public:
 	 * This should be called when the application is about to exit. It releases all static data held by backend(s) (e.g. PKCS11 library)
 	 */
 	static void shutDown();
+
+	/**
+	 * @brief The status of the last operation
+	 */
+	Status status = PinOK;
+
 	/**
 	 * @brief Get a list of all available tokens
 	 * 
