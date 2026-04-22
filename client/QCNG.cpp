@@ -57,7 +57,6 @@ QCNG::Status QCNG::login(const TokenData &_token)
 
 QByteArray QCNG::decrypt(const QByteArray &data, bool oaep)
 {
-	Status status = PinOK;
 	return exec([&](NCRYPT_PROV_HANDLE prov, NCRYPT_KEY_HANDLE key, QByteArray &result) {
 		BCRYPT_OAEP_PADDING_INFO padding {BCRYPT_SHA256_ALGORITHM, nullptr, 0};
 		PVOID paddingInfo = oaep ? &padding : nullptr;
