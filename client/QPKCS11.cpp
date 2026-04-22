@@ -183,22 +183,30 @@ QPKCS11::decrypt(const QByteArray &data, bool oaep)
 {
 	QPKCS11Private *d = getPrivate();
 	auto key = d->findObject(d->session, CKO_PRIVATE_KEY, d->id);
-	if(key.size() != 1)
+	if(key.size() != 1){
+		status = GeneralError;
 		return {};
+	}
 
 	CK_RSA_PKCS_OAEP_PARAMS params { CKM_SHA256, CKG_MGF1_SHA256, 0, nullptr, 0 };
 	auto mech = oaep ?
 		CK_MECHANISM{ CKM_RSA_PKCS_OAEP, &params, sizeof(params) } :
 		CK_MECHANISM{ CKM_RSA_PKCS, nullptr, 0 };
-	if(d->f->C_DecryptInit(d->session, &mech, key.front()) != CKR_OK)
+	if(d->f->C_DecryptInit(d->session, &mech, key.front()) != CKR_OK) {
+		status = GeneralError;
 		return {};
+	}
 
 	CK_ULONG size = 0;
-	if(d->f->C_Decrypt(d->session, CK_BYTE_PTR(data.constData()), CK_ULONG(data.size()), nullptr, &size) != CKR_OK)
+	if(d->f->C_Decrypt(d->session, CK_BYTE_PTR(data.constData()), CK_ULONG(data.size()), nullptr, &size) != CKR_OK) {
+		status = GeneralError;
 		return {};
+	}
 	QByteArray result(int(size), 0);
-	if(d->f->C_Decrypt(d->session, CK_BYTE_PTR(data.constData()), CK_ULONG(data.size()), CK_BYTE_PTR(result.data()), &size) != CKR_OK)
+	if(d->f->C_Decrypt(d->session, CK_BYTE_PTR(data.constData()), CK_ULONG(data.size()), CK_BYTE_PTR(result.data()), &size) != CKR_OK) {
+		status = GeneralError;
 		return {};
+	}
 
 	return result;
 }
@@ -208,8 +216,10 @@ QPKCS11::derive(const QByteArray &publicKey)
 {
 	QPKCS11Private *d = getPrivate();
 	std::vector<CK_OBJECT_HANDLE> key = d->findObject(d->session, CKO_PRIVATE_KEY, d->id);
-	if(key.size() != 1)
+	if(key.size() != 1) {
+		status = GeneralError;
 		return {};
+	}
 
 	CK_ECDH1_DERIVE_PARAMS ecdh_parms { CKD_NULL, 0, nullptr, CK_ULONG(publicKey.size()), CK_BYTE_PTR(publicKey.data()) };
 	CK_MECHANISM mech { CKM_ECDH1_DERIVE, &ecdh_parms, sizeof(CK_ECDH1_DERIVE_PARAMS) };
@@ -227,8 +237,10 @@ QPKCS11::derive(const QByteArray &publicKey)
 		CK_ATTRIBUTE{CKA_VALUE_LEN, &value_len, sizeof(value_len)},
 	};
 	CK_OBJECT_HANDLE newkey = CK_INVALID_HANDLE;
-	if(d->f->C_DeriveKey(d->session, &mech, key.front(), newkey_template.data(), CK_ULONG(newkey_template.size()), &newkey) != CKR_OK)
+	if(d->f->C_DeriveKey(d->session, &mech, key.front(), newkey_template.data(), CK_ULONG(newkey_template.size()), &newkey) != CKR_OK) {
+		status = GeneralError;
 		return {};
+	}
 
 	return d->attribute(d->session, newkey, CKA_VALUE);
 }
@@ -267,12 +279,13 @@ QPKCS11::deriveHMACExtract(const QByteArray &publicKey, const QByteArray &salt, 
 	auto ctx = libcdoc::make_unique_ptr<EVP_PKEY_CTX_free>(EVP_PKEY_CTX_new_id(EVP_PKEY_HKDF, nullptr));
 	QByteArray out(keySize, 0);
 	auto outlen = size_t(out.length());
-	auto isError = [](int err) {
+	auto isError = [this](int err) {
 		if(err < 1)
 		{
 			unsigned long errorCode = 0;
 			while((errorCode = ERR_get_error()))
 				qCWarning(CRYPTO) << ERR_error_string(errorCode, nullptr);
+			status = GeneralError;
 		}
 		return err < 1;
 	};
@@ -488,8 +501,10 @@ QByteArray QPKCS11::sign(QCryptographicHash::Algorithm type, const QByteArray &d
 {
 	QPKCS11Private *d = getPrivate();
 	std::vector<CK_OBJECT_HANDLE> key = d->findObject(d->session, CKO_PRIVATE_KEY, d->id);
-	if(key.size() != 1)
+	if(key.size() != 1) {
+		status = GeneralError;
 		return {};
+	}
 
 	CK_KEY_TYPE keyType = CKK_RSA;
 	CK_ATTRIBUTE attribute { CKA_KEY_TYPE, &keyType, sizeof(keyType) };
@@ -528,13 +543,19 @@ QByteArray QPKCS11::sign(QCryptographicHash::Algorithm type, const QByteArray &d
 	}
 	data.append(digest);
 
-	if(d->f->C_SignInit(d->session, &mech, key.front()) != CKR_OK)
+	if(d->f->C_SignInit(d->session, &mech, key.front()) != CKR_OK) {
+		status = GeneralError;
 		return {};
+	}
 	CK_ULONG size = 0;
-	if(d->f->C_Sign(d->session, CK_BYTE_PTR(data.constData()), CK_ULONG(data.size()), nullptr, &size) != CKR_OK)
+	if(d->f->C_Sign(d->session, CK_BYTE_PTR(data.constData()), CK_ULONG(data.size()), nullptr, &size) != CKR_OK) {
+		status = GeneralError;
 		return {};
+	}
 	QByteArray sig(int(size), 0);
-	if(d->f->C_Sign(d->session, CK_BYTE_PTR(data.constData()), CK_ULONG(data.size()), CK_BYTE_PTR(sig.data()), &size) != CKR_OK)
+	if(d->f->C_Sign(d->session, CK_BYTE_PTR(data.constData()), CK_ULONG(data.size()), CK_BYTE_PTR(sig.data()), &size) != CKR_OK) {
+		status = GeneralError;
 		return {};
+	}
 	return sig;
 }

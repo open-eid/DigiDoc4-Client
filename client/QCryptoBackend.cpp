@@ -148,6 +148,7 @@ QCryptoBackend::getKey()
 {
 	QSslKey key = cert.publicKey();
 	if(!key.handle()) {
+		status = GeneralError;
 		return {};
 	}
 	if(key.algorithm() == QSsl::Ec)
