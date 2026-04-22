@@ -55,17 +55,7 @@ public:
 	QReadWriteLock	lock;
 	QMutex			sleepMutex;
 	QWaitCondition	sleepCond;
-
-	//static ECDSA_SIG* ecdsa_do_sign(const unsigned char *dgst, int dgst_len,
-	//	const BIGNUM *inv, const BIGNUM *rp, EC_KEY *eckey);
-	//static int rsa_sign(int type, const unsigned char *m, unsigned int m_len,
-	//	unsigned char *sigret, unsigned int *siglen, const RSA *rsa);
-
-	//RSA_METHOD		*rsamethod = RSA_meth_dup(RSA_get_default_method());
-	//EC_KEY_METHOD	*ecmethod = EC_KEY_METHOD_new(EC_KEY_get_default_method());
 };
-
-
 
 using namespace digidoc;
 

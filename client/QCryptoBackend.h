@@ -19,8 +19,6 @@
 
 #pragma once
 
-#include <QObject>
-#include <QCryptographicHash>
 #include <QtNetwork/QSslKey>
 #include <QtNetwork/QSslCertificate>
 
@@ -44,18 +42,18 @@ public:
 
 	virtual ~QCryptoBackend() {};
 
-	virtual QByteArray decrypt(const QByteArray &data, bool oaep) = 0;
+	virtual QByteArray decrypt(const QByteArray &data, bool oaep) const = 0;
 	virtual QByteArray deriveConcatKDF(const QByteArray &publicKey, QCryptographicHash::Algorithm digest,
-		const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) = 0;
-	virtual QByteArray deriveHMACExtract(const QByteArray &publicKey, const QByteArray &salt, int keySize) = 0;
-	virtual QByteArray sign(QCryptographicHash::Algorithm method, const QByteArray &digest) = 0;
+		const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) const = 0;
+	virtual QByteArray deriveHMACExtract(const QByteArray &publicKey, const QByteArray &salt, int keySize) const = 0;
+	virtual QByteArray sign(QCryptographicHash::Algorithm method, const QByteArray &digest) const = 0;
 
 	/**
 	 * @brief Get the SSL key for the certificate
 	 * 
 	 * @return the Qt SSL key
 	 */
-	QSslKey getKey();
+	QSslKey getKey() const;
 	/**
 	 * @brief Get a new Backend object and log in with the given token
 	 * 
@@ -73,7 +71,7 @@ public:
 	/**
 	 * @brief The status of the last operation
 	 */
-	Status status = PinOK;
+	mutable Status status = PinOK;
 
 	/**
 	 * @brief Get a list of all available tokens
