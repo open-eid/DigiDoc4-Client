@@ -93,9 +93,7 @@ const Option<bool, bool (*)()> Settings::TSA_URL_CUSTOM
 
 const Option<QString> Settings::DEFAULT_DIR { QStringLiteral("DefaultDir") };
 const Option<QString, QString (*)()> Settings::LANGUAGE { QStringLiteral("Language"), [] {
-	auto languages = QLocale().uiLanguages();
-	if(languages.first().contains(QLatin1String("et"), Qt::CaseInsensitive)) return QStringLiteral("et");
-	if(languages.first().contains(QLatin1String("ru"), Qt::CaseInsensitive)) return QStringLiteral("ru");
+	if(QLocale().uiLanguages().first().contains(QLatin1String("et"), Qt::CaseInsensitive)) return QStringLiteral("et");
 	return QStringLiteral("en");
 }};
 const Option<QString> Settings::LAST_PATH { QStringLiteral("lastPath"), QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) };

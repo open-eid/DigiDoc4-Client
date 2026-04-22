@@ -159,10 +159,10 @@ left: 1px;
 }</string>
        </property>
        <property name="maxVisibleItems">
-        <number>3</number>
+        <number>2</number>
        </property>
        <property name="maxCount">
-        <number>3</number>
+        <number>2</number>
        </property>
       </widget>
       <widget class="QPushButton" name="continueBtn">
@@ -277,7 +277,7 @@ left: 1px;
         </rect>
        </property>
        <property name="text">
-        <string notr="true">Vali suhtluskeel / Выберите язык / Select language:</string>
+        <string notr="true">Vali suhtluskeel / Select language:</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>

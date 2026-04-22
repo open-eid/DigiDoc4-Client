@@ -42,20 +42,12 @@ FirstRun::FirstRun(QWidget *parent)
 	//	Page 1: language
 	ui->lang->addItem(QStringLiteral("Eesti keel"));
 	ui->lang->addItem(QStringLiteral("English"));
-	ui->lang->addItem(QString::fromUtf8("Русский язык")); //QStringLiteral breaks windows text
-
-	if(Settings::LANGUAGE == QLatin1String("en"))
-		ui->lang->setCurrentIndex(1);
-	else if(Settings::LANGUAGE == QLatin1String("ru"))
-		ui->lang->setCurrentIndex(2);
-	else
-		ui->lang->setCurrentIndex(0);
+	ui->lang->setCurrentIndex(Settings::LANGUAGE == QLatin1String("en") ? 1 : 0);
 
 	connect(ui->lang, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [this](int index) {
 		switch(index)
 		{
 		case 1: emit langChanged(QStringLiteral("en")); break;
-		case 2: emit langChanged(QStringLiteral("ru")); break;
 		default: emit langChanged(QStringLiteral("et")); break;
 		}
 		ui->retranslateUi(this);
