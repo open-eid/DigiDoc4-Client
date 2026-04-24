@@ -83,8 +83,8 @@ struct DDCryptoBackend final : public libcdoc::CryptoBackend {
 
 	explicit DDCryptoBackend() = default;
 
-	void setBackend(QCryptoBackend *backend) {
-		this->backend.reset(backend);
+	void setBackend(std::unique_ptr<QCryptoBackend> &&backend) {
+		this->backend = std::move(backend);
 	}
 };
 

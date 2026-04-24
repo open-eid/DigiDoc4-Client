@@ -328,7 +328,7 @@ DDNetworkBackend::fetchKey(std::vector<uint8_t> &result, const std::string &url,
 	QByteArray key_material = QByteArray::fromBase64(json.value(QLatin1String("ephemeral_key_material")).toString().toLatin1());
 	result.assign(key_material.cbegin(), key_material.cend());
 
-	crypto.setBackend(backend.release());
+	crypto.setBackend(std::move(backend));
 
 	return libcdoc::OK;
 }
