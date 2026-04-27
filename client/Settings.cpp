@@ -30,7 +30,6 @@ using Option = Settings::Option<T, D>;
 const Option<bool, bool (*)()> Settings::CDOC2_DEFAULT { QStringLiteral("CDOC2-DEFAULT"), [] {
 	return Application::confValue(QLatin1String("CDOC2-DEFAULT")).toBool(false);
 }};
-const Option<bool> Settings::CDOC2_NOTIFICATION { QStringLiteral("CDOC2-NOTIFICATION"), false };
 const Option<bool, bool (*)()> Settings::CDOC2_USE_KEYSERVER { QStringLiteral("CDOC2-USE-KEYSERVER"), [] {
 	return Application::confValue(QLatin1String("CDOC2-USE-KEYSERVER")).toBool(true);
 }};

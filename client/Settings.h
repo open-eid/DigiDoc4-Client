@@ -75,7 +75,6 @@ struct Settings
 	};
 
 	static const Option<bool, bool (*)()> CDOC2_DEFAULT;
-	static const Option<bool> CDOC2_NOTIFICATION;
 	static const Option<bool, bool (*)()> CDOC2_USE_KEYSERVER;
 	static const Option<QString, QString (*)()> CDOC2_DEFAULT_KEYSERVER;
 	static const Option<QString> CDOC2_UUID;

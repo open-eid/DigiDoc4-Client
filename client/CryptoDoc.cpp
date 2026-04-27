@@ -341,28 +341,6 @@ bool CryptoDoc::decrypt(const libcdoc::Lock *lock, const QByteArray& secret)
 		return false;
 	}
 
-	if (d->reader->version == 2 &&
-		(lock->type == libcdoc::Lock::Type::SERVER) &&
-		!Settings::CDOC2_NOTIFICATION.isSet()) {
-		auto *dlg = WarningDialog::create()
-			->withTitle(tr("You must enter your PIN code twice in order to decrypt the CDOC2 container"))
-			->withText(tr(
-				"The first PIN entry is required for authentication to the key server referenced in the CDOC2 container. "
-				"Second PIN entry is required to decrypt the CDOC2 container."))
-			->setCancelText(WarningDialog::Cancel)
-			->addButton(WarningDialog::OK, QMessageBox::Ok)
-			->addButton(tr("Don't show again"), QMessageBox::Ignore);
-		switch (dlg->exec())
-		{
-		case QMessageBox::Ok: break;
-		case QMessageBox::Ignore:
-			Settings::CDOC2_NOTIFICATION = true;
-			break;
-		default:
-			return false;
-		}
-	}
-
 	d->crypto.secret.assign(secret.cbegin(), secret.cend());
 
 	TempListConsumer cons;
