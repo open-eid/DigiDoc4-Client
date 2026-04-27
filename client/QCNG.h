@@ -32,7 +32,7 @@ public:
 	~QCNG() final;
 
 	Status login(const TokenData &token) final;
-	void logout() final {}
+	void logout() final;
 
 	QByteArray decrypt(const QByteArray &data, bool oaep) const final;
 	QByteArray deriveConcatKDF(const QByteArray &publicKey, QCryptographicHash::Algorithm digest,
@@ -47,5 +47,6 @@ private:
 	template<typename F>
 	QByteArray exec(F &&func) const;
 
-	TokenData token;
+	struct Private;
+	std::unique_ptr<Private> d;
 };

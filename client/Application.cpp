@@ -305,6 +305,10 @@ public:
 #ifdef Q_OS_WIN
 	QStringList	tempFiles;
 #endif // Q_OS_WIN
+
+	~Private() {
+		delete signer;
+	}
 };
 
 Application::Application( int &argc, char **argv )
