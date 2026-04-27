@@ -49,60 +49,13 @@ static Q_LOGGING_CATEGORY(SLog, "qdigidoc4.QSigner")
 class QSigner::Private final
 {
 public:
-	QCryptoBackend	*backend {};
 	QSmartCard		*smartcard {};
 	TokenData		auth, sign;
 	QList<TokenData> cache;
 	QReadWriteLock	lock;
 	QMutex			sleepMutex;
 	QWaitCondition	sleepCond;
-
-	static ECDSA_SIG* ecdsa_do_sign(const unsigned char *dgst, int dgst_len,
-		const BIGNUM *inv, const BIGNUM *rp, EC_KEY *eckey);
-	static int rsa_sign(int type, const unsigned char *m, unsigned int m_len,
-		unsigned char *sigret, unsigned int *siglen, const RSA *rsa);
-
-	RSA_METHOD		*rsamethod = RSA_meth_dup(RSA_get_default_method());
-	EC_KEY_METHOD	*ecmethod = EC_KEY_METHOD_new(EC_KEY_get_default_method());
 };
-
-ECDSA_SIG* QSigner::Private::ecdsa_do_sign(const unsigned char *dgst, int dgst_len,
-		const BIGNUM * /*inv*/, const BIGNUM * /*rp*/, EC_KEY *eckey)
-{
-	auto *backend = (QCryptoBackend*)EC_KEY_get_ex_data(eckey, 0);
-	QByteArray result = backend->sign(QCryptographicHash::Sha512, QByteArray::fromRawData((const char*)dgst, dgst_len));
-	if(result.isEmpty())
-		return nullptr;
-	QByteArray r = result.left(result.size()/2);
-	QByteArray s = result.right(result.size()/2);
-	ECDSA_SIG *sig = ECDSA_SIG_new();
-	ECDSA_SIG_set0(sig,
-		BN_bin2bn((const unsigned char*)r.data(), int(r.size()), nullptr),
-		BN_bin2bn((const unsigned char*)s.data(), int(s.size()), nullptr));
-	return sig;
-}
-
-int QSigner::Private::rsa_sign(int type, const unsigned char *m, unsigned int m_len,
-							   unsigned char *sigret, unsigned int *siglen, const RSA *rsa)
-{
-	auto *backend = (QCryptoBackend*)RSA_get_ex_data(rsa, 0);
-	QCryptographicHash::Algorithm algo = QCryptographicHash::Sha256;
-	switch(type)
-	{
-	case NID_sha224: algo = QCryptographicHash::Sha224; break;
-	case NID_sha256: algo = QCryptographicHash::Sha256; break;
-	case NID_sha384: algo = QCryptographicHash::Sha384; break;
-	case NID_sha512: algo = QCryptographicHash::Sha512; break;
-	}
-	QByteArray result = backend->sign(algo, QByteArray::fromRawData((const char*)m, int(m_len)));
-	if(result.isEmpty())
-		return 0;
-	*siglen = (unsigned int)result.size();
-	memcpy(sigret, result.constData(), size_t(result.size()));
-	return 1;
-}
-
-
 
 using namespace digidoc;
 
@@ -110,16 +63,6 @@ QSigner::QSigner(QObject *parent)
 	: QThread(parent)
 	, d(new Private)
 {
-	RSA_meth_set1_name(d->rsamethod, "QSmartCard");
-	RSA_meth_set_sign(d->rsamethod, Private::rsa_sign);
-	using EC_KEY_sign = int (*)(int type, const unsigned char *dgst, int dlen, unsigned char *sig,
-		unsigned int *siglen, const BIGNUM *kinv, const BIGNUM *r, EC_KEY *eckey);
-	using EC_KEY_sign_setup = int (*)(EC_KEY *eckey, BN_CTX *ctx_in, BIGNUM **kinvp, BIGNUM **rp);
-	EC_KEY_sign sign = nullptr;
-	EC_KEY_sign_setup sign_setup = nullptr;
-	EC_KEY_METHOD_get_sign(d->ecmethod, &sign, &sign_setup, nullptr);
-	EC_KEY_METHOD_set_sign(d->ecmethod, sign, sign_setup, Private::ecdsa_do_sign);
-
 	d->smartcard = new QSmartCard(parent);
 	connect(this, &QSigner::error, this, [](const QString &title, const QString &msg) {
 		WarningDialog::create()
@@ -156,8 +99,6 @@ QSigner::~QSigner()
 	d->sleepCond.wakeAll();
 	wait();
 	delete d->smartcard;
-	RSA_meth_free(d->rsamethod);
-	EC_KEY_METHOD_free(d->ecmethod);
 	delete d;
 }
 
@@ -171,108 +112,8 @@ X509Cert QSigner::cert() const
 	return X509Cert((const unsigned char*)der.constData(), size_t(der.size()), X509Cert::Der);
 }
 
-QByteArray QSigner::decrypt(std::function<QByteArray (QCryptoBackend *)> &&func, QCryptoBackend::PinStatus& pin_status)
-{
-	if(!d->lock.tryLockForWrite(10 * 1000))
-	{
-		Q_EMIT error(tr("Failed to decrypt document"), tr("Signing/decrypting is already in progress another window."));
-		pin_status = QCryptoBackend::GeneralError;
-		return {};
-	}
-
-	if( d->auth.cert().isNull() )
-	{
-		Q_EMIT error(tr("Failed to decrypt document"), tr("Authentication certificate is not selected."));
-		d->lock.unlock();
-		pin_status = QCryptoBackend::GeneralError;
-		return {};
-	}
-
-	switch(pin_status = QCryptoBackend::PinStatus(login(d->auth)))
-	{
-	case QCryptoBackend::PinOK: break;
-	case QCryptoBackend::PinCanceled: return {};
-	case QCryptoBackend::PinLocked:
-		Q_EMIT error(tr("Failed to decrypt document"), QCryptoBackend::errorString(pin_status));
-		return {};
-	default:
-		Q_EMIT error(tr("Failed to decrypt document"), tr("Failed to login token") + ' ' + QCryptoBackend::errorString(pin_status));
-		return {};
-	}
-	QByteArray result = waitFor(func, d->backend);
-	logout();
-	if(d->backend->lastError() == QCryptoBackend::PinCanceled) {
-		pin_status = QCryptoBackend::PinCanceled;
-		return {};
-	}
-
-	if(result.isEmpty())
-		Q_EMIT error(tr("Failed to decrypt document"), {});
-	return result;
-}
-
-QSslKey QSigner::key(QCryptoBackend::PinStatus& pin_status)
-{
-	QSslKey key = d->auth.cert().publicKey();
-	if(!key.handle()) {
-		pin_status = QCryptoBackend::GeneralError;
-		return {};
-	}
-	if(!d->lock.tryLockForWrite(10 * 1000)) {
-		Q_EMIT error(tr("Failed to decrypt document"), tr("Signing/decrypting is already in progress another window."));
-		pin_status = QCryptoBackend::GeneralError;
-		return {};
-	}
-	switch(pin_status = QCryptoBackend::PinStatus(login(d->auth)))
-	{
-	case QCryptoBackend::PinOK: break;
-	case QCryptoBackend::PinCanceled: return {};
-	case QCryptoBackend::PinLocked:
-		Q_EMIT error(tr("Failed to decrypt document"), QCryptoBackend::errorString(pin_status));
-		return {};
-	default:
-		Q_EMIT error(tr("Failed to decrypt document"), tr("Failed to login token") + ' ' + QCryptoBackend::errorString(pin_status));
-		return {};
-	}
-	if(key.algorithm() == QSsl::Ec)
-	{
-		auto *ec = (EC_KEY*)key.handle();
-		EC_KEY_set_method(ec, d->ecmethod);
-		EC_KEY_set_ex_data(ec, 0, d->backend);
-	}
-	else
-	{
-		RSA *rsa = (RSA*)key.handle();
-		RSA_set_method(rsa, d->rsamethod);
-		RSA_set_ex_data(rsa, 0, d->backend);
-	}
-	return key;
-}
-
-quint8 QSigner::login(const TokenData &token) const
-{
-	switch(auto status = d->backend->login(token))
-	{
-	case QCryptoBackend::PinOK: return status;
-	case QCryptoBackend::PinIncorrect:
-		dispatchToMain([&]{
-			WarningDialog::create()
-				->withTitle(SslCertificate(token.cert()).keyUsage().contains(SslCertificate::NonRepudiation) ? tr("Failed to sign document") : tr("Failed to decrypt document"))
-				->withText(QCryptoBackend::errorString(status))
-				->exec();
-		});
-		return login(token);
-	default:
-		d->lock.unlock();
-		// QSmartCard should also know that PIN is blocked.
-		d->smartcard->reloadCard(d->smartcard->tokenData(), true);
-		return status;
-	}
-}
-
 void QSigner::logout() const
 {
-	d->backend->logout();
 	d->lock.unlock();
 	// QSmartCard should also know that PIN1 info is updated
 	d->smartcard->reloadCard(d->smartcard->tokenData(), true);
@@ -303,25 +144,11 @@ void QSigner::run()
 {
 	d->auth.clear();
 	d->sign.clear();
-#ifdef Q_OS_WIN
-	d->backend = new QCNG(this);
-#else
-	d->backend = new QPKCS11(this);
-#endif
 
-	while(!isInterruptionRequested())
-	{
-		if(d->lock.tryLockForRead())
-		{
-			auto *pkcs11 = qobject_cast<QPKCS11*>(d->backend);
-			if(pkcs11 && !pkcs11->reload())
-			{
-				Q_EMIT error(tr("Failed to load PKCS#11 module"), {});
-				return;
-			}
-
+	while(!isInterruptionRequested()) {
+		if(d->lock.tryLockForRead()) {
 			QList<TokenData> acards, scards;
-			QList<TokenData> cache = d->backend->tokens();
+			QList<TokenData> cache = QCryptoBackend::getTokens();
 			if(cache != d->cache)
 			{
 				d->cache = std::move(cache);
@@ -374,6 +201,7 @@ void QSigner::run()
 			break;
 		d->sleepCond.wait(&d->sleepMutex, 5000);
 	}
+	QCryptoBackend::shutDown();
 }
 
 void QSigner::selectCard(const TokenData &token)
@@ -415,23 +243,22 @@ std::vector<unsigned char> QSigner::sign(const std::string &method, const std::v
 		throwException(tr("Signing certificate is not selected."), Exception::General)
 	}
 
-	switch(auto status = QCryptoBackend::PinStatus(login(d->sign)))
-	{
-	case QCryptoBackend::PinOK: break;
-	case QCryptoBackend::PinCanceled:
-		throwException((tr("Failed to login token") + ' ' + QCryptoBackend::errorString(status)), Exception::PINCanceled);
-	case QCryptoBackend::PinLocked:
-		throwException((tr("Failed to login token") + ' ' + QCryptoBackend::errorString(status)), Exception::PINLocked);
-	default:
-		throwException((tr("Failed to login token") + ' ' + QCryptoBackend::errorString(status)), Exception::PINFailed);
+	auto val = QCryptoBackend::getBackend(d->sign);
+	if (!val.value()) {
+		switch(val.error()) {
+		case QCryptoBackend::PinCanceled:
+			throwException((tr("Failed to login token") + ' ' + QCryptoBackend::errorString(val.error())), Exception::PINCanceled);
+		case QCryptoBackend::PinLocked:
+			throwException((tr("Failed to login token") + ' ' + QCryptoBackend::errorString(val.error())), Exception::PINLocked);
+		default:
+			throwException((tr("Failed to login token") + ' ' + QCryptoBackend::errorString(val.error())), Exception::PINFailed);
+		}
 	}
-	QByteArray sig = waitFor(&QCryptoBackend::sign, d->backend,
-		methodToNID(method), QByteArray::fromRawData((const char*)digest.data(), int(digest.size())));
-	logout();
-	if(d->backend->lastError() == QCryptoBackend::PinCanceled)
-		throwException(tr("Failed to login token"), Exception::PINCanceled)
+	std::unique_ptr<QCryptoBackend> backend(val.value());
 
-	if( sig.isEmpty() )
+	QByteArray sig = waitFor(&QCryptoBackend::sign, backend.get(),
+		methodToNID(method), QByteArray::fromRawData((const char*)digest.data(), int(digest.size())));
+	if (sig.isEmpty())
 		throwException(tr("Failed to sign document"), Exception::General)
 	return {sig.constBegin(), sig.constEnd()};
 }
@@ -443,6 +270,5 @@ TokenData QSigner::tokensign() const { return d->sign; }
 QString
 QSigner::getLastErrorStr() const
 {
-	QCryptoBackend::PinStatus status = d->backend->lastError();
-	return d->backend->errorString(status);
+	return "Backend error";
 }

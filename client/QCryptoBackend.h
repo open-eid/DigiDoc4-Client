@@ -19,16 +19,17 @@
 
 #pragma once
 
-#include <QObject>
-#include <QCryptographicHash>
+#include <QtNetwork/QSslKey>
+#include <QtNetwork/QSslCertificate>
+
+#include <expected>
 
 class TokenData;
 
-class QCryptoBackend: public QObject
+class QCryptoBackend
 {
-	Q_OBJECT
 public:
-	enum PinStatus : quint8
+	enum Status : quint8
 	{
 		PinOK,
 		PinCanceled,
@@ -39,17 +40,50 @@ public:
 		UnknownError
 	};
 
-	using QObject::QObject;
+	virtual ~QCryptoBackend() {};
 
-	virtual QList<TokenData> tokens() const = 0;
 	virtual QByteArray decrypt(const QByteArray &data, bool oaep) const = 0;
 	virtual QByteArray deriveConcatKDF(const QByteArray &publicKey, QCryptographicHash::Algorithm digest,
 		const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) const = 0;
 	virtual QByteArray deriveHMACExtract(const QByteArray &publicKey, const QByteArray &salt, int keySize) const = 0;
-	virtual PinStatus lastError() const { return PinOK; }
-	virtual PinStatus login(const TokenData &cert) = 0;
-	virtual void logout() = 0;
 	virtual QByteArray sign(QCryptographicHash::Algorithm method, const QByteArray &digest) const = 0;
 
-	static QString errorString( PinStatus error );
+	/**
+	 * @brief Get the SSL key for the certificate
+	 * 
+	 * @return the Qt SSL key
+	 */
+	QSslKey getKey() const;
+	/**
+	 * @brief Get a new Backend object and log in with the given token
+	 * 
+	 * @param token the token to use
+	 * @return the new backend object or an error code 
+	 */
+	static std::expected<QCryptoBackend *,Status> getBackend(const TokenData& token);
+	/**
+	 * @brief Shut down all backends
+	 * 
+	 * This should be called when the application is about to exit. It releases all static data held by backend(s) (e.g. PKCS11 library)
+	 */
+	static void shutDown();
+
+	/**
+	 * @brief The status of the last operation
+	 */
+	mutable Status status = PinOK;
+
+	/**
+	 * @brief Get a list of all available tokens
+	 * 
+	 * @return list of all available tokens
+	 */
+	static QList<TokenData> getTokens();
+
+	static QString errorString(Status error);
+protected:
+	virtual Status login(const TokenData &cert) = 0;
+	virtual void logout() = 0;
+
+	QSslCertificate cert;
 };
