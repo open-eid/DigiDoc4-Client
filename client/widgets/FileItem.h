@@ -33,7 +33,6 @@ public:
 	explicit FileItem(QString file, ria::qdigidoc4::ContainerState state, QWidget *parent = nullptr);
 	~FileItem() final;
 
-	QString getFile();
 	void initTabOrder(QWidget *item) final;
 	QWidget* lastTabWidget() final;
 	void stateChange(ria::qdigidoc4::ContainerState state) final;

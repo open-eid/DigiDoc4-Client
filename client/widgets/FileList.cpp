@@ -62,7 +62,8 @@ void FileList::clear()
 
 bool FileList::eventFilter(QObject *obj, QEvent *event)
 {
-	if(!qobject_cast<FileItem*>(obj))
+	auto *fileItem = qobject_cast<FileItem*>(obj);
+	if(!fileItem || !documentModel)
 		return ItemList::eventFilter(obj, event);
 	switch(event->type())
 	{
@@ -81,21 +82,22 @@ bool FileList::eventFilter(QObject *obj, QEvent *event)
 		if((mouse->pos() - obj->property("dragStartPosition").toPoint()).manhattanLength()
 			 < QApplication::startDragDistance())
 			break;
-		auto *fileItem = qobject_cast<FileItem*>(obj);
-		if(!documentModel || !fileItem)
-			break;
 		int i = index(fileItem);
 		if(i == -1)
 			break;
-		QString path = FileDialog::tempPath(fileItem->getFile());
-		documentModel->save(i, path);
-		documentModel->addTempReference(path);
+		QString path = documentModel->saveTemp(i);
+		if(path.isEmpty())
+			break;
+		FileDialog::setReadOnly(path, false);
 		auto *mimeData = new QMimeData;
 		mimeData->setText(QFileInfo(path).fileName());
 		mimeData->setUrls({ QUrl::fromLocalFile(path) });
 		auto *drag = new QDrag(this);
 		drag->setMimeData(mimeData);
-		drag->exec(Qt::CopyAction);
+		if(drag->exec(Qt::MoveAction | Qt::CopyAction) == Qt::MoveAction)
+			QFile::remove(path);
+		else
+			FileDialog::setReadOnly(path);
 		return true;
 	}
 	default: break;
@@ -127,10 +129,11 @@ void FileList::save(FileItem *item)
 {
 	if(int i = index(item); documentModel && i != -1)
 	{
-		QString extension = QFileInfo(item->getFile()).suffix();
-		QString capitalized = extension[0].toUpper() + extension.mid(1);
+		QString file = FileDialog::safeName(documentModel->data(i));
+		QString extension = QFileInfo(file).suffix();
+		QString capitalized = extension.isEmpty() ? QString() : extension[0].toUpper() + extension.mid(1);
 		QString dest = FileDialog::getSaveFileName(this, FileDialog::tr("Save file"),
-			QFileInfo(container).dir().absolutePath() + QDir::separator() + FileDialog::safeName(item->getFile()),
+			QFileInfo(container).dir().absolutePath() + QDir::separator() + file,
 			QStringLiteral("%1 (*%2)").arg(capitalized, extension));
 
 		if(!dest.endsWith(QStringLiteral(".%1").arg(extension)) && !extension.isEmpty())
@@ -217,7 +220,7 @@ void FileList::setModel(DocumentModel *documentModel)
 void FileList::stateChange(ria::qdigidoc4::ContainerState state)
 {
 	ItemList::stateChange(state);
-		updateDownload();
+	updateDownload();
 }
 
 void FileList::updateDownload()

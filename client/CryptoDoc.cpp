@@ -34,9 +34,6 @@
 #include <QtCore/QFileInfo>
 #include <QtCore/QRegularExpression>
 #include <QtCore/QThread>
-#include <QtCore/QUrl>
-#include <QtCore/QUrlQuery>
-#include <QtGui/QDesktopServices>
 #include <QtNetwork/QSslKey>
 #include <QtWidgets/QMessageBox>
 
@@ -74,7 +71,6 @@ struct CryptoDoc::Private
 	QString			fileName;
 	int version = -1;
 	CDocumentModel	*documents = new CDocumentModel(this);
-	QStringList		tempFiles;
 
 	// libcdoc handlers
 	DDConfiguration conf;
@@ -144,9 +140,9 @@ bool CDocumentModel::addFile(const QString &file, const QString &mime)
 	return true;
 }
 
-void CDocumentModel::addTempReference(const QString &file)
+QString CDocumentModel::containerName() const
 {
-	d->tempFiles.append(file);
+	return d->fileName;
 }
 
 QString CDocumentModel::copy(int row, const QString &dst) const
@@ -181,19 +177,8 @@ QString CDocumentModel::mime(int row) const
 
 void CDocumentModel::open(int row)
 {
-	if(d->isEncrypted())
-		return;
-	QString path = FileDialog::tempPath(FileDialog::safeName(data(row)));
-	if(!verifyFile(path))
-		return;
-	if(copy(row, path).isEmpty())
-		return;
-	d->tempFiles.append(path);
-	FileDialog::setReadOnly(path);
-	if(FileDialog::isSignedPDF(path))
-		Application::showClient({ std::move(path) }, false, false, true);
-	else
-		QDesktopServices::openUrl(QUrl::fromLocalFile(path));
+	if(!d->isEncrypted())
+		DocumentModel::open(row);
 }
 
 bool CDocumentModel::removeRow(int row)
@@ -210,6 +195,7 @@ bool CDocumentModel::removeRow(int row)
 		return false;
 	}
 
+	removeTempFile(data(row));
 	d->files.erase(d->files.cbegin() + row);
 	return true;
 }
@@ -223,10 +209,10 @@ QString CDocumentModel::save(int row, const QString &path) const
 {
 	if(d->isEncrypted())
 		return {};
-
+	if(QFileInfo::exists(path))
+		return path;
 	QString fileName = copy(row, path);
-	QFileInfo f(fileName);
-	if(!f.exists())
+	if(!QFileInfo::exists(fileName))
 		return {};
 	FileDialog::setFileZone(fileName, d->fileName);
 	return fileName;
@@ -279,13 +265,7 @@ bool CryptoDoc::canDecrypt(const QSslCertificate &cert) {
 
 void CryptoDoc::clear(const QString &file, int version)
 {
-	for(const QString &f: qAsConst(d->tempFiles))
-	{
-		// reset read-only attribute to enable delete file
-		FileDialog::setReadOnly(f, false);
-		QFile::remove(f);
-	}
-	d->tempFiles.clear();
+	d->documents->clearTempFolder();
 	d->reader.reset();
 	d->files.clear();
 	d->fileName = file;
@@ -394,13 +374,13 @@ bool CryptoDoc::decrypt(const libcdoc::Lock *lock, const QByteArray& secret)
 			str = tr("Cannot read file.");
 			break;
 		case DDCryptoBackend::PIN_CANCELED:
-			str = tr("PIN entry canceled");
+			str = QCryptoBackend::tr("PIN Canceled");
 			break;
 		case DDCryptoBackend::PIN_INCORRECT:
-			str = tr("PIN incorrect");
+			str = QCryptoBackend::tr("PIN Incorrect");
 			break;
 		case DDCryptoBackend::PIN_LOCKED:
-			str = tr("PIN locked");
+			str = QCryptoBackend::tr("PIN locked");
 			break;
 		default:
 			str = tr("Please check your internet connection and network settings.");

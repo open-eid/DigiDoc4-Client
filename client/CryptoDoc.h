@@ -87,7 +87,6 @@ class CDocumentModel final: public DocumentModel
 	Q_OBJECT
 public:
 	bool addFile(const QString &file, const QString &mime = QStringLiteral("application/octet-stream")) final;
-	void addTempReference(const QString &file) final;
 	QString data(int row) const final;
 	quint64 fileSize(int row) const final;
 	QString mime(int row) const final;
@@ -100,6 +99,7 @@ private:
 	CDocumentModel(CryptoDoc::Private *doc);
 	Q_DISABLE_COPY(CDocumentModel)
 
+	QString containerName() const final;
 	QString copy(int row, const QString &dst) const;
 
 	CryptoDoc::Private *d;
