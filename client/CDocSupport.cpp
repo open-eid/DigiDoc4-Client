@@ -112,7 +112,7 @@ getDecryptStatus(const std::vector<uint8_t>& result, QCryptoBackend::PinStatus p
 libcdoc::result_t
 DDCryptoBackend::decryptRSA(std::vector<uint8_t>& result, const std::vector<uint8_t> &data, bool oaep, unsigned int idx)
 {
-	QCryptoBackend::PinStatus pin_status;
+	QCryptoBackend::PinStatus pin_status = QCryptoBackend::PinOK;
 	QByteArray qkek = qApp->signer()->decrypt([qdata = toByteArray(data), &oaep](QCryptoBackend *backend) {
 		return backend->decrypt(qdata, oaep);
 	}, pin_status);
@@ -124,7 +124,7 @@ libcdoc::result_t
 DDCryptoBackend::deriveConcatKDF(std::vector<uint8_t>& dst, const std::vector<uint8_t> &publicKey, const std::string &digest,
 								 const std::vector<uint8_t> &algorithmID, const std::vector<uint8_t> &partyUInfo, const std::vector<uint8_t> &partyVInfo, unsigned int idx)
 {
-	QCryptoBackend::PinStatus pin_status;
+	QCryptoBackend::PinStatus pin_status = QCryptoBackend::PinOK;
 	QByteArray decryptedKey = qApp->signer()->decrypt([&publicKey, &digest, &algorithmID, &partyUInfo, &partyVInfo](QCryptoBackend *backend) {
 		static const QHash<std::string_view, QCryptographicHash::Algorithm> SHA_MTH{
 			{"http://www.w3.org/2001/04/xmlenc#sha256", QCryptographicHash::Sha256},
@@ -141,7 +141,7 @@ DDCryptoBackend::deriveConcatKDF(std::vector<uint8_t>& dst, const std::vector<ui
 libcdoc::result_t
 DDCryptoBackend::deriveHMACExtract(std::vector<uint8_t>& dst, const std::vector<uint8_t> &key_material, const std::vector<uint8_t> &salt, unsigned int idx)
 {
-	QCryptoBackend::PinStatus pin_status;
+	QCryptoBackend::PinStatus pin_status = QCryptoBackend::PinOK;
 	QByteArray qkekpm = qApp->signer()->decrypt([qkey_material = toByteArray(key_material), qsalt = toByteArray(salt)](QCryptoBackend *backend) {
 		return backend->deriveHMACExtract(qkey_material, qsalt, ECC_KEY_LEN);
 	}, pin_status);
@@ -290,7 +290,7 @@ DDNetworkBackend::fetchKey(std::vector<uint8_t> &result,
 		last_error = "No connection";
 		return BACKEND_ERROR;
 	}
-	QCryptoBackend::PinStatus pin_status;
+	QCryptoBackend::PinStatus pin_status = QCryptoBackend::PinOK;
 	auto authKey =  dispatchToMain([&] {
 		return qApp->signer()->key(pin_status);
 	});
@@ -412,7 +412,7 @@ TempListConsumer::open(const std::string& name, int64_t size)
 	std::string truncated = name;
 	if (truncated.starts_with("./PaxHeaders.X/"))
 		truncated = truncated.substr(15);
-	IOEntry io({truncated, "application/octet-stream", 0, {}});
+	IOEntry io({std::move(truncated), "application/octet-stream", 0, {}});
 	if ((size < 0) || (size > MAX_VEC_SIZE)) {
 		io.data = std::make_unique<QTemporaryFile>();
 	} else {
