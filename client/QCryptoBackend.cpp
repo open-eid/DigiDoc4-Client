@@ -67,9 +67,9 @@ QString QCryptoBackend::errorString(Status error)
 	switch( error )
 	{
 	case PinOK: return QString();
-	case PinCanceled: return QCoreApplication::translate("QCryptoBackend", "PIN Canceled");
+	case PinCanceled: return QCoreApplication::translate("QCryptoBackend", "PIN entry canceled");
 	case PinLocked: return QCoreApplication::translate("QCryptoBackend", "PIN locked");
-	case PinIncorrect: return QCoreApplication::translate("QCryptoBackend", "PIN Incorrect");
+	case PinIncorrect: return QCoreApplication::translate("QCryptoBackend", "PIN incorrect");
 	case GeneralError: return QCoreApplication::translate("QCryptoBackend", "PKCS11 general error");
 	case DeviceError: return QCoreApplication::translate("QCryptoBackend", "PKCS11 device error");
 	default: return QCoreApplication::translate("QCryptoBackend", "Unknown error");

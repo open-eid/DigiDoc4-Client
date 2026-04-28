@@ -89,7 +89,7 @@ qt_add_translations(${PROJECT_NAME} TS_FILES
 	translations/et.ts
 	../common/translations/qtbase_et.ts
 	RESOURCE_PREFIX /translations
-	LUPDATE_OPTIONS -locations none
+	LUPDATE_OPTIONS -locations none -no-obsolete
 )
 qt_add_resources(${PROJECT_NAME} tsl BASE ${TSL_DIR} PREFIX /TSL FILES ${TSL_LIST})
 qt_add_resources(${PROJECT_NAME} fonts BASE fonts PREFIX /fonts FILES
