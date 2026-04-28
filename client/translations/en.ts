@@ -242,6 +242,13 @@
     </message>
 </context>
 <context>
+    <name>C</name>
+    <message>
+        <source>DigiDoc4 Client</source>
+        <translation>DigiDoc4 Client</translation>
+    </message>
+</context>
+<context>
     <name>CDocumentModel</name>
     <message>
         <source>Added file(s) exceeds the maximum size limit of the container (∼120MB). &lt;a href=&apos;https://www.id.ee/en/article/encrypting-large-120-mb-files/&apos;&gt;Read more about it&lt;/a&gt;</source>
@@ -490,14 +497,6 @@
         <translation>Decrypting</translation>
     </message>
     <message>
-        <source>You are about to delete the last file in the container</source>
-        <translation>You are about to delete the last file in the container</translation>
-    </message>
-    <message>
-        <source>It is removed along with the container.</source>
-        <translation>It is removed along with the container.</translation>
-    </message>
-    <message>
         <source>In order to view Validity Confirmation Sheet there has to be at least one printer installed!</source>
         <translation>In order to view Validity Confirmation Sheet there has to be at least one printer installed!</translation>
     </message>
@@ -581,14 +580,6 @@
         <translation>Failed to add key</translation>
     </message>
     <message>
-        <source>You must enter your PIN code twice in order to decrypt the CDOC2 container</source>
-        <translation>You must enter your PIN code twice in order to decrypt the CDOC2 container</translation>
-    </message>
-    <message>
-        <source>The first PIN entry is required for authentication to the key server referenced in the CDOC2 container. Second PIN entry is required to decrypt the CDOC2 container.</source>
-        <translation>The first PIN entry is required for authentication to the key server referenced in the CDOC2 container. Second PIN entry is required to decrypt the CDOC2 container.</translation>
-    </message>
-    <message>
         <source>Please check your internet connection and network settings.</source>
         <translation>Please check your internet connection and network settings.</translation>
     </message>
@@ -603,10 +594,6 @@
     <message>
         <source>Failed to open document</source>
         <translation>Failed to open document</translation>
-    </message>
-    <message>
-        <source>Don&apos;t show again</source>
-        <translation>Don&apos;t show again</translation>
     </message>
     <message>
         <source>Wrong password.</source>
@@ -694,30 +681,6 @@
     <message>
         <source>USB info:</source>
         <translation>USB info:</translation>
-    </message>
-    <message>
-        <source>Unknown - error %1</source>
-        <translation type="vanished">Unknown - error %1</translation>
-    </message>
-    <message>
-        <source>User</source>
-        <translation type="vanished">User</translation>
-    </message>
-    <message>
-        <source>Administrator</source>
-        <translation type="vanished">Administrator</translation>
-    </message>
-    <message>
-        <source>User rights: </source>
-        <translation type="vanished">User rights: </translation>
-    </message>
-    <message>
-        <source>Not found</source>
-        <translation type="vanished">Not found</translation>
-    </message>
-    <message>
-        <source>Certificate Propagation service status: </source>
-        <translation type="vanished">Certificate Propagation service status: </translation>
     </message>
     <message>
         <source>is set manually</source>
@@ -2125,16 +2088,8 @@ ID-Card</translation>
 <context>
     <name>QCryptoBackend</name>
     <message>
-        <source>PIN Canceled</source>
-        <translation>PIN Canceled</translation>
-    </message>
-    <message>
         <source>PIN locked</source>
         <translation>PIN locked</translation>
-    </message>
-    <message>
-        <source>PIN Incorrect</source>
-        <translation>PIN Incorrect</translation>
     </message>
     <message>
         <source>PKCS11 general error</source>
@@ -2148,6 +2103,14 @@ ID-Card</translation>
         <source>Unknown error</source>
         <translation>Unknown error</translation>
     </message>
+    <message>
+        <source>PIN incorrect</source>
+        <translation>PIN Incorrect</translation>
+    </message>
+    <message>
+        <source>PIN entry canceled</source>
+        <translation>PIN entry canceled</translation>
+    </message>
 </context>
 <context>
     <name>QFileDialog</name>
@@ -2158,10 +2121,6 @@ ID-Card</translation>
 </context>
 <context>
     <name>QSigner</name>
-    <message>
-        <source>Failed to load PKCS#11 module</source>
-        <translation>Failed to load PKCS#11 module</translation>
-    </message>
     <message>
         <source>Signing certificate is not selected.</source>
         <translation>Signing certificate is not selected.</translation>
@@ -2181,10 +2140,6 @@ ID-Card</translation>
     <message>
         <source>Signing/decrypting is already in progress another window.</source>
         <translation>Signing/decrypting is already in progress another window.</translation>
-    </message>
-    <message>
-        <source>Authentication certificate is not selected.</source>
-        <translation>Authentication certificate is not selected.</translation>
     </message>
     <message>
         <source>Failed to decrypt document</source>
@@ -3050,6 +3005,14 @@ Additional licenses and components</translation>
     <message>
         <source>Remove</source>
         <translation>Remove</translation>
+    </message>
+    <message>
+        <source>You are about to delete the last file in the container</source>
+        <translation>You are about to delete the last file in the container</translation>
+    </message>
+    <message>
+        <source>It is removed along with the container.</source>
+        <translation>It is removed along with the container.</translation>
     </message>
 </context>
 <context>

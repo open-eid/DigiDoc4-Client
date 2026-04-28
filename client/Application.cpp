@@ -432,6 +432,7 @@ Application::Application( int &argc, char **argv )
 	// Clear obsolete registriy settings
 #ifndef Q_OS_DARWIN
 	Settings::DEFAULT_DIR.clear();
+	Settings::CDOC2_NOTIFICATION.clear();
 #endif
 
 	// Actions

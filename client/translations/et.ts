@@ -242,6 +242,13 @@
     </message>
 </context>
 <context>
+    <name>C</name>
+    <message>
+        <source>DigiDoc4 Client</source>
+        <translation>DigiDoc4 klient</translation>
+    </message>
+</context>
+<context>
     <name>CDocumentModel</name>
     <message>
         <source>Added file(s) exceeds the maximum size limit of the container (∼120MB). &lt;a href=&apos;https://www.id.ee/en/article/encrypting-large-120-mb-files/&apos;&gt;Read more about it&lt;/a&gt;</source>
@@ -490,14 +497,6 @@
         <translation>Dekrüpteerin</translation>
     </message>
     <message>
-        <source>You are about to delete the last file in the container</source>
-        <translation>Oled kustutamas viimast faili ümbrikus</translation>
-    </message>
-    <message>
-        <source>It is removed along with the container.</source>
-        <translation>Koos sellega eemaldatakse ka ümbrik.</translation>
-    </message>
-    <message>
         <source>In order to view Validity Confirmation Sheet there has to be at least one printer installed!</source>
         <translation>Digitaalallkirjade kinnituslehe kuvamiseks peab olema arvutis vähemalt üks printer seadistatud!</translation>
     </message>
@@ -581,14 +580,6 @@
         <translation>Võtme lisamine ebaõnnestus</translation>
     </message>
     <message>
-        <source>You must enter your PIN code twice in order to decrypt the CDOC2 container</source>
-        <translation>CDOC2 ümbriku dekrüpteerimiseks tuleb sisestada PIN-koodi kaks korda</translation>
-    </message>
-    <message>
-        <source>The first PIN entry is required for authentication to the key server referenced in the CDOC2 container. Second PIN entry is required to decrypt the CDOC2 container.</source>
-        <translation>Esimene PIN-koodi sisestamine on vajalik autentimiseks CDOC2 ümbrikus viidatud võtmeedastusserverisse. Teine PIN-koodi sisestamine on vajalik CDOC2 ümbriku dekrüpteerimiseks.</translation>
-    </message>
-    <message>
         <source>Please check your internet connection and network settings.</source>
         <translation>Palun kontrolli internetiühendust ja võrgu sätteid.</translation>
     </message>
@@ -603,10 +594,6 @@
     <message>
         <source>Failed to open document</source>
         <translation>Dokumendi avamine ebaõnnestus</translation>
-    </message>
-    <message>
-        <source>Don&apos;t show again</source>
-        <translation>Ära rohkem näita</translation>
     </message>
     <message>
         <source>Wrong password.</source>
@@ -694,30 +681,6 @@
     <message>
         <source>USB info:</source>
         <translation>USB info:</translation>
-    </message>
-    <message>
-        <source>Unknown - error %1</source>
-        <translation type="vanished">Teadmata - viga %1</translation>
-    </message>
-    <message>
-        <source>User</source>
-        <translation type="vanished">Kasutaja</translation>
-    </message>
-    <message>
-        <source>Administrator</source>
-        <translation type="vanished">Administraator</translation>
-    </message>
-    <message>
-        <source>User rights: </source>
-        <translation type="vanished">Kasutajaõigused: </translation>
-    </message>
-    <message>
-        <source>Not found</source>
-        <translation type="vanished">Ei leitud</translation>
-    </message>
-    <message>
-        <source>Certificate Propagation service status: </source>
-        <translation type="vanished">Certificate Propagation teenuse staatus: </translation>
     </message>
     <message>
         <source>is set manually</source>
@@ -2125,16 +2088,8 @@ ID-kaardiga</translation>
 <context>
     <name>QCryptoBackend</name>
     <message>
-        <source>PIN Canceled</source>
-        <translation>PIN katkestatud</translation>
-    </message>
-    <message>
         <source>PIN locked</source>
         <translation>PIN on lukus</translation>
-    </message>
-    <message>
-        <source>PIN Incorrect</source>
-        <translation>Vale PIN</translation>
     </message>
     <message>
         <source>PKCS11 general error</source>
@@ -2148,6 +2103,14 @@ ID-kaardiga</translation>
         <source>Unknown error</source>
         <translation>Tundmatu viga</translation>
     </message>
+    <message>
+        <source>PIN incorrect</source>
+        <translation>Vale PIN</translation>
+    </message>
+    <message>
+        <source>PIN entry canceled</source>
+        <translation>PIN sisestus katkestatus</translation>
+    </message>
 </context>
 <context>
     <name>QFileDialog</name>
@@ -2158,10 +2121,6 @@ ID-kaardiga</translation>
 </context>
 <context>
     <name>QSigner</name>
-    <message>
-        <source>Failed to load PKCS#11 module</source>
-        <translation>PKCS#11 mooduli laadimine ebaõnnestus</translation>
-    </message>
     <message>
         <source>Signing certificate is not selected.</source>
         <translation>Allkirjastamise sertifikaat ei ole valitud.</translation>
@@ -2181,10 +2140,6 @@ ID-kaardiga</translation>
     <message>
         <source>Signing/decrypting is already in progress another window.</source>
         <translation>Allkirjastamine/dekrüpteerimine on juba käimas teises aknas.</translation>
-    </message>
-    <message>
-        <source>Authentication certificate is not selected.</source>
-        <translation>Isikutuvastamise sertifikaat ei ole valitud.</translation>
     </message>
     <message>
         <source>Failed to decrypt document</source>
@@ -3050,6 +3005,14 @@ Täiendavad litsentsid ja komponendid</translation>
     <message>
         <source>Remove</source>
         <translation>Eemalda</translation>
+    </message>
+    <message>
+        <source>You are about to delete the last file in the container</source>
+        <translation>Oled kustutamas viimast faili ümbrikus</translation>
+    </message>
+    <message>
+        <source>It is removed along with the container.</source>
+        <translation>Koos sellega eemaldatakse ka ümbrik.</translation>
     </message>
 </context>
 <context>
