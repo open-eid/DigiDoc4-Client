@@ -232,7 +232,7 @@ void ContainerPage::deleteConfirm(C *c, int index)
 	if (dlg->exec() != QMessageBox::Ok)
 		return;
 	window()->setWindowFilePath({});
-	window()->setWindowTitle(tr("DigiDoc4 Client"));
+	window()->setWindowTitle(QCoreApplication::translate("MainWindow", "DigiDoc4 Client"));
 	if(QFile::exists(c->fileName()))
 		QFile::remove(c->fileName());
 	emit action(ContainerClose);
