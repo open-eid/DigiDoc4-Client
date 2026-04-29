@@ -41,8 +41,6 @@ public:
 
 	QList<TokenData> cache() const;
 	digidoc::X509Cert cert() const final;
-	QByteArray decrypt(std::function<QByteArray (QCryptoBackend *)> &&func, QCryptoBackend::PinStatus& pin_status);
-	QSslKey key(QCryptoBackend::PinStatus& pin_status);
 	void logout() const;
 	void selectCard(const TokenData &token);
 	std::vector<unsigned char> sign( const std::string &method,
@@ -59,7 +57,6 @@ Q_SIGNALS:
 	void error(const QString &title, const QString &text);
 
 private:
-	quint8 login(const TokenData &token) const;
 	static QCryptographicHash::Algorithm methodToNID(const std::string &method);
 	void run() final;
 

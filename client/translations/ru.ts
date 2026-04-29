@@ -490,14 +490,6 @@
         <translation>Расшифровка</translation>
     </message>
     <message>
-        <source>You are about to delete the last file in the container</source>
-        <translation>Вы собираетесь удалить последний файл в контейнере</translation>
-    </message>
-    <message>
-        <source>It is removed along with the container.</source>
-        <translation>Он удаляется вместе с контейнером.</translation>
-    </message>
-    <message>
         <source>In order to view Validity Confirmation Sheet there has to be at least one printer installed!</source>
         <translation>Для отображения листа подтверждения действительности цифровой подписи на компьютере должен быть установлен как минимум один принтер!</translation>
     </message>
@@ -581,14 +573,6 @@
         <translation>Не удалось добавить ключ</translation>
     </message>
     <message>
-        <source>You must enter your PIN code twice in order to decrypt the CDOC2 container</source>
-        <translation>PIN-код необходимо ввести дважды, чтобы расшифровать конверт CDOC2</translation>
-    </message>
-    <message>
-        <source>The first PIN entry is required for authentication to the key server referenced in the CDOC2 container. Second PIN entry is required to decrypt the CDOC2 container.</source>
-        <translation>Первый ввод PIN-кода требуется для аутентификации на сервере передачи ключей, указанном в конверте CDOC2. Для расшифровки конверта CDOC2 требуется второй ввод PIN-кода.</translation>
-    </message>
-    <message>
         <source>Please check your internet connection and network settings.</source>
         <translation>Пожалуйста, проверьте подключение к Интернету и настройки сети.</translation>
     </message>
@@ -603,10 +587,6 @@
     <message>
         <source>Failed to open document</source>
         <translation>Не удалось открыть документ</translation>
-    </message>
-    <message>
-        <source>Don&apos;t show again</source>
-        <translation>Больше не показывать</translation>
     </message>
     <message>
         <source>Wrong password.</source>
@@ -2125,16 +2105,8 @@ ID-картой</translation>
 <context>
     <name>QCryptoBackend</name>
     <message>
-        <source>PIN Canceled</source>
-        <translation>PIN-код отменен</translation>
-    </message>
-    <message>
         <source>PIN locked</source>
         <translation>PIN заблокирован</translation>
-    </message>
-    <message>
-        <source>PIN Incorrect</source>
-        <translation>Неверный PIN</translation>
     </message>
     <message>
         <source>PKCS11 general error</source>
@@ -2148,6 +2120,14 @@ ID-картой</translation>
         <source>Unknown error</source>
         <translation>Неизвестная ошибка</translation>
     </message>
+    <message>
+        <source>PIN incorrect</source>
+        <translation>Неверный PIN</translation>
+    </message>
+    <message>
+        <source>PIN entry canceled</source>
+        <translation>PIN-код отменен</translation>
+    </message>
 </context>
 <context>
     <name>QFileDialog</name>
@@ -2158,10 +2138,6 @@ ID-картой</translation>
 </context>
 <context>
     <name>QSigner</name>
-    <message>
-        <source>Failed to load PKCS#11 module</source>
-        <translation>Неудачная загрузка модуля PKCS#11</translation>
-    </message>
     <message>
         <source>Signing certificate is not selected.</source>
         <translation>Сертификат подписи не выбран.</translation>
@@ -2181,10 +2157,6 @@ ID-картой</translation>
     <message>
         <source>Signing/decrypting is already in progress another window.</source>
         <translation>Операция подписи/расшифровки уже выполняется в другом окне.</translation>
-    </message>
-    <message>
-        <source>Authentication certificate is not selected.</source>
-        <translation>Сертификат идентификации не выбран.</translation>
     </message>
     <message>
         <source>Failed to decrypt document</source>
@@ -3051,6 +3023,14 @@ Additional licenses and components</source>
     <message>
         <source>Remove</source>
         <translation>Удалить</translation>
+    </message>
+    <message>
+        <source>You are about to delete the last file in the container</source>
+        <translation>Вы собираетесь удалить последний файл в контейнере</translation>
+    </message>
+    <message>
+        <source>It is removed along with the container.</source>
+        <translation>Он удаляется вместе с контейнером.</translation>
     </message>
 </context>
 <context>
