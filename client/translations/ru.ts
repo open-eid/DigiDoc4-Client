@@ -676,6 +676,30 @@
         <translation>Информация об USB:</translation>
     </message>
     <message>
+        <source>Unknown - error %1</source>
+        <translation type="vanished">Неизвестная - ошибка %1</translation>
+    </message>
+    <message>
+        <source>User</source>
+        <translation type="vanished">Пользователь</translation>
+    </message>
+    <message>
+        <source>Administrator</source>
+        <translation type="vanished">Администратор</translation>
+    </message>
+    <message>
+        <source>User rights: </source>
+        <translation type="vanished">Права пользователя: </translation>
+    </message>
+    <message>
+        <source>Not found</source>
+        <translation type="vanished">Не найдено</translation>
+    </message>
+    <message>
+        <source>Certificate Propagation service status: </source>
+        <translation type="vanished">Статус Certificate Propagation сервиса: </translation>
+    </message>
+    <message>
         <source>is set manually</source>
         <translation>назначено вручную</translation>
     </message>
@@ -690,30 +714,6 @@
     <message>
         <source>TSL cache</source>
         <translation>TSL-буфер</translation>
-    </message>
-    <message>
-        <source>Unknown - error %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>User</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Administrator</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>User rights: </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Not found</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Certificate Propagation service status: </source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

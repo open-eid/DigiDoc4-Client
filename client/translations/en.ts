@@ -676,6 +676,30 @@
         <translation>USB info:</translation>
     </message>
     <message>
+        <source>Unknown - error %1</source>
+        <translation type="vanished">Unknown - error %1</translation>
+    </message>
+    <message>
+        <source>User</source>
+        <translation type="vanished">User</translation>
+    </message>
+    <message>
+        <source>Administrator</source>
+        <translation type="vanished">Administrator</translation>
+    </message>
+    <message>
+        <source>User rights: </source>
+        <translation type="vanished">User rights: </translation>
+    </message>
+    <message>
+        <source>Not found</source>
+        <translation type="vanished">Not found</translation>
+    </message>
+    <message>
+        <source>Certificate Propagation service status: </source>
+        <translation type="vanished">Certificate Propagation service status: </translation>
+    </message>
+    <message>
         <source>is set manually</source>
         <translation>is set manually</translation>
     </message>
@@ -690,30 +714,6 @@
     <message>
         <source>TSL cache</source>
         <translation>TSL cache</translation>
-    </message>
-    <message>
-        <source>Unknown - error %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>User</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Administrator</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>User rights: </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Not found</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Certificate Propagation service status: </source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

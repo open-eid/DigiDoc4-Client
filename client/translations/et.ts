@@ -676,6 +676,30 @@
         <translation>USB info:</translation>
     </message>
     <message>
+        <source>Unknown - error %1</source>
+        <translation type="vanished">Teadmata - viga %1</translation>
+    </message>
+    <message>
+        <source>User</source>
+        <translation type="vanished">Kasutaja</translation>
+    </message>
+    <message>
+        <source>Administrator</source>
+        <translation type="vanished">Administraator</translation>
+    </message>
+    <message>
+        <source>User rights: </source>
+        <translation type="vanished">Kasutajaõigused: </translation>
+    </message>
+    <message>
+        <source>Not found</source>
+        <translation type="vanished">Ei leitud</translation>
+    </message>
+    <message>
+        <source>Certificate Propagation service status: </source>
+        <translation type="vanished">Certificate Propagation teenuse staatus: </translation>
+    </message>
+    <message>
         <source>is set manually</source>
         <translation>käsitsi määratud</translation>
     </message>
@@ -690,30 +714,6 @@
     <message>
         <source>TSL cache</source>
         <translation>TSL puhver</translation>
-    </message>
-    <message>
-        <source>Unknown - error %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>User</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Administrator</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>User rights: </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Not found</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Certificate Propagation service status: </source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
