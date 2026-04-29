@@ -242,13 +242,6 @@
     </message>
 </context>
 <context>
-    <name>C</name>
-    <message>
-        <source>DigiDoc4 Client</source>
-        <translation>DigiDoc4 клиент</translation>
-    </message>
-</context>
-<context>
     <name>CDocumentModel</name>
     <message>
         <source>Added file(s) exceeds the maximum size limit of the container (∼120MB). &lt;a href=&apos;https://www.id.ee/en/article/encrypting-large-120-mb-files/&apos;&gt;Read more about it&lt;/a&gt;</source>
@@ -697,6 +690,30 @@
     <message>
         <source>TSL cache</source>
         <translation>TSL-буфер</translation>
+    </message>
+    <message>
+        <source>Unknown - error %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Administrator</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User rights: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Not found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Certificate Propagation service status: </source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
