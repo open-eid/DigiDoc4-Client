@@ -19,6 +19,7 @@
 
 #include "LdapSearch.h"
 
+#include <QtCore/QFile>
 #include <QtCore/QTimer>
 #include <QtCore/QUrl>
 #include <QtCore/QVariantMap>
@@ -61,14 +62,16 @@ class LdapSearch::Private
 public:
 	LDAP *ldap {};
 	QUrl url;
+	QByteArray caCertPath;
 	QTimer *timer {};
 };
 
-LdapSearch::LdapSearch(const QString &url, QObject *parent)
+LdapSearch::LdapSearch(const QString &url, const QString &caCertPath, QObject *parent)
 :	QObject( parent )
 ,	d(new Private)
 {
 	d->url = QUrl(url);
+	d->caCertPath = QFile::encodeName(caCertPath);
 	d->timer = new QTimer(this);
 	d->timer->setSingleShot(true);
 	connect(d->timer, &QTimer::timeout, this, [this]{
@@ -104,9 +107,24 @@ bool LdapSearch::init()
 	}
 	ULONG err = 0;
 #else
+	if(!d->caCertPath.isEmpty())
+	{
+		if(auto err = ldap_set_option(nullptr, LDAP_OPT_X_TLS_CACERTFILE, d->caCertPath.constData()); err)
+		{
+			setLastError(tr("Failed to set ldap CA cert"), err);
+			return false;
+		}
+	}
+
+	int cert_flag = LDAP_OPT_X_TLS_DEMAND;
+	if(auto err = ldap_set_option(nullptr, LDAP_OPT_X_TLS_REQUIRE_CERT, &cert_flag); err)
+	{
+		setLastError(tr("Failed to start ssl"), err);
+		return false;
+	}
+
 	QByteArray host = d->url.toString(QUrl::RemovePath|QUrl::RemoveQuery|QUrl::RemoveFragment).toUtf8();
-	int err = ldap_initialize(&d->ldap, host.constData());
-	if(err)
+	if(auto err = ldap_initialize(&d->ldap, host.constData()))
 	{
 		setLastError(tr("Failed to init ldap"), err);
 		return false;
@@ -114,38 +132,20 @@ bool LdapSearch::init()
 #endif
 
 	int version = LDAP_VERSION3;
-	err = ldap_set_option(d->ldap, LDAP_OPT_PROTOCOL_VERSION, &version);
-	if(err)
+	if(auto err = ldap_set_option(d->ldap, LDAP_OPT_PROTOCOL_VERSION, &version))
 	{
 		setLastError(tr("Failed to set ldap version"), err);
 		return false;
 	}
 
-#ifndef Q_OS_WIN
-#if 1
-	int cert_flag = LDAP_OPT_X_TLS_NEVER;
-	err = ldap_set_option(nullptr, LDAP_OPT_X_TLS_REQUIRE_CERT, &cert_flag);
-	if(err)
+	if(auto err = ldap_simple_bind_s(d->ldap, nullptr, nullptr))
 	{
-		setLastError(tr("Failed to start ssl"), err);
-		return false;
-	}
-#else
-	err = ldap_set_option(nullptr, LDAP_OPT_X_TLS_CACERTFILE, "");
-	if(err)
-	{
-		setLastError(tr("Failed to start ssl"), err);
-		return false;
-	}
-#endif
-#endif
-
-	err = ldap_simple_bind_s(d->ldap, nullptr, nullptr);
-	if(err)
 		setLastError(tr("Failed to init ldap"), err);
+		return false;
+	}
 
 	d->timer->start(4min);
-	return !err;
+	return true;
 }
 
 void LdapSearch::search(const QString &search, const QVariantMap &userData)

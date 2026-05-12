@@ -27,7 +27,7 @@ class LdapSearch final: public QObject
 	Q_OBJECT
 
 public:
-	LdapSearch(const QString &url, QObject *parent = nullptr);
+	LdapSearch(const QString &url, const QString &caCertPath = {}, QObject *parent = nullptr);
 	~LdapSearch() final;
 
 	void search(const QString &search, const QVariantMap &userData);

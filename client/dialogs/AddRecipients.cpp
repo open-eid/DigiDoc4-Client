@@ -43,18 +43,26 @@
 AddRecipients::AddRecipients(ItemList* itemList, QWidget *parent)
 	: QDialog(parent)
 	, ui(new Ui::AddRecipients)
-	, ldap_corp(new LdapSearch(Application::confValue(QLatin1String("LDAP-CORP-URL")).toString(QStringLiteral("ldaps://k3.ldap.sk.ee")), this))
 {
-	for(const auto list = Application::confValue(QLatin1String("LDAP-PERSON-URLS")).toArray(); auto url: list) {
-		ldap_person.append(new LdapSearch(url.toString(), this));
+#ifndef Q_OS_WIN
+	if(const auto list = Application::confValue(QLatin1String("LDAP-CERTS")).toArray();
+		!list.isEmpty() && ldapCACerts.open())
+	{
+		for(const auto &entry : list)
+			ldapCACerts.write(QSslCertificate(QByteArray::fromBase64(entry.toString().toLatin1()), QSsl::Der).toPem());
+		ldapCACerts.close();
 	}
+#endif
+	ldap_corp = new LdapSearch(Application::confValue(QLatin1String("LDAP-CORP-URL")).toString(QStringLiteral("ldaps://k3.ldap.sk.ee")), ldapCACerts.fileName(), this);
+	for(const auto list = Application::confValue(QLatin1String("LDAP-PERSON-URLS")).toArray(); auto url: list)
+		ldap_person.append(new LdapSearch(url.toString(), ldapCACerts.fileName(), this));
 	if(ldap_person.isEmpty()) {
-		ldap_person.append(new LdapSearch(QStringLiteral("ldaps://esteid.ldap.sk.ee"), this));
-		ldap_person.append(new LdapSearch(QStringLiteral("ldaps://ldap.eidpki.ee/dc=eidpki,dc=ee"), this));
+		ldap_person.append(new LdapSearch(QStringLiteral("ldaps://esteid.ldap.sk.ee"), ldapCACerts.fileName(), this));
+		ldap_person.append(new LdapSearch(QStringLiteral("ldaps://ldap.eidpki.ee/dc=eidpki,dc=ee"), ldapCACerts.fileName(), this));
 	}
 
 	ui->setupUi(this);
-#if defined (Q_OS_WIN)
+#ifdef Q_OS_WIN
 	ui->actionLayout->setDirection(QBoxLayout::RightToLeft);
 #endif
 	setWindowFlags( Qt::Dialog | Qt::CustomizeWindowHint );
