@@ -671,7 +671,6 @@ void Application::loadTranslation( const QString &lang )
 	Settings::LANGUAGE = d->lang = lang;
 
 	if(lang == QLatin1String("en")) QLocale::setDefault(QLocale(QLocale::English, QLocale::UnitedKingdom));
-	else if(lang == QLatin1String("ru")) QLocale::setDefault(QLocale( QLocale::Russian, QLocale::RussianFederation));
 	else QLocale::setDefault(QLocale(QLocale::Estonian, QLocale::Estonia));
 
 	void(d->appTranslator.load(QLatin1String(":/translations/%1.qm").arg(lang)));

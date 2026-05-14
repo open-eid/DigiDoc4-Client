@@ -85,9 +85,7 @@ add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
 qt_add_translations(${PROJECT_NAME} TS_FILES
 	translations/en.ts
 	translations/et.ts
-	translations/ru.ts
 	../common/translations/qtbase_et.ts
-	../common/translations/qtbase_ru.ts
 	RESOURCE_PREFIX /translations
 	LUPDATE_OPTIONS -locations none
 )

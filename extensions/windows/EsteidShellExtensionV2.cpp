@@ -37,9 +37,6 @@ struct EsteidShellExtension : public winrt::implements<EsteidShellExtension<IsCr
 		case LANG_ESTONIAN:
 			if constexpr (IsCrypto) return SHLocalStrDupW(L"Krüpteeri DigiDoc4-ga", ppszName);
 			else return SHLocalStrDupW(L"Allkirjasta DigiDoc4-ga", ppszName);
-		case LANG_RUSSIAN:
-			if constexpr (IsCrypto) return SHLocalStrDupW(L"Зашифровать с помощью DigiDoc4", ppszName);
-			else return SHLocalStrDupW(L"Подписать с помощью DigiDoc4", ppszName);
 		default:
 			if constexpr (IsCrypto) return SHLocalStrDupW(L"Encrypt with DigiDoc4", ppszName);
 			else return SHLocalStrDupW(L"Sign with DigiDoc4", ppszName);
@@ -57,9 +54,6 @@ struct EsteidShellExtension : public winrt::implements<EsteidShellExtension<IsCr
 		case LANG_ESTONIAN:
 			if constexpr (IsCrypto) return SHLocalStrDupW(L"Krüpteeri valitud failid", ppszInfotip);
 			else return SHLocalStrDupW(L"Allkirjasta valitud failid digitaalselt", ppszInfotip);
-		case LANG_RUSSIAN:
-			if constexpr (IsCrypto) return SHLocalStrDupW(L"Зашифровать выбранные файлы", ppszInfotip);
-			else return SHLocalStrDupW(L"Цифровая подпись выбранных файлов", ppszInfotip);
 		default:
 			if constexpr (IsCrypto) return SHLocalStrDupW(L"Encrypt selected files", ppszInfotip);
 			else return SHLocalStrDupW(L"Digitally sign selected files", ppszInfotip);
