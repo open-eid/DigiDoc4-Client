@@ -22,6 +22,7 @@
 #include "CertificateHistory.h"
 
 #include <QDialog>
+#include <QtCore/QTemporaryFile>
 
 namespace Ui {
 class AddRecipients;
@@ -61,5 +62,6 @@ private:
 	LdapSearch *ldap_corp;
 	int multiSearch = 0;
 
+	QTemporaryFile ldapCACerts;
 	HistoryList historyCertData;
 };
