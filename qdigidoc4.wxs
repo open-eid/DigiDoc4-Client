@@ -17,7 +17,8 @@
 <?endif?>
 
 <Wix xmlns="http://wixtoolset.org/schemas/v4/wxs"
-     xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
+     xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui"
+     xmlns:util="http://wixtoolset.org/schemas/v4/wxs/util">
   <Package Name="DigiDoc4 Client $(sys.BUILDARCH)" UpgradeCode="67932072-aa9e-45e3-b697-d825349f273d"
       Language="1033" Version="!(bind.FileVersion.qdigidoc4.exe)" Manufacturer="RIA" Scope="perMachine">
     <MediaTemplate EmbedCab="yes" CompressionLevel="high" />
@@ -28,6 +29,43 @@
         "A newer version of [ProductName] is already installed. If you are trying to downgrade, please uninstall the newer version first." />
     <Launch Condition="Installed OR (VersionNT &gt;= 601)" Message="[ProductName] requires Windows 7 or higher." />
     <ui:WixUI Id="WixUI_Minimal2" />
+
+    <!-- Shell extension registration -->
+    <SetProperty Id="RegisterShellExtMsixCurrentUser"
+        Value="&quot;[System64Folder]WindowsPowerShell\v1.0\powershell.exe&quot; -NoProfile -NonInteractive -WindowStyle Hidden -ExecutionPolicy Bypass -Command &quot;Add-AppxPackage -Path '[INSTALLFOLDER]DigiDoc4Shell.msix' -ExternalLocation '[INSTALLFOLDER]'&quot;"
+        Before="RegisterShellExtMsixCurrentUser"
+        Sequence="execute" />
+    <CustomAction Id="RegisterShellExtMsixCurrentUser"
+        DllEntry="WixSilentExec"
+        BinaryRef="Wix4UtilCA_$(sys.BUILDARCHSHORT)"
+        Execute="deferred"
+        Impersonate="yes"
+        Return="ignore" />
+    <SetProperty Id="RegisterShellExtTask"
+        Value="&quot;[System64Folder]WindowsPowerShell\v1.0\powershell.exe&quot; -NoProfile -NonInteractive -WindowStyle Hidden -ExecutionPolicy Bypass -Command &quot;Register-ScheduledTask -Force -TaskName DigiDoc4ShellExt -Action (New-ScheduledTaskAction -Execute powershell.exe -Argument '-NoProfile -NonInteractive -WindowStyle Hidden -ExecutionPolicy Bypass -Command \&quot;Add-AppxPackage -Path ''[INSTALLFOLDER]DigiDoc4Shell.msix'' -ExternalLocation ''[INSTALLFOLDER]'' -ErrorAction SilentlyContinue\&quot;') -Trigger (New-ScheduledTaskTrigger -AtLogOn) -Principal (New-ScheduledTaskPrincipal -GroupId Users -RunLevel Limited) -Settings (New-ScheduledTaskSettingsSet -Hidden)&quot;"
+        Before="RegisterShellExtTask"
+        Sequence="execute" />
+    <CustomAction Id="RegisterShellExtTask"
+        DllEntry="WixSilentExec"
+        BinaryRef="Wix4UtilCA_$(sys.BUILDARCHSHORT)"
+        Execute="deferred"
+        Impersonate="no"
+        Return="ignore" />
+    <SetProperty Id="UnregisterShellExtMsix"
+        Value="&quot;[System64Folder]WindowsPowerShell\v1.0\powershell.exe&quot; -NoProfile -NonInteractive -WindowStyle Hidden -ExecutionPolicy Bypass -Command &quot;Unregister-ScheduledTask -TaskName DigiDoc4ShellExt -Confirm:$false -ErrorAction SilentlyContinue; Get-AppxPackage -Name RiigiInfossteemiAmet.DigiDoc4ShellExt -AllUsers | Remove-AppxPackage -AllUsers&quot;"
+        Before="UnregisterShellExtMsix"
+        Sequence="execute" />
+    <CustomAction Id="UnregisterShellExtMsix"
+        DllEntry="WixSilentExec"
+        BinaryRef="Wix4UtilCA_$(sys.BUILDARCHSHORT)"
+        Execute="deferred"
+        Impersonate="no"
+        Return="ignore" />
+    <InstallExecuteSequence>
+      <Custom Action="RegisterShellExtMsixCurrentUser" After="InstallFiles" Condition="NOT Installed OR WIX_UPGRADE_DETECTED" />
+      <Custom Action="RegisterShellExtTask" After="RegisterShellExtMsixCurrentUser" Condition="NOT Installed OR WIX_UPGRADE_DETECTED" />
+      <Custom Action="UnregisterShellExtMsix" Before="RemoveFiles" Condition="REMOVE~=&quot;ALL&quot; OR WIX_UPGRADE_DETECTED" />
+    </InstallExecuteSequence>
 
     <!-- Desktop shortcut -->
     <StandardDirectory Id="DesktopFolder">
@@ -68,6 +106,8 @@
           </ProgId>
           <RegistryValue Root="HKCR" Key=".pdf\OpenWithProgids" Name="qdigidoc4.document" Value="" Type="string" />
         </Component>
+        <File Source="$(var.shellext_v2)" />
+        <File Source="$(var.shellext_msix)" Name="DigiDoc4Shell.msix" />
         <File Name="zlib$(var.qt_suffix)1.dll" />
         <File Name="libxml2.dll" />
         <File Name="libxmlsec1.dll" />
