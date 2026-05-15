@@ -290,7 +290,7 @@ QByteArray QCNG::sign(QCryptographicHash::Algorithm type, const QByteArray &dige
 		case QCryptographicHash::Sha224: rsaPSS = { L"SHA224", 24 }; break;
 		case QCryptographicHash::Sha256: rsaPSS = { NCRYPT_SHA256_ALGORITHM, 32 }; break;
 		case QCryptographicHash::Sha384: rsaPSS = { NCRYPT_SHA384_ALGORITHM, 48 }; break;
-		case QCryptographicHash::Sha512: rsaPSS = { NCRYPT_SHA256_ALGORITHM, 64 }; break;
+		case QCryptographicHash::Sha512: rsaPSS = { NCRYPT_SHA512_ALGORITHM, 64 }; break;
 		default: return NTE_INVALID_PARAMETER;
 		}
 		BCRYPT_PKCS1_PADDING_INFO rsaPKCS1 { rsaPSS.pszAlgId };
