@@ -23,10 +23,6 @@ file(GLOB WIDGETS CONFIGURE_DEPENDS
 	"effects/*.cpp" "effects/*.h" "effects/*.ui"
 	"widgets/*.cpp" "widgets/*.h" "widgets/*.ui"
 )
-set(SCHEMAS
-	../schema/recipients.fbs
-	../schema/header.fbs
-)
 add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
 	${PROJECT_NAME}.rc
 	${WIDGETS}
