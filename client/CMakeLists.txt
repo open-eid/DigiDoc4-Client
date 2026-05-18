@@ -41,7 +41,8 @@ add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
 	DateTime.cpp
 	DateTime.h
 	Diagnostics.cpp
-	$<IF:$<PLATFORM_ID:Windows>,Diagnostics_win.cpp,Diagnostics_unix.cpp>
+	Diagnostics_unix.cpp
+	Diagnostics_win.cpp
 	Diagnostics.h
 	DiagnosticsTask.cpp
 	DiagnosticsTask.h
@@ -127,6 +128,12 @@ target_compile_definitions(${PROJECT_NAME} PRIVATE
 	VERSION_NUMBER=${PROJECT_VERSION_MAJOR},${PROJECT_VERSION_MINOR},${PROJECT_VERSION_PATCH},${BUILD_NUMBER}
 	VERSION_STR="${VERSION}"
 )
+
+if(WIN32)
+	set_source_files_properties(Diagnostics_unix.cpp PROPERTIES HEADER_FILE_ONLY ON)
+else()
+	set_source_files_properties(Diagnostics_win.cpp PROPERTIES HEADER_FILE_ONLY ON)
+endif()
 
 if( APPLE )
 	file(GLOB RESOURCE_FILES mac/*.icns mac/*.lproj)

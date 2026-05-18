@@ -228,24 +228,27 @@ void MainWindow::navigateToPage( Pages page, const QStringList &files, bool crea
 	if(page == SignDetails)
 	{
 		navigate = false;
-		auto signatureContainer = std::make_unique<DigiDoc>(this);
 		if(create)
 		{
 			QString filename = FileDialog::createNewFileName(files[0], true, this);
 			if(!filename.isNull())
 			{
-				signatureContainer->create(filename);
+				auto signatureContainer = DigiDoc::create(filename, this);
 				for(const auto &file: files)
 				{
 					if(signatureContainer->documentModel()->addFile(file))
 						navigate = true;
 				}
+				if(navigate)
+				{
+					resetDigiDoc(std::move(signatureContainer));
+					ui->signContainerPage->transition(digiDoc.get());
+				}
 			}
 		}
-		else
-			navigate = signatureContainer->open(files[0]);
-		if(navigate)
+		else if(auto signatureContainer = DigiDoc::open(files[0], this))
 		{
+			navigate = true;
 			resetDigiDoc(std::move(signatureContainer));
 			ui->signContainerPage->transition(digiDoc.get());
 		}
@@ -600,8 +603,7 @@ bool MainWindow::wrap(const QString& wrappedFile, bool pdf)
 	if(filename.isNull())
 		return false;
 
-	auto signatureContainer = std::make_unique<DigiDoc>(this);
-	signatureContainer->create(filename);
+	auto signatureContainer = DigiDoc::create(filename, this);
 
 	// If pdf, add whole file to signature container; otherwise content only
 	if(pdf)

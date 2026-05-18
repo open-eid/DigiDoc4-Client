@@ -43,7 +43,7 @@ set(CPACK_RPM_PACKAGE_RELEASE_DIST ON)
 include(CPack)
 include(GNUInstallDirs)
 
-find_package(libdigidocpp 4.2.0 REQUIRED HINTS /Library)
+find_package(libdigidocpp 4.5.0 REQUIRED HINTS /Library)
 message("-- Found libdigidocpp: ${libdigidocpp_DIR} (found version \"${libdigidocpp_VERSION}\")")
 find_package(LDAP REQUIRED)
 find_package(Qt6 6.2.0 REQUIRED COMPONENTS Core Widgets Network PrintSupport SvgWidgets LinguistTools)
