@@ -759,10 +759,6 @@
         <translation>Missing signature</translation>
     </message>
     <message>
-        <source>PIN Incorrect</source>
-        <translation>PIN Incorrect</translation>
-    </message>
-    <message>
         <source>PIN Login failed</source>
         <translation>PIN Login failed</translation>
     </message>

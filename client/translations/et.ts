@@ -759,10 +759,6 @@
         <translation>Allkiri puudub</translation>
     </message>
     <message>
-        <source>PIN Incorrect</source>
-        <translation>Vale PIN</translation>
-    </message>
-    <message>
         <source>PIN Login failed</source>
         <translation>PIN-koodi valideerimine ebaõnnestus</translation>
     </message>
