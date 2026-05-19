@@ -64,7 +64,7 @@
 3. Configure
 
         cmake -B build -S . \
-          -DCMAKE_PREFIX_PATH=~/cmake_builds/Qt-6.10.2-OpenSSL
+          -DCMAKE_PREFIX_PATH=~/cmake_builds/Qt-6.11.1-OpenSSL \
           -DOPENSSL_ROOT_DIR=~/cmake_build/OpenSSL \
           -DLDAP_ROOT=~/cmake_build/OpenLDAP \
           -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64"
@@ -95,7 +95,7 @@
 3. Configure
 
         cmake -G"NMAKE Makefiles" -B build -S . `
-          -DCMAKE_PREFIX_PATH=C:\Qt\6.10.2\msvc2022_x64 `
+          -DCMAKE_PREFIX_PATH=C:\Qt\6.11.1\msvc2022_64 `
           -DLibDigiDocpp_ROOT="C:\Program Files (x86)\libdigidocpp" `
           -DVCPKG_MANIFEST_DIR=client/libcdoc
 

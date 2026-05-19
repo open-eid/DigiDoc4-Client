@@ -250,7 +250,7 @@ elseif(WIN32)
 		COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:EsteidShellExtensionV2> appx
 		COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/libcrypto-3${OPENSSL_SUFFIX}.dll appx
 		COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/libssl-3${OPENSSL_SUFFIX}.dll appx
-		COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/zlib$<$<CONFIG:Debug>:d>1.dll appx
+		COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/z$<$<CONFIG:Debug>:d>.dll appx
 		COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/libxml2.dll appx
 		COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/libxmlsec1.dll appx
 		COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/libxmlsec1-openssl.dll appx
