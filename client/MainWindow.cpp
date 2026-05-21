@@ -63,7 +63,7 @@ MainWindow::MainWindow( QWidget *parent )
 	ui->version->setText(QStringLiteral("%1%2").arg(tr("Ver. "), Application::applicationVersion()));
 	connect(ui->version, &QPushButton::clicked, this, [this] {showSettings(SettingsDialog::DiagnosticsSettings);});
 
-	ui->coatOfArms->load(QStringLiteral(":/images/Logo_small.svg"));
+	ui->logoIcon->load(QStringLiteral(":/images/Logo_small.svg"));
 	ui->pageButtonGroup->setId(ui->signature, Pages::SignIntro);
 	ui->pageButtonGroup->setId(ui->crypto, Pages::CryptoIntro);
 	ui->pageButtonGroup->setId(ui->myEid, Pages::MyEid);
