@@ -41,7 +41,8 @@ add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
 	DateTime.cpp
 	DateTime.h
 	Diagnostics.cpp
-	$<IF:$<PLATFORM_ID:Windows>,Diagnostics_win.cpp,Diagnostics_unix.cpp>
+	Diagnostics_win.cpp
+	Diagnostics_unix.cpp
 	Diagnostics.h
 	DiagnosticsTask.cpp
 	DiagnosticsTask.h
@@ -78,6 +79,11 @@ add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
 	TokenData.h
 	Utils.h
 )
+if(WIN32)
+	set_source_files_properties(Diagnostics_unix.cpp PROPERTIES HEADER_FILE_ONLY TRUE)
+else()
+	set_source_files_properties(Diagnostics_win.cpp PROPERTIES HEADER_FILE_ONLY TRUE)
+endif()
 qt_add_translations(${PROJECT_NAME} TS_FILES
 	translations/en.ts
 	translations/et.ts
@@ -250,7 +256,7 @@ elseif(WIN32)
 		COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:EsteidShellExtensionV2> appx
 		COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/libcrypto-3${OPENSSL_SUFFIX}.dll appx
 		COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/libssl-3${OPENSSL_SUFFIX}.dll appx
-		COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/zlib$<$<CONFIG:Debug>:d>1.dll appx
+		COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/z$<$<CONFIG:Debug>:d>.dll appx
 		COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/libxml2.dll appx
 		COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/libxmlsec1.dll appx
 		COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/libxmlsec1-openssl.dll appx

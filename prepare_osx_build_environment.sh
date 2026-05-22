@@ -4,12 +4,12 @@
 set -e
 
 ######### Versions of libraries/frameworks to be compiled
-QT_VER="6.10.2"
-OPENSSL_VER="3.5.5"
-OPENLDAP_VER="2.6.12"
+QT_VER="6.10.3"
+OPENSSL_VER="3.5.6"
+OPENLDAP_VER="2.6.13"
 REBUILD=false
 BUILD_PATH=~/cmake_builds
-: ${MACOSX_DEPLOYMENT_TARGET:="13.0"}
+: ${MACOSX_DEPLOYMENT_TARGET:="14.0"}
 export MACOSX_DEPLOYMENT_TARGET
 
 while [[ $# -gt 0 ]]

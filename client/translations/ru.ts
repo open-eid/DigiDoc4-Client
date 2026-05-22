@@ -542,10 +542,6 @@
         <translation>Подписать</translation>
     </message>
     <message>
-        <source>Cannot alter container %1. Save different location?</source>
-        <translation>Сохранение контейнера %1 не удалось. Сохранить в другой каталог?</translation>
-    </message>
-    <message>
         <source>Encrypting</source>
         <translation>Зашифровывание</translation>
     </message>
@@ -697,27 +693,27 @@
     </message>
     <message>
         <source>Unknown - error %1</source>
-        <translation type="vanished">Неизвестная - ошибка %1</translation>
+        <translation>Неизвестная - ошибка %1</translation>
     </message>
     <message>
         <source>User</source>
-        <translation type="vanished">Пользователь</translation>
+        <translation>Пользователь</translation>
     </message>
     <message>
         <source>Administrator</source>
-        <translation type="vanished">Администратор</translation>
+        <translation>Администратор</translation>
     </message>
     <message>
         <source>User rights: </source>
-        <translation type="vanished">Права пользователя: </translation>
+        <translation>Права пользователя: </translation>
     </message>
     <message>
         <source>Not found</source>
-        <translation type="vanished">Не найдено</translation>
+        <translation>Не найдено</translation>
     </message>
     <message>
         <source>Certificate Propagation service status: </source>
-        <translation type="vanished">Статус Certificate Propagation сервиса: </translation>
+        <translation>Статус Certificate Propagation сервиса: </translation>
     </message>
     <message>
         <source>is set manually</source>

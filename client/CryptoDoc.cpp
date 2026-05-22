@@ -53,7 +53,7 @@ Q_LOGGING_CATEGORY(CRYPTO, "CRYPTO")
 
 CKey::CKey(QSslCertificate _rcpt_cert) : lock(libcdoc::Lock::PUBLIC_KEY), rcpt_cert(_rcpt_cert) {
 	SslCertificate ssl(rcpt_cert);
-	lock.pk_type = (rcpt_cert.publicKey().algorithm() == QSsl::Ec) ? libcdoc::PKType::ECC : libcdoc::PKType::RSA;
+	lock.pk_type = (rcpt_cert.publicKey().algorithm() == QSsl::Ec) ? libcdoc::Algorithm::ECC : libcdoc::Algorithm::RSA;
 	QByteArray der = ssl.publicKeyDer();
 	lock.setBytes(libcdoc::Lock::RCPT_KEY, std::vector<uint8_t>(der.cbegin(), der.cend()));
 	der = rcpt_cert.toDer();
@@ -467,21 +467,13 @@ bool CryptoDoc::encrypt(const QString &filename, const QString& label, const QBy
 		for (const auto &key : d->keys) {
 			if (!key.rcpt_cert.isNull()) {
 				QByteArray ba = key.rcpt_cert.toDer();
-				enc_keys.push_back(keyserver_id.empty() ?
-					libcdoc::Recipient::makeCertificate({}, {ba.cbegin(), ba.cend()}) :
-					libcdoc::Recipient::makeServer({}, {ba.cbegin(), ba.cend()}, keyserver_id));
+				enc_keys.push_back(libcdoc::Recipient::makeCertificate({}, {ba.cbegin(), ba.cend()}, keyserver_id));
 			} else {
 				switch (key.lock.type) {
 				case libcdoc::Lock::CDOC1:
-					enc_keys.push_back(libcdoc::Recipient::makePublicKey(key.lock));
-					break;
 				case libcdoc::Lock::PUBLIC_KEY:
 				case libcdoc::Lock::SERVER:
-					if (keyserver_id.empty()) {
-						enc_keys.push_back(libcdoc::Recipient::makePublicKey(key.lock));
-					} else {
-						enc_keys.push_back(libcdoc::Recipient::makeServer(key.lock, keyserver_id));
-					}
+					enc_keys.push_back(libcdoc::Recipient::makePublicKey(key.lock, keyserver_id));
 					break;
 				default:
 					break;
@@ -512,10 +504,8 @@ bool CryptoDoc::encrypt(const QString &filename, const QString& label, const QBy
 			->withText(tr("Please check your internet connection and network settings."))
 			->withDetails(writer_last_error)
 			->open();
-	} else {
-		this->clear(d->fileName);
-		this->open(d->fileName);
-	}
+	} else
+		open(d->fileName);
 	return d->isEncrypted();
 }
 
