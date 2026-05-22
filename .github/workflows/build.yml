@@ -41,7 +41,7 @@ jobs:
         key: vcpkg-macOS-${{ hashFiles('prepare_osx_build_environment.sh') }}
     - name: Build libraries
       run: |
-        mkdir -p ${LIBS_PATH}/Qt-6.11.1-OpenSSL
+        mkdir -p ${LIBS_PATH}/Qt-6.10.3-OpenSSL
         ./prepare_osx_build_environment.sh -p ${LIBS_PATH}
     - name: Install Qt
       uses: jurplel/install-qt-action@v4
@@ -173,7 +173,7 @@ jobs:
       uses: actions/cache@v5
       with:
         path: ${{ github.workspace }}/vcpkg_cache
-        key: vcpkg-${{ matrix.vcver }}-${{ matrix.platform }}-${{ hashFiles('vcpkg.json') }}
+        key: vcpkg-${{ matrix.vcver }}-${{ matrix.platform }}-${{ hashFiles('client/libcdoc/vcpkg.json') }}
     - name: Install Qt
       uses: jurplel/install-qt-action@v4
       with:
