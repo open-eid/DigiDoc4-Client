@@ -41,7 +41,6 @@ public:
 
 	QList<TokenData> cache() const;
 	digidoc::X509Cert cert() const final;
-	void logout() const;
 	void selectCard(const TokenData &token);
 	std::vector<unsigned char> sign( const std::string &method,
 		const std::vector<unsigned char> &digest) const final;

@@ -27,7 +27,6 @@
 
 #include <QtCore/QCoreApplication>
 #include <QtNetwork/QSslKey>
-#include <QtNetwork/QSslCertificate>
 
 // TODO: Port everything to the new OpenSSL API
 #define OPENSSL_SUPPRESS_DEPRECATED
@@ -43,7 +42,7 @@ QCryptoBackend::getBackend(const TokenData& token) {
 #else
 	auto backend = std::make_unique<QPKCS11>();
 #endif
-	backend.get()->cert = token.cert();
+	backend->cert = token.cert();
 	Status status;
 	do {
 		status = backend->login(token);

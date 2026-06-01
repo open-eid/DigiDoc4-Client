@@ -48,13 +48,9 @@ struct QCNG::Private
 	bool pss;
 };
 
-QCNG::QCNG()
-{
-}
+QCNG::QCNG() noexcept = default;
 
-QCNG::~QCNG()
-{
-}
+QCNG::~QCNG() noexcept = default;
 
 QCNG::Status QCNG::login(const TokenData &token)
 {
@@ -67,20 +63,12 @@ QCNG::Status QCNG::login(const TokenData &token)
 	// https://docs.microsoft.com/en-us/archive/blogs/alejacma/smart-cards-pin-gets-cached
 	NCryptSetProperty(p->key, NCRYPT_PIN_PROPERTY, nullptr, 0, 0);
 	p->pss =  token.data(u"PSS"_s).toBool();
-	d.reset(p.release());
+	d = std::move(p);
 	return PinOK;
-}
-
-void
-QCNG::logout()
-{
-	d.reset();
 }
 
 QByteArray QCNG::decrypt(const QByteArray &data, bool oaep) const
 {
-	if (!d)
-		return {};
 	return exec([&](NCRYPT_PROV_HANDLE prov, NCRYPT_KEY_HANDLE key, QByteArray &result) {
 		BCRYPT_OAEP_PADDING_INFO padding {BCRYPT_SHA256_ALGORITHM, nullptr, 0};
 		PVOID paddingInfo = oaep ? &padding : nullptr;
@@ -102,8 +90,6 @@ QByteArray QCNG::decrypt(const QByteArray &data, bool oaep) const
 template<typename F>
 QByteArray QCNG::derive(const QByteArray &publicKey, F &&func) const
 {
-	if (!d)
-		return {};
 	return exec([&](NCRYPT_PROV_HANDLE prov, NCRYPT_KEY_HANDLE key, QByteArray &derived) {
 		BCRYPT_ECCKEY_BLOB oh { BCRYPT_ECDH_PUBLIC_P384_MAGIC, ULONG((publicKey.size() - 1) / 2) };
 		switch((publicKey.size() - 1) * 4)
@@ -128,8 +114,6 @@ QByteArray QCNG::derive(const QByteArray &publicKey, F &&func) const
 QByteArray QCNG::deriveConcatKDF(const QByteArray &publicKey, QCryptographicHash::Algorithm digest,
 	const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) const
 {
-	if (!d)
-		return {};
 	return derive(publicKey, [&](NCRYPT_SECRET_HANDLE sharedSecret, QByteArray &derived) {
 		std::array paramValues{
 			BCryptBuffer{ULONG(algorithmID.size()), KDF_ALGORITHMID, PBYTE(algorithmID.data())},
@@ -160,8 +144,6 @@ QByteArray QCNG::deriveConcatKDF(const QByteArray &publicKey, QCryptographicHash
 
 QByteArray QCNG::deriveHMACExtract(const QByteArray &publicKey, const QByteArray &salt, int keySize) const
 {
-	if (!d)
-		return {};
 	return derive(publicKey, [&](NCRYPT_SECRET_HANDLE sharedSecret, QByteArray &derived) {
 		std::array paramValues{
 			BCryptBuffer{ULONG(salt.size()), KDF_HMAC_KEY, PBYTE(salt.data())},
@@ -182,6 +164,8 @@ QByteArray QCNG::deriveHMACExtract(const QByteArray &publicKey, const QByteArray
 template<typename F>
 QByteArray QCNG::exec(F &&func) const
 {
+	if (!d)
+		return {};
 	status = UnknownError;
 	QByteArray result;
 	switch(func(d->prov, d->key, result))
@@ -293,8 +277,6 @@ QList<TokenData> QCNG::tokens()
 
 QByteArray QCNG::sign(QCryptographicHash::Algorithm type, const QByteArray &digest) const
 {
-	if (!d)
-		return {};
 	return exec([&](NCRYPT_PROV_HANDLE prov, NCRYPT_KEY_HANDLE key, QByteArray &result) {
 		BCRYPT_PSS_PADDING_INFO rsaPSS { NCRYPT_SHA256_ALGORITHM, 32 };
 		switch(type)

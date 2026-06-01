@@ -490,6 +490,14 @@
         <translation>Dekrüpteerin</translation>
     </message>
     <message>
+        <source>You are about to delete the last file in the container</source>
+        <translation>Oled kustutamas viimast faili ümbrikus</translation>
+    </message>
+    <message>
+        <source>It is removed along with the container.</source>
+        <translation>Koos sellega eemaldatakse ka ümbrik.</translation>
+    </message>
+    <message>
         <source>In order to view Validity Confirmation Sheet there has to be at least one printer installed!</source>
         <translation>Digitaalallkirjade kinnituslehe kuvamiseks peab olema arvutis vähemalt üks printer seadistatud!</translation>
     </message>
@@ -3018,14 +3026,6 @@ Täiendavad litsentsid ja komponendid</translation>
     <message>
         <source>Remove</source>
         <translation>Eemalda</translation>
-    </message>
-    <message>
-        <source>You are about to delete the last file in the container</source>
-        <translation>Oled kustutamas viimast faili ümbrikus</translation>
-    </message>
-    <message>
-        <source>It is removed along with the container.</source>
-        <translation>Koos sellega eemaldatakse ka ümbrik.</translation>
     </message>
 </context>
 <context>

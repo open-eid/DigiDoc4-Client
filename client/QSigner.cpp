@@ -112,13 +112,6 @@ X509Cert QSigner::cert() const
 	return X509Cert((const unsigned char*)der.constData(), size_t(der.size()), X509Cert::Der);
 }
 
-void QSigner::logout() const
-{
-	d->lock.unlock();
-	// QSmartCard should also know that PIN1 info is updated
-	d->smartcard->reloadCard(d->smartcard->tokenData(), true);
-}
-
 QCryptographicHash::Algorithm QSigner::methodToNID(const std::string &method)
 {
 	if(method == "http://www.w3.org/2001/04/xmldsig-more#sha224" ||
@@ -243,8 +236,14 @@ std::vector<unsigned char> QSigner::sign(const std::string &method, const std::v
 		throwException(tr("Signing certificate is not selected."), Exception::General)
 	}
 
+	auto unlock = qScopeGuard([this] {
+		d->lock.unlock();
+		// QSmartCard should also know that PIN2 info is updated
+		d->smartcard->reloadCard(d->smartcard->tokenData(), true);
+	});
+
 	auto val = QCryptoBackend::getBackend(d->sign);
-	if (!val.value()) {
+	if (!val) {
 		switch(val.error()) {
 		case QCryptoBackend::PinCanceled:
 			throwException((tr("Failed to login token") + ' ' + QCryptoBackend::errorString(val.error())), Exception::PINCanceled);
@@ -258,8 +257,17 @@ std::vector<unsigned char> QSigner::sign(const std::string &method, const std::v
 
 	QByteArray sig = waitFor(&QCryptoBackend::sign, backend.get(),
 		methodToNID(method), QByteArray::fromRawData((const char*)digest.data(), int(digest.size())));
-	if (sig.isEmpty())
+	if (sig.isEmpty()) {
+		switch(backend->status) {
+		case QCryptoBackend::PinCanceled:
+			throwException((tr("Failed to login token") + ' ' + QCryptoBackend::errorString(backend->status)), Exception::PINCanceled);
+		case QCryptoBackend::PinLocked:
+			throwException((tr("Failed to login token") + ' ' + QCryptoBackend::errorString(backend->status)), Exception::PINLocked)
+		default:
+			break;
+		}
 		throwException(tr("Failed to sign document"), Exception::General)
+	}
 	return {sig.constBegin(), sig.constEnd()};
 }
 
