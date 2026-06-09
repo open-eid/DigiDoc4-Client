@@ -68,8 +68,8 @@
         <com:Extension Category="windows.comServer">
           <com:ComServer>
             <com:SurrogateServer DisplayName="DigiDoc4 Shell Extension">
-              <com:Class Id="4ef3a5aa-125c-45f5-b5fd-d4c478050afa" Path="EsteidShellExtensionV2.dll" ThreadingModel="STA"/>
-              <com:Class Id="bb67aa19-089b-4ec9-a059-13d985987cdc" Path="EsteidShellExtensionV2.dll" ThreadingModel="STA"/>
+              <com:Class Id="4ef3a5aa-125c-45f5-b5fd-d4c478050afa" Path="$<TARGET_FILE_NAME:EsteidShellExtensionV2>" ThreadingModel="STA"/>
+              <com:Class Id="bb67aa19-089b-4ec9-a059-13d985987cdc" Path="$<TARGET_FILE_NAME:EsteidShellExtensionV2>" ThreadingModel="STA"/>
             </com:SurrogateServer>
           </com:ComServer>
         </com:Extension>

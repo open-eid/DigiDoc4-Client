@@ -61,7 +61,7 @@ QString FileDialog::createNewFileName(const QString &file, bool signature, QWidg
 #ifndef Q_OS_MACOS
 	// macOS App Sandbox restricts the rights of the application to write to the filesystem outside of
 	// app sandbox; user must explicitly give permission to write data to the specific folders.
-	if(!QFile::exists(fileName))
+	if(!QFile::exists(fileName) && fileIsWritable(fileName))
 		return fileName;
 #endif
 	fileName = FileDialog::getSaveFileName(parent, tr("Create %1").arg(type), fileName,

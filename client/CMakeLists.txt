@@ -41,7 +41,8 @@ add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
 	DateTime.cpp
 	DateTime.h
 	Diagnostics.cpp
-	$<IF:$<PLATFORM_ID:Windows>,Diagnostics_win.cpp,Diagnostics_unix.cpp>
+	Diagnostics_win.cpp
+	Diagnostics_unix.cpp
 	Diagnostics.h
 	DiagnosticsTask.cpp
 	DiagnosticsTask.h
@@ -78,12 +79,15 @@ add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
 	TokenData.h
 	Utils.h
 )
+if(WIN32)
+	set_source_files_properties(Diagnostics_unix.cpp PROPERTIES HEADER_FILE_ONLY TRUE)
+else()
+	set_source_files_properties(Diagnostics_win.cpp PROPERTIES HEADER_FILE_ONLY TRUE)
+endif()
 qt_add_translations(${PROJECT_NAME} TS_FILES
 	translations/en.ts
 	translations/et.ts
-	translations/ru.ts
 	../common/translations/qtbase_et.ts
-	../common/translations/qtbase_ru.ts
 	RESOURCE_PREFIX /translations
 	LUPDATE_OPTIONS -locations none
 )
@@ -200,18 +204,22 @@ elseif(WIN32)
 	set(WIX_CMD wix.exe build -nologo
 		-arch $ENV{PLATFORM}
 		-ext WixToolset.UI.wixext
+		-ext WixToolset.Util.wixext
 		-bv WixUIDialogBmp=${CMAKE_SOURCE_DIR}/common/dlgbmp.bmp
 		-bv WixUIBannerBmp=${CMAKE_SOURCE_DIR}/common/banner.bmp
 		-d ico_path=${CMAKE_CURRENT_SOURCE_DIR}/images/digidoc.ico
 		-d libs_path=${LIBS_PATH}
 		-d client_path=$<TARGET_FILE:${PROJECT_NAME}>
+		-d shellext_v2=$<TARGET_FILE:EsteidShellExtensionV2>
+		-d shellext_msix=${CMAKE_BINARY_DIR}/${SHELLEXT_MSIX_FILE}
+		-d assets_path=${CMAKE_SOURCE_DIR}/Assets
 		-d qt_suffix=$<$<CONFIG:Debug>:d>
 		${CMAKE_SOURCE_DIR}/${PROJECT_NAME}.wxs
 		${CMAKE_SOURCE_DIR}/common/WelcomeDlg.wxs
 		${CMAKE_SOURCE_DIR}/common/WixUI_Minimal.wxs
 	)
 	get_filename_component(QT_BASE_DIR "${Qt6_DIR}/../../.." ABSOLUTE)
-	add_custom_target(msi DEPENDS ${PROJECT_NAME}
+	add_custom_target(msi DEPENDS ${PROJECT_NAME} msixshellext
 		COMMAND ${WIX_CMD} -o "${MSI_FILE}.msi"
 		#Build MSI with QT
 		COMMAND ${WIX_CMD} -d qt_path=${QT_BASE_DIR}/bin -o "${MSI_FILE}.qt.msi"
@@ -230,7 +238,8 @@ elseif(WIN32)
 		)
 	endif()
 	set(PLATFORM $ENV{PLATFORM})
-	configure_file(${CMAKE_SOURCE_DIR}/AppxManifest.xml.cmake ${CMAKE_BINARY_DIR}/AppxManifest.xml)
+	configure_file(${CMAKE_SOURCE_DIR}/AppxManifest.xml.cmake ${CMAKE_BINARY_DIR}/AppxManifest.xml.in)
+	file(GENERATE OUTPUT ${CMAKE_BINARY_DIR}/AppxManifest.xml INPUT ${CMAKE_BINARY_DIR}/AppxManifest.xml.in)
 	if(PLATFORM STREQUAL "x86")
 		set(OPENSSL_SUFFIX "")
 	else()
@@ -250,7 +259,7 @@ elseif(WIN32)
 		COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:EsteidShellExtensionV2> appx
 		COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/libcrypto-3${OPENSSL_SUFFIX}.dll appx
 		COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/libssl-3${OPENSSL_SUFFIX}.dll appx
-		COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/zlib$<$<CONFIG:Debug>:d>1.dll appx
+		COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/z$<$<CONFIG:Debug>:d>.dll appx
 		COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/libxml2.dll appx
 		COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/libxmlsec1.dll appx
 		COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/libxmlsec1-openssl.dll appx

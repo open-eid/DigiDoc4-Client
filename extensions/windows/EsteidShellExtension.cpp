@@ -33,7 +33,7 @@ extern "C" IMAGE_DOS_HEADER __ImageBase;
 
 using ARGB = DWORD;
 
-static bool HasAlpha(ARGB *pargb, const SIZE &sizeImage, int cxRow)
+static constexpr bool HasAlpha(ARGB *pargb, const SIZE &sizeImage, int cxRow)
 {
 	ULONG cxDelta = cxRow - sizeImage.cx;
 	for(ULONG y = sizeImage.cy; y; --y)
@@ -48,7 +48,7 @@ static bool HasAlpha(ARGB *pargb, const SIZE &sizeImage, int cxRow)
 	return false;
 }
 
-static BITMAPINFO InitBitmapInfo(const SIZE &sizeImage)
+static constexpr BITMAPINFO InitBitmapInfo(const SIZE &sizeImage)
 {
 	return {{
 		.biSize = sizeof(BITMAPINFOHEADER),
@@ -60,34 +60,33 @@ static BITMAPINFO InitBitmapInfo(const SIZE &sizeImage)
 	}};
 }
 
-static HRESULT ConvertToPARGB32(HDC hdc, ARGB *pargb, HBITMAP hbmp, const SIZE &sizeImage, int cxRow)
+static HRESULT ConvertToPARGB32(HDC hdc, ARGB *pargb, HBITMAP hbmp, const SIZE &sizeImage, int cxRow) try
 {
 	BITMAPINFO bmi = InitBitmapInfo(sizeImage);
-	HRESULT hr = E_OUTOFMEMORY;
-	HANDLE hHeap = GetProcessHeap();
-	if (void *pvBits = HeapAlloc(hHeap, 0, bmi.bmiHeader.biWidth * 4 * bmi.bmiHeader.biHeight))
+	HRESULT hr = E_UNEXPECTED;
+	std::vector<ARGB> pvBits(bmi.bmiHeader.biWidth * bmi.bmiHeader.biHeight);
+	if (GetDIBits(hdc, hbmp, 0, bmi.bmiHeader.biHeight, pvBits.data(), &bmi, DIB_RGB_COLORS) == bmi.bmiHeader.biHeight)
 	{
-		hr = E_UNEXPECTED;
-		if (GetDIBits(hdc, hbmp, 0, bmi.bmiHeader.biHeight, pvBits, &bmi, DIB_RGB_COLORS) == bmi.bmiHeader.biHeight)
+		ULONG cxDelta = cxRow - bmi.bmiHeader.biWidth;
+		ARGB *pargbMask = pvBits.data();
+		for (ULONG y = bmi.bmiHeader.biHeight; y; --y)
 		{
-			ULONG cxDelta = cxRow - bmi.bmiHeader.biWidth;
-			ARGB *pargbMask = static_cast<ARGB *>(pvBits);
-			for (ULONG y = bmi.bmiHeader.biHeight; y; --y)
+			for (ULONG x = bmi.bmiHeader.biWidth; x; --x)
 			{
-				for (ULONG x = bmi.bmiHeader.biWidth; x; --x)
-				{
-					if (*pargbMask++) // transparent pixel
-						*pargb++ = 0;
-					else // opaque pixel
-						*pargb++ |= 0xFF000000;
-				}
-				pargb += cxDelta;
+				if (*pargbMask++) // transparent pixel
+					*pargb++ = 0;
+				else // opaque pixel
+					*pargb++ |= 0xFF000000;
 			}
-			hr = S_OK;
+			pargb += cxDelta;
 		}
-		HeapFree(hHeap, 0, pvBits);
+		hr = S_OK;
 	}
 	return hr;
+}
+catch (...)
+{
+	return winrt::to_hresult();
 }
 
 static HRESULT ConvertBufferToPARGB32(HPAINTBUFFER hPaintBuffer, HDC hdc, HICON hicon, const SIZE &sizeIcon)
@@ -237,10 +236,6 @@ STDMETHODIMP CEsteidShlExt::QueryContextMenu(
 		sign = L"Allkirjasta digitaalselt";
 		encrypt = L"Krüpteeri";
 		break;
-	case LANG_RUSSIAN:
-		sign = L"Подписать дигитально";
-		encrypt = L"Зашифровать";
-		break;
 	default: break;
 	}
 
@@ -270,9 +265,6 @@ STDMETHODIMP CEsteidShlExt::GetCommandString(
 			{
 			case LANG_ESTONIAN:
 				szText = idCmd == MENU_ENCRYPT ? L"Krüpteeri valitud failid" : L"Allkirjasta valitud failid digitaalselt";
-				break;
-			case LANG_RUSSIAN:
-				szText = idCmd == MENU_ENCRYPT ? L"Зашифровать выбранные файлы" : L"Цифровая подпись выбранных файлов";
 				break;
 			default: break;
 			}
