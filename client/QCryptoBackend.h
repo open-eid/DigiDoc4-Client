@@ -19,12 +19,12 @@
 
 #pragma once
 
-#include <QtNetwork/QSslKey>
 #include <QtNetwork/QSslCertificate>
 
 #include <expected>
 
 class TokenData;
+class QSslKey;
 
 class QCryptoBackend
 {
@@ -83,7 +83,6 @@ public:
 	static QString errorString(Status error);
 protected:
 	virtual Status login(const TokenData &cert) = 0;
-	virtual void logout() = 0;
 
 	QSslCertificate cert;
 };

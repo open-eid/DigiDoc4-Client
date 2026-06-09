@@ -534,10 +534,6 @@
         <translation>Jätka allkirjastamisega</translation>
     </message>
     <message>
-        <source>Cannot alter container %1. Save different location?</source>
-        <translation>Ümbriku %1 salvestamine ebaõnnestus. Salvestada teise asukohta?</translation>
-    </message>
-    <message>
         <source>Encrypting</source>
         <translation>Krüpteerin</translation>
     </message>
@@ -677,27 +673,27 @@
     </message>
     <message>
         <source>Unknown - error %1</source>
-        <translation type="vanished">Teadmata - viga %1</translation>
+        <translation>Teadmata - viga %1</translation>
     </message>
     <message>
         <source>User</source>
-        <translation type="vanished">Kasutaja</translation>
+        <translation>Kasutaja</translation>
     </message>
     <message>
         <source>Administrator</source>
-        <translation type="vanished">Administraator</translation>
+        <translation>Administraator</translation>
     </message>
     <message>
         <source>User rights: </source>
-        <translation type="vanished">Kasutajaõigused: </translation>
+        <translation>Kasutajaõigused: </translation>
     </message>
     <message>
         <source>Not found</source>
-        <translation type="vanished">Ei leitud</translation>
+        <translation>Ei leitud</translation>
     </message>
     <message>
         <source>Certificate Propagation service status: </source>
-        <translation type="vanished">Certificate Propagation teenuse staatus: </translation>
+        <translation>Certificate Propagation teenuse staatus: </translation>
     </message>
     <message>
         <source>is set manually</source>
@@ -3097,6 +3093,10 @@ Täiendavad litsentsid ja komponendid</translation>
     <message>
         <source>Certificates have expired!</source>
         <translation>Sertifikaadid on aegunud!</translation>
+    </message>
+    <message>
+        <source>https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult/reminders-for-id-card-holders/</source>
+        <translation>https://www.politsei.ee/et/juhend/id-kaardi-taotlemine-taeiskasvanule/id-kaardi-kasutaja-meelespea/</translation>
     </message>
     <message>
         <source>Additional information</source>

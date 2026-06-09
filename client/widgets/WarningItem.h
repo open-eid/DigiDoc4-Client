@@ -31,6 +31,10 @@ struct WarningText {
 
 		CertExpiredError,
 		CertExpiryWarning,
+		Pin1PukBlockedWarning,
+		Pin1PukBlockedResetWarning,
+		Pin2PukBlockedWarning,
+		Pin2PukBlockedResetWarning,
 		UnblockPin1Warning,
 		UnblockPin2Warning,
 		ActivatePin2Warning,

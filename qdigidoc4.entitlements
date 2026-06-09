@@ -14,22 +14,11 @@
 	<true/>
 	<key>com.apple.security.print</key>
 	<true/>
-	<key>com.apple.security.scripting-targets</key>
-	<dict>
-		<key>com.apple.mail</key>
-		<array>
-			<string>com.apple.mail.compose</string>
-		</array>
-	</dict>
 	<key>com.apple.security.smartcard</key>
 	<true/>
 	<key>com.apple.security.application-groups</key>
 	<array>
 		<string>group.ee.ria.qdigidoc4.tsl</string>
-	</array>
-	<key>com.apple.security.temporary-exception.apple-events</key>
-	<array>
-		<string>com.microsoft.outlook</string>
 	</array>
 </dict>
 </plist>

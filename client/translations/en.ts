@@ -534,10 +534,6 @@
         <translation>Continue signing</translation>
     </message>
     <message>
-        <source>Cannot alter container %1. Save different location?</source>
-        <translation>Cannot alter container %1. Save to different location?</translation>
-    </message>
-    <message>
         <source>Encrypting</source>
         <translation>Encrypting</translation>
     </message>
@@ -677,27 +673,27 @@
     </message>
     <message>
         <source>Unknown - error %1</source>
-        <translation type="vanished">Unknown - error %1</translation>
+        <translation>Unknown - error %1</translation>
     </message>
     <message>
         <source>User</source>
-        <translation type="vanished">User</translation>
+        <translation>User</translation>
     </message>
     <message>
         <source>Administrator</source>
-        <translation type="vanished">Administrator</translation>
+        <translation>Administrator</translation>
     </message>
     <message>
         <source>User rights: </source>
-        <translation type="vanished">User rights: </translation>
+        <translation>User rights: </translation>
     </message>
     <message>
         <source>Not found</source>
-        <translation type="vanished">Not found</translation>
+        <translation>Not found</translation>
     </message>
     <message>
         <source>Certificate Propagation service status: </source>
-        <translation type="vanished">Certificate Propagation service status: </translation>
+        <translation>Certificate Propagation service status: </translation>
     </message>
     <message>
         <source>is set manually</source>
@@ -3097,6 +3093,10 @@ Additional licenses and components</translation>
     <message>
         <source>Certificates expire soon!</source>
         <translation>Certificates expire soon!</translation>
+    </message>
+    <message>
+        <source>https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult/reminders-for-id-card-holders/</source>
+        <translation>https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult/reminders-for-id-card-holders/</translation>
     </message>
     <message>
         <source>Additional information</source>

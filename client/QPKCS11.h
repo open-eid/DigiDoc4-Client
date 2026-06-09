@@ -21,11 +21,13 @@
 
 #include "QCryptoBackend.h"
 
+#include <memory>
+
 class QPKCS11 final: public QCryptoBackend
 {
 public:
 	explicit QPKCS11();
-	~QPKCS11() final;
+	~QPKCS11() noexcept final;
 
 	QByteArray decrypt(const QByteArray &data, bool oaep) const final;
 	QByteArray derive(const QByteArray &publicKey) const;
@@ -35,8 +37,10 @@ public:
 	QByteArray sign(QCryptographicHash::Algorithm type, const QByteArray &digest) const final;
 
 	Status login(const TokenData &t) final;
-	void logout() final;
-	static bool reload();
 
 	static QList<TokenData> tokens();
+
+private:
+	struct Private;
+	std::unique_ptr<Private> d;
 };

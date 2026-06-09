@@ -109,19 +109,27 @@ getDecryptStatus(QCryptoBackend::Status pin_status)
 	}
 }
 
+static libcdoc::result_t
+getDecryptResultStatus(const std::vector<uint8_t> &result, std::unique_ptr<QCryptoBackend> backend)
+{
+	if (!result.empty())
+		return libcdoc::OK;
+	libcdoc::result_t mapped = getDecryptStatus(backend->status);
+	return mapped == libcdoc::OK ? DDCryptoBackend::BACKEND_ERROR : mapped;
+}
+
 libcdoc::result_t
 DDCryptoBackend::decryptRSA(std::vector<uint8_t>& dst, const std::vector<uint8_t> &data, bool oaep, unsigned int idx)
 {
 	if (!backend) {
 		auto val = QCryptoBackend::getBackend(qApp->signer()->tokenauth());
-		if (!val.value())
+		if (!val)
 			return getDecryptStatus(val.error());
 		backend.reset(val.value());
 	}
 	QByteArray decryptedKey = backend->decrypt(toByteArray(data), oaep);
 	dst.assign(decryptedKey.cbegin(), decryptedKey.cend());
-	backend.reset();
-	return (dst.empty() ? BACKEND_ERROR : libcdoc::OK);
+	return getDecryptResultStatus(dst, std::move(backend));
 }
 
 libcdoc::result_t
@@ -135,15 +143,14 @@ DDCryptoBackend::deriveConcatKDF(std::vector<uint8_t>& dst, const std::vector<ui
 	};
 	if (!backend) {
 		auto val = QCryptoBackend::getBackend(qApp->signer()->tokenauth());
-		if (!val.value())
+		if (!val)
 			return getDecryptStatus(val.error());
 		backend.reset(val.value());
 	}
 	QByteArray decryptedKey = backend->deriveConcatKDF(toByteArray(publicKey), SHA_MTH.value(digest),
 		toByteArray(algorithmID), toByteArray(partyUInfo), toByteArray(partyVInfo));
 	dst.assign(decryptedKey.cbegin(), decryptedKey.cend());
-	backend.reset();
-	return (dst.empty() ? BACKEND_ERROR : libcdoc::OK);
+	return getDecryptResultStatus(dst, std::move(backend));
 }
 
 libcdoc::result_t
@@ -151,14 +158,13 @@ DDCryptoBackend::deriveHMACExtract(std::vector<uint8_t>& dst, const std::vector<
 {
 	if (!backend) {
 		auto val = QCryptoBackend::getBackend(qApp->signer()->tokenauth());
-		if (!val.value())
+		if (!val)
 			return getDecryptStatus(val.error());
 		backend.reset(val.value());
 	}
 	QByteArray decryptedKey = backend->deriveHMACExtract(toByteArray(key_material), toByteArray(salt), ECC_KEY_LEN);
 	dst.assign(decryptedKey.cbegin(), decryptedKey.cend());
-	backend.reset();
-	return (dst.empty() ? BACKEND_ERROR : libcdoc::OK);
+	return getDecryptResultStatus(dst, std::move(backend));
 }
 
 libcdoc::result_t

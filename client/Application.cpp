@@ -317,6 +317,7 @@ Application::Application( int &argc, char **argv )
 {
 	setApplicationName(QStringLiteral("qdigidoc4"));
 	setApplicationVersion(QStringLiteral(VERSION_STR));
+	setDesktopFileName("ee.ria.qdigidoc4");
 	setOrganizationDomain(QStringLiteral("ria.ee"));
 	setOrganizationName(QStringLiteral("RIA"));
 	setWindowIcon(QIcon(QStringLiteral(":/images/Icon.svg")));
@@ -676,7 +677,6 @@ void Application::loadTranslation( const QString &lang )
 	Settings::LANGUAGE = d->lang = lang;
 
 	if(lang == QLatin1String("en")) QLocale::setDefault(QLocale(QLocale::English, QLocale::UnitedKingdom));
-	else if(lang == QLatin1String("ru")) QLocale::setDefault(QLocale( QLocale::Russian, QLocale::RussianFederation));
 	else QLocale::setDefault(QLocale(QLocale::Estonian, QLocale::Estonia));
 
 	void(d->appTranslator.load(QLatin1String(":/translations/%1.qm").arg(lang)));

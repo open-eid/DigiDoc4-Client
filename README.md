@@ -26,7 +26,7 @@
          # Ubuntu
          sudo apt install cmake qt6-tools-dev libqt6svg6-dev libpcsclite-dev libssl-dev libdigidocpp-dev libldap2-dev gettext pkg-config  libflatbuffers-dev zlib1g-dev
          # Fedora
-         sudo dnf install qt6-qtsvg-devel qt6-qttools-devel pcsc-lite-devel openssl-devel libdigidocpp openldap-devel gettext pkg-config flatbuffers-devel flatbuffers-compiler
+         sudo dnf install qt6-qtsvg-devel qt6-qttools-devel pcsc-lite-devel openssl-devel libdigidocpp-devel openldap-devel gettext pkg-config flatbuffers-devel flatbuffers-compiler
 
    * Also runtime dependency opensc-pkcs11 and pcscd is needed
 
@@ -64,7 +64,7 @@
 3. Configure
 
         cmake -B build -S . \
-          -DCMAKE_PREFIX_PATH=~/cmake_builds/Qt-6.10.2-OpenSSL
+          -DCMAKE_PREFIX_PATH=~/cmake_builds/Qt-6.11.1-OpenSSL \
           -DOPENSSL_ROOT_DIR=~/cmake_build/OpenSSL \
           -DLDAP_ROOT=~/cmake_build/OpenLDAP \
           -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64"
@@ -95,7 +95,7 @@
 3. Configure
 
         cmake -G"NMAKE Makefiles" -B build -S . `
-          -DCMAKE_PREFIX_PATH=C:\Qt\6.10.2\msvc2022_x64 `
+          -DCMAKE_PREFIX_PATH=C:\Qt\6.11.1\msvc2022_64 `
           -DLibDigiDocpp_ROOT="C:\Program Files (x86)\libdigidocpp" `
           -DVCPKG_MANIFEST_DIR=client/libcdoc
 

@@ -151,7 +151,7 @@ void Diagnostics::run()
 	static const QStringList dlls{
 		"digidocpp", "qdigidoc4.exe", "EsteidShellExtension", "id-updater.exe", "web-eid.exe",
 		"EstIDMinidriver", "EstIDMinidriver64", "EestiMinidriver", "EestiMinidriver64", "estgsv4md", "estgsv4md64",
-		"zlib1", "libxml2", "libxmlsec1", "libxmlsec1-openssl",
+		"zlib1", "z", "libxml2", "libxmlsec1", "libxmlsec1-openssl",
 		"msvcp140", "msvcp140_1", "msvcp140_2", "vcruntime140", "vcruntime140_1"};
 	for(const QString &lib: dlls)
 	{

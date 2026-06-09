@@ -240,20 +240,6 @@ void ContainerPage::deleteConfirm(C *c, int index)
 
 void ContainerPage::encrypt(CryptoDoc *container, bool longTerm)
 {
-	if(!FileDialog::fileIsWritable(container->fileName()))
-	{
-		auto *dlg = WarningDialog::create(this)
-			->withTitle(CryptoDoc::tr("Failed to encrypt document"))
-			->withText(tr("Cannot alter container %1. Save different location?").arg(FileDialog::normalized(container->fileName())))
-			->addButton(WarningDialog::YES, QMessageBox::Yes);
-		if(dlg->exec() != QMessageBox::Yes)
-			return;
-		QString to = FileDialog::getSaveFileName(this, FileDialog::tr("Save file"), container->fileName());
-		if(to.isNull() || !container->move(to))
-			return;
-		setHeader(to);
-	}
-
 	if(!longTerm) {
 		WaitDialogHolder waitDialog(this, tr("Encrypting"));
 		if(!container->encrypt(container->fileName(), {}, {}))

@@ -18,5 +18,4 @@ Actions=new-window
 [Desktop Action new-window]
 Name=New Window
 Name[et]=Ava uus aken
-Name[ru]=Новое окно
 Exec=qdigidoc4 -newWindow

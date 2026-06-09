@@ -39,6 +39,7 @@
 #include <openssl/kdf.h>
 
 #include <array>
+#include <mutex>
 
 template<class Container>
 static QString toQString(const Container &c)
@@ -46,90 +47,138 @@ static QString toQString(const Container &c)
 	return QString::fromLatin1((const char*)std::data(c), std::size(c));
 }
 
-struct QPKCS11Private
+struct QPKCS11Library
 {
-	static bool load(const QString &driver);
-	static void unload();
-	static void logout();
+	explicit QPKCS11Library(const QString &driver);
+	~QPKCS11Library();
+
 	QByteArray attribute(CK_SESSION_HANDLE session, CK_OBJECT_HANDLE obj, CK_ATTRIBUTE_TYPE type) const;
 	std::vector<CK_OBJECT_HANDLE> findObject(CK_SESSION_HANDLE session, CK_OBJECT_CLASS cls, const QByteArray &id = {}) const;
+	static std::shared_ptr<QPKCS11Library> current();
 
 	QLibrary lib;
-	CK_FUNCTION_LIST_PTR f = nullptr;
+	CK_FUNCTION_LIST_PTR f {};
 	bool isFinDriver = false;
-	CK_SESSION_HANDLE session = 0;
-	QByteArray id;
-	bool isPSS = false;
 };
 
-static QPKCS11Private priv;
-
-static QPKCS11Private *getPrivate()
+QPKCS11Library::QPKCS11Library(const QString &driver)
+	: lib(driver)
 {
-	return &priv;
-}
-
-bool
-QPKCS11Private::load(const QString &driver)
-{
-	QPKCS11Private *d = getPrivate();
-	if(d->lib.fileName() == driver && d->f)
-		return true;
 	qWarning() << "Loading:" << driver;
-	unload();
-	d->lib.setFileName(driver);
-	if(auto l = CK_C_GetFunctionList(d->lib.resolve("C_GetFunctionList"));
-		!l || l(&d->f) != CKR_OK)
+	if(auto l = CK_C_GetFunctionList(lib.resolve("C_GetFunctionList"));
+		!l || l(&f) != CKR_OK)
 	{
-		qWarning() << "Failed to resolve symbols" << d->lib.errorString();
-		return false;
+		qWarning() << "Failed to resolve symbols" << lib.errorString();
+		return;
 	}
 
 	CK_C_INITIALIZE_ARGS init_args { nullptr, nullptr, nullptr, nullptr, CKF_OS_LOCKING_OK, nullptr };
-	CK_RV err = d->f->C_Initialize( &init_args );
-	if( err != CKR_OK && err != CKR_CRYPTOKI_ALREADY_INITIALIZED )
+	CK_RV err = f->C_Initialize(&init_args);
+	if(err != CKR_OK && err != CKR_CRYPTOKI_ALREADY_INITIALIZED)
 	{
 		qWarning() << "Failed to initalize";
-		return false;
+		f = nullptr;
+		return;
 	}
 
 	CK_INFO info{};
-	d->f->C_GetInfo( &info );
+	f->C_GetInfo(&info);
 	qWarning()
 		<< QStringLiteral("%1 (%2.%3)").arg(toQString(info.manufacturerID))
 			.arg(info.cryptokiVersion.major).arg(info.cryptokiVersion.minor) << '\n'
 		<< QStringLiteral("%1 (%2.%3)").arg(toQString(info.libraryDescription))
 			.arg(info.libraryVersion.major).arg(info.libraryVersion.minor) << '\n'
 		<< "Flags:" << info.flags;
-	d->isFinDriver = toQString(info.libraryDescription).contains(QLatin1String("MPOLLUX"), Qt::CaseInsensitive);
-	return true;
+	isFinDriver = toQString(info.libraryDescription).contains(QLatin1String("MPOLLUX"), Qt::CaseInsensitive);
 }
 
-void
-QPKCS11Private::unload()
+QPKCS11Library::~QPKCS11Library()
 {
-	logout();
-	QPKCS11Private *d = getPrivate();
-	if(d->f)
-		d->f->C_Finalize(nullptr);
-	d->f = nullptr;
-	d->lib.unload();
+	if(f)
+		f->C_Finalize(nullptr);
 }
 
-void
-QPKCS11Private::logout()
+static std::shared_ptr<QPKCS11Library> loadLibrary(const QString &driver)
 {
-	QPKCS11Private *d = getPrivate();
-	d->id.clear();
-	if (d->f && d->session) {
-		d->f->C_Logout(d->session);
-		d->f->C_CloseSession(d->session);
+	static std::mutex loadedMutex;
+	static std::shared_ptr<QPKCS11Library> loaded;
+	std::lock_guard lock(loadedMutex);
+	if(loaded && loaded->lib.fileName() == driver)
+		return loaded;
+
+	auto lib = std::make_shared<QPKCS11Library>(driver);
+	if(!lib->f)
+		return {};
+	loaded = lib;
+	return lib;
+}
+
+std::shared_ptr<QPKCS11Library> QPKCS11Library::current()
+{
+	static const QMultiHash<QString,QByteArray> drivers {
+#ifdef Q_OS_MAC
+		{ QApplication::applicationDirPath() + "/opensc-pkcs11.so", {} },
+		{ "/Library/latvia-eid/lib/eidlv-pkcs11.bundle/Contents/MacOS/eidlv-pkcs11", "3BDB960080B1FE451F830012428F536549440F900020" }, // LV-G2
+		{ "/Library/latvia-eid/lib/eidlv-pkcs11.bundle/Contents/MacOS/eidlv-pkcs11", "3BDC960080B1FE451F830012428F54654944320F900012" }, // LV-G2.1
+		{ "/Library/mCard/lib/mcard-pkcs11.so", "3B9D188131FC358031C0694D54434F5373020604D1" }, // LT MaskTech 2.6.4
+		{ "/Library/mCard/lib/mcard-pkcs11.so", "3B9D188131FC358031C0694D54434F5373020605D0" }, // LT MaskTech 2.6.5
+		{ "/Library/Atostek ID/Atostek-ID-PKCS11.dylib", "3B7F9600008031B865B08504021B1200F6829000" }, // FI-G3.1
+		{ "/Library/Atostek ID/Atostek-ID-PKCS11.dylib", "3B7F9600008031B865B085050011122460829000" }, // FI-G4
+		{ "/Library/Atostek ID/Atostek-ID-PKCS11.dylib", "3B7F9600008031B865B085051024122460829000" }, // FI-G4.1
+		{ "/Library/mPolluxDigiSign/libcryptoki.dylib", "3B7F9600008031B865B08504021B1200F6829000" }, // FI-G3.1
+		{ "/Library/mPolluxDigiSign/libcryptoki.dylib", "3B7F9600008031B865B085050011122460829000" }, // FI-G4
+		{ "/Library/mPolluxDigiSign/libcryptoki.dylib", "3B7F9600008031B865B085051024122460829000" }, // FI-G4.1
+		{ "/Library/Frameworks/eToken.framework/Versions/Current/libeToken.dylib", "3BD5180081313A7D8073C8211030" },
+		{ "/Library/Frameworks/eToken.framework/Versions/Current/libeToken.dylib", "3BD518008131FE7D8073C82110F4" },
+		{ "/Library/Frameworks/eToken.framework/Versions/Current/libeToken.dylib", "3BFF9600008131FE4380318065B0846566FB12017882900085" },
+		{ "/Library/Frameworks/eToken.framework/Versions/Current/libIDPrimePKCS11.dylib", "3BFF9600008131804380318065B0850300EF120FFE82900066" },
+		{ "/Library/Frameworks/eToken.framework/Versions/Current/libIDPrimePKCS11.dylib", "3BFF9600008131FE4380318065B0855956FB120FFE82900000" },
+#elif defined(Q_OS_WIN)
+		{ "opensc-pkcs11.dll", {} },
+#else
+		{ "opensc-pkcs11.so", {} },
+#if defined(Q_OS_LINUX)
+		{ "/opt/latvia-eid/lib/eidlv-pkcs11.so", "3BDB960080B1FE451F830012428F536549440F900020" }, // LV-G2
+		{ "/opt/latvia-eid/lib/eidlv-pkcs11.so", "3BDC960080B1FE451F830012428F54654944320F900012" }, // LV-G2.1
+		{ "mcard-pkcs11.so", "3B9D188131FC358031C0694D54434F5373020604D1" }, // LT MaskTech 2.6.4
+		{ "mcard-pkcs11.so", "3B9D188131FC358031C0694D54434F5373020605D0" }, // LT MaskTech 2.6.5
+#if Q_PROCESSOR_WORDSIZE == 8
+		{ "/usr/lib/Atostek-ID-PKCS11.so", "3B7F9600008031B865B08504021B1200F6829000" }, // FI-G3.1
+		{ "/usr/lib/Atostek-ID-PKCS11.so", "3B7F9600008031B865B085050011122460829000" }, // FI-G4
+		{ "/usr/lib/Atostek-ID-PKCS11.so", "3B7F9600008031B865B085051024122460829000" }, // FI-G4.1
+		{ "/usr/lib64/libcryptoki.so", "3B7F9600008031B865B08504021B1200F6829000" }, // FI-G3.1
+		{ "/usr/lib64/libcryptoki.so", "3B7F9600008031B865B085050011122460829000" }, // FI-G4
+		{ "/usr/lib64/libcryptoki.so", "3B7F9600008031B865B085051024122460829000" }, // FI-G4.1
+#else
+		{ "libcryptoki.so", "3B7F9600008031B865B08504021B1200F6829000" }, // FI-G3.1
+		{ "libcryptoki.so", "3B7F9600008031B865B085050011122460829000" }, // FI-G4
+		{ "libcryptoki.so", "3B7F9600008031B865B085051024122460829000" }, // FI-G4.1
+#endif
+		{ "/usr/lib/libeTPkcs11.so", "3BD5180081313A7D8073C8211030" },
+		{ "/usr/lib/libeTPkcs11.so", "3BD518008131FE7D8073C82110F4" },
+		{ "/usr/lib/libeTPkcs11.so", "3BFF9600008131FE4380318065B0846566FB12017882900085" },
+		{ "/usr/lib/libIDPrimePKCS11.so", "3BFF9600008131804380318065B0850300EF120FFE82900066" },
+		{ "/usr/lib/libIDPrimePKCS11.so", "3BFF9600008131FE4380318065B0855956FB120FFE82900000" },
+#endif
+#endif
+	};
+	for(const QString &reader: QPCSC::instance().readers())
+	{
+		QPCSCReader r(reader, &QPCSC::instance());
+		if(!r.isPresent())
+			continue;
+		QByteArray atr = r.atr();
+		for(auto i = drivers.cbegin(); i != drivers.cend(); ++i) {
+			if(i.value() == atr) {
+				if(auto lib = loadLibrary(i.key()))
+					return lib;
+			}
+		}
 	}
-	d->session = 0;
+	return loadLibrary(drivers.key({}));
 }
 
-QByteArray
-QPKCS11Private::attribute(CK_SESSION_HANDLE session, CK_OBJECT_HANDLE obj, CK_ATTRIBUTE_TYPE type) const
+QByteArray QPKCS11Library::attribute(CK_SESSION_HANDLE session, CK_OBJECT_HANDLE obj, CK_ATTRIBUTE_TYPE type) const
 {
 	QByteArray data;
 	CK_ATTRIBUTE attr { type, nullptr, 0 };
@@ -142,8 +191,7 @@ QPKCS11Private::attribute(CK_SESSION_HANDLE session, CK_OBJECT_HANDLE obj, CK_AT
 	return data;
 }
 
-std::vector<CK_OBJECT_HANDLE>
-QPKCS11Private::findObject(CK_SESSION_HANDLE session, CK_OBJECT_CLASS cls, const QByteArray &id) const
+std::vector<CK_OBJECT_HANDLE> QPKCS11Library::findObject(CK_SESSION_HANDLE session, CK_OBJECT_CLASS cls, const QByteArray &id) const
 {
 	std::vector<CK_OBJECT_HANDLE> result;
 	if(!f)
@@ -168,21 +216,39 @@ QPKCS11Private::findObject(CK_SESSION_HANDLE session, CK_OBJECT_CLASS cls, const
 	return result;
 }
 
+
+struct QPKCS11::Private
+{
+	void closeSession()
+	{
+		id.clear();
+		if(l && l->f && session) {
+			l->f->C_Logout(session);
+			l->f->C_CloseSession(session);
+		}
+		session = 0;
+	}
+
+	std::shared_ptr<QPKCS11Library> l;
+	CK_SESSION_HANDLE session = 0;
+	QByteArray id;
+	bool isPSS = false;
+};
+
 QPKCS11::QPKCS11()
 	: QCryptoBackend()
+	, d(std::make_unique<Private>())
 {
 }
 
-QPKCS11::~QPKCS11()
+QPKCS11::~QPKCS11() noexcept
 {
-	logout();
+	d->closeSession();
 }
 
-QByteArray
-QPKCS11::decrypt(const QByteArray &data, bool oaep) const
+QByteArray QPKCS11::decrypt(const QByteArray &data, bool oaep) const
 {
-	QPKCS11Private *d = getPrivate();
-	auto key = d->findObject(d->session, CKO_PRIVATE_KEY, d->id);
+	auto key = d->l->findObject(d->session, CKO_PRIVATE_KEY, d->id);
 	if(key.size() != 1){
 		status = GeneralError;
 		return {};
@@ -192,18 +258,18 @@ QPKCS11::decrypt(const QByteArray &data, bool oaep) const
 	auto mech = oaep ?
 		CK_MECHANISM{ CKM_RSA_PKCS_OAEP, &params, sizeof(params) } :
 		CK_MECHANISM{ CKM_RSA_PKCS, nullptr, 0 };
-	if(d->f->C_DecryptInit(d->session, &mech, key.front()) != CKR_OK) {
+	if(d->l->f->C_DecryptInit(d->session, &mech, key.front()) != CKR_OK) {
 		status = GeneralError;
 		return {};
 	}
 
 	CK_ULONG size = 0;
-	if(d->f->C_Decrypt(d->session, CK_BYTE_PTR(data.constData()), CK_ULONG(data.size()), nullptr, &size) != CKR_OK) {
+	if(d->l->f->C_Decrypt(d->session, CK_BYTE_PTR(data.constData()), CK_ULONG(data.size()), nullptr, &size) != CKR_OK) {
 		status = GeneralError;
 		return {};
 	}
 	QByteArray result(int(size), 0);
-	if(d->f->C_Decrypt(d->session, CK_BYTE_PTR(data.constData()), CK_ULONG(data.size()), CK_BYTE_PTR(result.data()), &size) != CKR_OK) {
+	if(d->l->f->C_Decrypt(d->session, CK_BYTE_PTR(data.constData()), CK_ULONG(data.size()), CK_BYTE_PTR(result.data()), &size) != CKR_OK) {
 		status = GeneralError;
 		return {};
 	}
@@ -211,11 +277,9 @@ QPKCS11::decrypt(const QByteArray &data, bool oaep) const
 	return result;
 }
 
-QByteArray
-QPKCS11::derive(const QByteArray &publicKey) const
+QByteArray QPKCS11::derive(const QByteArray &publicKey) const
 {
-	QPKCS11Private *d = getPrivate();
-	std::vector<CK_OBJECT_HANDLE> key = d->findObject(d->session, CKO_PRIVATE_KEY, d->id);
+	std::vector<CK_OBJECT_HANDLE> key = d->l->findObject(d->session, CKO_PRIVATE_KEY, d->id);
 	if(key.size() != 1) {
 		status = GeneralError;
 		return {};
@@ -228,25 +292,24 @@ QPKCS11::derive(const QByteArray &publicKey) const
 	CK_OBJECT_CLASS newkey_class = CKO_SECRET_KEY;
 	CK_KEY_TYPE newkey_type = CKK_GENERIC_SECRET;
 	CK_ULONG value_len = (publicKey.size() - 1) / 2;
-	std::array newkey_template{
-		CK_ATTRIBUTE{CKA_TOKEN, &_false, sizeof(_false)},
-		CK_ATTRIBUTE{CKA_CLASS, &newkey_class, sizeof(newkey_class)},
-		CK_ATTRIBUTE{CKA_KEY_TYPE, &newkey_type, sizeof(newkey_type)},
-		CK_ATTRIBUTE{CKA_SENSITIVE, &_false, sizeof(_false)},
-		CK_ATTRIBUTE{CKA_EXTRACTABLE, &_true, sizeof(_true)},
-		CK_ATTRIBUTE{CKA_VALUE_LEN, &value_len, sizeof(value_len)},
-	};
+	auto newkey_template = std::to_array<CK_ATTRIBUTE>({
+		{CKA_TOKEN, &_false, sizeof(_false)},
+		{CKA_CLASS, &newkey_class, sizeof(newkey_class)},
+		{CKA_KEY_TYPE, &newkey_type, sizeof(newkey_type)},
+		{CKA_SENSITIVE, &_false, sizeof(_false)},
+		{CKA_EXTRACTABLE, &_true, sizeof(_true)},
+		{CKA_VALUE_LEN, &value_len, sizeof(value_len)},
+	});
 	CK_OBJECT_HANDLE newkey = CK_INVALID_HANDLE;
-	if(d->f->C_DeriveKey(d->session, &mech, key.front(), newkey_template.data(), CK_ULONG(newkey_template.size()), &newkey) != CKR_OK) {
+	if(d->l->f->C_DeriveKey(d->session, &mech, key.front(), newkey_template.data(), CK_ULONG(newkey_template.size()), &newkey) != CKR_OK) {
 		status = GeneralError;
 		return {};
 	}
 
-	return d->attribute(d->session, newkey, CKA_VALUE);
+	return d->l->attribute(d->session, newkey, CKA_VALUE);
 }
 
-QByteArray
-QPKCS11::deriveConcatKDF(const QByteArray &publicKey, QCryptographicHash::Algorithm digest,
+QByteArray QPKCS11::deriveConcatKDF(const QByteArray &publicKey, QCryptographicHash::Algorithm digest,
 	const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) const
 {
 	QByteArray z = derive(publicKey);
@@ -270,8 +333,7 @@ QPKCS11::deriveConcatKDF(const QByteArray &publicKey, QCryptographicHash::Algori
 	return key.left(int(keyDataLen));
 }
 
-QByteArray
-QPKCS11::deriveHMACExtract(const QByteArray &publicKey, const QByteArray &salt, int keySize) const
+QByteArray QPKCS11::deriveHMACExtract(const QByteArray &publicKey, const QByteArray &salt, int keySize) const
 {
 	QByteArray key = derive(publicKey);
 	if(key.isEmpty())
@@ -300,27 +362,30 @@ QPKCS11::deriveHMACExtract(const QByteArray &publicKey, const QByteArray &salt, 
 	return out;
 }
 
-QPKCS11::Status
-QPKCS11::login(const TokenData &t)
+QPKCS11::Status QPKCS11::login(const TokenData &t)
 {
-	logout();
+	if(!d->l) {
+		d->l = QPKCS11Library::current();
+	}
+	if(!d->l || !d->l->f)
+		return UnknownError;
 
-	QPKCS11Private *d = getPrivate();
+	d->closeSession();
 	auto currentSlot = t.data(QStringLiteral("slot")).value<CK_SLOT_ID>();
 	d->id = t.data(QStringLiteral("id")).toByteArray();
 	d->isPSS = t.data(QStringLiteral("PSS")).toBool();
 
 	CK_TOKEN_INFO token;
-	if(d->f->C_GetTokenInfo(currentSlot, &token) != CKR_OK ||
-		d->f->C_OpenSession(currentSlot, CKF_SERIAL_SESSION, nullptr, nullptr, &d->session) != CKR_OK)
+	if(d->l->f->C_GetTokenInfo(currentSlot, &token) != CKR_OK ||
+		d->l->f->C_OpenSession(currentSlot, CKF_SERIAL_SESSION, nullptr, nullptr, &d->session) != CKR_OK)
 		return UnknownError;
 
-	std::vector<CK_OBJECT_HANDLE> list = d->findObject(d->session, CKO_CERTIFICATE, d->id);
-	if(list.size() != 1 || QSslCertificate(d->attribute(d->session, list.front(), CKA_VALUE), QSsl::Der) != t.cert())
+	std::vector<CK_OBJECT_HANDLE> list = d->l->findObject(d->session, CKO_CERTIFICATE, d->id);
+	if(list.size() != 1 || QSslCertificate(d->l->attribute(d->session, list.front(), CKA_VALUE), QSsl::Der) != t.cert())
 		return UnknownError;
 
 	// Hack: Workaround broken FIN pkcs11 drivers not providing CKF_LOGIN_REQUIRED info
-	if(!d->isFinDriver && !(token.flags & CKF_LOGIN_REQUIRED))
+	if(!d->l->isFinDriver && !(token.flags & CKF_LOGIN_REQUIRED))
 		return PinOK;
 
 	SslCertificate cert(t.cert());
@@ -335,14 +400,14 @@ QPKCS11::login(const TokenData &t)
 			PinPopup p(isSign ? QSmartCardData::Pin2Type : QSmartCardData::Pin1Type, f, cert, Application::mainWindow());
 			p.open();
 			p.startTimer();
-			return waitFor(d->f->C_Login, d->session, CKU_USER, nullptr, 0);
+			return waitFor(d->l->f->C_Login, d->session, CKU_USER, nullptr, 0);
 		} else {
 			PinPopup p(isSign ? QSmartCardData::Pin2Type : QSmartCardData::Pin1Type, f, cert, Application::mainWindow());
 			p.setPinLen(token.ulMinPinLen, token.ulMaxPinLen < 12 ? 12 : token.ulMaxPinLen);
 			if(!p.exec())
 				return CKR_FUNCTION_CANCELED;
 			QByteArray pin = p.pin().toUtf8();
-			return d->f->C_Login(d->session, CKU_USER, CK_UTF8CHAR_PTR(pin.constData()), CK_ULONG(pin.size()));
+			return d->l->f->C_Login(d->session, CKU_USER, CK_UTF8CHAR_PTR(pin.constData()), CK_ULONG(pin.size()));
 		}
 	});
 
@@ -355,7 +420,7 @@ QPKCS11::login(const TokenData &t)
 	case CKR_FUNCTION_CANCELED:
 		return PinCanceled;
 	case CKR_PIN_INCORRECT:
-		d->f->C_GetTokenInfo(currentSlot, &token);
+		d->l->f->C_GetTokenInfo(currentSlot, &token);
 		return (token.flags & CKF_USER_PIN_LOCKED) ? PinLocked : PinIncorrect;
 	case CKR_PIN_LOCKED:
 		return PinLocked;
@@ -368,18 +433,11 @@ QPKCS11::login(const TokenData &t)
 	}
 }
 
-void QPKCS11::logout()
-{
-	QPKCS11Private *d = getPrivate();
-	d->logout();
-}
-
 QList<TokenData> QPKCS11::tokens()
 {
 	QList<TokenData> list;
-	reload();
-	QPKCS11Private *d = getPrivate();
-	if(!d->f)
+	auto d = QPKCS11Library::current();
+	if(!d || !d->f)
 		return list;
 	size_t size = 0;
 	if(d->f->C_GetSlotList(CK_TRUE, nullptr, CK_ULONG_PTR(&size)) != CKR_OK)
@@ -434,73 +492,9 @@ QList<TokenData> QPKCS11::tokens()
 	return list;
 }
 
-bool QPKCS11::reload()
-{
-	static const QMultiHash<QString,QByteArray> drivers {
-#ifdef Q_OS_MAC
-		{ QApplication::applicationDirPath() + "/opensc-pkcs11.so", {} },
-		{ "/Library/latvia-eid/lib/eidlv-pkcs11.bundle/Contents/MacOS/eidlv-pkcs11", "3BDB960080B1FE451F830012428F536549440F900020" }, // LV-G2
-		{ "/Library/latvia-eid/lib/eidlv-pkcs11.bundle/Contents/MacOS/eidlv-pkcs11", "3BDC960080B1FE451F830012428F54654944320F900012" }, // LV-G2.1
-		{ "/Library/mCard/lib/mcard-pkcs11.so", "3B9D188131FC358031C0694D54434F5373020505D3" }, // LT-G3
-		{ "/Library/mCard/lib/mcard-pkcs11.so", "3B9D188131FC358031C0694D54434F5373020604D1" }, // LT-G3.1
-		{ "/Library/Atostek ID/Atostek-ID-PKCS11.dylib", "3B7F9600008031B865B08504021B1200F6829000" }, // FI-G3.1
-		{ "/Library/Atostek ID/Atostek-ID-PKCS11.dylib", "3B7F9600008031B865B085050011122460829000" }, // FI-G4
-		{ "/Library/Atostek ID/Atostek-ID-PKCS11.dylib", "3B7F9600008031B865B085051024122460829000" }, // FI-G4.1
-		{ "/Library/mPolluxDigiSign/libcryptoki.dylib", "3B7F9600008031B865B08504021B1200F6829000" }, // FI-G3.1
-		{ "/Library/mPolluxDigiSign/libcryptoki.dylib", "3B7F9600008031B865B085050011122460829000" }, // FI-G4
-		{ "/Library/mPolluxDigiSign/libcryptoki.dylib", "3B7F9600008031B865B085051024122460829000" }, // FI-G4.1
-		{ "/Library/Frameworks/eToken.framework/Versions/Current/libeToken.dylib", "3BD5180081313A7D8073C8211030" },
-		{ "/Library/Frameworks/eToken.framework/Versions/Current/libeToken.dylib", "3BD518008131FE7D8073C82110F4" },
-		{ "/Library/Frameworks/eToken.framework/Versions/Current/libeToken.dylib", "3BFF9600008131FE4380318065B0846566FB12017882900085" },
-		{ "/Library/Frameworks/eToken.framework/Versions/Current/libIDPrimePKCS11.dylib", "3BFF9600008131804380318065B0850300EF120FFE82900066" },
-		{ "/Library/Frameworks/eToken.framework/Versions/Current/libIDPrimePKCS11.dylib", "3BFF9600008131FE4380318065B0855956FB120FFE82900000" },
-#elif defined(Q_OS_WIN)
-		{ "opensc-pkcs11.dll", {} },
-#else
-		{ "opensc-pkcs11.so", {} },
-#if defined(Q_OS_LINUX)
-		{ "/opt/latvia-eid/lib/eidlv-pkcs11.so", "3BDB960080B1FE451F830012428F536549440F900020" }, // LV-G2
-		{ "/opt/latvia-eid/lib/eidlv-pkcs11.so", "3BDC960080B1FE451F830012428F54654944320F900012" }, // LV-G2.1
-		{ "mcard-pkcs11.so", "3B9D188131FC358031C0694D54434F5373020505D3" }, // LT-G3
-		{ "mcard-pkcs11.so", "3B9D188131FC358031C0694D54434F5373020604D1" }, // LT-G3.1
-#if Q_PROCESSOR_WORDSIZE == 8
-		{ "/usr/lib/Atostek-ID-PKCS11.so", "3B7F9600008031B865B08504021B1200F6829000" }, // FI-G3.1
-		{ "/usr/lib/Atostek-ID-PKCS11.so", "3B7F9600008031B865B085050011122460829000" }, // FI-G4
-		{ "/usr/lib/Atostek-ID-PKCS11.so", "3B7F9600008031B865B085051024122460829000" }, // FI-G4.1
-		{ "/usr/lib64/libcryptoki.so", "3B7F9600008031B865B08504021B1200F6829000" }, // FI-G3.1
-		{ "/usr/lib64/libcryptoki.so", "3B7F9600008031B865B085050011122460829000" }, // FI-G4
-		{ "/usr/lib64/libcryptoki.so", "3B7F9600008031B865B085051024122460829000" }, // FI-G4.1
-#else
-		{ "libcryptoki.so", "3B7F9600008031B865B08504021B1200F6829000" }, // FI-G3.1
-		{ "libcryptoki.so", "3B7F9600008031B865B085050011122460829000" }, // FI-G4
-		{ "libcryptoki.so", "3B7F9600008031B865B085051024122460829000" }, // FI-G4.1
-#endif
-		{ "/usr/lib/libeTPkcs11.so", "3BD5180081313A7D8073C8211030" },
-		{ "/usr/lib/libeTPkcs11.so", "3BD518008131FE7D8073C82110F4" },
-		{ "/usr/lib/libeTPkcs11.so", "3BFF9600008131FE4380318065B0846566FB12017882900085" },
-		{ "/usr/lib/libIDPrimePKCS11.so", "3BFF9600008131804380318065B0850300EF120FFE82900066" },
-		{ "/usr/lib/libIDPrimePKCS11.so", "3BFF9600008131FE4380318065B0855956FB120FFE82900000" },
-#endif
-#endif
-	};
-	for(const QString &reader: QPCSC::instance().readers())
-	{
-		QPCSCReader r(reader, &QPCSC::instance());
-		if(!r.isPresent())
-			continue;
-		QByteArray atr = r.atr();
-		for(auto i = drivers.cbegin(); i != drivers.cend(); ++i) {
-			if(i.value() == atr && QPKCS11Private::load(i.key()))
-				return true;
-		}
-	}
-	return QPKCS11Private::load(drivers.key({}));
-}
-
 QByteArray QPKCS11::sign(QCryptographicHash::Algorithm type, const QByteArray &digest) const
 {
-	QPKCS11Private *d = getPrivate();
-	std::vector<CK_OBJECT_HANDLE> key = d->findObject(d->session, CKO_PRIVATE_KEY, d->id);
+	std::vector<CK_OBJECT_HANDLE> key = d->l->findObject(d->session, CKO_PRIVATE_KEY, d->id);
 	if(key.size() != 1) {
 		status = GeneralError;
 		return {};
@@ -508,7 +502,7 @@ QByteArray QPKCS11::sign(QCryptographicHash::Algorithm type, const QByteArray &d
 
 	CK_KEY_TYPE keyType = CKK_RSA;
 	CK_ATTRIBUTE attribute { CKA_KEY_TYPE, &keyType, sizeof(keyType) };
-	d->f->C_GetAttributeValue(d->session, key.front(), &attribute, 1);
+	d->l->f->C_GetAttributeValue(d->session, key.front(), &attribute, 1);
 
 	CK_RSA_PKCS_PSS_PARAMS pssParams { CKM_SHA256, CKG_MGF1_SHA256, 32 };
 	CK_MECHANISM mech { keyType == CKK_ECDSA ? CKM_ECDSA : CKM_RSA_PKCS, nullptr, 0 };
@@ -543,17 +537,17 @@ QByteArray QPKCS11::sign(QCryptographicHash::Algorithm type, const QByteArray &d
 	}
 	data.append(digest);
 
-	if(d->f->C_SignInit(d->session, &mech, key.front()) != CKR_OK) {
+	if(d->l->f->C_SignInit(d->session, &mech, key.front()) != CKR_OK) {
 		status = GeneralError;
 		return {};
 	}
 	CK_ULONG size = 0;
-	if(d->f->C_Sign(d->session, CK_BYTE_PTR(data.constData()), CK_ULONG(data.size()), nullptr, &size) != CKR_OK) {
+	if(d->l->f->C_Sign(d->session, CK_BYTE_PTR(data.constData()), CK_ULONG(data.size()), nullptr, &size) != CKR_OK) {
 		status = GeneralError;
 		return {};
 	}
 	QByteArray sig(int(size), 0);
-	if(d->f->C_Sign(d->session, CK_BYTE_PTR(data.constData()), CK_ULONG(data.size()), CK_BYTE_PTR(sig.data()), &size) != CKR_OK) {
+	if(d->l->f->C_Sign(d->session, CK_BYTE_PTR(data.constData()), CK_ULONG(data.size()), CK_BYTE_PTR(sig.data()), &size) != CKR_OK) {
 		status = GeneralError;
 		return {};
 	}
