@@ -23,11 +23,62 @@
 #include "dialogs/FileDialog.h"
 #include "dialogs/WarningDialog.h"
 
-#include <QtCore/QJsonArray>
+#include <QtCore/QCoreApplication>
+#include <QtCore/QCryptographicHash>
+#include <QtCore/QDir>
+#include <QtCore/QDirIterator>
 #include <QtCore/QFileInfo>
-#include <QtCore/QProcessEnvironment>
+#include <QtCore/QJsonArray>
+#include <QtCore/QUrl>
+#include <QtGui/QDesktopServices>
 
-bool DocumentModel::addFileCheck(const QString &container, QFileInfo file)
+void DocumentModel::clearTempFolder()
+{
+	if(m_tempDir)
+	{
+		QDirIterator it(m_tempDir->path(), QDir::Files, QDirIterator::Subdirectories);
+		while(it.hasNext())
+			FileDialog::setReadOnly(it.next(), false);
+	}
+	m_tempDir.reset();
+}
+
+QString DocumentModel::saveTemp(int row) const
+{
+	if(!m_tempDir)
+		m_tempDir = std::make_unique<QTemporaryDir>(
+			QDir::tempPath() + QDir::separator() + QCoreApplication::applicationName() + QStringLiteral("_XXXXXX"));
+	if(!m_tempDir->isValid())
+		return {};
+	QString name = data(row);
+	QDir dir(m_tempDir->path());
+	QString folder = QFileInfo(name).path();
+	if(folder != QLatin1String("."))
+	{
+		QString hash = QCryptographicHash::hash(folder.toUtf8(), QCryptographicHash::Sha256).left(8).toHex();
+		dir.mkpath(hash);
+		dir = QDir(dir.filePath(hash));
+	}
+	return save(row, dir.filePath(FileDialog::safeName(name)));
+}
+
+void DocumentModel::removeTempFile(const QString &file)
+{
+	if(!m_tempDir)
+		return;
+	QDir dir(m_tempDir->path());
+	QString folder = QFileInfo(file).path();
+	if(folder != QLatin1String("."))
+	{
+		QString hash = QCryptographicHash::hash(folder.toUtf8(), QCryptographicHash::Sha256).left(8).toHex();
+		dir = QDir(dir.filePath(hash));
+	}
+	QString path = dir.filePath(FileDialog::safeName(file));
+	FileDialog::setReadOnly(path, false);
+	QFile::remove(path);
+}
+
+bool DocumentModel::addFileCheck(const QString &container, const QFileInfo &file) const
 {
 	// Check that container is not dropped into itself
 	if(QFileInfo(container) == file)
@@ -64,42 +115,47 @@ bool DocumentModel::addFileCheck(const QString &container, QFileInfo file)
 	return true;
 }
 
-void DocumentModel::addTempFiles(const QStringList &files)
+void DocumentModel::open(int row)
 {
-	for(const QString &file: files)
-	{
-		addFile(file);
-		addTempReference(file);
-	}
-}
-
-QStringList DocumentModel::tempFiles() const
-{
-	QStringList copied;
-	for(int i = 0, rows = rowCount(); i < rows; ++i)
-	{
-		if(QFileInfo f(save(i, FileDialog::tempPath(data(i)))); f.exists())
-			copied.append(f.absoluteFilePath());
-	}
-	return copied;
-}
-
-bool DocumentModel::verifyFile(const QString &f)
-{
+	if(row >= rowCount())
+		return;
 	static const QJsonArray defaultArray {
-			QStringLiteral("ddoc"), QStringLiteral("bdoc") ,QStringLiteral("edoc"), QStringLiteral("adoc"), QStringLiteral("asice"), QStringLiteral("cdoc"), QStringLiteral("asics"),
+			QStringLiteral("ddoc"), QStringLiteral("bdoc"), QStringLiteral("edoc"), QStringLiteral("adoc"), QStringLiteral("asice"), QStringLiteral("cdoc"), QStringLiteral("asics"),
 			QStringLiteral("txt"), QStringLiteral("doc"), QStringLiteral("docx"), QStringLiteral("odt"), QStringLiteral("ods"), QStringLiteral("tex"), QStringLiteral("wks"), QStringLiteral("wps"),
 			QStringLiteral("wpd"), QStringLiteral("rtf"), QStringLiteral("xlr"), QStringLiteral("xls"), QStringLiteral("xlsx"), QStringLiteral("pdf"), QStringLiteral("key"), QStringLiteral("odp"),
 			QStringLiteral("pps"), QStringLiteral("ppt"), QStringLiteral("pptx"), QStringLiteral("png"), QStringLiteral("jpg"), QStringLiteral("jpeg"), QStringLiteral("bmp"), QStringLiteral("ai"),
 			QStringLiteral("gif"), QStringLiteral("ico"), QStringLiteral("ps"), QStringLiteral("psd"), QStringLiteral("tif"), QStringLiteral("tiff"), QStringLiteral("csv")};
-
 	QJsonArray allowedExts = Application::confValue(QLatin1String("ALLOWED-EXTENSIONS")).toArray(defaultArray);
-	if(allowedExts.contains(QJsonValue(QFileInfo(f).suffix().toLower())))
-		return true;
-	WarningDialog::create()
-		->withTitle(tr("Failed to open file"))
-		->withText(tr("A file with this extension cannot be opened in the DigiDoc4 Client. Download the file to view it."))
-		->setCancelText(WarningDialog::OK)
-		->open();
-	return false;
+	if(!allowedExts.contains(QJsonValue(QFileInfo(data(row)).suffix().toLower())))
+	{
+		WarningDialog::create()
+			->withTitle(tr("Failed to open file"))
+			->withText(tr("A file with this extension cannot be opened in the DigiDoc4 Client. Download the file to view it."))
+			->setCancelText(WarningDialog::OK)
+			->open();
+		return;
+	}
+	QString path = saveTemp(row);
+	if(path.isEmpty())
+		return;
+	FileDialog::setReadOnly(path);
+	if(!containerName().endsWith(QLatin1String(".pdf"), Qt::CaseInsensitive) && FileDialog::isSignedPDF(path))
+		Application::showClient({ std::move(path) }, false, false, true);
+	else
+		QDesktopServices::openUrl(QUrl::fromLocalFile(path));
+}
+
+void DocumentModel::copyModel(DocumentModel *model)
+{
+	if(!model)
+		return;
+	for(int i = 0, rows = model->rowCount(); i < rows; ++i)
+	{
+		QString path = model->saveTemp(i);
+		if(path.isEmpty())
+			continue;
+		addFile(path);
+	}
+	if(!m_tempDir)
+		m_tempDir = std::exchange(model->m_tempDir, nullptr);
 }

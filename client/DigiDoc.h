@@ -93,11 +93,9 @@ class SDocumentModel final: public DocumentModel
 
 public:
 	bool addFile(const QString &file, const QString &mime = QStringLiteral("application/octet-stream")) final;
-	void addTempReference(const QString &file) final;
 	QString data(int row) const final;
 	quint64 fileSize(int row) const final;
 	QString mime(int row) const final;
-	void open(int row) final;
 	bool removeRow(int row) final;
 	int rowCount() const final;
 	QString save(int row, const QString &path) const final;
@@ -105,6 +103,8 @@ public:
 private:
 	SDocumentModel(DigiDoc *container);
 	Q_DISABLE_COPY(SDocumentModel)
+
+	QString containerName() const final;
 
 	DigiDoc *doc;
 	friend class DigiDoc;
@@ -159,7 +159,6 @@ private:
 	QList<DigiDocSignature> m_signatures, m_timestamps;
 	bool			modified = false;
 	QString			m_fileName;
-	QStringList		m_tempFiles;
 
 	friend class DigiDocSignature;
 	friend class SDocumentModel;
