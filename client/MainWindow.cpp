@@ -104,7 +104,6 @@ MainWindow::MainWindow( QWidget *parent )
 	connect(ui->cryptoIntroButton, &QPushButton::clicked, this, [this] { openContainer(false); });
 	connect(ui->signContainerPage, &ContainerPage::action, this, &MainWindow::onSignAction);
 	connect(ui->signContainerPage, &ContainerPage::addFiles, this, [this](const QStringList &files) { openFiles(files); } );
-	connect(ui->signContainerPage, &ContainerPage::removed, this, &MainWindow::removeSignature);
 	connect(ui->signContainerPage, &ContainerPage::warning, this, [this](WarningText warningText) {
 		ui->warnings->showWarning(std::move(warningText));
 		ui->signature->warningIcon(true);
@@ -228,24 +227,27 @@ void MainWindow::navigateToPage( Pages page, const QStringList &files, bool crea
 	if(page == SignDetails)
 	{
 		navigate = false;
-		auto signatureContainer = std::make_unique<DigiDoc>(this);
 		if(create)
 		{
 			QString filename = FileDialog::createNewFileName(files[0], true, this);
 			if(!filename.isNull())
 			{
-				signatureContainer->create(filename);
+				auto signatureContainer = DigiDoc::create(filename, this);
 				for(const auto &file: files)
 				{
 					if(signatureContainer->documentModel()->addFile(file))
 						navigate = true;
 				}
+				if(navigate)
+				{
+					resetDigiDoc(std::move(signatureContainer));
+					ui->signContainerPage->transition(digiDoc.get());
+				}
 			}
 		}
-		else
-			navigate = signatureContainer->open(files[0]);
-		if(navigate)
+		else if(auto signatureContainer = DigiDoc::open(files[0], this))
 		{
+			navigate = true;
 			resetDigiDoc(std::move(signatureContainer));
 			ui->signContainerPage->transition(digiDoc.get());
 		}
@@ -349,7 +351,7 @@ void MainWindow::convertToCDoc()
 
 	cryptoDoc = std::move(cryptoContainer);
 	digiDoc.reset();
-	ui->cryptoContainerPage->transition(cryptoDoc.get(),  qApp->signer()->tokenauth().cert());
+	ui->cryptoContainerPage->transition(cryptoDoc.get(), cardData.cert());
 	selectPage(CryptoDetails);
 
 	FadeInNotification::success(ui->topBar, tr("Converted to crypto container!"));
@@ -502,6 +504,8 @@ void MainWindow::resetDigiDoc(std::unique_ptr<DigiDoc> &&doc)
 			digiDoc->save();
 	}
 	digiDoc = std::move(doc);
+	if(digiDoc)
+		connect(digiDoc.get(), &DigiDoc::stateChanged, this, &MainWindow::adjustDrops);
 }
 
 void MainWindow::selectPage(Pages page)
@@ -580,18 +584,6 @@ void MainWindow::sign(F &&sign)
 	ui->signContainerPage->transition(digiDoc.get());
 
 	FadeInNotification::success(ui->topBar, tr("The container has been successfully signed!"));
-	setAcceptDrops(false);
-}
-
-void MainWindow::removeSignature(int index)
-{
-	if(!digiDoc)
-		return;
-	WaitDialogHolder waitDialog(this, tr("Removing signature"));
-	digiDoc->removeSignature(unsigned(index));
-	digiDoc->save();
-	ui->signContainerPage->transition(digiDoc.get());
-	adjustDrops();
 }
 
 bool MainWindow::wrap(const QString& wrappedFile, bool pdf)
@@ -600,8 +592,7 @@ bool MainWindow::wrap(const QString& wrappedFile, bool pdf)
 	if(filename.isNull())
 		return false;
 
-	auto signatureContainer = std::make_unique<DigiDoc>(this);
-	signatureContainer->create(filename);
+	auto signatureContainer = DigiDoc::create(filename, this);
 
 	// If pdf, add whole file to signature container; otherwise content only
 	if(pdf)
