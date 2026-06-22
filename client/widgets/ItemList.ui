@@ -16,14 +16,6 @@ color: #07142A;
 font-family: Roboto, Helvetica;
 font-size: 14px;
 }
-QLineEdit {
-padding: 10px 14px;
-border: 1px solid #C4CBD8;
-border-radius: 4px;
-background-color: white;
-placeholder-text-color: #607496;
-font-size: 16px;
-}
 QScrollBar {
 width: 10px;
 padding: 5px 5px 5px 0px;
@@ -149,7 +141,7 @@ icon: url(:/images/icon_download_clicked.svg);
           <enum>Qt::TabFocus</enum>
          </property>
          <property name="text">
-          <string notr="true">+ Add recipient</string>
+          <string>Add recipients</string>
          </property>
         </widget>
        </item>
@@ -239,77 +231,6 @@ padding: 5px;
           </widget>
          </item>
         </layout>
-       </item>
-      </layout>
-     </widget>
-    </item>
-    <item>
-     <widget class="QWidget" name="findGroup" native="true">
-      <layout class="QGridLayout" name="findGroupLayout">
-       <property name="leftMargin">
-        <number>0</number>
-       </property>
-       <property name="topMargin">
-        <number>8</number>
-       </property>
-       <property name="rightMargin">
-        <number>0</number>
-       </property>
-       <property name="bottomMargin">
-        <number>16</number>
-       </property>
-       <property name="horizontalSpacing">
-        <number>24</number>
-       </property>
-       <property name="verticalSpacing">
-        <number>6</number>
-       </property>
-       <item row="0" column="0" colspan="2">
-        <widget class="QLabel" name="lblFind">
-         <property name="text">
-          <string>Enter the personal code, institution or registry code</string>
-         </property>
-         <property name="buddy">
-          <cstring>txtFind</cstring>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0">
-        <widget class="QLineEdit" name="txtFind"/>
-       </item>
-       <item row="1" column="1">
-        <widget class="QPushButton" name="btnFind">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="cursor">
-          <cursorShape>PointingHandCursor</cursorShape>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QPushButton {
-padding: 12px 12px;
-border-radius: 4px;
-color: #ffffff;
-font-weight: 700;
-background-color: #2F70B6;
-}
-QPushButton:hover, QPushButton:focus {
-background-color: #2B66A6;
-}
-QPushButton:pressed {
-background-color: #215081;
-}
-QPushButton:disabled {
-background-color: #82A9D3;
-}</string>
-         </property>
-         <property name="text">
-          <string>Search</string>
-         </property>
-        </widget>
        </item>
       </layout>
      </widget>
