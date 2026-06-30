@@ -17,7 +17,7 @@
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc, 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #
-import os
+import subprocess
 import gettext
 import locale
 import gi
@@ -37,11 +37,7 @@ class OpenDigidocExtension(GObject.GObject, Nautilus.MenuProvider):
         super().__init__()
 
     def menu_activate_cb(self, menu, paths):
-        args = "-sign "
-        for path in paths:
-            args += "\"%s\" " % path
-        cmd = ("qdigidoc4 " + args + "&")
-        os.system(cmd)
+        subprocess.Popen(["qdigidoc4", "-sign", *paths])
 
     def valid_file(self, file):
         return file.get_file_type() == Gio.FileType.REGULAR and file.get_uri_scheme() == 'file'
@@ -81,11 +77,7 @@ class OpenCryptoExtension(GObject.GObject, Nautilus.MenuProvider):
         super().__init__()
 
     def menu_activate_cb(self, menu, paths):
-        args = "-crypto "
-        for path in paths:
-            args += "\"%s\" " % path
-        cmd = ("qdigidoc4 " + args + "&")
-        os.system(cmd)
+        subprocess.Popen(["qdigidoc4", "-crypto", *paths])
 
     def valid_file(self, file):
         return file.get_file_type() == Gio.FileType.REGULAR and file.get_uri_scheme() == 'file'

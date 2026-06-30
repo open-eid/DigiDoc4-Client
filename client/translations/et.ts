@@ -490,8 +490,32 @@
         <translation>Dekrüpteerin</translation>
     </message>
     <message>
+        <source>You are about to delete the last file in the container</source>
+        <translation>Oled kustutamas viimast faili ümbrikus</translation>
+    </message>
+    <message>
+        <source>It is removed along with the container.</source>
+        <translation>Koos sellega eemaldatakse ka ümbrik.</translation>
+    </message>
+    <message>
         <source>In order to view Validity Confirmation Sheet there has to be at least one printer installed!</source>
         <translation>Digitaalallkirjade kinnituslehe kuvamiseks peab olema arvutis vähemalt üks printer seadistatud!</translation>
+    </message>
+    <message>
+        <source>Removing signature</source>
+        <translation>Allkirja eemaldamine</translation>
+    </message>
+    <message>
+        <source>Extend signatures</source>
+        <translation>Pikenda allkirju</translation>
+    </message>
+    <message>
+        <source>All signatures in the container will be extended to LTA format.</source>
+        <translation>Kõik ümbriku allkirjad pikendatakse LTA formaati.</translation>
+    </message>
+    <message>
+        <source>Extend</source>
+        <translation>Pikenda</translation>
     </message>
     <message>
         <source>Change</source>
@@ -755,6 +779,30 @@
         <translation>Saada dokument SiVa-le</translation>
     </message>
     <message>
+        <source>Container validity cannot be extended</source>
+        <translation>Konteineri kehtivust ei saa pikendada</translation>
+    </message>
+    <message>
+        <source>Failed to extend signatures and wrapped to timestamped container.</source>
+        <translation>Allkirjade pikendamine ebaõnnestus ja konteiner pakiti ajatempliga konteinerisse.</translation>
+    </message>
+    <message>
+        <source>Container validity extended</source>
+        <translation>Konteineri kehtivust pikendati</translation>
+    </message>
+    <message>
+        <source>Extended %1 of %2 signatures.</source>
+        <translation>Pikendati %1 allkirja %2-st.</translation>
+    </message>
+    <message>
+        <source>All signatures extended successfully.</source>
+        <translation>Kõik allkirjad pikendati edukalt.</translation>
+    </message>
+    <message>
+        <source>Failed to extend container validity</source>
+        <translation>Konteineri kehtivuse pikendamine ebaõnnestus</translation>
+    </message>
+    <message>
         <source>Certificate status revoked</source>
         <translation>Sertifikaat on kehtetu</translation>
     </message>
@@ -781,6 +829,10 @@
     <message>
         <source>Failed add file to container</source>
         <translation>Faili lisamine ümbrikusse ebaõnnestus</translation>
+    </message>
+    <message>
+        <source>Please check the access to signing services and network settings.</source>
+        <translation>Palun kontrolli allkirjastamisteenuste ligipääsu ja võrgu sätteid.</translation>
     </message>
     <message>
         <source>Failed remove signature from container</source>
@@ -1384,6 +1436,14 @@ ID-kaardiga</translation>
         <translation>DigiDoc4 klient</translation>
     </message>
     <message>
+        <source>Documents (%1)</source>
+        <translation>Dokumendid (%1)</translation>
+    </message>
+    <message>
+        <source>Save file</source>
+        <translation>Salvesta fail</translation>
+    </message>
+    <message>
         <source>Cannot alter container %1. Save different location?</source>
         <translation>Ümbriku %1 salvestamine ebaõnnestus. Salvestada teise asukohta?</translation>
     </message>
@@ -1414,10 +1474,6 @@ ID-kaardiga</translation>
     <message>
         <source>Cannot alter container</source>
         <translation>Ümbriku salvestamine ebaõnnestus</translation>
-    </message>
-    <message>
-        <source>Removing signature</source>
-        <translation>Allkirja eemaldamine</translation>
     </message>
     <message>
         <source>Connect the card reader to your computer and insert your ID card into the reader</source>
@@ -2476,6 +2532,10 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>Krüpteerimisseaded</translation>
     </message>
     <message>
+        <source>Use Long Term Archival (LTA) format when signing</source>
+        <translation>Kasutan allkirjastamisel arhiveerimise ajatempli (LTA) vormingut</translation>
+    </message>
+    <message>
         <source>Add certificate</source>
         <translation>Lisa sertifikaat</translation>
     </message>
@@ -3018,14 +3078,6 @@ Täiendavad litsentsid ja komponendid</translation>
     <message>
         <source>Remove</source>
         <translation>Eemalda</translation>
-    </message>
-    <message>
-        <source>You are about to delete the last file in the container</source>
-        <translation>Oled kustutamas viimast faili ümbrikus</translation>
-    </message>
-    <message>
-        <source>It is removed along with the container.</source>
-        <translation>Koos sellega eemaldatakse ka ümbrik.</translation>
     </message>
 </context>
 <context>

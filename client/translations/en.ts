@@ -490,8 +490,32 @@
         <translation>Decrypting</translation>
     </message>
     <message>
+        <source>You are about to delete the last file in the container</source>
+        <translation>You are about to delete the last file in the container</translation>
+    </message>
+    <message>
+        <source>It is removed along with the container.</source>
+        <translation>It is removed along with the container.</translation>
+    </message>
+    <message>
         <source>In order to view Validity Confirmation Sheet there has to be at least one printer installed!</source>
         <translation>In order to view Validity Confirmation Sheet there has to be at least one printer installed!</translation>
+    </message>
+    <message>
+        <source>Removing signature</source>
+        <translation>Removing signature</translation>
+    </message>
+    <message>
+        <source>Extend signatures</source>
+        <translation>Extend signatures</translation>
+    </message>
+    <message>
+        <source>All signatures in the container will be extended to LTA format.</source>
+        <translation>All signatures in the container will be extended to LTA format.</translation>
+    </message>
+    <message>
+        <source>Extend</source>
+        <translation>Extend</translation>
     </message>
     <message>
         <source>Change</source>
@@ -755,6 +779,30 @@
         <translation>Send document to SiVa</translation>
     </message>
     <message>
+        <source>Container validity cannot be extended</source>
+        <translation>Container validity cannot be extended</translation>
+    </message>
+    <message>
+        <source>Failed to extend signatures and wrapped to timestamped container.</source>
+        <translation>Failed to extend signatures and wrapped to timestamped container.</translation>
+    </message>
+    <message>
+        <source>Container validity extended</source>
+        <translation>Container validity extended</translation>
+    </message>
+    <message>
+        <source>Extended %1 of %2 signatures.</source>
+        <translation>Extended %1 of %2 signatures.</translation>
+    </message>
+    <message>
+        <source>All signatures extended successfully.</source>
+        <translation>All signatures extended successfully.</translation>
+    </message>
+    <message>
+        <source>Failed to extend container validity</source>
+        <translation>Failed to extend container validity</translation>
+    </message>
+    <message>
         <source>Certificate status revoked</source>
         <translation>Certificate status revoked</translation>
     </message>
@@ -781,6 +829,10 @@
     <message>
         <source>Failed add file to container</source>
         <translation>Failed add file to container</translation>
+    </message>
+    <message>
+        <source>Please check the access to signing services and network settings.</source>
+        <translation>Please check the access to signing services and network settings.</translation>
     </message>
     <message>
         <source>Failed remove signature from container</source>
@@ -1384,6 +1436,14 @@ ID-Card</translation>
         <translation>DigiDoc4 Client</translation>
     </message>
     <message>
+        <source>Documents (%1)</source>
+        <translation>Documents (%1)</translation>
+    </message>
+    <message>
+        <source>Save file</source>
+        <translation>Save file</translation>
+    </message>
+    <message>
         <source>Cannot alter container %1. Save different location?</source>
         <translation>Cannot alter container %1. Save to different location?</translation>
     </message>
@@ -1414,10 +1474,6 @@ ID-Card</translation>
     <message>
         <source>Cannot alter container</source>
         <translation>Cannot alter container</translation>
-    </message>
-    <message>
-        <source>Removing signature</source>
-        <translation>Removing signature</translation>
     </message>
     <message>
         <source>Connect the card reader to your computer and insert your ID card into the reader</source>
@@ -2476,6 +2532,10 @@ Additional licenses and components</translation>
         <translation>Encryption settings</translation>
     </message>
     <message>
+        <source>Use Long Term Archival (LTA) format when signing</source>
+        <translation>Use Long Term Archival (LTA) format when signing</translation>
+    </message>
+    <message>
         <source>Add certificate</source>
         <translation>Add certificate</translation>
     </message>
@@ -3018,14 +3078,6 @@ Additional licenses and components</translation>
     <message>
         <source>Remove</source>
         <translation>Remove</translation>
-    </message>
-    <message>
-        <source>You are about to delete the last file in the container</source>
-        <translation>You are about to delete the last file in the container</translation>
-    </message>
-    <message>
-        <source>It is removed along with the container.</source>
-        <translation>It is removed along with the container.</translation>
     </message>
 </context>
 <context>

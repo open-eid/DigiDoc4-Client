@@ -55,7 +55,6 @@ Q_SIGNALS:
 	void action(int code, const QString &idCode = {}, const QString &info2 = {});
 	void addFiles(const QStringList &files);
 	void certChanged(const SslCertificate &cert);
-	void removed(int row);
 	void warning(const WarningText &warningText);
 
 private:
