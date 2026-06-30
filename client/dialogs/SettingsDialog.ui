@@ -556,6 +556,13 @@ max-height: 22px;
         </widget>
        </item>
        <item>
+        <widget class="QCheckBox" name="chkDefaultLTA">
+         <property name="text">
+          <string>Use Long Term Archival (LTA) format when signing</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <spacer name="pageGeneralSpacer">
          <property name="orientation">
           <enum>Qt::Vertical</enum>

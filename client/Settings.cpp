@@ -90,6 +90,7 @@ const Option<QByteArray> Settings::TSA_CERT { QStringLiteral("TSA-CERT") };
 const Option<QString> Settings::TSA_URL { QStringLiteral("TSA-URL") };
 const Option<bool, bool (*)()> Settings::TSA_URL_CUSTOM
 	{ QStringLiteral("TSA-URL-CUSTOM"), [] { return Settings::TSA_URL.isSet(); } };
+const Option<bool> Settings::DEFAULT_LTA { QStringLiteral("DefaultLTA"), false };
 
 const Option<QString> Settings::DEFAULT_DIR { QStringLiteral("DefaultDir") };
 const Option<QString, QString (*)()> Settings::LANGUAGE { QStringLiteral("Language"), [] {

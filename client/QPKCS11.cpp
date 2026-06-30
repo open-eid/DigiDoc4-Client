@@ -387,6 +387,7 @@ bool QPKCS11::reload()
 		{ "/Library/Frameworks/eToken.framework/Versions/Current/libeToken.dylib", "3BFF9600008131FE4380318065B0846566FB12017882900085" },
 		{ "/Library/Frameworks/eToken.framework/Versions/Current/libIDPrimePKCS11.dylib", "3BFF9600008131804380318065B0850300EF120FFE82900066" },
 		{ "/Library/Frameworks/eToken.framework/Versions/Current/libIDPrimePKCS11.dylib", "3BFF9600008131FE4380318065B0855956FB120FFE82900000" },
+		{ "/Library/Frameworks/eToken.framework/Versions/Current/libIDPrimePKCS11.dylib", "3BFF9600008131FE4380318065B08505003912017882900040" },
 #elif defined(Q_OS_WIN)
 		{ "opensc-pkcs11.dll", {} },
 #else
@@ -413,6 +414,7 @@ bool QPKCS11::reload()
 		{ "/usr/lib/libeTPkcs11.so", "3BFF9600008131FE4380318065B0846566FB12017882900085" },
 		{ "/usr/lib/libIDPrimePKCS11.so", "3BFF9600008131804380318065B0850300EF120FFE82900066" },
 		{ "/usr/lib/libIDPrimePKCS11.so", "3BFF9600008131FE4380318065B0855956FB120FFE82900000" },
+		{ "/usr/lib/libIDPrimePKCS11.so", "3BFF9600008131FE4380318065B08505003912017882900040" },
 #endif
 #endif
 	};

@@ -61,12 +61,40 @@ QString CheckConnection::errorString() const
 	}
 }
 
+class LimitedNAM final: public QNetworkAccessManager
+{
+public:
+	using QNetworkAccessManager::QNetworkAccessManager;
+protected:
+	QNetworkReply *createRequest(Operation op, const QNetworkRequest &req, QIODevice *data) final
+	{
+		constexpr qint64 MAX_REPLY_SIZE = 1024 * 1024;
+		QNetworkRequest limitedReq = req;
+		limitedReq.setDecompressedSafetyCheckThreshold(MAX_REPLY_SIZE);
+		auto *reply = QNetworkAccessManager::createRequest(op, limitedReq, data);
+		reply->setReadBufferSize(MAX_REPLY_SIZE + 1);
+		QObject::connect(reply, &QNetworkReply::metaDataChanged, reply, [reply]() {
+			if(reply->header(QNetworkRequest::ContentLengthHeader).toLongLong() > MAX_REPLY_SIZE)
+				reply->abort();
+		});
+		QObject::connect(reply, &QNetworkReply::readyRead, reply, [reply]() {
+			if(reply->bytesAvailable() > MAX_REPLY_SIZE)
+				reply->abort();
+		});
+		QObject::connect(reply, &QNetworkReply::downloadProgress, reply, [reply](qint64 received, qint64 total) {
+			if(received > MAX_REPLY_SIZE || total > MAX_REPLY_SIZE)
+				reply->abort();
+		});
+		return reply;
+	}
+};
+
 QNetworkAccessManager* CheckConnection::setupNAM(QNetworkRequest &req, const QByteArray &add)
 {
 	req.setSslConfiguration(sslConfiguration(add));
 	req.setRawHeader("User-Agent", QStringLiteral("%1/%2 (%3)")
 		.arg(Application::applicationName(), Application::applicationVersion(), Common::applicationOs()).toUtf8());
-	auto *nam = new QNetworkAccessManager();
+	auto *nam = new LimitedNAM();
 	QObject::connect(nam, &QNetworkAccessManager::sslErrors, nam, [](QNetworkReply *reply, const QList<QSslError> &errors) {
 		QList<QSslError> ignore;
 		for(const QSslError &error: errors)
