@@ -206,26 +206,33 @@ checkConnection()
 std::string
 DDConfiguration::getValue(std::string_view domain, std::string_view param) const
 {
-	std::string def = Settings::CDOC2_DEFAULT_KEYSERVER;
 	if (param == libcdoc::Configuration::KEYSERVER_SEND_URL) {
 #ifdef CONFIG_URL
 		QJsonObject list = Application::confValue(QLatin1String("CDOC2-CONF")).toObject();
+		if (list.isEmpty()) return {};
 		QJsonObject data = list.value(QLatin1String(domain.data(), domain.size())).toObject();
-		QString url = data.value(QLatin1String("POST")).toString(Settings::CDOC2_POST);
+		if (data.isEmpty()) return {};
+		QString url = data.value(QLatin1String("POST")).toString();
 		return url.toStdString();
 #else
-		QString url = Settings::CDOC2_POST;
-		return url.toStdString();
+		if (domain == Settings::CDOC2_DEFAULT_KEYSERVER) {
+			QString url = Settings::CDOC2_POST;
+			return url.toStdString();
+		}
 #endif
 	} else if (param == libcdoc::Configuration::KEYSERVER_FETCH_URL) {
 #ifdef CONFIG_URL
 		QJsonObject list = Application::confValue(QLatin1String("CDOC2-CONF")).toObject();
+		if (list.isEmpty()) return {};
 		QJsonObject data = list.value(QLatin1String(domain.data(), domain.size())).toObject();
-		QString url = data.value(QLatin1String("FETCH")).toString(Settings::CDOC2_GET);
+		if (data.isEmpty()) return {};
+		QString url = data.value(QLatin1String("FETCH")).toString();
 		return url.toStdString();
 #else
-		QString url = Settings::CDOC2_GET;
-		return url.toStdString();
+		if (domain == Settings::CDOC2_DEFAULT_KEYSERVER) {
+			QString url = Settings::CDOC2_GET;
+			return url.toStdString();
+		}
 #endif
 	}
 	return {};
