@@ -373,12 +373,13 @@ bool CryptoDoc::decrypt(const libcdoc::Lock *lock, const QByteArray& secret)
 			str = tr("Cannot read file.");
 			break;
 		case DDCryptoBackend::PIN_CANCELED:
-			return false;
+			str = QCryptoBackend::errorString(QCryptoBackend::Status::PinCanceled);
+			break;
 		case DDCryptoBackend::PIN_INCORRECT:
 			str = QCryptoBackend::errorString(QCryptoBackend::Status::PinIncorrect);
 			break;
 		case DDCryptoBackend::PIN_LOCKED:
-			QCryptoBackend::errorString(QCryptoBackend::Status::PinLocked);
+			str = QCryptoBackend::errorString(QCryptoBackend::Status::PinLocked);
 			break;
 		default:
 			str = tr("Please check your internet connection and network settings.");
