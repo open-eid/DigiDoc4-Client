@@ -310,7 +310,7 @@ DDNetworkBackend::fetchKey(std::vector<uint8_t> &result, const std::string &url,
 
 	TokenData auth = qApp->signer()->tokenauth();
 	auto val = QCryptoBackend::getBackend(qApp->signer()->tokenauth());
-	if (!val.value())
+	if (!val)
 		return getDecryptStatus(val.error());
 	std::unique_ptr<QCryptoBackend> backend(val.value());
 
