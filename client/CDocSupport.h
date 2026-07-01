@@ -19,6 +19,8 @@
 
 #pragma once
 
+#include "QCryptoBackend.h"
+
 #include <QtCore/QObject>
 #include <QtCore/QIODevice>
 #include <QtCore/QFile>
@@ -58,6 +60,7 @@ struct DDCryptoBackend final : public libcdoc::CryptoBackend {
 	static constexpr int PIN_CANCELED = -504;
 	static constexpr int PIN_INCORRECT = -505;
 	static constexpr int PIN_LOCKED = -506;
+	static constexpr int IN_PROGRESS = -507;
 	libcdoc::result_t decryptRSA(std::vector<uint8_t> &result,
 								 const std::vector<uint8_t> &data, bool oaep,
 								 unsigned int idx) final;
@@ -76,9 +79,14 @@ struct DDCryptoBackend final : public libcdoc::CryptoBackend {
 								unsigned int idx) final;
 	std::string getLastErrorStr(libcdoc::result_t code) const final;
 
+	std::unique_ptr<QCryptoBackend> backend;
 	std::vector<uint8_t> secret;
 
 	explicit DDCryptoBackend() = default;
+
+	void setBackend(std::unique_ptr<QCryptoBackend> &&backend) {
+		this->backend = std::move(backend);
+	}
 };
 
 //
@@ -110,8 +118,9 @@ struct DDNetworkBackend final : public libcdoc::NetworkBackend, private QObject 
 		return libcdoc::NOT_IMPLEMENTED;
 	}
 
-	explicit DDNetworkBackend() = default;
+	explicit DDNetworkBackend(DDCryptoBackend &_crypto) : crypto(_crypto) {}
 
+	DDCryptoBackend &crypto;
 	std::string last_error;
 };
 

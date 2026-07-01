@@ -593,26 +593,6 @@
         <translation>Võtme lisamine ebaõnnestus</translation>
     </message>
     <message>
-        <source>You must enter your PIN code twice in order to decrypt the CDOC2 container</source>
-        <translation>CDOC2 ümbriku dekrüpteerimiseks tuleb sisestada PIN-koodi kaks korda</translation>
-    </message>
-    <message>
-        <source>The first PIN entry is required for authentication to the key server referenced in the CDOC2 container. Second PIN entry is required to decrypt the CDOC2 container.</source>
-        <translation>Esimene PIN-koodi sisestamine on vajalik autentimiseks CDOC2 ümbrikus viidatud võtmeedastusserverisse. Teine PIN-koodi sisestamine on vajalik CDOC2 ümbriku dekrüpteerimiseks.</translation>
-    </message>
-    <message>
-        <source>PIN entry canceled</source>
-        <translation>PIN-koodi sisestamine tühistati</translation>
-    </message>
-    <message>
-        <source>PIN incorrect</source>
-        <translation>Vale PIN</translation>
-    </message>
-    <message>
-        <source>PIN locked</source>
-        <translation>PIN on lukus</translation>
-    </message>
-    <message>
         <source>Please check your internet connection and network settings.</source>
         <translation>Palun kontrolli internetiühendust ja võrgu sätteid.</translation>
     </message>
@@ -627,10 +607,6 @@
     <message>
         <source>Failed to open document</source>
         <translation>Dokumendi avamine ebaõnnestus</translation>
-    </message>
-    <message>
-        <source>Don&apos;t show again</source>
-        <translation>Ära rohkem näita</translation>
     </message>
     <message>
         <source>Wrong password.</source>
@@ -781,10 +757,6 @@
     <message>
         <source>Missing signature</source>
         <translation>Allkiri puudub</translation>
-    </message>
-    <message>
-        <source>PIN Incorrect</source>
-        <translation>Vale PIN</translation>
     </message>
     <message>
         <source>PIN Login failed</source>
@@ -2181,16 +2153,12 @@ ID-kaardiga</translation>
 <context>
     <name>QCryptoBackend</name>
     <message>
-        <source>PIN Canceled</source>
-        <translation>PIN katkestatud</translation>
-    </message>
-    <message>
         <source>PIN locked</source>
         <translation>PIN on lukus</translation>
     </message>
     <message>
-        <source>PIN Incorrect</source>
-        <translation>Vale PIN</translation>
+        <source>Signing/decrypting is already in progress another window.</source>
+        <translation>Allkirjastamine/dekrüpteerimine on juba käimas teises aknas.</translation>
     </message>
     <message>
         <source>PKCS11 general error</source>
@@ -2204,6 +2172,14 @@ ID-kaardiga</translation>
         <source>Unknown error</source>
         <translation>Tundmatu viga</translation>
     </message>
+    <message>
+        <source>PIN incorrect</source>
+        <translation>Vale PIN</translation>
+    </message>
+    <message>
+        <source>PIN entry canceled</source>
+        <translation>PIN sisestus katkestatus</translation>
+    </message>
 </context>
 <context>
     <name>QFileDialog</name>
@@ -2214,10 +2190,6 @@ ID-kaardiga</translation>
 </context>
 <context>
     <name>QSigner</name>
-    <message>
-        <source>Failed to load PKCS#11 module</source>
-        <translation>PKCS#11 mooduli laadimine ebaõnnestus</translation>
-    </message>
     <message>
         <source>Signing certificate is not selected.</source>
         <translation>Allkirjastamise sertifikaat ei ole valitud.</translation>
@@ -2233,14 +2205,6 @@ ID-kaardiga</translation>
     <message>
         <source>Sign certificate is not selected</source>
         <translation>Allkirjastamise sertifikaat ei ole valitud</translation>
-    </message>
-    <message>
-        <source>Signing/decrypting is already in progress another window.</source>
-        <translation>Allkirjastamine/dekrüpteerimine on juba käimas teises aknas.</translation>
-    </message>
-    <message>
-        <source>Authentication certificate is not selected.</source>
-        <translation>Isikutuvastamise sertifikaat ei ole valitud.</translation>
     </message>
     <message>
         <source>Failed to decrypt document</source>

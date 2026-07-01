@@ -21,27 +21,26 @@
 
 #include "QCryptoBackend.h"
 
+#include <memory>
+
 class QPKCS11 final: public QCryptoBackend
 {
-	Q_OBJECT
 public:
-	explicit QPKCS11(QObject *parent = nullptr);
-	~QPKCS11() final;
+	explicit QPKCS11();
+	~QPKCS11() noexcept final;
 
 	QByteArray decrypt(const QByteArray &data, bool oaep) const final;
 	QByteArray derive(const QByteArray &publicKey) const;
 	QByteArray deriveConcatKDF(const QByteArray &publicKey, QCryptographicHash::Algorithm digest,
 		const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) const final;
 	QByteArray deriveHMACExtract(const QByteArray &publicKey, const QByteArray &salt, int keySize) const final;
-	bool isLoaded() const;
-	bool load( const QString &driver );
-	void unload();
-	PinStatus login(const TokenData &t) final;
-	void logout() final;
-	bool reload();
 	QByteArray sign(QCryptographicHash::Algorithm type, const QByteArray &digest) const final;
-	QList<TokenData> tokens() const final;
+
+	Status login(const TokenData &t) final;
+
+	static QList<TokenData> tokens();
+
 private:
 	struct Private;
-	Private *d;
+	std::unique_ptr<Private> d;
 };

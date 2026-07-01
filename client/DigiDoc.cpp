@@ -23,6 +23,7 @@
 #include "CheckConnection.h"
 #include "Common.h"
 #include "MainWindow.h"
+#include "QCryptoBackend.h"
 #include "QSigner.h"
 #include "Settings.h"
 #include "TokenData.h"
@@ -779,7 +780,7 @@ void DigiDoc::setLastError(const QString &title, const Exception &e)
 	case Exception::PINFailed:
 		dlg->withText(tr("PIN Login failed")); break;
 	case Exception::PINIncorrect:
-		dlg->withText(tr("PIN Incorrect")); break;
+		dlg->withText(QCryptoBackend::errorString(QCryptoBackend::PinIncorrect)); break;
 	case Exception::PINLocked:
 		dlg->withText(tr("PIN Locked. Unblock to reuse PIN.")); break;
 	case Exception::NetworkError:
@@ -828,7 +829,7 @@ bool DigiDoc::sign(const QString &city, const QString &state, const QString &zip
 		case Exception::PINIncorrect:
 			WarningDialog::create()
 				->withTitle(tr("Failed to sign container"))
-				->withText(tr("PIN Incorrect"))
+				->withText(QCryptoBackend::errorString(QCryptoBackend::PinIncorrect))
 				->exec();
 			return sign(city, state, zip, country, role, signer);
 		case Exception::InvalidUrl:

@@ -75,6 +75,7 @@ struct Settings
 	};
 
 	static const Option<bool, bool (*)()> CDOC2_DEFAULT;
+	// TODO: Remove this after 2 releases
 	static const Option<bool> CDOC2_NOTIFICATION;
 	static const Option<bool, bool (*)()> CDOC2_USE_KEYSERVER;
 	static const Option<QString, QString (*)()> CDOC2_DEFAULT_KEYSERVER;
