@@ -19,7 +19,9 @@
 
 #pragma once
 
-#include <QtNetwork/QSslCertificate>
+#include "TokenData.h"
+
+#include <QtCore/QCryptographicHash>
 
 #include <expected>
 
@@ -35,12 +37,13 @@ public:
 		PinCanceled,
 		PinIncorrect,
 		PinLocked,
+		InProgress,
 		DeviceError,
 		GeneralError,
 		UnknownError
 	};
 
-	virtual ~QCryptoBackend() {};
+	virtual ~QCryptoBackend();
 
 	virtual QByteArray decrypt(const QByteArray &data, bool oaep) const = 0;
 	virtual QByteArray deriveConcatKDF(const QByteArray &publicKey, QCryptographicHash::Algorithm digest,
@@ -54,6 +57,7 @@ public:
 	 * @return the Qt SSL key
 	 */
 	QSslKey getKey() const;
+	QSslCertificate cert() const;
 	/**
 	 * @brief Get a new Backend object and log in with the given token
 	 * 
@@ -84,5 +88,6 @@ public:
 protected:
 	virtual Status login(const TokenData &cert) = 0;
 
-	QSslCertificate cert;
+private:
+	TokenData token;
 };

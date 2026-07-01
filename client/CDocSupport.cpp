@@ -104,6 +104,8 @@ getDecryptStatus(QCryptoBackend::Status pin_status)
 		return DDCryptoBackend::PIN_INCORRECT;
 	case QCryptoBackend::PinLocked:
 		return DDCryptoBackend::PIN_LOCKED;
+	case QCryptoBackend::InProgress:
+		return DDCryptoBackend::IN_PROGRESS;
 	default:
 		return DDCryptoBackend::BACKEND_ERROR;
 	}
@@ -184,6 +186,8 @@ DDCryptoBackend::getLastErrorStr(libcdoc::result_t code) const
 			return "PIN incorrect";
 		case PIN_LOCKED:
 			return "PIN locked";
+		case IN_PROGRESS:
+			return "Signing/decrypting is already in progress another window.";
 		case BACKEND_ERROR:
 			return qApp->signer()->getLastErrorStr().toStdString();
 	}
@@ -248,6 +252,8 @@ DDNetworkBackend::getLastErrorStr(libcdoc::result_t code) const
 			return "PIN incorrect";
 		case DDCryptoBackend::PIN_LOCKED:
 			return "PIN locked";
+		case DDCryptoBackend::IN_PROGRESS:
+			return "Signing/decrypting is already in progress another window.";
 		case BACKEND_ERROR:
 		case DDCryptoBackend::BACKEND_ERROR:
 			return last_error;

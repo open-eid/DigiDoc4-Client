@@ -759,10 +759,6 @@
         <translation>Missing signature</translation>
     </message>
     <message>
-        <source>PIN Incorrect</source>
-        <translation>PIN Incorrect</translation>
-    </message>
-    <message>
         <source>PIN Login failed</source>
         <translation>PIN Login failed</translation>
     </message>
@@ -2161,6 +2157,10 @@ ID-Card</translation>
         <translation>PIN locked</translation>
     </message>
     <message>
+        <source>Signing/decrypting is already in progress another window.</source>
+        <translation>Signing/decrypting is already in progress another window.</translation>
+    </message>
+    <message>
         <source>PKCS11 general error</source>
         <translation>PKCS11 general error</translation>
     </message>
@@ -2205,10 +2205,6 @@ ID-Card</translation>
     <message>
         <source>Sign certificate is not selected</source>
         <translation>Signing certificate is not selected</translation>
-    </message>
-    <message>
-        <source>Signing/decrypting is already in progress another window.</source>
-        <translation>Signing/decrypting is already in progress another window.</translation>
     </message>
     <message>
         <source>Failed to decrypt document</source>

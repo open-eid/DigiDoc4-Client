@@ -19,13 +19,17 @@
 
 #include "QCryptoBackend.h"
 
+#include "Application.h"
 #include "TokenData.h"
 #ifdef Q_OS_WIN
 #include "QCNG.h"
 #endif
 #include "QPKCS11.h"
+#include "QSigner.h"
+#include "QSmartCard.h"
 
-#include <QtCore/QCoreApplication>
+#include <QtCore/QReadWriteLock>
+#include <QtNetwork/QSslCertificate>
 #include <QtNetwork/QSslKey>
 
 // TODO: Port everything to the new OpenSSL API
@@ -35,20 +39,38 @@
 #include <openssl/obj_mac.h>
 #include <openssl/rsa.h>
 
+QCryptoBackend::~QCryptoBackend()
+{
+	qApp->signer()->sessionLock().unlock();
+	qApp->signer()->smartcard()->reloadCard(token, true);
+}
+
 std::expected<QCryptoBackend *,QCryptoBackend::Status>
 QCryptoBackend::getBackend(const TokenData& token) {
+	if(!qApp->signer()->sessionLock().tryLockForWrite(10 * 1000))
+		return std::unexpected(InProgress);
 #ifdef Q_OS_WIN
 	auto backend = std::make_unique<QCNG>();
 #else
 	auto backend = std::make_unique<QPKCS11>();
 #endif
-	backend->cert = token.cert();
+	backend->token = token;
+	if(backend->cert().isNull())
+		return backend.release();
+
 	Status status;
 	do {
 		status = backend->login(token);
 	} while (status == PinIncorrect);
-	if (status != PinOK) return std::unexpected(status);
+	if (status != PinOK)
+		return std::unexpected(status);
+
 	return backend.release();
+}
+
+QSslCertificate QCryptoBackend::cert() const
+{
+	return token.cert();
 }
 
 QList<TokenData>
@@ -69,6 +91,7 @@ QString QCryptoBackend::errorString(Status error)
 	case PinCanceled: return QCoreApplication::translate("QCryptoBackend", "PIN entry canceled");
 	case PinLocked: return QCoreApplication::translate("QCryptoBackend", "PIN locked");
 	case PinIncorrect: return QCoreApplication::translate("QCryptoBackend", "PIN incorrect");
+	case InProgress: return QCoreApplication::translate("QCryptoBackend", "Signing/decrypting is already in progress another window.");
 	case GeneralError: return QCoreApplication::translate("QCryptoBackend", "PKCS11 general error");
 	case DeviceError: return QCoreApplication::translate("QCryptoBackend", "PKCS11 device error");
 	default: return QCoreApplication::translate("QCryptoBackend", "Unknown error");
@@ -146,7 +169,7 @@ static EC_KEY_METHOD *get_ec_method(bool release = false)
 QSslKey
 QCryptoBackend::getKey() const
 {
-	QSslKey key = cert.publicKey();
+	QSslKey key = token.cert().publicKey();
 	if(!key.handle()) {
 		status = GeneralError;
 		return {};
@@ -172,4 +195,3 @@ QCryptoBackend::shutDown()
 	get_rsa_method(true);
 	get_ec_method(true);
 }
-

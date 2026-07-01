@@ -23,10 +23,7 @@
 #include "QPCSC.h"
 #include "QSmartCard.h"
 #include "TokenData.h"
-#ifdef Q_OS_WIN
-#include "QCNG.h"
-#endif
-#include "QPKCS11.h"
+#include "QCryptoBackend.h"
 #include "SslCertificate.h"
 #include "Utils.h"
 #include "dialogs/WarningDialog.h"
@@ -227,21 +224,6 @@ std::vector<unsigned char> QSigner::sign(const std::string &method, const std::v
 		throw e; \
 	}
 
-	if(!d->lock.tryLockForWrite(10 * 1000))
-		throwException(tr("Signing/decrypting is already in progress another window."), Exception::General)
-
-	if( d->sign.cert().isNull() )
-	{
-		d->lock.unlock();
-		throwException(tr("Signing certificate is not selected."), Exception::General)
-	}
-
-	auto unlock = qScopeGuard([this] {
-		d->lock.unlock();
-		// QSmartCard should also know that PIN2 info is updated
-		d->smartcard->reloadCard(d->smartcard->tokenData(), true);
-	});
-
 	auto val = QCryptoBackend::getBackend(d->sign);
 	if (!val) {
 		switch(val.error()) {
@@ -249,11 +231,15 @@ std::vector<unsigned char> QSigner::sign(const std::string &method, const std::v
 			throwException((tr("Failed to login token") + ' ' + QCryptoBackend::errorString(val.error())), Exception::PINCanceled);
 		case QCryptoBackend::PinLocked:
 			throwException((tr("Failed to login token") + ' ' + QCryptoBackend::errorString(val.error())), Exception::PINLocked);
+		case QCryptoBackend::InProgress:
+			throwException((tr("Failed to login token") + ' ' + QCryptoBackend::errorString(val.error())), Exception::General);
 		default:
 			throwException((tr("Failed to login token") + ' ' + QCryptoBackend::errorString(val.error())), Exception::PINFailed);
 		}
 	}
 	std::unique_ptr<QCryptoBackend> backend(val.value());
+	if(backend->cert().isNull())
+		throwException(tr("Signing certificate is not selected."), Exception::General)
 
 	QByteArray sig = waitFor(&QCryptoBackend::sign, backend.get(),
 		methodToNID(method), QByteArray::fromRawData((const char*)digest.data(), int(digest.size())));
@@ -269,6 +255,11 @@ std::vector<unsigned char> QSigner::sign(const std::string &method, const std::v
 		throwException(tr("Failed to sign document"), Exception::General)
 	}
 	return {sig.constBegin(), sig.constEnd()};
+}
+
+QReadWriteLock& QSigner::sessionLock() const
+{
+	return d->lock;
 }
 
 QSmartCard * QSigner::smartcard() const { return d->smartcard; }

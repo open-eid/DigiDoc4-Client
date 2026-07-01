@@ -23,12 +23,9 @@
 #include <digidocpp/crypto/Signer.h>
 
 #include <QCryptographicHash>
-#include <QCryptoBackend.h>
 
-#include <functional>
-
+class QReadWriteLock;
 class QSmartCard;
-class QSslKey;
 class TokenData;
 
 class QSigner final: public QThread, public digidoc::Signer
@@ -44,6 +41,7 @@ public:
 	void selectCard(const TokenData &token);
 	std::vector<unsigned char> sign( const std::string &method,
 		const std::vector<unsigned char> &digest) const final;
+	QReadWriteLock& sessionLock() const;
 	QSmartCard * smartcard() const;
 	TokenData tokenauth() const;
 	TokenData tokensign() const;

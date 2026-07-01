@@ -60,6 +60,7 @@ struct DDCryptoBackend final : public libcdoc::CryptoBackend {
 	static constexpr int PIN_CANCELED = -504;
 	static constexpr int PIN_INCORRECT = -505;
 	static constexpr int PIN_LOCKED = -506;
+	static constexpr int IN_PROGRESS = -507;
 	libcdoc::result_t decryptRSA(std::vector<uint8_t> &result,
 								 const std::vector<uint8_t> &data, bool oaep,
 								 unsigned int idx) final;

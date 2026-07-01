@@ -759,10 +759,6 @@
         <translation>Allkiri puudub</translation>
     </message>
     <message>
-        <source>PIN Incorrect</source>
-        <translation>Vale PIN</translation>
-    </message>
-    <message>
         <source>PIN Login failed</source>
         <translation>PIN-koodi valideerimine ebaõnnestus</translation>
     </message>
@@ -2161,6 +2157,10 @@ ID-kaardiga</translation>
         <translation>PIN on lukus</translation>
     </message>
     <message>
+        <source>Signing/decrypting is already in progress another window.</source>
+        <translation>Allkirjastamine/dekrüpteerimine on juba käimas teises aknas.</translation>
+    </message>
+    <message>
         <source>PKCS11 general error</source>
         <translation>PKCS11 üldine viga</translation>
     </message>
@@ -2205,10 +2205,6 @@ ID-kaardiga</translation>
     <message>
         <source>Sign certificate is not selected</source>
         <translation>Allkirjastamise sertifikaat ei ole valitud</translation>
-    </message>
-    <message>
-        <source>Signing/decrypting is already in progress another window.</source>
-        <translation>Allkirjastamine/dekrüpteerimine on juba käimas teises aknas.</translation>
     </message>
     <message>
         <source>Failed to decrypt document</source>

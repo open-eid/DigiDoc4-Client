@@ -238,8 +238,7 @@ struct QPKCS11::Private
 };
 
 QPKCS11::QPKCS11()
-	: QCryptoBackend()
-	, d(std::make_unique<Private>())
+	: d(std::make_unique<Private>())
 {
 }
 
@@ -466,7 +465,7 @@ QList<TokenData> QPKCS11::tokens()
 			auto key = d->findObject(session, CKO_PUBLIC_KEY, id);
 			if(key.size() != 1) // Workaround broken FIN pkcs11 drivers showing non-repu certificates in auth slot
 				continue;
-			TokenData t;
+			TokenData &t = list.emplace_back();
 			t.setCard(cert.type() & SslCertificate::EstEidType || cert.type() & SslCertificate::DigiIDType ?
 				toQString(token.serialNumber).trimmed() : cert.subjectInfo(QSslCertificate::CommonName) + "-" + cert.serialNumber());
 			t.setCert(cert);
@@ -487,7 +486,6 @@ QList<TokenData> QPKCS11::tokens()
 				d->f->C_GetMechanismList(slot, mech.data(), &count);
 				t.setData(QStringLiteral("PSS"), mech.contains(CKM_RSA_PKCS_PSS));
 			}
-			list.append(std::move(t));
 		}
 		d->f->C_CloseSession( session );
 	}
