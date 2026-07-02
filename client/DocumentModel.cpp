@@ -20,10 +20,12 @@
 #include "DocumentModel.h"
 
 #include "Application.h"
+#include "Configuration.h"
 #include "dialogs/FileDialog.h"
 #include "dialogs/WarningDialog.h"
 
 #include <QtCore/QJsonArray>
+#include <QtCore/QJsonObject>
 #include <QtCore/QFileInfo>
 #include <QtCore/QProcessEnvironment>
 
@@ -93,7 +95,11 @@ bool DocumentModel::verifyFile(const QString &f)
 			QStringLiteral("pps"), QStringLiteral("ppt"), QStringLiteral("pptx"), QStringLiteral("png"), QStringLiteral("jpg"), QStringLiteral("jpeg"), QStringLiteral("bmp"), QStringLiteral("ai"),
 			QStringLiteral("gif"), QStringLiteral("ico"), QStringLiteral("ps"), QStringLiteral("psd"), QStringLiteral("tif"), QStringLiteral("tiff"), QStringLiteral("csv")};
 
-	QJsonArray allowedExts = Application::confValue(QLatin1String("ALLOWED-EXTENSIONS")).toArray(defaultArray);
+#ifdef CONFIG_URL
+	auto allowedExts = qApp->conf()->rawObject().value(QLatin1String("ALLOWED-EXTENSIONS")).toArray(defaultArray);
+#else
+	auto allowedExts = defaultArray;
+#endif
 	if(allowedExts.contains(QJsonValue(QFileInfo(f).suffix().toLower())))
 		return true;
 	WarningDialog::create()
