@@ -22,7 +22,9 @@
 #include <QEventLoop>
 #include <QIODevice>
 #include <QTimer>
+
 #include <exception>
+#include <limits>
 #include <thread>
 
 namespace {
@@ -81,7 +83,7 @@ namespace {
 		return escaped;
 	}
 
-	inline qint64 copyIODevice(QIODevice *from, QIODevice *to, qint64 max = std::numeric_limits<qint64>::max())
+	inline qint64 copyIODevice(QIODevice *from, QIODevice *to, qint64 max = (std::numeric_limits<qint64>::max)())
 	{
 		std::array<char,16*1024> buf{};
 		qint64 size = 0, i = 0;
