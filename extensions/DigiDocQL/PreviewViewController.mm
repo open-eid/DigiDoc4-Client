@@ -100,7 +100,7 @@ public:
         NSISO8601DateFormatter *dfrom = [[NSISO8601DateFormatter alloc] init];
         NSDateFormatter *dto = [[NSDateFormatter alloc] init];
         [dto setTimeZone: [NSTimeZone defaultTimeZone]];
-        [dto setDateFormat:@"YYYY-MM-dd HH:mm:ss z"];
+        [dto setDateFormat:@"yyyy-MM-dd HH:mm:ss z"];
 
         NSMutableString *h = [NSMutableString stringWithString:@R"(
 <html><head><meta charset="UTF-8"><style>
