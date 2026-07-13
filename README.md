@@ -4,7 +4,7 @@
 
  * License: LGPL 2.1
  * &copy; Estonian Information System Authority
- * [Architecture of ID-software](http://open-eid.github.io)
+ * [Architecture of ID-software](https://open-eid.github.io)
 
 ## Building
 [![Build Status](https://github.com/open-eid/DigiDoc4-Client/workflows/CI/badge.svg?branch=master)](https://github.com/open-eid/DigiDoc4-Client/actions)
@@ -18,7 +18,7 @@
    * Add custom RIA repository to APT repository list
 
          curl https://installer.id.ee/media/install-scripts/C6C83D68.pub | gpg --dearmor | tee /etc/apt/trusted.gpg.d/ria-repository.gpg > /dev/null
-         echo "deb http://installer.id.ee/media/ubuntu/ $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/ria-repository.list
+         echo "deb https://installer.id.ee/media/ubuntu/ $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/ria-repository.list
          sudo apt update
 
    * Install
@@ -51,8 +51,8 @@
 
 1. Install dependencies from
    * [XCode](https://apps.apple.com/us/app/xcode/id497799835?mt=12)
-   * [http://www.cmake.org](http://www.cmake.org)
-   * [http://qt-project.org](http://qt-project.org)  
+   * <https://www.cmake.org>
+   * <https://qt-project.org>  
        Build universal binary of Qt using provided [prepare_osx_build_environment.sh](prepare_osx_build_environment.sh) script; by default Qt is built in the `~/cmake_builds` folder but alternate build path can be defined with the `-p` option.
    * [libdigidocpp-*.pkg](https://github.com/open-eid/libdigidocpp/releases)
 
@@ -64,7 +64,7 @@
 3. Configure
 
         cmake -B build -S . \
-          -DCMAKE_PREFIX_PATH=~/cmake_builds/Qt-6.11.1-OpenSSL \
+          -DCMAKE_PREFIX_PATH=~/cmake_builds/Qt-6.11.2-OpenSSL \
           -DOPENSSL_ROOT_DIR=~/cmake_build/OpenSSL \
           -DLDAP_ROOT=~/cmake_build/OpenLDAP \
           -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64"
@@ -82,8 +82,8 @@
 
 1. Install dependencies from
     * [Visual Studio Community 2022](https://www.visualstudio.com/downloads/)
-    * [http://www.cmake.org](http://www.cmake.org)
-    * [http://qt-project.org](http://qt-project.org)
+    * <https://www.cmake.org>
+    * <sqt-project.org>
     * [libdigidocpp-*.msi](https://github.com/open-eid/libdigidocpp/releases)
     * [vcpkg](https://vcpkg.io/)
 
@@ -95,7 +95,7 @@
 3. Configure
 
         cmake -G"NMAKE Makefiles" -B build -S . `
-          -DCMAKE_PREFIX_PATH=C:\Qt\6.11.1\msvc2022_64 `
+          -DCMAKE_PREFIX_PATH=C:\Qt\6.11.2\msvc2022_64 `
           -DLibDigiDocpp_ROOT="C:\Program Files (x86)\libdigidocpp" `
           -DVCPKG_MANIFEST_DIR=client/libcdoc
 

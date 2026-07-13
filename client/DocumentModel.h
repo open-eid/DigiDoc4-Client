@@ -35,7 +35,6 @@ public:
 	virtual void copyModel(DocumentModel *model);
 	virtual QString data(int row) const = 0;
 	virtual quint64 fileSize(int row) const = 0;
-	virtual QString mime(int row) const = 0;
 	virtual void open(int row);
 	virtual bool removeRow(int row) = 0;
 	virtual int rowCount() const = 0;
