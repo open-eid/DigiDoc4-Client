@@ -333,14 +333,6 @@ quint64 SDocumentModel::fileSize(int row) const
 	return doc->b->dataFiles().at(size_t(row))->fileSize();
 }
 
-QString SDocumentModel::mime(int row) const
-{
-	if(row >= rowCount())
-		return {};
-
-	return from(doc->b->dataFiles().at(size_t(row))->mediaType());
-}
-
 bool SDocumentModel::removeRow(int row)
 {
 	if(!doc->b)
@@ -368,6 +360,7 @@ QString SDocumentModel::save(int row, const QString &path) const
 		return {};
 	if(QFileInfo::exists(path))
 		return path;
+	auto keepAlive = FileDialog::keepAccessAlive(path);
 	doc->b->dataFiles().at(size_t(row))->saveAs(path.toStdString());
 	if(!QFileInfo::exists(path))
 		return {};
@@ -710,6 +703,7 @@ bool DigiDoc::saveAs(const QString &filename)
 {
 	try
 	{
+		auto keepAlive = FileDialog::keepAccessAlive(filename);
 		return waitFor([&] {
 			parentContainer ? parentContainer->save(to(filename)) : b->save(to(filename));
 			return true;

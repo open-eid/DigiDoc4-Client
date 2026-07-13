@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.22)
 if(NOT EXISTS ${CMAKE_SOURCE_DIR}/common/CMakeLists.txt)
     message(FATAL_ERROR "common submodule directory empty, did you 'git clone --recursive'?")
 endif()
-project(qdigidoc4 VERSION 4.11.1
+project(qdigidoc4 VERSION 4.12.0
     DESCRIPTION "DigiDoc4 application for digital signing and encryption"
     HOMEPAGE_URL https://github.com/open-eid/DigiDoc4-Client
 )
