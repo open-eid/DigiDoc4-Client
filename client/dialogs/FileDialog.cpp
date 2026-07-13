@@ -105,6 +105,27 @@ bool FileDialog::fileIsWritable( const QString &filename )
 	return result;
 }
 
+std::unique_ptr<QFile> FileDialog::keepAccessAlive(const QString &path, QIODevice::OpenMode mode)
+{
+#ifdef Q_OS_MACOS
+	// Qt 6.11's macOS sandbox file engine only keeps a user-selected path's
+	// security-scoped access active while some QFile instance for that exact
+	// path exists (not merely open). That covers files picked in a file dialog
+	// and files opened from Finder alike. Code that reads or writes the file
+	// without going through QFile (libdigidocpp, libcdoc, std::filesystem)
+	// bypasses that entirely, so callers doing raw I/O on such a path must keep
+	// the object this returns alive for the duration of that I/O.
+	auto file = std::make_unique<QFile>(path);
+	bool opened = file->open(mode);
+	Q_UNUSED(opened)
+	return file;
+#else
+	Q_UNUSED(path)
+	Q_UNUSED(mode)
+	return {};
+#endif
+}
+
 bool FileDialog::isSignedPDF(const QString &path)
 {
 	if(!path.endsWith(QLatin1String("pdf"), Qt::CaseInsensitive))
