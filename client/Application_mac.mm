@@ -19,13 +19,51 @@
 
 #include "Application.h"
 
-#import <AppKit/AppKit.h>
-#include <Security/Security.h>
+#include "dialogs/FileDialog.h"
+
+#include <QtCore/QFile>
 #include <QtCore/QUrl>
 #include <QtCore/QUrlQuery>
 #include <QtGui/QDesktopServices>
 
+#include <AppKit/AppKit.h>
+#include <Security/Security.h>
+
 using namespace Qt::StringLiterals;
+
+// Keeps the attachment's security-scoped access active until the mail composer has
+// taken it; the sandbox only lets Mail read a file the application has access to
+@interface MailAttachmentDelegate : NSObject <NSSharingServiceDelegate>
+- (instancetype)initWithPath:(const QString &)path;
+@end
+
+@implementation MailAttachmentDelegate {
+	std::unique_ptr<QFile> keepAlive;
+	MailAttachmentDelegate *retainSelf; // NSSharingService holds its delegate weakly
+}
+
+- (instancetype)initWithPath:(const QString &)path
+{
+	if(self = [super init])
+	{
+		keepAlive = FileDialog::keepAccessAlive(path, QFile::ReadOnly);
+		retainSelf = self;
+	}
+	return self;
+}
+
+- (void)sharingService:(NSSharingService *)sharingService didShareItems:(NSArray *)items
+{
+	keepAlive.reset();
+	retainSelf = nil;
+}
+
+- (void)sharingService:(NSSharingService *)sharingService didFailToShareItems:(NSArray *)items error:(NSError *)error
+{
+	keepAlive.reset();
+	retainSelf = nil;
+}
+@end
 
 static NSMutableDictionary *proxyCredentialsQuery()
 {
@@ -50,20 +88,6 @@ static auto fetchPaths(NSPasteboard *pboard)
 
 @implementation NSApplication (ApplicationObjC)
 
-- (void)appReopen:(NSAppleEventDescriptor *)event withReplyEvent:(NSAppleEventDescriptor *)replyEvent
-{
-	Q_UNUSED(event)
-	Q_UNUSED(replyEvent)
-	QApplication::postEvent( qApp, new REOpenEvent );
-}
-
-- (void)openClient:(NSPasteboard *)pboard userData:(NSString *)data error:(NSString **)error
-{
-	Q_UNUSED(data)
-	Q_UNUSED(error)
-	Application::showClient(fetchPaths(pboard));
-}
-
 - (void)signClient:(NSPasteboard *)pboard userData:(NSString *)data error:(NSString **)error
 {
 	Q_UNUSED(data)
@@ -85,26 +109,12 @@ void Application::addRecent( const QString &file )
 		[NSDocumentController.sharedDocumentController noteNewRecentDocumentURL:[NSURL fileURLWithPath:file.toNSString()]];
 }
 
-void Application::initMacEvents()
+void Application::initMacServices()
 {
-	static bool isInitalized = false;
-	if(isInitalized)
-		return;
-	[[NSAppleEventManager sharedAppleEventManager] setEventHandler:NSApp
-		andSelector:@selector(appReopen:withReplyEvent:)
-		forEventClass:kCoreEventClass
-		andEventID:kAEReopenApplication];
-	// reload /System/Library/CoreServices/pbs
-	// list /System/Library/CoreServices/pbs -dump_pboard
+	// NSServices declared in Info.plist
+	// re-register: /System/Library/CoreServices/pbs -flush
+	// list:        /System/Library/CoreServices/pbs -dump_pboard
 	[NSApp setServicesProvider:NSApp];
-	isInitalized = true;
-}
-
-void Application::deinitMacEvents()
-{
-	[NSAppleEventManager.sharedAppleEventManager
-		removeEventHandlerForEventClass:kCoreEventClass
-		andEventID:kAEReopenApplication];
 }
 
 void Application::mailTo( const QUrl &url )
@@ -113,8 +123,10 @@ void Application::mailTo( const QUrl &url )
 	NSSharingService *service = [NSSharingService sharingServiceNamed:NSSharingServiceNameComposeEmail];
 	if(service)
 	{
+		QString attachment = q.queryItemValue(u"attachment"_s);
 		service.subject = q.queryItemValue(u"subject"_s).toNSString();
-		NSURL *fileURL = [NSURL fileURLWithPath:q.queryItemValue(u"attachment"_s).toNSString()];
+		service.delegate = [[MailAttachmentDelegate alloc] initWithPath:attachment];
+		NSURL *fileURL = [NSURL fileURLWithPath:attachment.toNSString()];
 		[service performWithItems:@[fileURL]];
 		return;
 	}
@@ -125,21 +137,6 @@ QString Application::groupContainerPath()
 {
 	return QString::fromNSString([NSFileManager.defaultManager
 		containerURLForSecurityApplicationGroupIdentifier:@"group.ee.ria.qdigidoc4.tsl"].path);
-}
-
-Application::ProxyCredentials::ProxyCredentials(
-	QString host, QString port, QString user, QString password)
-	: host(std::move(host))
-	, port(std::move(port))
-	, user(std::move(user))
-	, password(std::move(password))
-{}
-
-Application::ProxyCredentials::ProxyCredentials(ProxyCredentials &&) noexcept = default;
-
-Application::ProxyCredentials::~ProxyCredentials()
-{
-	password.fill(QChar{});
 }
 
 std::optional<Application::ProxyCredentials> Application::proxyCredentials()
@@ -209,4 +206,17 @@ bool Application::setProxyCredentials(ProxyCredentials credentials)
 		return true;
 	qWarning() << "Failed to store the proxy credentials in Keychain:" << status;
 	return false;
+}
+
+Application::ProxyCredentials::ProxyCredentials(
+	QString host, QString port, QString user, QString password)
+	: host(std::move(host))
+	, port(std::move(port))
+	, user(std::move(user))
+	, password(std::move(password))
+{}
+
+Application::ProxyCredentials::~ProxyCredentials()
+{
+	password.fill(QChar{});
 }

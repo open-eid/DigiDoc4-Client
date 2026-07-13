@@ -65,11 +65,10 @@ QString FileDialog::createNewFileName(const QString &file, bool signature, QWidg
 	if(!QFile::exists(fileName) && fileIsWritable(fileName))
 		return fileName;
 #endif
-	fileName = FileDialog::getSaveFileName(parent, tr("Create %1").arg(type), fileName,
+	// An existing file is overwritten in place on saving, rather than removed here:
+	// on macOS that would invalidate the sandbox's security-scoped bookmark for it
+	return FileDialog::getSaveFileName(parent, tr("Create %1").arg(type), fileName,
 		QStringLiteral("%1 (*%2)").arg(capitalized, extension));
-	if(!fileName.isEmpty())
-		QFile::remove(fileName);
-	return fileName;
 }
 
 FileDialog::FileType FileDialog::detect(const QString &filename)
@@ -103,6 +102,27 @@ bool FileDialog::fileIsWritable( const QString &filename )
 	if( remove )
 		f.remove();
 	return result;
+}
+
+std::unique_ptr<QFile> FileDialog::keepAccessAlive(const QString &path, QIODevice::OpenMode mode)
+{
+#ifdef Q_OS_MACOS
+	// Qt 6.11's macOS sandbox file engine only keeps a user-selected path's
+	// security-scoped access active while some QFile instance for that exact
+	// path exists (not merely open). That covers files picked in a file dialog
+	// and files opened from Finder alike. Code that reads or writes the file
+	// without going through QFile (libdigidocpp, libcdoc, std::filesystem)
+	// bypasses that entirely, so callers doing raw I/O on such a path must keep
+	// the object this returns alive for the duration of that I/O.
+	auto file = std::make_unique<QFile>(path);
+	bool opened = file->open(mode);
+	Q_UNUSED(opened)
+	return file;
+#else
+	Q_UNUSED(path)
+	Q_UNUSED(mode)
+	return {};
+#endif
 }
 
 bool FileDialog::isSignedPDF(const QString &path)

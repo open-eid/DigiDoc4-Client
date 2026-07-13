@@ -140,7 +140,6 @@ void FileList::save(FileItem *item)
 
 		if(!dest.endsWith(QStringLiteral(".%1").arg(extension)) && !extension.isEmpty())
 			dest.append(QStringLiteral(".%1").arg(extension));
-		QFile::remove( dest );
 		documentModel->save(i, dest);
 	}
 }
@@ -159,7 +158,6 @@ void FileList::saveAll()
 		{
 			if(b == QMessageBox::YesToAll)
 			{
-				QFile::remove( dest );
 				documentModel->save( i, dest );
 				continue;
 			}
@@ -184,7 +182,7 @@ void FileList::saveAll()
 					continue;
 				break;
 			default:
-				QFile::remove(dest);
+				break;
 			}
 		}
 		documentModel->save( i, dest );

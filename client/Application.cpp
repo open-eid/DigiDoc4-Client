@@ -323,9 +323,8 @@ private:
 	std::optional<std::string> log;
 };
 
-class Application::Private
+struct Application::Private
 {
-public:
 	Configuration *conf {};
 	QAction		*closeAction {}, *newClientAction {}, *helpAction {};
 	std::unique_ptr<MacMenuBar> bar;
@@ -491,6 +490,7 @@ Application::Application( int &argc, char **argv )
 	connect(this, &Application::lastWindowClosed, this, [&]{ d->lastWindowTimer.start(10s); });
 
 #ifdef Q_OS_MAC
+	initMacServices();
 	d->bar = std::make_unique<MacMenuBar>();
 	d->bar->fileMenu()->addAction( d->newClientAction );
 	d->bar->fileMenu()->addAction( d->closeAction );
@@ -567,8 +567,6 @@ Application::~Application()
 		delete d;
 		return;
 	}
-#else
-	deinitMacEvents();
 #endif
 	QEventLoop e;
 	connect(this, &Application::TSLLoadingFinished, &e, &QEventLoop::quit);
@@ -665,13 +663,7 @@ QVariant Application::confValue( ConfParameter parameter, const QVariant &value 
 
 bool Application::event(QEvent *event)
 {
-	switch(int(event->type()))
-	{
-	case REOpenEvent::Type:
-		if( !activeWindow() )
-			showClient();
-		return true;
-	case QEvent::FileOpen:
+	if(event->type() == QEvent::FileOpen)
 	{
 		QString fileName = static_cast<QFileOpenEvent*>(event)->file().normalized(QString::NormalizationForm_C);
 #if QT_VERSION < QT_VERSION_CHECK(6, 5, 0)
@@ -681,14 +673,7 @@ bool Application::event(QEvent *event)
 #endif
 		return true;
 	}
-#ifdef Q_OS_MAC
-	// Load here because cocoa NSApplication overides events
-	case QEvent::ApplicationActivate:
-		initMacEvents();
-		return QApplication::event(event);
-#endif
-	default: return QApplication::event(event);
-	}
+	return QApplication::event(event);
 }
 
 void Application::initDiagnosticConf()
