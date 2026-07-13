@@ -44,7 +44,7 @@
 #define SCARD_CTL_CODE(code) (0x42000000 + (code))
 #endif
 
-// http://pcscworkgroup.com/Download/Specifications/pcsc10_v2.02.09.pdf
+// https://pcscworkgroup.com/Download/Specifications/pcsc10_v2.02.09.pdf
 // http://ludovic.rousseau.free.fr/softwares/pcsc-lite/SecurePIN%20discussion%20v5.pdf
 #define CM_IOCTL_GET_FEATURE_REQUEST SCARD_CTL_CODE(3400)
 
