@@ -18,7 +18,6 @@
  */
 
 #include "MobileProgress.h"
-#include "ui_MobileProgress.h"
 
 #include "Application.h"
 #include "CheckConnection.h"
@@ -38,18 +37,27 @@
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkRequest>
 #include <QtNetwork/QNetworkReply>
+#include <QtWidgets/QAbstractButton>
+#include <QtWidgets/QDialog>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QProgressBar>
 
 Q_LOGGING_CATEGORY(MIDLog,"RIA.MID")
 
 using namespace digidoc;
 
-class MobileProgress::Private final: public QDialog, public Ui::MobileProgress
+class MobileProgress::Private final: public QObject
 {
 	Q_OBJECT
 public:
-	using QDialog::QDialog;
-	void reject() final { l.exit(QDialog::Rejected); }
-	QTimeLine *statusTimer{};
+	explicit Private(const SigningProgressUI &pui, QObject *parent = nullptr)
+		: QObject(parent)
+		, ui(pui)
+	{}
+
+	const SigningProgressUI &ui;
+
+	QTimeLine *statusTimer {};
 	QNetworkAccessManager *manager {};
 	QNetworkRequest req;
 	QString ssid, cell, sessionID;
@@ -62,38 +70,25 @@ public:
 	QString URL = !UUID.isNull() && useCustomUUID ? Settings::MID_SK_URL : Settings::MID_PROXY_URL;
 };
 
-MobileProgress::MobileProgress(QWidget *parent)
-	: d(new Private(parent))
+MobileProgress::MobileProgress(const SigningProgressUI &pui)
+	: d(new Private(pui))
 {
 	const_cast<QLoggingCategory&>(MIDLog()).setEnabled(QtDebugMsg,
 		QFile::exists(QStringLiteral("%1/%2.log").arg(QDir::tempPath(), QApplication::applicationName())));
-	d->setWindowFlags(Qt::Dialog|Qt::CustomizeWindowHint);
-	d->setupUi(d);
-	d->code->setBuddy(d->signProgressBar);
-	d->code->clear();
-#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
-const auto styleSheet = R"(QProgressBar {
-background-color: #d3d3d3;
-border-style: solid;
-border-radius: 3px;
-min-height: 6px;
-max-height: 6px;
-margin: 15px 5px;
-}
-QProgressBar::chunk {
-border-style: solid;
-border-radius: 3px;
-background-color: #007aff;
-})";
-	d->signProgressBar->setStyleSheet(styleSheet);
-#endif
-	QObject::connect(d->cancel, &QPushButton::clicked, d, &QDialog::reject);
+	d->ui.bar->setMaximum(75);
+	d->ui.bar->setValue(0);
+	d->ui.code->setBuddy(d->ui.bar);
+	d->ui.code->clear();
+	d->ui.info->clear();
+	QObject::connect(pui.cancel, &QAbstractButton::clicked, [this]() {
+		d->l.exit(QDialog::Rejected);
+	});
 
-	d->statusTimer = new QTimeLine(d->signProgressBar->maximum() * 1000, d);
+	d->statusTimer = new QTimeLine(d->ui.bar->maximum() * 1000, d);
 	d->statusTimer->setEasingCurve(QEasingCurve::Linear);
-	d->statusTimer->setFrameRange(d->signProgressBar->minimum(), d->signProgressBar->maximum());
-	QObject::connect(d->statusTimer, &QTimeLine::frameChanged, d->signProgressBar, &QProgressBar::setValue);
-	QObject::connect(d->statusTimer, &QTimeLine::finished, d, &QDialog::reject);
+	d->statusTimer->setFrameRange(d->ui.bar->minimum(), d->ui.bar->maximum());
+	QObject::connect(d->statusTimer, &QTimeLine::frameChanged, d->ui.bar, &QProgressBar::setValue);
+	QObject::connect(d->statusTimer, &QTimeLine::finished, pui.cancel, &QAbstractButton::click);
 
 	d->req.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 	d->manager = CheckConnection::setupNAM(d->req);
@@ -103,8 +98,7 @@ background-color: #007aff;
 		auto returnError = [=, this](const QString &err, const QString &details = {}) {
 			qCWarning(MIDLog) << err;
 			d->statusTimer->stop();
-			d->hide();
-			auto *dlg = WarningDialog::create(d->parentWidget())->withText(err)->withDetails(details)
+			auto *dlg = WarningDialog::create(d->ui.errorParent)->withText(err)->withDetails(details)
 				->withTitle(QCoreApplication::translate("DigiDoc", "Failed to sign container"));
 			QObject::connect(dlg, &WarningDialog::finished, &d->l, &QEventLoop::exit);
 			dlg->open();
@@ -169,7 +163,6 @@ background-color: #007aff;
 			try {
 				QByteArray b64 = QByteArray::fromBase64(result.value(QLatin1String("cert")).toString().toUtf8());
 				d->cert = X509Cert((const unsigned char*)b64.constData(), size_t(b64.size()), X509Cert::Der);
-				d->hide();
 				d->l.exit(QDialog::Accepted);
 			} catch(const Exception &e) {
 				returnError(tr("Failed to parse certificate: ") + QString::fromStdString(e.msg()));
@@ -186,7 +179,6 @@ background-color: #007aff;
 				QByteArray b64 = QByteArray::fromBase64(
 					result.value(QLatin1String("signature")).toObject().value(QLatin1String("value")).toString().toUtf8());
 				d->signature.assign(b64.cbegin(), b64.cend());
-				d->hide();
 				d->l.exit(QDialog::Accepted);
 			}
 			else if(endResult == QLatin1String("NOT_MID_CLIENT") || endResult == QLatin1String("NOT_FOUND") || endResult == QLatin1String("NOT_ACTIVE"))
@@ -227,7 +219,7 @@ bool MobileProgress::init(const QString &ssid, const QString &cell)
 {
 	if(!d->UUID.isEmpty() && QUuid(d->UUID).isNull())
 	{
-		WarningDialog::create(d->parentWidget())
+		WarningDialog::create(d->ui.errorParent)
 			->withText(tr("Failed to send request. Check your %1 service access settings.").arg(tr("mobile-ID")))
 			->withTitle(QCoreApplication::translate("DigiDoc", "Failed to sign container"))
 			->open();
@@ -235,8 +227,8 @@ bool MobileProgress::init(const QString &ssid, const QString &cell)
 	}
 	d->ssid = ssid;
 	d->cell = '+' + cell;
-	d->info->setText(tr("Signing in process"));
-	d->code->setAccessibleName(d->info->text());
+	d->ui.info->setText(tr("Signing in process"));
+	d->ui.code->setAccessibleName(d->ui.info->text());
 	d->sessionID.clear();
 	QByteArray data = QJsonDocument(QJsonObject::fromVariantHash(QVariantHash{
 		{"relyingPartyUUID", d->UUID.isEmpty() ? QStringLiteral("00000000-0000-0000-0000-000000000000") : d->UUID},
@@ -268,9 +260,9 @@ std::vector<unsigned char> MobileProgress::sign(const std::string &method, const
 	else
 		throw Exception(__FILE__, __LINE__, "Unsupported digest method");
 
-	d->code->setText(QStringLiteral("%1").arg((digest.front() >> 2) << 7 | (digest.back() & 0x7F), 4, 10, QChar('0')));
-	d->info->setText(tr("Make sure control code matches with one in phone screen and enter mobile-ID PIN2-code."));
-	d->code->setAccessibleName(QStringLiteral("%1 %2. %3").arg(d->label->text(), d->code->text(), d->info->text()));
+	d->ui.code->setText(QStringLiteral("%1").arg((digest.front() >> 2) << 7 | (digest.back() & 0x7F), 4, 10, QChar('0')));
+	d->ui.info->setText(tr("Make sure control code matches with one in phone screen and enter mobile-ID PIN2-code."));
+	d->ui.code->setAccessibleName(QStringLiteral("%1 %2. %3").arg(d->ui.label->text(), d->ui.code->text(), d->ui.info->text()));
 
 	QByteArray data = QJsonDocument(QJsonObject::fromVariantHash({
 		{"relyingPartyUUID", d->UUID.isEmpty() ? QStringLiteral("00000000-0000-0000-0000-000000000000") : d->UUID},
@@ -289,9 +281,6 @@ std::vector<unsigned char> MobileProgress::sign(const std::string &method, const
 	qCDebug(MIDLog).noquote() << d->req.url() << data;
 	d->manager->post(d->req, data);
 	d->statusTimer->start();
-	d->adjustSize();
-	WaitDialogHider hider;
-	d->show();
 	switch(d->l.exec())
 	{
 	case QDialog::Accepted: return d->signature;
