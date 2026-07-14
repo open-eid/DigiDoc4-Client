@@ -26,17 +26,15 @@
 #include "DigiDoc.h"
 #include "QCryptoBackend.h"
 #include "QPCSC.h"
-#include "QSigner.h"
 #include "Settings.h"
 #include "SslCertificate.h"
 #include "TokenData.h"
 #include "effects/FadeInNotification.h"
 #include "effects/Overlay.h"
 #include "dialogs/FileDialog.h"
-#include "dialogs/MobileProgress.h"
 #include "dialogs/RoleAddressDialog.h"
 #include "dialogs/SettingsDialog.h"
-#include "dialogs/SmartIDProgress.h"
+#include "dialogs/SigningDialog.h"
 #include "dialogs/WaitDialog.h"
 #include "dialogs/WarningDialog.h"
 #include "widgets/CardPopup.h"
@@ -221,7 +219,6 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *event)
 {
 	if(auto *cardPopup = findChild<CardPopup*>())
 		cardPopup->deleteLater();
-	ui->signContainerPage->clearPopups();
 	QWidget::mouseReleaseEvent(event);
 }
 
@@ -286,30 +283,12 @@ void MainWindow::navigateToPage( Pages page, const QStringList &files, bool crea
 		selectPage(page);
 }
 
-void MainWindow::onSignAction(int action, const QString &idCode, const QString &info2)
+void MainWindow::onSignAction(int action)
 {
 	switch(action)
 	{
 	case SignatureAdd:
-	case SignatureToken:
-		sign([this](const QString &city, const QString &state, const QString &zip, const QString &country, const QString &role) {
-			QSigner signer(qApp->cryptoManager()->tokensign());
-			return digiDoc->sign(city, state, zip, country, role, &signer);
-		});
-		break;
-	case SignatureMobile:
-		sign([this, idCode, info2](const QString &city, const QString &state, const QString &zip, const QString &country, const QString &role) {
-			MobileProgress m(this);
-			return m.init(idCode, info2) &&
-				digiDoc->sign(city, state, zip, country, role, &m);
-		});
-		break;
-	case SignatureSmartID:
-		sign([this, idCode, info2](const QString &city, const QString &state, const QString &zip, const QString &country, const QString &role) {
-			SmartIDProgress s(this);
-			return s.init(info2, idCode, digiDoc->fileName()) &&
-				digiDoc->sign(city, state, zip, country, role, &s);
-		});
+		sign();
 		break;
 	case ContainerClearWarning:
 		ui->signature->warningIcon(false);
@@ -362,7 +341,7 @@ void MainWindow::convertToCDoc()
 	FadeInNotification::success(ui->topBar, tr("Converted to crypto container!"));
 }
 
-void MainWindow::onCryptoAction(int action, const QString &/*id*/, const QString &/*phone*/)
+void MainWindow::onCryptoAction(int action)
 {
 	switch(action)
 	{
@@ -555,12 +534,11 @@ void MainWindow::showSettings(int page)
 	dlg->open();
 }
 
-template<typename F>
-void MainWindow::sign(F &&sign)
+void MainWindow::sign()
 {
-	if(!CheckConnection().check())
+	if(CheckConnection check; !check.check())
 	{
-		FadeInNotification::error(ui->topBar, tr("Check internet connection"));
+		FadeInNotification::error(ui->topBar, check.errorString());
 		return;
 	}
 
@@ -568,28 +546,34 @@ void MainWindow::sign(F &&sign)
 	if(RoleAddressDialog(this).get(city, country, state, zip, role) == QDialog::Rejected)
 		return;
 
-	WaitDialogHolder waitDialog(this, tr("Signing"));
 	if(digiDoc->isPDF())
 	{
-		QString wrappedFile = digiDoc->fileName();
-		if(!wrap(wrappedFile, true))
+		QString pdfFile = digiDoc->fileName();
+		if(!wrap(pdfFile, true))
 			return;
 
-		if(!sign(city, state, zip, country, role))
+		SigningDialog dlg(digiDoc.get(), ui->signContainerPage);
+		dlg.setRoleAddress(city, country, state, zip, role);
+		if(dlg.exec() != QDialog::Accepted)
 		{
 			digiDoc.reset();
-			openFiles({std::move(wrappedFile)});
+			openFiles({std::move(pdfFile)});
 			return;
 		}
 	}
-	else if(!sign(city, state, zip, country, role))
-		return;
+	else
+	{
+		SigningDialog dlg(digiDoc.get(), ui->signContainerPage);
+		dlg.setRoleAddress(city, country, state, zip, role);
+		if(dlg.exec() != QDialog::Accepted)
+			return;
+	}
+	WaitDialogHolder waitDialog(this, tr("Signing"));
 
 	if(!digiDoc->save())
 		return;
 
 	ui->signContainerPage->transition(digiDoc.get());
-
 	FadeInNotification::success(ui->topBar, tr("The container has been successfully signed!"));
 }
 

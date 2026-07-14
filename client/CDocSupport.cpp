@@ -196,12 +196,13 @@ DDCryptoBackend::getLastErrorStr(libcdoc::result_t code) const
 static bool
 checkConnection()
 {
-	if(CheckConnection().check()) {
+	CheckConnection check;
+	if(check.check()) {
 		return true;
 	}
-	return dispatchToMain([] {
+	return dispatchToMain([check] {
 		FadeInNotification::error(Application::mainWindow()->findChild<QWidget*>(QStringLiteral("topBar")),
-								  QCoreApplication::translate("MainWindow", "Check internet connection"));
+								  check.errorString());
 		return false;
 	});
 }

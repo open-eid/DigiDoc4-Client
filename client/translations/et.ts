@@ -249,6 +249,17 @@
     </message>
 </context>
 <context>
+    <name>CardListItem</name>
+    <message>
+        <source>Issuer</source>
+        <translation>Väljaandja</translation>
+    </message>
+    <message>
+        <source>Valid to</source>
+        <translation>Kehtib kuni</translation>
+    </message>
+</context>
+<context>
     <name>CardWidget</name>
     <message>
         <source>ID-card</source>
@@ -456,8 +467,8 @@
         <translation>Kontrolli proksi kasutajanime ja parooli</translation>
     </message>
     <message>
-        <source>Cannot connect to certificate status service!</source>
-        <translation>Kehtivuskinnitusteenus ei ole kättesaadav!</translation>
+        <source>Check internet connection</source>
+        <translation>Kontrolli internetiühendust</translation>
     </message>
 </context>
 <context>
@@ -476,10 +487,6 @@
     <message>
         <source>Container:</source>
         <translation>Ümbrik:</translation>
-    </message>
-    <message>
-        <source>The document has already been signed by you</source>
-        <translation>Dokument on Sinu poolt juba allkirjastatud</translation>
     </message>
     <message>
         <source>DigiDoc4 Client</source>
@@ -552,10 +559,6 @@
     <message>
         <source>Sign</source>
         <translation>Allkirjasta</translation>
-    </message>
-    <message>
-        <source>Continue signing</source>
-        <translation>Jätka allkirjastamisega</translation>
     </message>
     <message>
         <source>Encrypting</source>
@@ -1348,29 +1351,6 @@ LDAP serveriga ei saa ühendust.</translation>
 <context>
     <name>MainAction</name>
     <message>
-        <source>Token selection</source>
-        <comment>accessible</comment>
-        <translation>Vali vahend</translation>
-    </message>
-    <message>
-        <source>Sign with
-Mobile-ID</source>
-        <translation>Allkirjasta
-Mobiil-ID’ga</translation>
-    </message>
-    <message>
-        <source>Sign with
-Smart-ID</source>
-        <translation>Allkirjasta
-Smart-ID’ga</translation>
-    </message>
-    <message>
-        <source>Sign with
-E-Seal</source>
-        <translation>Allkirjasta
-E-templiga</translation>
-    </message>
-    <message>
         <source>Encrypt</source>
         <translation>Krüpteeri</translation>
     </message>
@@ -1379,22 +1359,14 @@ E-templiga</translation>
         <translation>Dekrüpteeri</translation>
     </message>
     <message>
-        <source>Decrypt with
-ID-Card</source>
-        <translation>Dekrüpteeri
-ID-kaardiga</translation>
+        <source>Sign</source>
+        <translation>Allkirjasta</translation>
     </message>
     <message>
         <source>Encrypt
 long-term</source>
         <translation>Krüpteeri
 säilitamiseks</translation>
-    </message>
-    <message>
-        <source>Sign with
-ID-Card</source>
-        <translation>Allkirjasta
-ID-kaardiga</translation>
     </message>
 </context>
 <context>
@@ -1484,10 +1456,6 @@ ID-kaardiga</translation>
         <translation>Allkirjastamine</translation>
     </message>
     <message>
-        <source>Check internet connection</source>
-        <translation>Kontrolli internetiühendust</translation>
-    </message>
-    <message>
         <source>Load file from disk for signing or verifying</source>
         <comment>accessible</comment>
         <translation>Vali fail kettalt allkirjastamiseks või kontrollimiseks</translation>
@@ -1562,49 +1530,6 @@ ID-kaardiga</translation>
     </message>
 </context>
 <context>
-    <name>MobileDialog</name>
-    <message>
-        <source>Enter your phone number to sign with mobile-ID</source>
-        <translation>&lt;b&gt;Sisesta oma telefoninumber&lt;br/&gt;mobiil-IDga allkirjastamiseks&lt;/b&gt;</translation>
-    </message>
-    <message>
-        <source>Remember me</source>
-        <translation>Pea mind meeles</translation>
-    </message>
-    <message>
-        <source>Personal code is not valid</source>
-        <translation>Isikukood pole kehtiv</translation>
-    </message>
-    <message>
-        <source>Phone number is not entered</source>
-        <translation>Telefoninumber pole sisestatud</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Katkesta</translation>
-    </message>
-    <message>
-        <source>Sign</source>
-        <translation>Allkirjastan</translation>
-    </message>
-    <message>
-        <source>Country code and phone number</source>
-        <translation>Riigikood ja telefoninumber</translation>
-    </message>
-    <message>
-        <source>Personal code</source>
-        <translation>Isikukood</translation>
-    </message>
-    <message>
-        <source>Invalid country code</source>
-        <translation>Vigane riigikood</translation>
-    </message>
-    <message>
-        <source>Mobile-ID</source>
-        <translation>Mobiil-ID</translation>
-    </message>
-</context>
-<context>
     <name>MobileProgress</name>
     <message>
         <source>Signing in process</source>
@@ -1631,20 +1556,8 @@ ID-kaardiga</translation>
         <translation>Veendu kontrollkoodi õigsuses ja sisesta telefonil mobiil-ID PIN2-kood.</translation>
     </message>
     <message>
-        <source>Control code:</source>
-        <translation>Kontrollkood:</translation>
-    </message>
-    <message>
         <source>SSL handshake failed. Check the proxy settings of your computer or software upgrades.</source>
         <translation>SSL ühenduskanali loomine ebaõnnestus. Kontrolli arvuti puhverserveri seadeid või tarkvara uuendusi.</translation>
-    </message>
-    <message>
-        <source>%v sec</source>
-        <translation>%v sek</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Katkesta</translation>
     </message>
     <message>
         <source>%1 service has encountered technical errors. Please try again later.</source>
@@ -2781,22 +2694,26 @@ Täiendavad litsentsid ja komponendid</translation>
     </message>
 </context>
 <context>
-    <name>SmartIDDialog</name>
+    <name>SigningDialog</name>
+    <message>
+        <source>Sign document</source>
+        <translation>Allkirjasta dokument</translation>
+    </message>
+    <message>
+        <source>Choose signing method</source>
+        <translation>Vali allkirjastamise meetod</translation>
+    </message>
+    <message>
+        <source>Country code and phone number</source>
+        <translation>Riigikood ja telefoninumber</translation>
+    </message>
     <message>
         <source>Personal code</source>
         <translation>Isikukood</translation>
     </message>
     <message>
-        <source>Enter your personal code to sign with Smart-ID</source>
-        <translation>Sisesta oma isikukood Smart-IDga allkirjastamiseks</translation>
-    </message>
-    <message>
         <source>Remember me</source>
         <translation>Pea mind meeles</translation>
-    </message>
-    <message>
-        <source>Personal code is not valid</source>
-        <translation>Isikukood pole kehtiv</translation>
     </message>
     <message>
         <source>Country</source>
@@ -2820,7 +2737,43 @@ Täiendavad litsentsid ja komponendid</translation>
     </message>
     <message>
         <source>Sign</source>
-        <translation>Allkirjastan</translation>
+        <translation>Allkirjasta</translation>
+    </message>
+    <message>
+        <source>Control code:</source>
+        <translation>Kontrollkood:</translation>
+    </message>
+    <message>
+        <source>ID-card</source>
+        <translation>ID-kaart</translation>
+    </message>
+    <message>
+        <source>Mobile-ID</source>
+        <translation>Mobiil-ID</translation>
+    </message>
+    <message>
+        <source>Smart-ID</source>
+        <translation>Smart-ID</translation>
+    </message>
+    <message>
+        <source>Personal code is not valid</source>
+        <translation>Isikukood pole kehtiv</translation>
+    </message>
+    <message>
+        <source>Phone number is not entered</source>
+        <translation>Telefoninumber pole sisestatud</translation>
+    </message>
+    <message>
+        <source>Invalid country code</source>
+        <translation>Vigane riigikood</translation>
+    </message>
+    <message>
+        <source>The document has already been signed by you</source>
+        <translation>Dokument on Sinu poolt juba allkirjastatud</translation>
+    </message>
+    <message>
+        <source>Continue signing</source>
+        <translation>Jätka allkirjastamisega</translation>
     </message>
 </context>
 <context>
