@@ -431,9 +431,9 @@ Application::Application( int &argc, char **argv )
 	loadTranslation(Settings::LANGUAGE);
 
 	// Clear obsolete registriy settings
+	Settings::CDOC2_NOTIFICATION.clear();
 #ifndef Q_OS_DARWIN
 	Settings::DEFAULT_DIR.clear();
-	Settings::CDOC2_NOTIFICATION.clear();
 #endif
 
 	// Actions
