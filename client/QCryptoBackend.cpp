@@ -20,17 +20,21 @@
 #include "QCryptoBackend.h"
 
 #include "Application.h"
-#include "TokenData.h"
 #ifdef Q_OS_WIN
 #include "QCNG.h"
 #endif
+#include "QPCSC.h"
 #include "QPKCS11.h"
-#include "QSigner.h"
 #include "QSmartCard.h"
+#include "SslCertificate.h"
 
+#include <QtCore/QLoggingCategory>
+#include <QtCore/QMutex>
 #include <QtCore/QReadWriteLock>
-#include <QtNetwork/QSslCertificate>
+#include <QtCore/QWaitCondition>
 #include <QtNetwork/QSslKey>
+
+static Q_LOGGING_CATEGORY(CryptoLog, "qdigidoc4.QCryptoManager")
 
 // TODO: Port everything to the new OpenSSL API
 #define OPENSSL_SUPPRESS_DEPRECATED
@@ -39,15 +43,31 @@
 #include <openssl/obj_mac.h>
 #include <openssl/rsa.h>
 
+struct QCryptoManager::Private
+{
+	QSmartCard smartcard;
+	TokenData auth, sign;
+	QList<TokenData> cache;
+	QReadWriteLock operationLock;
+	QReadWriteLock lock;
+	QMutex sleepMutex;
+	QWaitCondition sleepCond;
+
+	RSA_METHOD *rsa_method = RSA_meth_dup(RSA_get_default_method());
+	EC_KEY_METHOD *ec_method = EC_KEY_METHOD_new(EC_KEY_get_default_method());
+};
+
 QCryptoBackend::~QCryptoBackend()
 {
-	qApp->signer()->sessionLock().unlock();
-	qApp->signer()->smartcard()->reloadCard(token, true);
+	auto *manager = qApp->cryptoManager();
+	manager->smartcard()->reloadCard(token, true);
+	manager->d->operationLock.unlock();
+	manager->d->sleepCond.wakeAll();
 }
 
 std::expected<QCryptoBackend *,QCryptoBackend::Status>
 QCryptoBackend::getBackend(const TokenData& token) {
-	if(!qApp->signer()->sessionLock().tryLockForWrite(10 * 1000))
+	if(!qApp->cryptoManager()->d->operationLock.tryLockForWrite(10 * 1000))
 		return std::unexpected(InProgress);
 #ifdef Q_OS_WIN
 	auto backend = std::make_unique<QCNG>();
@@ -73,28 +93,18 @@ QSslCertificate QCryptoBackend::cert() const
 	return token.cert();
 }
 
-QList<TokenData>
-QCryptoBackend::getTokens()
-{
-#ifdef Q_OS_WIN
-	return QCNG::tokens();
-#else
-	return QPKCS11::tokens();
-#endif
-}
-
 QString QCryptoBackend::errorString(Status error)
 {
 	switch( error )
 	{
 	case PinOK: return QString();
-	case PinCanceled: return QCoreApplication::translate("QCryptoBackend", "PIN entry canceled");
-	case PinLocked: return QCoreApplication::translate("QCryptoBackend", "PIN locked");
-	case PinIncorrect: return QCoreApplication::translate("QCryptoBackend", "PIN incorrect");
-	case InProgress: return QCoreApplication::translate("QCryptoBackend", "Signing/decrypting is already in progress another window.");
-	case GeneralError: return QCoreApplication::translate("QCryptoBackend", "PKCS11 general error");
-	case DeviceError: return QCoreApplication::translate("QCryptoBackend", "PKCS11 device error");
-	default: return QCoreApplication::translate("QCryptoBackend", "Unknown error");
+	case PinCanceled: return tr("PIN entry canceled");
+	case PinLocked: return tr("PIN locked");
+	case PinIncorrect: return tr("PIN incorrect");
+	case InProgress: return tr("Signing/decrypting is already in progress another window.");
+	case GeneralError: return tr("PKCS11 general error");
+	case DeviceError: return tr("PKCS11 device error");
+	default: return tr("Unknown error");
 	}
 }
 
@@ -133,39 +143,6 @@ ecdsa_do_sign(const unsigned char *dgst, int dgst_len, const BIGNUM * /*inv*/, c
 	return sig;
 }
 
-static RSA_METHOD *get_rsa_method(bool release = false)
-{
-	static RSA_METHOD *method = nullptr;
-	if (!method && !release) {
-		method = RSA_meth_dup(RSA_get_default_method());
-		RSA_meth_set1_name(method, "QSmartCard");
-		RSA_meth_set_sign(method, rsa_sign);
-	} else if (method && release) {
-		RSA_meth_free(method);
-		method = nullptr;
-	}
-	return method;
-}
-
-static EC_KEY_METHOD *get_ec_method(bool release = false)
-{
-	static EC_KEY_METHOD *method = nullptr;
-	if(!method && !release) {
-		method = EC_KEY_METHOD_new(EC_KEY_get_default_method());
-		using EC_KEY_sign = int (*)(int type, const unsigned char *dgst, int dlen, unsigned char *sig,
-			unsigned int *siglen, const BIGNUM *kinv, const BIGNUM *r, EC_KEY *eckey);
-		using EC_KEY_sign_setup = int (*)(EC_KEY *eckey, BN_CTX *ctx_in, BIGNUM **kinvp, BIGNUM **rp);
-		EC_KEY_sign sign = nullptr;
-		EC_KEY_sign_setup sign_setup = nullptr;
-		EC_KEY_METHOD_get_sign(method, &sign, &sign_setup, nullptr);
-		EC_KEY_METHOD_set_sign(method, sign, sign_setup, ecdsa_do_sign);
-	} else if (method && release) {
-		EC_KEY_METHOD_free(method);
-		method = nullptr;
-	}
-	return method;
-}
-
 QSslKey
 QCryptoBackend::getKey() const
 {
@@ -174,24 +151,172 @@ QCryptoBackend::getKey() const
 		status = GeneralError;
 		return {};
 	}
+	auto *manager = qApp->cryptoManager();
 	if(key.algorithm() == QSsl::Ec)
 	{
 		auto *ec = (EC_KEY*)key.handle();
-		EC_KEY_set_method(ec, get_ec_method());
+		EC_KEY_set_method(ec, manager->d->ec_method);
 		EC_KEY_set_ex_data(ec, 0, (void *) this);
 	}
 	else
 	{
 		RSA *rsa = (RSA*)key.handle();
-		RSA_set_method(rsa, get_rsa_method());
+		RSA_set_method(rsa, manager->d->rsa_method);
 		RSA_set_ex_data(rsa, 0, (void *) this);
 	}
 	return key;
 }
 
-void
-QCryptoBackend::shutDown()
+QCryptoManager::QCryptoManager()
+	: d(new Private)
 {
-	get_rsa_method(true);
-	get_ec_method(true);
+	RSA_meth_set1_name(d->rsa_method, "QSmartCard");
+	RSA_meth_set_sign(d->rsa_method, rsa_sign);
+	using EC_KEY_sign = int (*)(int type, const unsigned char *dgst, int dlen, unsigned char *sig,
+		unsigned int *siglen, const BIGNUM *kinv, const BIGNUM *r, EC_KEY *eckey);
+	using EC_KEY_sign_setup = int (*)(EC_KEY *eckey, BN_CTX *ctx_in, BIGNUM **kinvp, BIGNUM **rp);
+	EC_KEY_sign sign = nullptr;
+	EC_KEY_sign_setup sign_setup = nullptr;
+	EC_KEY_METHOD_get_sign(d->ec_method, &sign, &sign_setup, nullptr);
+	EC_KEY_METHOD_set_sign(d->ec_method, sign, sign_setup, ecdsa_do_sign);
+
+	connect(&QPCSC::instance(), &QPCSC::cardChanged, this, [this] {
+		qCDebug(CryptoLog) << "Card change detected";
+		d->sleepCond.wakeAll();
+	});
+	start();
+	QPCSC::instance().start();
+}
+
+QCryptoManager::~QCryptoManager()
+{
+	requestInterruption();
+	d->sleepCond.wakeAll();
+	wait();
+	EC_KEY_METHOD_free(d->ec_method);
+	RSA_meth_free(d->rsa_method);
+	delete d;
+}
+
+void QCryptoManager::run()
+{
+	while(!isInterruptionRequested())
+	{
+		refresh();
+		QMutexLocker locker(&d->sleepMutex);
+		if(isInterruptionRequested())
+			break;
+		d->sleepCond.wait(&d->sleepMutex, 5000);
+	}
+}
+
+QList<TokenData> QCryptoManager::cache() const { QReadLocker locker(&d->lock); return d->cache; }
+QSmartCard *QCryptoManager::smartcard() const { return &d->smartcard; }
+TokenData QCryptoManager::tokenauth() const { QReadLocker locker(&d->lock); return d->auth; }
+TokenData QCryptoManager::tokensign() const { QReadLocker locker(&d->lock); return d->sign; }
+
+void QCryptoManager::selectCard(const TokenData &token)
+{
+	bool isSign = SslCertificate(token.cert()).keyUsage().contains(SslCertificate::NonRepudiation);
+	TokenData other;
+	{
+		QWriteLocker locker(&d->lock);
+		if(isSign)
+			d->sign = token;
+		else
+			d->auth = token;
+		for(const TokenData &t: d->cache)
+		{
+			if(t == token ||
+				t.card() != token.card() ||
+				isSign == SslCertificate(t.cert()).keyUsage().contains(SslCertificate::NonRepudiation))
+				continue;
+			if(isSign)
+				d->auth = t;
+			else
+				d->sign = t;
+			other = t;
+			break;
+		}
+	}
+	if(isSign)
+		Q_EMIT signDataChanged(token);
+	else
+		Q_EMIT authDataChanged(token);
+	if(!other.isNull())
+	{
+		if(isSign)
+			Q_EMIT authDataChanged(other);
+		else
+			Q_EMIT signDataChanged(other);
+	}
+	d->smartcard.reloadCard(token, false);
+}
+
+void QCryptoManager::refresh()
+{
+	if(!d->operationLock.tryLockForRead())
+		return;
+
+#ifdef Q_OS_WIN
+	QList<TokenData> newCache = QCNG::tokens();
+#else
+	QList<TokenData> newCache = QPKCS11::tokens();
+#endif
+
+	QList<TokenData> acards, scards;
+	for(const TokenData &t: newCache)
+	{
+		SslCertificate c(t.cert());
+		if(c.keyUsage().contains(SslCertificate::KeyEncipherment) ||
+			c.keyUsage().contains(SslCertificate::KeyAgreement))
+			acards.append(t);
+		if(c.keyUsage().contains(SslCertificate::NonRepudiation))
+			scards.append(t);
+	}
+
+	bool cacheChangedFlag = false;
+	TokenData aold, sold, anew, snew;
+	{
+		QWriteLocker locker(&d->lock);
+		if(newCache != d->cache)
+		{
+			d->cache = std::move(newCache);
+			cacheChangedFlag = true;
+		}
+
+		aold = d->auth;
+		sold = d->sign;
+
+		if(!d->auth.isNull() && !acards.contains(d->auth))
+		{
+			qCDebug(CryptoLog) << "Disconnected from auth card" << d->auth.card();
+			d->auth.clear();
+		}
+		if(!d->sign.isNull() && !scards.contains(d->sign))
+		{
+			qCDebug(CryptoLog) << "Disconnected from sign card" << d->sign.card();
+			d->sign.clear();
+		}
+
+		if(d->sign.isNull() && !scards.isEmpty())
+			d->sign = scards.first();
+		if(d->auth.isNull() && !acards.isEmpty())
+			d->auth = acards.first();
+
+		anew = d->auth;
+		snew = d->sign;
+	}
+
+	if(cacheChangedFlag)
+		Q_EMIT cacheChanged();
+	TokenData update;
+	if(aold != anew)
+		Q_EMIT authDataChanged(update = anew);
+	if(sold != snew)
+		Q_EMIT signDataChanged(update = snew);
+	if(aold != anew || sold != snew)
+		d->smartcard.reloadCard(update, false);
+
+	d->operationLock.unlock();
 }

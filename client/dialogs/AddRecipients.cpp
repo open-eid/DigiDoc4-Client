@@ -26,7 +26,7 @@
 #include "FileDialog.h"
 #include "IKValidator.h"
 #include "LdapSearch.h"
-#include "QSigner.h"
+#include "QCryptoBackend.h"
 #include "Settings.h"
 #include "TokenData.h"
 #include "dialogs/WarningDialog.h"
@@ -146,13 +146,19 @@ AddRecipients::AddRecipients(ItemList* itemList, QWidget *parent)
 	connect(ui->rightPane, &ItemList::removed, ui->rightPane, &ItemList::removeItem );
 
 	connect(ui->fromCard, &QPushButton::clicked, this, [this] {
-		addRecipient(qApp->signer()->tokenauth().cert());
+		for(const auto &token: qApp->cryptoManager()->cache())
+		{
+			if(SslCertificate(token.cert()).isEncryptionCert())
+				addRecipient(token.cert());
+		}
 	});
 	auto enableRecipientFromCard = [this] {
-		ui->fromCard->setDisabled(qApp->signer()->tokenauth().cert().isNull());
+		const auto cache = qApp->cryptoManager()->cache();
+		ui->fromCard->setDisabled(std::none_of(cache.cbegin(), cache.cend(),
+			[](const TokenData &token) { return SslCertificate(token.cert()).isEncryptionCert(); }));
 	};
 	enableRecipientFromCard();
-	connect(qApp->signer(), &QSigner::authDataChanged, this, std::move(enableRecipientFromCard));
+	connect(qApp->cryptoManager(), &QCryptoManager::cacheChanged, this, std::move(enableRecipientFromCard));
 
 	connect(ui->fromFile, &QPushButton::clicked, this, &AddRecipients::addRecipientFromFile);
 	connect(ui->fromHistory, &QPushButton::clicked, this, &AddRecipients::addRecipientFromHistory);
