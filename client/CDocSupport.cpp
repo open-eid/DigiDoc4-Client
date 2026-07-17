@@ -32,7 +32,6 @@
 #include "Application.h"
 #include "CheckConnection.h"
 #include "QCryptoBackend.h"
-#include "QSigner.h"
 #include "Settings.h"
 #include "TokenData.h"
 #include "Utils.h"
@@ -124,7 +123,7 @@ libcdoc::result_t
 DDCryptoBackend::decryptRSA(std::vector<uint8_t>& dst, const std::vector<uint8_t> &data, bool oaep, unsigned int idx)
 {
 	if (!backend) {
-		auto val = QCryptoBackend::getBackend(qApp->signer()->tokenauth());
+		auto val = QCryptoBackend::getBackend(qApp->cryptoManager()->tokenauth());
 		if (!val)
 			return getDecryptStatus(val.error());
 		backend.reset(val.value());
@@ -144,7 +143,7 @@ DDCryptoBackend::deriveConcatKDF(std::vector<uint8_t>& dst, const std::vector<ui
 		{"http://www.w3.org/2001/04/xmlenc#sha512", QCryptographicHash::Sha512}
 	};
 	if (!backend) {
-		auto val = QCryptoBackend::getBackend(qApp->signer()->tokenauth());
+		auto val = QCryptoBackend::getBackend(qApp->cryptoManager()->tokenauth());
 		if (!val)
 			return getDecryptStatus(val.error());
 		backend.reset(val.value());
@@ -159,7 +158,7 @@ libcdoc::result_t
 DDCryptoBackend::deriveHMACExtract(std::vector<uint8_t>& dst, const std::vector<uint8_t> &key_material, const std::vector<uint8_t> &salt, unsigned int idx)
 {
 	if (!backend) {
-		auto val = QCryptoBackend::getBackend(qApp->signer()->tokenauth());
+		auto val = QCryptoBackend::getBackend(qApp->cryptoManager()->tokenauth());
 		if (!val)
 			return getDecryptStatus(val.error());
 		backend.reset(val.value());
@@ -189,7 +188,7 @@ DDCryptoBackend::getLastErrorStr(libcdoc::result_t code) const
 		case IN_PROGRESS:
 			return "Signing/decrypting is already in progress another window.";
 		case BACKEND_ERROR:
-			return qApp->signer()->getLastErrorStr().toStdString();
+			return "Backend error";
 	}
 	return libcdoc::CryptoBackend::getLastErrorStr(code);
 }
@@ -321,8 +320,8 @@ DDNetworkBackend::fetchKey(std::vector<uint8_t> &result, const std::string &url,
 		return BACKEND_ERROR;
 	}
 
-	TokenData auth = qApp->signer()->tokenauth();
-	auto val = QCryptoBackend::getBackend(qApp->signer()->tokenauth());
+	TokenData auth = qApp->cryptoManager()->tokenauth();
+	auto val = QCryptoBackend::getBackend(auth);
 	if (!val)
 		return getDecryptStatus(val.error());
 	std::unique_ptr<QCryptoBackend> backend(val.value());
@@ -333,7 +332,7 @@ DDNetworkBackend::fetchKey(std::vector<uint8_t> &result, const std::string &url,
 		return BACKEND_ERROR;
 	}
 	QScopedPointer<QNetworkAccessManager,QScopedPointerDeleteLater> nam(
-				CheckConnection::setupNAM(req, qApp->signer()->tokenauth().cert(), authKey, Settings::CDOC2_GET_CERT));
+				CheckConnection::setupNAM(req, auth.cert(), authKey, Settings::CDOC2_GET_CERT));
 	QEventLoop e;
 	QNetworkReply *reply = nam->get(req);
 	connect(reply, &QNetworkReply::finished, &e, &QEventLoop::quit);
