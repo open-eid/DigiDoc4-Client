@@ -24,6 +24,7 @@
 #include "CheckConnection.h"
 #include "CryptoDoc.h"
 #include "DigiDoc.h"
+#include "QCryptoBackend.h"
 #include "QPCSC.h"
 #include "QSigner.h"
 #include "Settings.h"
@@ -92,13 +93,13 @@ MainWindow::MainWindow( QWidget *parent )
 #endif
 
 	// Refresh ID card info in card widget
-	connect(qApp->signer(), &QSigner::cacheChanged, this, &MainWindow::updateSelector);
-	connect(qApp->signer(), &QSigner::signDataChanged, ui->signContainerPage, &ContainerPage::tokenChanged);
-	connect(qApp->signer(), &QSigner::authDataChanged, ui->cryptoContainerPage, &ContainerPage::tokenChanged);
+	connect(qApp->cryptoManager(), &QCryptoManager::cacheChanged, this, &MainWindow::updateSelector);
+	connect(qApp->cryptoManager(), &QCryptoManager::signDataChanged, ui->signContainerPage, &ContainerPage::tokenChanged);
+	connect(qApp->cryptoManager(), &QCryptoManager::authDataChanged, ui->cryptoContainerPage, &ContainerPage::tokenChanged);
 
 	// Refresh card info on "My EID" page
-	connect(qApp->signer()->smartcard(), &QSmartCard::tokenChanged, this, &MainWindow::updateMyEID);
-	connect(qApp->signer()->smartcard(), &QSmartCard::dataChanged, this, &MainWindow::updateMyEid);
+	connect(qApp->cryptoManager()->smartcard(), &QSmartCard::tokenChanged, this, &MainWindow::updateMyEID);
+	connect(qApp->cryptoManager()->smartcard(), &QSmartCard::dataChanged, this, &MainWindow::updateMyEid);
 
 	connect(ui->signIntroButton, &QPushButton::clicked, this, [this] { openContainer(true); });
 	connect(ui->cryptoIntroButton, &QPushButton::clicked, this, [this] { openContainer(false); });
@@ -119,10 +120,10 @@ MainWindow::MainWindow( QWidget *parent )
 	connect(ui->accordion, &Accordion::changePinClicked, this, &MainWindow::changePinClicked);
 	connect(ui->cardInfo, &CardWidget::selected, ui->selector, &QToolButton::toggle);
 
-	ui->signContainerPage->tokenChanged(qApp->signer()->tokensign());
-	ui->cryptoContainerPage->tokenChanged(qApp->signer()->tokenauth());
-	updateMyEID(qApp->signer()->smartcard()->tokenData());
-	updateMyEid(qApp->signer()->smartcard()->data());
+	ui->signContainerPage->tokenChanged(qApp->cryptoManager()->tokensign());
+	ui->cryptoContainerPage->tokenChanged(qApp->cryptoManager()->tokenauth());
+	updateMyEID(qApp->cryptoManager()->smartcard()->tokenData());
+	updateMyEid(qApp->cryptoManager()->smartcard()->data());
 }
 
 MainWindow::~MainWindow() noexcept = default;
@@ -157,8 +158,8 @@ void MainWindow::changeEvent(QEvent* event)
 
 void MainWindow::changePinClicked(QSmartCardData::PinType type, QSmartCard::PinAction action)
 {
-	if(qApp->signer()->smartcard()->pinChange(type, action, ui->topBar))
-		updateMyEid(qApp->signer()->smartcard()->data());
+	if(qApp->cryptoManager()->smartcard()->pinChange(type, action, ui->topBar))
+		updateMyEid(qApp->cryptoManager()->smartcard()->data());
 }
 
 void MainWindow::closeEvent(QCloseEvent * /*event*/)
@@ -274,7 +275,7 @@ void MainWindow::navigateToPage( Pages page, const QStringList &files, bool crea
 		if(navigate)
 		{
 			cryptoDoc = std::move(cryptoContainer);
-			ui->cryptoContainerPage->transition(cryptoDoc.get(), qApp->signer()->tokenauth().cert());
+			ui->cryptoContainerPage->transition(cryptoDoc.get(), qApp->cryptoManager()->tokenauth().cert());
 		}
 	}
 
@@ -289,7 +290,8 @@ void MainWindow::onSignAction(int action, const QString &idCode, const QString &
 	case SignatureAdd:
 	case SignatureToken:
 		sign([this](const QString &city, const QString &state, const QString &zip, const QString &country, const QString &role) {
-			return digiDoc->sign(city, state, zip, country, role, qApp->signer());
+			QSigner signer(qApp->cryptoManager()->tokensign());
+			return digiDoc->sign(city, state, zip, country, role, &signer);
 		});
 		break;
 	case SignatureMobile:
@@ -344,7 +346,7 @@ void MainWindow::convertToCDoc()
 	else
 		cryptoContainer->documentModel()->copyModel(digiDoc->documentModel());
 
-	auto cardData = qApp->signer()->tokenauth();
+	auto cardData = qApp->cryptoManager()->tokenauth();
 	if (!cardData.cert().isNull()) {
 		cryptoContainer->addEncryptionKey(CKey(cardData.cert()));
 	}
@@ -733,22 +735,22 @@ void MainWindow::updateSelector()
 	{
 	case SignIntro:
 	case SignDetails:
-		selected = qApp->signer()->tokensign();
+		selected = qApp->cryptoManager()->tokensign();
 		filter = Signing;
 		break;
 	case CryptoIntro:
 	case CryptoDetails:
-		selected = qApp->signer()->tokenauth();
+		selected = qApp->cryptoManager()->tokenauth();
 		filter = Decrypting;
 		break;
 	case MyEid:
 	default:
-		selected = qApp->signer()->smartcard()->tokenData();
+		selected = qApp->cryptoManager()->smartcard()->tokenData();
 		filter = MyEID;
 		break;
 	}
 	QVector<TokenData> list;
-	for(const TokenData &token: qApp->signer()->cache())
+	for(const TokenData &token: qApp->cryptoManager()->cache())
 	{
 		if(token.card() == selected.card())
 			continue;
@@ -783,7 +785,7 @@ void MainWindow::updateSelector()
 		if(show)
 		{
 			auto *cardPopup = new CardPopup(list, this);
-			connect(cardPopup, &CardPopup::activated, qApp->signer(), &QSigner::selectCard);
+			connect(cardPopup, &CardPopup::activated, qApp->cryptoManager(), &QCryptoManager::selectCard);
 			connect(cardPopup, &CardPopup::activated, this, [this] { ui->selector->setChecked(false); });
 			cardPopup->show();
 		}

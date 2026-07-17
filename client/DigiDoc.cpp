@@ -424,8 +424,8 @@ bool DigiDoc::extend()
 {
 	QWidget *parent = parentWidget();
 	try {
-		auto *signer = qApp->signer();
-		signer->setUserAgent(QStringLiteral("%1/%2 (%3) Devices: %4").arg(
+		QSigner signer(qApp->cryptoManager()->tokensign());
+		signer.setUserAgent(QStringLiteral("%1/%2 (%3) Devices: %4").arg(
 			QCoreApplication::applicationName(),
 			QCoreApplication::applicationVersion(),
 			Common::applicationOs(),
@@ -434,12 +434,10 @@ bool DigiDoc::extend()
 		ServiceConfirmation cb(parent);
 		QString current = m_fileName;
 		size_t extendCount = 0;
-		bool wrapped = false;
 		if(std::unique_ptr<Container> extended = waitFor([&] {
-			return Container::extendContainerValidity(*b, signer, extendCount);
+			return Container::extendContainerValidity(*b, &signer, extendCount);
 		}))
 		{
-			wrapped = true;
 			const QString asics = QCoreApplication::translate("MainWindow", "Documents (%1)").arg(QLatin1String("*.asics *.scs"));
 			QFileInfo f(current);
 			QString name = f.absolutePath() + '/' + f.completeBaseName() + QStringLiteral(".asics");
