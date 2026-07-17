@@ -23,7 +23,6 @@
 #include "CDocSupport.h"
 #include "TokenData.h"
 #include "QCryptoBackend.h"
-#include "QSigner.h"
 #include "Settings.h"
 #include "SslCertificate.h"
 #include "Utils.h"
@@ -283,7 +282,7 @@ bool CryptoDoc::decrypt(const libcdoc::Lock *lock, const QByteArray& secret)
 	if(!d->reader)
 	{
 		WarningDialog::create()
-			->withTitle(QSigner::tr("Failed to decrypt document"))
+			->withTitle(tr("Failed to decrypt document"))
 			->withText(tr("Container is not open"))
 			->open();
 		return false;
@@ -292,12 +291,12 @@ bool CryptoDoc::decrypt(const libcdoc::Lock *lock, const QByteArray& secret)
 	int lock_idx = -1;
 	const std::vector<libcdoc::Lock> &locks = d->reader->getLocks();
 	if (lock == nullptr) {
-		QByteArray der = qApp->signer()->tokenauth().cert().toDer();
+		QByteArray der = qApp->cryptoManager()->tokenauth().cert().toDer();
 		lock_idx = d->reader->getLockForCert(
 			std::vector<uint8_t>(der.cbegin(), der.cend()));
 		if (lock_idx < 0) {
 			WarningDialog::create()
-				->withTitle(QSigner::tr("Failed to decrypt document"))
+				->withTitle(tr("Failed to decrypt document"))
 				->withText(tr("You do not have the key to decrypt this document"))
 				->open();
 			return false;
@@ -315,7 +314,7 @@ bool CryptoDoc::decrypt(const libcdoc::Lock *lock, const QByteArray& secret)
 	}
 	if (!lock || (lock->isSymmetric() && secret.isEmpty())) {
 		WarningDialog::create()
-			->withTitle(QSigner::tr("Failed to decrypt document"))
+			->withTitle(tr("Failed to decrypt document"))
 			->withText(tr("You do not have the key to decrypt this document"))
 			->open();
 		return false;
@@ -368,7 +367,7 @@ bool CryptoDoc::decrypt(const libcdoc::Lock *lock, const QByteArray& secret)
 			break;
 		}
 		WarningDialog::create()
-			->withTitle(QSigner::tr("Failed to decrypt document"))
+			->withTitle(tr("Failed to decrypt document"))
 			->withText(str)
 			->withDetails(QString::fromStdString(msg))
 			->open();

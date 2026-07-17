@@ -25,7 +25,7 @@
 #include "Configuration.h"
 #include "Diagnostics.h"
 #include "FileDialog.h"
-#include "QSigner.h"
+#include "QCryptoBackend.h"
 #include "Settings.h"
 #include "SslCertificate.h"
 #include "TokenData.h"
@@ -376,7 +376,7 @@ SettingsDialog::SettingsDialog(int page, QWidget *parent)
 #ifdef Q_OS_WIN
 	connect(ui->btnNavFromHistory, &QPushButton::clicked, this, [this] {
 		// remove certificates from browsing history of Edge and Google Chrome, and do it for all users.
-		QList<TokenData> cache = qApp->signer()->cache();
+		QList<TokenData> cache = qApp->cryptoManager()->cache();
 		HCERTSTORE s = CertOpenStore(CERT_STORE_PROV_SYSTEM_W,
 			X509_ASN_ENCODING, 0, CERT_SYSTEM_STORE_CURRENT_USER, L"MY");
 		if(!s)

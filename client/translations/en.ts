@@ -621,6 +621,10 @@
         <translation>Failed to open document</translation>
     </message>
     <message>
+        <source>Failed to decrypt document</source>
+        <translation>Failed to decrypt document</translation>
+    </message>
+    <message>
         <source>Wrong password.</source>
         <translation>Wrong password.</translation>
     </message>
@@ -2199,10 +2203,6 @@ ID-Card</translation>
 <context>
     <name>QSigner</name>
     <message>
-        <source>Signing certificate is not selected.</source>
-        <translation>Signing certificate is not selected.</translation>
-    </message>
-    <message>
         <source>Failed to login token</source>
         <translation>Failed to login token</translation>
     </message>
@@ -2213,10 +2213,6 @@ ID-Card</translation>
     <message>
         <source>Sign certificate is not selected</source>
         <translation>Signing certificate is not selected</translation>
-    </message>
-    <message>
-        <source>Failed to decrypt document</source>
-        <translation>Failed to decrypt document</translation>
     </message>
 </context>
 <context>

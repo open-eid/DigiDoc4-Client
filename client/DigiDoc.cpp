@@ -24,7 +24,6 @@
 #include "Common.h"
 #include "MainWindow.h"
 #include "QCryptoBackend.h"
-#include "QSigner.h"
 #include "Settings.h"
 #include "TokenData.h"
 #include "Utils.h"
@@ -33,6 +32,7 @@
 
 #include <digidocpp/DataFile.h>
 #include <digidocpp/Signature.h>
+#include <digidocpp/crypto/Signer.h>
 #include <digidocpp/crypto/X509Cert.h>
 
 #include <QtCore/QDateTime>
@@ -44,6 +44,16 @@
 
 using namespace digidoc;
 using namespace ria::qdigidoc4;
+
+struct ExtendSigner final: public Signer
+{
+	X509Cert cert() const final { return X509Cert(); }
+	std::vector<unsigned char> sign(const std::string & /*method*/,
+		const std::vector<unsigned char> & /*digest*/) const final
+	{
+		throw Exception(__FILE__, __LINE__, "Not implemented");
+	}
+};
 
 static std::string to(const QString &str) { return str.toStdString(); }
 static QString from(const std::string &str) { return FileDialog::normalized(QString::fromStdString(str)); }
@@ -424,8 +434,8 @@ bool DigiDoc::extend()
 {
 	QWidget *parent = parentWidget();
 	try {
-		auto *signer = qApp->signer();
-		signer->setUserAgent(QStringLiteral("%1/%2 (%3) Devices: %4").arg(
+		ExtendSigner signer;
+		signer.setUserAgent(QStringLiteral("%1/%2 (%3) Devices: %4").arg(
 			QCoreApplication::applicationName(),
 			QCoreApplication::applicationVersion(),
 			Common::applicationOs(),
@@ -434,12 +444,10 @@ bool DigiDoc::extend()
 		ServiceConfirmation cb(parent);
 		QString current = m_fileName;
 		size_t extendCount = 0;
-		bool wrapped = false;
 		if(std::unique_ptr<Container> extended = waitFor([&] {
-			return Container::extendContainerValidity(*b, signer, extendCount);
+			return Container::extendContainerValidity(*b, &signer, extendCount);
 		}))
 		{
-			wrapped = true;
 			const QString asics = QCoreApplication::translate("MainWindow", "Documents (%1)").arg(QLatin1String("*.asics *.scs"));
 			QFileInfo f(current);
 			QString name = f.absolutePath() + '/' + f.completeBaseName() + QStringLiteral(".asics");
