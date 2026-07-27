@@ -1,5 +1,5 @@
 <RCC>
-	<qresource prefix="/images" >
+	<qresource prefix="/images">
 		<file>accordion_arrow_down.svg</file>
 		<file>accordion_arrow_right.svg</file>
 		<file>arrow_down.svg</file>
@@ -57,6 +57,7 @@
 		<file>icon_remove_clicked.svg</file>
 		<file>icon_remove_hover.svg</file>
 		<file>icon_Seaded.svg</file>
+		<file>intro_crypto.svg</file>
 		<file>intro_crypto-select_en.png</file>
 		<file>intro_crypto-select_et.png</file>
 		<file>intro_crypto-recipient_en.png</file>
@@ -67,15 +68,14 @@
 		<file>intro_eid-manage_et.png</file>
 		<file>intro_eid-info_en.png</file>
 		<file>intro_eid-info_et.png</file>
-		<file>intro_one.svg</file>
+		<file>intro_myeid.svg</file>
+		<file>intro_sign.svg</file>
 		<file>intro_sign-pin_en.png</file>
 		<file>intro_sign-pin_et.png</file>
 		<file>intro_sign-select_en.png</file>
 		<file>intro_sign-select_et.png</file>
 		<file>intro_sign-sign_en.png</file>
 		<file>intro_sign-sign_et.png</file>
-		<file>intro_three.svg</file>
-		<file>intro_two.svg</file>
 		<file>Logo_small.svg</file>
 		<file>Logo_Suur.svg</file>
 		<file>Struktuurifondid.svg</file>
