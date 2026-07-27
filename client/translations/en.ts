@@ -1127,6 +1127,34 @@
         <source>&quot;My eID&quot; also provides a good overview of the status and contact information of the ID card inserted in the card reader.</source>
         <translation>&quot;My eID&quot; also provides a good overview of the status and contact information of the ID card inserted in the card reader.</translation>
     </message>
+    <message>
+        <source>Initial introduction</source>
+        <translation>Initial introduction</translation>
+    </message>
+    <message>
+        <source>1. About the DigiDoc application</source>
+        <translation>1. About the DigiDoc application</translation>
+    </message>
+    <message>
+        <source>2. Signing</source>
+        <translation>2. Signing</translation>
+    </message>
+    <message>
+        <source>3. Encryption</source>
+        <translation>3. Encryption</translation>
+    </message>
+    <message>
+        <source>4. Managing your eIDs</source>
+        <translation>4. Managing your eIDs</translation>
+    </message>
+    <message>
+        <source>Close introduction</source>
+        <translation>Close introduction</translation>
+    </message>
+    <message>
+        <source>DigiDoc4 version %1, released %2</source>
+        <translation>DigiDoc4 version %1, released %2</translation>
+    </message>
 </context>
 <context>
     <name>InfoStack</name>

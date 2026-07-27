@@ -21,6 +21,8 @@
 
 #include <QDialog>
 
+class QAbstractButton;
+
 namespace Ui {
 class FirstRun;
 }
@@ -37,7 +39,6 @@ signals:
 	void langChanged(const QString& lang);
 
 private:
-	void keyPressEvent(QKeyEvent *event) final;
 	void loadImages();
 
 	enum View
@@ -49,6 +50,7 @@ private:
 		MyEid
 	};
 
+	void setView(QAbstractButton *button);
+
 	Ui::FirstRun *ui;
 };
-

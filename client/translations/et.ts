@@ -1097,7 +1097,7 @@
     </message>
     <message>
         <source>Continue</source>
-        <translation>Edasi</translation>
+        <translation>Jätka</translation>
     </message>
     <message>
         <source>View introduction</source>
@@ -1105,7 +1105,7 @@
     </message>
     <message>
         <source>View next intro</source>
-        <translation>Vaata järgmist tutvustust</translation>
+        <translation>Järgmine tutvustus</translation>
     </message>
     <message>
         <source>Enter the application</source>
@@ -1126,6 +1126,34 @@
     <message>
         <source>&quot;My eID&quot; also provides a good overview of the status and contact information of the ID card inserted in the card reader.</source>
         <translation>&quot;Minu eID&quot; annab ka hea ülevaate kaardilugejasse sisestatud ID-kaardi staatusest ja kontaktandmetest.</translation>
+    </message>
+    <message>
+        <source>Initial introduction</source>
+        <translation>Esmane tutvustus</translation>
+    </message>
+    <message>
+        <source>1. About the DigiDoc application</source>
+        <translation>1. DigiDoc rakendusest</translation>
+    </message>
+    <message>
+        <source>2. Signing</source>
+        <translation>2. Allkirjastamine</translation>
+    </message>
+    <message>
+        <source>3. Encryption</source>
+        <translation>3. Krüpteerimine</translation>
+    </message>
+    <message>
+        <source>4. Managing your eIDs</source>
+        <translation>4. Oma eID-de haldus</translation>
+    </message>
+    <message>
+        <source>Close introduction</source>
+        <translation>Sulge tutvustus</translation>
+    </message>
+    <message>
+        <source>DigiDoc4 version %1, released %2</source>
+        <translation>DigiDoc4 versioon %1, avalikustatud %2</translation>
     </message>
 </context>
 <context>
