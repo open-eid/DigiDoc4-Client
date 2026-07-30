@@ -601,6 +601,10 @@
         <translation>Dokumendi krüpteerimine ebaõnnestus</translation>
     </message>
     <message>
+        <source>Key transfer server is not configured</source>
+        <translation>Võtmeedastusserver ei ole seadistatud</translation>
+    </message>
+    <message>
         <source>Failed to remove key</source>
         <translation>Võtme eemaldamine ebaõnnestus</translation>
     </message>
@@ -1302,6 +1306,10 @@
     <message>
         <source>Failed to init ldap</source>
         <translation>LDAP initsialiseerimine ebaõnnestus</translation>
+    </message>
+    <message>
+        <source>Failed to set ldap CA cert</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Failed to init ldap search</source>
