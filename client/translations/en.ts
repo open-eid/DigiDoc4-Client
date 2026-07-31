@@ -2,13 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="en_US">
 <context>
-    <name>Accordion</name>
-    <message>
-        <source>PIN/PUK codes and certificates</source>
-        <translation>PIN/PUK codes and certificates</translation>
-    </message>
-</context>
-<context>
     <name>AddRecipients</name>
     <message>
         <source>Failed to read certificate</source>
@@ -610,7 +603,7 @@
     </message>
     <message>
         <source>Key transfer server is not configured</source>
-        <translation type="unfinished"></translation>
+        <translation>Key transfer server is not configured</translation>
     </message>
     <message>
         <source>Failed to remove key</source>
@@ -1142,53 +1135,6 @@
     <message>
         <source>&quot;My eID&quot; also provides a good overview of the status and contact information of the ID card inserted in the card reader.</source>
         <translation>&quot;My eID&quot; also provides a good overview of the status and contact information of the ID card inserted in the card reader.</translation>
-    </message>
-</context>
-<context>
-    <name>InfoStack</name>
-    <message>
-        <source>You&apos;re using digital identity card</source>
-        <translation>You&apos;re using digital identity card</translation>
-    </message>
-    <message>
-        <source>Name</source>
-        <translation>Name</translation>
-    </message>
-    <message>
-        <source>Organization</source>
-        <translation>Organization</translation>
-    </message>
-    <message>
-        <source>Serial</source>
-        <translation>Serial</translation>
-    </message>
-    <message>
-        <source>Country</source>
-        <translation>Country</translation>
-    </message>
-    <message>
-        <source>Given names</source>
-        <translation>Given names</translation>
-    </message>
-    <message>
-        <source>Surname</source>
-        <translation>Surname</translation>
-    </message>
-    <message>
-        <source>Personal code</source>
-        <translation>Personal code</translation>
-    </message>
-    <message>
-        <source>Citizenship</source>
-        <translation>Citizenship</translation>
-    </message>
-    <message>
-        <source>Expiry date</source>
-        <translation>Expiry date</translation>
-    </message>
-    <message>
-        <source>Document</source>
-        <translation>Document</translation>
     </message>
 </context>
 <context>
@@ -1781,6 +1727,53 @@ ID-Card</translation>
     <message>
         <source>ENG</source>
         <translation>ENG</translation>
+    </message>
+</context>
+<context>
+    <name>MyEidInfo</name>
+    <message>
+        <source>Given names</source>
+        <translation>Given names</translation>
+    </message>
+    <message>
+        <source>Surname</source>
+        <translation>Surname</translation>
+    </message>
+    <message>
+        <source>Personal code</source>
+        <translation>Personal code</translation>
+    </message>
+    <message>
+        <source>Citizenship</source>
+        <translation>Citizenship</translation>
+    </message>
+    <message>
+        <source>Expiry date</source>
+        <translation>Expiry date</translation>
+    </message>
+    <message>
+        <source>Document</source>
+        <translation>Document</translation>
+    </message>
+    <message>
+        <source>You&apos;re using digital identity card</source>
+        <translation>You&apos;re using digital identity card</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>Name</translation>
+    </message>
+    <message>
+        <source>Organization</source>
+        <translation>Organization</translation>
+    </message>
+    <message>
+        <source>Serial</source>
+        <translation>Serial</translation>
+    </message>
+    <message>
+        <source>Country</source>
+        <translation>Country</translation>
     </message>
 </context>
 <context>
