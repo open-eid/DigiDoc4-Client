@@ -361,7 +361,7 @@ void ContainerPage::transition(CryptoDoc *container, const QSslCertificate &cert
 	});
 	disconnect(container, &CryptoDoc::destroyed, this, nullptr);
 	connect(container, &CryptoDoc::destroyed, this, [this] {
-		clear(ClearCryptoWarning);
+		clear(ContainerClearWarning);
 	});
 	disconnect(mainAction, &MainAction::action, container, nullptr);
 	connect(mainAction, &MainAction::action, container, [container, this](int action) {
@@ -382,7 +382,7 @@ void ContainerPage::transition(CryptoDoc *container, const QSslCertificate &cert
 		}
 	});
 
-	clear(ClearCryptoWarning);
+	clear(ContainerClearWarning);
 	isSupported = container->state() & UnencryptedContainer || container->canDecrypt(cert);
 	setHeader(container->fileName());
 	ui->leftPane->init(fileName, QT_TRANSLATE_NOOP("ItemList", "Encrypted files"));
@@ -481,10 +481,10 @@ void ContainerPage::transition(DigiDoc* container)
 	});
 	disconnect(container, &DigiDoc::destroyed, this, nullptr);
 	connect(container, &DigiDoc::destroyed, this, [this] {
-		clear(ClearSignatureWarning);
+		clear(ContainerClearWarning);
 	});
 
-	clear(ClearSignatureWarning);
+	clear(ContainerClearWarning);
 	std::map<WarningText::WarningType, int> errors;
 	setHeader(container->fileName());
 	ui->leftPane->init(fileName, QT_TRANSLATE_NOOP("ItemList", "Container files"));
