@@ -32,8 +32,6 @@
 #include <QtCore/QtEndian>
 #include <QtCore/QLibrary>
 
-#include <cdoc/utils/memory.h>
-
 #include <openssl/err.h>
 #include <openssl/evp.h>
 #include <openssl/kdf.h>
@@ -339,7 +337,7 @@ QByteArray QPKCS11::deriveHMACExtract(const QByteArray &publicKey, const QByteAr
 	QByteArray key = derive(publicKey);
 	if(key.isEmpty())
 		return key;
-	auto ctx = libcdoc::make_unique_ptr<EVP_PKEY_CTX_free>(EVP_PKEY_CTX_new_id(EVP_PKEY_HKDF, nullptr));
+	auto ctx = make_unique_ptr<EVP_PKEY_CTX_free>(EVP_PKEY_CTX_new_id(EVP_PKEY_HKDF, nullptr));
 	QByteArray out(keySize, 0);
 	auto outlen = size_t(out.length());
 	auto isError = [this](int err) {
