@@ -25,6 +25,7 @@
 #include <QtCore/QByteArrayView>
 #include <QtCore/QCoreApplication>
 #include <QtCore/QRegularExpression>
+#include <QtCore/QStandardPaths>
 #include <QtCore/QTemporaryFile>
 
 #include <algorithm>
@@ -49,6 +50,10 @@ class CPtr
 };
 #elif defined(Q_OS_MAC)
 #include <sys/xattr.h>
+#endif
+
+#ifndef Q_OS_WIN
+#include <unistd.h>
 #endif
 
 QString FileDialog::createNewFileName(const QString &file, bool signature, QWidget *parent)
@@ -123,6 +128,36 @@ std::unique_ptr<QFile> FileDialog::keepAccessAlive(const QString &path, QIODevic
 	Q_UNUSED(mode)
 	return {};
 #endif
+}
+
+QString FileDialog::logPath(const QString &name)
+{
+	QString dir = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation);
+	QDir().mkpath(dir);
+#ifndef Q_OS_WIN
+	QFile::setPermissions(dir, QFileDevice::ReadOwner|QFileDevice::WriteOwner|QFileDevice::ExeOwner);
+#endif
+	return dir + QLatin1Char('/') + name;
+}
+
+bool FileDialog::openLogFile(QFile &f, const QString &path)
+{
+	static constexpr qint64 maxBytes = 5LL * 1024 * 1024;
+	QFileInfo info(path);
+	if(info.exists() && (info.isSymLink() || !info.isFile()
+#ifndef Q_OS_WIN
+		|| info.ownerId() != geteuid()
+#endif
+		))
+		return false;
+
+	f.setFileName(path);
+	QIODevice::OpenMode mode = QIODevice::WriteOnly|QIODevice::Text|
+		(info.size() >= maxBytes ? QIODevice::Truncate : QIODevice::Append);
+	if(!f.open(mode))
+		return false;
+	f.setPermissions(QFileDevice::ReadOwner|QFileDevice::WriteOwner);
+	return true;
 }
 
 bool FileDialog::isSignedPDF(const QString &path)

@@ -34,7 +34,7 @@
 #include <QtCore/QWaitCondition>
 #include <QtNetwork/QSslKey>
 
-static Q_LOGGING_CATEGORY(CryptoLog, "qdigidoc4.QCryptoManager")
+static Q_LOGGING_CATEGORY(CryptoLog, "qdigidoc4.cryptomanager", QtWarningMsg)
 
 // TODO: Port everything to the new OpenSSL API
 #define OPENSSL_SUPPRESS_DEPRECATED

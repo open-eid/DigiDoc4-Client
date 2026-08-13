@@ -34,6 +34,7 @@ class MacMenuBar {};
 #endif
 #include "TokenData.h"
 #include "Utils.h"
+#include "dialogs/FileDialog.h"
 #include "dialogs/FirstRun.h"
 #include "dialogs/SettingsDialog.h"
 #include "dialogs/WaitDialog.h"
@@ -47,11 +48,13 @@ class MacMenuBar {};
 #include <digidocpp/crypto/X509Cert.h>
 
 #include <QAction>
+#include <QtCore/QFile>
 #include <QtCore/QFileInfo>
 #include <QtCore/QJsonArray>
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonObject>
 #include <QtCore/QLockFile>
+#include <QtCore/QLoggingCategory>
 #include <QtCore/QProcess>
 #include <QtCore/QRegularExpression>
 #include <QtCore/QTimer>
@@ -81,6 +84,12 @@ class MacMenuBar {};
 
 using namespace std::chrono;
 
+static QFile& applicationLog()
+{
+	static QFile file;
+	return file;
+}
+
 const QStringList Application::CONTAINER_EXT {
 	QStringLiteral("asice"), QStringLiteral("sce"),
 	QStringLiteral("asics"), QStringLiteral("scs"),
@@ -90,10 +99,9 @@ const QStringList Application::CONTAINER_EXT {
 class DigidocConf final: public digidoc::XmlConfCurrent
 {
 public:
-	DigidocConf()
+	explicit DigidocConf(bool debugLogging)
 	{
-		enableLog(Settings::LIBDIGIDOCPP_DEBUG);
-		Settings::LIBDIGIDOCPP_DEBUG = false;
+		enableLog(debugLogging);
 		Settings::LIBDIGIDOCPP_DEBUG.registerCallback([this](const bool &value) { enableLog(value); });
 #ifdef Q_OS_MACOS
 		if(Settings::PROXY_HOST.isSet() || Settings::PROXY_PORT.isSet()
@@ -253,7 +261,7 @@ private:
 	void enableLog(bool enable)
 	{
 		if(enable) {
-			log = QStringLiteral("%1/libdigidocpp.log").arg(QDir::tempPath()).toStdString();
+			log = FileDialog::logPath(QStringLiteral("libdigidocpp.log")).toStdString();
 			DDCDocLogger::setLogLevel(libcdoc::LEVEL_DEBUG);
 		} else {
 			log.reset();
@@ -349,8 +357,16 @@ Application::Application( int &argc, char **argv )
 	setOrganizationDomain(QStringLiteral("ria.ee"));
 	setOrganizationName(QStringLiteral("RIA"));
 	setWindowIcon(QIcon(QStringLiteral(":/images/Icon.svg")));
-	if(QFile::exists(QStringLiteral("%1/%2.log").arg(QDir::tempPath(), applicationName())))
+	const bool debugLogging = Settings::LIBDIGIDOCPP_DEBUG;
+	Settings::LIBDIGIDOCPP_DEBUG = false;
+	if(debugLogging && FileDialog::openLogFile(applicationLog(),
+		FileDialog::logPath(QStringLiteral("%1.log").arg(applicationName()))))
+	{
+		QLoggingCategory::setFilterRules(QStringLiteral(
+			"qdigidoc4.*.debug=true\n"
+			"qdigidoc4.pcsc.apdu.debug=false"));
 		qInstallMessageHandler(msgHandler);
+	}
 
 #if defined(Q_OS_WIN)
 	AllowSetForegroundWindow( ASFW_ANY );
@@ -496,10 +512,10 @@ Application::Application( int &argc, char **argv )
 	d->helpAction = d->bar->helpMenu()->addAction(tr("DigiDoc4 Client Help"), this, &Application::openHelp);
 #endif
 
-	DDCDocLogger::setUpLogger(QStringLiteral("%1/libcdoc.log").arg(QDir::tempPath()));
+	DDCDocLogger::setUpLogger(FileDialog::logPath(QStringLiteral("libcdoc.log")));
 	try
 	{
-		digidoc::Conf::init( new DigidocConf );
+		digidoc::Conf::init(new DigidocConf(debugLogging));
 		d->cryptoManager = new QCryptoManager();
 		updateTSLCache(QDateTime::currentDateTimeUtc().addDays(-7));
 
@@ -676,7 +692,7 @@ bool Application::event(QEvent *event)
 
 void Application::initDiagnosticConf()
 {
-	digidoc::Conf::init(new DigidocConf);
+	digidoc::Conf::init(new DigidocConf(false));
 }
 
 void Application::loadTranslation( const QString &lang )
@@ -797,8 +813,8 @@ QWidget* Application::mainWindow()
 
 void Application::msgHandler(QtMsgType type, const QMessageLogContext &ctx, const QString &msg)
 {
-	QFile f(QStringLiteral("%1/%2.log").arg(QDir::tempPath(), applicationName()));
-	if(!f.open( QFile::Append ))
+	QFile &f = applicationLog();
+	if(!f.isOpen())
 		return;
 	f.write(QDateTime::currentDateTime().toString(QStringLiteral("yyyy-MM-dd hh:mm:ss ")).toUtf8());
 	switch(type)
@@ -809,13 +825,20 @@ void Application::msgHandler(QtMsgType type, const QMessageLogContext &ctx, cons
 	case QtFatalMsg: f.write("F"); break;
 	default: f.write("I"); break;
 	}
-	f.write(QStringLiteral(" %1 ").arg(QLatin1String(ctx.category)).toUtf8());
+	f.write(" ");
+	f.write(ctx.category ? ctx.category : "default");
+	f.write(" ");
 	if(ctx.line > 0)
 	{
-		f.write(QStringLiteral("%1:%2 \"%3\" ")
-					.arg(QFileInfo(QString::fromLatin1(ctx.file)).fileName())
-					.arg(ctx.line)
-					.arg(QLatin1String(ctx.function)).toUtf8());
+		QByteArrayView fileName(ctx.file ? ctx.file : "");
+		const qsizetype separator = qMax(fileName.lastIndexOf('/'), fileName.lastIndexOf('\\'));
+		fileName = fileName.sliced(separator + 1);
+		f.write(fileName.data(), fileName.size());
+		f.write(":");
+		f.write(QByteArray::number(ctx.line));
+		f.write(" \"");
+		f.write(ctx.function ? ctx.function : "");
+		f.write("\" ");
 	}
 	f.write(msg.toUtf8());
 	f.write("\n");

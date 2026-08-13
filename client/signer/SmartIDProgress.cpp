@@ -28,7 +28,7 @@
 #include <digidocpp/crypto/X509Cert.h>
 
 #include <QtCore/QCryptographicHash>
-#include <QtCore/QDir>
+#include <QtCore/QFileInfo>
 #include <QtCore/QJsonArray>
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonObject>
@@ -43,7 +43,7 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QProgressBar>
 
-Q_LOGGING_CATEGORY(SIDLog,"RIA.SmartID")
+Q_LOGGING_CATEGORY(SIDLog, "qdigidoc4.smartid", QtWarningMsg)
 
 using namespace digidoc;
 
@@ -74,8 +74,6 @@ public:
 SmartIDProgress::SmartIDProgress(const SigningProgressUI &pui)
 	: d(new Private(pui))
 {
-	const_cast<QLoggingCategory&>(SIDLog()).setEnabled(QtDebugMsg,
-		QFile::exists(QStringLiteral("%1/%2.log").arg(QDir::tempPath(), QApplication::applicationName())));
 	d->ui.bar->setMaximum(100);
 	d->ui.bar->setValue(0);
 	d->ui.code->setBuddy(d->ui.bar);
