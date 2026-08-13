@@ -30,7 +30,7 @@
 
 using namespace Qt::Literals::StringLiterals;
 
-Q_LOGGING_CATEGORY(CNG, "qdigidoc4.QCNG")
+Q_LOGGING_CATEGORY(CNG, "qdigidoc4.cng", QtWarningMsg)
 
 template<typename T, auto D = NCryptFreeObject>
 struct SCOPE

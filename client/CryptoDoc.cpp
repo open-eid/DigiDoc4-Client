@@ -30,7 +30,6 @@
 #include "dialogs/FileDialog.h"
 #include "dialogs/WarningDialog.h"
 
-#include <QtCore/QDir>
 #include <QtCore/QFileInfo>
 #include <QtCore/QRegularExpression>
 #include <QtCore/QThread>
@@ -46,7 +45,7 @@
 
 using namespace ria::qdigidoc4;
 
-Q_LOGGING_CATEGORY(CRYPTO, "CRYPTO")
+Q_LOGGING_CATEGORY(CRYPTO, "qdigidoc4.crypto", QtWarningMsg)
 
 CKey::CKey(QSslCertificate _rcpt_cert) : lock(libcdoc::Lock::PUBLIC_KEY), rcpt_cert(_rcpt_cert) {
 	SslCertificate ssl(rcpt_cert);
@@ -223,8 +222,6 @@ CryptoDoc::CryptoDoc( QObject *parent )
 	: QObject(parent)
 	, d(new Private)
 {
-	const_cast<QLoggingCategory&>(CRYPTO()).setEnabled(QtDebugMsg,
-		QFile::exists(QStringLiteral("%1/%2.log").arg(QDir::tempPath(), Application::applicationName())));
 }
 
 CryptoDoc::~CryptoDoc() {
