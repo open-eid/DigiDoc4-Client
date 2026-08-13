@@ -24,6 +24,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QIODevice>
 #include <QtCore/QFile>
+#include <QtCore/QMutex>
 
 #include <cdoc/Configuration.h>
 #include <cdoc/CryptoBackend.h>
@@ -149,11 +150,14 @@ class DDCDocLogger final : private libcdoc::Logger {
   public:
 	static void setUpLogger(const QString &path);
 	static void setLogLevel(libcdoc::LogLevel level);
+	static QByteArray logData();
 
   private:
 	DDCDocLogger() = default;
 	static DDCDocLogger *getLogger();
 	void logMessage(libcdoc::LogLevel level, std::string_view file, int line, std::string_view message) final;
+	QMutex mutex;
+	libcdoc::LogLevel minLevel = libcdoc::LEVEL_WARNING;
 	QFile ofs;
 };
 

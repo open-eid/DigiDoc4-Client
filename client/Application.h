@@ -58,16 +58,18 @@ public:
 	void waitForTSL( const QString &file );
 
 	static void addRecent( const QString &file );
+	static void closeLog();
 	template<class T>
 	static QJsonValue confValue(const T &key);
 	static QVariant confValue(ConfParameter parameter, const QVariant &value = {});
 	static void initDiagnosticConf();
+	static bool isContainerExtension(QStringView suffix);
 	static QWidget* mainWindow();
 	static void openHelp();
 	static uint readTSLVersion(const QString &path);
 	static void showClient(QStringList params = {}, bool crypto = false, bool sign = false, bool newWindow = false);
 	static void updateTSLCache(const QDateTime &tslTime);
-#if defined(Q_OS_MAC)
+#ifdef Q_OS_MACOS
 	struct ProxyCredentials
 	{
 		ProxyCredentials(QString host, QString port, QString user, QString password);
@@ -101,11 +103,10 @@ private:
 	static void msgHandler(QtMsgType type, const QMessageLogContext &ctx, const QString &msg);
 	static void parseArgs(QStringList args);
 	static void showWarning(const QString &title, const digidoc::Exception &e);
-#if defined(Q_OS_MAC)
+#ifdef Q_OS_MACOS
 	static void initMacServices();
 #endif
 
-	static const QStringList CONTAINER_EXT;
 	struct Private;
 	Private *d;
 };

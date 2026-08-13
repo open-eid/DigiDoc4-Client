@@ -22,7 +22,6 @@
 #include "common_enums.h"
 #include "DocumentModel.h"
 
-#include <QtCore/QLoggingCategory>
 #include <QtNetwork/QSslCertificate>
 
 #include <memory>
@@ -31,8 +30,6 @@
 
 class QCryptoBackend;
 
-Q_DECLARE_LOGGING_CATEGORY(CRYPTO)
-
 //
 // A wrapper structure for UI that contains either:
 // - lock information for decryption
@@ -40,7 +37,6 @@ Q_DECLARE_LOGGING_CATEGORY(CRYPTO)
 //
 
 struct CKey {
-public:
 	CKey(const libcdoc::Lock& _lock) : lock(_lock) {}
 	CKey(QSslCertificate rcpt_cert);
 

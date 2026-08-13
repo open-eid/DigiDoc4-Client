@@ -28,7 +28,6 @@
 #include <digidocpp/Exception.h>
 #include <digidocpp/crypto/X509Cert.h>
 
-#include <QtCore/QDir>
 #include <QtCore/QJsonArray>
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonObject>
@@ -43,7 +42,7 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QProgressBar>
 
-Q_LOGGING_CATEGORY(MIDLog,"RIA.MID")
+Q_LOGGING_CATEGORY(MIDLog, "qdigidoc4.mobileid", QtWarningMsg)
 
 using namespace digidoc;
 
@@ -74,8 +73,6 @@ public:
 MobileProgress::MobileProgress(const SigningProgressUI &pui)
 	: d(new Private(pui))
 {
-	const_cast<QLoggingCategory&>(MIDLog()).setEnabled(QtDebugMsg,
-		QFile::exists(QStringLiteral("%1/%2.log").arg(QDir::tempPath(), QApplication::applicationName())));
 	d->ui.bar->setMaximum(75);
 	d->ui.bar->setValue(0);
 	d->ui.code->setBuddy(d->ui.bar);
@@ -96,8 +93,11 @@ MobileProgress::MobileProgress(const SigningProgressUI &pui)
 	d->manager->setParent(d);
 	QObject::connect(d->manager, &QNetworkAccessManager::finished, d, [=, this](QNetworkReply *reply) {
 		QScopedPointer<QNetworkReply,QScopedPointerDeleteLater> scope(reply);
-		auto returnError = [=, this](const QString &err, const QString &details = {}, bool richText = false) {
-			qCWarning(MIDLog) << err;
+		auto returnError = [=, this](const QString &err, const QString &details = {}, bool richText = false, QtMsgType level = QtWarningMsg) {
+			if(level == QtInfoMsg)
+				qCInfo(MIDLog) << err;
+			else
+				qCWarning(MIDLog) << err;
 			d->statusTimer->stop();
 			auto *dlg = WarningDialog::create(d->ui.errorParent);
 			if(richText)
@@ -149,8 +149,12 @@ MobileProgress::MobileProgress(const SigningProgressUI &pui)
 			return returnError(tr("Invalid content type header ") + reply->header(QNetworkRequest::ContentTypeHeader).toString());
 
 		QByteArray data = reply->readAll();
-		qCDebug(MIDLog).noquote() << data;
 		QJsonObject result = QJsonDocument::fromJson(data, nullptr).object();
+		qCDebug(MIDLog) << "Response"
+			<< reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt()
+			<< "bytes" << data.size()
+			<< "state" << result.value(QLatin1String("state")).toString()
+			<< "result" << result.value(QLatin1String("result")).toObject().value(QLatin1String("endResult")).toString();
 		if(result.isEmpty())
 			return returnError(tr("Failed to parse JSON content"));
 
@@ -189,7 +193,7 @@ MobileProgress::MobileProgress(const SigningProgressUI &pui)
 			else if(endResult == QLatin1String("NOT_MID_CLIENT") || endResult == QLatin1String("NOT_FOUND") || endResult == QLatin1String("NOT_ACTIVE"))
 				returnError(tr("User is not a mobile-ID client"));
 			else if(endResult == QLatin1String("USER_CANCELLED"))
-				returnError(tr("User denied or cancelled"));
+				returnError(tr("User denied or cancelled"), {}, false, QtInfoMsg);
 			else if(endResult == QLatin1String("TIMEOUT"))
 				returnError(tr("Your mobile-ID transaction has expired. Please try again."));
 			else if(endResult == QLatin1String("PHONE_ABSENT"))
@@ -205,7 +209,7 @@ MobileProgress::MobileProgress(const SigningProgressUI &pui)
 			return;
 		}
 		d->req.setUrl(QUrl(QStringLiteral("%1/signature/session/%2?timeoutMs=10000").arg(d->URL, d->sessionID)));
-		qCDebug(MIDLog).noquote() << d->req.url();
+		qCDebug(MIDLog) << "Session status request" << d->req.url().host();
 		d->manager->get(d->req);
 	});
 }
@@ -242,7 +246,7 @@ bool MobileProgress::init(const QString &ssid, const QString &cell)
 		{"phoneNumber", d->cell},
 	})).toJson();
 	d->req.setUrl(QUrl(QStringLiteral("%1/certificate").arg(d->URL)));
-	qCDebug(MIDLog).noquote() << d->req.url() << data;
+	qCDebug(MIDLog) << "Certificate request" << d->req.url().host();
 	d->manager->post(d->req, data);
 	return d->l.exec() == QDialog::Accepted;
 }
@@ -283,7 +287,7 @@ std::vector<unsigned char> MobileProgress::sign(const std::string &method, const
 	// Workaround MID proxy issues
 	data = QString::fromUtf8(data).arg(escapeUnicode(tr("Sign document"))).toUtf8();
 	d->req.setUrl(QUrl(QStringLiteral("%1/signature").arg(d->URL)));
-	qCDebug(MIDLog).noquote() << d->req.url() << data;
+	qCDebug(MIDLog) << "Signature request" << d->req.url().host();
 	d->manager->post(d->req, data);
 	d->statusTimer->start();
 	switch(d->l.exec())
