@@ -20,6 +20,7 @@
 #include "SslCertificate.h"
 
 #include "Common.h"
+#include "Utils.h"
 
 #include <digidocpp/Exception.h>
 #include <digidocpp/crypto/X509Cert.h>
@@ -35,18 +36,6 @@
 #include <openssl/ocsp.h>
 #include <openssl/x509v3.h>
 
-#include <memory>
-
-template<auto D>
-struct free_deleter
-{
-	template<class T>
-	void operator()(T *p) const noexcept
-	{
-		D(p);
-	}
-};
-
 template<typename> struct free_argument;
 template<class T, class R>
 struct free_argument<R (*)(T *)>
@@ -58,13 +47,6 @@ struct free_argument<R (&)(T *)>
 {
 	using type = T;
 };
-
-template<auto F, typename T>
-[[nodiscard]]
-constexpr auto make_unique_ptr(T *t) noexcept
-{
-	return std::unique_ptr<T, free_deleter<F>>(t);
-}
 
 template<class T>
 static auto toQByteArray(T &x)

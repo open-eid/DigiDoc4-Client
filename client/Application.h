@@ -57,9 +57,6 @@ public:
 	explicit Application( int &argc, char **argv );
 	~Application() final;
 
-#ifdef Q_OS_WIN
-	void addTempFile(const QString &file);
-#endif
 	Configuration *conf();
 	void loadTranslation( const QString &lang );
 	bool notify(QObject *object, QEvent *event ) final;
