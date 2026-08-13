@@ -109,6 +109,6 @@ const Option<QString> Settings::PROXY_HOST { QStringLiteral("ProxyHost") };
 const Option<QString> Settings::PROXY_PORT { QStringLiteral("ProxyPort") };
 const Option<QString> Settings::PROXY_USER { QStringLiteral("ProxyUser") };
 const Option<QString> Settings::PROXY_PASS { QStringLiteral("ProxyPass") };
-#ifdef Q_OS_MAC
+#ifdef Q_OS_MACOS
 const Option<QString> Settings::PLUGINS { QStringLiteral("plugins") };
 #endif
