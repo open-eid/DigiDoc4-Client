@@ -302,9 +302,6 @@ public:
 	QString		lang;
 	QTimer		lastWindowTimer;
 	volatile bool ready = false;
-#ifdef Q_OS_WIN
-	QStringList	tempFiles;
-#endif // Q_OS_WIN
 
 	~Private() {
 		delete signer;
@@ -520,11 +517,6 @@ Application::~Application()
 {
 	for(QWidget *top: topLevelWidgets())
 		top->close();
-#ifdef Q_OS_WIN
-	for(const QString &file: qAsConst(d->tempFiles))
-		QFile::remove(file);
-	d->tempFiles.clear();
-#endif // Q_OS_WIN
 
 #ifndef Q_OS_MAC
 	if( isRunning() )
@@ -557,13 +549,6 @@ Application::~Application()
 
 #ifndef Q_OS_MAC
 void Application::addRecent( const QString & ) {}
-#endif
-
-#ifdef Q_OS_WIN
-void Application::addTempFile(const QString &file)
-{
-	d->tempFiles.append(file);
-}
 #endif
 
 void Application::browse( const QUrl &url )
