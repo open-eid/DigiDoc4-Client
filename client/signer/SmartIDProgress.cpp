@@ -29,7 +29,7 @@
 #include <digidocpp/crypto/X509Cert.h>
 
 #include <QtCore/QCryptographicHash>
-#include <QtCore/QDir>
+#include <QtCore/QFileInfo>
 #include <QtCore/QJsonArray>
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonObject>
@@ -44,7 +44,7 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QProgressBar>
 
-Q_LOGGING_CATEGORY(SIDLog,"RIA.SmartID")
+Q_LOGGING_CATEGORY(SIDLog, "qdigidoc4.smartid", QtWarningMsg)
 
 using namespace digidoc;
 
@@ -75,8 +75,6 @@ public:
 SmartIDProgress::SmartIDProgress(const SigningProgressUI &pui)
 	: d(new Private(pui))
 {
-	const_cast<QLoggingCategory&>(SIDLog()).setEnabled(QtDebugMsg,
-		QFile::exists(QStringLiteral("%1/%2.log").arg(QDir::tempPath(), QApplication::applicationName())));
 	d->ui.bar->setMaximum(100);
 	d->ui.bar->setValue(0);
 	d->ui.code->setBuddy(d->ui.bar);
@@ -96,8 +94,11 @@ SmartIDProgress::SmartIDProgress(const SigningProgressUI &pui)
 	d->manager->setParent(d);
 	QNetworkAccessManager::connect(d->manager, &QNetworkAccessManager::finished, d, [&, this](QNetworkReply *reply){
 		QScopedPointer<QNetworkReply,QScopedPointerDeleteLater> scope(reply);
-		auto returnError = [=, this](const QString &err, const QString &details = {}, bool richText = false) {
-			qCWarning(SIDLog) << err;
+		auto returnError = [=, this](const QString &err, const QString &details = {}, bool richText = false, QtMsgType level = QtWarningMsg) {
+			if(level == QtInfoMsg)
+				qCInfo(SIDLog) << err;
+			else
+				qCWarning(SIDLog) << err;
 			d->statusTimer->stop();
 			auto *dlg = WarningDialog::create(d->ui.errorParent);
 			if(richText)
@@ -155,8 +156,12 @@ SmartIDProgress::SmartIDProgress(const SigningProgressUI &pui)
 
 		QByteArray data = reply->readAll();
 		reply->deleteLater();
-		qCDebug(SIDLog).noquote() << data;
 		QJsonObject result = QJsonDocument::fromJson(data, nullptr).object();
+		qCDebug(SIDLog) << "Response"
+			<< reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt()
+			<< "bytes" << data.size()
+			<< "state" << result.value(QLatin1String("state")).toString()
+			<< "result" << result.value(QLatin1String("result")).toObject().value(QLatin1String("endResult")).toString();
 		if(result.isEmpty())
 			return returnError(tr("Failed to parse JSON content"));
 		if(d->sessionID.isEmpty())
@@ -170,7 +175,7 @@ SmartIDProgress::SmartIDProgress(const SigningProgressUI &pui)
 				endResult == QLatin1String("USER_REFUSED_VC_CHOICE") ||
 				endResult == QLatin1String("USER_REFUSED_CONFIRMATIONMESSAGE") ||
 				endResult == QLatin1String("USER_REFUSED_CONFIRMATIONMESSAGE_WITH_VC_CHOICE"))
-				returnError(tr("User denied or cancelled"));
+				returnError(tr("User denied or cancelled"), {}, false, QtInfoMsg);
 			else if(endResult == QLatin1String("TIMEOUT"))
 				returnError(tr("Your Smart-ID transaction has expired or user account not found."));
 			else if(endResult == QLatin1String("REQUIRED_INTERACTION_NOT_SUPPORTED_BY_APP"))
@@ -204,7 +209,7 @@ SmartIDProgress::SmartIDProgress(const SigningProgressUI &pui)
 			return;
 		}
 		d->req.setUrl(QUrl(QStringLiteral("%1/session/%2?timeoutMs=10000").arg(d->URL, d->sessionID)));
-		qCDebug(SIDLog).noquote() << d->req.url();
+		qCDebug(SIDLog) << "Session status request" << d->req.url().host();
 		d->manager->get(d->req);
 	});
 }
@@ -243,7 +248,7 @@ bool SmartIDProgress::init(const QString &country, const QString &idCode, const 
 		{"nonce", QUuid::createUuid().toString().remove('-').mid(1, 30)}
 	}).toJson();
 	d->req.setUrl(QUrl(QStringLiteral("%1/certificatechoice/etsi/PNO%2-%3").arg(d->URL, country, idCode)));
-	qCDebug(SIDLog).noquote() << d->req.url() << data;
+	qCDebug(SIDLog) << "Certificate choice request" << d->req.url().host();
 	d->manager->post(d->req, data);
 	d->ui.info->setText(tr("Open the Smart-ID application on your smart device and confirm device for signing."));
 	d->ui.code->setAccessibleName(d->ui.info->text());
@@ -287,7 +292,7 @@ std::vector<unsigned char> SmartIDProgress::sign(const std::string &method, cons
 	QString escape = QStringLiteral("%1 %2").arg(tr("Sign document"), d->fileName);
 	QByteArray data = QString::fromUtf8(QJsonDocument(req).toJson()).arg(escapeUnicode(escape)).toUtf8();
 	d->req.setUrl(QUrl(QStringLiteral("%1/signature/document/%2").arg(d->URL, d->documentNumber)));
-	qCDebug(SIDLog).noquote() << d->req.url() << data;
+	qCDebug(SIDLog) << "Signature request" << d->req.url().host();
 	d->manager->post(d->req, data);
 	d->statusTimer->start();
 	switch(d->l.exec())
