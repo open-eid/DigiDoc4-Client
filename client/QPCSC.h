@@ -35,7 +35,6 @@ public:
 	bool serviceRunning() const;
 
 Q_SIGNALS:
-	void statusChanged(const QString &reader, const QStringList &state);
 	void cardChanged();
 
 private:
