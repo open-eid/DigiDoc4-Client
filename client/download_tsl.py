@@ -7,6 +7,13 @@ import urllib.error
 import urllib.parse
 import time
 
+def is_well_formed_xml(path):
+    try:
+        ET.parse(path)
+        return True
+    except ET.ParseError:
+        return False
+
 def download_tsl_file(url, output_path, filename):
     output_file = os.path.join(output_path, filename)
     print(f"Downloading TSL list from: {url}")
@@ -15,10 +22,14 @@ def download_tsl_file(url, output_path, filename):
         try:
             with urllib.request.urlopen(url, timeout=60) as response, open(output_file, 'wb') as f:
                 shutil.copyfileobj(response, f)
+            if not is_well_formed_xml(output_file):
+                raise ValueError(f"downloaded file is not well-formed XML: {output_file}")
             print(f"Saved to: {output_file}")
             return output_file
-        except (urllib.error.HTTPError, urllib.error.URLError) as e:
+        except (urllib.error.HTTPError, urllib.error.URLError, ValueError) as e:
             print(f"Attempt {attempt + 1}/{retries} failed: {e}")
+            if os.path.exists(output_file):
+                os.remove(output_file)
             if attempt + 1 < retries:
                 sleep_time = 10 * (attempt + 1)
                 print(f"Retrying in {sleep_time} seconds...")
