@@ -1,23 +1,41 @@
+# SPDX-FileCopyrightText: Estonian Information System Authority
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 import sys
+import http.client
 import shutil
 import os
+import tempfile
 import xml.etree.ElementTree as ET
 import urllib.request
 import urllib.error
 import urllib.parse
 import time
 
+def is_well_formed_xml(path):
+    try:
+        ET.parse(path)
+        return True
+    except ET.ParseError:
+        return False
+
 def download_tsl_file(url, output_path, filename):
     output_file = os.path.join(output_path, filename)
     print(f"Downloading TSL list from: {url}")
     retries = 3
     for attempt in range(retries):
+        temporary_file = None
         try:
-            with urllib.request.urlopen(url, timeout=60) as response, open(output_file, 'wb') as f:
+            with urllib.request.urlopen(url, timeout=60) as response, tempfile.NamedTemporaryFile(dir=output_path, delete=False) as f:
+                temporary_file = f.name
                 shutil.copyfileobj(response, f)
+            if not is_well_formed_xml(temporary_file):
+                raise ValueError(f"downloaded file is not well-formed XML: {output_file}")
+            os.replace(temporary_file, output_file)
             print(f"Saved to: {output_file}")
             return output_file
-        except (urllib.error.HTTPError, urllib.error.URLError) as e:
+        except (urllib.error.HTTPError, urllib.error.URLError, http.client.IncompleteRead,
+                TimeoutError, ConnectionError, ValueError) as e:
             print(f"Attempt {attempt + 1}/{retries} failed: {e}")
             if attempt + 1 < retries:
                 sleep_time = 10 * (attempt + 1)
@@ -29,6 +47,9 @@ def download_tsl_file(url, output_path, filename):
         except IOError as e:
             print(f"Error saving TSL list {output_file}: {e}")
             sys.exit(1)
+        finally:
+            if temporary_file is not None and os.path.exists(temporary_file):
+                os.remove(temporary_file)
 
 def download_tsl_files(output_path, list_url, territories):
     master_list_filename = os.path.basename(urllib.parse.urlparse(list_url).path)
