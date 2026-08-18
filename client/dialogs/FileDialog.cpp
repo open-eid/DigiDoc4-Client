@@ -22,11 +22,14 @@
 #include "Settings.h"
 #include "dialogs/WarningDialog.h"
 
+#include <QtCore/QByteArrayView>
 #include <QtCore/QCoreApplication>
 #include <QtCore/QRegularExpression>
 #include <QtCore/QTemporaryFile>
 
 #include <algorithm>
+#include <array>
+#include <cstring>
 
 #ifdef Q_OS_WIN
 #include <ShObjIdl.h>
@@ -47,8 +50,6 @@ class CPtr
 #elif defined(Q_OS_MAC)
 #include <sys/xattr.h>
 #endif
-
-#include <array>
 
 QString FileDialog::createNewFileName(const QString &file, bool signature, QWidget *parent)
 {
@@ -111,9 +112,36 @@ bool FileDialog::isSignedPDF(const QString &path)
 	QFile file(path);
 	if(!file.open(QIODevice::ReadOnly))
 		return false;
-	QByteArray blob = file.readAll();
-	static const auto list = {"adbe.pkcs7.detached", "adbe.pkcs7.sha1", "adbe.x509.rsa_sha1", "ETSI.CAdES.detached"};
-	return std::any_of(list.begin(), list.end(), [&blob](const char *token) { return blob.indexOf(token) > 0; });
+
+	static constexpr std::array TOKENS {
+		QByteArrayView("adbe.pkcs7.detached"),
+		QByteArrayView("adbe.pkcs7.sha1"),
+		QByteArrayView("adbe.x509.rsa_sha1"),
+		QByteArrayView("ETSI.CAdES.detached"),
+	};
+	static constexpr qsizetype CHUNK_SIZE = 1024 * 1024;
+	static constexpr qsizetype OVERLAP = [] {
+		qsizetype longest = 0;
+		for(QByteArrayView token: TOKENS)
+			longest = std::max(longest, token.size());
+		return longest - 1;
+	}();
+
+	QByteArray buffer(OVERLAP + CHUNK_SIZE, Qt::Uninitialized);
+	qsizetype carry = 0; // bytes already valid at the front of buffer, kept from the previous chunk's tail
+	while(!file.atEnd())
+	{
+		qint64 readResult = file.read(buffer.data() + carry, CHUNK_SIZE);
+		if(readResult <= 0)
+			break;
+		qsizetype total = carry + qsizetype(readResult);
+		QByteArrayView view(buffer.constData(), total);
+		if(std::ranges::any_of(TOKENS, [view](QByteArrayView token) { return view.contains(token); }))
+			return true;
+		carry = std::min(total, OVERLAP);
+		std::memmove(buffer.data(), buffer.constData() + total - carry, size_t(carry));
+	}
+	return false;
 }
 
 void FileDialog::setFileZone(const QString &target, const QString &source)
