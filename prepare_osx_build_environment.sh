@@ -6,7 +6,6 @@ set -e
 ######### Versions of libraries/frameworks to be compiled
 QT_VER="6.12.0"
 OPENSSL_VER="3.5.9"
-OPENLDAP_VER="2.6.15"
 REBUILD=false
 BUILD_PATH=~/cmake_builds
 : ${MACOSX_DEPLOYMENT_TARGET:="14.0"}
@@ -29,17 +28,13 @@ do
         QT_VER="$2"
         shift
         ;;
-    -l|--openldap)
-        OPENLDAP_VER="$2"
-        shift
-        ;;
     -r|--rebuild)
         REBUILD=true
         ;;
     -h|--help)
         echo "Build Qt for Digidoc4 client"
         echo ""
-        echo "Usage: $0 [-r|--rebuild] [-p build-path] [-h|--help] [-q|--qt qt-version] [-l|--openldap openldap-version]"
+        echo "Usage: $0 [-r|--rebuild] [-p build-path] [-h|--help] [-q|--qt qt-version]"
         echo ""
         echo "Options:"
         echo "  -o or --openssl openssl-path:"
@@ -48,8 +43,6 @@ do
         echo "     folder where the dependencies should be built; default ${BUILD_PATH}"
         echo "  -q or --qt qt-version:"
         echo "     Specific version of Qt to build; default ${QT_VER} "
-        echo "  -l or --openldap openldap-version:"
-        echo "     Specific version of OpenLDAP to build; default ${OPENLDAP_VER} "
         echo "  -r or --rebuild:"
         echo "     Rebuild even if dependency is already built"
         echo " "
@@ -62,7 +55,6 @@ do
 done
 
 QT_PATH=${BUILD_PATH}/Qt-${QT_VER}-OpenSSL
-OPENLDAP_PATH=${BUILD_PATH}/OpenLDAP
 GREY='\033[0;37m'
 ORANGE='\033[0;33m'
 RED='\033[0;31m'
@@ -122,25 +114,6 @@ if [[ "$REBUILD" = true || ! -d ${QT_PATH} ]] ; then
     done
 else
     echo -e "\n${GREY}  Qt not built${RESET}"
-fi
-
-if [[ "$REBUILD" = true || ! -d ${OPENLDAP_PATH} ]] ; then
-    echo -e "\n${ORANGE}##### Building OpenLDAP ${OPENLDAP_VER} ${OPENLDAP_PATH} #####${RESET}\n"
-    if [ ! -f openldap-${OPENLDAP_VER}.tgz ]; then
-        curl -O -L https://mirror.eu.oneandone.net/software/openldap/openldap-release/openldap-${OPENLDAP_VER}.tgz
-    fi
-    tar xf openldap-${OPENLDAP_VER}.tgz
-    pushd openldap-${OPENLDAP_VER}
-    sed -ie 's! doc!!' Makefile.in
-    ARCH="-arch x86_64 -arch arm64"
-    CFLAGS="${ARCH}" CXXFLAGS="${ARCH}" LDFLAGS="${ARCH} -L${OPENSSL_PATH}/lib" CPPFLAGS="-I${OPENSSL_PATH}/include" ./configure \
-        --prefix ${OPENLDAP_PATH} --enable-static --disable-shared --disable-syslog --disable-local --disable-slapd \
-        --without-threads --without-cyrus-sasl --with-tls=openssl
-    make
-    make install
-    popd
-else
-    echo -e "\n${GREY}  OpenLDAP not built${RESET}"
 fi
 
 popd

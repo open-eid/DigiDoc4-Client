@@ -19,213 +19,362 @@
 
 #include "LdapSearch.h"
 
-#include <QtCore/QFile>
+#include "Application.h"
+#include "TLV.h"
+
+#include <QtCore/QCoreApplication>
+#include <QtCore/QJsonArray>
 #include <QtCore/QTimer>
-#include <QtCore/QUrl>
 #include <QtCore/QVariantMap>
+#include <QtNetwork/QNetworkProxy>
 #include <QtNetwork/QSslCertificate>
+#include <QtNetwork/QSslSocket>
 
-#ifdef Q_OS_WIN
-#include <Windows.h>
-#include <Winldap.h>
-#include <Winber.h>
-using STR_T = PWSTR;
-#define STR(X) const_cast<STR_T>(L##X)
-#define TO_STR(X) STR_T((X).utf16())
-#else
-#define LDAP_DEPRECATED 1
-#include <sys/time.h>
-#include <ldap.h>
-using ULONG = int;
-using LDAP_TIMEVAL = timeval;
-using STR_T = char *;
-#define STR(X) const_cast<STR_T>(X)
-#define TO_STR(X) STR_T((X).toLocal8Bit().constData())
-#endif
-
-#include <array>
 #include <chrono>
+#include <type_traits>
+#include <utility>
 
 using namespace std::chrono;
 
-template<typename T>
-static constexpr auto TO_QSTR(const T *str)
-{
-	if constexpr (std::is_same_v<T,char>)
-		return QLatin1String(str);
-	else
-		return QStringView(str);
-}
+namespace {
 
-class LdapSearch::Private
-{
-public:
-	LDAP *ldap {};
-	QUrl url;
-	QByteArray caCertPath;
-	QTimer *timer {};
+// RFC 4511 BER tags
+enum Tag : quint8 {
+	BOOLEAN = 0x01,
+	INTEGER = 0x02,
+	OCTET_STRING = 0x04,
+	ENUMERATED = 0x0A,
+	SEQUENCE = 0x30,
+	UNBIND_REQUEST = 0x42,
+	SEARCH_REQUEST = 0x63,
+	SEARCH_RESULT_ENTRY = 0x64,
+	SEARCH_RESULT_DONE = 0x65,
+	SEARCH_RESULT_REFERENCE = 0x73,
+	FILTER_EQUALITY = 0xA3,
+	FILTER_SUBSTRINGS = 0xA4,
+	SUBSTRING_ANY = 0x81,
 };
 
-LdapSearch::LdapSearch(const QString &url, const QString &caCertPath, QObject *parent)
-:	QObject( parent )
-,	d(new Private)
+constexpr int MESSAGE_ID = 1;
+constexpr int SIZE_LIMIT = 50;
+constexpr int RESULT_SUCCESS = 0;
+constexpr int RESULT_SIZE_LIMIT_EXCEEDED = 4;
+constexpr qsizetype MAX_RESPONSE_SIZE = 10 * 1024 * 1024;
+
+template<typename T>
+struct Ber final
 {
-	d->url = QUrl(url);
-	d->caCertPath = QFile::encodeName(caCertPath);
-	d->timer = new QTimer(this);
-	d->timer->setSingleShot(true);
-	connect(d->timer, &QTimer::timeout, this, [this]{
-		if(d->ldap)
-			ldap_unbind_s(d->ldap);
-		d->ldap = nullptr;
-	});
+	Tag tag;
+	T value;
+	constexpr qsizetype encodedSize() const;
+	operator QByteArray() const;
+};
+
+constexpr int lengthSize(qsizetype size)
+{
+	int length = 1;
+	if(size >= 0x80)
+		for(; size > 0; size >>= 8)
+			++length;
+	return length;
 }
 
-LdapSearch::~LdapSearch()
+qsizetype payloadSize(const QByteArray &value)
 {
-	if( d->ldap )
-		ldap_unbind_s( d->ldap );
-	delete d;
+	return value.size();
 }
 
-bool LdapSearch::init()
+constexpr int payloadSize(int value)
 {
-	if(d->ldap)
+	int length = 1;
+	for(; value < -128 || value > 127; value >>= 8)
+		++length;
+	return length;
+}
+
+template<typename T>
+constexpr qsizetype payloadSize(const Ber<T> &value)
+{
+	return value.encodedSize();
+}
+
+template<typename T>
+constexpr qsizetype Ber<T>::encodedSize() const
+{
+	qsizetype size = payloadSize(value);
+	return 1 + lengthSize(size) + size;
+}
+
+template<typename T>
+inline QByteArray operator+(QByteArray lhs, const Ber<T>& rhs)
+{
+	// Tag
+	lhs.append(char(rhs.tag));
+	// Length
+	auto size = payloadSize(rhs.value);
+	if(int length = lengthSize(size); length == 1)
+		lhs.append(char(size));
+	else
 	{
-		d->timer->start(4min);
+		lhs.append(char(0x80 | (length - 1)));
+		for(int shift = (length - 2) * 8; shift >= 0; shift -= 8)
+			lhs.append(char((size >> shift) & 0xFF));
+	}
+	// Value
+	if constexpr(std::is_same_v<T, QByteArray>)
+		lhs.append(rhs.value);
+	else if constexpr(std::is_same_v<T, int>)
+	{
+		for(int shift = (size - 1) * 8; shift >= 0; shift -= 8)
+			lhs.append(char((quint32(rhs.value) >> shift) & 0xFF));
+	}
+	else
+		return std::move(lhs) + rhs.value;
+	return lhs;
+}
+
+template<typename T>
+Ber<T>::operator QByteArray() const
+{
+	QByteArray result;
+	result.reserve(encodedSize());
+	return std::move(result) + *this;
+}
+
+QByteArray ldapMessage(Tag operation, auto &&value)
+{
+	return Ber{SEQUENCE, Ber{INTEGER, MESSAGE_ID} + Ber{operation, std::forward<decltype(value)>(value)}};
+}
+
+int toInt(QByteArrayView data)
+{
+	if(data.isEmpty() || data.size() > qsizetype(sizeof(int)))
+		return -1;
+	int result = 0;
+	for(char c: data)
+		result = (result << 8) | quint8(c);
+	return result;
+}
+
+struct Request final: public QSslSocket
+{
+	Q_DECLARE_TR_FUNCTIONS(LdapSearch)
+
+public:
+	Request(LdapSearch *owner, const QUrl &url, const QSslConfiguration &ssl,
+		const QByteArray &request, const QVariantMap &userData)
+		: QSslSocket(owner)
+		, owner(owner)
+		, host(url.host())
+		, tls(url.scheme() == QLatin1String("ldaps"))
+		, port(quint16(url.port(tls ? 636 : 389)))
+		, userData(userData)
+	{
+		timer.setSingleShot(true);
+		connect(&timer, &QTimer::timeout, this, &Request::timeout);
+		connect(this, &QAbstractSocket::errorOccurred, this, &Request::socketError);
+		connect(this, &QAbstractSocket::disconnected, this, &QObject::deleteLater);
+		connect(this, &QIODevice::readyRead, this, &Request::readResults);
+		if(tls)
+			connect(this, &QSslSocket::encrypted, this, [this, request] { write(request); });
+		else
+			connect(this, &QAbstractSocket::connected, this, [this, request] { write(request); });
+		setSslConfiguration(ssl);
+		connectToServer();
+	}
+
+private:
+	void connectToServer()
+	{
+		timer.start(30s);
+		if(tls)
+			connectToHostEncrypted(host, port);
+		else
+			connectToHost(host, port);
+	}
+
+	void fail(const QString &title, const QString &details = {})
+	{
+		finished = true;
+		abort();
+		deleteLater();
+		Q_EMIT owner->error(title, details.isEmpty() ? host : QStringLiteral("%1\n%2").arg(host, details));
+	}
+
+	bool viaProxy() const
+	{
+		if(proxy().type() != QNetworkProxy::DefaultProxy)
+			return proxy().type() != QNetworkProxy::NoProxy;
+		// Same lookup that QAbstractSocket does for the default proxy
+		for(const QNetworkProxy &p: QNetworkProxyFactory::proxyForQuery(QNetworkProxyQuery(host, port, protocolTag())))
+		{
+			if(p.capabilities() & QNetworkProxy::TunnelingCapability)
+				return p.type() != QNetworkProxy::NoProxy;
+		}
+		return false;
+	}
+
+	// Proxies often allow CONNECT only to port 443, while firewalls allow
+	// the direct LDAP connection that libldap and WinLDAP always used
+	bool retryDirect()
+	{
+		if(!viaProxy())
+			return false;
+		abort();
+		setProxy(QNetworkProxy::NoProxy);
+		// Reconnecting from errorOccurred is not supported, retry from the event loop
+		QTimer::singleShot(0, this, &Request::connectToServer);
 		return true;
 	}
 
-#ifdef Q_OS_WIN
-	int ssl = d->url.scheme() == QLatin1String("ldaps") ? 1 : 0;
-	QString host = d->url.host();
-	ULONG port = ULONG(d->url.port(ssl ? LDAP_SSL_PORT : LDAP_PORT));
-	if(d->ldap = ldap_sslinit(TO_STR(host), port, ssl); !d->ldap)
+	void timeout()
 	{
-		setLastError(tr("Failed to init ldap"), int(LdapGetLastError()));
-		return false;
-	}
-	ULONG err = 0;
-#else
-	if(!d->caCertPath.isEmpty())
-	{
-		if(auto err = ldap_set_option(nullptr, LDAP_OPT_X_TLS_CACERTFILE, d->caCertPath.constData()); err)
+		if(!finished)
 		{
-			setLastError(tr("Failed to set ldap CA cert"), err);
-			return false;
+			// The proxy did not answer CONNECT
+			if(state() != QAbstractSocket::ConnectedState && retryDirect())
+				return;
+			return fail(tr("Check your internet connection!\nLDAP server is unavailable."));
 		}
+		abort();
+		deleteLater();
 	}
 
-	int cert_flag = LDAP_OPT_X_TLS_DEMAND;
-	if(auto err = ldap_set_option(nullptr, LDAP_OPT_X_TLS_REQUIRE_CERT, &cert_flag); err)
+	void socketError(QAbstractSocket::SocketError error)
 	{
-		setLastError(tr("Failed to start ssl"), err);
-		return false;
-	}
-
-	QByteArray host = d->url.toString(QUrl::RemovePath|QUrl::RemoveQuery|QUrl::RemoveFragment).toUtf8();
-	if(auto err = ldap_initialize(&d->ldap, host.constData()))
-	{
-		setLastError(tr("Failed to init ldap"), err);
-		return false;
-	}
-#endif
-
-	int version = LDAP_VERSION3;
-	if(auto err = ldap_set_option(d->ldap, LDAP_OPT_PROTOCOL_VERSION, &version))
-	{
-		setLastError(tr("Failed to set ldap version"), err);
-		return false;
-	}
-
-	if(auto err = ldap_simple_bind_s(d->ldap, nullptr, nullptr))
-	{
-		setLastError(tr("Failed to init ldap"), err);
-		return false;
-	}
-
-	d->timer->start(4min);
-	return true;
-}
-
-void LdapSearch::search(const QString &search, const QVariantMap &userData)
-{
-	if(!init())
-	{
-		if(d->ldap)
-			ldap_unbind_s(d->ldap);
-		d->ldap = nullptr;
-		return;
-	}
-
-	std::array<STR_T, 2> attrs { STR("userCertificate;binary"), nullptr };
-
-	ULONG msg_id = 0;
-	QString path = d->url.path();
-	int err = ldap_search_ext(d->ldap, TO_STR(path.isEmpty() ? "c=EE" : path.remove(0, 1)), LDAP_SCOPE_SUBTREE,
-		TO_STR(search), attrs.data(), 0, nullptr, nullptr, LDAP_NO_LIMIT, LDAP_NO_LIMIT, &msg_id);
-	if(err)
-		return setLastError( tr("Failed to init ldap search"), err );
-
-	auto *timer = new QTimer(this);
-	connect(timer, &QTimer::timeout, this, [this, msg_id, timer, userData] {
-		LDAPMessage *result = nullptr;
-		LDAP_TIMEVAL t { 5, 0 };
-		switch(int err = ldap_result(d->ldap, msg_id, LDAP_MSG_ALL, &t, &result))
-		{
-		case LDAP_SUCCESS: //Timeout
+		if(finished)
 			return;
-		case LDAP_RES_SEARCH_ENTRY:
-		case LDAP_RES_SEARCH_RESULT:
+		switch(error)
+		{
+		case QAbstractSocket::SocketAccessError: // proxy answered 403/405 to CONNECT
+		case QAbstractSocket::ProxyAuthenticationRequiredError:
+		case QAbstractSocket::ProxyConnectionRefusedError:
+		case QAbstractSocket::ProxyConnectionClosedError:
+		case QAbstractSocket::ProxyConnectionTimeoutError:
+		case QAbstractSocket::ProxyNotFoundError:
+		case QAbstractSocket::ProxyProtocolError:
+			if(retryDirect())
+				return;
 			break;
 		default:
-			setLastError(tr("Failed to get result"), err);
-			timer->deleteLater();
-			return;
+			break;
 		}
-		timer->deleteLater();
-
-		QList<QSslCertificate> list;
-		LDAPMessage *entry = ldap_first_entry(d->ldap, result);
-		int count = ldap_count_entries(d->ldap, entry);
-		for(; entry; entry = ldap_next_entry(d->ldap, entry))
+		if(const auto errors = sslHandshakeErrors();
+			error == QAbstractSocket::SslHandshakeFailedError && !errors.isEmpty())
 		{
-			BerElement *pos = nullptr;
-			for(auto *attr = ldap_first_attribute(d->ldap, entry, &pos);
-				attr; attr = ldap_next_attribute(d->ldap, entry, pos))
-			{
-				if(QLatin1String("userCertificate;binary") == TO_QSTR(attr))
-				{
-					berval **cert = ldap_get_values_len(d->ldap, entry, attr);
-					for(ULONG i = 0; i < ldap_count_values_len(cert); ++i)
-						list.append(QSslCertificate(QByteArray::fromRawData(cert[i]->bv_val, int(cert[i]->bv_len)), QSsl::Der));
-					ldap_value_free_len(cert);
-				}
-				ldap_memfree(attr);
-			}
-			ber_free(pos, 0);
+			QStringList details;
+			for(const QSslError &sslError: errors)
+				details.append(sslError.errorString());
+			return fail(tr("The LDAP server certificate is not trusted."), details.join(QLatin1Char('\n')));
 		}
-		ldap_msgfree(result);
-
-		Q_EMIT searchResult(list, count, userData);
-	});
-	timer->start(1s);
-}
-
-void LdapSearch::setLastError( const QString &msg, int err )
-{
-	QString res = msg;
-	QString details;
-	switch( err )
-	{
-	case LDAP_UNAVAILABLE:
-	case LDAP_SERVER_DOWN:
-		res = tr("Check your internet connection!\nLDAP server is unavailable.");
-		break;
-	default:
-		details = tr( "Error Code: %1 (%2)" ).arg( err ).arg( ldap_err2string( err ) );
-		break;
+		fail(tr("Check your internet connection!\nLDAP server is unavailable."), errorString());
 	}
-	Q_EMIT error( res, details );
+
+	void readResults()
+	{
+		if(finished)
+			return;
+		buffer.append(readAll());
+		if(buffer.size() > MAX_RESPONSE_SIZE)
+			return fail(tr("Failed to get result"));
+		// An incomplete message stays in the buffer until the rest arrives
+		for(TLV message(buffer); message; message = TLV(buffer))
+		{
+			TLV id(message.value());
+			TLV op = id.next();
+			if(message.tag != SEQUENCE || id.tag != INTEGER || toInt(id.value()) != MESSAGE_ID || !op)
+				return fail(tr("Failed to get result"));
+			switch(op.tag)
+			{
+			case SEARCH_RESULT_ENTRY:
+				readEntry(op.value());
+				break;
+			case SEARCH_RESULT_REFERENCE:
+				return fail(tr("Failed to get result"),
+					tr("The LDAP search could not be completed because the server returned a referral."));
+			case SEARCH_RESULT_DONE:
+				return complete(op.value());
+			default:
+				return fail(tr("Failed to get result"));
+			}
+			buffer.remove(0, message.data.data() - buffer.constData() + message.length);
+		}
+	}
+
+	void readEntry(QByteArrayView entry)
+	{
+		TLV attributes = TLV(entry).next(); // skip objectName
+		for(TLV attribute(attributes.value()); attribute; ++attribute)
+		{
+			TLV type(attribute.value());
+			if(const QByteArray name = type.value().toByteArray();
+				name.compare("userCertificate;binary", Qt::CaseInsensitive) != 0 &&
+				name.compare("userCertificate", Qt::CaseInsensitive) != 0)
+				continue;
+			TLV values = type.next();
+			for(TLV cert(values.value()); cert; ++cert)
+				certs.append(QSslCertificate(cert.value().toByteArray(), QSsl::Der));
+		}
+		++count;
+	}
+
+	void complete(QByteArrayView result)
+	{
+		TLV resultCode(result);
+		TLV diagnosticMessage = resultCode.next().next(); // skip matchedDN
+		int code = resultCode.tag == ENUMERATED ? toInt(resultCode.value()) : -1;
+		if(code != RESULT_SUCCESS && code != RESULT_SIZE_LIMIT_EXCEEDED)
+			return fail(tr("Failed to get result"), tr("Error Code: %1 (%2)")
+				.arg(code).arg(QString::fromUtf8(diagnosticMessage.value())));
+		finished = true;
+		write(ldapMessage(UNBIND_REQUEST, QByteArray{}));
+		disconnectFromHost();
+		timer.start(5s);
+		Q_EMIT owner->searchResult(certs, count, userData);
+	}
+
+	LdapSearch *owner;
+	const QString host;
+	const bool tls;
+	const quint16 port;
+	const QVariantMap userData;
+	QTimer timer;
+	QByteArray buffer;
+	QList<QSslCertificate> certs;
+	int count = 0;
+	bool finished = false;
+};
+
 }
 
+LdapSearch::LdapSearch(QObject *parent)
+	: QObject(parent)
+{
+	QList<QSslCertificate> caCerts;
+	for(const auto &entry: Application::confValue(QLatin1String("LDAP-CERTS")).toArray())
+	{
+		if(QSslCertificate cert(QByteArray::fromBase64(entry.toString().toLatin1()), QSsl::Der); !cert.isNull())
+			caCerts.append(cert);
+	}
+	if(!caCerts.isEmpty())
+		ssl.setCaCertificates(caCerts);
+}
+
+void LdapSearch::search(const QUrl &url, const QString &attribute, const QString &value, Match match, const QVariantMap &userData)
+{
+	QString base = url.path().mid(1);
+	QByteArray request = ldapMessage(SEARCH_REQUEST,
+		Ber{OCTET_STRING, base.isEmpty() ? QByteArrayLiteral("c=EE") : base.toUtf8()} +
+		Ber{ENUMERATED, 2} + // scope: wholeSubtree
+		Ber{ENUMERATED, 0} + // derefAliases: neverDerefAliases
+		Ber{INTEGER, SIZE_LIMIT} +
+		Ber{INTEGER, 0} + // timeLimit: none
+		Ber{BOOLEAN, 0} + // typesOnly: false
+		(match == Contains ?
+			Ber{FILTER_SUBSTRINGS, Ber{OCTET_STRING, attribute.toUtf8()} + Ber{SEQUENCE, Ber{SUBSTRING_ANY, value.toUtf8()}}} :
+			Ber{FILTER_EQUALITY, Ber{OCTET_STRING, attribute.toUtf8()} + Ber{OCTET_STRING, value.toUtf8()}}
+		) +
+		Ber{SEQUENCE, Ber{OCTET_STRING, QByteArrayLiteral("userCertificate;binary")}}
+	);
+	new Request(this, url, ssl, request, userData);
+}
