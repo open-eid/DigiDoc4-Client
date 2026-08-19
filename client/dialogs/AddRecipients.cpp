@@ -54,23 +54,14 @@ struct AddRecipients::Private: public Ui::AddRecipients
 AddRecipients::AddRecipients(ItemList* itemList, QWidget *parent)
 	: QDialog(parent)
 	, ui(new Private)
+	, ldap(new LdapSearch(this))
 {
-#ifndef Q_OS_WIN
-	if(const auto list = Application::confValue(QLatin1String("LDAP-CERTS")).toArray();
-		!list.isEmpty() && ldapCACerts.open())
-	{
-		for(const auto &entry : list)
-			ldapCACerts.write(QSslCertificate(QByteArray::fromBase64(entry.toString().toLatin1()), QSsl::Der).toPem());
-		ldapCACerts.close();
-	}
-#endif
-	ldap_corp = new LdapSearch(Application::confValue(QLatin1String("LDAP-CORP-URL")).toString(QStringLiteral("ldaps://k3.ldap.sk.ee")), ldapCACerts.fileName(), this);
+	ldapCorpUrl = QUrl(Application::confValue(QLatin1String("LDAP-CORP-URL")).toString(QStringLiteral("ldaps://k3.ldap.sk.ee")));
 	for(const auto list = Application::confValue(QLatin1String("LDAP-PERSON-URLS")).toArray(); auto url: list)
-		ldap_person.append(new LdapSearch(url.toString(), ldapCACerts.fileName(), this));
-	if(ldap_person.isEmpty()) {
-		ldap_person.append(new LdapSearch(QStringLiteral("ldaps://esteid.ldap.sk.ee"), ldapCACerts.fileName(), this));
-		ldap_person.append(new LdapSearch(QStringLiteral("ldaps://ldap.eidpki.ee/dc=eidpki,dc=ee"), ldapCACerts.fileName(), this));
-	}
+		ldapPersonUrls.append(QUrl(url.toString()));
+	if(ldapPersonUrls.isEmpty())
+		ldapPersonUrls = {QUrl(QStringLiteral("ldaps://esteid.ldap.sk.ee")),
+			QUrl(QStringLiteral("ldaps://ldap.eidpki.ee/dc=eidpki,dc=ee"))};
 
 	ui->setupUi(this);
 
@@ -131,12 +122,8 @@ AddRecipients::AddRecipients(ItemList* itemList, QWidget *parent)
 	connect(ui->txtFind, &QLineEdit::textChanged, this, [this](const QString &text) {
 		ui->btnFind->setDisabled(text.trimmed().isEmpty());
 	});
-	for(auto *ldap: ldap_person) {
-		connect(ldap, &LdapSearch::searchResult, this, &AddRecipients::showResult);
-		connect(ldap, &LdapSearch::error, this, &AddRecipients::showError);
-	}
-	connect(ldap_corp, &LdapSearch::searchResult, this, &AddRecipients::showResult);
-	connect(ldap_corp, &LdapSearch::error, this, &AddRecipients::showError);
+	connect(ldap, &LdapSearch::searchResult, this, &AddRecipients::showResult);
+	connect(ldap, &LdapSearch::error, this, &AddRecipients::showError);
 	connect(this, &AddRecipients::finished, this, &AddRecipients::close);
 
 	connect(ui->leftPane, &ItemList::add, this, [this] {
@@ -168,7 +155,8 @@ AddRecipients::AddRecipients(ItemList* itemList, QWidget *parent)
 
 AddRecipients::~AddRecipients()
 {
-	QApplication::restoreOverrideCursor();
+	if(pendingSearches)
+		QApplication::restoreOverrideCursor();
 	delete ui;
 }
 
@@ -340,49 +328,47 @@ QList<CKey> AddRecipients::keys() const
 
 void AddRecipients::search(const QString &term, bool select, const QString &type)
 {
-	QApplication::setOverrideCursor(Qt::WaitCursor);
-
 	QVariantMap userData {
 		{QStringLiteral("type"), type},
 		{QStringLiteral("select"), select}
 	};
-	QString cleanTerm = term.simplified()
-#ifdef Q_OS_WIN
-		.replace(QStringLiteral("\\"), QStringLiteral("\\5c"))
-		.replace(QStringLiteral("*"), QStringLiteral("\\2A"))
-		.replace(QStringLiteral("("), QStringLiteral("\\28"))
-		.replace(QStringLiteral(")"), QStringLiteral("\\29"));
-#else
-		.replace(QStringLiteral("\\"), QStringLiteral("\\\\"))
-		.replace(QStringLiteral("*"), QStringLiteral("\\*"))
-		.replace(QStringLiteral("("), QStringLiteral("\\("))
-		.replace(QStringLiteral(")"), QStringLiteral("\\)"));
-#endif
-	multiSearch = 0;
+	QString cleanTerm = term.simplified();
 	bool isDigit = false;
 	void(cleanTerm.toULongLong(&isDigit));
-	if(!isDigit || (cleanTerm.size() != 11 && cleanTerm.size() != 8))
-		ldap_corp->search(QStringLiteral("(cn=*%1*)").arg(cleanTerm), userData);
-	else if(cleanTerm.size() == 8)
-		ldap_corp->search(QStringLiteral("(serialNumber=%1)" ).arg(cleanTerm), userData);
-	else if(IKValidator::isValid(cleanTerm))
+	const bool personSearch = isDigit && cleanTerm.size() == 11;
+	if(personSearch && !IKValidator::isValid(cleanTerm))
 	{
-		userData[QStringLiteral("personSearch")] = true;
-		for(auto *ldap: ldap_person) {
-			ldap->search(QStringLiteral("(serialNumber=PNOEE-%1)").arg(cleanTerm), userData);
-			++multiSearch;
-		}
+		WarningDialog::create(this)->withTitle(tr("Personal code is not valid!"))->open();
+		return;
 	}
+	if(!pendingSearches)
+	{
+		searchFailed = false;
+		QApplication::setOverrideCursor(Qt::WaitCursor);
+	}
+	pendingSearches += personSearch ? int(ldapPersonUrls.size()) : 1;
+	if(!isDigit || (cleanTerm.size() != 11 && cleanTerm.size() != 8))
+		ldap->search(ldapCorpUrl, QStringLiteral("cn"), cleanTerm, LdapSearch::Contains, userData);
+	else if(cleanTerm.size() == 8)
+		ldap->search(ldapCorpUrl, QStringLiteral("serialNumber"), cleanTerm, LdapSearch::Equals, userData);
 	else
 	{
-		QApplication::restoreOverrideCursor();
-		WarningDialog::create(this)->withTitle(tr("Personal code is not valid!"))->open();
+		userData[QStringLiteral("personSearch")] = true;
+		for(const auto &url: ldapPersonUrls)
+			ldap->search(url, QStringLiteral("serialNumber"), QStringLiteral("PNOEE-%1").arg(cleanTerm), LdapSearch::Equals, userData);
 	}
+}
+
+void AddRecipients::finishSearch(bool failed)
+{
+	searchFailed |= failed;
+	if(--pendingSearches == 0)
+		QApplication::restoreOverrideCursor();
 }
 
 void AddRecipients::showError(const QString &title, const QString &details)
 {
-	QApplication::restoreOverrideCursor();
+	finishSearch(true);
 	WarningDialog::create(this)->withTitle(title)->withDetails(details)->open();
 }
 
@@ -401,15 +387,15 @@ void AddRecipients::showResult(const QList<QSslCertificate> &result, int resultC
 				(userData.value(QStringLiteral("type")).isNull() || HistoryCertData::toType(SslCertificate(k)) == userData[QStringLiteral("type")]));
 		}
 	}
+	finishSearch();
 	if(resultCount >= 50)
 		WarningDialog::create(this)
 			->withText(tr("The name you were looking for gave too many results, please refine your search."))
 			->open();
-	else if(--multiSearch <= 0 && ui->leftPane->items.isEmpty())
+	else if(!pendingSearches && !searchFailed && ui->leftPane->items.isEmpty())
 		WarningDialog::create(this)
 			->withTitle(tr("Person or company does not own a valid certificate"))
 			->withRichText(tr("It is necessary to have a valid certificate for encryption.<br />"
 				"<a href='https://www.id.ee/en/article/encryption-and-decryption-of-documents/'>Read more about it</a>."))
 			->open();
-	QApplication::restoreOverrideCursor();
 }
