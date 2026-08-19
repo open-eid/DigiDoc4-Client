@@ -44,21 +44,31 @@ AddRecipients::AddRecipients(ItemList* itemList, QWidget *parent)
 	: QDialog(parent)
 	, ui(new Ui::AddRecipients)
 {
-#ifndef Q_OS_WIN
-	if(const auto list = Application::confValue(QLatin1String("LDAP-CERTS")).toArray();
-		!list.isEmpty() && ldapCACerts.open())
+#ifdef Q_OS_WIN
+	QList<QSslCertificate> ldapTrust;
+	for(const auto &entry: Application::confValue(QLatin1String("LDAP-CERTS")).toArray())
 	{
-		for(const auto &entry : list)
-			ldapCACerts.write(QSslCertificate(QByteArray::fromBase64(entry.toString().toLatin1()), QSsl::Der).toPem());
+		if(QSslCertificate cert(QByteArray::fromBase64(entry.toString().toLatin1()), QSsl::Der); !cert.isNull())
+			ldapTrust.append(cert);
+	}
+#else
+	if(ldapCACerts.open())
+	{
+		for(const auto &entry: Application::confValue(QLatin1String("LDAP-CERTS")).toArray())
+		{
+			if(QSslCertificate cert(QByteArray::fromBase64(entry.toString().toLatin1()), QSsl::Der); !cert.isNull())
+				ldapCACerts.write(cert.toPem());
+		}
 		ldapCACerts.close();
 	}
+	const QString ldapTrust = ldapCACerts.fileName();
 #endif
-	ldap_corp = new LdapSearch(Application::confValue(QLatin1String("LDAP-CORP-URL")).toString(QStringLiteral("ldaps://k3.ldap.sk.ee")), ldapCACerts.fileName(), this);
+	ldap_corp = new LdapSearch(Application::confValue(QLatin1String("LDAP-CORP-URL")).toString(QStringLiteral("ldaps://k3.ldap.sk.ee")), ldapTrust, this);
 	for(const auto list = Application::confValue(QLatin1String("LDAP-PERSON-URLS")).toArray(); auto url: list)
-		ldap_person.append(new LdapSearch(url.toString(), ldapCACerts.fileName(), this));
+		ldap_person.append(new LdapSearch(url.toString(), ldapTrust, this));
 	if(ldap_person.isEmpty()) {
-		ldap_person.append(new LdapSearch(QStringLiteral("ldaps://esteid.ldap.sk.ee"), ldapCACerts.fileName(), this));
-		ldap_person.append(new LdapSearch(QStringLiteral("ldaps://ldap.eidpki.ee/dc=eidpki,dc=ee"), ldapCACerts.fileName(), this));
+		ldap_person.append(new LdapSearch(QStringLiteral("ldaps://esteid.ldap.sk.ee"), ldapTrust, this));
+		ldap_person.append(new LdapSearch(QStringLiteral("ldaps://ldap.eidpki.ee/dc=eidpki,dc=ee"), ldapTrust, this));
 	}
 
 	ui->setupUi(this);

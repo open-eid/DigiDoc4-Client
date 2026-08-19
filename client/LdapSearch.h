@@ -27,7 +27,11 @@ class LdapSearch final: public QObject
 	Q_OBJECT
 
 public:
+#ifdef Q_OS_WIN
+	LdapSearch(const QString &url, const QList<QSslCertificate> &caCerts = {}, QObject *parent = nullptr);
+#else
 	LdapSearch(const QString &url, const QString &caCertPath = {}, QObject *parent = nullptr);
+#endif
 	~LdapSearch() final;
 
 	void search(const QString &search, const QVariantMap &userData);
@@ -40,6 +44,6 @@ private:
 	bool init();
 	void setLastError( const QString &msg, int err );
 
-	class Private;
+	struct Private;
 	Private *d;
 };
