@@ -146,7 +146,7 @@ void VerifyCert::update()
 
 		ui->validUntil->setLabel({});
 		ui->validUntil->setText(tr("The PUK code is located in your envelope"));
-		ui->validUntil->setHidden(isBlockedPuk);
+		ui->validUntil->setHidden(isBlockedPuk || !isPUKReplacable);
 
 		ui->changePIN->setText(tr("Change PUK"));
 		ui->changePIN->setHidden(isBlockedPuk || !isPUKReplacable);
@@ -166,9 +166,9 @@ void VerifyCert::update()
 		else if(!isPUKReplacable)
 		{
 			ui->info->setLabel({});
-			ui->info->setText(tr("The PUK code cannot be changed on the ID-card in the reader.<br />"
-				"If you have forgotten the PUK code of your ID-card then you can view it from the Police and Border Guard Board portal.<br />"
-				 "<a href=\"https://www.id.ee/en/article/pin-and-puk-codes-security-recommendations/\">Additional information</a>."));
+			ui->info->setText(tr("The PUK code of the ID-card inserted in the card reader cannot be changed.<br />"
+				"If you wish to view your ID-card’s PUK code or have forgotten it, you can do so via the Police and Border Guard Board portal.<br />"
+				"<a href=\"https://www.id.ee/en/article/pin-and-puk-codes-security-recommendations/\">Additional information</a>."));
 		}
 	} else {
 		if(pinType == QSmartCardData::Pin2Type)
