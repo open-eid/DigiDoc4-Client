@@ -54,6 +54,7 @@ find_package(Qt6 6.2.0 REQUIRED COMPONENTS Core Widgets Network PrintSupport Svg
 if(APPLE)
     add_subdirectory(extensions/DigiDocQL)
 elseif(WIN32)
+    set(APPX_PUBLISHER "CN=8BBBE4D8-620A-4884-A12A-72F1A2030D8B" CACHE STRING "Publisher for test Appx and MSIX packages")
     add_subdirectory(extensions/windows)
 elseif(UNIX)
     option(ENABLE_KDE "Install KDE service menu (default: TRUE)" TRUE)

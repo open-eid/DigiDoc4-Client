@@ -212,6 +212,7 @@ jobs:
         path: |
           build/*.msi
           build/*.appx
+          build/*.cer
   coverity:
     name: Run Coverity tests
     if: github.repository == 'open-eid/DigiDoc4-Client' && contains(github.ref, 'coverity_scan')
