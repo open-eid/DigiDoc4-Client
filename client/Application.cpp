@@ -70,6 +70,7 @@ class MacMenuBar {};
 #include <QtNetwork/QNetworkProxy>
 #include <QtNetwork/QSslCertificate>
 #include <QtNetwork/QSslConfiguration>
+#include <QtNetwork/QSslSocket>
 #include <QtWidgets/QAccessibleWidget>
 #include <QtWidgets/QMessageBox>
 #include <QtWidgets/QProgressBar>
@@ -484,32 +485,53 @@ Application::Application( int &argc, char **argv )
 	}
 
 	QMetaObject::invokeMethod(this, [this] {
+		auto showSslWarning = [this] {
+			if(QSslSocket::supportsSsl())
+				return;
+			WarningDialog::create()
+				->withTitle(tr("Secure network support is unavailable"))
+				->withText(tr("DigiDoc4 Client could not load a compatible TLS library. "
+					"Mobile-ID, Smart-ID, configuration updates, and other online services may not work. "
+					"Check for conflicting OpenSSL installations or reinstall ID-software."))
+				->withDetails(QStringLiteral("Qt (%1)\nOpenSSL build (%2)\nOpenSSL current (%3)")
+					.arg(QString::fromLatin1(qVersion()), QSslSocket::sslLibraryBuildVersionString(),
+						QSslSocket::sslLibraryVersionString()))
+				->open();
+		};
+		auto showPluginWarning = [this, showSslWarning] {
 #ifdef Q_OS_MAC
-		if(!Settings::PLUGINS.isSet())
-		{
-			auto *dlg = WarningDialog::create()
-				->withText(tr("In order to authenticate and sign in e-services with an ID-card you need to install the web browser components."))
-				->setCancelText(tr("Ignore forever"))
-				->addButton(tr("Remind later"), QMessageBox::Ignore)
-				->addButton(tr("Install"), QMessageBox::Open);
-			connect(dlg, &WarningDialog::finished, this, [](int result) {
-				switch(result)
-				{
-				case QMessageBox::Open: QDesktopServices::openUrl(tr("https://www.id.ee/en/article/install-id-software/")); break;
-				case QMessageBox::Ignore: break;
-				default: Settings::PLUGINS = QStringLiteral("ignore");
-				}
-			});
-			dlg->open();
-		}
+			if(!Settings::PLUGINS.isSet())
+			{
+				auto *dlg = WarningDialog::create()
+					->withText(tr("In order to authenticate and sign in e-services with an ID-card you need to install the web browser components."))
+					->setCancelText(tr("Ignore forever"))
+					->addButton(tr("Remind later"), QMessageBox::Ignore)
+					->addButton(tr("Install"), QMessageBox::Open);
+				connect(dlg, &WarningDialog::finished, this, [showSslWarning](int result) {
+					switch(result)
+					{
+					case QMessageBox::Open: QDesktopServices::openUrl(tr("https://www.id.ee/en/article/install-id-software/")); break;
+					case QMessageBox::Ignore: break;
+					default: Settings::PLUGINS = QStringLiteral("ignore");
+					}
+					showSslWarning();
+				});
+				dlg->open();
+				return;
+			}
 #endif
+			showSslWarning();
+		};
 		if(Settings::SHOW_INTRO)
 		{
 			Settings::SHOW_INTRO = false;
 			auto *dlg = new FirstRun(mainWindow());
 			connect(dlg, &FirstRun::langChanged, this, &Application::loadTranslation);
+			connect(dlg, &FirstRun::finished, this, showPluginWarning);
 			dlg->open();
 		}
+		else
+			showPluginWarning();
 	}, Qt::QueuedConnection);
 
 	if( !args.isEmpty() || topLevelWindows().isEmpty() )
