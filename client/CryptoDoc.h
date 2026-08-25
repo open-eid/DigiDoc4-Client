@@ -60,8 +60,8 @@ public:
 	bool supportsSymmetricKeys() const;
 	bool addEncryptionKey(const CKey& key);
 	void clear(const QString &file = {}, int version = -1);
-	bool decrypt(const libcdoc::Lock &lock, const QByteArray& secret, std::unique_ptr<QCryptoBackend> &&backend);
-	bool encrypt(const QString &filename = {}, const QString& label = {}, const QByteArray& secret = {});
+	bool decrypt(const libcdoc::Lock &lock, QByteArray secret, std::unique_ptr<QCryptoBackend> &&backend);
+	bool encrypt(const QString &filename = {}, const QString& label = {}, QByteArray secret = {});
 	DocumentModel* documentModel() const;
 	QString fileName() const;
 	const std::vector<CKey>& keys() const;

@@ -55,7 +55,7 @@ Q_SIGNALS:
 private:
 	void changeEvent(QEvent* event) final;
 	void clear(int code);
-	void decrypt(CryptoDoc *container, const libcdoc::Lock &lock, const QByteArray &secret,
+	void decrypt(CryptoDoc *container, const libcdoc::Lock &lock, QByteArray secret,
 		std::unique_ptr<QCryptoBackend> &&backend);
 	template<class C>
 	bool deleteConfirm(C *c, int index);

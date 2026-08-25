@@ -197,10 +197,20 @@ PinUnblock::PinUnblock(QSmartCardData::PinType type, QSmartCard::PinAction actio
 
 PinUnblock::~PinUnblock()
 {
+	clearCodes();
 	delete ui;
 }
 
-QString PinUnblock::firstCodeText() const { return ui->puk->text(); }
+std::pair<QByteArray, QByteArray> PinUnblock::takeCodes()
+{
+	std::pair codes{ui->puk->text().toUtf8(), ui->pin->text().toUtf8()};
+	clearCodes();
+	return codes;
+}
 
-QString PinUnblock::newCodeText() const { return ui->pin->text(); }
-
+void PinUnblock::clearCodes()
+{
+	ui->puk->clearSensitive();
+	ui->pin->clearSensitive();
+	ui->repeat->clearSensitive();
+}
