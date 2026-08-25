@@ -221,6 +221,14 @@
         <translation>Ava uus aken</translation>
     </message>
     <message>
+        <source>Secure network support is unavailable</source>
+        <translation>Turvaline võrguühendus pole saadaval</translation>
+    </message>
+    <message>
+        <source>DigiDoc4 Client could not load a compatible TLS library. Mobile-ID, Smart-ID, configuration updates, and other online services may not work. Check for conflicting OpenSSL installations or reinstall ID-software.</source>
+        <translation>DigiDoc4 Client ei saanud ühilduvat TLS-teeki laadida. Mobiil-ID, Smart-ID, konfiguratsiooni uuendamine ja muud võrguteenused ei pruugi töötada. Kontrolli vastuolulisi OpenSSL-i paigaldusi või paigalda ID-tarkvara uuesti.</translation>
+    </message>
+    <message>
         <source>In order to authenticate and sign in e-services with an ID-card you need to install the web browser components.</source>
         <translation>ID-kaardiga e-teenustes autentimiseks ja allkirjastamiseks on vajalik paigaldada ka veebilehitseja komponendid.</translation>
     </message>
