@@ -122,13 +122,23 @@ PinPopup::PinPopup(QSmartCardData::PinType type, TokenFlags flags, const SslCert
 	pinInput = ui.pin;
 }
 
+PinPopup::~PinPopup()
+{
+	pinInput->clearSensitive();
+}
+
 void PinPopup::setPinLen(unsigned long minLen, unsigned long maxLen)
 {
 	QString charPattern = regexp->regularExpression().pattern().startsWith(QLatin1String("^.")) ? QStringLiteral(".") : QStringLiteral("\\d");
 	regexp->setRegularExpression(QRegularExpression(QStringLiteral("^%1{%2,%3}$").arg(charPattern).arg(minLen).arg(maxLen)));
 }
 
-QString PinPopup::pin() const { return pinInput->text(); }
+QByteArray PinPopup::takePin()
+{
+	QByteArray pin = pinInput->text().toUtf8();
+	pinInput->clearSensitive();
+	return pin;
+}
 
 void PinPopup::reject()
 {

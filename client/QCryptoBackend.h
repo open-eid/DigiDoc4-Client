@@ -23,7 +23,9 @@
 
 #include <QtCore/QCryptographicHash>
 
+#include <cstdint>
 #include <expected>
+#include <vector>
 
 class TokenData;
 class QSslKey;
@@ -45,10 +47,10 @@ public:
 
 	virtual ~QCryptoBackend();
 
-	virtual QByteArray decrypt(const QByteArray &data, bool oaep) const = 0;
-	virtual QByteArray deriveConcatKDF(const QByteArray &publicKey, QCryptographicHash::Algorithm digest,
+	virtual std::vector<uint8_t> decrypt(const QByteArray &data, bool oaep) const = 0;
+	virtual std::vector<uint8_t> deriveConcatKDF(const QByteArray &publicKey, QCryptographicHash::Algorithm digest,
 		const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) const = 0;
-	virtual QByteArray deriveHMACExtract(const QByteArray &publicKey, const QByteArray &salt, int keySize) const = 0;
+	virtual std::vector<uint8_t> deriveHMACExtract(const QByteArray &publicKey, const QByteArray &salt, int keySize) const = 0;
 	virtual QByteArray sign(QCryptographicHash::Algorithm method, const QByteArray &digest) const = 0;
 
 	/**
