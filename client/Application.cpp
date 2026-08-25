@@ -27,7 +27,7 @@
 #include "QSmartCard.h"
 #include "DigiDoc.h"
 #include "Settings.h"
-#ifdef Q_OS_MAC
+#ifdef Q_OS_MACOS
 #include "MacMenuBar.h"
 #else
 class MacMenuBar {};
@@ -67,6 +67,7 @@ class MacMenuBar {};
 #include <QtNetwork/QNetworkProxy>
 #include <QtNetwork/QSslCertificate>
 #include <QtNetwork/QSslConfiguration>
+#include <QtNetwork/QSslSocket>
 #include <QtWidgets/QAccessibleWidget>
 #include <QtWidgets/QMessageBox>
 #include <QtWidgets/QProgressBar>
@@ -174,7 +175,7 @@ public:
 			Settings::PROXY_PASS, [this] { return digidoc::XmlConfCurrent::proxyPass(); });
 	}
 
-#ifdef Q_OS_MAC
+#ifdef Q_OS_MACOS
 	std::string TSLCache() const final
 	{
 		return Application::groupContainerPath().toStdString();
@@ -350,12 +351,12 @@ Application::Application( int &argc, char **argv )
 	if(QFile::exists(QStringLiteral("%1/%2.log").arg(QDir::tempPath(), applicationName())))
 		qInstallMessageHandler(msgHandler);
 
-#if defined(Q_OS_WIN)
+#ifdef Q_OS_WIN
 	AllowSetForegroundWindow( ASFW_ANY );
 #ifdef NDEBUG
 	setLibraryPaths({ applicationDirPath() });
 #endif
-#elif defined(Q_OS_MAC)
+#elifdef Q_OS_MACOS
 	qputenv("OPENSSL_CONF", applicationDirPath().toUtf8() + "../Resources/openssl.cnf");
 #ifdef NDEBUG
 	setLibraryPaths({ applicationDirPath() + "/../PlugIns" });
@@ -364,7 +365,7 @@ Application::Application( int &argc, char **argv )
 
 	QStringList args = arguments();
 	args.removeFirst();
-#ifndef Q_OS_MAC
+#ifndef Q_OS_MACOS
 	d->lockFile = Common::acquireInstanceLock(args);
 	if(!d->lockFile)
 		return;
@@ -485,7 +486,7 @@ Application::Application( int &argc, char **argv )
 	connect(&d->lastWindowTimer, &QTimer::timeout, this, []{ if(topLevelWindows().isEmpty()) quit(); });
 	connect(this, &Application::lastWindowClosed, this, [&]{ d->lastWindowTimer.start(10s); });
 
-#ifdef Q_OS_MAC
+#ifdef Q_OS_MACOS
 	initMacServices();
 	d->bar = std::make_unique<MacMenuBar>();
 	d->bar->fileMenu()->addAction( d->newClientAction );
@@ -520,32 +521,53 @@ Application::Application( int &argc, char **argv )
 	}
 
 	QMetaObject::invokeMethod(this, [this] {
-#ifdef Q_OS_MAC
-		if(!Settings::PLUGINS.isSet())
-		{
-			auto *dlg = WarningDialog::create()
-				->withText(tr("In order to authenticate and sign in e-services with an ID-card you need to install the web browser components."))
-				->setCancelText(tr("Ignore forever"))
-				->addButton(tr("Remind later"), QMessageBox::Ignore)
-				->addButton(tr("Install"), QMessageBox::Open);
-			connect(dlg, &WarningDialog::finished, this, [](int result) {
-				switch(result)
-				{
-				case QMessageBox::Open: QDesktopServices::openUrl(tr("https://www.id.ee/en/article/install-id-software/")); break;
-				case QMessageBox::Ignore: break;
-				default: Settings::PLUGINS = QStringLiteral("ignore");
-				}
-			});
-			dlg->open();
-		}
+		auto showSslWarning = [this] {
+			if(QSslSocket::supportsSsl())
+				return;
+			WarningDialog::create()
+				->withTitle(tr("Secure network support is unavailable"))
+				->withText(tr("DigiDoc4 Client could not load a compatible TLS library. "
+					"Mobile-ID, Smart-ID, configuration updates, and other online services may not work. "
+					"Check for conflicting OpenSSL installations or reinstall ID-software."))
+				->withDetails(QStringLiteral("Qt (%1)\nOpenSSL build (%2)\nOpenSSL current (%3)")
+					.arg(QString::fromLatin1(qVersion()), QSslSocket::sslLibraryBuildVersionString(),
+						QSslSocket::sslLibraryVersionString()))
+				->open();
+		};
+		auto showPluginWarning = [this, showSslWarning] {
+#ifdef Q_OS_MACOS
+			if(!Settings::PLUGINS.isSet())
+			{
+				auto *dlg = WarningDialog::create()
+					->withText(tr("In order to authenticate and sign in e-services with an ID-card you need to install the web browser components."))
+					->setCancelText(tr("Ignore forever"))
+					->addButton(tr("Remind later"), QMessageBox::Ignore)
+					->addButton(tr("Install"), QMessageBox::Open);
+				connect(dlg, &WarningDialog::finished, this, [showSslWarning](int result) {
+					switch(result)
+					{
+					case QMessageBox::Open: QDesktopServices::openUrl(tr("https://www.id.ee/en/article/install-id-software/")); break;
+					case QMessageBox::Ignore: break;
+					default: Settings::PLUGINS = QStringLiteral("ignore");
+					}
+					showSslWarning();
+				});
+				dlg->open();
+				return;
+			}
 #endif
+			showSslWarning();
+		};
 		if(Settings::SHOW_INTRO)
 		{
 			Settings::SHOW_INTRO = false;
 			auto *dlg = new FirstRun(mainWindow());
 			connect(dlg, &FirstRun::langChanged, this, &Application::loadTranslation);
+			connect(dlg, &FirstRun::finished, this, showPluginWarning);
 			dlg->open();
 		}
+		else
+			showPluginWarning();
 	}, Qt::QueuedConnection);
 
 	if( !args.isEmpty() || topLevelWindows().isEmpty() )
@@ -557,7 +579,7 @@ Application::~Application()
 	for(QWidget *top: topLevelWidgets())
 		top->close();
 
-#ifndef Q_OS_MAC
+#ifndef Q_OS_MACOS
 	if(!d->lockFile)
 	{
 		delete d;
@@ -583,7 +605,7 @@ Application::~Application()
 	}
 }
 
-#ifndef Q_OS_MAC
+#ifndef Q_OS_MACOS
 void Application::addRecent( const QString & ) {}
 #endif
 
@@ -591,10 +613,10 @@ void Application::browse( const QUrl &url )
 {
 	QUrl u = url;
 	u.setScheme(QStringLiteral("file"));
-#if defined(Q_OS_WIN)
+#ifdef Q_OS_WIN
 	if(QProcess::startDetached(QStringLiteral("explorer"), {QStringLiteral("/select,"), QDir::toNativeSeparators(u.toLocalFile())}))
 		return;
-#elif defined(Q_OS_MAC)
+#elifdef Q_OS_MACOS
 	if(QProcess::startDetached(QStringLiteral("open"), {QStringLiteral("-R"), u.toLocalFile()}))
 		return;
 #endif
@@ -603,7 +625,7 @@ void Application::browse( const QUrl &url )
 
 void Application::closeWindow()
 {
-#ifndef Q_OS_MAC
+#ifndef Q_OS_MACOS
 	if(auto *w = qobject_cast<MainWindow*>(activeWindow()))
 		w->close();
 	else
@@ -694,7 +716,7 @@ void Application::loadTranslation( const QString &lang )
 	if(d->helpAction) d->helpAction->setText(tr("DigiDoc4 Client Help"));
 }
 
-#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
+#if defined(Q_OS_UNIX) && !defined(Q_OS_MACOS)
 void Application::mailTo( const QUrl &url )
 {
 	QUrlQuery q(url);
@@ -855,7 +877,7 @@ uint Application::readTSLVersion(const QString &path)
 
 int Application::run()
 {
-#ifndef Q_OS_MAC
+#ifndef Q_OS_MACOS
 	if(!d->lockFile) return 0;
 #endif
 	return exec();
@@ -914,7 +936,7 @@ void Application::showClient(QStringList files, bool crypto, bool sign, bool new
 		}
 #endif
 	}
-#ifdef Q_OS_MAC
+#ifdef Q_OS_MACOS
 	// Required for restoring minimized window on macOS
 	w->setWindowState(Qt::WindowActive);
 #endif
