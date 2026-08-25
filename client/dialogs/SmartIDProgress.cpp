@@ -112,14 +112,18 @@ background-color: #007aff;
 	d->manager->setParent(d);
 	QNetworkAccessManager::connect(d->manager, &QNetworkAccessManager::finished, d, [&, this](QNetworkReply *reply){
 		QScopedPointer<QNetworkReply,QScopedPointerDeleteLater> scope(reply);
-		auto returnError = [=, this](const QString &err, const QString &details = {}) {
+		auto returnError = [=, this](const QString &err, const QString &details = {}, bool richText = false) {
 			qCWarning(SIDLog) << err;
 			d->statusTimer->stop();
 			delete d->timer;
 			d->timer = nullptr;
 			d->hide();
-			auto *dlg = WarningDialog::create(d->parentWidget())->withText(err)->withDetails(details)
-				->withTitle(QCoreApplication::translate("DigiDoc", "Failed to sign container"));
+			auto *dlg = WarningDialog::create(d->parentWidget());
+			if(richText)
+				dlg->withRichText(err);
+			else
+				dlg->withText(err);
+			dlg->withDetails(details)->withTitle(QCoreApplication::translate("DigiDoc", "Failed to sign container"));
 			QObject::connect(dlg, &WarningDialog::finished, &d->l, &QEventLoop::exit);
 			dlg->open();
 		};
@@ -147,17 +151,17 @@ background-color: #007aff;
 			{
 			case 403:
 				return returnError(tr("Check your %1 service access settings. "
-					"<a href=\"https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/\">Additional information</a>").arg(tr("Smart-ID")));
+					"<a href=\"https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/\">Additional information</a>").arg(tr("Smart-ID")), {}, true);
 			case 409:
 				return returnError(tr("Failed to send request. The number of unsuccesful request from this IP address has been exceeded. Please try again later."));
 			case 429:
 				return returnError(tr("The limit for %1 digital signatures per month has been reached. "
-					"<a href=\"https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/\">Additional information</a>").arg(tr("Smart-ID")));
+					"<a href=\"https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/\">Additional information</a>").arg(tr("Smart-ID")), {}, true);
 			case 471:
 				return returnError(tr("Your Smart-ID certificate level must be qualified to sign documents in DigiDoc4 Client."));
 			case 480:
 				return returnError(tr("Your signing software needs an upgrade. Please update your ID software, which you can get from "
-					"<a href=\"https://www.id.ee/en/\">www.id.ee</a>. Additional info is available ID-helpline (+372) 666 8888."));
+					"<a href=\"https://www.id.ee/en/\">www.id.ee</a>. Additional info is available ID-helpline (+372) 666 8888."), {}, true);
 			case 580:
 				return returnError(tr("Failed to send request. A valid session is associated with this personal code. "
 					"It is not possible to start a new signing before the current session expires. Please try again later."));
