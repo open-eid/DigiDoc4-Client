@@ -64,7 +64,7 @@ struct ServiceConfirmation final: public ContainerOpenCB
 		return dispatchToMain([this] {
 			return WarningDialog::create(parent)
 				->withTitle(DigiDoc::tr("Send document to SiVa"))
-				->withText(DigiDoc::tr(
+				->withRichText(DigiDoc::tr(
 					"This type of signed document will be transmitted to the "
 					"Digital Signature Validation Service SiVa to verify the validity of the digital signature. "
 					"Read more information about transmitted data to Digital Signature Validation service from "
@@ -735,14 +735,14 @@ void DigiDoc::setLastError(const QString &title, const Exception &e)
 	case Exception::CertificateUnknown:
 		dlg->withText(tr("Certificate status unknown")); break;
 	case Exception::OCSPTimeSlot:
-		dlg->withText(tr("Please check your computer time. <a href='https://www.id.ee/en/article/digidoc4-client-error-please-check-your-computer-time-2/'>Additional information</a>")); break;
+		dlg->withRichText(tr("Please check your computer time. <a href='https://www.id.ee/en/article/digidoc4-client-error-please-check-your-computer-time-2/'>Additional information</a>")); break;
 	case Exception::OCSPRequestUnauthorized:
 		dlg->withText(tr("You have not granted IP-based access. "
 			"Check your validity confirmation service access settings.")); break;
 	case Exception::TSForbidden:
 		dlg->withText(tr("Check your Time-Stamping service access settings.")); break;
 	case Exception::TSTooManyRequests:
-		dlg->withText(tr("The limit for digital signatures per month has been reached for this IP address. "
+		dlg->withRichText(tr("The limit for digital signatures per month has been reached for this IP address. "
 			"<a href=\"https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/\">Additional information</a>")); break;
 	case Exception::PINCanceled:
 		dlg->deleteLater();
