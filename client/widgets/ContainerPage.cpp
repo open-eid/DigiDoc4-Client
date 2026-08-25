@@ -207,9 +207,9 @@ void ContainerPage::changeEvent(QEvent* event)
 	QWidget::changeEvent(event);
 }
 
-void ContainerPage::decrypt(CryptoDoc *container, const libcdoc::Lock *lock, const QByteArray &secret) {
+void ContainerPage::decrypt(CryptoDoc *container, const libcdoc::Lock *lock, QByteArray secret) {
 	WaitDialogHolder waitDialog(this, tr("Decrypting"));
-	if (!container->decrypt(lock, secret))
+	if (!container->decrypt(lock, std::move(secret)))
 		return;
 	transition(container, QSslCertificate{});
 	emit action(DecryptContainerSuccess, {}, {});

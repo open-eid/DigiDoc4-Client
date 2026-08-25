@@ -108,7 +108,7 @@ public:
 	QStringList state() const;
 
 	bool connect( Connect connect = Shared, Mode mode = Mode(T0|T1) );
-	Result transfer( const QByteArray &apdu ) const;
+	Result transfer(const QByteArray &apdu, bool sensitive = false) const;
 	Result transferCTL(const QByteArray &apdu, bool verify, quint16 lang = 0,
 		quint8 minlen = 4, quint8 newPINOffset = 0, bool requestCurrentPIN = true) const;
 
