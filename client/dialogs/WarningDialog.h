@@ -48,6 +48,7 @@ public:
 	WarningDialog *resetCancelStyle(bool warning);
 	WarningDialog *withTitle(const QString &text);
 	WarningDialog *withText(const QString &text);
+	WarningDialog *withRichText(const QString &text);
 	WarningDialog *withDetails(const QString &details);
 
 	static WarningDialog *create(QWidget *parent = {});
