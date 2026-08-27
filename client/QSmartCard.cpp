@@ -122,9 +122,11 @@ QPCSCReader::Result Card::transfer(bool verify, QByteArray &&apdu,
 
 QByteArrayView Card::parseFCI(QByteArrayView data, quint8 expectedTag)
 {
-	for(auto i = data.begin(); i != data.end();)
+	for(auto i = data.begin(); std::distance(i, data.end()) >= 2;)
 	{
 		quint8 tag(*i++), size(*i++);
+		if(size > std::distance(i, data.end()))
+			return {};
 		if(tag == expectedTag)
 			return {i, size};
 		if((tag & 0x20) == 0)
@@ -491,7 +493,7 @@ bool THALESCard::updateCounters(QSmartCardDataPrivate *d) const
 
 QSmartCard::QSmartCard(QObject *parent)
 	: QObject(parent)
-	, d(new Private)
+	, d(std::make_unique<Private>())
 {}
 
 QSmartCard::~QSmartCard() noexcept = default;
@@ -658,7 +660,7 @@ void QSmartCard::reloadCard(const TokenData &token, bool reloadCounters)
 
 	QString reader = d->token.reader();
 	if(d->token.reader().endsWith(QLatin1String("..."))) {
-		for(auto truncated = QStringView(d->token.reader()).left(d->token.reader().size() - 3);
+		for(auto truncated = QStringView(reader).left(reader.size() - 3);
 			const QString &test: QPCSC::instance().readers()) {
 			if(test.startsWith(truncated))
 				reader = test;
@@ -667,9 +669,7 @@ void QSmartCard::reloadCard(const TokenData &token, bool reloadCounters)
 
 	qCDebug(CLog) << "Read" << reader;
 	auto card = Card::card(reader);
-	if(!card)
-		return;
-	if(!card->reader.connect())
+	if(!card || !card->reader.connect())
 		return;
 	qCDebug(CLog) << "Read card" << d->token.card() << "info";
 	QSharedDataPointer<QSmartCardDataPrivate> t = d->t.d;
