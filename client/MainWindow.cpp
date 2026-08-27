@@ -100,8 +100,11 @@ MainWindow::MainWindow( QWidget *parent )
 	connect(qApp->signer()->smartcard(), &QSmartCard::tokenChanged, this, &MainWindow::updateMyEID);
 	connect(qApp->signer()->smartcard(), &QSmartCard::dataChanged, this, &MainWindow::updateMyEid);
 
-	connect(ui->signIntroButton, &QPushButton::clicked, this, [this] { openContainer(true); });
-	connect(ui->cryptoIntroButton, &QPushButton::clicked, this, [this] { openContainer(false); });
+	connect(ui->signIntroButton, &QPushButton::clicked, this, [this] {
+		openContainer(QStringLiteral("*.bdoc *.ddoc *.asice *.sce *.asics *.scs *.edoc *.adoc%1")
+			.arg(Application::confValue(Application::SiVaUrl).toString().isEmpty() ? QLatin1String() : QLatin1String(" *.pdf")));
+	});
+	connect(ui->cryptoIntroButton, &QPushButton::clicked, this, [this] { openContainer(QLatin1String("*.cdoc *.cdoc2")); });
 	connect(ui->signContainerPage, &ContainerPage::action, this, &MainWindow::onSignAction);
 	connect(ui->signContainerPage, &ContainerPage::addFiles, this, [this](const QStringList &files) { openFiles(files); } );
 	connect(ui->signContainerPage, &ContainerPage::warning, this, [this](WarningText warningText) {
@@ -116,7 +119,7 @@ MainWindow::MainWindow( QWidget *parent )
 		ui->crypto->warningIcon(true);
 	});
 
-	connect(ui->accordion, &Accordion::changePinClicked, this, &MainWindow::changePinClicked);
+	connect(ui->infoStack, &MyEidInfo::changePinClicked, this, &MainWindow::changePinClicked);
 	connect(ui->cardInfo, &CardWidget::selected, ui->selector, &QToolButton::toggle);
 
 	ui->signContainerPage->tokenChanged(qApp->signer()->tokensign());
@@ -306,7 +309,7 @@ void MainWindow::onSignAction(int action, const QString &idCode, const QString &
 				digiDoc->sign(city, state, zip, country, role, &s);
 		});
 		break;
-	case ClearSignatureWarning:
+	case ContainerClearWarning:
 		ui->signature->warningIcon(false);
 		ui->warnings->closeWarnings(SignDetails);
 		break;
@@ -376,7 +379,7 @@ void MainWindow::onCryptoAction(int action, const QString &/*id*/, const QString
 	case EncryptContainerSuccess:
 		FadeInNotification::success(ui->topBar, tr("Encryption succeeded!"));
 		break;
-	case ClearCryptoWarning:
+	case ContainerClearWarning:
 		ui->crypto->warningIcon(false);
 		ui->warnings->closeWarnings(CryptoDetails);
 		break;
@@ -448,13 +451,20 @@ void MainWindow::openFiles(QStringList files, bool addFile, bool forceCreate)
 	default:
 		if(addFile)
 		{
-			bool crypto = state & CryptoContainers;
-			if(wrapContainer(!crypto))
+			page = (state & CryptoContainers) ? CryptoDetails : SignDetails;
+			if(WarningDialog::create(this)
+				->withTitle(page == CryptoDetails ?
+					tr("Files can not be added to the cryptocontainer") :
+					tr("Files can not be added to the signed container"))
+				->withText(page == CryptoDetails ?
+					tr("The system will create a new container which shall contain the cypto-document and the files you wish to add.") :
+					tr("The system will create a new container which shall contain the signed document and the files you wish to add."))
+				->setCancelText(WarningDialog::Cancel)
+				->addButton(tr("Continue"), QMessageBox::Ok)
+				->exec() == QMessageBox::Ok)
 				files.insert(files.begin(), digiDoc->fileName());
 			else
 				create = false;
-
-			page = crypto ? CryptoDetails : SignDetails;
 		}
 		else
 		{
@@ -469,15 +479,10 @@ void MainWindow::openFiles(QStringList files, bool addFile, bool forceCreate)
 	navigateToPage(page, files, create);
 }
 
-void MainWindow::openContainer(bool signature)
+void MainWindow::openContainer(const QString &filter)
 {
-	QString filter = QFileDialog::tr("All Files (*)") + QStringLiteral(";;") + FileDialog::tr("Documents (%1)");
-	if(signature)
-		filter = filter.arg(QStringLiteral("*.bdoc *.ddoc *.asice *.sce *.asics *.scs *.edoc *.adoc%1")
-			.arg(Application::confValue(Application::SiVaUrl).toString().isEmpty() ? QLatin1String() : QLatin1String(" *.pdf")));
-	else
-		filter = filter.arg(QLatin1String("*.cdoc *.cdoc2"));
-	QStringList files = FileDialog::getOpenFileNames(this, tr("Select documents"), {}, filter);
+	QStringList files = FileDialog::getOpenFileNames(this, tr("Select documents"), {},
+		QFileDialog::tr("All Files (*)") + QStringLiteral(";;") + FileDialog::tr("Documents (%1)").arg(filter));
 	if(!files.isEmpty())
 		openFiles(std::move(files));
 }
@@ -543,9 +548,9 @@ void MainWindow::showSettings(int page)
 		settings->show();
 		return;
 	}
-	SettingsDialog dlg(page, this);
-	connect(&dlg, &SettingsDialog::togglePrinting, ui->signContainerPage, &ContainerPage::togglePrinting);
-	dlg.exec();
+	auto *dlg = new SettingsDialog(page, this);
+	connect(dlg, &SettingsDialog::togglePrinting, ui->signContainerPage, &ContainerPage::togglePrinting);
+	dlg->open();
 }
 
 template<typename F>
@@ -609,18 +614,6 @@ bool MainWindow::wrap(const QString& wrappedFile, bool pdf)
 	return true;
 }
 
-bool MainWindow::wrapContainer(bool signing)
-{
-	return WarningDialog::create(this)
-		->withTitle(signing ? tr("Files can not be added to the signed container") : tr("Files can not be added to the cryptocontainer"))
-		->withText(signing ?
-			tr("The system will create a new container which shall contain the signed document and the files you wish to add.") :
-			tr("The system will create a new container which shall contain the cypto-document and the files you wish to add."))
-		->setCancelText(WarningDialog::Cancel)
-		->addButton(tr("Continue"), QMessageBox::Ok)
-		->exec() == QMessageBox::Ok;
-}
-
 void MainWindow::updateMyEID(const TokenData &t)
 {
 	updateSelector();
@@ -630,7 +623,6 @@ void MainWindow::updateMyEID(const TokenData &t)
 	SslCertificate cert(t.cert());
 	auto type = cert.type();
 	ui->infoStack->setHidden(type == SslCertificate::UnknownType);
-	ui->accordion->setHidden(type == SslCertificate::UnknownType);
 	ui->noReaderInfo->setVisible(type == SslCertificate::UnknownType);
 
 	auto setText = [this](const char *text) {
@@ -640,18 +632,12 @@ void MainWindow::updateMyEID(const TokenData &t)
 	if(!t.isNull())
 	{
 		setText(QT_TR_NOOP("The card in the card reader is not an Estonian ID-card"));
-		if(ui->cardInfo->token().card() != t.card())
-			ui->accordion->clear();
 		if(type & SslCertificate::TempelType)
-		{
 			ui->infoStack->update(cert);
-			ui->accordion->updateInfo(cert);
-		}
 	}
 	else
 	{
 		ui->infoStack->clearData();
-		ui->accordion->clear();
 		setText(QT_TR_NOOP("Connect the card reader to your computer and insert your ID card into the reader"));
 	}
 }
@@ -659,7 +645,6 @@ void MainWindow::updateMyEID(const TokenData &t)
 void MainWindow::updateMyEid(const QSmartCardData &data)
 {
 	ui->infoStack->update(data);
-	ui->accordion->updateInfo(data);
 	ui->myEid->warningIcon(false);
 	ui->myEid->invalidIcon(false);
 	ui->warnings->closeWarnings(MyEid);
