@@ -27,8 +27,8 @@
 #include <array>
 #include <cstring>
 
-static Q_LOGGING_CATEGORY(APDU,"QPCSC.APDU")
-static Q_LOGGING_CATEGORY(SCard,"QPCSC.SCard")
+static Q_LOGGING_CATEGORY(APDU, "qdigidoc4.pcsc.apdu", QtWarningMsg)
+static Q_LOGGING_CATEGORY(SCard, "qdigidoc4.pcsc", QtWarningMsg)
 
 static quint16 toUInt16(const QByteArray &data, int size)
 {
@@ -86,8 +86,6 @@ QHash<DRIVER_FEATURES,quint32> QPCSCReader::Private::features()
 QPCSC::QPCSC()
 	: d(new Private)
 {
-	const_cast<QLoggingCategory&>(SCard()).setEnabled(QtDebugMsg, qEnvironmentVariableIsSet("PCSC_DEBUG"));
-	const_cast<QLoggingCategory&>(APDU()).setEnabled(QtDebugMsg, qEnvironmentVariableIsSet("APDU_DEBUG"));
 	Q_UNUSED(serviceRunning())
 }
 

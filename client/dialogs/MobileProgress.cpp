@@ -28,7 +28,6 @@
 
 #include <digidocpp/crypto/X509Cert.h>
 
-#include <QtCore/QDir>
 #include <QtCore/QJsonArray>
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonObject>
@@ -39,7 +38,7 @@
 #include <QtNetwork/QNetworkRequest>
 #include <QtNetwork/QNetworkReply>
 
-Q_LOGGING_CATEGORY(MIDLog,"RIA.MID")
+Q_LOGGING_CATEGORY(MIDLog, "qdigidoc4.mobileid", QtWarningMsg)
 
 using namespace digidoc;
 
@@ -65,8 +64,6 @@ public:
 MobileProgress::MobileProgress(QWidget *parent)
 	: d(new Private(parent))
 {
-	const_cast<QLoggingCategory&>(MIDLog()).setEnabled(QtDebugMsg,
-		QFile::exists(QStringLiteral("%1/%2.log").arg(QDir::tempPath(), QApplication::applicationName())));
 	d->setWindowFlags(Qt::Dialog|Qt::CustomizeWindowHint);
 	d->setupUi(d);
 	d->code->setBuddy(d->signProgressBar);
