@@ -48,8 +48,6 @@ class CPtr
 #include <sys/xattr.h>
 #endif
 
-#include <array>
-
 QString FileDialog::createNewFileName(const QString &file, bool signature, QWidget *parent)
 {
 	const QString extension = signature ? QStringLiteral(".asice") :
@@ -293,17 +291,15 @@ QString FileDialog::getSaveFileName(QWidget *parent, const QString &caption, con
 
 QString FileDialog::normalized(const QString &data)
 {
-	static constexpr std::array<const unsigned char[3],5> list {{
-		{0xE2, 0x80, 0x8E}, // \u200E LEFT-TO-RIGHT MARK
-		{0xE2, 0x80, 0x8F}, // \u200F RIGHT-TO-LEFT MARK
-		{0xE2, 0x80, 0xAA}, // \u202A LEFT-TO-RIGHT EMBEDDING
-		{0xE2, 0x80, 0xAB}, // \u202B RIGHT-TO-LEFT EMBEDDING
-		{0xE2, 0x80, 0xAE}, // \u202E RIGHT-TO-LEFT OVERRIDE
-	}};
-	QString result = data.normalized(QString::NormalizationForm_C);
-	for (const unsigned char *replace: list)
-		result = result.remove((const char*)replace);
-	return result;
+	static const QRegularExpression control(QStringLiteral(
+		"["
+		"\\x{061C}" // ARABIC LETTER MARK
+		"\\x{200E}" // LEFT-TO-RIGHT MARK
+		"\\x{200F}" // RIGHT-TO-LEFT MARK
+		"\\x{202A}-\\x{202E}" // LEFT-TO-RIGHT EMBEDDING, RIGHT-TO-LEFT EMBEDDING, POP DIRECTIONAL FORMATTING, LEFT-TO-RIGHT OVERRIDE, RIGHT-TO-LEFT OVERRIDE
+		"\\x{2066}-\\x{2069}" // LEFT-TO-RIGHT ISOLATE, RIGHT-TO-LEFT ISOLATE, FIRST STRONG ISOLATE, POP DIRECTIONAL ISOLATE
+		"]"));
+	return data.normalized(QString::NormalizationForm_C).remove(control);
 }
 
 QString FileDialog::result( const QString &str )
