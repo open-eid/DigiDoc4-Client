@@ -196,7 +196,7 @@ if( APPLE )
 elseif(WIN32)
 	target_sources(${PROJECT_NAME} PRIVATE QCNG.cpp QCNG.h)
 	target_compile_options(${PROJECT_NAME} PRIVATE "/guard:cf")
-	target_link_options(${PROJECT_NAME} PRIVATE "/guard:cf" $<$<BOOL:${CROSSSIGNCERT}>:/INTEGRITYCHECK>)
+	target_link_options(${PROJECT_NAME} PRIVATE "/guard:cf")
 	target_link_libraries(${PROJECT_NAME} NCrypt Crypt32 Cryptui winscard)
 	get_filename_component(LIBS_PATH ${libdigidocpp_DIR} DIRECTORY)
 	get_filename_component(LIBS_PATH ${LIBS_PATH} DIRECTORY)
@@ -229,7 +229,7 @@ elseif(WIN32)
 		list(APPEND SIGNCMD signtool.exe sign /a /v /s MY /n "${SIGNCERT}" /fd SHA256
 			/du http://installer.id.ee /tr http://timestamp.digicert.com /td SHA256)
 		add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-			COMMAND ${SIGNCMD} "$<$<BOOL:${CROSSSIGNCERT}>:/ph;/ac;${CROSSSIGNCERT}>" $<TARGET_FILE:${PROJECT_NAME}>
+			COMMAND ${SIGNCMD} $<TARGET_FILE:${PROJECT_NAME}>
 			COMMAND_EXPAND_LISTS
 		)
 		add_custom_command(TARGET msi POST_BUILD
