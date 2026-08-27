@@ -2,6 +2,9 @@ name: CI
 on: [push, pull_request]
 permissions:
   contents: read
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 env:
   BUILD_NUMBER: ${{ github.run_number }}
   CMAKE_BUILD_PARALLEL_LEVEL: 4
@@ -10,17 +13,19 @@ jobs:
   macos:
     name: Build on macOS
     runs-on: macos-latest
+    timeout-minutes: 120
     env:
       MACOSX_DEPLOYMENT_TARGET: 14.0
       LIBS_PATH: ${{ github.workspace }}/cache
     steps:
     - &Checkout
       name: Checkout
-      uses: actions/checkout@v6
+      uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
       with:
         submodules: recursive
+        persist-credentials: false
     - name: Download artifact
-      uses: dawidd6/action-download-artifact@v20
+      uses: dawidd6/action-download-artifact@8305c0f1062bb0d184d09ef4493ecb9288447732 # v20
       with:
         workflow: build.yml
         branch: master
@@ -30,12 +35,13 @@ jobs:
     - name: Install dependencies
       run: |
         brew install flatbuffers
-        curl -O -L -s https://installer.id.ee/media/github/opensc_0.26.1.pkg
+        curl -O -sS --fail-with-body -L --retry 3 --proto '=https' --proto-redir '=https' https://installer.id.ee/media/github/opensc_0.26.1.pkg
+        echo "db30c6dee3d362d3003f26a2f0478161f222e3074364de58d62e34ce247d31b1  opensc_0.26.1.pkg" | shasum -a 256 -c -
         sudo installer -verboseR -pkg libdigidocpp-pkg/build/macos/libdigidocpp*.pkg -target /
         sudo installer -verboseR -pkg opensc_*.pkg -target /
         rm -rf libdigidocpp-pkg
     - name: Cache libraries
-      uses: actions/cache@v5
+      uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5.1.0
       with:
         path: ${{ env.LIBS_PATH }}
         key: vcpkg-macOS-${{ hashFiles('prepare_osx_build_environment.sh') }}
@@ -44,7 +50,7 @@ jobs:
         mkdir -p ${LIBS_PATH}/Qt-6.10.3-OpenSSL
         ./prepare_osx_build_environment.sh -p ${LIBS_PATH}
     - name: Install Qt
-      uses: jurplel/install-qt-action@v4
+      uses: jurplel/install-qt-action@48d3ad6db93f3627c8ee7a0454bc6f3744f7e730 # v4.3.1
       with:
         version: 6.10.3
         arch: clang_64
@@ -60,13 +66,14 @@ jobs:
         cmake --build build --target macdeployqt
         cmake --build build --target zip
     - name: Archive artifacts
-      uses: actions/upload-artifact@v7
+      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
       with:
         name: macOS
         path: build/qdigidoc4*.zip
   ubuntu:
     name: Build on Ubuntu ${{ matrix.container }} ${{ matrix.arch }}
     runs-on: ubuntu-24.04${{ matrix.arch == 'arm64' && '-arm' || '' }}
+    timeout-minutes: 120
     container: ubuntu:${{ matrix.container }}
     strategy:
       matrix:
@@ -78,7 +85,7 @@ jobs:
       DEBEMAIL: github-actions@github.com
     steps:
     - name: Download artifact
-      uses: dawidd6/action-download-artifact@v20
+      uses: dawidd6/action-download-artifact@8305c0f1062bb0d184d09ef4493ecb9288447732 # v20
       with:
         workflow: build.yml
         branch: master
@@ -113,20 +120,21 @@ jobs:
     - name: Lintian
       run: lintian *.deb;
     - name: Archive artifacts
-      uses: actions/upload-artifact@v7
+      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
       with:
         name: ubuntu_${{ matrix.container }}_${{ matrix.arch }}
         path: qdigidoc4*.*
   fedora:
     name: Build on Fedora ${{ matrix.container }}
     runs-on: ubuntu-latest
+    timeout-minutes: 120
     container: fedora:${{ matrix.container }}
     strategy:
       matrix:
         container: [43, 44]
     steps:
     - name: Download artifact
-      uses: dawidd6/action-download-artifact@v20
+      uses: dawidd6/action-download-artifact@8305c0f1062bb0d184d09ef4493ecb9288447732 # v20
       with:
         workflow: build.yml
         branch: master
@@ -141,13 +149,14 @@ jobs:
         cmake -DCMAKE_INSTALL_PREFIX=/usr -B build -S .
         cmake --build build --target all package
     - name: Archive artifacts
-      uses: actions/upload-artifact@v7
+      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
       with:
         name: fedora_${{ matrix.container }}
         path: build/qdigidoc4*.rpm
   windows:
     name: Build on Windows
     runs-on: windows-2022
+    timeout-minutes: 120
     strategy:
       matrix:
         vcver: [143]
@@ -157,7 +166,7 @@ jobs:
     steps:
     - *Checkout
     - name: Download artifact
-      uses: dawidd6/action-download-artifact@v20
+      uses: dawidd6/action-download-artifact@8305c0f1062bb0d184d09ef4493ecb9288447732 # v20
       with:
         workflow: build.yml
         branch: master
@@ -170,17 +179,17 @@ jobs:
         $r = Start-Process msiexec -ArgumentList '/a', 'libdigidocpp.msi', '/qn', "TARGETDIR=$env:GITHUB_WORKSPACE\libs", '/l*v', 'install.log' -Wait -PassThru
         if ($r.ExitCode -ne 0) { Get-Content install.log; exit $r.ExitCode }
     - name: Cache vcpkg
-      uses: actions/cache@v5
+      uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5.1.0
       with:
         path: ${{ github.workspace }}/vcpkg_cache
         key: vcpkg-${{ matrix.vcver }}-${{ matrix.platform }}-${{ hashFiles('client/libcdoc/vcpkg.json') }}
     - name: Install Qt
-      uses: jurplel/install-qt-action@v4
+      uses: jurplel/install-qt-action@48d3ad6db93f3627c8ee7a0454bc6f3744f7e730 # v4.3.1
       with:
         version: 6.11.1
         arch: ${{ matrix.platform == 'arm64' && 'win64_msvc2022_arm64_cross_compiled' || 'win64_msvc2022_64' }}
         cache: true
-        aqtsource: git+https://github.com/miurahr/aqtinstall.git
+        aqtsource: git+https://github.com/miurahr/aqtinstall.git@16db45a70b5905ad596941b223469bc86a56901e
     - name: Install WiX
       run: |
         dotnet tool install -g wix --version 6.0.2
@@ -201,7 +210,7 @@ jobs:
         cmake --build build --target msishellext
         cmake --build build --target appx
     - name: Archive artifacts
-      uses: actions/upload-artifact@v7
+      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
       with:
         name: msi_${{ matrix.vcver }}_${{ matrix.platform }}
         path: |
@@ -211,13 +220,11 @@ jobs:
     name: Run Coverity tests
     if: github.repository == 'open-eid/DigiDoc4-Client' && contains(github.ref, 'coverity_scan')
     runs-on: ubuntu-24.04
-    env:
-      TOKEN: ${{ secrets.COVERITY_SCAN_TOKEN }}
-      PROJECTNAME: open-eid/DigiDoc4-Client
+    timeout-minutes: 120
     steps:
     - *Checkout
     - name: Download artifact
-      uses: dawidd6/action-download-artifact@v20
+      uses: dawidd6/action-download-artifact@8305c0f1062bb0d184d09ef4493ecb9288447732 # v20
       with:
         workflow: build.yml
         branch: master
@@ -227,8 +234,11 @@ jobs:
     - name: Install dependencies
       run: sudo apt update -qq && sudo apt install --no-install-recommends -y ${UBUNTU_DEPS}
     - name: Download Coverity Build Tool
+      env:
+        TOKEN: ${{ secrets.COVERITY_SCAN_TOKEN }}
+        PROJECTNAME: open-eid/DigiDoc4-Client
       run: |
-        curl -sSfL \
+        curl -sS --fail-with-body -L --retry 3 --proto '=https' --proto-redir '=https' \
           --data-urlencode "token=${TOKEN}" \
           --data-urlencode "project=${PROJECTNAME}" \
           -o cov-analysis-linux64.tar.gz \
@@ -242,8 +252,11 @@ jobs:
         cov-build --dir cov-int make
         tar czvf upload.tgz cov-int
     - name: Submit the result to Coverity Scan
+      env:
+        TOKEN: ${{ secrets.COVERITY_SCAN_TOKEN }}
+        PROJECTNAME: open-eid/DigiDoc4-Client
       run: |
-        curl -sSfL \
+        curl -sS --fail-with-body -L --retry 3 --proto '=https' --proto-redir '=https' \
           -F project=$PROJECTNAME \
           -F token=$TOKEN \
           -F email=eid-teenusehaldus@ria.ee \
@@ -255,12 +268,13 @@ jobs:
     name: Run CodeQL tests
     if: github.repository == 'open-eid/DigiDoc4-Client'
     runs-on: ubuntu-24.04
+    timeout-minutes: 120
     permissions:
       security-events: write
     steps:
     - *Checkout
     - name: Download artifact
-      uses: dawidd6/action-download-artifact@v20
+      uses: dawidd6/action-download-artifact@8305c0f1062bb0d184d09ef4493ecb9288447732 # v20
       with:
         workflow: build.yml
         branch: master
@@ -270,19 +284,19 @@ jobs:
     - name: Install dependencies
       run: sudo apt update -qq && sudo apt install --no-install-recommends -y ${UBUNTU_DEPS}
     - name: Initialize CodeQL
-      uses: github/codeql-action/init@v4
+      uses: github/codeql-action/init@ff2f1c621b7f889edc0d3c761ac2e6a3f8cdb0dd # v4.37.7
       with:
         languages: cpp
         queries: +security-and-quality
     - name: Autobuild
-      uses: github/codeql-action/autobuild@v4
+      uses: github/codeql-action/autobuild@ff2f1c621b7f889edc0d3c761ac2e6a3f8cdb0dd # v4.37.7
     - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v4
+      uses: github/codeql-action/analyze@ff2f1c621b7f889edc0d3c761ac2e6a3f8cdb0dd # v4.37.7
       with:
         upload: False
         output: sarif-results
     - name: Filter results
-      uses: advanced-security/filter-sarif@develop
+      uses: advanced-security/filter-sarif@2da736ff05ef065cb2894ac6892e47b5eac2c3c0 # v1.1
       with:
         patterns: |
           -**/*autogen*/**
@@ -292,6 +306,6 @@ jobs:
         input: sarif-results/cpp.sarif
         output: sarif-results/cpp.sarif
     - name: Upload results
-      uses: github/codeql-action/upload-sarif@v4
+      uses: github/codeql-action/upload-sarif@ff2f1c621b7f889edc0d3c761ac2e6a3f8cdb0dd # v4.37.7
       with:
         sarif_file: sarif-results/cpp.sarif
