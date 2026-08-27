@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1025</width>
-    <height>600</height>
+    <width>1280</width>
+    <height>710</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>1024</width>
-    <height>600</height>
+    <width>1280</width>
+    <height>710</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -661,10 +661,7 @@ background-color: #BFD3E8;
         <number>0</number>
        </property>
        <item>
-        <widget class="InfoStack" name="infoStack" native="true"/>
-       </item>
-       <item>
-        <widget class="Accordion" name="accordion" native="true"/>
+        <widget class="MyEidInfo" name="infoStack" native="true"/>
        </item>
        <item>
         <widget class="QWidget" name="noReaderInfo" native="true">
@@ -768,14 +765,9 @@ background-color: #BFD3E8;
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>InfoStack</class>
+   <class>MyEidInfo</class>
    <extends>QWidget</extends>
-   <header>widgets/InfoStack.h</header>
-  </customwidget>
-  <customwidget>
-   <class>Accordion</class>
-   <extends>QWidget</extends>
-   <header>widgets/Accordion.h</header>
+   <header>widgets/MyEidInfo.h</header>
   </customwidget>
   <customwidget>
    <class>NoCardInfo</class>

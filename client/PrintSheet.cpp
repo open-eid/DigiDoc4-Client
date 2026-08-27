@@ -129,8 +129,7 @@ PrintSheet::PrintSheet( DigiDoc *doc, QPrinter *printer )
 	setPen( oPen );
 
 	int i = 1;
-	for(const DigiDocSignature &sig: doc->signatures())
-	{
+	doc->enumSignatures([this,&i](DigiDocSignature sig) {
 		const SslCertificate cert = sig.cert();
 		bool tempel = cert.type() & SslCertificate::TempelType;
 
@@ -177,7 +176,8 @@ PrintSheet::PrintSheet( DigiDoc *doc, QPrinter *printer )
 
 		customText(tr("HASH VALUE OF SIGNATURE"), SslCertificate::toHex(sig.messageImprint()));
 		top += 15;
-	}
+		return true;
+	});
 	save();
 	newPage( 50 );
 	QStaticText textDoc;

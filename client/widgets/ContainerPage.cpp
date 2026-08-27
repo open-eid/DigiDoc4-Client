@@ -44,6 +44,9 @@
 #include <QFontMetrics>
 #include <QMessageBox>
 
+#include <QtCore/QEventLoop>
+#include <QtCore/QPointer>
+#include <QtCore/QTimer>
 #include <QtCore/QUrlQuery>
 #include <QtGui/QDesktopServices>
 
@@ -361,7 +364,7 @@ void ContainerPage::transition(CryptoDoc *container, const QSslCertificate &cert
 	});
 	disconnect(container, &CryptoDoc::destroyed, this, nullptr);
 	connect(container, &CryptoDoc::destroyed, this, [this] {
-		clear(ClearCryptoWarning);
+		clear(ContainerClearWarning);
 	});
 	disconnect(mainAction, &MainAction::action, container, nullptr);
 	connect(mainAction, &MainAction::action, container, [container, this](int action) {
@@ -382,7 +385,7 @@ void ContainerPage::transition(CryptoDoc *container, const QSslCertificate &cert
 		}
 	});
 
-	clear(ClearCryptoWarning);
+	clear(ContainerClearWarning);
 	isSupported = container->state() & UnencryptedContainer || container->canDecrypt(cert);
 	setHeader(container->fileName());
 	ui->leftPane->init(fileName, QT_TRANSLATE_NOOP("ItemList", "Encrypted files"));
@@ -481,45 +484,67 @@ void ContainerPage::transition(DigiDoc* container)
 	});
 	disconnect(container, &DigiDoc::destroyed, this, nullptr);
 	connect(container, &DigiDoc::destroyed, this, [this] {
-		clear(ClearSignatureWarning);
+		clear(ContainerClearWarning);
 	});
 
-	clear(ClearSignatureWarning);
+	clear(ContainerClearWarning);
 	std::map<WarningText::WarningType, int> errors;
 	setHeader(container->fileName());
 	ui->leftPane->init(fileName, QT_TRANSLATE_NOOP("ItemList", "Container files"));
 
-	if(!container->timestamps().isEmpty())
-	{
-		ui->rightPane->addHeader(QT_TRANSLATE_NOOP("ItemList", "Container timestamps"));
-
-		for(const DigiDocSignature &c: container->timestamps())
+	bool hasTimestamps = false;
+	container->enumTimestamps([&, this](DigiDocSignature &&c) {
+		if(!hasTimestamps)
 		{
-			auto *item = new SignatureItem(c, ui->rightPane);
-			if(c.isInvalid())
-				++errors[item->getError()];
-			ui->rightPane->addHeaderWidget(item);
+			ui->rightPane->addHeader(QT_TRANSLATE_NOOP("ItemList", "Container timestamps"));
+			hasTimestamps = true;
 		}
-	}
+		bool isInvalid = c.isInvalid();
+		auto *item = new SignatureItem(std::move(c), ui->rightPane);
+		if(isInvalid)
+			++errors[item->getError()];
+		ui->rightPane->addHeaderWidget(item);
+		return true;
+	});
 
-	for(const DigiDocSignature &c: container->signatures())
-	{
-		auto *item = new SignatureItem(c, ui->rightPane);
-		if(c.isInvalid())
+	bool isXAdES = false;
+	bool isCAdES = false;
+	int i = 0;
+	QPointer<DigiDoc> guard(container);
+	container->enumSignatures([&, this](DigiDocSignature &&c) {
+		QString profile = c.profile();
+		if(profile.contains(QLatin1String("BES"), Qt::CaseInsensitive))
+			isXAdES = true;
+		if(profile.contains(QLatin1String("CADES"), Qt::CaseInsensitive))
+			isCAdES = true;
+		bool isInvalid = c.isInvalid();
+		auto *item = new SignatureItem(std::move(c), ui->rightPane);
+		if(isInvalid)
 			++errors[item->getError()];
 		ui->rightPane->addWidget(item);
-	}
+		if(++i % 50 == 0)
+		{
+			QEventLoop loop;
+			QTimer::singleShot(0, &loop, &QEventLoop::quit);
+			loop.exec();
+			if(!guard)
+				return false;
+		}
+		return true;
+	});
+	if(!guard)
+		return;
 
 	for(const auto &[key, value]: errors)
 		emit warning({key, value});
 	if(container->fileName().endsWith(QStringLiteral("ddoc"), Qt::CaseInsensitive))
 		emit warning({UnsupportedDDocWarning});
-	if(container->isAsicS())
+	if(container->isAsicS() && isXAdES)
 		emit warning({UnsupportedAsicSWarning});
-	if(container->isCades())
+	if(isCAdES)
 		emit warning({UnsupportedAsicCadesWarning});
 
-	isSupported = container->isSupported() || container->isPDF();
+	isSupported = container->isSupported() && !isCAdES || container->isPDF();
 
 	for (auto i = 0, count = container->documentModel()->rowCount(); i < count; i++)
 	{

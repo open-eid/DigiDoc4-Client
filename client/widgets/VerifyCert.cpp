@@ -30,6 +30,12 @@ VerifyCert::VerifyCert(QWidget *parent)
 	, ui(new Ui::VerifyCert)
 {
 	ui->setupUi( this );
+	connect(ui->info, &Label::wordWrapChanged, this, [this](bool wordWrap) {
+		Qt::Alignment alignment = Qt::AlignTop;
+		if(!wordWrap)
+			alignment |= Qt::AlignLeft;
+		ui->nameLayout->setAlignment(ui->info, alignment);
+	});
 
 	connect(ui->changePIN, &QToolButton::clicked, this, [this] {
 		if(cardData.retryCount(pinType) == 0 && cardData.pinLocked(pinType))
