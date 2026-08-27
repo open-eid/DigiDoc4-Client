@@ -23,8 +23,9 @@
 #include "TokenData.h"
 #ifdef Q_OS_WIN
 #include "QCNG.h"
-#endif
+#else
 #include "QPKCS11.h"
+#endif
 #include "QSigner.h"
 #include "QSmartCard.h"
 
@@ -88,13 +89,13 @@ QString QCryptoBackend::errorString(Status error)
 	switch( error )
 	{
 	case PinOK: return QString();
-	case PinCanceled: return QCoreApplication::translate("QCryptoBackend", "PIN entry canceled");
-	case PinLocked: return QCoreApplication::translate("QCryptoBackend", "PIN locked");
-	case PinIncorrect: return QCoreApplication::translate("QCryptoBackend", "PIN incorrect");
-	case InProgress: return QCoreApplication::translate("QCryptoBackend", "Signing/decrypting is already in progress another window.");
-	case GeneralError: return QCoreApplication::translate("QCryptoBackend", "PKCS11 general error");
-	case DeviceError: return QCoreApplication::translate("QCryptoBackend", "PKCS11 device error");
-	default: return QCoreApplication::translate("QCryptoBackend", "Unknown error");
+	case PinCanceled: return tr("PIN entry canceled");
+	case PinLocked: return tr("PIN locked");
+	case PinIncorrect: return tr("PIN incorrect");
+	case InProgress: return tr("Signing/decrypting is already in progress another window.");
+	case GeneralError: return tr("PKCS11 general error");
+	case DeviceError: return tr("PKCS11 device error");
+	default: return tr("Unknown error");
 	}
 }
 
