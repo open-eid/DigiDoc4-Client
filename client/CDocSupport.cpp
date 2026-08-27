@@ -20,6 +20,7 @@
 #include <QtCore/QBuffer>
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonObject>
+#include <QtCore/QJsonParseError>
 #include <QtCore/QtEndian>
 #include <QtCore/QTemporaryFile>
 #include <QtCore/QUrlQuery>
@@ -314,7 +315,13 @@ libcdoc::result_t DDNetworkBackend::sendKey(
 libcdoc::result_t
 DDNetworkBackend::fetchKey(std::vector<uint8_t> &result, const std::string &url, const std::string &transaction_id)
 {
-	QNetworkRequest req(QStringLiteral("%1/key-capsules/%2").arg(QString::fromStdString(url), QLatin1String(transaction_id.c_str())));
+	if(transaction_id.empty()) {
+		last_error = "Missing key-capsule transaction identifier";
+		return BACKEND_ERROR;
+	}
+	QByteArray requestUrl = QByteArray::fromStdString(url + "/key-capsules/");
+	requestUrl += QByteArray::fromStdString(transaction_id).toPercentEncoding();
+	QNetworkRequest req(QUrl::fromEncoded(requestUrl, QUrl::StrictMode));
 	req.setHeader(QNetworkRequest::ContentTypeHeader, QStringLiteral("application/json"));
 	if(!checkConnection()) {
 		last_error = "No connection";
@@ -322,7 +329,7 @@ DDNetworkBackend::fetchKey(std::vector<uint8_t> &result, const std::string &url,
 	}
 
 	TokenData auth = qApp->signer()->tokenauth();
-	auto val = QCryptoBackend::getBackend(qApp->signer()->tokenauth());
+	auto val = QCryptoBackend::getBackend(auth);
 	if (!val)
 		return getDecryptStatus(val.error());
 	std::unique_ptr<QCryptoBackend> backend(val.value());
@@ -333,19 +340,41 @@ DDNetworkBackend::fetchKey(std::vector<uint8_t> &result, const std::string &url,
 		return BACKEND_ERROR;
 	}
 	QScopedPointer<QNetworkAccessManager,QScopedPointerDeleteLater> nam(
-				CheckConnection::setupNAM(req, qApp->signer()->tokenauth().cert(), authKey, Settings::CDOC2_GET_CERT));
+				CheckConnection::setupNAM(req, auth.cert(), authKey, Settings::CDOC2_GET_CERT));
 	QEventLoop e;
 	QNetworkReply *reply = nam->get(req);
 	connect(reply, &QNetworkReply::finished, &e, &QEventLoop::quit);
 	e.exec();
 
-	if(reply->error() != QNetworkReply::NoError && reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() != 201) {
+	if(reply->error() != QNetworkReply::NoError) {
 		last_error = reply->errorString().toStdString();
 		return BACKEND_ERROR;
 	}
-	QJsonObject json = QJsonDocument::fromJson(reply->readAll()).object();
-	QByteArray key_material = QByteArray::fromBase64(json.value(QLatin1String("ephemeral_key_material")).toString().toLatin1());
-	result.assign(key_material.cbegin(), key_material.cend());
+	const int httpStatus = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+	if(httpStatus != 200) {
+		last_error = QStringLiteral("Key-capsule request failed with HTTP status %1").arg(httpStatus).toStdString();
+		return BACKEND_ERROR;
+	}
+
+	QJsonParseError parseError;
+	const QJsonDocument document = QJsonDocument::fromJson(reply->readAll(), &parseError);
+	if(parseError.error != QJsonParseError::NoError || !document.isObject()) {
+		last_error = "Invalid key-capsule JSON response";
+		return BACKEND_ERROR;
+	}
+	const QJsonValue keyValue = document.object().value(QLatin1String("ephemeral_key_material"));
+	if(!keyValue.isString()) {
+		last_error = "Missing key material in key-capsule response";
+		return BACKEND_ERROR;
+	}
+	const auto decoded = QByteArray::fromBase64Encoding(
+		keyValue.toString().toLatin1(), QByteArray::AbortOnBase64DecodingErrors);
+	static constexpr qsizetype MAX_KEY_MATERIAL_SIZE = 16 * 1024;
+	if(!decoded || decoded.decoded.isEmpty() || decoded.decoded.size() > MAX_KEY_MATERIAL_SIZE) {
+		last_error = "Invalid key material in key-capsule response";
+		return BACKEND_ERROR;
+	}
+	result.assign(decoded.decoded.cbegin(), decoded.decoded.cend());
 
 	crypto.setBackend(std::move(backend));
 
