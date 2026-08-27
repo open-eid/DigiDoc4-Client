@@ -166,7 +166,7 @@ void FileList::saveAll()
 			}
 			b = WarningDialog::create(this)
 				->withTitle(FileDialog::tr("Failed to save files"))
-				->withText(tr("%1 already exists.<br />Do you want replace it?").arg(dest))
+				->withRichText(tr("%1 already exists.<br />Do you want replace it?").arg(dest.toHtmlEscaped()))
 				->setCancelText(WarningDialog::Cancel)
 				->addButton(WarningDialog::YES, QMessageBox::Yes)
 				->addButton(WarningDialog::NO, QMessageBox::No)

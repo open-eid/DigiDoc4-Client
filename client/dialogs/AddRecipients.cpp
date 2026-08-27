@@ -198,7 +198,7 @@ void AddRecipients::addRecipientToRightPane(Item *item, bool update)
 					->open();
 				return;
 			}
-			auto *dlg = WarningDialog::create(this)->withText(tr(
+			auto *dlg = WarningDialog::create(this)->withRichText(tr(
 				"Are you sure that you want use certificate for encrypting, which expired on %1?<br />"
 				"When decrypter has updated certificates then decrypting is impossible.")
 				.arg(expiryDate.toString(QStringLiteral("dd.MM.yyyy hh:mm:ss"))))
@@ -336,7 +336,7 @@ void AddRecipients::showResult(const QList<QSslCertificate> &result, int resultC
 	else if(--multiSearch <= 0 && ui->leftPane->items.isEmpty())
 		WarningDialog::create(this)
 			->withTitle(tr("Person or company does not own a valid certificate"))
-			->withText(tr("It is necessary to have a valid certificate for encryption.<br />"
+			->withRichText(tr("It is necessary to have a valid certificate for encryption.<br />"
 				"<a href='https://www.id.ee/en/article/encryption-and-decryption-of-documents/'>Read more about it</a>."))
 			->open();
 	QApplication::restoreOverrideCursor();
