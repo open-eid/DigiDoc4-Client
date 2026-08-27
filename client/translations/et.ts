@@ -43,6 +43,14 @@
         <translation>Sertifikaadid (*.cer *.crt *.pem)</translation>
     </message>
     <message>
+        <source>Enter the personal code, institution or registry code</source>
+        <translation>Sisesta isikukood, asutus või registrikood</translation>
+    </message>
+    <message>
+        <source>Search</source>
+        <translation>Otsi</translation>
+    </message>
+    <message>
         <source>Are you sure that you want use certificate for encrypting, which expired on %1?&lt;br /&gt;When decrypter has updated certificates then decrypting is impossible.</source>
         <translation>Kas oled kindel, et soovid kasutada krüpteerimiseks sertifikaati, mis aegus %1?&lt;br /&gt;&lt;br /&gt;Juhul, kui dekrüpteerija on oma sertifikaate uuendanud, ei ole dekrüpteerimine võimalik.</translation>
     </message>
@@ -1178,10 +1186,6 @@
 <context>
     <name>ItemList</name>
     <message>
-        <source>Enter the personal code, institution or registry code</source>
-        <translation>Sisesta isikukood, asutus või registrikood</translation>
-    </message>
-    <message>
         <source>Container is not signed</source>
         <translation>Ümbrikul puuduvad allkirjad</translation>
     </message>
@@ -1217,10 +1221,6 @@
     <message>
         <source>Added recipients</source>
         <translation>Lisatud adressaadid</translation>
-    </message>
-    <message>
-        <source>Search</source>
-        <translation>Otsi</translation>
     </message>
     <message>
         <source>Download all files</source>

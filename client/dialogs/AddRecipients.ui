@@ -90,20 +90,21 @@ background-color: #BFD3E8;
 QPushButton:disabled {
 color: #82A9D3;
 }
-QPushButton:default {
+#confirm {
 color: #ffffff;
 border-color: #2F70B6;
 background-color: #2F70B6;
 }
-QPushButton:default:hover, QPushButton:default:focus {
+#confirm:hover, #confirm:focus {
 border-color: #2B66A6;
 background-color: #2B66A6;
 }
-QPushButton:default:pressed {
+#confirm:pressed {
 border-color: #215081;
 background-color: #215081;
 }
-QPushButton:default:disabled {
+#confirm:disabled {
+color: #ffffff;
 border-color: #82A9D3;
 background-color: #82A9D3;
 }
