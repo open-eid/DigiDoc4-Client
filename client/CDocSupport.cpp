@@ -20,10 +20,15 @@
 #include <QtCore/QBuffer>
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonObject>
+#include <QtCore/QMessageAuthenticationCode>
 #include <QtCore/QtEndian>
 #include <QtCore/QTemporaryFile>
 #include <QtCore/QUrlQuery>
+#if QT_VERSION >= QT_VERSION_CHECK(6, 8, 0)
+#include <QtCore/QSpan>
+#endif
 #include <QtNetwork/QNetworkAccessManager>
+#include <QtNetwork/QPasswordDigestor>
 #include <QtNetwork/QSslKey>
 #include <QLoggingCategory>
 #include <QXmlStreamReader>
@@ -49,8 +54,12 @@ QDebug operator<<(QDebug d, std::string_view str) {
 }
 #endif
 
-static QByteArray toByteArray(const std::vector<uint8_t> &data) {
+static QByteArray asByteArray(const std::vector<uint8_t> &data) {
 	return QByteArray::fromRawData(reinterpret_cast<const char *>(data.data()), data.size());
+}
+
+static QByteArray asByteArray(QByteArrayView data) {
+	return QByteArray::fromRawData(data.data(), data.size());
 }
 
 std::vector<libcdoc::FileInfo>
@@ -129,8 +138,7 @@ DDCryptoBackend::decryptRSA(std::vector<uint8_t>& dst, const std::vector<uint8_t
 			return getDecryptStatus(val.error());
 		backend.reset(val.value());
 	}
-	QByteArray decryptedKey = backend->decrypt(toByteArray(data), oaep);
-	dst.assign(decryptedKey.cbegin(), decryptedKey.cend());
+	dst = backend->decrypt(asByteArray(data), oaep);
 	return getDecryptResultStatus(dst, std::move(backend));
 }
 
@@ -149,9 +157,8 @@ DDCryptoBackend::deriveConcatKDF(std::vector<uint8_t>& dst, const std::vector<ui
 			return getDecryptStatus(val.error());
 		backend.reset(val.value());
 	}
-	QByteArray decryptedKey = backend->deriveConcatKDF(toByteArray(publicKey), SHA_MTH.value(digest),
-		toByteArray(algorithmID), toByteArray(partyUInfo), toByteArray(partyVInfo));
-	dst.assign(decryptedKey.cbegin(), decryptedKey.cend());
+	dst = backend->deriveConcatKDF(asByteArray(publicKey), SHA_MTH.value(digest),
+		asByteArray(algorithmID), asByteArray(partyUInfo), asByteArray(partyVInfo));
 	return getDecryptResultStatus(dst, std::move(backend));
 }
 
@@ -164,15 +171,46 @@ DDCryptoBackend::deriveHMACExtract(std::vector<uint8_t>& dst, const std::vector<
 			return getDecryptStatus(val.error());
 		backend.reset(val.value());
 	}
-	QByteArray decryptedKey = backend->deriveHMACExtract(toByteArray(key_material), toByteArray(salt), ECC_KEY_LEN);
-	dst.assign(decryptedKey.cbegin(), decryptedKey.cend());
+	dst = backend->deriveHMACExtract(asByteArray(key_material), asByteArray(salt), ECC_KEY_LEN);
 	return getDecryptResultStatus(dst, std::move(backend));
 }
 
 libcdoc::result_t
-DDCryptoBackend::getSecret(std::vector<uint8_t>& _secret, unsigned int idx)
+DDCryptoBackend::extractHKDF(std::vector<uint8_t> &dst, const std::vector<uint8_t> &salt,
+	const std::vector<uint8_t> &pwSalt, int32_t kdfIter, unsigned int idx)
 {
-	_secret = secret;
+	if(secret.isEmpty() || salt.empty() || kdfIter < 0 || (kdfIter > 0 && pwSalt.empty()))
+		return INVALID_PARAMS;
+
+	QByteArray derivedKeyMaterial;
+	auto keyMaterialGuard = qScopeGuard([&] { derivedKeyMaterial.fill(0); });
+	QByteArrayView keyMaterial(secret);
+	if(kdfIter > 0) {
+		derivedKeyMaterial = QPasswordDigestor::deriveKeyPbkdf2(QCryptographicHash::Sha256,
+			secret, asByteArray(pwSalt), kdfIter, 32);
+		keyMaterial = QByteArrayView(derivedKeyMaterial);
+	} else if(secret.size() != 32) {
+		return INVALID_PARAMS;
+	}
+	if(keyMaterial.size() != 32)
+		return libcdoc::CRYPTO_ERROR;
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 8, 0)
+	dst.resize(32);
+	const QByteArrayView result = QMessageAuthenticationCode::hashInto(
+		dst, keyMaterial, salt, QCryptographicHash::Sha256);
+	if(result.size() != 32) {
+		std::fill(dst.begin(), dst.end(), 0);
+		dst.clear();
+		return libcdoc::CRYPTO_ERROR;
+	}
+#else
+	QByteArray kekPreMaster = QMessageAuthenticationCode::hash(asByteArray(keyMaterial), asByteArray(salt), QCryptographicHash::Sha256);
+	auto kekPreMasterGuard = qScopeGuard([&] { kekPreMaster.fill(0); });
+	if(kekPreMaster.size() != 32)
+		return libcdoc::CRYPTO_ERROR;
+	dst.assign(kekPreMaster.cbegin(), kekPreMaster.cend());
+#endif
 	return libcdoc::OK;
 }
 
@@ -278,8 +316,8 @@ libcdoc::result_t DDNetworkBackend::sendKey(
 	}
 	QScopedPointer<QNetworkAccessManager, QScopedPointerDeleteLater> nam(CheckConnection::setupNAM(req, Settings::CDOC2_POST_CERT));
 	QNetworkReply *reply = nam->post(req, QJsonDocument({
-		{QLatin1String("recipient_id"), QLatin1String(toByteArray(rcpt_key).toBase64())},
-		{QLatin1String("ephemeral_key_material"), QLatin1String(toByteArray(key_material).toBase64())},
+		{QLatin1String("recipient_id"), QLatin1String(asByteArray(rcpt_key).toBase64())},
+		{QLatin1String("ephemeral_key_material"), QLatin1String(asByteArray(key_material).toBase64())},
 		{QLatin1String("capsule_type"), QLatin1String(type.c_str())},
 	}).toJson());
 	QEventLoop e;

@@ -35,9 +35,10 @@ public:
 		 short leftAttempts, QDate birthDate, const QString &personalCode, bool isPUKReplacable, QWidget *parent);
 	~PinUnblock() final;
 
-	QString firstCodeText() const;
-	QString newCodeText() const;
+	std::pair<QByteArray, QByteArray> takeCodes();
 
 private:
+	void clearCodes();
+
 	Ui::PinUnblock *ui;
 };

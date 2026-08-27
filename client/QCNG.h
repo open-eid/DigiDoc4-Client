@@ -33,18 +33,18 @@ public:
 
 	Status login(const TokenData &token) final;
 
-	QByteArray decrypt(const QByteArray &data, bool oaep) const final;
-	QByteArray deriveConcatKDF(const QByteArray &publicKey, QCryptographicHash::Algorithm digest,
+	std::vector<uint8_t> decrypt(const QByteArray &data, bool oaep) const final;
+	std::vector<uint8_t> deriveConcatKDF(const QByteArray &publicKey, QCryptographicHash::Algorithm digest,
 		const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) const final;
-	QByteArray deriveHMACExtract(const QByteArray &publicKey, const QByteArray &salt, int keySize) const final;
+	std::vector<uint8_t> deriveHMACExtract(const QByteArray &publicKey, const QByteArray &salt, int keySize) const final;
 	QByteArray sign(QCryptographicHash::Algorithm type, const QByteArray &digest) const final;
 
 	static QList<TokenData> tokens();
 private:
 	template<typename F>
-	QByteArray derive(const QByteArray &publicKey, F &&func) const;
-	template<typename F>
-	QByteArray exec(F &&func) const;
+	std::vector<uint8_t> derive(const QByteArray &publicKey, F &&func) const;
+	template<typename Result = QByteArray, typename F>
+	Result exec(F &&func) const;
 
 	struct Private;
 	std::unique_ptr<Private> d;
