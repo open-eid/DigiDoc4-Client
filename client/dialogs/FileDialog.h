@@ -19,7 +19,10 @@
 
 #pragma once
 
+#include <QtCore/QFile>
 #include <QtWidgets/QFileDialog>
+
+#include <memory>
 
 class FileDialog : public QFileDialog
 {
@@ -36,6 +39,7 @@ public:
 	static QString createNewFileName(const QString &file, bool signature, QWidget *parent);
 	static FileType detect(const QString &filename);
 	static bool fileIsWritable( const QString &filename );
+	static std::unique_ptr<QFile> keepAccessAlive(const QString &path);
 	static bool isSignedPDF(const QString &path);
 	static void setFileZone(const QString &target, const QString &source);
 	static void setReadOnly(const QString &path, bool readonly = true);
