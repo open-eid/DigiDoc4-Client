@@ -135,12 +135,11 @@ void FileList::save(FileItem *item)
 		QString dest = FileDialog::getSaveFileName(this, FileDialog::tr("Save file"),
 			QFileInfo(container).dir().absolutePath() + QDir::separator() + file,
 			QStringLiteral("%1 (*%2)").arg(capitalized, extension));
-
-		if(!dest.endsWith(QStringLiteral(".%1").arg(extension)) && !extension.isEmpty())
-				dest.append(QStringLiteral(".%1").arg(extension));
-
 		if(dest.isEmpty())
 			return;
+
+		if(!dest.endsWith(QStringLiteral(".%1").arg(extension)) && !extension.isEmpty())
+			dest.append(QStringLiteral(".%1").arg(extension));
 		QFile::remove( dest );
 		documentModel->save(i, dest);
 	}
