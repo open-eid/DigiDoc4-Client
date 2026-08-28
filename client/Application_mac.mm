@@ -19,12 +19,23 @@
 
 #include "Application.h"
 
-#include <Cocoa/Cocoa.h>
+#import <AppKit/AppKit.h>
+#include <Security/Security.h>
 #include <QtCore/QUrl>
 #include <QtCore/QUrlQuery>
 #include <QtGui/QDesktopServices>
 
 using namespace Qt::StringLiterals;
+
+static NSMutableDictionary *proxyCredentialsQuery()
+{
+	return [@{
+		(__bridge id)kSecClass: (__bridge id)kSecClassInternetPassword,
+		(__bridge id)kSecAttrProtocol: (__bridge id)kSecAttrProtocolHTTPProxy,
+		(__bridge id)kSecAttrSecurityDomain:
+			QStringLiteral("%1.proxy").arg(QGuiApplication::desktopFileName()).toNSString()
+	} mutableCopy];
+}
 
 static auto fetchPaths(NSPasteboard *pboard)
 {
@@ -116,3 +127,73 @@ QString Application::groupContainerPath()
 		containerURLForSecurityApplicationGroupIdentifier:@"group.ee.ria.qdigidoc4.tsl"].path);
 }
 
+Application::ProxyCredentials::ProxyCredentials(
+	QString host, QString port, QString user, QString password)
+	: host(std::move(host))
+	, port(std::move(port))
+	, user(std::move(user))
+	, password(std::move(password))
+{}
+
+Application::ProxyCredentials::ProxyCredentials(ProxyCredentials &&) noexcept = default;
+
+Application::ProxyCredentials::~ProxyCredentials()
+{
+	password.fill(QChar{});
+}
+
+std::optional<Application::ProxyCredentials> Application::proxyCredentials()
+{
+	NSMutableDictionary *query = proxyCredentialsQuery();
+	query[(__bridge id)kSecReturnAttributes] = @YES;
+	query[(__bridge id)kSecReturnData] = @YES;
+	query[(__bridge id)kSecMatchLimit] = (__bridge id)kSecMatchLimitOne;
+
+	CFTypeRef result = nullptr;
+	const OSStatus status = SecItemCopyMatching((__bridge CFDictionaryRef)query, &result);
+	if(status == errSecItemNotFound)
+		return std::nullopt;
+	if(status != errSecSuccess)
+	{
+		qWarning() << "Failed to read the proxy credentials from Keychain:" << status;
+		return std::nullopt;
+	}
+
+	NSDictionary *item = CFBridgingRelease(result);
+	NSData *data = item[(__bridge id)kSecValueData];
+	const quint16 port = [item[(__bridge id)kSecAttrPort] unsignedShortValue];
+	return ProxyCredentials {
+		QString::fromNSString(item[(__bridge id)kSecAttrServer]),
+		port ? QString::number(port) : QString(),
+		QString::fromNSString(item[(__bridge id)kSecAttrAccount]),
+		QString::fromUtf8(static_cast<const char *>(data.bytes), qsizetype(data.length))
+	};
+}
+
+bool Application::setProxyCredentials(ProxyCredentials credentials)
+{
+	QByteArray utf8 = credentials.password.toUtf8();
+	auto utf8Scope = qScopeGuard([&] { utf8.fill(0); });
+	NSData *data = [NSData dataWithBytesNoCopy:utf8.data()
+		length:NSUInteger(utf8.size()) freeWhenDone:NO];
+	NSMutableDictionary *query = proxyCredentialsQuery();
+	NSDictionary *attributes = @{
+		(__bridge id)kSecAttrServer: credentials.host.toNSString(),
+		(__bridge id)kSecAttrPort: @(credentials.port.toUShort()),
+		(__bridge id)kSecAttrAccount: credentials.user.toNSString(),
+		(__bridge id)kSecValueData: data
+	};
+
+	OSStatus status = SecItemUpdate((__bridge CFDictionaryRef)query,
+		(__bridge CFDictionaryRef)attributes);
+	if(status == errSecItemNotFound)
+	{
+		[query addEntriesFromDictionary:attributes];
+		status = SecItemAdd((__bridge CFDictionaryRef)query, nullptr);
+	}
+
+	if(status == errSecSuccess)
+		return true;
+	qWarning() << "Failed to store the proxy credentials in Keychain:" << status;
+	return false;
+}
