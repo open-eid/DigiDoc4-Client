@@ -171,11 +171,6 @@ quint64 CDocumentModel::fileSize(int row) const
 	return d->files.at(row).size;
 }
 
-QString CDocumentModel::mime(int row) const
-{
-	return FileDialog::normalized(QString::fromStdString(d->files.at(row).mime));
-}
-
 void CDocumentModel::open(int row)
 {
 	if(!d->isEncrypted())
@@ -414,6 +409,7 @@ bool CryptoDoc::encrypt(const QString &filename, const QString& label, const QBy
 		return false;
 	}
 	QString writer_last_error;
+	auto keepAlive = FileDialog::keepAccessAlive(d->fileName);
 	libcdoc::result_t result = waitFor([&] -> libcdoc::result_t {
 		qCDebug(CRYPTO) << "Encrypt" << d->fileName;
 		auto writer = std::unique_ptr<libcdoc::CDocWriter>(libcdoc::CDocWriter::createWriter(d->version, d->fileName.toStdString(), &d->conf, &d->crypto, &d->network));
@@ -524,6 +520,7 @@ bool CryptoDoc::saveCopy(const QString &filename)
 	QFileInfo dst(filename);
 	if(src == dst)
 		return true;
+	auto keepAlive = FileDialog::keepAccessAlive(filename);
 	std::error_code ec;
 	std::filesystem::copy_file(src.filesystemFilePath(), dst.filesystemFilePath(),
 		std::filesystem::copy_options::overwrite_existing, ec);
