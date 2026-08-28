@@ -424,15 +424,16 @@ bool DigiDoc::extend()
 			Common::applicationOs(),
 			Common::drivers().join(',')).toUtf8().constData());
 		qApp->waitForTSL(fileName());
-		ServiceConfirmation cb(parent);
 		QString current = m_fileName;
 		size_t extendCount = 0;
-		bool wrapped = false;
+		const auto signatures = b->signatures();
+		const bool timestampedContainer = std::any_of(signatures.cbegin(), signatures.cend(), [](const Signature *signature) {
+			return signature->profile() == "TimeStampToken";
+		});
 		if(std::unique_ptr<Container> extended = waitFor([&] {
 			return Container::extendContainerValidity(*b, signer, extendCount);
 		}))
 		{
-			wrapped = true;
 			const QString asics = QCoreApplication::translate("MainWindow", "Documents (%1)").arg(QLatin1String("*.asics *.scs"));
 			QFileInfo f(current);
 			QString name = f.absolutePath() + '/' + f.completeBaseName() + QStringLiteral(".asics");
@@ -440,14 +441,12 @@ bool DigiDoc::extend()
 			if(filename.isEmpty())
 				return false;
 			auto original = std::exchange(b, std::move(extended));
-			auto originalParent = std::exchange(parentContainer, {});
 			if(!saveAs(filename))
 			{
 				b = std::move(original);
-				parentContainer = std::move(originalParent);
 				return false;
 			}
-			load(std::move(b), cb);
+			load(std::move(b));
 			m_fileName = filename;
 			Application::addRecent(m_fileName);
 			modified = false;
@@ -459,8 +458,8 @@ bool DigiDoc::extend()
 		}
 		if(!save())
 			return false;
-		load(std::move(b), cb);
-		if(extendCount < b->signatures().size())
+		load(std::move(b));
+		if(!timestampedContainer && extendCount < b->signatures().size())
 		{
 			WarningDialog::create(parent)
 				->withTitle(tr("Container validity extended"))
@@ -539,35 +538,19 @@ bool DigiDoc::isSupported() const
 	return b && b->mediaType() == "application/vnd.etsi.asic-e+zip" && !isCades();
 }
 
-void DigiDoc::load(std::unique_ptr<Container> &&doc, ServiceConfirmation &cb)
+void DigiDoc::load(std::unique_ptr<Container> &&doc)
 {
-	parentContainer.reset();
 	m_signatures.clear();
 	m_timestamps.clear();
 	documentModel()->clearTempFolder();
 	b = std::move(doc);
-	if(b && b->mediaType() == "application/vnd.etsi.asic-s+zip" &&
-		b->dataFiles().size() == 1 &&
-		b->signatures().size() == 1)
-	{
-		if(from(b->dataFiles().at(0)->fileName()).endsWith(QStringLiteral(".ddoc"), Qt::CaseInsensitive))
-		{
-			if(QString tmppath = documentModel()->saveTemp(0); !tmppath.isEmpty())
-			{
-				try {
-					parentContainer = std::exchange(b, Container::openPtr(to(tmppath), &cb));
-				} catch(const Exception &) {}
-			}
-		}
-	}
-	bool isTimeStamped = parentContainer && parentContainer->signatures().at(0)->trustedSigningTime().compare("2018-07-01T00:00:00Z") < 0;
-	for(const Signature *signature: b->signatures())
-		m_signatures.emplace_back(signature, this, isTimeStamped);
-	if(parentContainer)
-	{
-		for(const Signature *signature: parentContainer->signatures())
-			m_timestamps.emplace_back(signature, this);
-	}
+	const auto containerSignatures = b->signatures();
+	const bool isTimeStamped = std::any_of(containerSignatures.cbegin(), containerSignatures.cend(), [](const Signature *signature) {
+		return signature->profile() == "TimeStampToken" &&
+			signature->trustedSigningTime().compare("2018-07-01T00:00:00Z") < 0;
+	});
+	for(const Signature *signature: containerSignatures)
+		m_signatures.emplace_back(signature, this, signature->profile() != "TimeStampToken" && isTimeStamped);
 	setState(signatures().isEmpty() ? ContainerState::UnsignedSavedContainer : ContainerState::SignedContainer);
 }
 
@@ -608,7 +591,7 @@ std::unique_ptr<DigiDoc> DigiDoc::open(const QString &file, QWidget *parent)
 		std::unique_ptr<DigiDoc> doc(new DigiDoc(parent));
 		WaitDialogHolder waitDialog(parent, tr("Opening"), false);
 		if(waitFor([&] {
-			doc->load(Container::openPtr(to(file), &cb), cb);
+			doc->load(Container::openPtr(to(file), &cb));
 			Application::addRecent(file);
 			doc->m_fileName = file;
 			return true;
@@ -705,7 +688,7 @@ bool DigiDoc::saveAs(const QString &filename)
 	{
 		auto keepAlive = FileDialog::keepAccessAlive(filename);
 		return waitFor([&] {
-			parentContainer ? parentContainer->save(to(filename)) : b->save(to(filename));
+			b->save(to(filename));
 			return true;
 		});
 	}
