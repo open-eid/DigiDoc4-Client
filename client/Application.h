@@ -19,6 +19,8 @@
 
 #pragma once
 
+#include <optional>
+
 #include <QtCore/QtGlobal>
 
 #ifdef Q_OS_MAC
@@ -76,7 +78,24 @@ public:
 	static void showClient(QStringList params = {}, bool crypto = false, bool sign = false, bool newWindow = false);
 	static void updateTSLCache(const QDateTime &tslTime);
 #if defined(Q_OS_MAC)
+	struct ProxyCredentials
+	{
+		ProxyCredentials(QString host, QString port, QString user, QString password);
+		ProxyCredentials(ProxyCredentials &&) noexcept;
+		~ProxyCredentials();
+
+		Q_DISABLE_COPY(ProxyCredentials)
+		ProxyCredentials &operator=(ProxyCredentials &&) = delete;
+
+		QString host;
+		QString port;
+		QString user;
+		QString password;
+	};
+
 	static QString groupContainerPath();
+	static std::optional<ProxyCredentials> proxyCredentials();
+	static bool setProxyCredentials(ProxyCredentials credentials);
 #endif
 
 private Q_SLOTS:

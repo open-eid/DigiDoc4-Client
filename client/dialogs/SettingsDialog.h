@@ -63,6 +63,7 @@ signals:
 
 private:
 	void checkConnection();
+	void applyProxy() const;
 	void retranslate(const QString& lang);
 	void saveFile(const QString &name, const QString &path);
 	void saveFile(const QString &name, const QByteArray &content);
