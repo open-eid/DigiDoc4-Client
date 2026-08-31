@@ -2712,6 +2712,10 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>Vali allkirjastamise meetod</translation>
     </message>
     <message>
+        <source>Enter PIN2 code</source>
+        <translation>Sisesta PIN2-kood</translation>
+    </message>
+    <message>
         <source>Country code and phone number</source>
         <translation>Riigikood ja telefoninumber</translation>
     </message>
@@ -2782,6 +2786,10 @@ Täiendavad litsentsid ja komponendid</translation>
     <message>
         <source>Continue signing</source>
         <translation>Jätka allkirjastamisega</translation>
+    </message>
+    <message>
+        <source>Failed to sign document</source>
+        <translation>Dokumendi allkirjastamine ebaõnnestus</translation>
     </message>
 </context>
 <context>

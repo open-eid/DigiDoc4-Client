@@ -21,6 +21,8 @@
 
 #include <QtWidgets/QMessageBox>
 
+#include <memory>
+
 SigningDialog::SigningDialog(DigiDoc *doc, QWidget *parent)
 	: QDialog(parent)
 	, digiDoc(doc)
@@ -44,6 +46,16 @@ SigningDialog::SigningDialog(DigiDoc *doc, QWidget *parent)
 	// ID-card tab
 	updateCards();
 	connect(qApp->cryptoManager(), &QCryptoManager::cacheChanged, this, &SigningDialog::updateCards);
+	ui->pin->setPinLen(5); // PIN2 (signing) is 5..12 digits
+	connect(ui->pin, &QLineEdit::textEdited, this, [this] {
+		if(!ui->errorPin->text().isEmpty()) {
+			ui->errorPin->clear();
+			ui->errorPin->setVisible(false);
+			ui->pin->setLabel({});
+		}
+		ui->sign->setEnabled(ui->pin->hasAcceptableInput());
+	});
+	connect(ui->pin, &QLineEdit::returnPressed, ui->sign, &QPushButton::click);
 	connect(ui->tabs, &QTabBar::currentChanged, this, [this](int index) {
 		if(index == IDCard)
 			updateCards();
@@ -230,8 +242,22 @@ void SigningDialog::updateCards()
 	}
 	ui->noCard->setVisible(!any);
 	ui->cardListContainer->setVisible(any);
+
+	// The inline PIN2 field applies only to software PIN entry: PKCS11 readers
+	// (non-Windows) that are not PinPads. PinPad and Windows keep their own PIN UI
+	// (hardware / OS dialog) via the empty-pin path in performSign().
+	bool showPin = false;
+#ifndef Q_OS_WIN
+	showPin = selectedUsable && !m_selectedToken.data(QStringLiteral("pinpad")).toBool();
+#endif
+	ui->labelPin->setVisible(showPin);
+	ui->pin->setVisible(showPin);
+	ui->errorPin->setVisible(showPin && !ui->errorPin->text().isEmpty());
+	if(!showPin)
+		ui->pin->clear();
+
 	if(currentMethod() == IDCard)
-		ui->sign->setEnabled(selectedUsable);
+		ui->sign->setEnabled(selectedUsable && (!showPin || ui->pin->hasAcceptableInput()));
 }
 
 bool SigningDialog::performSign()
@@ -261,7 +287,33 @@ bool SigningDialog::performSign()
 
 	switch(currentMethod()) {
 	case IDCard: {
-		QSigner signer(m_selectedToken);
+		// Software PIN entry uses the inline field; PinPad/Windows pass an empty
+		// PIN so login() falls back to the hardware/OS prompt.
+		QString pin = ui->pin->isVisible() ? ui->pin->text() : QString();
+		auto val = QCryptoBackend::getBackend(m_selectedToken, pin);
+		if(!val) {
+			switch(val.error()) {
+			case QCryptoBackend::PinIncorrect:
+				// Show the error under the field and let the user retype + re-sign.
+				ui->pin->setLabel(QStringLiteral("error"));
+				ui->errorPin->setText(QCryptoBackend::errorString(QCryptoBackend::PinIncorrect));
+				ui->errorPin->setVisible(true);
+				ui->pin->clear();
+				ui->pin->setFocus();
+				ui->sign->setEnabled(false);
+				return false;
+			case QCryptoBackend::PinCanceled:
+				return false;
+			default:
+				WarningDialog::create(this)
+					->withTitle(tr("Failed to sign document"))
+					->withText(QCryptoBackend::errorString(val.error()))
+					->exec();
+				return false;
+			}
+		}
+		std::unique_ptr<QCryptoBackend> backend(val.value());
+		QSigner signer(backend.get(), m_selectedToken);
 		return digiDoc->sign(m_city, m_state, m_zip, m_country, m_role, &signer);
 	}
 	case MobileID: {
