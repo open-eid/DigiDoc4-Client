@@ -286,7 +286,6 @@ jobs:
       with:
         patterns: |
           -**/*autogen*/**
-          -**/common/qtsingleapplication/**
           -**:cpp/loop-variable-changed
           -**:cpp/poorly-documented-function
         input: sarif-results/cpp.sarif

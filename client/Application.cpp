@@ -48,13 +48,12 @@ class MacMenuBar {};
 #include <digidocpp/XmlConf.h>
 #include <digidocpp/crypto/X509Cert.h>
 
-#include <qtsingleapplication/src/qtlocalpeer.h>
-
 #include <QAction>
 #include <QtCore/QFileInfo>
 #include <QtCore/QJsonArray>
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonObject>
+#include <QtCore/QLockFile>
 #include <QtCore/QProcess>
 #include <QtCore/QRegularExpression>
 #include <QtCore/QTimer>
@@ -301,6 +300,7 @@ public:
 	QTranslator	appTranslator, qtTranslator;
 	QString		lang;
 	QTimer		lastWindowTimer;
+	std::unique_ptr<QLockFile> lockFile;
 	volatile bool ready = false;
 #ifdef Q_OS_WIN
 	QStringList	tempFiles;
@@ -312,7 +312,7 @@ public:
 };
 
 Application::Application( int &argc, char **argv )
-	: BaseApplication(argc, argv)
+	: QApplication(argc, argv)
 	, d(new Private)
 {
 	setApplicationName(QStringLiteral("qdigidoc4"));
@@ -339,12 +339,20 @@ Application::Application( int &argc, char **argv )
 	QStringList args = arguments();
 	args.removeFirst();
 #ifndef Q_OS_MAC
-	if( isRunning() )
-	{
-		sendMessage(args.join(QStringLiteral("\", \"")));
+	d->lockFile = Common::acquireInstanceLock(args);
+	if(!d->lockFile)
 		return;
-	}
-	connect(this, &Application::messageReceived, this, qOverload<const QString&>(&Application::parseArgs));
+	if(!Common::startLocalServer(this, [this](const QStringList &msg) {
+		QStringList params;
+		params.reserve(msg.size());
+		for(const QString &param: msg)
+		{
+			QUrl url(param, QUrl::StrictMode);
+			params.append(param != QLatin1String("-crypto") && !url.toLocalFile().isEmpty() ? url.toLocalFile() : param);
+		}
+		parseArgs(std::move(params));
+	}))
+		qWarning() << "Failed to start local server for activation messages";
 #endif
 
 	QPalette p = palette();
@@ -527,13 +535,11 @@ Application::~Application()
 #endif // Q_OS_WIN
 
 #ifndef Q_OS_MAC
-	if( isRunning() )
+	if(!d->lockFile)
 	{
 		delete d;
 		return;
 	}
-	if(auto *obj = findChild<QtLocalPeer*>())
-		delete obj;
 #else
 	deinitMacEvents();
 #endif
@@ -659,9 +665,9 @@ bool Application::event(QEvent *event)
 	// Load here because cocoa NSApplication overides events
 	case QEvent::ApplicationActivate:
 		initMacEvents();
-		return BaseApplication::event(event);
+		return QApplication::event(event);
 #endif
-	default: return BaseApplication::event(event);
+	default: return QApplication::event(event);
 	}
 }
 
@@ -843,17 +849,6 @@ void Application::openHelp()
 	QDesktopServices::openUrl(QUrl(tr("https://www.id.ee/en/id-help/")));
 }
 
-void Application::parseArgs( const QString &msg )
-{
-	QStringList params;
-	for(const QString &param: msg.split(QStringLiteral("\", \""), Qt::SkipEmptyParts))
-	{
-		QUrl url( param, QUrl::StrictMode );
-		params.append(param != QLatin1String("-crypto") && !url.toLocalFile().isEmpty() ? url.toLocalFile() : param);
-	}
-	parseArgs(std::move(params));
-}
-
 void Application::parseArgs(QStringList args)
 {
 	bool crypto = args.removeAll(QStringLiteral("-crypto")) > 0;
@@ -886,7 +881,7 @@ uint Application::readTSLVersion(const QString &path)
 int Application::run()
 {
 #ifndef Q_OS_MAC
-	if( isRunning() ) return 0;
+	if(!d->lockFile) return 0;
 #endif
 	return exec();
 }
