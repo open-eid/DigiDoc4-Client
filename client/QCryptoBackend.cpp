@@ -66,7 +66,7 @@ QCryptoBackend::~QCryptoBackend()
 }
 
 std::expected<QCryptoBackend *,QCryptoBackend::Status>
-QCryptoBackend::getBackend(const TokenData& token) {
+QCryptoBackend::getBackend(const TokenData& token, const QString &pin) {
 	if(!qApp->cryptoManager()->d->operationLock.tryLockForWrite(10 * 1000))
 		return std::unexpected(InProgress);
 #ifdef Q_OS_WIN
@@ -79,9 +79,14 @@ QCryptoBackend::getBackend(const TokenData& token) {
 		return backend.release();
 
 	Status status;
-	do {
-		status = backend->login(token);
-	} while (status == PinIncorrect);
+	if(pin.isEmpty())
+	{
+		do {
+			status = backend->login(token, {});
+		} while (status == PinIncorrect);
+	}
+	else
+		status = backend->login(token, pin);
 	if (status != PinOK)
 		return std::unexpected(status);
 
