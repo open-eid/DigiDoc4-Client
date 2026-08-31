@@ -19,15 +19,7 @@
 
 #pragma once
 
-#include <QtCore/QtGlobal>
-
-#ifdef Q_OS_MAC
 #include <QtWidgets/QApplication>
-using BaseApplication = QApplication;
-#else
-#include "qtsingleapplication/src/QtSingleApplication"
-using BaseApplication = QtSingleApplication;
-#endif
 
 #if defined(qApp)
 #undef qApp
@@ -38,7 +30,7 @@ namespace digidoc { class Exception; }
 class Configuration;
 class QAction;
 class QSigner;
-class Application final: public BaseApplication
+class Application final: public QApplication
 {
 	Q_OBJECT
 
@@ -90,7 +82,6 @@ private:
 	bool event(QEvent *event) final;
 	static void closeWindow();
 	static void msgHandler(QtMsgType type, const QMessageLogContext &ctx, const QString &msg);
-	static void parseArgs(const QString &msg = {});
 	static void parseArgs(QStringList args);
 	static void showWarning(const QString &title, const digidoc::Exception &e);
 #if defined(Q_OS_MAC)
