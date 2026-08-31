@@ -67,7 +67,7 @@ public:
 	 * @param token the token to use
 	 * @return the new backend object or an error code
 	 */
-	static std::expected<QCryptoBackend *,Status> getBackend(const TokenData &token);
+	static std::expected<QCryptoBackend *,Status> getBackend(const TokenData &token, const QString &pin = {});
 
 	/**
 	 * @brief The status of the last operation
@@ -77,7 +77,7 @@ public:
 	static QString errorString(Status error);
 
 protected:
-	virtual Status login(const TokenData &cert) = 0;
+	virtual Status login(const TokenData &cert, const QString &pin) = 0;
 
 private:
 	TokenData token;

@@ -33,8 +33,9 @@
 
 using namespace digidoc;
 
-QSigner::QSigner(const TokenData &token)
-	: m_token(token)
+QSigner::QSigner(QCryptoBackend *backend, const TokenData &token)
+	: m_backend(backend)
+	, m_token(token)
 {
 	if(m_token.data(QStringLiteral("PSS")).toBool())
 	{
@@ -89,27 +90,15 @@ std::vector<unsigned char> QSigner::sign(const std::string &method, const std::v
 		throw e; \
 	}
 
-	auto val = QCryptoBackend::getBackend(m_token);
-	if(!val)
-	{
-		auto err = tr("Failed to login token") + ' ' +
-			QCryptoBackend::errorString(val.error());
-		switch(val.error()) {
-		case QCryptoBackend::PinCanceled: throwException(err, Exception::PINCanceled);
-		case QCryptoBackend::PinLocked:   throwException(err, Exception::PINLocked);
-		case QCryptoBackend::InProgress:  throwException(err, Exception::General);
-		default:                          throwException(err, Exception::PINFailed);
-		}
-	}
-	std::unique_ptr<QCryptoBackend> backend(val.value());
-
-	QByteArray sig = waitFor(&QCryptoBackend::sign, backend.get(),
+	// The backend is already authenticated by the caller (see getBackend);
+	// QSigner only performs the signature itself.
+	QByteArray sig = waitFor(&QCryptoBackend::sign, m_backend,
 		methodToNID(method), QByteArray::fromRawData((const char*)digest.data(), int(digest.size())));
 	if(sig.isEmpty())
 	{
 		auto err = tr("Failed to login token") + ' ' +
-			QCryptoBackend::errorString(backend->status);
-		switch(backend->status) {
+			QCryptoBackend::errorString(m_backend->status);
+		switch(m_backend->status) {
 		case QCryptoBackend::PinCanceled: throwException(err, Exception::PINCanceled);
 		case QCryptoBackend::PinLocked:   throwException(err, Exception::PINLocked);
 		default: break;

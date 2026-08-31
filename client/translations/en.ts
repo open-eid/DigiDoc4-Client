@@ -2704,6 +2704,10 @@ Additional licenses and components</translation>
         <translation>Choose signing method</translation>
     </message>
     <message>
+        <source>Enter PIN2 code</source>
+        <translation>Enter PIN2 code</translation>
+    </message>
+    <message>
         <source>Country code and phone number</source>
         <translation>Country code and phone number</translation>
     </message>
@@ -2774,6 +2778,10 @@ Additional licenses and components</translation>
     <message>
         <source>Continue signing</source>
         <translation>Continue signing</translation>
+    </message>
+    <message>
+        <source>Failed to sign document</source>
+        <translation>Failed to sign document</translation>
     </message>
 </context>
 <context>
