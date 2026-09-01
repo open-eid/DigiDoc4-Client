@@ -25,7 +25,7 @@
 #include "Configuration.h"
 #include "CDocSupport.h"
 #include "MainWindow.h"
-#include "QSigner.h"
+#include "QCryptoBackend.h"
 #include "QSmartCard.h"
 #include "DigiDoc.h"
 #include "Settings.h"
@@ -296,7 +296,7 @@ public:
 	Configuration *conf {};
 	QAction		*closeAction {}, *newClientAction {}, *helpAction {};
 	std::unique_ptr<MacMenuBar> bar;
-	QSigner		*signer {};
+	QCryptoManager	*cryptoManager {};
 
 	QTranslator	appTranslator, qtTranslator;
 	QString		lang;
@@ -307,7 +307,7 @@ public:
 #endif // Q_OS_WIN
 
 	~Private() {
-		delete signer;
+		delete cryptoManager;
 	}
 };
 
@@ -462,7 +462,7 @@ Application::Application( int &argc, char **argv )
 	try
 	{
 		digidoc::Conf::init( new DigidocConf );
-		d->signer = new QSigner(this);
+		d->cryptoManager = new QCryptoManager();
 		updateTSLCache(QDateTime::currentDateTimeUtc().addDays(-7));
 
 		digidoc::initialize(applicationName().toUtf8().constData(), QStringLiteral("%1/%2 (%3)")
@@ -968,7 +968,7 @@ void Application::showWarning(const QString &title, const digidoc::Exception &e)
 	WarningDialog::create()->withTitle(title)->withDetails(causes.join('\n'))->open();
 }
 
-QSigner* Application::signer() const { return d->signer; }
+QCryptoManager* Application::cryptoManager() const { return d->cryptoManager; }
 
 void Application::updateTSLCache(const QDateTime &tslTime)
 {
