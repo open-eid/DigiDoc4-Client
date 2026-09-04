@@ -38,6 +38,9 @@ struct Settings
 		operator std::string() const requires(std::is_same_v<T,QString>) {
 			return operator T().toStdString();
 		}
+		bool operator ==(std::string_view value) const requires(std::is_same_v<T,QString>) {
+			return operator QVariant() == QLatin1String(value.data(), value.size());
+		}
 		void operator =(const QVariant &value) const {
 			if(value == defaultValue())
 				clear();
