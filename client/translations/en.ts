@@ -221,6 +221,14 @@
         <translation>New Window</translation>
     </message>
     <message>
+        <source>Secure network support is unavailable</source>
+        <translation>Secure network support is unavailable</translation>
+    </message>
+    <message>
+        <source>DigiDoc4 Client could not load a compatible TLS library. Mobile-ID, Smart-ID, configuration updates, and other online services may not work. Check for conflicting OpenSSL installations or reinstall ID-software.</source>
+        <translation>DigiDoc4 Client could not load a compatible TLS library. Mobile-ID, Smart-ID, configuration updates, and other online services may not work. Check for conflicting OpenSSL installations or reinstall ID-software.</translation>
+    </message>
+    <message>
         <source>In order to authenticate and sign in e-services with an ID-card you need to install the web browser components.</source>
         <translation>In order to authenticate and sign in e-services with an ID-card you need to install the web browser components.</translation>
     </message>
