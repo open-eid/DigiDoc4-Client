@@ -101,11 +101,21 @@ SettingsDialog::SettingsDialog(int page, QWidget *parent)
 	ui->txtTimeStamp->setVisible(ui->rdTimeStampCustom->isChecked());
 	ui->txtTimeStamp->setPlaceholderText(Application::confValue(Settings::TSA_URL.KEY).toString());
 	ui->txtTimeStamp->setText(Settings::TSA_URL);
+	ui->txtTimeStampArchive->setReadOnly(Settings::TSA_URL_ARCHIVE.isLocked());
+	ui->lblTimeStampArchive->setVisible(ui->rdTimeStampCustom->isChecked());
+	ui->txtTimeStampArchive->setVisible(ui->rdTimeStampCustom->isChecked());
+	ui->txtTimeStampArchive->setPlaceholderText(Application::confValue(Application::TSAUrlArchive).toString());
+	ui->txtTimeStampArchive->setText(Settings::TSA_URL_ARCHIVE);
 	ui->wgtTSACert->setDisabled(Settings::TSA_CERT.isLocked());
 	ui->wgtTSACert->setVisible(ui->rdTimeStampCustom->isChecked());
+	ui->wgtTSACertArchive->setDisabled(Settings::TSA_CERT_ARCHIVE.isLocked());
+	ui->wgtTSACertArchive->setVisible(ui->rdTimeStampCustom->isChecked());
 	connect(ui->rdTimeStampCustom, &QRadioButton::toggled, ui->txtTimeStamp, [this](bool checked) {
 		ui->txtTimeStamp->setVisible(checked);
+		ui->lblTimeStampArchive->setVisible(checked);
+		ui->txtTimeStampArchive->setVisible(checked);
 		ui->wgtTSACert->setVisible(checked);
+		ui->wgtTSACertArchive->setVisible(checked);
 		Settings::TSA_URL_CUSTOM = checked;
 	});
 	connect(ui->txtTimeStamp, &QLineEdit::textChanged, this, [this](const QString &url) {
@@ -114,6 +124,14 @@ SettingsDialog::SettingsDialog(int page, QWidget *parent)
 		{
 			Settings::TSA_CERT.clear();
 			updateTSACert(QSslCertificate());
+		}
+	});
+	connect(ui->txtTimeStampArchive, &QLineEdit::textChanged, this, [this](const QString &url) {
+		Settings::TSA_URL_ARCHIVE = url;
+		if(url.isEmpty())
+		{
+			Settings::TSA_CERT_ARCHIVE.clear();
+			updateTSACertArchive(QSslCertificate());
 		}
 	});
 	connect(ui->helpTimeStamp, &QToolButton::clicked, this, []{
@@ -128,6 +146,15 @@ SettingsDialog::SettingsDialog(int page, QWidget *parent)
 		updateTSACert(cert);
 	});
 	updateTSACert(QSslCertificate(QByteArray::fromBase64(Settings::TSA_CERT), QSsl::Der));
+	connect(ui->btInstallTSACertArchive, &QPushButton::clicked, this, [this] {
+		QSslCertificate cert = selectCert(tr("Select archive Time-Stamping server certificate"),
+			tr("Archive Time-Stamping service SSL certificate"));
+		if(cert.isNull())
+			return;
+		Settings::TSA_CERT_ARCHIVE = cert.toDer().toBase64();
+		updateTSACertArchive(cert);
+	});
+	updateTSACertArchive(QSslCertificate(QByteArray::fromBase64(Settings::TSA_CERT_ARCHIVE), QSsl::Der));
 
 	// pageServices - MID
 	ui->rdMIDUUIDDefault->setDisabled(Settings::MID_UUID_CUSTOM.isLocked());
@@ -480,6 +507,11 @@ void SettingsDialog::updateCDoc2Cert(const QSslCertificate &c)
 void SettingsDialog::updateSiVaCert(const QSslCertificate &c)
 {
 	updateCert(c, ui->btShowSiVaCert, ui->txtSiVaCert);
+}
+
+void SettingsDialog::updateTSACertArchive(const QSslCertificate &c)
+{
+	updateCert(c, ui->btShowTSACertArchive, ui->txtTSACertArchive);
 }
 
 void SettingsDialog::updateTSACert(const QSslCertificate &c)

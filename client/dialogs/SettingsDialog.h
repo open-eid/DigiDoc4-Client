@@ -73,6 +73,7 @@ private:
 	void updateCDoc2Cert(const QSslCertificate &c);
 	void updateSiVaCert(const QSslCertificate &c);
 	void updateTSACert(const QSslCertificate &c);
+	void updateTSACertArchive(const QSslCertificate &c);
 	void updateDiagnostics();
 	void useDefaultSettings();
 
