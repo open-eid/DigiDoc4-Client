@@ -24,27 +24,52 @@
 #include <QTimer>
 
 #include <exception>
+#include <future>
 #include <limits>
+#include <memory>
 #include <thread>
 
 namespace {
+	template<auto D>
+	struct free_deleter
+	{
+		template<class T>
+		void operator()(T *p) const noexcept
+		{
+			D(p);
+		}
+	};
+
+	template<auto F, typename T>
+	[[nodiscard]]
+	constexpr auto make_unique_ptr(T *t) noexcept
+	{
+		return std::unique_ptr<T, free_deleter<F>>(t);
+	}
+
 	template <typename F, class... Args>
 	inline auto waitFor(F&& function, Args&& ...args) {
-		std::exception_ptr exception;
-		std::invoke_result_t<F,Args...> result{};
 		QEventLoop l;
-		std::thread([&, function = std::forward<F>(function), ...args = std::forward<Args>(args)]{
-			try {
-				result = std::invoke(function, args...);
-			} catch(...) {
-				exception = std::current_exception();
-			}
-			l.exit();
-		}).detach();
+		using result_t = std::invoke_result_t<F, Args...>;
+		std::packaged_task<result_t()> task(
+			[function = std::forward<F>(function),
+			...args = std::forward<Args>(args)]() mutable -> result_t {
+				return std::invoke(function, args...);
+			});
+		auto future = task.get_future();
+		std::jthread worker([&l, task = std::move(task)]() mutable {
+			task();
+			QMetaObject::invokeMethod(&l, &QEventLoop::quit, Qt::QueuedConnection);
+		});
 		l.exec();
-		if(exception)
-			std::rethrow_exception(std::move(exception));
-		return result;
+		return future.get();
+	}
+
+	template <typename Sender, typename Signal>
+	inline void waitForSignal(Sender *sender, Signal signal) {
+		QEventLoop l;
+		QObject::connect(sender, signal, &l, &QEventLoop::quit);
+		l.exec();
 	}
 
 	template <typename F, class... Args>
