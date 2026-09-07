@@ -64,8 +64,10 @@ add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
 	QPCSC.cpp
 	QPCSC_p.h
 	QPCSC.h
-	QPKCS11.cpp
-	QPKCS11.h
+	$<IF:$<PLATFORM_ID:Windows>,
+		QCNG.cpp QCNG.h,
+		QPKCS11.cpp QPKCS11.h
+	>
 	QSigner.cpp
 	QSigner.h
 	QSmartCard.cpp
@@ -194,7 +196,6 @@ if( APPLE )
 		COMMAND zip -r ${CMAKE_BINARY_DIR}/${PROJECT_NAME}-dbg_${VERSION}$ENV{VER_SUFFIX}.zip ${PROJECT_NAME}.dSYM
 	)
 elseif(WIN32)
-	target_sources(${PROJECT_NAME} PRIVATE QCNG.cpp QCNG.h)
 	target_compile_options(${PROJECT_NAME} PRIVATE "/guard:cf")
 	target_link_options(${PROJECT_NAME} PRIVATE "/guard:cf" $<$<BOOL:${CROSSSIGNCERT}>:/INTEGRITYCHECK>)
 	target_link_libraries(${PROJECT_NAME} NCrypt Crypt32 Cryptui winscard)

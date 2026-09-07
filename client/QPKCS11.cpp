@@ -135,7 +135,9 @@ std::shared_ptr<QPKCS11Library> QPKCS11Library::current()
 		{ "/Library/Frameworks/eToken.framework/Versions/Current/libIDPrimePKCS11.dylib", "3BFF9600008131FE4380318065B0855956FB120FFE82900000" },
 		{ "/Library/Frameworks/eToken.framework/Versions/Current/libIDPrimePKCS11.dylib", "3BFF9600008131FE4380318065B08505003912017882900040" },
 #elif defined(Q_OS_WIN)
+#ifdef _DEBUG
 		{ "opensc-pkcs11.dll", {} },
+#endif
 #else
 		{ "opensc-pkcs11.so", {} },
 #if defined(Q_OS_LINUX)

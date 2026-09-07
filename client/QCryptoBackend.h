@@ -21,6 +21,7 @@
 
 #include "TokenData.h"
 
+#include <QtCore/QCoreApplication>
 #include <QtCore/QCryptographicHash>
 
 #include <expected>
@@ -30,6 +31,7 @@ class QSslKey;
 
 class QCryptoBackend
 {
+	Q_DECLARE_TR_FUNCTIONS(QCryptoBackend);
 public:
 	enum Status : quint8
 	{
