@@ -2913,10 +2913,6 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>Muuda PIN%1</translation>
     </message>
     <message>
-        <source>The PUK code cannot be changed on the ID-card in the reader.&lt;br /&gt;If you have forgotten the PUK code of your ID-card then you can view it from the Police and Border Guard Board portal.&lt;br /&gt;&lt;a href=&quot;https://www.id.ee/en/article/pin-and-puk-codes-security-recommendations/&quot;&gt;Additional information&lt;/a&gt;.</source>
-        <translation>Lugejas oleval ID-kaardil ei ole võimalik PUK-koodi muuta.&lt;br /&gt;Kui oled unustanud enda ID-kaardi PUK-koodi, siis saad sa seda vaadata Politsei- ja Piirivalveameti iseteenindusest.&lt;br /&gt;&lt;a href=&quot;https://www.id.ee/artikkel/pin-ja-puk-koodid-soovitused-turvalisuse-tagamiseks/&quot;&gt;Lisainfo&lt;/a&gt;.</translation>
-    </message>
-    <message>
         <source>PUK code is blocked because the PUK code has been entered 3 times incorrectly.&lt;br/&gt;You can not unblock the PUK code yourself.&lt;br/&gt;As long as the PUK code is blocked, all eID options can be used, except PUK-code.&lt;br/&gt;</source>
         <translation>PUK-kood on blokeeritud, kuna PUK-koodi on sisestatud 3 korda valesti.&lt;br/&gt;PUK-koodi ei saa ise lahti blokeerida.&lt;br/&gt;Kuigi PUK-kood on blokeeritud, saab kõiki eID võimalusi kasutada, välja arvatud PUK-koodi vajavaid.&lt;br/&gt;</translation>
     </message>
@@ -3027,6 +3023,10 @@ Täiendavad litsentsid ja komponendid</translation>
     <message>
         <source>Change PUK</source>
         <translation>Muuda PUK</translation>
+    </message>
+    <message>
+        <source>The PUK code of the ID-card inserted in the card reader cannot be changed.&lt;br /&gt;If you wish to view your ID-card’s PUK code or have forgotten it, you can do so via the Police and Border Guard Board portal.&lt;br /&gt;&lt;a href=&quot;https://www.id.ee/en/article/pin-and-puk-codes-security-recommendations/&quot;&gt;Additional information&lt;/a&gt;.</source>
+        <translation>Lugejas oleva ID-kaardi PUK-koodi ei ole võimalik muuta.&lt;br /&gt;Kui soovid oma ID-kaardi PUK-koodi vaadata või oled selle unustanud, saad seda teha Politsei- ja Piirivalveameti iseteeninduses.&lt;br /&gt;&lt;a href=&quot;https://www.id.ee/artikkel/pin-ja-puk-koodid-soovitused-turvalisuse-tagamiseks/&quot;&gt;Lisainfo&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>PIN can be changed only using eToken utility</source>

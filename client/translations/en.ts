@@ -2913,10 +2913,6 @@ Additional licenses and components</translation>
         <translation>Change PIN%1</translation>
     </message>
     <message>
-        <source>The PUK code cannot be changed on the ID-card in the reader.&lt;br /&gt;If you have forgotten the PUK code of your ID-card then you can view it from the Police and Border Guard Board portal.&lt;br /&gt;&lt;a href=&quot;https://www.id.ee/en/article/pin-and-puk-codes-security-recommendations/&quot;&gt;Additional information&lt;/a&gt;.</source>
-        <translation>The PUK code cannot be changed on the ID-card in the reader.&lt;br /&gt;If you have forgotten the PUK code of your ID-card then you can view it from the Police and Border Guard Board portal.&lt;br /&gt;&lt;a href=&quot;https://www.id.ee/en/article/pin-and-puk-codes-security-recommendations/&quot;&gt;Additional information&lt;/a&gt;.</translation>
-    </message>
-    <message>
         <source>PUK code is blocked because the PUK code has been entered 3 times incorrectly.&lt;br/&gt;You can not unblock the PUK code yourself.&lt;br/&gt;As long as the PUK code is blocked, all eID options can be used, except PUK-code.&lt;br/&gt;</source>
         <translation>PUK code is blocked because the PUK code has been entered 3 times incorrectly.&lt;br/&gt;You can not unblock the PUK code yourself.&lt;br/&gt;As long as the PUK code is blocked, all eID options can be used, except PUK-code.&lt;br/&gt;</translation>
     </message>
@@ -3023,6 +3019,10 @@ Additional licenses and components</translation>
     <message>
         <source>Please check your internet connection.</source>
         <translation>Please check your internet connection.</translation>
+    </message>
+    <message>
+        <source>The PUK code of the ID-card inserted in the card reader cannot be changed.&lt;br /&gt;If you wish to view your ID-card’s PUK code or have forgotten it, you can do so via the Police and Border Guard Board portal.&lt;br /&gt;&lt;a href=&quot;https://www.id.ee/en/article/pin-and-puk-codes-security-recommendations/&quot;&gt;Additional information&lt;/a&gt;.</source>
+        <translation>The PUK code of the ID-card inserted in the card reader cannot be changed.&lt;br /&gt;If you wish to view your ID-card’s PUK code or have forgotten it, you can do so via the Police and Border Guard Board portal.&lt;br /&gt;&lt;a href=&quot;https://www.id.ee/en/article/pin-and-puk-codes-security-recommendations/&quot;&gt;Additional information&lt;/a&gt;.</translation>
     </message>
     <message>
         <source>The ID-card must be activated in order to authenticate</source>
