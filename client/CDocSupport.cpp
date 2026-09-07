@@ -36,6 +36,7 @@
 #include "Settings.h"
 #include "TokenData.h"
 #include "Utils.h"
+#include "dialogs/FileDialog.h"
 #include "effects/FadeInNotification.h"
 #include <cdoc/CDocReader.h>
 #include <cdoc/Lock.h>
@@ -392,8 +393,7 @@ void DDCDocLogger::setUpLogger(const QString &path)
 {
 	DDCDocLogger *logger = getLogger();
 	logger->setMinLogLevel(libcdoc::LEVEL_WARNING);
-	logger->ofs.setFileName(path);
-	if(logger->ofs.open(QFile::WriteOnly|QFile::Append))
+	if(FileDialog::openLogFile(logger->ofs, path))
 		libcdoc::setLogger(logger);
 }
 

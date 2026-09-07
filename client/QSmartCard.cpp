@@ -31,7 +31,7 @@
 #include <QtCore/QScopedPointer>
 #include <QtNetwork/QSslKey>
 
-static Q_LOGGING_CATEGORY(CLog, "qdigidoc4.QSmartCard")
+static Q_LOGGING_CATEGORY(CLog, "qdigidoc4.smartcard", QtWarningMsg)
 
 QSmartCardData::QSmartCardData(): d(new QSmartCardDataPrivate) {}
 QSmartCardData::QSmartCardData(const QSmartCardData &other) = default;

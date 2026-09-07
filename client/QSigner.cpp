@@ -41,7 +41,7 @@
 #include <openssl/obj_mac.h>
 #include <openssl/rsa.h>
 
-static Q_LOGGING_CATEGORY(SLog, "qdigidoc4.QSigner")
+static Q_LOGGING_CATEGORY(SLog, "qdigidoc4.signer", QtWarningMsg)
 
 class QSigner::Private final
 {
