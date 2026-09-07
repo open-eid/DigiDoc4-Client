@@ -271,12 +271,13 @@ elseif(WIN32)
 			--skip-plugin-types generic,networkinformation,iconengines --exclude-plugins qjpeg,qico,qgif,qcertonlybackend,qschannelbackend appx
 		COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/digidoc-tool.exe appx
 		COMMAND makeappx.exe pack -d appx -p ${MSI_FILE}.appx
-		# https://msdn.microsoft.com/en-us/library/windows/desktop/jj835832(v=vs.85).aspx
-		#Popups GUI
-		#COMMAND MakeCert.exe /n "CN=8BBBE4D8-620A-4884-A12A-72F1A2030D8B" /r /h 0 /eku "1.3.6.1.5.5.7.3.3,1.3.6.1.4.1.311.10.3.13" /m 120 /a sha256 /sv qdigidoc4.pvk qdigidoc4.cer
-		#COMMAND Pvk2Pfx.exe /pvk qdigidoc4.pvk /spc qdigidoc4.cer /pfx qdigidoc4.pfx /f
-		COMMAND signtool.exe sign -f ${CMAKE_SOURCE_DIR}/qdigidoc4.pfx -fd SHA256 -v ${MSI_FILE}.appx
+		COMMAND powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass
+			-File ${CMAKE_SOURCE_DIR}/SignAppx.ps1
+			-PackagePath ${MSI_FILE}.appx
+			-ManifestPath AppxManifest.xml
+			-CertificatePath ${MSI_FILE}.cer
 		WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+		VERBATIM
 	)
 else()
 	find_package( Threads REQUIRED )
