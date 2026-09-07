@@ -122,7 +122,7 @@ bool CDocumentModel::addFile(const QString &file, const QString &mime)
 	{
 		WarningDialog::create()
 			->withTitle(DocumentModel::tr("Failed to add file"))
-			->withText(tr("Added file(s) exceeds the maximum size limit of the container (∼120MB). "
+			->withRichText(tr("Added file(s) exceeds the maximum size limit of the container (∼120MB). "
 				"<a href='https://www.id.ee/en/article/encrypting-large-120-mb-files/'>Read more about it</a>"))
 			->open();
 		return false;
