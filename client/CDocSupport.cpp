@@ -27,6 +27,7 @@
 #include <QtNetwork/QSslKey>
 #include <QLoggingCategory>
 #include <QXmlStreamReader>
+#include <optional>
 #include <utility>
 
 #include "Application.h"
@@ -56,39 +57,81 @@ static QByteArray toByteArray(const std::vector<uint8_t> &data) {
 std::vector<libcdoc::FileInfo>
 CDocSupport::getCDocFileList(const QString &filename)
 {
+	static constexpr qsizetype MAX_CONTENT_LENGTH = 4096;
+	static constexpr size_t MAX_ENTRIES = 1'000;
+	static constexpr qsizetype ORIG_FILE_FIELDS = 4;
+
 	std::vector<libcdoc::FileInfo> files;
-	if (libcdoc::CDocReader::getCDocFileVersion(filename.toStdString()) != 1)
-		return files;
 	QFile ifs(filename);
 	if(!ifs.open(QIODevice::ReadOnly))
 		return files;
 	QXmlStreamReader xml(&ifs);
-	while (xml.readNextStartElement()) {
-		if (xml.name() == QLatin1String("EncryptedData")) {
-			while (xml.readNextStartElement()) {
-				if (xml.name() == QLatin1String("EncryptionProperties")) {
-					while (xml.readNextStartElement()) {
-						if (xml.name() == QLatin1String("EncryptionProperty")) {
-							if (xml.attributes().value(QStringLiteral("Name")) == QLatin1String("orig_file")) {
-								QString content = xml.readElementText();
-								auto list = content.split('|');
-								files.push_back({list.at(0).toStdString(), list.at(1).toInt()});
-							} else {
-								xml.skipCurrentElement();
-							}
-						} else {
-							xml.skipCurrentElement();
-						}
-					}
-				} else {
-					xml.skipCurrentElement();
-				}
-			}
-		} else {
+	auto readNextElement = [&xml](const QString &name) {
+		while (xml.readNextStartElement()) {
+			if (xml.name() == name)
+				return true;
 			xml.skipCurrentElement();
 		}
+		return false;
+	};
+	auto readElementText = [&xml]() -> std::optional<QString> {
+		QString content;
+		bool usable = true;
+		while(!xml.atEnd()) {
+			switch(xml.readNext()) {
+			case QXmlStreamReader::Characters: {
+				QStringView text = xml.text();
+				if(usable && text.size() <= MAX_CONTENT_LENGTH - content.size())
+					content += text;
+				else
+					usable = false;
+				break;
+			}
+			case QXmlStreamReader::Comment:
+			case QXmlStreamReader::ProcessingInstruction:
+				break;
+			case QXmlStreamReader::EndElement:
+				return usable ? std::optional<QString>{std::move(content)} : std::nullopt;
+			case QXmlStreamReader::StartElement:
+				usable = false;
+				xml.skipCurrentElement();
+				break;
+			case QXmlStreamReader::EntityReference:
+				usable = false;
+				break;
+			default:
+				return std::nullopt;
+			}
+		}
+		return std::nullopt;
+	};
+	while(!xml.atEnd() && !xml.isStartElement()) {
+		if(xml.readNext() == QXmlStreamReader::DTD)
+			return files;
 	}
-
+	if(!xml.isStartElement() || xml.name() != QLatin1String("EncryptedData"))
+		return files;
+	while(readNextElement(QLatin1String("EncryptionProperties"))) {
+		while(readNextElement(QLatin1String("EncryptionProperty"))) {
+			if(xml.attributes().value(QStringLiteral("Name")) != QLatin1String("orig_file")) {
+				xml.skipCurrentElement();
+				continue;
+			}
+			if(files.size() >= MAX_ENTRIES) {
+				xml.skipCurrentElement();
+				continue;
+			}
+			auto content = readElementText();
+			if(!content)
+				continue;
+			QStringList list = content->split('|');
+			bool ok = false;
+			qint64 size = list.size() == ORIG_FILE_FIELDS ? list.at(1).toLongLong(&ok) : 0;
+			if(list.size() != ORIG_FILE_FIELDS || !ok || size < 0)
+				continue;
+			files.emplace_back(list.at(0).toStdString(), size);
+		}
+	}
 	return files;
 }
 

@@ -498,9 +498,11 @@ bool CryptoDoc::open(const QString &file)
 		return false;
 	}
 	d->version = d->reader->version;
-	std::vector<libcdoc::FileInfo> files = CDocSupport::getCDocFileList(file);
-	for (auto& f : files) {
-		d->files.push_back({f.name, {}, f.size, {}});
+	if (d->version == 1) {
+		std::vector<libcdoc::FileInfo> files = CDocSupport::getCDocFileList(file);
+		for (auto& f : files) {
+			d->files.push_back({std::move(f.name), {}, f.size, {}});
+		}
 	}
 	Application::addRecent( file );
 	return true;
