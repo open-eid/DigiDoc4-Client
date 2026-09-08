@@ -430,6 +430,7 @@ Application::Application( int &argc, char **argv )
 	QFont f(QStringLiteral("Roboto, Helvetica"));
 	f.setPixelSize(14);
 	QToolTip::setFont(f);
+	Common::setLanguage(Settings::LANGUAGE);
 
 #ifdef CONFIG_URL
 	d->conf = new Configuration(this);
@@ -538,8 +539,7 @@ Application::Application( int &argc, char **argv )
 		d->cryptoManager = new QCryptoManager();
 		updateTSLCache(QDateTime::currentDateTimeUtc().addDays(-7));
 
-		digidoc::initialize(applicationName().toUtf8().constData(), QStringLiteral("%1/%2 (%3)")
-			.arg(applicationName(), applicationVersion(), Common::applicationOs()).toUtf8().constData(),
+		digidoc::initialize(applicationName().toUtf8().constData(), Common::userAgent().constData(),
 			[](const digidoc::Exception *ex) {
 				qInfo() << "TSL loading finished";
 				Q_EMIT qApp->TSLLoadingFinished();
@@ -628,7 +628,7 @@ void Application::browse( const QUrl &url )
 {
 	QUrl u = url;
 	u.setScheme(QStringLiteral("file"));
-#if defined(Q_OS_WIN)
+#ifdef Q_OS_WIN
 	if(QProcess::startDetached(QStringLiteral("explorer"), {QStringLiteral("/select,"), QDir::toNativeSeparators(u.toLocalFile())}))
 		return;
 #elifdef Q_OS_MACOS
