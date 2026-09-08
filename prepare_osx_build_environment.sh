@@ -1,4 +1,6 @@
 #!/bin/bash
+# SPDX-FileCopyrightText: Estonian Information System Authority
+# SPDX-License-Identifier: LGPL-2.1-or-later
 # Requires xcode and cmake, also OpenSSL has to be installed via homebrew.
 
 set -e
