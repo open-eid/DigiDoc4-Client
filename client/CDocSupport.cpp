@@ -88,6 +88,11 @@ CDocSupport::getCDocFileList(const QString &filename)
 			xml.skipCurrentElement();
 		}
 	}
+	if(xml.hasError()) {
+		// Malformed container, whatever was collected so far is incomplete
+		qWarning() << "Failed to parse" << filename << ":" << xml.errorString();
+		files.clear();
+	}
 
 	return files;
 }
