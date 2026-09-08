@@ -19,7 +19,7 @@
 
 #include "SslCertificate.h"
 
-#include "Common.h"
+#include "Application.h"
 
 #include <digidocpp/Exception.h>
 #include <digidocpp/crypto/X509Cert.h>
@@ -366,8 +366,7 @@ SslCertificate::Validity SslCertificate::validateOnline() const
 
 	// Get issuer
 	QNetworkRequest r(urls.values(SslCertificate::ad_CAIssuers).first());
-	r.setRawHeader("User-Agent", QStringLiteral("%1/%2 (%3)")
-		.arg(QCoreApplication::applicationName(), QCoreApplication::applicationVersion(), Common::applicationOs()).toUtf8());
+	r.setRawHeader("User-Agent", Application::userAgent());
 	QNetworkReply *repl = m.get(r);
 	e.exec();
 	QSslCertificate issuer(repl->readAll(), QSsl::Der);

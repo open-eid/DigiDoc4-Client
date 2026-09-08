@@ -359,6 +359,7 @@ Application::Application( int &argc, char **argv )
 	QFont f(QStringLiteral("Roboto, Helvetica"));
 	f.setPixelSize(14);
 	QToolTip::setFont(f);
+	Common::setLanguage(Settings::LANGUAGE);
 
 #ifdef CONFIG_URL
 	d->conf = new Configuration(this);
@@ -465,8 +466,7 @@ Application::Application( int &argc, char **argv )
 		d->signer = new QSigner(this);
 		updateTSLCache(QDateTime::currentDateTimeUtc().addDays(-7));
 
-		digidoc::initialize(applicationName().toUtf8().constData(), QStringLiteral("%1/%2 (%3)")
-			.arg(applicationName(), applicationVersion(), Common::applicationOs()).toUtf8().constData(),
+		digidoc::initialize(applicationName().toUtf8().constData(), userAgent().constData(),
 			[](const digidoc::Exception *ex) {
 				qDebug() << "TSL loading finished";
 				Q_EMIT qApp->TSLLoadingFinished();
@@ -675,6 +675,7 @@ void Application::loadTranslation( const QString &lang )
 	if( d->lang == lang )
 		return;
 	Settings::LANGUAGE = d->lang = lang;
+	Common::setLanguage(lang);
 
 	if(lang == QLatin1String("en")) QLocale::setDefault(QLocale(QLocale::English, QLocale::UnitedKingdom));
 	else QLocale::setDefault(QLocale(QLocale::Estonian, QLocale::Estonia));
@@ -969,6 +970,11 @@ void Application::showWarning(const QString &title, const digidoc::Exception &e)
 }
 
 QSigner* Application::signer() const { return d->signer; }
+
+QByteArray Application::userAgent(bool devices)
+{
+	return Common::userAgent(devices);
+}
 
 void Application::updateTSLCache(const QDateTime &tslTime)
 {

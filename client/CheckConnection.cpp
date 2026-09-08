@@ -20,7 +20,6 @@
 #include "CheckConnection.h"
 
 #include "Application.h"
-#include "Common.h"
 
 #include <QtCore/QCoreApplication>
 #include <QtCore/QEventLoop>
@@ -33,7 +32,9 @@ bool CheckConnection::check(const QUrl &url)
 {
 	QNetworkAccessManager nam;
 	QEventLoop e;
-	QNetworkReply *reply = nam.head(QNetworkRequest(url));
+	QNetworkRequest request(url);
+	request.setRawHeader("User-Agent", Application::userAgent());
+	QNetworkReply *reply = nam.head(request);
 	QObject::connect(reply, &QNetworkReply::sslErrors, reply,
 		QOverload<const QList<QSslError> &>::of(&QNetworkReply::ignoreSslErrors));
 	QObject::connect(reply, &QNetworkReply::finished, &e, &QEventLoop::quit);
@@ -92,8 +93,7 @@ protected:
 QNetworkAccessManager* CheckConnection::setupNAM(QNetworkRequest &req, const QByteArray &add)
 {
 	req.setSslConfiguration(sslConfiguration(add));
-	req.setRawHeader("User-Agent", QStringLiteral("%1/%2 (%3)")
-		.arg(Application::applicationName(), Application::applicationVersion(), Common::applicationOs()).toUtf8());
+	req.setRawHeader("User-Agent", Application::userAgent());
 	auto *nam = new LimitedNAM();
 	QObject::connect(nam, &QNetworkAccessManager::sslErrors, nam, [](QNetworkReply *reply, const QList<QSslError> &errors) {
 		QList<QSslError> ignore;

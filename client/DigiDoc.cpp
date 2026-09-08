@@ -21,7 +21,6 @@
 
 #include "Application.h"
 #include "CheckConnection.h"
-#include "Common.h"
 #include "MainWindow.h"
 #include "QCryptoBackend.h"
 #include "QSigner.h"
@@ -425,11 +424,7 @@ bool DigiDoc::extend()
 	QWidget *parent = parentWidget();
 	try {
 		auto *signer = qApp->signer();
-		signer->setUserAgent(QStringLiteral("%1/%2 (%3) Devices: %4").arg(
-			QCoreApplication::applicationName(),
-			QCoreApplication::applicationVersion(),
-			Common::applicationOs(),
-			Common::drivers().join(',')).toUtf8().constData());
+		signer->setUserAgent(Application::userAgent(true).constData());
 		qApp->waitForTSL(fileName());
 		ServiceConfirmation cb(parent);
 		QString current = m_fileName;
@@ -778,11 +773,7 @@ bool DigiDoc::sign(const QString &city, const QString &state, const QString &zip
 			roles.push_back(to(role));
 		signer->setSignerRoles(roles);
 		signer->setProfile(Settings::DEFAULT_LTA ? "time-stamp-archive" : "time-stamp");
-		signer->setUserAgent(QStringLiteral("%1/%2 (%3) Devices: %4").arg(
-			 QCoreApplication::applicationName(),
-			 QCoreApplication::applicationVersion(),
-			 Common::applicationOs(),
-			 Common::drivers().join(',')).toUtf8().constData());
+		signer->setUserAgent(Application::userAgent(true).constData());
 		qApp->waitForTSL( fileName() );
 		digidoc::Signature *s = b->sign(signer);
 		return modified = waitFor([&] {
