@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Estonian Information System Authority
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 set(RESOURCES ../../client/images/qdigidoc_client_document_128.png)
 add_executable(DigiDocQL MACOSX_BUNDLE
     ${RESOURCES}
