@@ -1,2 +1,4 @@
+/* SPDX-FileCopyrightText: Estonian Information System Authority */
+/* SPDX-License-Identifier: LGPL-2.1-or-later */
 "Sign with DigiDoc4" = "Allkirjasta DigiDoc4 rakendusega";
 "Encrypt with DigiDoc4" = "Krüpteeri DigiDoc4 rakendusega";

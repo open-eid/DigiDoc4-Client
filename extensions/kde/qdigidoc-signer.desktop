@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2010 Erkko Kebbinau <erkko@smartlink.ee>
+# SPDX-License-Identifier: LGPL-2.1-or-later
 [Desktop Entry]
 X-KDE-ServiceTypes=KonqPopupMenu/Plugin,all/allfiles	
 Actions=sign;

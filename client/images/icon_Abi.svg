@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- SPDX-FileCopyrightText: Estonian Information System Authority -->
+<!-- SPDX-License-Identifier: LGPL-2.1-or-later -->
 <svg width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M9.33333 9.33333H1.16667V1.16667H5.25V0H1.16667C0.519167 0 0 0.525 0 1.16667V9.33333C0 9.975 0.519167 10.5 1.16667 10.5H9.33333C9.975 10.5 10.5 9.975 10.5 9.33333V5.25H9.33333V9.33333ZM6.41667 0V1.16667H8.51083L2.77667 6.90083L3.59917 7.72333L9.33333 1.98917V4.08333H10.5V0H6.41667Z" fill="white"/>
 </svg>

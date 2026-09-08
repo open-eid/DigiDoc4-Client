@@ -1,4 +1,6 @@
 <?xml version="1.0"?>
+<!-- SPDX-FileCopyrightText: Estonian Information System Authority -->
+<!-- SPDX-License-Identifier: LGPL-2.1-or-later -->
 <mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
 	<mime-type type="application/vnd.lt.archyvai.adoc-2008">
 		<comment>DigiDoc signed document</comment>

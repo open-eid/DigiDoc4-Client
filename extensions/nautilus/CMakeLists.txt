@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2010 Erkko Kebbinau <erkko@smartlink.ee>
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 find_package(Gettext)
 
 file(GLOB PO_FILES po/*.po)
