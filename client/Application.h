@@ -75,6 +75,7 @@ public:
 	static uint readTSLVersion(const QString &path);
 	static void showClient(QStringList params = {}, bool crypto = false, bool sign = false, bool newWindow = false);
 	static void updateTSLCache(const QDateTime &tslTime);
+	static QByteArray userAgent(bool devices = false);
 #if defined(Q_OS_MAC)
 	static QString groupContainerPath();
 #endif
