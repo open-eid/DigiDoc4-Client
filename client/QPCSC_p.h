@@ -27,7 +27,6 @@
 
 #ifdef Q_OS_WIN
 #undef UNICODE
-#define NOMINMAX
 #include <winsock2.h>
 #include <winscard.h>
 #elif defined(Q_OS_MAC)
