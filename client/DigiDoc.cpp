@@ -109,20 +109,15 @@ bool DigiDocSignature::isInvalid() const
 
 QString DigiDocSignature::lastError() const { return m_lastError; }
 
-QString DigiDocSignature::location() const
-{
-	QStringList l = locations();
-	l.removeAll({});
-	return l.join(QStringLiteral(", "));
-}
-
-QStringList DigiDocSignature::locations() const
+DigiDocSignature::Location DigiDocSignature::location() const
 {
 	return {
-		from( s->city() ).trimmed(),
-		from( s->stateOrProvince() ).trimmed(),
-		from( s->postalCode() ).trimmed(),
-		from( s->countryName() ).trimmed()};
+		from(s->city()).trimmed(),
+		from(s->stateOrProvince()).trimmed(),
+		from(s->postalCode()).trimmed(),
+		from(s->countryName()).trimmed(),
+		from(s->streetAddress()).trimmed(),
+	};
 }
 
 QByteArray DigiDocSignature::messageImprint() const

@@ -31,6 +31,50 @@ color: #07142A;
 font-family: Roboto, Helvetica;
 font-size: 14px;
 }
+QScrollBar {
+border: none;
+background: transparent;
+}
+QScrollBar:vertical {
+width: 12px;
+padding: 4px 4px 4px 0px;
+margin: 0px;
+}
+QScrollBar:horizontal {
+height: 10px;
+padding: 0px 4px 4px 4px;
+margin: 0px;
+}
+QScrollBar::handle:vertical {
+background-color: #B5BFCF;
+border: none;
+margin: 0px;
+border-radius: 4px;
+min-height: 16px;
+}
+QScrollBar::handle:horizontal {
+background-color: #B5BFCF;
+border: none;
+margin: 0px;
+border-radius: 3px;
+min-width: 16px;
+}
+QScrollBar::add-line:vertical,
+QScrollBar::sub-line:vertical {
+height: 0px;
+border: none;
+background: none;
+}
+QScrollBar::add-line:horizontal,
+QScrollBar::sub-line:horizontal {
+width: 0px;
+border: none;
+background: none;
+}
+QScrollBar::add-page,
+QScrollBar::sub-page {
+background: transparent;
+}
 #lblMenuSettings, #lblGeneralLang, #lblDefaultDirectory, #lblTimeStamp, #lblMID, #lblSiVa, #pageEncryptionLabel, #pageProxyLabel {
 color: #003168;
 font-weight: 700;
@@ -1555,24 +1599,6 @@ max-height: 22px;
 color: #07142A;
 background: #FFFFFF;
 border-bottom: 1px solid #E7EAEF;
-}
-QScrollBar {
-width: 10px;
-padding: 5px 5px 5px 0px;
-margin: 2px 0px 2px 0px;
-border: none;
-background: #FFFFFF;
-}
-QScrollBar::handle:vertical {
-background-color: #C4CBD8;
-margin: 0px;
-border-radius: 2px;
-height: 145px;
-}
-QScrollBar::add-line:vertical,
-QScrollBar::sub-line:vertical {
-border: none;
-background: none;
 }</string>
          </property>
          <property name="frameShape">
@@ -1658,24 +1684,6 @@ Additional licenses and components</string>
           <string notr="true">QTextEdit {
 color: #07142A;
 background: #FFFFFF;
-}
-QScrollBar {
-width: 10px;
-padding: 5px 5px 5px 0px;
-margin: 2px 0px 2px 0px;
-border: none;
-background: #FFFFFF;
-}
-QScrollBar::handle:vertical {
-background-color: #C4CBD8;
-margin: 0px;
-border-radius: 2px;
-height: 145px;
-}
-QScrollBar::add-line:vertical,
-QScrollBar::sub-line:vertical {
-border: none;
-background: none;
 }</string>
          </property>
          <property name="frameShape">
