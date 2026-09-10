@@ -2079,6 +2079,10 @@ ID-Card</translation>
         <translation>TIME</translation>
     </message>
     <message>
+        <source>PLACE OF CONFIRMATION (CITY, STREET, STATE, ZIP, COUNTRY)</source>
+        <translation>PLACE OF CONFIRMATION (CITY, STREET, STATE, ZIP, COUNTRY)</translation>
+    </message>
+    <message>
         <source>NOTES</source>
         <translation>NOTES</translation>
     </message>
@@ -2097,10 +2101,6 @@ ID-Card</translation>
     <message>
         <source>ROLE / RESOLUTION</source>
         <translation>ROLE / RESOLUTION</translation>
-    </message>
-    <message>
-        <source>PLACE OF CONFIRMATION (CITY, STATE, ZIP, COUNTRY)</source>
-        <translation>PLACE OF CONFIRMATION (CITY, STATE, ZIP, COUNTRY)</translation>
     </message>
     <message>
         <source>ISSUER OF CERTIFICATE</source>
@@ -2594,6 +2594,10 @@ Additional licenses and components</translation>
     <message>
         <source>Role and address</source>
         <translation>Role and address</translation>
+    </message>
+    <message>
+        <source>Street</source>
+        <translation>Street</translation>
     </message>
     <message>
         <source>City</source>
