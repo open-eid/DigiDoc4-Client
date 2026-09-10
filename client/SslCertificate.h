@@ -101,7 +101,6 @@ public:
 	bool		showCN() const;
 	QString		signatureAlgorithm() const;
 	QByteArray	subjectKeyIdentifier() const;
-	static QByteArray	toHex(const QByteArray &in, char separator = ' ');
 	QString		toString( const QString &format ) const;
 	CertType	type() const;
 	Validity	validateOnline() const;
