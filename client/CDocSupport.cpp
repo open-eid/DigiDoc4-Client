@@ -123,7 +123,7 @@ libcdoc::result_t
 DDCryptoBackend::decryptRSA(std::vector<uint8_t>& dst, const std::vector<uint8_t> &data, bool oaep, unsigned int idx)
 {
 	if (!backend) {
-		auto val = QCryptoBackend::getBackend(qApp->cryptoManager()->tokenauth());
+		auto val = QCryptoBackend::getBackend(token);
 		if (!val)
 			return getDecryptStatus(val.error());
 		backend.reset(val.value());
@@ -143,7 +143,7 @@ DDCryptoBackend::deriveConcatKDF(std::vector<uint8_t>& dst, const std::vector<ui
 		{"http://www.w3.org/2001/04/xmlenc#sha512", QCryptographicHash::Sha512}
 	};
 	if (!backend) {
-		auto val = QCryptoBackend::getBackend(qApp->cryptoManager()->tokenauth());
+		auto val = QCryptoBackend::getBackend(token);
 		if (!val)
 			return getDecryptStatus(val.error());
 		backend.reset(val.value());
@@ -158,7 +158,7 @@ libcdoc::result_t
 DDCryptoBackend::deriveHMACExtract(std::vector<uint8_t>& dst, const std::vector<uint8_t> &key_material, const std::vector<uint8_t> &salt, unsigned int idx)
 {
 	if (!backend) {
-		auto val = QCryptoBackend::getBackend(qApp->cryptoManager()->tokenauth());
+		auto val = QCryptoBackend::getBackend(token);
 		if (!val)
 			return getDecryptStatus(val.error());
 		backend.reset(val.value());
@@ -321,7 +321,7 @@ DDNetworkBackend::fetchKey(std::vector<uint8_t> &result, const std::string &url,
 		return BACKEND_ERROR;
 	}
 
-	TokenData auth = qApp->cryptoManager()->tokenauth();
+	const TokenData &auth = crypto.token;
 	auto val = QCryptoBackend::getBackend(auth);
 	if (!val)
 		return getDecryptStatus(val.error());

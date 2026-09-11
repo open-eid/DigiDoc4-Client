@@ -44,7 +44,6 @@ enum Actions : unsigned char {
 
     EncryptContainer,
     EncryptContainerSuccess,
-    DecryptContainer,
     DecryptContainerSuccess,
 
     SignatureAdd,

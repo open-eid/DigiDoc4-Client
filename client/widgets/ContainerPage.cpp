@@ -114,18 +114,6 @@ ContainerPage::~ContainerPage()
 	delete ui;
 }
 
-void ContainerPage::cardChanged(const SslCertificate &cert, bool isBlocked)
-{
-	emit ui->rightPane->idChanged(cert);
-	this->isBlocked = isBlocked;
-	emit certChanged(cert);
-}
-
-void ContainerPage::tokenChanged(const TokenData &token)
-{
-	cardChanged(token.cert(), token.data(QStringLiteral("blocked")).toBool());
-}
-
 void ContainerPage::clear(int code)
 {
 	ui->leftPane->clear();
@@ -165,11 +153,11 @@ void ContainerPage::changeEvent(QEvent* event)
 	QWidget::changeEvent(event);
 }
 
-void ContainerPage::decrypt(CryptoDoc *container, const libcdoc::Lock *lock, const QByteArray &secret) {
+void ContainerPage::decrypt(CryptoDoc *container, const libcdoc::Lock &lock, const QByteArray &secret, const TokenData &token) {
 	WaitDialogHolder waitDialog(this, tr("Decrypting"));
-	if (!container->decrypt(lock, secret))
+	if (!container->decrypt(lock, secret, token))
 		return;
-	transition(container, QSslCertificate{});
+	transition(container);
 	emit action(DecryptContainerSuccess);
 }
 
@@ -201,21 +189,18 @@ void ContainerPage::encrypt(CryptoDoc *container)
 {
 	QString label;
 	QByteArray secret;
-	QSslCertificate cert;
 	if(isPasswordEncryption()) {
 		PasswordDialog p(PasswordDialog::Mode::ENCRYPT, this);
 		if(!p.exec())
 			return;
 		label = p.label();
 		secret = p.secret();
-	} else {
-		cert = qApp->cryptoManager()->tokenauth().cert();
 	}
 
 	WaitDialogHolder waitDialog(this, tr("Encrypting"));
 	if(!container->encrypt(container->fileName(), label, secret))
 		return;
-	transition(container, cert);
+	transition(container);
 	emit action(EncryptContainerSuccess);
 }
 
@@ -232,7 +217,7 @@ bool ContainerPage::isPasswordEncryption() const
 	return !ui->encryptMethodArea->isHidden() && ui->encryptMethod->currentIndex() == 1;
 }
 
-void ContainerPage::transition(CryptoDoc *container, const QSslCertificate &cert)
+void ContainerPage::transition(CryptoDoc *container)
 {
 	disconnect(ui->leftPane, &ItemList::removed, container, nullptr);
 	connect(ui->leftPane, &ItemList::removed, container, [this, container](int index) {
@@ -258,12 +243,6 @@ void ContainerPage::transition(CryptoDoc *container, const QSslCertificate &cert
 		ui->rightPane->removeItem(index);
 		mainAction->setEnabled(isEncryptEnabled(container));
 	});
-	disconnect(this, &ContainerPage::certChanged, container, nullptr);
-	connect(this, &ContainerPage::certChanged, container, [this, container](const SslCertificate &cert) {
-		isSupported = container->state() & UnencryptedContainer || container->canDecrypt(cert);
-		if(container->state() & EncryptedContainer)
-			mainAction->setEnabled(isSupported && !isBlocked);
-	});
 	disconnect(ui->changeLocation, &QPushButton::clicked, container, nullptr);
 	connect(ui->changeLocation, &QPushButton::clicked, container, [container, this] {
 		QString to = FileDialog::getSaveFileName(this, FileDialog::tr("Move file"), container->fileName());
@@ -285,22 +264,12 @@ void ContainerPage::transition(CryptoDoc *container, const QSslCertificate &cert
 	});
 	disconnect(mainAction, &MainAction::action, container, nullptr);
 	connect(mainAction, &MainAction::action, container, [container, this](int action) {
-		switch (action)
-		{
-		case EncryptContainer:
+		if(action == EncryptContainer)
 			encrypt(container);
-			break;
-		case DecryptContainer:
-			decrypt(container, nullptr, {});
-			break;
-		default:
-			break;
-		}
 	});
 
 	clear(ContainerClearWarning);
 	ui->encryptMethod->setCurrentIndex(0);
-	isSupported = container->state() & UnencryptedContainer || container->canDecrypt(cert);
 	setHeader(container->fileName());
 	ui->leftPane->init(fileName, QT_TRANSLATE_NOOP("ItemList", "Encrypted files"));
 	ui->rightPane->init(ItemList::ItemAddress, QT_TRANSLATE_NOOP("ItemList", "Recipients"));
@@ -309,15 +278,17 @@ void ContainerPage::transition(CryptoDoc *container, const QSslCertificate &cert
 		hasUnsupported = hasUnsupported || (key.rcpt_cert.isNull() && !key.lock.isValid());
 		auto *addr = new AddressItem(key, AddressItem::Icon, ui->rightPane);
 		ui->rightPane->addWidget(addr);
-		connect(addr, &AddressItem::decrypt, container, [container, key, this] {
-			if (key.lock.type != libcdoc::Lock::Type::PASSWORD)
+		connect(addr, &AddressItem::decrypt, container, [container, key, this](const TokenData &token) {
+			if (key.lock.type != libcdoc::Lock::Type::PASSWORD) {
+				decrypt(container, key.lock, {}, token);
 				return;
+			}
 			PasswordDialog p(PasswordDialog::Mode::DECRYPT, this);
 			auto params = libcdoc::Lock::parseLabel(key.lock.label);
 			p.setLabel(QString::fromStdString(params.contains("label") ? params["label"] : key.lock.label));
 			if (!p.exec())
 				return;
-			decrypt(container, &key.lock, p.secret());
+			decrypt(container, key.lock, p.secret(), token);
 		});
 	}
 	if(hasUnsupported)
@@ -526,10 +497,6 @@ void ContainerPage::updatePanes(ria::qdigidoc4::ContainerState state, CryptoDoc 
 	case UnencryptedContainer:
 		mainAction->showAction(EncryptContainer);
 		mainAction->setEnabled(isEncryptEnabled(crypto_container));
-		break;
-	case EncryptedContainer:
-		mainAction->showAction(DecryptContainer);
-		mainAction->setEnabled(isSupported && !isBlocked);
 		break;
 	default:
 		mainAction->hide();

@@ -81,6 +81,7 @@ struct DDCryptoBackend final : public libcdoc::CryptoBackend {
 
 	std::unique_ptr<QCryptoBackend> backend;
 	std::vector<uint8_t> secret;
+	TokenData token;
 
 	explicit DDCryptoBackend() = default;
 

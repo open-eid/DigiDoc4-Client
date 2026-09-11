@@ -236,17 +236,10 @@ void QCryptoManager::selectCard(const TokenData &token)
 			break;
 		}
 	}
-	if(isSign)
-		Q_EMIT signDataChanged(token);
-	else
+	if(!isSign)
 		Q_EMIT authDataChanged(token);
-	if(!other.isNull())
-	{
-		if(isSign)
-			Q_EMIT authDataChanged(other);
-		else
-			Q_EMIT signDataChanged(other);
-	}
+	else if(!other.isNull())
+		Q_EMIT authDataChanged(other);
 	d->smartcard.reloadCard(token, false);
 }
 
@@ -314,8 +307,9 @@ void QCryptoManager::refresh()
 	TokenData update;
 	if(aold != anew)
 		Q_EMIT authDataChanged(update = anew);
+	// reloadCard() reports the sign token when that is the one that changed
 	if(sold != snew)
-		Q_EMIT signDataChanged(update = snew);
+		update = snew;
 	if(aold != anew || sold != snew)
 		d->smartcard.reloadCard(update, false);
 

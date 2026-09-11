@@ -78,10 +78,6 @@
 <context>
     <name>AddressItem</name>
     <message>
-        <source> (Yourself)</source>
-        <translation> (Yourself)</translation>
-    </message>
-    <message>
         <source>digi-ID</source>
         <translation>digi-ID</translation>
     </message>
@@ -1369,10 +1365,6 @@ LDAP server is unavailable.</translation>
     <message>
         <source>Encrypt</source>
         <translation>Encrypt</translation>
-    </message>
-    <message>
-        <source>Decrypt</source>
-        <translation>Decrypt</translation>
     </message>
     <message>
         <source>Sign</source>
