@@ -306,6 +306,29 @@ bool CryptoDoc::decrypt(const libcdoc::Lock &lock, const QByteArray& secret, std
 	if (result != libcdoc::OK) {
 		QString str;
 		const std::string &msg = d->reader->getLastErrorStr();
+		// Resource-limit failures and malformed declared sizes need specific
+		// messages, so report them before the generic mapping below.
+		if(cons.rejection() != TempListConsumer::Rejection::None) {
+			switch(cons.rejection()) {
+			case TempListConsumer::Rejection::Count:
+				str = tr("The container contains too many files.");
+				break;
+			case TempListConsumer::Rejection::Disk:
+				str = tr("The container requires more temporary disk space than the application can safely use.");
+				break;
+			case TempListConsumer::Rejection::Overrun:
+				str = tr("Corrupted or tampered file.");
+				break;
+			case TempListConsumer::Rejection::None:
+				break;
+			}
+			WarningDialog::create()
+				->withTitle(tr("Failed to decrypt document"))
+				->withText(str)
+				->withDetails(QString::fromStdString(msg))
+				->open();
+			return false;
+		}
 		switch (result) {
 		case libcdoc::NOT_SUPPORTED:
 			str = QCoreApplication::translate("AddressItem", "Unsupported cryptographic algorithm or recipient type");
