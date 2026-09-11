@@ -205,7 +205,7 @@ SettingsDialog::SettingsDialog(int page, QWidget *parent)
 		ui->txtCdoc2UUID->setDisabled(disabled);
 		ui->txtCdoc2Fetch->setDisabled(disabled);
 		ui->txtCdoc2Post->setDisabled(disabled);
-		ui->txtCdoc2UUID->setClearButtonEnabled(!disabled);
+		ui->txtCdoc2UUID->setClearButtonEnabled(false);
 		ui->txtCdoc2Fetch->setClearButtonEnabled(!disabled);
 		ui->txtCdoc2Post->setClearButtonEnabled(!disabled);
 		ui->wgtCDoc2Cert->setHidden(disabled);

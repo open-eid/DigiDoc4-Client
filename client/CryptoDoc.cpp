@@ -413,6 +413,14 @@ bool CryptoDoc::encrypt(const QString &filename, const QString& label, const QBy
 			->open();
 		return false;
 	}
+	if(d->version == 2 && Settings::CDOC2_USE_KEYSERVER && QString(Settings::CDOC2_DEFAULT_KEYSERVER).isEmpty())
+	{
+		WarningDialog::create()
+			->withTitle(tr("Failed to encrypt document"))
+			->withText(tr("Key transfer server is not configured"))
+			->open();
+		return false;
+	}
 	QString writer_last_error;
 	libcdoc::result_t result = waitFor([&] -> libcdoc::result_t {
 		qCDebug(CRYPTO) << "Encrypt" << d->fileName;
