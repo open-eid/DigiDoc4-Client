@@ -40,11 +40,8 @@ enum Actions : unsigned char {
     ContainerCancel,
     ContainerClearWarning,
     ContainerConvert,
-    ContainerEncrypt,
 
-    EncryptContainer,
     EncryptContainerSuccess,
-    DecryptContainer,
     DecryptContainerSuccess,
 
     SignatureAdd,
