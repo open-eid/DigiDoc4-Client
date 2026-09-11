@@ -18,8 +18,10 @@
  */
 
 #include <QtCore/QBuffer>
+#include <QtCore/QDir>
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonObject>
+#include <QtCore/QStorageInfo>
 #include <QtCore/QtEndian>
 #include <QtCore/QTemporaryFile>
 #include <QtCore/QUrlQuery>
@@ -399,27 +401,59 @@ void DDCDocLogger::setUpLogger(const QString &path)
 
 void DDCDocLogger::setLogLevel(libcdoc::LogLevel level)
 {
-	DDCDocLogger *logger = getLogger();
-	logger->setMinLogLevel(level);
+	getLogger()->setMinLogLevel(level);
+}
+
+TempListConsumer::TempListConsumer()
+{
+	const QStorageInfo storage(QDir::tempPath());
+	if(storage.isValid() && storage.isReady() && storage.bytesAvailable() >= 0)
+	{
+		const quint64 available = quint64(storage.bytesAvailable());
+		const size_t safeAvailable = size_t(available > MIN_FREE_DISK_SIZE ? available - MIN_FREE_DISK_SIZE : 0);
+		if(safeAvailable < _disk_limit)
+			_disk_limit = safeAvailable;
+	}
 }
 
 TempListConsumer::~TempListConsumer()
 {
 	if (!files.empty()) {
-		IOEntry& file = files.back();
-		file.data->close();
+		files.back().data->close();
 	}
+}
+
+libcdoc::result_t TempListConsumer::reject(Rejection reason, libcdoc::result_t code) noexcept
+{
+	if(_rejection == Rejection::None)
+		_rejection = reason;
+	return code;
 }
 
 libcdoc::result_t TempListConsumer::write(const uint8_t *src, size_t size) noexcept {
 	if (files.empty())
 		return libcdoc::OUTPUT_ERROR;
+	if (_rejection != Rejection::None)
+		return libcdoc::OUTPUT_ERROR;
 	IOEntry &file = files.back();
 	if (!file.data->isWritable())
 		return libcdoc::OUTPUT_ERROR;
+
+	// An entry must not exceed the size its own TAR header declared; one that
+	// does is malformed, not merely large. Entries without a declared size are
+	// bounded by the cumulative disk budget below.
+	if(_declared >= 0 && (file.size > _declared ||
+		std::cmp_greater(size, uint64_t(_declared - file.size))))
+		return reject(Rejection::Overrun, libcdoc::DATA_FORMAT_ERROR);
+
+	if(!_in_memory && exceedsDiskBudget(size)) {
+		return reject(Rejection::Disk, libcdoc::OUTPUT_ERROR);
+	}
+
 	if (auto result = file.data->write((const char *)src, size); std::cmp_not_equal(result , size))
 		return result;
 	file.size += size;
+	(_in_memory ? _memory_used : _disk_used) += size;
 	return size;
 }
 
@@ -446,12 +480,21 @@ TempListConsumer::open(const std::string& name, int64_t size)
 	std::string truncated = name;
 	if (truncated.starts_with("./PaxHeaders.X/"))
 		truncated = truncated.substr(15);
+	if(files.size() >= MAX_FILE_COUNT)
+		return reject(Rejection::Count, libcdoc::OUTPUT_ERROR);
+
 	IOEntry io({std::move(truncated), "application/octet-stream", 0, {}});
-	if ((size < 0) || (size > MAX_VEC_SIZE)) {
-		io.data = std::make_unique<QTemporaryFile>();
-	} else {
+	// Buffer in memory only while the shared budget has room for the whole
+	// entry; everything else, including entries of undeclared size, spills to a
+	// temporary file.
+	_declared = size;
+	_in_memory = size >= 0 && std::cmp_less_equal(size, MAX_MEMORY_SIZE - _memory_used);
+	if(!_in_memory && size >= 0 && exceedsDiskBudget(size_t(size)))
+		return reject(Rejection::Disk, libcdoc::OUTPUT_ERROR);
+	if(_in_memory)
 		io.data = std::make_unique<QBuffer>();
-	}
+	else
+		io.data = std::make_unique<QTemporaryFile>();
 	io.data->open(QIODevice::ReadWrite);
 	files.push_back(std::move(io));
 	return libcdoc::OK;
