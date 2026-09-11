@@ -31,6 +31,10 @@
 #include <QtCore/QDebug>
 #include <QtCore/QtEndian>
 #include <QtCore/QLibrary>
+#include <QtCore/QScopeGuard>
+#if QT_VERSION >= QT_VERSION_CHECK(6, 8, 0)
+#include <QtCore/QSpan>
+#endif
 
 #include <cdoc/utils/memory.h>
 
@@ -38,6 +42,7 @@
 #include <openssl/evp.h>
 #include <openssl/kdf.h>
 
+#include <algorithm>
 #include <array>
 #include <mutex>
 
@@ -52,7 +57,8 @@ struct QPKCS11Library
 	explicit QPKCS11Library(const QString &driver);
 	~QPKCS11Library();
 
-	QByteArray attribute(CK_SESSION_HANDLE session, CK_OBJECT_HANDLE obj, CK_ATTRIBUTE_TYPE type) const;
+	template<typename Result = QByteArray>
+	Result attribute(CK_SESSION_HANDLE session, CK_OBJECT_HANDLE obj, CK_ATTRIBUTE_TYPE type) const;
 	std::vector<CK_OBJECT_HANDLE> findObject(CK_SESSION_HANDLE session, CK_OBJECT_CLASS cls, const QByteArray &id = {}) const;
 	static std::shared_ptr<QPKCS11Library> current();
 
@@ -180,9 +186,10 @@ std::shared_ptr<QPKCS11Library> QPKCS11Library::current()
 	return loadLibrary(drivers.key({}));
 }
 
-QByteArray QPKCS11Library::attribute(CK_SESSION_HANDLE session, CK_OBJECT_HANDLE obj, CK_ATTRIBUTE_TYPE type) const
+template<typename Result>
+Result QPKCS11Library::attribute(CK_SESSION_HANDLE session, CK_OBJECT_HANDLE obj, CK_ATTRIBUTE_TYPE type) const
 {
-	QByteArray data;
+	Result data;
 	CK_ATTRIBUTE attr { type, nullptr, 0 };
 	if(!f || f->C_GetAttributeValue( session, obj, &attr, 1 ) != CKR_OK)
 		return data;
@@ -247,7 +254,7 @@ QPKCS11::~QPKCS11() noexcept
 	d->closeSession();
 }
 
-QByteArray QPKCS11::decrypt(const QByteArray &data, bool oaep) const
+std::vector<uint8_t> QPKCS11::decrypt(const QByteArray &data, bool oaep) const
 {
 	auto key = d->l->findObject(d->session, CKO_PRIVATE_KEY, d->id);
 	if(key.size() != 1){
@@ -269,16 +276,18 @@ QByteArray QPKCS11::decrypt(const QByteArray &data, bool oaep) const
 		status = GeneralError;
 		return {};
 	}
-	QByteArray result(int(size), 0);
+	std::vector<uint8_t> result(size);
 	if(d->l->f->C_Decrypt(d->session, CK_BYTE_PTR(data.constData()), CK_ULONG(data.size()), CK_BYTE_PTR(result.data()), &size) != CKR_OK) {
+		std::fill(result.begin(), result.end(), 0);
 		status = GeneralError;
 		return {};
 	}
+	result.resize(size);
 
 	return result;
 }
 
-QByteArray QPKCS11::derive(const QByteArray &publicKey) const
+std::vector<uint8_t> QPKCS11::derive(const QByteArray &publicKey) const
 {
 	std::vector<CK_OBJECT_HANDLE> key = d->l->findObject(d->session, CKO_PRIVATE_KEY, d->id);
 	if(key.size() != 1) {
@@ -307,41 +316,73 @@ QByteArray QPKCS11::derive(const QByteArray &publicKey) const
 		return {};
 	}
 
-	return d->l->attribute(d->session, newkey, CKA_VALUE);
+	return d->l->attribute<std::vector<uint8_t>>(d->session, newkey, CKA_VALUE);
 }
 
-QByteArray QPKCS11::deriveConcatKDF(const QByteArray &publicKey, QCryptographicHash::Algorithm digest,
+std::vector<uint8_t> QPKCS11::deriveConcatKDF(const QByteArray &publicKey, QCryptographicHash::Algorithm digest,
 	const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) const
 {
-	QByteArray z = derive(publicKey);
-	if(z.isEmpty())
+	auto z = derive(publicKey);
+	if(z.empty())
 		return z;
-	QByteArray otherInfo = algorithmID + partyUInfo + partyVInfo;
-	quint32 keyDataLen = 32;
-	auto hashLen = quint32(QCryptographicHash::hashLength(digest));
-	auto reps = quint32(std::ceil(double(keyDataLen) / double(hashLen)));
-	QCryptographicHash md(digest);
-	QByteArray key;
-	for(quint32 i = 1; i <= reps; i++)
-	{
-		quint32 intToFourBytes = qToBigEndian(i);
-		md.reset();
-		md.addData((const char*)&intToFourBytes, 4);
-		md.addData(z);
-		md.addData(otherInfo);
-		key += md.result();
+	auto zGuard = qScopeGuard([&] { std::fill(z.begin(), z.end(), 0); });
+	constexpr size_t keyDataLen = 32;
+	const int hashLen = QCryptographicHash::hashLength(digest);
+	if(hashLen <= 0) {
+		status = GeneralError;
+		return {};
 	}
-	return key.left(int(keyDataLen));
+	const size_t reps = (keyDataLen + size_t(hashLen) - 1) / size_t(hashLen);
+	std::vector<uint8_t> key;
+	key.reserve(reps * size_t(hashLen));
+#if QT_VERSION >= QT_VERSION_CHECK(6, 8, 0)
+	key.resize(reps * size_t(hashLen));
+	for(size_t i = 0; i < reps; ++i) {
+		quint32 counter = qToBigEndian(quint32(i + 1));
+		const std::array input{
+			QByteArrayView(reinterpret_cast<const char *>(&counter), sizeof(counter)),
+			QByteArrayView(z),
+			QByteArrayView(algorithmID),
+			QByteArrayView(partyUInfo),
+			QByteArrayView(partyVInfo)
+		};
+		QSpan<uchar> output(reinterpret_cast<uchar *>(key.data() + i * size_t(hashLen)), hashLen);
+		if(QCryptographicHash::hashInto(output, QSpan<const QByteArrayView>(input), digest).size() != hashLen) {
+			std::fill(key.begin(), key.end(), 0);
+			status = GeneralError;
+			return {};
+		}
+	}
+#else
+	QCryptographicHash md(digest);
+	for(size_t i = 0; i < reps; ++i) {
+		quint32 counter = qToBigEndian(quint32(i + 1));
+		md.reset();
+		md.addData(reinterpret_cast<const char *>(&counter), sizeof(counter));
+		md.addData(QByteArray::fromRawData(reinterpret_cast<const char *>(z.data()), qsizetype(z.size())));
+		md.addData(algorithmID);
+		md.addData(partyUInfo);
+		md.addData(partyVInfo);
+		QByteArray block = md.result();
+		auto blockGuard = qScopeGuard([&] { block.fill(0); });
+		key.insert(key.end(), reinterpret_cast<const uint8_t *>(block.constData()),
+			reinterpret_cast<const uint8_t *>(block.constData() + block.size()));
+	}
+#endif
+	std::fill(key.begin() + keyDataLen, key.end(), 0);
+	key.resize(keyDataLen);
+	return key;
 }
 
-QByteArray QPKCS11::deriveHMACExtract(const QByteArray &publicKey, const QByteArray &salt, int keySize) const
+std::vector<uint8_t> QPKCS11::deriveHMACExtract(const QByteArray &publicKey, const QByteArray &salt, int keySize) const
 {
-	QByteArray key = derive(publicKey);
-	if(key.isEmpty())
+	auto key = derive(publicKey);
+	if(key.empty())
 		return key;
+	auto keyGuard = qScopeGuard([&] { std::fill(key.begin(), key.end(), 0); });
 	auto ctx = libcdoc::make_unique_ptr<EVP_PKEY_CTX_free>(EVP_PKEY_CTX_new_id(EVP_PKEY_HKDF, nullptr));
-	QByteArray out(keySize, 0);
-	auto outlen = size_t(out.length());
+	std::vector<uint8_t> out(static_cast<size_t>(keySize));
+	auto outlen = out.size();
 	auto isError = [this](int err) {
 		if(err < 1)
 		{
@@ -358,8 +399,12 @@ QByteArray QPKCS11::deriveHMACExtract(const QByteArray &publicKey, const QByteAr
 		isError(EVP_PKEY_CTX_set_hkdf_md(ctx.get(), EVP_sha256())) ||
 		isError(EVP_PKEY_CTX_set1_hkdf_key(ctx.get(), (const unsigned char*)key.data(), int(key.size()))) ||
 		isError(EVP_PKEY_CTX_set1_hkdf_salt(ctx.get(), (const unsigned char*)salt.data(), int(salt.size()))) ||
-		isError(EVP_PKEY_derive(ctx.get(), (unsigned char*)out.data(), &outlen)))
+		isError(EVP_PKEY_derive(ctx.get(), out.data(), &outlen))) {
+		std::fill(out.begin(), out.end(), 0);
 		out.clear();
+	} else {
+		out.resize(outlen);
+	}
 	return out;
 }
 
@@ -407,7 +452,8 @@ QPKCS11::Status QPKCS11::login(const TokenData &t)
 			p.setPinLen(token.ulMinPinLen, token.ulMaxPinLen < 12 ? 12 : token.ulMaxPinLen);
 			if(!p.exec())
 				return CKR_FUNCTION_CANCELED;
-			QByteArray pin = p.pin().toUtf8();
+			QByteArray pin = p.takePin();
+			auto pinGuard = qScopeGuard([&] { pin.fill(0); });
 			return d->l->f->C_Login(d->session, CKU_USER, CK_UTF8CHAR_PTR(pin.constData()), CK_ULONG(pin.size()));
 		}
 	});
