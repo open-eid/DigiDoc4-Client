@@ -574,8 +574,9 @@ Application::~Application()
 	connect(this, &Application::TSLLoadingFinished, &e, &QEventLoop::quit);
 	if( !d->ready )
 		e.exec();
-	digidoc::terminate();
 	delete d;
+	d = nullptr;
+	digidoc::terminate();
 
 	QDesktopServices::unsetUrlHandler(QStringLiteral("browse"));
 	QDesktopServices::unsetUrlHandler(QStringLiteral("mailto"));
