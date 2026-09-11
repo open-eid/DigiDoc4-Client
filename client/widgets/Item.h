@@ -31,7 +31,6 @@ class Item : public StyledWidget
 public:
 	using StyledWidget::StyledWidget;
 
-	virtual void idChanged(const SslCertificate &cert);
 	virtual void initTabOrder(QWidget *item);
 	virtual QWidget* lastTabWidget();
 

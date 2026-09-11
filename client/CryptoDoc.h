@@ -32,6 +32,7 @@
 #include <cdoc/Recipient.h>
 
 class QSslKey;
+class TokenData;
 
 Q_DECLARE_LOGGING_CATEGORY(CRYPTO)
 
@@ -61,9 +62,8 @@ public:
 
 	bool supportsSymmetricKeys() const;
 	bool addEncryptionKey(const CKey& key);
-	bool canDecrypt(const QSslCertificate &cert);
 	void clear(const QString &file = {}, int version = -1);
-	bool decrypt(const libcdoc::Lock *lock, const QByteArray& secret);
+	bool decrypt(const libcdoc::Lock &lock, const QByteArray& secret, const TokenData &token);
 	bool encrypt(const QString &filename = {}, const QString& label = {}, const QByteArray& secret = {});
 	DocumentModel* documentModel() const;
 	QString fileName() const;

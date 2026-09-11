@@ -77,7 +77,6 @@ void MainAction::update()
 	switch(_action)
 	{
 	case EncryptContainer: return setText(tr("Encrypt"));
-	case DecryptContainer: return setText(tr("Decrypt"));
 	default: return setText(tr("Sign"));
 	}
 }

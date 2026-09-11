@@ -79,10 +79,6 @@
 <context>
     <name>AddressItem</name>
     <message>
-        <source> (Yourself)</source>
-        <translation> (Sina ise)</translation>
-    </message>
-    <message>
         <source>digi-ID</source>
         <translation>digi-ID</translation>
     </message>
@@ -1319,10 +1315,6 @@ LDAP serveriga ei saa ühendust.</translation>
     <message>
         <source>Encrypt</source>
         <translation>Krüpteeri</translation>
-    </message>
-    <message>
-        <source>Decrypt</source>
-        <translation>Dekrüpteeri</translation>
     </message>
     <message>
         <source>Sign</source>
