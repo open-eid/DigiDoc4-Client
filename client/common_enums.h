@@ -43,7 +43,6 @@ enum Actions : unsigned char {
     ContainerEncrypt,
 
     EncryptContainer,
-    EncryptLT,
     EncryptContainerSuccess,
     DecryptContainer,
     DecryptContainerSuccess,

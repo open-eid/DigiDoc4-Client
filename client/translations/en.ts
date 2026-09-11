@@ -493,6 +493,14 @@
         <translation>DigiDoc4 Client</translation>
     </message>
     <message>
+        <source>Encrypt for recipients</source>
+        <translation>Encrypt for recipients</translation>
+    </message>
+    <message>
+        <source>Encrypt with password</source>
+        <translation>Encrypt with password</translation>
+    </message>
+    <message>
         <source>Decrypting</source>
         <translation>Decrypting</translation>
     </message>
@@ -527,6 +535,10 @@
     <message>
         <source>Change</source>
         <translation>Change</translation>
+    </message>
+    <message>
+        <source>Password encryption is meant for long-term storage. The password cannot be changed or recovered.</source>
+        <translation>Password encryption is meant for long-term storage. The password cannot be changed or recovered.</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -1311,6 +1323,10 @@
         <translation>Failed to init ldap</translation>
     </message>
     <message>
+        <source>Failed to set ldap CA cert</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Failed to init ldap search</source>
         <translation>Failed to init ldap search</translation>
     </message>
@@ -1361,12 +1377,6 @@ LDAP server is unavailable.</translation>
     <message>
         <source>Sign</source>
         <translation>Sign</translation>
-    </message>
-    <message>
-        <source>Encrypt
-long-term</source>
-        <translation>Encrypt
-long-term</translation>
     </message>
 </context>
 <context>
@@ -1714,14 +1724,22 @@ long-term</translation>
         <translation>Encrypt with password</translation>
     </message>
     <message>
-        <source>Key label (recipient name or id)</source>
-        <translation>Key label (recipient name or id)</translation>
-    </message>
-    <message>
         <source>Be sure to save the password in a secure place
 - without the password, you won’t be able to open the file again.</source>
         <translation>Be sure to save the password in a secure place
 - without the password, you won’t be able to open the file again.</translation>
+    </message>
+    <message>
+        <source>Create a name for the envelope</source>
+        <translation>Create a name for the envelope</translation>
+    </message>
+    <message>
+        <source>E.g. Contracts</source>
+        <translation>E.g. Contracts</translation>
+    </message>
+    <message>
+        <source>Create a password for the envelope</source>
+        <translation>Create a password for the envelope</translation>
     </message>
     <message>
         <source>• Length: 20–64 characters
@@ -1746,16 +1764,16 @@ long-term</translation>
         <translation>Encrypt</translation>
     </message>
     <message>
-        <source>Decrypt with password</source>
-        <translation>Decrypt with password</translation>
-    </message>
-    <message>
-        <source>Enter password to decrypt the document</source>
-        <translation>Enter password to decrypt the document</translation>
-    </message>
-    <message>
         <source>Decrypt</source>
         <translation>Decrypt</translation>
+    </message>
+    <message>
+        <source>Envelope name</source>
+        <translation>Envelope name</translation>
+    </message>
+    <message>
+        <source>Envelope password</source>
+        <translation>Envelope password</translation>
     </message>
     <message>
         <source>Password is empty</source>
@@ -1768,10 +1786,6 @@ long-term</translation>
     <message>
         <source>Passwords do not match</source>
         <translation>Passwords do not match</translation>
-    </message>
-    <message>
-        <source>Enter a password to encrypt the document</source>
-        <translation>Enter a password to encrypt the document</translation>
     </message>
 </context>
 <context>
