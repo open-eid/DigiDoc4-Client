@@ -585,12 +585,20 @@
         <translation>You do not have the key to decrypt this document</translation>
     </message>
     <message>
+        <source>The container contains too many files.</source>
+        <translation>The container contains too many files.</translation>
+    </message>
+    <message>
         <source>No keys specified</source>
         <translation>No recipients specified</translation>
     </message>
     <message>
         <source>Failed to add key</source>
         <translation>Failed to add key</translation>
+    </message>
+    <message>
+        <source>The container requires more temporary disk space than the application can safely use.</source>
+        <translation>The container requires more temporary disk space than the application can safely use.</translation>
     </message>
     <message>
         <source>Please check your internet connection and network settings.</source>

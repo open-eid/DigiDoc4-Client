@@ -585,12 +585,20 @@
         <translation>Sul puudub võti millega dekrüpteerida seda turvaümbrikut</translation>
     </message>
     <message>
+        <source>The container contains too many files.</source>
+        <translation>Konteiner sisaldab liiga palju faile.</translation>
+    </message>
+    <message>
         <source>No keys specified</source>
         <translation>Ühtegi adressaati ei ole lisatud</translation>
     </message>
     <message>
         <source>Failed to add key</source>
         <translation>Võtme lisamine ebaõnnestus</translation>
+    </message>
+    <message>
+        <source>The container requires more temporary disk space than the application can safely use.</source>
+        <translation>Konteiner vajab rohkem ajutist kettaruumi, kui rakendus saab turvaliselt kasutada.</translation>
     </message>
     <message>
         <source>Please check your internet connection and network settings.</source>
