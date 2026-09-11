@@ -127,12 +127,8 @@ getDecryptResultStatus(const std::vector<uint8_t> &result, std::unique_ptr<QCryp
 libcdoc::result_t
 DDCryptoBackend::decryptRSA(std::vector<uint8_t>& dst, const std::vector<uint8_t> &data, bool oaep, unsigned int idx)
 {
-	if (!backend) {
-		auto val = QCryptoBackend::getBackend(qApp->cryptoManager()->tokenauth());
-		if (!val)
-			return getDecryptStatus(val.error());
-		backend.reset(val.value());
-	}
+	if (!backend)
+		return BACKEND_ERROR;
 	QByteArray decryptedKey = backend->decrypt(toByteArray(data), oaep);
 	dst.assign(decryptedKey.cbegin(), decryptedKey.cend());
 	return getDecryptResultStatus(dst, std::move(backend));
@@ -147,12 +143,8 @@ DDCryptoBackend::deriveConcatKDF(std::vector<uint8_t>& dst, const std::vector<ui
 		{"http://www.w3.org/2001/04/xmlenc#sha384", QCryptographicHash::Sha384},
 		{"http://www.w3.org/2001/04/xmlenc#sha512", QCryptographicHash::Sha512}
 	};
-	if (!backend) {
-		auto val = QCryptoBackend::getBackend(qApp->cryptoManager()->tokenauth());
-		if (!val)
-			return getDecryptStatus(val.error());
-		backend.reset(val.value());
-	}
+	if (!backend)
+		return BACKEND_ERROR;
 	QByteArray decryptedKey = backend->deriveConcatKDF(toByteArray(publicKey), SHA_MTH.value(digest),
 		toByteArray(algorithmID), toByteArray(partyUInfo), toByteArray(partyVInfo));
 	dst.assign(decryptedKey.cbegin(), decryptedKey.cend());
@@ -162,12 +154,8 @@ DDCryptoBackend::deriveConcatKDF(std::vector<uint8_t>& dst, const std::vector<ui
 libcdoc::result_t
 DDCryptoBackend::deriveHMACExtract(std::vector<uint8_t>& dst, const std::vector<uint8_t> &key_material, const std::vector<uint8_t> &salt, unsigned int idx)
 {
-	if (!backend) {
-		auto val = QCryptoBackend::getBackend(qApp->cryptoManager()->tokenauth());
-		if (!val)
-			return getDecryptStatus(val.error());
-		backend.reset(val.value());
-	}
+	if (!backend)
+		return BACKEND_ERROR;
 	QByteArray decryptedKey = backend->deriveHMACExtract(toByteArray(key_material), toByteArray(salt), ECC_KEY_LEN);
 	dst.assign(decryptedKey.cbegin(), decryptedKey.cend());
 	return getDecryptResultStatus(dst, std::move(backend));
@@ -279,7 +267,7 @@ libcdoc::result_t DDNetworkBackend::sendKey(
 	if (expiry_ts) {
 		uint64_t expiry = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now() + std::chrono::months(6));
 		expiry_ts = std::min(expiry_ts, expiry);
-		req.setRawHeader("x-expiry-time", QDateTime::fromSecsSinceEpoch(expiry_ts).toString(Qt::ISODate).toLatin1());
+		req.setRawHeader("x-expiry-time", QDateTime::fromSecsSinceEpoch(expiry_ts, Qt::UTC).toString(Qt::ISODate).toLatin1());
 	}
 	if (!checkConnection()) {
 		last_error = "No connection";
@@ -330,19 +318,17 @@ DDNetworkBackend::fetchKey(std::vector<uint8_t> &result, const std::string &url,
 		return BACKEND_ERROR;
 	}
 
-	TokenData auth = qApp->cryptoManager()->tokenauth();
-	auto val = QCryptoBackend::getBackend(auth);
-	if (!val)
-		return getDecryptStatus(val.error());
-	std::unique_ptr<QCryptoBackend> backend(val.value());
-
-	auto authKey = backend->getKey();
+	if (!crypto.backend) {
+		last_error = "No authentication backend";
+		return BACKEND_ERROR;
+	}
+	auto authKey = crypto.backend->getKey();
 	if (!authKey.handle()) {
 		last_error = "Cannot create authentication key";
 		return BACKEND_ERROR;
 	}
 	QScopedPointer<QNetworkAccessManager,QScopedPointerDeleteLater> nam(
-				CheckConnection::setupNAM(req, auth.cert(), authKey, Settings::CDOC2_GET_CERT));
+				CheckConnection::setupNAM(req, crypto.backend->cert(), authKey, Settings::CDOC2_GET_CERT));
 	QEventLoop e;
 	QNetworkReply *reply = nam->get(req);
 	connect(reply, &QNetworkReply::finished, &e, &QEventLoop::quit);
@@ -355,8 +341,6 @@ DDNetworkBackend::fetchKey(std::vector<uint8_t> &result, const std::string &url,
 	QJsonObject json = QJsonDocument::fromJson(reply->readAll()).object();
 	QByteArray key_material = QByteArray::fromBase64(json.value(QLatin1String("ephemeral_key_material")).toString().toLatin1());
 	result.assign(key_material.cbegin(), key_material.cend());
-
-	crypto.setBackend(std::move(backend));
 
 	return libcdoc::OK;
 }

@@ -30,15 +30,12 @@ class MainAction final : public QPushButton
 public:
 	explicit MainAction(QWidget *parent);
 
-	void showAction(ria::qdigidoc4::Actions action);
-
-signals:
-	void action(ria::qdigidoc4::Actions action);
+	void setEncrypt(bool encrypt);
 
 private:
 	void changeEvent(QEvent* event) override;
 	bool eventFilter(QObject *watched, QEvent *event) override;
 	void update();
 
-	ria::qdigidoc4::Actions _action;
+	bool isEncrypt = false;
 };

@@ -22,16 +22,14 @@
 #include "common_enums.h"
 #include "DocumentModel.h"
 
-#include <QtCore/QIODevice>
 #include <QtCore/QLoggingCategory>
 #include <QtNetwork/QSslCertificate>
 
-#include <cdoc/CDoc.h>
-#include <cdoc/Certificate.h>
-#include <cdoc/Lock.h>
-#include <cdoc/Recipient.h>
+#include <memory>
 
-class QSslKey;
+#include <cdoc/Lock.h>
+
+class QCryptoBackend;
 
 Q_DECLARE_LOGGING_CATEGORY(CRYPTO)
 
@@ -61,9 +59,8 @@ public:
 
 	bool supportsSymmetricKeys() const;
 	bool addEncryptionKey(const CKey& key);
-	bool canDecrypt(const QSslCertificate &cert);
 	void clear(const QString &file = {}, int version = -1);
-	bool decrypt(const libcdoc::Lock *lock, const QByteArray& secret);
+	bool decrypt(const libcdoc::Lock &lock, const QByteArray& secret, std::unique_ptr<QCryptoBackend> &&backend);
 	bool encrypt(const QString &filename = {}, const QString& label = {}, const QByteArray& secret = {});
 	DocumentModel* documentModel() const;
 	QString fileName() const;

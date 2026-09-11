@@ -92,7 +92,6 @@ MainWindow::MainWindow( QWidget *parent )
 
 	// Refresh ID card info in card widget
 	connect(qApp->cryptoManager(), &QCryptoManager::cacheChanged, this, &MainWindow::updateSelector);
-	connect(qApp->cryptoManager(), &QCryptoManager::authDataChanged, ui->cryptoContainerPage, &ContainerPage::tokenChanged);
 
 	// Refresh card info on "My EID" page
 	connect(qApp->cryptoManager()->smartcard(), &QSmartCard::tokenChanged, this, &MainWindow::updateMyEID);
@@ -120,7 +119,6 @@ MainWindow::MainWindow( QWidget *parent )
 	connect(ui->infoStack, &MyEidInfo::changePinClicked, this, &MainWindow::changePinClicked);
 	connect(ui->cardInfo, &CardWidget::selected, ui->selector, &QToolButton::toggle);
 
-	ui->cryptoContainerPage->tokenChanged(qApp->cryptoManager()->tokenauth());
 	updateMyEID(qApp->cryptoManager()->smartcard()->tokenData());
 	updateMyEid(qApp->cryptoManager()->smartcard()->data());
 }
@@ -273,7 +271,7 @@ void MainWindow::navigateToPage( Pages page, const QStringList &files, bool crea
 		if(navigate)
 		{
 			cryptoDoc = std::move(cryptoContainer);
-			ui->cryptoContainerPage->transition(cryptoDoc.get(), qApp->cryptoManager()->tokenauth().cert());
+			ui->cryptoContainerPage->transition(cryptoDoc.get());
 		}
 	}
 
@@ -334,7 +332,7 @@ void MainWindow::convertToCDoc()
 
 	cryptoDoc = std::move(cryptoContainer);
 	digiDoc.reset();
-	ui->cryptoContainerPage->transition(cryptoDoc.get(), qApp->cryptoManager()->tokenauth().cert());
+	ui->cryptoContainerPage->transition(cryptoDoc.get());
 	selectPage(CryptoDetails);
 
 	FadeInNotification::success(ui->topBar, tr("Converted to crypto container!"));
@@ -645,7 +643,6 @@ void MainWindow::updateMyEid(const QSmartCardData &data)
 		pin1Blocked || pin1Locked ||
 		pin2Blocked || pin2Locked ||
 		pukBlocked);
-	ui->cryptoContainerPage->cardChanged(data.authCert(), pin1Blocked || pin1Locked);
 
 	using enum WarningText::WarningType;
 	if(pin1Locked)

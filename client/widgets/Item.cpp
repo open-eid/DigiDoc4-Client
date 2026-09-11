@@ -23,7 +23,6 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QVBoxLayout>
 
-void Item::idChanged(const SslCertificate & /* cert */) {}
 void Item::initTabOrder(QWidget * /* item */) {}
 QWidget* Item::lastTabWidget() { return this; }
 

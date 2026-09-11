@@ -20,31 +20,31 @@
 #include "AddressItem.h"
 #include "ui_AddressItem.h"
 
+#include "Application.h"
 #include "CryptoDoc.h"
+#include "QCryptoBackend.h"
 #include "SslCertificate.h"
+#include "TokenData.h"
 #include "dialogs/KeyDialog.h"
 
 #include <QSslKey>
 
 using namespace ria::qdigidoc4;
 
-class AddressItem::Private: public Ui::AddressItem
+struct AddressItem::Private: public Ui::AddressItem
 {
-public:
-	Private(const CKey& _key) : key(_key) {}
-
-	QString code;
 	CKey key;
+	QString code;
 	QString label;
 	QDateTime expireDate;
-	bool yourself = false;
+	TokenData token;
+	ContainerState state = Uninitialized;
 };
 
 AddressItem::AddressItem(const CKey &key, Type type, QWidget *parent)
 	: Item(parent)
-	, ui(new Private(key))
+	, ui(new Private{.key = key})
 {
-	ui->key = key;
 	ui->setupUi(this);
 	if(type == Icon)
 		ui->icon->load(QStringLiteral(":/images/icon_Krypto_small.svg"));
@@ -89,14 +89,14 @@ AddressItem::AddressItem(const CKey &key, Type type, QWidget *parent)
 
 	connect(ui->add, &QToolButton::clicked, this, [this]{ emit add(this);});
 	connect(ui->remove, &QToolButton::clicked, this, [this]{ emit remove(this);});
-	connect(ui->decrypt, &QToolButton::clicked, this, [this] {
-		emit decrypt(&ui->key.lock);
-	});
+	connect(ui->decrypt, &QToolButton::clicked, this, [this] { emit decrypt(ui->token); });
+	connect(qApp->cryptoManager(), &QCryptoManager::cacheChanged, this, &AddressItem::setDecryptVisible);
 
+	setName();
 	setIdType();
 	ui->add->setVisible(type == Add);
 	ui->remove->setVisible(type != Add);
-	ui->decrypt->setVisible(ui->key.lock.type == libcdoc::Lock::PASSWORD);
+	setDecryptVisible();
 }
 
 AddressItem::~AddressItem()
@@ -122,15 +122,6 @@ const CKey& AddressItem::getKey() const
 	return ui->key;
 }
 
-void AddressItem::idChanged(const SslCertificate &cert) {
-	ui->yourself = false;
-	if (ui->key.lock.isPKI()) {
-		const auto &key = ui->key.lock.getBytes(libcdoc::Lock::RCPT_KEY);
-		ui->yourself = cert.publicKey().toDer() == QByteArray::fromRawData((const char*)key.data(), key.size());
-	}
-	setName();
-}
-
 void AddressItem::initTabOrder(QWidget *item)
 {
 	setTabOrder(item, ui->name);
@@ -149,18 +140,39 @@ void AddressItem::mouseReleaseEvent(QMouseEvent * /*event*/) {
 	(new KeyDialog(ui->key, this))->open();
 }
 
+TokenData AddressItem::tokenForLock(const libcdoc::Lock &lock)
+{
+	if(!lock.isPKI())
+		return {};
+	const auto &key = lock.getBytes(libcdoc::Lock::RCPT_KEY);
+	QByteArray rcpt = QByteArray::fromRawData((const char*)key.data(), key.size());
+	for(const TokenData &token: qApp->cryptoManager()->cache())
+		if(SslCertificate(token.cert()).publicKeyDer() == rcpt)
+			return token;
+	return {};
+}
+
+void AddressItem::setDecryptVisible()
+{
+	ui->token = tokenForLock(ui->key.lock);
+	ui->decrypt->setVisible(ui->state == EncryptedContainer &&
+		(ui->key.lock.type == libcdoc::Lock::PASSWORD || !ui->token.isNull()));
+}
+
 void AddressItem::setName()
 {
 	ui->name->setText(QStringLiteral("%1 <span style=\"font-weight:normal;\">%2</span>")
-		.arg(ui->label.toHtmlEscaped(), (ui->yourself ? ui->code + tr(" (Yourself)") : ui->code).toHtmlEscaped()));
+		.arg(ui->label.toHtmlEscaped(), ui->code.toHtmlEscaped()));
 	if(ui->name->text().isEmpty())
 		ui->name->hide();
 }
 
 void AddressItem::stateChange(ContainerState state)
 {
+	ui->state = state;
 	if(ui->add->isHidden())
 		ui->remove->setVisible(state == UnencryptedContainer);
+	setDecryptVisible();
 }
 
 void AddressItem::setIdType(const SslCertificate &cert) {

@@ -222,9 +222,8 @@ TokenData QCryptoManager::tokensign() const { QReadLocker locker(&d->lock); retu
 
 void QCryptoManager::selectCard(const TokenData &token)
 {
-	bool isSign = SslCertificate(token.cert()).keyUsage().contains(SslCertificate::NonRepudiation);
-	TokenData other;
 	{
+		bool isSign = SslCertificate(token.cert()).keyUsage().contains(SslCertificate::NonRepudiation);
 		QWriteLocker locker(&d->lock);
 		if(isSign)
 			d->sign = token;
@@ -240,14 +239,9 @@ void QCryptoManager::selectCard(const TokenData &token)
 				d->auth = t;
 			else
 				d->sign = t;
-			other = t;
 			break;
 		}
 	}
-	if(!isSign)
-		Q_EMIT authDataChanged(token);
-	else if(!other.isNull())
-		Q_EMIT authDataChanged(other);
 	d->smartcard.reloadCard(token, false);
 }
 
@@ -308,8 +302,6 @@ void QCryptoManager::refresh()
 
 	if(cacheChangedFlag)
 		Q_EMIT cacheChanged();
-	if(aold != anew)
-		Q_EMIT authDataChanged(anew);
 	if(sold != snew)
 		d->smartcard.reloadCard(snew, false);
 	else if(aold != anew)

@@ -79,10 +79,6 @@
 <context>
     <name>AddressItem</name>
     <message>
-        <source> (Yourself)</source>
-        <translation> (Yourself)</translation>
-    </message>
-    <message>
         <source>digi-ID</source>
         <translation>digi-ID</translation>
     </message>
@@ -512,6 +508,10 @@
     <message>
         <source>It is removed along with the container.</source>
         <translation>It is removed along with the container.</translation>
+    </message>
+    <message>
+        <source>Failed to decrypt document</source>
+        <translation type="unfinished">Failed to decrypt document</translation>
     </message>
     <message>
         <source>In order to view Validity Confirmation Sheet there has to be at least one printer installed!</source>
@@ -1020,10 +1020,6 @@
         <translation>DigiDoc is created for managing Estonian eIDs and is the official digital signing and encryption application.</translation>
     </message>
     <message>
-        <source>Skip introductions</source>
-        <translation>Skip introductions →</translation>
-    </message>
-    <message>
         <source>The DigiDoc application allows you to:</source>
         <translation>The DigiDoc application allows you to:</translation>
     </message>
@@ -1124,28 +1120,12 @@
         <translation>Continue</translation>
     </message>
     <message>
-        <source>View introduction</source>
-        <translation>View introduction</translation>
-    </message>
-    <message>
         <source>View next intro</source>
         <translation>View next intro</translation>
     </message>
     <message>
         <source>Enter the application</source>
         <translation>Enter the application</translation>
-    </message>
-    <message>
-        <source>Go to signing intro</source>
-        <translation>Go to signing intro</translation>
-    </message>
-    <message>
-        <source>Go to EID intro</source>
-        <translation>Go to EID intro</translation>
-    </message>
-    <message>
-        <source>Go to encryption intro</source>
-        <translation>Go to encryption intro</translation>
     </message>
     <message>
         <source>&quot;My eID&quot; also provides a good overview of the status and contact information of the ID card inserted in the card reader.</source>
@@ -1347,10 +1327,6 @@ LDAP server is unavailable.</translation>
     <message>
         <source>Encrypt</source>
         <translation>Encrypt</translation>
-    </message>
-    <message>
-        <source>Decrypt</source>
-        <translation>Decrypt</translation>
     </message>
     <message>
         <source>Sign</source>

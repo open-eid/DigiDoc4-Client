@@ -48,7 +48,6 @@ background-color: #82A9D3;
 })"));
 	parent->installEventFilter(this);
 	move(parent->width() - width(), parent->height() - height());
-	connect(this, &QPushButton::clicked, this, [this]{ emit action(_action); });
 }
 
 void MainAction::changeEvent(QEvent* event)
@@ -65,19 +64,14 @@ bool MainAction::eventFilter(QObject *watched, QEvent *event)
 	return QWidget::eventFilter(watched, event);
 }
 
-void MainAction::showAction(Actions action)
+void MainAction::setEncrypt(bool encrypt)
 {
-	_action = action;
+	isEncrypt = encrypt;
 	update();
 	show();
 }
 
 void MainAction::update()
 {
-	switch(_action)
-	{
-	case EncryptContainer: return setText(tr("Encrypt"));
-	case DecryptContainer: return setText(tr("Decrypt"));
-	default: return setText(tr("Sign"));
-	}
+	setText(isEncrypt ? tr("Encrypt") : tr("Sign"));
 }
