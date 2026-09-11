@@ -494,6 +494,14 @@
         <translation>DigiDoc4 klient</translation>
     </message>
     <message>
+        <source>Encrypt for recipients</source>
+        <translation>Krüpteeri adressaadi alusel</translation>
+    </message>
+    <message>
+        <source>Encrypt with password</source>
+        <translation>Krüpteeri parooliga</translation>
+    </message>
+    <message>
         <source>Decrypting</source>
         <translation>Dekrüpteerin</translation>
     </message>
@@ -528,6 +536,10 @@
     <message>
         <source>Change</source>
         <translation>Muuda</translation>
+    </message>
+    <message>
+        <source>Password encryption is meant for long-term storage. The password cannot be changed or recovered.</source>
+        <translation>Parooliga krüpteerimine on mõeldud pikaajaliseks salvestamiseks. Parooli ei saa muuta ega taastada.</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -1316,12 +1328,6 @@ LDAP serveriga ei saa ühendust.</translation>
         <source>Sign</source>
         <translation>Allkirjasta</translation>
     </message>
-    <message>
-        <source>Encrypt
-long-term</source>
-        <translation>Krüpteeri
-säilitamiseks</translation>
-    </message>
 </context>
 <context>
     <name>MainWindow</name>
@@ -1715,14 +1721,22 @@ säilitamiseks</translation>
         <translation>Krüpteeri parooliga</translation>
     </message>
     <message>
-        <source>Key label (recipient name or id)</source>
-        <translation>Võtme nimi (saaja nimi või kood)</translation>
-    </message>
-    <message>
         <source>Be sure to save the password in a secure place
 - without the password, you won’t be able to open the file again.</source>
         <translation>Salvesta parool kindlasti turvalisse kohta
 - ilma paroolita ei saa faili enam avada.</translation>
+    </message>
+    <message>
+        <source>Create a name for the envelope</source>
+        <translation>Loo ümbrikule nimi</translation>
+    </message>
+    <message>
+        <source>E.g. Contracts</source>
+        <translation>Nt. Lepingud</translation>
+    </message>
+    <message>
+        <source>Create a password for the envelope</source>
+        <translation>Loo ümbrikule parool</translation>
     </message>
     <message>
         <source>• Length: 20–64 characters
@@ -1747,16 +1761,16 @@ säilitamiseks</translation>
         <translation>Krüpteeri</translation>
     </message>
     <message>
-        <source>Decrypt with password</source>
-        <translation>Dekrüpteeri parooliga</translation>
-    </message>
-    <message>
-        <source>Enter password to decrypt the document</source>
-        <translation>Sisestage parool dokumendi dekrüpteerimiseks</translation>
-    </message>
-    <message>
         <source>Decrypt</source>
         <translation>Dekrüpteeri</translation>
+    </message>
+    <message>
+        <source>Envelope name</source>
+        <translation>Ümbriku nimi</translation>
+    </message>
+    <message>
+        <source>Envelope password</source>
+        <translation>Ümbriku parool</translation>
     </message>
     <message>
         <source>Password is empty</source>
@@ -1768,11 +1782,7 @@ säilitamiseks</translation>
     </message>
     <message>
         <source>Passwords do not match</source>
-        <translation>Paroolid ei ühti</translation>
-    </message>
-    <message>
-        <source>Enter a password to encrypt the document</source>
-        <translation>Loo ümbrikule parool</translation>
+        <translation>Paroolid ei kattu</translation>
     </message>
 </context>
 <context>

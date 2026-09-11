@@ -431,20 +431,22 @@ bool CryptoDoc::encrypt(const QString &filename, const QString& label, const QBy
 		if ((d->version == 2) && Settings::CDOC2_USE_KEYSERVER) {
 			keyserver_id = Settings::CDOC2_DEFAULT_KEYSERVER;
 		}
-		// Encrypt for address list
-		for (const auto &key : d->keys) {
-			if (!key.rcpt_cert.isNull()) {
-				QByteArray ba = key.rcpt_cert.toDer();
-				enc_keys.push_back(libcdoc::Recipient::makeCertificate({}, {ba.cbegin(), ba.cend()}, keyserver_id));
-			} else {
-				switch (key.lock.type) {
-				case libcdoc::Lock::CDOC1:
-				case libcdoc::Lock::PUBLIC_KEY:
-				case libcdoc::Lock::SERVER:
-					enc_keys.push_back(libcdoc::Recipient::makePublicKey(key.lock, keyserver_id));
-					break;
-				default:
-					break;
+		// Encrypt for address list, password encryption excludes recipients
+		if (secret.isEmpty()) {
+			for (const auto &key : d->keys) {
+				if (!key.rcpt_cert.isNull()) {
+					QByteArray ba = key.rcpt_cert.toDer();
+					enc_keys.push_back(libcdoc::Recipient::makeCertificate({}, {ba.cbegin(), ba.cend()}, keyserver_id));
+				} else {
+					switch (key.lock.type) {
+					case libcdoc::Lock::CDOC1:
+					case libcdoc::Lock::PUBLIC_KEY:
+					case libcdoc::Lock::SERVER:
+						enc_keys.push_back(libcdoc::Recipient::makePublicKey(key.lock, keyserver_id));
+						break;
+					default:
+						break;
+					}
 				}
 			}
 		}
