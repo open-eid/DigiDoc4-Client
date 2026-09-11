@@ -159,10 +159,11 @@ struct IOEntry
 };
 
 struct TempListConsumer final : public libcdoc::MultiDataConsumer {
-	static constexpr int64_t MAX_VEC_SIZE = 500L * 1024L * 1024L;
+	/// Why extraction stopped, so policy limits can be distinguished from
+	/// malformed container data.
+	enum class Rejection : quint8 { None, Count, Disk, Overrun };
 
-	explicit TempListConsumer(size_t max_memory_size = 500L * 1024L * 1024L)
-		: _max_memory_size(max_memory_size) {}
+	TempListConsumer();
 	~TempListConsumer();
 
 	libcdoc::result_t write(const uint8_t *src, size_t size) noexcept final;
@@ -171,8 +172,30 @@ struct TempListConsumer final : public libcdoc::MultiDataConsumer {
 	libcdoc::result_t open(const std::string &name,
 						   int64_t size) final;
 
-	size_t _max_memory_size;
+	Rejection rejection() const noexcept { return _rejection; }
+
 	std::vector<IOEntry> files;
+
+private:
+	static constexpr size_t MAX_MEMORY_SIZE = 500ULL * 1024ULL * 1024ULL;
+	static constexpr size_t MAX_DISK_SIZE = 8ULL * 1024ULL * 1024ULL * 1024ULL;
+	static constexpr size_t MIN_FREE_DISK_SIZE = 1ULL * 1024ULL * 1024ULL * 1024ULL;
+	static constexpr size_t MAX_FILE_COUNT = 1000;
+
+	[[nodiscard]] bool exceedsDiskBudget(size_t size) const noexcept
+	{
+		return _disk_used > _disk_limit || size > _disk_limit - _disk_used;
+	}
+	libcdoc::result_t reject(Rejection reason, libcdoc::result_t code) noexcept;
+
+	Rejection _rejection = Rejection::None;
+	size_t _memory_used = 0;
+	size_t _disk_used = 0;
+	size_t _disk_limit = MAX_DISK_SIZE;
+	/// Size the container declared for the open entry, or -1 if unstated.
+	int64_t _declared = -1;
+	/// Whether the open entry is buffered in memory rather than on disk.
+	bool _in_memory = false;
 };
 
 struct StreamListSource final : public libcdoc::MultiDataSource {
