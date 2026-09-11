@@ -79,10 +79,6 @@
 <context>
     <name>AddressItem</name>
     <message>
-        <source> (Yourself)</source>
-        <translation> (Sina ise)</translation>
-    </message>
-    <message>
         <source>digi-ID</source>
         <translation>digi-ID</translation>
     </message>
@@ -512,6 +508,10 @@
     <message>
         <source>It is removed along with the container.</source>
         <translation>Koos sellega eemaldatakse ka ümbrik.</translation>
+    </message>
+    <message>
+        <source>Failed to decrypt document</source>
+        <translation type="unfinished">Dokumendi dekrüpteerimine ebaõnnestus</translation>
     </message>
     <message>
         <source>In order to view Validity Confirmation Sheet there has to be at least one printer installed!</source>
@@ -1020,10 +1020,6 @@
         <translation>DigiDoc on loodud Eesti eID-de haldamiseks ja on ametlik rakendus dokumentide digitaalseks allkirjastamiseks ja krüpteerimiseks.</translation>
     </message>
     <message>
-        <source>Skip introductions</source>
-        <translation>Jäta tutvustused vahele →</translation>
-    </message>
-    <message>
         <source>The DigiDoc application allows you to:</source>
         <translation>DigiDoc rakendus võimaldab Sinul:</translation>
     </message>
@@ -1124,28 +1120,12 @@
         <translation>Jätka</translation>
     </message>
     <message>
-        <source>View introduction</source>
-        <translation>Vaata tutvustust</translation>
-    </message>
-    <message>
         <source>View next intro</source>
         <translation>Järgmine tutvustus</translation>
     </message>
     <message>
         <source>Enter the application</source>
         <translation>Sisene rakendusse</translation>
-    </message>
-    <message>
-        <source>Go to signing intro</source>
-        <translation>Mine allkirjastamise tutvustuse juurde</translation>
-    </message>
-    <message>
-        <source>Go to EID intro</source>
-        <translation>Mine eID tutvustuse juurde</translation>
-    </message>
-    <message>
-        <source>Go to encryption intro</source>
-        <translation>Mine krüpteerimise tutvustuse juurde</translation>
     </message>
     <message>
         <source>&quot;My eID&quot; also provides a good overview of the status and contact information of the ID card inserted in the card reader.</source>
@@ -1347,10 +1327,6 @@ LDAP serveriga ei saa ühendust.</translation>
     <message>
         <source>Encrypt</source>
         <translation>Krüpteeri</translation>
-    </message>
-    <message>
-        <source>Decrypt</source>
-        <translation>Dekrüpteeri</translation>
     </message>
     <message>
         <source>Sign</source>
