@@ -17,28 +17,36 @@
  *
  */
 
-#include "InfoStack.h"
-#include "ui_InfoStack.h"
+#include "MyEidInfo.h"
+#include "ui_MyEidInfo.h"
 
-#include "QSmartCard.h"
 #include "SslCertificate.h"
 
 #include <QStyle>
 
-InfoStack::InfoStack( QWidget *parent )
+MyEidInfo::MyEidInfo( QWidget *parent )
 	: QWidget(parent)
-	, ui( new Ui::InfoStack )
+	, ui(new Ui::MyEidInfo)
 {
 	ui->setupUi( this );
+	connect(ui->authBox, &VerifyCert::changePinClicked, this, [this](QSmartCard::PinAction action) {
+		emit changePinClicked(QSmartCardData::Pin1Type, action);
+	});
+	connect(ui->signBox, &VerifyCert::changePinClicked, this,[this](QSmartCard::PinAction action) {
+		emit changePinClicked(QSmartCardData::Pin2Type, action);
+	});
+	connect(ui->pukBox, &VerifyCert::changePinClicked, this, [this](QSmartCard::PinAction action) {
+		emit changePinClicked(QSmartCardData::PukType, action);
+	});
 	clearData();
 }
 
-InfoStack::~InfoStack()
+MyEidInfo::~MyEidInfo()
 {
 	delete ui;
 }
 
-void InfoStack::clearData()
+void MyEidInfo::clearData()
 {
 	certType = 0;
 	expiry = {};
@@ -48,9 +56,12 @@ void InfoStack::clearData()
 	ui->valueCitizenship->clear();
 	ui->valueExpiryDate->clear();
 	ui->valueDocument->clear();
+	ui->authBox->clear();
+	ui->signBox->clear();
+	ui->pukBox->clear();
 }
 
-void InfoStack::changeEvent(QEvent* event)
+void MyEidInfo::changeEvent(QEvent* event)
 {
 	if (event->type() == QEvent::LanguageChange)
 	{
@@ -61,7 +72,7 @@ void InfoStack::changeEvent(QEvent* event)
 	QWidget::changeEvent(event);
 }
 
-void InfoStack::update()
+void MyEidInfo::update()
 {
 	ui->valueExpiryDate->setText(expiry.toString(QStringLiteral("dd.MM.yyyy")));
 	if(certType & SslCertificate::DigiIDType)
@@ -92,19 +103,28 @@ void InfoStack::update()
 	}
 }
 
-void InfoStack::update(const SslCertificate &cert)
+void MyEidInfo::update(const SslCertificate &cert)
 {
 	certType = cert.type();
 	expiry = cert.expiryDate();
+	bool isSign = cert.keyUsage().contains(SslCertificate::NonRepudiation);
 	ui->valueGivenNames->setText(cert.toString(QStringLiteral("CN")));
 	ui->valueSurname->setText(cert.toString(QStringLiteral("O")));
 	ui->valuePersonalCode->setText(cert.personalCode());
 	ui->valueCitizenship->setText(cert.toString(QStringLiteral("C")));
 	ui->valueDocument->clear();
+	ui->authBox->setHidden(isSign);
+	ui->signBox->setVisible(isSign);
+	if(isSign)
+		ui->signBox->update(QSmartCardData::Pin2Type, cert);
+	else
+		ui->authBox->update(QSmartCardData::Pin1Type, cert);
+	ui->pukBox->hide();
+
 	update();
 }
 
-void InfoStack::update(const QSmartCardData &t)
+void MyEidInfo::update(const QSmartCardData &t)
 {
 	if(t.isNull())
 		return clearData();
@@ -115,5 +135,17 @@ void InfoStack::update(const QSmartCardData &t)
 	ui->valuePersonalCode->setText(t.data(QSmartCardData::Id).toString());
 	ui->valueCitizenship->setText(t.data(QSmartCardData::Citizen).toString());
 	ui->valueDocument->setText(t.data(QSmartCardData::DocumentId).toString());
+
+	ui->authBox->setVisible(!t.authCert().isNull());
+	if(!t.authCert().isNull())
+		ui->authBox->update(QSmartCardData::Pin1Type, t);
+
+	ui->signBox->setVisible(!t.signCert().isNull());
+	if(!t.signCert().isNull())
+		ui->signBox->update(QSmartCardData::Pin2Type, t);
+
+	ui->pukBox->show();
+	ui->pukBox->update(QSmartCardData::PukType, t);
+
 	update();
 }
