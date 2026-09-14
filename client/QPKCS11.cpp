@@ -164,7 +164,7 @@ std::shared_ptr<QPKCS11Library> QPKCS11Library::current()
 	};
 	for(const QString &reader: QPCSC::instance().readers())
 	{
-		QPCSCReader r(reader, &QPCSC::instance());
+		QPCSCReader r(reader);
 		if(!r.isPresent())
 			continue;
 		QByteArray atr = r.atr();

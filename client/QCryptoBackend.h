@@ -20,6 +20,7 @@
 #pragma once
 
 #include "TokenData.h"
+#include "QSmartCard.h"
 
 #include <QtCore/QCoreApplication>
 #include <QtCore/QCryptographicHash>
@@ -27,7 +28,6 @@
 
 #include <expected>
 
-class QSmartCard;
 class QSslKey;
 
 class QCryptoBackend
@@ -91,13 +91,14 @@ public:
 	~QCryptoManager() final;
 
 	QList<TokenData> cache() const;
-	QSmartCard *smartcard() const;
-	void selectCard(const TokenData &token);
-	TokenData tokenauth() const;
-	TokenData tokensign() const;
+	quint64 readCard(const TokenData &token, const QSmartCardData &previous);
+	void refreshToken(const TokenData &token);
 
 Q_SIGNALS:
-	void cacheChanged();
+	void cacheChanged(const QList<TokenData> &tokens);
+	void tokenChanged(const TokenData &token);
+	void cardDataReady(quint64 request, const QSmartCardData &data);
+	void refreshed();
 
 private:
 	friend class QCryptoBackend;

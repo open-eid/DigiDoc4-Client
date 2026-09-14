@@ -191,7 +191,7 @@ struct QPCSCReader::Private
 {
 	QHash<DRIVER_FEATURES,quint32> features();
 
-	QPCSC::Private *d {};
+	SCARDCONTEXT context {};
 	SCARDHANDLE card {};
 	SCARD_IO_REQUEST io {SCARD_PROTOCOL_UNDEFINED, sizeof(SCARD_IO_REQUEST)};
 	SCARD_READERSTATE state {};

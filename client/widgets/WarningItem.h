@@ -53,7 +53,7 @@ struct WarningText {
 		EmptyFileWarning,
 	} type = NoWarning;
 	int counter = 0;
-	std::function<void()> cb;
+	std::function<void()> cb{};
 };
 
 

@@ -93,7 +93,7 @@ void Diagnostics::generalInfo(QTextStream &s)
 	for( const QString &readername: QPCSC::instance().readers() )
 	{
 		s << "<br />" << readername;
-		QPCSCReader reader( readername, &QPCSC::instance() );
+		QPCSCReader reader(readername);
 		if( !reader.isPresent() )
 		{
 #ifndef Q_OS_WIN /* Apple 10.5.7 and pcsc-lite previous to v1.5.5 do not support 0 as protocol identifier */
