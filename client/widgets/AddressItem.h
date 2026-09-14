@@ -52,12 +52,12 @@ signals:
 private:
 	void changeEvent(QEvent *event) final;
 	void mouseReleaseEvent(QMouseEvent *event) final;
-	void setDecryptVisible();
+	void setDecryptVisible(const QList<TokenData> &tokens);
 	void setName();
 	void setIdType();
 	void setIdType(const SslCertificate& cert);
 
-	static TokenData tokenForLock(const libcdoc::Lock &lock);
+	static TokenData tokenForLock(const libcdoc::Lock &lock, const QList<TokenData> &tokens);
 
 	struct Private;
 	Private *ui;

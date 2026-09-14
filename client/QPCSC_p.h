@@ -190,7 +190,7 @@ struct QPCSCReader::Private
 {
 	quint32 feature(DRIVER_FEATURES key);
 
-	QPCSC::Private *d {};
+	SCARDCONTEXT context {};
 	SCARDHANDLE card {};
 	SCARD_IO_REQUEST io {SCARD_PROTOCOL_UNDEFINED, sizeof(SCARD_IO_REQUEST)};
 	SCARD_READERSTATE state {};

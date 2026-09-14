@@ -23,9 +23,12 @@ private:
 	enum Method { IDCard, MobileID, SmartID };
 
 	void changeEvent(QEvent *event) final;
-	void updateCards();
+	void reject() final;
+	void updateCards(QList<TokenData> tokens);
+	void updateNoCard();
 	void updateTabs();
-	void updateSelection(bool usable);
+	void updateSelection();
+	void updatePinControls();
 	void performSign();
 	Method currentMethod() const;
 	bool confirmAlreadySigned();
