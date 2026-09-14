@@ -609,6 +609,10 @@
         <translation>Dokumendi avamine ebaõnnestus</translation>
     </message>
     <message>
+        <source>Failed to decrypt document</source>
+        <translation>Dokumendi dekrüpteerimine ebaõnnestus</translation>
+    </message>
+    <message>
         <source>Wrong password.</source>
         <translation>Vale parool.</translation>
     </message>
@@ -2191,10 +2195,6 @@ ID-kaardiga</translation>
 <context>
     <name>QSigner</name>
     <message>
-        <source>Signing certificate is not selected.</source>
-        <translation>Allkirjastamise sertifikaat ei ole valitud.</translation>
-    </message>
-    <message>
         <source>Failed to login token</source>
         <translation>PIN-koodi valideerimine ebaõnnestus</translation>
     </message>
@@ -2205,10 +2205,6 @@ ID-kaardiga</translation>
     <message>
         <source>Sign certificate is not selected</source>
         <translation>Allkirjastamise sertifikaat ei ole valitud</translation>
-    </message>
-    <message>
-        <source>Failed to decrypt document</source>
-        <translation>Dokumendi dekrüpteerimine ebaõnnestus</translation>
     </message>
 </context>
 <context>
