@@ -152,12 +152,11 @@ AddRecipients::AddRecipients(ItemList* itemList, QWidget *parent)
 				addRecipient(token.cert());
 		}
 	});
-	auto enableRecipientFromCard = [this] {
-		const auto cache = qApp->cryptoManager()->cache();
+	auto enableRecipientFromCard = [this](const QList<TokenData> &cache) {
 		ui->fromCard->setDisabled(std::none_of(cache.cbegin(), cache.cend(),
 			[](const TokenData &token) { return SslCertificate(token.cert()).isEncryptionCert(); }));
 	};
-	enableRecipientFromCard();
+	enableRecipientFromCard(qApp->cryptoManager()->cache());
 	connect(qApp->cryptoManager(), &QCryptoManager::cacheChanged, this, std::move(enableRecipientFromCard));
 
 	connect(ui->fromFile, &QPushButton::clicked, this, &AddRecipients::addRecipientFromFile);

@@ -95,7 +95,7 @@ public:
 		T1 = 2
 	};
 
-	explicit QPCSCReader( const QString &reader, QPCSC *parent );
+	explicit QPCSCReader(const QString &reader);
 	QPCSCReader(QPCSCReader &&) noexcept;
 	~QPCSCReader() noexcept final;
 

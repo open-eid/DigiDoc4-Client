@@ -23,17 +23,10 @@
    <string notr="true">QLabel {
 color: #07142A;
 }
-#logo, #navBar {
-background-color: #003168;
-border-right: 1px solid #E7EAEF;
-}
-#topBar, #startScreen, #warnings {
+#startScreen, #warnings {
 background-color: #FFFFFF;
 }
-#warnings {
-border-top: 1px solid #E7EAEF;
-}
-#signPage, #cryptoPage, #noReaderInfo {
+#signPage, #cryptoPage {
 background-image: url(:/images/bg_lovid.svg);
 background-repeat: repeat-x;
 background-position: bottom;
@@ -54,13 +47,16 @@ background-color: #2B66A6;
 #signIntroButton:pressed, #cryptoIntroButton:pressed {
 background-color: #215081;
 }
-#signIntroLabel, #cryptoIntroLabel, #noReaderInfoText {
+#signIntroLabel, #cryptoIntroLabel {
 font-family: Roboto, Helvetica;
 font-size: 18px;
 font-weight: 400;
 }</string>
   </property>
-  <layout class="QGridLayout" name="MainWindowLayout">
+  <layout class="QHBoxLayout" name="MainWindowLayout">
+   <property name="spacing">
+    <number>0</number>
+   </property>
    <property name="leftMargin">
     <number>0</number>
    </property>
@@ -73,68 +69,7 @@ font-weight: 400;
    <property name="bottomMargin">
     <number>0</number>
    </property>
-   <property name="spacing">
-    <number>0</number>
-   </property>
-   <item row="0" column="0">
-    <widget class="QWidget" name="logo" native="true">
-     <property name="styleSheet">
-      <string notr="true">#label {
-color: #FFFFFF;
-font-family: Roboto, Helvetica;
-font-size: 9px;
-font-weight: 700;
-}</string>
-     </property>
-     <layout class="QHBoxLayout" name="horizontalLayout">
-      <property name="spacing">
-       <number>6</number>
-      </property>
-      <property name="leftMargin">
-       <number>8</number>
-      </property>
-      <property name="topMargin">
-       <number>15</number>
-      </property>
-      <property name="rightMargin">
-       <number>8</number>
-      </property>
-      <property name="bottomMargin">
-       <number>15</number>
-      </property>
-      <item>
-       <widget class="QSvgWidget" name="logoIcon" native="true">
-        <property name="minimumSize">
-         <size>
-          <width>28</width>
-          <height>22</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>28</width>
-          <height>22</height>
-         </size>
-        </property>
-        <property name="focusPolicy">
-         <enum>Qt::TabFocus</enum>
-        </property>
-        <property name="accessibleName">
-         <string notr="true">DigiDoc</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="label">
-        <property name="text">
-         <string notr="true">DigiDoc4</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="1" column="0" rowspan="2">
+   <item>
     <widget class="QWidget" name="navBar" native="true">
      <property name="minimumSize">
       <size>
@@ -149,7 +84,11 @@ font-weight: 700;
       </size>
      </property>
      <property name="styleSheet">
-      <string notr="true">QToolButton {
+      <string notr="true">#navBar {
+background-color: #003168;
+border-right: 1px solid #E7EAEF;
+}
+QToolButton {
 border: none;
 color: #E7EAEF;
 padding: 13px 0px 10px 0px;
@@ -159,6 +98,12 @@ font-size: 16px;
 QToolButton:checked {
 background-color: #ffffff;
 color: #003168;
+}
+#logoLabel {
+color: #FFFFFF;
+font-family: Roboto, Helvetica;
+font-size: 9px;
+font-weight: 700;
 }
 #version, #version:pressed {
 border: none;
@@ -195,6 +140,56 @@ color: #BFD3E8;
       <property name="bottomMargin">
        <number>0</number>
       </property>
+      <item>
+       <widget class="QWidget" name="logo" native="true">
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <property name="spacing">
+          <number>6</number>
+         </property>
+         <property name="leftMargin">
+          <number>8</number>
+         </property>
+         <property name="topMargin">
+          <number>15</number>
+         </property>
+         <property name="rightMargin">
+          <number>8</number>
+         </property>
+         <property name="bottomMargin">
+          <number>15</number>
+         </property>
+         <item>
+          <widget class="QSvgWidget" name="logoIcon" native="true">
+           <property name="minimumSize">
+            <size>
+             <width>28</width>
+             <height>22</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>28</width>
+             <height>22</height>
+            </size>
+           </property>
+           <property name="focusPolicy">
+            <enum>Qt::TabFocus</enum>
+           </property>
+           <property name="accessibleName">
+            <string notr="true">DigiDoc</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="logoLabel">
+           <property name="text">
+            <string notr="true">DigiDoc4</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
       <item>
        <widget class="PageIcon" name="signature">
         <property name="minimumSize">
@@ -404,21 +399,9 @@ color: #BFD3E8;
      </layout>
     </widget>
    </item>
-   <item row="0" column="1">
-    <widget class="QWidget" name="topBar" native="true">
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>54</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>54</height>
-      </size>
-     </property>
-     <layout class="QHBoxLayout" name="topBarLayout">
+   <item>
+    <widget class="QWidget" name="content" native="true">
+     <layout class="QVBoxLayout" name="contentLayout">
       <property name="spacing">
        <number>0</number>
       </property>
@@ -426,268 +409,42 @@ color: #BFD3E8;
        <number>0</number>
       </property>
       <property name="topMargin">
-       <number>6</number>
+       <number>0</number>
       </property>
       <property name="rightMargin">
-       <number>16</number>
+       <number>0</number>
       </property>
       <property name="bottomMargin">
-       <number>6</number>
+       <number>0</number>
       </property>
       <item>
-       <widget class="CardWidget" name="cardInfo" native="true"/>
-      </item>
-      <item>
-       <widget class="QToolButton" name="selector">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>32</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>32</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">border: none;</string>
-        </property>
-        <property name="icon">
-         <iconset resource="images/images.qrc">
-          <normaloff>:/images/arrow_down.svg</normaloff>
-          <activeon>:/images/arrow_down_selected.svg</activeon>:/images/arrow_down.svg</iconset>
-        </property>
-        <property name="iconSize">
-         <size>
-          <width>24</width>
-          <height>24</height>
-         </size>
-        </property>
-        <property name="checkable">
-         <bool>true</bool>
-        </property>
+       <widget class="WarningList" name="warnings" native="true">
+        <layout class="QVBoxLayout" name="warningsLayout">
+         <property name="spacing">
+          <number>2</number>
+         </property>
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+        </layout>
        </widget>
       </item>
       <item>
-       <widget class="NoCardInfo" name="noCardInfo" native="true"/>
-      </item>
-      <item>
-       <spacer name="topBarSpacer">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
+       <widget class="QStackedWidget" name="startScreen">
+        <property name="currentIndex">
+         <number>0</number>
         </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>8</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="1" column="1">
-    <widget class="WarningList" name="warnings" native="true">
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>1</height>
-      </size>
-     </property>
-     <layout class="QVBoxLayout" name="warningsLayout">
-      <property name="spacing">
-       <number>2</number>
-      </property>
-      <property name="leftMargin">
-       <number>0</number>
-      </property>
-      <property name="topMargin">
-       <number>1</number>
-      </property>
-      <property name="rightMargin">
-       <number>0</number>
-      </property>
-      <property name="bottomMargin">
-       <number>0</number>
-      </property>
-     </layout>
-    </widget>
-   </item>
-   <item row="2" column="1">
-    <widget class="QStackedWidget" name="startScreen">
-     <property name="currentIndex">
-      <number>0</number>
-     </property>
-     <widget class="QWidget" name="signPage">
-      <layout class="QVBoxLayout" name="signPageLayout">
-       <property name="spacing">
-        <number>40</number>
-       </property>
-       <property name="leftMargin">
-        <number>0</number>
-       </property>
-       <property name="topMargin">
-        <number>0</number>
-       </property>
-       <property name="rightMargin">
-        <number>0</number>
-       </property>
-       <property name="bottomMargin">
-        <number>0</number>
-       </property>
-       <item>
-        <spacer name="signPageTopSpacer">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>159</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item>
-        <widget class="QLabel" name="signIntroLabel">
-         <property name="text">
-          <string>Drag file here for signing ...</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item alignment="Qt::AlignHCenter">
-        <widget class="QPushButton" name="signIntroButton">
-         <property name="cursor">
-          <cursorShape>PointingHandCursor</cursorShape>
-         </property>
-         <property name="accessibleName">
-          <string comment="accessible">Load file from disk for signing or verifying</string>
-         </property>
-         <property name="text">
-          <string>... or load file from disk</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <spacer name="signPageBottomSpacer">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>260</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-      </layout>
-     </widget>
-     <widget class="ContainerPage" name="signContainerPage"/>
-     <widget class="QWidget" name="cryptoPage">
-      <layout class="QVBoxLayout" name="cryptoPageLayout">
-       <property name="spacing">
-        <number>40</number>
-       </property>
-       <property name="leftMargin">
-        <number>0</number>
-       </property>
-       <property name="topMargin">
-        <number>0</number>
-       </property>
-       <property name="rightMargin">
-        <number>0</number>
-       </property>
-       <property name="bottomMargin">
-        <number>0</number>
-       </property>
-       <item>
-        <spacer name="cryptoPageTopSpacer">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>159</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item>
-        <widget class="QLabel" name="cryptoIntroLabel">
-         <property name="text">
-          <string>Drag file here for encryption ...</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item alignment="Qt::AlignHCenter">
-        <widget class="QPushButton" name="cryptoIntroButton">
-         <property name="cursor">
-          <cursorShape>PointingHandCursor</cursorShape>
-         </property>
-         <property name="accessibleName">
-          <string comment="accessible">Load file from disk for encryption or decryption</string>
-         </property>
-         <property name="text">
-          <string>... or load file from disk</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <spacer name="cryptoPageBottomSpacer">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>260</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-      </layout>
-     </widget>
-     <widget class="ContainerPage" name="cryptoContainerPage"/>
-     <widget class="QWidget" name="eidPage">
-      <layout class="QVBoxLayout" name="eidPageLayout">
-       <property name="spacing">
-        <number>0</number>
-       </property>
-       <property name="leftMargin">
-        <number>0</number>
-       </property>
-       <property name="topMargin">
-        <number>0</number>
-       </property>
-       <property name="rightMargin">
-        <number>0</number>
-       </property>
-       <property name="bottomMargin">
-        <number>0</number>
-       </property>
-       <item>
-        <widget class="MyEidInfo" name="infoStack" native="true"/>
-       </item>
-       <item>
-        <widget class="QWidget" name="noReaderInfo" native="true">
-         <layout class="QVBoxLayout" name="noReaderInfoLayout">
+        <widget class="QWidget" name="signPage">
+         <layout class="QVBoxLayout" name="signPageLayout">
           <property name="spacing">
            <number>40</number>
           </property>
@@ -704,7 +461,7 @@ color: #BFD3E8;
            <number>0</number>
           </property>
           <item>
-           <spacer name="noReaderInfoTopSpacer">
+           <spacer name="signPageTopSpacer">
             <property name="orientation">
              <enum>Qt::Vertical</enum>
             </property>
@@ -717,36 +474,30 @@ color: #BFD3E8;
            </spacer>
           </item>
           <item>
-           <widget class="QLabel" name="noReaderInfoText">
-            <property name="focusPolicy">
-             <enum>Qt::TabFocus</enum>
-            </property>
+           <widget class="QLabel" name="signIntroLabel">
             <property name="text">
-             <string>Connect the card reader to your computer and insert your ID card into the reader</string>
+             <string>Drag file here for signing ...</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignCenter</set>
             </property>
-            <property name="wordWrap">
-             <bool>true</bool>
+           </widget>
+          </item>
+          <item alignment="Qt::AlignHCenter">
+           <widget class="QPushButton" name="signIntroButton">
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
             </property>
-            <property name="openExternalLinks">
-             <bool>true</bool>
+            <property name="accessibleName">
+             <string comment="accessible">Load file from disk for signing or verifying</string>
+            </property>
+            <property name="text">
+             <string>... or load file from disk</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QWidget" name="noReaderInfoTextSpacer" native="true">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>42</height>
-             </size>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <spacer name="noReaderInfoBottomSpacer">
+           <spacer name="signPageBottomSpacer">
             <property name="orientation">
              <enum>Qt::Vertical</enum>
             </property>
@@ -760,9 +511,80 @@ color: #BFD3E8;
           </item>
          </layout>
         </widget>
-       </item>
-      </layout>
-     </widget>
+        <widget class="ContainerPage" name="signContainerPage"/>
+        <widget class="QWidget" name="cryptoPage">
+         <layout class="QVBoxLayout" name="cryptoPageLayout">
+          <property name="spacing">
+           <number>40</number>
+          </property>
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <spacer name="cryptoPageTopSpacer">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>159</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QLabel" name="cryptoIntroLabel">
+            <property name="text">
+             <string>Drag file here for encryption ...</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item alignment="Qt::AlignHCenter">
+           <widget class="QPushButton" name="cryptoIntroButton">
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
+            <property name="accessibleName">
+             <string comment="accessible">Load file from disk for encryption or decryption</string>
+            </property>
+            <property name="text">
+             <string>... or load file from disk</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="cryptoPageBottomSpacer">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>260</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </widget>
+        <widget class="ContainerPage" name="cryptoContainerPage"/>
+        <widget class="MyEidInfo" name="eidPage"/>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </item>
   </layout>
@@ -775,12 +597,6 @@ color: #BFD3E8;
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>CardWidget</class>
-   <extends>QWidget</extends>
-   <header>widgets/CardWidget.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
    <class>ContainerPage</class>
    <extends>QWidget</extends>
    <header>widgets/ContainerPage.h</header>
@@ -790,12 +606,6 @@ color: #BFD3E8;
    <class>MyEidInfo</class>
    <extends>QWidget</extends>
    <header>widgets/MyEidInfo.h</header>
-  </customwidget>
-  <customwidget>
-   <class>NoCardInfo</class>
-   <extends>QWidget</extends>
-   <header>widgets/NoCardInfo.h</header>
-   <container>1</container>
   </customwidget>
   <customwidget>
    <class>PageIcon</class>

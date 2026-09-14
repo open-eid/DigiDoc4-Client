@@ -25,16 +25,13 @@
 #endif
 #include "QPCSC.h"
 #include "QPKCS11.h"
-#include "QSmartCard.h"
 #include "SslCertificate.h"
 
 #include <QtCore/QLoggingCategory>
-#include <QtCore/QMutex>
 #include <QtCore/QReadWriteLock>
-#include <QtCore/QWaitCondition>
+#include <QtCore/QScopeGuard>
+#include <QtCore/QTimer>
 #include <QtNetwork/QSslKey>
-
-static Q_LOGGING_CATEGORY(CryptoLog, "qdigidoc4.QCryptoManager")
 
 // TODO: Port everything to the new OpenSSL API
 #define OPENSSL_SUPPRESS_DEPRECATED
@@ -43,15 +40,14 @@ static Q_LOGGING_CATEGORY(CryptoLog, "qdigidoc4.QCryptoManager")
 #include <openssl/obj_mac.h>
 #include <openssl/rsa.h>
 
+#include <atomic>
+
 struct QCryptoManager::Private
 {
-	QSmartCard smartcard;
-	TokenData auth, sign;
 	QList<TokenData> cache;
 	QReadWriteLock operationLock;
 	QReadWriteLock lock;
-	QMutex sleepMutex;
-	QWaitCondition sleepCond;
+	std::atomic<quint64> nextRequest {0};
 
 	RSA_METHOD *rsa_method = RSA_meth_dup(RSA_get_default_method());
 	EC_KEY_METHOD *ec_method = EC_KEY_METHOD_new(EC_KEY_get_default_method());
@@ -60,9 +56,8 @@ struct QCryptoManager::Private
 QCryptoBackend::~QCryptoBackend()
 {
 	auto *manager = qApp->cryptoManager();
-	manager->smartcard()->reloadCard(token, true);
 	manager->d->operationLock.unlock();
-	manager->d->sleepCond.wakeAll();
+	manager->refreshToken(token);
 }
 
 std::expected<QCryptoBackend *,QCryptoBackend::Status>
@@ -185,10 +180,9 @@ QCryptoManager::QCryptoManager()
 	EC_KEY_METHOD_get_sign(d->ec_method, &sign, &sign_setup, nullptr);
 	EC_KEY_METHOD_set_sign(d->ec_method, sign, sign_setup, ecdsa_do_sign);
 
-	connect(&QPCSC::instance(), &QPCSC::cardChanged, this, [this] {
-		qCDebug(CryptoLog) << "Card change detected";
-		d->sleepCond.wakeAll();
-	});
+	// Token enumeration runs on the manager thread.
+	moveToThread(this);
+	connect(&QPCSC::instance(), &QPCSC::cardChanged, this, &QCryptoManager::refresh);
 	start();
 	QPCSC::instance().start();
 }
@@ -196,7 +190,7 @@ QCryptoManager::QCryptoManager()
 QCryptoManager::~QCryptoManager()
 {
 	requestInterruption();
-	d->sleepCond.wakeAll();
+	quit();
 	wait();
 	EC_KEY_METHOD_free(d->ec_method);
 	RSA_meth_free(d->rsa_method);
@@ -205,50 +199,46 @@ QCryptoManager::~QCryptoManager()
 
 void QCryptoManager::run()
 {
-	while(!isInterruptionRequested())
-	{
-		refresh();
-		QMutexLocker locker(&d->sleepMutex);
-		if(isInterruptionRequested())
-			break;
-		d->sleepCond.wait(&d->sleepMutex, 5000);
-	}
+	QTimer timer;
+	connect(&timer, &QTimer::timeout, this, &QCryptoManager::refresh);
+	timer.start(5000);
+	refresh();
+	exec();
 }
 
 QList<TokenData> QCryptoManager::cache() const { QReadLocker locker(&d->lock); return d->cache; }
-QSmartCard *QCryptoManager::smartcard() const { return &d->smartcard; }
-TokenData QCryptoManager::tokenauth() const { QReadLocker locker(&d->lock); return d->auth; }
-TokenData QCryptoManager::tokensign() const { QReadLocker locker(&d->lock); return d->sign; }
 
-void QCryptoManager::selectCard(const TokenData &token)
+quint64 QCryptoManager::readCard(const TokenData &token, const QSmartCardData &previous)
 {
-	{
-		bool isSign = SslCertificate(token.cert()).keyUsage().contains(SslCertificate::NonRepudiation);
-		QWriteLocker locker(&d->lock);
-		if(isSign)
-			d->sign = token;
-		else
-			d->auth = token;
-		for(const TokenData &t: d->cache)
-		{
-			if(t == token ||
-				t.card() != token.card() ||
-				isSign == SslCertificate(t.cert()).keyUsage().contains(SslCertificate::NonRepudiation))
-				continue;
-			if(isSign)
-				d->auth = t;
-			else
-				d->sign = t;
-			break;
-		}
-	}
-	d->smartcard.reloadCard(token, false);
+	const quint64 request = ++d->nextRequest;
+	QMetaObject::invokeMethod(this, [this, token, previous, request] {
+		QSmartCardData data;
+		if(isInterruptionRequested())
+			return;
+		if(cache().contains(token))
+			data = previous.isNull() ? QSmartCard::readCard(token) : QSmartCard::readCounters(previous);
+		Q_EMIT cardDataReady(request, data);
+	}, Qt::QueuedConnection);
+	return request;
+}
+
+void QCryptoManager::refreshToken(const TokenData &token)
+{
+	QMetaObject::invokeMethod(this, [this, token] {
+		refresh();
+		if(!token.isNull())
+			Q_EMIT tokenChanged(token);
+	}, Qt::QueuedConnection);
 }
 
 void QCryptoManager::refresh()
 {
 	if(!d->operationLock.tryLockForRead())
 		return;
+	auto unlock = qScopeGuard([this] {
+		d->operationLock.unlock();
+		Q_EMIT refreshed();
+	});
 
 #ifdef Q_OS_WIN
 	QList<TokenData> newCache = QCNG::tokens();
@@ -256,56 +246,16 @@ void QCryptoManager::refresh()
 	QList<TokenData> newCache = QPKCS11::tokens();
 #endif
 
-	QList<TokenData> acards, scards;
-	for(const TokenData &t: newCache)
-	{
-		SslCertificate c(t.cert());
-		if(c.keyUsage().contains(SslCertificate::KeyEncipherment) ||
-			c.keyUsage().contains(SslCertificate::KeyAgreement))
-			acards.append(t);
-		if(c.keyUsage().contains(SslCertificate::NonRepudiation))
-			scards.append(t);
-	}
-
 	bool cacheChangedFlag = false;
-	TokenData aold, sold, anew, snew;
 	{
 		QWriteLocker locker(&d->lock);
 		if(newCache != d->cache)
 		{
-			d->cache = std::move(newCache);
+			d->cache = newCache;
 			cacheChangedFlag = true;
 		}
-
-		aold = d->auth;
-		sold = d->sign;
-
-		if(!d->auth.isNull() && !acards.contains(d->auth))
-		{
-			qCDebug(CryptoLog) << "Disconnected from auth card" << d->auth.card();
-			d->auth.clear();
-		}
-		if(!d->sign.isNull() && !scards.contains(d->sign))
-		{
-			qCDebug(CryptoLog) << "Disconnected from sign card" << d->sign.card();
-			d->sign.clear();
-		}
-
-		if(d->sign.isNull() && !scards.isEmpty())
-			d->sign = scards.first();
-		if(d->auth.isNull() && !acards.isEmpty())
-			d->auth = acards.first();
-
-		anew = d->auth;
-		snew = d->sign;
 	}
 
 	if(cacheChangedFlag)
-		Q_EMIT cacheChanged();
-	if(sold != snew)
-		d->smartcard.reloadCard(snew, false);
-	else if(aold != anew)
-		d->smartcard.reloadCard(anew, false);
-
-	d->operationLock.unlock();
+		Q_EMIT cacheChanged(newCache);
 }

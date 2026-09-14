@@ -1412,10 +1412,6 @@ LDAP server is unavailable.</translation>
         <translation>Cannot alter container</translation>
     </message>
     <message>
-        <source>Connect the card reader to your computer and insert your ID card into the reader</source>
-        <translation>Connect the card reader to your computer and insert your ID-card into the reader</translation>
-    </message>
-    <message>
         <source>Signing</source>
         <translation>Signing</translation>
     </message>
@@ -1443,10 +1439,6 @@ LDAP server is unavailable.</translation>
         <source>Select my EID page</source>
         <extracomment>accessible</extracomment>
         <translation>Select my EID page</translation>
-    </message>
-    <message>
-        <source>The card in the card reader is not an Estonian ID-card</source>
-        <translation>The card in the card reader is not an Estonian ID-card</translation>
     </message>
     <message>
         <source>My eID</source>
@@ -1698,24 +1690,29 @@ LDAP server is unavailable.</translation>
         <source>Country</source>
         <translation>Country</translation>
     </message>
-</context>
-<context>
-    <name>NoCardInfo</name>
     <message>
-        <source>No card in reader</source>
-        <translation>No card in card reader; check if ID-card is inserted correctly</translation>
+        <source>No card reader found. Connect a card reader to your computer.</source>
+        <translation>No card reader found. Connect a card reader to your computer.</translation>
     </message>
     <message>
-        <source>No readers found</source>
-        <translation>No card readers found</translation>
+        <source>No card in the reader. Insert your ID-card into the reader.</source>
+        <translation>No card in the reader. Insert your ID-card into the reader.</translation>
     </message>
     <message>
-        <source>Loading data</source>
-        <translation>Loading data</translation>
+        <source>The card in the reader is not supported. Insert an Estonian ID-card.</source>
+        <translation>The card in the reader is not supported. Insert an Estonian ID-card.</translation>
     </message>
     <message>
         <source>The PCSC service, required for using the ID-card, is not working. Check your computer settings.</source>
         <translation>The PCSC service, required for using the ID-card, is not working. Check your computer settings.</translation>
+    </message>
+    <message>
+        <source>Reading card...</source>
+        <translation>Reading card...</translation>
+    </message>
+    <message>
+        <source>Failed to read card data</source>
+        <translation>Failed to read card data</translation>
     </message>
 </context>
 <context>
@@ -2809,6 +2806,18 @@ Additional licenses and components</translation>
     <message>
         <source>Failed to sign document</source>
         <translation>Failed to sign document</translation>
+    </message>
+    <message>
+        <source>No card in reader</source>
+        <translation>No card in card reader; check if ID-card is inserted correctly</translation>
+    </message>
+    <message>
+        <source>No readers found</source>
+        <translation>No card readers found</translation>
+    </message>
+    <message>
+        <source>The PCSC service, required for using the ID-card, is not working. Check your computer settings.</source>
+        <translation>The PCSC service, required for using the ID-card, is not working. Check your computer settings.</translation>
     </message>
 </context>
 <context>

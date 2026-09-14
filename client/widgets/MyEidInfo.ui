@@ -4,43 +4,152 @@
 <ui version="4.0">
  <class>MyEidInfo</class>
  <widget class="QWidget" name="MyEidInfo">
-  <property name="geometry">
-   <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>882</width>
-    <height>387</height>
-   </rect>
-  </property>
   <property name="styleSheet">
    <string notr="true">#authBox, #signBox, #pukBox {
 border: 1px solid #E7EAEF;
 border-radius: 8px;
+}
+#topBar {
+background-color: #FFFFFF;
+border-bottom: 1px solid #E7EAEF;
+}
+#noReaderInfo {
+background-image: url(:/images/bg_lovid.svg);
+background-repeat: repeat-x;
+background-position: bottom;
+}
+#noReaderInfoText {
+font-family: Roboto, Helvetica;
+font-size: 18px;
+font-weight: 400;
 }</string>
   </property>
-  <layout class="QGridLayout" name="MyEidInfoLayout" rowstretch="0,1">
+  <layout class="QVBoxLayout" name="eidPageLayout">
+   <property name="spacing">
+    <number>0</number>
+   </property>
    <property name="leftMargin">
-    <number>24</number>
+    <number>0</number>
    </property>
    <property name="topMargin">
-    <number>24</number>
+    <number>0</number>
    </property>
    <property name="rightMargin">
-    <number>24</number>
+    <number>0</number>
    </property>
    <property name="bottomMargin">
-    <number>26</number>
+    <number>0</number>
    </property>
-   <property name="horizontalSpacing">
-    <number>24</number>
-   </property>
-   <property name="verticalSpacing">
-    <number>40</number>
-   </property>
-   <item row="0" column="0" colspan="3" alignment="Qt::AlignLeft">
-    <widget class="QWidget" name="InfoStack" native="true">
-     <property name="styleSheet">
-      <string notr="true">QLabel {
+   <item>
+    <widget class="QWidget" name="topBar" native="true">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>54</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>54</height>
+      </size>
+     </property>
+     <layout class="QHBoxLayout" name="topBarLayout">
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>6</number>
+      </property>
+      <property name="rightMargin">
+       <number>16</number>
+      </property>
+      <property name="bottomMargin">
+       <number>6</number>
+      </property>
+      <item>
+       <widget class="CardWidget" name="cardInfo" native="true"/>
+      </item>
+      <item>
+       <widget class="QToolButton" name="selector">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>32</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>32</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">border: none;</string>
+        </property>
+        <property name="icon">
+         <iconset resource="../images/images.qrc">
+          <normaloff>:/images/arrow_down.svg</normaloff>
+          <activeon>:/images/arrow_down_selected.svg</activeon>:/images/arrow_down.svg</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="topBarSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>8</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QWidget" name="cardDetails" native="true">
+     <layout class="QVBoxLayout" name="MyEidInfoLayout" stretch="0,1">
+      <property name="spacing">
+       <number>40</number>
+      </property>
+      <property name="leftMargin">
+       <number>24</number>
+      </property>
+      <property name="topMargin">
+       <number>24</number>
+      </property>
+      <property name="rightMargin">
+       <number>24</number>
+      </property>
+      <property name="bottomMargin">
+       <number>26</number>
+      </property>
+      <item alignment="Qt::AlignLeft">
+       <widget class="QWidget" name="InfoStack" native="true">
+        <property name="styleSheet">
+         <string notr="true">QLabel {
 color: #607496;
 font-family: Roboto, Helvetica;
 font-size: 12px;
@@ -67,8 +176,237 @@ color: #1A641B;
 background: #EAF8EA;
 font-weight: 400;
 }</string>
-     </property>
-     <layout class="QGridLayout" name="InfoStackLayout" columnstretch="0,1">
+        </property>
+        <layout class="QGridLayout" name="InfoStackLayout" columnstretch="0,1">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <property name="horizontalSpacing">
+          <number>56</number>
+         </property>
+         <property name="verticalSpacing">
+          <number>32</number>
+         </property>
+         <item row="0" column="0">
+          <layout class="QVBoxLayout" name="layoutGivenNames">
+           <property name="spacing">
+            <number>2</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="labelGivenNames">
+             <property name="focusPolicy">
+              <enum>Qt::TabFocus</enum>
+             </property>
+             <property name="text">
+              <string>Given names</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="Label" name="valueGivenNames">
+             <property name="wrapAtWidth" stdset="0">
+              <number>392</number>
+             </property>
+             <property name="focusPolicy">
+              <enum>Qt::TabFocus</enum>
+             </property>
+             <property name="text">
+              <string notr="true">valueGivenNames</string>
+             </property>
+             <property name="wordWrap">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="0" column="1">
+          <layout class="QVBoxLayout" name="layoutSurname">
+           <property name="spacing">
+            <number>2</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="labelSurname">
+             <property name="focusPolicy">
+              <enum>Qt::TabFocus</enum>
+             </property>
+             <property name="text">
+              <string>Surname</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="Label" name="valueSurname">
+             <property name="wrapAtWidth" stdset="0">
+              <number>392</number>
+             </property>
+             <property name="focusPolicy">
+              <enum>Qt::TabFocus</enum>
+             </property>
+             <property name="text">
+              <string notr="true">valueSurname</string>
+             </property>
+             <property name="wordWrap">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="1" column="0">
+          <layout class="QVBoxLayout" name="layoutPersonalCode">
+           <property name="spacing">
+            <number>2</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="labelPersonalCode">
+             <property name="focusPolicy">
+              <enum>Qt::TabFocus</enum>
+             </property>
+             <property name="text">
+              <string>Personal code</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="valuePersonalCode">
+             <property name="focusPolicy">
+              <enum>Qt::TabFocus</enum>
+             </property>
+             <property name="text">
+              <string notr="true">valuePersonalCode</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="1" column="1">
+          <layout class="QVBoxLayout" name="layoutCitizenship">
+           <property name="spacing">
+            <number>2</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="labelCitizenship">
+             <property name="focusPolicy">
+              <enum>Qt::TabFocus</enum>
+             </property>
+             <property name="text">
+              <string>Citizenship</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="valueCitizenship">
+             <property name="focusPolicy">
+              <enum>Qt::TabFocus</enum>
+             </property>
+             <property name="text">
+              <string notr="true">valueCitizenship</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="2" column="0">
+          <layout class="QVBoxLayout" name="layoutExpiryDate">
+           <property name="spacing">
+            <number>2</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="labelExpiryDate">
+             <property name="focusPolicy">
+              <enum>Qt::TabFocus</enum>
+             </property>
+             <property name="text">
+              <string>Expiry date</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="Label" name="valueExpiryDate">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="focusPolicy">
+              <enum>Qt::TabFocus</enum>
+             </property>
+             <property name="text">
+              <string notr="true">valueExpiryDate</string>
+             </property>
+             <property name="label" stdset="0">
+              <string notr="true">good</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="2" column="1">
+          <layout class="QVBoxLayout" name="layoutDocument">
+           <property name="spacing">
+            <number>2</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="labelDocument">
+             <property name="focusPolicy">
+              <enum>Qt::TabFocus</enum>
+             </property>
+             <property name="text">
+              <string>Document</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="valueDocument">
+             <property name="focusPolicy">
+              <enum>Qt::TabFocus</enum>
+             </property>
+             <property name="text">
+              <string notr="true">valueSerialNumber</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="certLayout" stretch="1,1,1">
+        <property name="spacing">
+         <number>24</number>
+        </property>
+        <item>
+         <widget class="VerifyCert" name="authBox" native="true"/>
+        </item>
+        <item>
+         <widget class="VerifyCert" name="signBox" native="true"/>
+        </item>
+        <item>
+         <widget class="VerifyCert" name="pukBox" native="true"/>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QWidget" name="noReaderInfo" native="true">
+     <layout class="QVBoxLayout" name="noReaderInfoLayout">
+      <property name="spacing">
+       <number>0</number>
+      </property>
       <property name="leftMargin">
        <number>0</number>
       </property>
@@ -81,210 +419,37 @@ font-weight: 400;
       <property name="bottomMargin">
        <number>0</number>
       </property>
-      <property name="horizontalSpacing">
-       <number>56</number>
-      </property>
-      <property name="verticalSpacing">
-       <number>32</number>
-      </property>
-      <item row="0" column="0">
-       <layout class="QVBoxLayout" name="layoutGivenNames">
-        <property name="spacing">
-         <number>2</number>
+      <item>
+       <widget class="QLabel" name="noReaderInfoText">
+        <property name="focusPolicy">
+         <enum>Qt::TabFocus</enum>
         </property>
-        <item>
-         <widget class="QLabel" name="labelGivenNames">
-          <property name="focusPolicy">
-           <enum>Qt::TabFocus</enum>
-          </property>
-          <property name="text">
-           <string>Given names</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="Label" name="valueGivenNames">
-          <property name="wrapAtWidth" stdset="0">
-           <number>392</number>
-          </property>
-          <property name="focusPolicy">
-           <enum>Qt::TabFocus</enum>
-          </property>
-          <property name="text">
-           <string notr="true">valueGivenNames</string>
-          </property>
-          <property name="wordWrap">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item row="0" column="1">
-       <layout class="QVBoxLayout" name="layoutSurname">
-        <property name="spacing">
-         <number>2</number>
+        <property name="text">
+         <string>Reading card...</string>
         </property>
-        <item>
-         <widget class="QLabel" name="labelSurname">
-          <property name="focusPolicy">
-           <enum>Qt::TabFocus</enum>
-          </property>
-          <property name="text">
-           <string>Surname</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="Label" name="valueSurname">
-          <property name="wrapAtWidth" stdset="0">
-           <number>392</number>
-          </property>
-          <property name="focusPolicy">
-           <enum>Qt::TabFocus</enum>
-          </property>
-          <property name="text">
-           <string notr="true">valueSurname</string>
-          </property>
-          <property name="wordWrap">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item row="1" column="0">
-       <layout class="QVBoxLayout" name="layoutPersonalCode">
-        <property name="spacing">
-         <number>2</number>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
         </property>
-        <item>
-         <widget class="QLabel" name="labelPersonalCode">
-          <property name="focusPolicy">
-           <enum>Qt::TabFocus</enum>
-          </property>
-          <property name="text">
-           <string>Personal code</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="valuePersonalCode">
-          <property name="focusPolicy">
-           <enum>Qt::TabFocus</enum>
-          </property>
-          <property name="text">
-           <string notr="true">valuePersonalCode</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item row="1" column="1">
-       <layout class="QVBoxLayout" name="layoutCitizenship">
-        <property name="spacing">
-         <number>2</number>
+        <property name="wordWrap">
+         <bool>true</bool>
         </property>
-        <item>
-         <widget class="QLabel" name="labelCitizenship">
-          <property name="focusPolicy">
-           <enum>Qt::TabFocus</enum>
-          </property>
-          <property name="text">
-           <string>Citizenship</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="valueCitizenship">
-          <property name="focusPolicy">
-           <enum>Qt::TabFocus</enum>
-          </property>
-          <property name="text">
-           <string notr="true">valueCitizenship</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item row="2" column="0">
-       <layout class="QVBoxLayout" name="layoutExpiryDate">
-        <property name="spacing">
-         <number>2</number>
+        <property name="openExternalLinks">
+         <bool>true</bool>
         </property>
-        <item>
-         <widget class="QLabel" name="labelExpiryDate">
-          <property name="focusPolicy">
-           <enum>Qt::TabFocus</enum>
-          </property>
-          <property name="text">
-           <string>Expiry date</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="Label" name="valueExpiryDate">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="focusPolicy">
-           <enum>Qt::TabFocus</enum>
-          </property>
-          <property name="text">
-           <string notr="true">valueExpiryDate</string>
-          </property>
-          <property name="label" stdset="0">
-           <string notr="true">good</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item row="2" column="1">
-       <layout class="QVBoxLayout" name="layoutDocument">
-        <property name="spacing">
-         <number>2</number>
-        </property>
-        <item>
-         <widget class="QLabel" name="labelDocument">
-          <property name="focusPolicy">
-           <enum>Qt::TabFocus</enum>
-          </property>
-          <property name="text">
-           <string>Document</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="valueDocument">
-          <property name="focusPolicy">
-           <enum>Qt::TabFocus</enum>
-          </property>
-          <property name="text">
-           <string notr="true">valueSerialNumber</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
+       </widget>
       </item>
      </layout>
     </widget>
    </item>
-   <item row="1" column="0">
-    <widget class="VerifyCert" name="authBox" native="true"/>
-   </item>
-   <item row="1" column="1">
-    <widget class="VerifyCert" name="signBox" native="true"/>
-   </item>
-   <item row="1" column="2">
-    <widget class="VerifyCert" name="pukBox" native="true"/>
-   </item>
   </layout>
  </widget>
  <customwidgets>
+  <customwidget>
+   <class>CardWidget</class>
+   <extends>QWidget</extends>
+   <header>widgets/CardWidget.h</header>
+   <container>1</container>
+  </customwidget>
   <customwidget>
    <class>Label</class>
    <extends>QLabel</extends>
@@ -297,6 +462,8 @@ font-weight: 400;
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="../images/images.qrc"/>
+ </resources>
  <connections/>
 </ui>

@@ -248,7 +248,7 @@ QList<TokenData> QCNG::tokens()
 				{"3BD518008131FE7D8073C82110F4"}, // SafeNet 5110 FIPS
 				{"3BFF9600008131FE4380318065B0846566FB12017882900085"}, // SafeNet 5110+ FIPS
 			};
-			t.setData(u"PSS"_s, usePSS.contains(QPCSCReader(reader, &QPCSC::instance()).atr()));
+			t.setData(u"PSS"_s, usePSS.contains(QPCSCReader(reader).atr()));
 		}
 	};
 

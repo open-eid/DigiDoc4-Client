@@ -18,6 +18,7 @@ public:
 	~CardListItem() final;
 
 	TokenData token() const;
+	void refresh();
 	void update(const TokenData &token, bool selected);
 
 signals:
