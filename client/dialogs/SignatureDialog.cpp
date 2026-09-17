@@ -27,6 +27,7 @@
 #include "effects/Overlay.h"
 
 #include <QDesktopServices>
+#include <QTextFrame>
 
 SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *parent)
 :	QDialog( parent )
@@ -38,11 +39,11 @@ SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *par
 	setWindowFlags(windowFlags()|Qt::FramelessWindowHint);
 	d->showErrors->hide();
 	d->error->hide();
-	connect(d->showErrors, &AccordionTitle::toggled, d->showRole, [this](bool open) {
+	connect(d->showErrors, &QCheckBox::toggled, d->showRole, [this](bool open) {
 		d->showRole->setChecked(!open);
 		d->error->setVisible(open && !d->showErrors->isHidden());
 	});
-	connect(d->showRole, &AccordionTitle::toggled, d->showErrors, [this](bool open) {
+	connect(d->showRole, &QCheckBox::toggled, d->showErrors, [this](bool open) {
 		d->showErrors->setChecked(!open);
 		d->role->setVisible(open);
 	});
@@ -119,27 +120,48 @@ SignatureDialog::SignatureDialog(const DigiDocSignature &signature, QWidget *par
 	d->title->setText(!c.isNull() ? c.toString(c.showCN() ? QStringLiteral("CN serialNumber") : QStringLiteral("GN SN serialNumber")) : s.signedBy());
 	connect(d->close, &QPushButton::clicked, this, &SignatureDialog::accept);
 
-	const QStringList l = s.locations();
-	d->signerCity->setText( l.value( 0 ) );
-	d->signerState->setText( l.value( 1 ) );
-	d->signerZip->setText( l.value( 2 ) );
-	d->signerCountry->setText( l.value( 3 ) );
-
-	d->signerRoles->setText(s.roles().join(QStringLiteral(", ")));
-	auto setFocus = [](QLabel *lbl, QLabel *cnt) {
-		lbl->setFocusPolicy(cnt->text().isEmpty() ? Qt::NoFocus : Qt::TabFocus);
-		cnt->setFocusPolicy(cnt->text().isEmpty() ? Qt::NoFocus : Qt::TabFocus);
+	const auto l = s.location();
+	auto setAddress = [](QTextEdit *field, const QString &value) {
+		field->setPlainText(value.simplified());
+		QTextFrameFormat format = field->document()->rootFrame()->frameFormat();
+		format.setLeftMargin(13);
+		format.setTopMargin(8);
+		format.setRightMargin(13);
+		format.setBottomMargin(0);
+		field->document()->rootFrame()->setFrameFormat(format);
+		field->moveCursor(QTextCursor::Start);
 	};
-	setFocus(d->labelCity, d->signerCity);
-	setFocus(d->labelState, d->signerState);
-	setFocus(d->labelCountry, d->signerCountry);
-	setFocus(d->labelZip, d->signerZip);
-	setFocus(d->labelRoles, d->signerRoles);
+	setAddress(d->signerCity, l.city);
+	setAddress(d->signerState, l.stateOrProvince);
+	setAddress(d->signerZip, l.postalCode);
+	setAddress(d->signerCountry, l.countryName);
+	setAddress(d->signerStreet, l.streetAddress);
+
+	const QString roles = s.roles().join(QStringLiteral(", "));
+	d->signerRoles->setPlainText(roles);
+	QTextFrameFormat roleFormat = d->signerRoles->document()->rootFrame()->frameFormat();
+	roleFormat.setLeftMargin(13);
+	roleFormat.setTopMargin(9);
+	roleFormat.setRightMargin(13);
+	roleFormat.setBottomMargin(9);
+	d->signerRoles->document()->rootFrame()->setFrameFormat(roleFormat);
+	auto setFocus = [](QLabel *lbl, QWidget *cnt, const QString &text) {
+		auto policy = text.isEmpty() ? Qt::NoFocus : Qt::TabFocus;
+		lbl->setFocusPolicy(policy);
+		cnt->setFocusPolicy(policy);
+	};
+	setFocus(d->labelRoles, d->signerRoles, roles);
+	setFocus(d->labelStreet, d->signerStreet, l.streetAddress);
+	setFocus(d->labelCity, d->signerCity, l.city);
+	setFocus(d->labelState, d->signerState, l.stateOrProvince);
+	setFocus(d->labelCountry, d->signerCountry, l.countryName);
+	setFocus(d->labelZip, d->signerZip, l.postalCode);
 
 	// Certificate info
 	QTreeWidget *t = d->signatureView;
+	t->header()->setFixedHeight(34);
 	t->header()->setSectionResizeMode(0, QHeaderView::Fixed);
-	t->header()->resizeSection(0, 244);
+	t->header()->resizeSection(0, 270);
 
 	auto addCert = [this](QTreeWidget *t, const QString &title, const QString &title2, const QSslCertificate &cert) {
 		if(cert.isNull())
@@ -191,6 +213,7 @@ void SignatureDialog::addItem(QTreeWidget *view, const QString &variable, QWidge
 {
 	auto *i = new QTreeWidgetItem(view);
 	QLabel *header = itemLabel(variable, view);
+	header->setProperty("attributeColumn", true);
 	view->setItemWidget(i, 0, header);
 	view->setItemWidget(i, 1, value);
 	view->addTopLevelItem(i);

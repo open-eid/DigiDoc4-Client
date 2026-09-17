@@ -281,11 +281,6 @@ QByteArray SslCertificate::subjectKeyIdentifier() const
 	return !id ? QByteArray() : toQByteArray(id);
 }
 
-QByteArray SslCertificate::toHex(const QByteArray &in, char separator)
-{
-	return in.toHex(separator).toUpper();
-}
-
 QString SslCertificate::toString( const QString &format ) const
 {
 	static const QRegularExpression r(QStringLiteral("[a-zA-Z]+"));
