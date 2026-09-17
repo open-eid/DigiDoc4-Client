@@ -363,7 +363,7 @@ QByteArray QPKCS11::deriveHMACExtract(const QByteArray &publicKey, const QByteAr
 	return out;
 }
 
-QPKCS11::Status QPKCS11::login(const TokenData &t)
+QPKCS11::Status QPKCS11::login(const TokenData &t, const QString &pin)
 {
 	if(!d->l) {
 		d->l = QPKCS11Library::current();
@@ -403,12 +403,19 @@ QPKCS11::Status QPKCS11::login(const TokenData &t)
 			p.startTimer();
 			return waitFor(d->l->f->C_Login, d->session, CKU_USER, nullptr, 0);
 		} else {
-			PinPopup p(isSign ? QSmartCardData::Pin2Type : QSmartCardData::Pin1Type, f, cert, Application::mainWindow());
-			p.setPinLen(token.ulMinPinLen, token.ulMaxPinLen < 12 ? 12 : token.ulMaxPinLen);
-			if(!p.exec())
-				return CKR_FUNCTION_CANCELED;
-			QByteArray pin = p.pin().toUtf8();
-			return d->l->f->C_Login(d->session, CKU_USER, CK_UTF8CHAR_PTR(pin.constData()), CK_ULONG(pin.size()));
+			QByteArray pinData;
+			if(pin.isEmpty()) {
+				// No PIN supplied by the caller: prompt with the modal popup.
+				PinPopup p(isSign ? QSmartCardData::Pin2Type : QSmartCardData::Pin1Type, f, cert, Application::mainWindow());
+				p.setPinLen(token.ulMinPinLen, token.ulMaxPinLen < 12 ? 12 : token.ulMaxPinLen);
+				if(!p.exec())
+					return CKR_FUNCTION_CANCELED;
+				pinData = p.pin().toUtf8();
+			} else {
+				// Caller supplied the PIN (e.g. an inline field).
+				pinData = pin.toUtf8();
+			}
+			return d->l->f->C_Login(d->session, CKU_USER, CK_UTF8CHAR_PTR(pinData.constData()), CK_ULONG(pinData.size()));
 		}
 	});
 
@@ -473,6 +480,7 @@ QList<TokenData> QPKCS11::tokens()
 			t.setData(QStringLiteral("slot"), QVariant::fromValue(slot));
 			t.setData(QStringLiteral("id"), id);
 			t.setData(QStringLiteral("blocked"), (token.flags & (CKF_USER_PIN_LOCKED|CKF_USER_PIN_TO_BE_CHANGED)) > 0);
+			t.setData(QStringLiteral("pinpad"), (token.flags & CKF_PROTECTED_AUTHENTICATION_PATH) > 0);
 
 			CK_KEY_TYPE keyType = CKK_RSA;
 			CK_ATTRIBUTE attribute { CKA_KEY_TYPE, &keyType, sizeof(keyType) };

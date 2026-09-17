@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MyEidInfo</class>
+ <widget class="QWidget" name="MyEidInfo">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>882</width>
+    <height>387</height>
+   </rect>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">#authBox, #signBox, #pukBox {
+border: 1px solid #E7EAEF;
+border-radius: 8px;
+}</string>
+  </property>
+  <layout class="QGridLayout" name="MyEidInfoLayout" rowstretch="0,1">
+   <property name="leftMargin">
+    <number>24</number>
+   </property>
+   <property name="topMargin">
+    <number>24</number>
+   </property>
+   <property name="rightMargin">
+    <number>24</number>
+   </property>
+   <property name="bottomMargin">
+    <number>26</number>
+   </property>
+   <property name="horizontalSpacing">
+    <number>24</number>
+   </property>
+   <property name="verticalSpacing">
+    <number>40</number>
+   </property>
+   <item row="0" column="0" colspan="3" alignment="Qt::AlignLeft">
+    <widget class="QWidget" name="InfoStack" native="true">
+     <property name="styleSheet">
+      <string notr="true">QLabel {
+color: #607496;
+font-family: Roboto, Helvetica;
+font-size: 12px;
+font-weight: 400;
+}
+#valueGivenNames, #valueSurname,
+#valuePersonalCode, #valueCitizenship,
+#valueDocument, #valueExpiryDate {
+color: #003168;
+font-size: 14px;
+font-weight: 700;
+}
+#valueExpiryDate[label=&quot;error&quot;] {
+padding: 2px 10px;
+border-radius: 8px;
+color: #AD2A45;
+background: #F5EBED;
+font-weight: 400;
+}
+#valueExpiryDate[label=&quot;good&quot;] {
+padding: 2px 10px;
+border-radius: 8px;
+color: #1A641B;
+background: #EAF8EA;
+font-weight: 400;
+}</string>
+     </property>
+     <layout class="QGridLayout" name="InfoStackLayout" columnstretch="0,1">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <property name="horizontalSpacing">
+       <number>56</number>
+      </property>
+      <property name="verticalSpacing">
+       <number>32</number>
+      </property>
+      <item row="0" column="0">
+       <layout class="QVBoxLayout" name="layoutGivenNames">
+        <property name="spacing">
+         <number>2</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="labelGivenNames">
+          <property name="focusPolicy">
+           <enum>Qt::TabFocus</enum>
+          </property>
+          <property name="text">
+           <string>Given names</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Label" name="valueGivenNames">
+          <property name="wrapAtWidth" stdset="0">
+           <number>392</number>
+          </property>
+          <property name="focusPolicy">
+           <enum>Qt::TabFocus</enum>
+          </property>
+          <property name="text">
+           <string notr="true">valueGivenNames</string>
+          </property>
+          <property name="wordWrap">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="0" column="1">
+       <layout class="QVBoxLayout" name="layoutSurname">
+        <property name="spacing">
+         <number>2</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="labelSurname">
+          <property name="focusPolicy">
+           <enum>Qt::TabFocus</enum>
+          </property>
+          <property name="text">
+           <string>Surname</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Label" name="valueSurname">
+          <property name="wrapAtWidth" stdset="0">
+           <number>392</number>
+          </property>
+          <property name="focusPolicy">
+           <enum>Qt::TabFocus</enum>
+          </property>
+          <property name="text">
+           <string notr="true">valueSurname</string>
+          </property>
+          <property name="wordWrap">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="1" column="0">
+       <layout class="QVBoxLayout" name="layoutPersonalCode">
+        <property name="spacing">
+         <number>2</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="labelPersonalCode">
+          <property name="focusPolicy">
+           <enum>Qt::TabFocus</enum>
+          </property>
+          <property name="text">
+           <string>Personal code</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="valuePersonalCode">
+          <property name="focusPolicy">
+           <enum>Qt::TabFocus</enum>
+          </property>
+          <property name="text">
+           <string notr="true">valuePersonalCode</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="1" column="1">
+       <layout class="QVBoxLayout" name="layoutCitizenship">
+        <property name="spacing">
+         <number>2</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="labelCitizenship">
+          <property name="focusPolicy">
+           <enum>Qt::TabFocus</enum>
+          </property>
+          <property name="text">
+           <string>Citizenship</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="valueCitizenship">
+          <property name="focusPolicy">
+           <enum>Qt::TabFocus</enum>
+          </property>
+          <property name="text">
+           <string notr="true">valueCitizenship</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="2" column="0">
+       <layout class="QVBoxLayout" name="layoutExpiryDate">
+        <property name="spacing">
+         <number>2</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="labelExpiryDate">
+          <property name="focusPolicy">
+           <enum>Qt::TabFocus</enum>
+          </property>
+          <property name="text">
+           <string>Expiry date</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Label" name="valueExpiryDate">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="focusPolicy">
+           <enum>Qt::TabFocus</enum>
+          </property>
+          <property name="text">
+           <string notr="true">valueExpiryDate</string>
+          </property>
+          <property name="label" stdset="0">
+           <string notr="true">good</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="2" column="1">
+       <layout class="QVBoxLayout" name="layoutDocument">
+        <property name="spacing">
+         <number>2</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="labelDocument">
+          <property name="focusPolicy">
+           <enum>Qt::TabFocus</enum>
+          </property>
+          <property name="text">
+           <string>Document</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="valueDocument">
+          <property name="focusPolicy">
+           <enum>Qt::TabFocus</enum>
+          </property>
+          <property name="text">
+           <string notr="true">valueSerialNumber</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="VerifyCert" name="authBox" native="true"/>
+   </item>
+   <item row="1" column="1">
+    <widget class="VerifyCert" name="signBox" native="true"/>
+   </item>
+   <item row="1" column="2">
+    <widget class="VerifyCert" name="pukBox" native="true"/>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Label</class>
+   <extends>QLabel</extends>
+   <header>widgets/Label.h</header>
+  </customwidget>
+  <customwidget>
+   <class>VerifyCert</class>
+   <extends>QWidget</extends>
+   <header>widgets/VerifyCert.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
