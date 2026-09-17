@@ -249,6 +249,17 @@
     </message>
 </context>
 <context>
+    <name>CardListItem</name>
+    <message>
+        <source>Issuer</source>
+        <translation>Issuer</translation>
+    </message>
+    <message>
+        <source>Valid to</source>
+        <translation>Valid to</translation>
+    </message>
+</context>
+<context>
     <name>CardWidget</name>
     <message>
         <source>ID-card</source>
@@ -456,8 +467,8 @@
         <translation>Check proxy username and password</translation>
     </message>
     <message>
-        <source>Cannot connect to certificate status service!</source>
-        <translation>Cannot connect to certificate status service!</translation>
+        <source>Check internet connection</source>
+        <translation>Check internet connection</translation>
     </message>
 </context>
 <context>
@@ -478,12 +489,16 @@
         <translation>Container:</translation>
     </message>
     <message>
-        <source>The document has already been signed by you</source>
-        <translation>The document has already been signed by you</translation>
-    </message>
-    <message>
         <source>DigiDoc4 Client</source>
         <translation>DigiDoc4 Client</translation>
+    </message>
+    <message>
+        <source>Encrypt for recipients</source>
+        <translation>Encrypt for recipients</translation>
+    </message>
+    <message>
+        <source>Encrypt with password</source>
+        <translation>Encrypt with password</translation>
     </message>
     <message>
         <source>Decrypting</source>
@@ -522,6 +537,10 @@
         <translation>Change</translation>
     </message>
     <message>
+        <source>Password encryption is meant for long-term storage. The password cannot be changed or recovered.</source>
+        <translation>Password encryption is meant for long-term storage. The password cannot be changed or recovered.</translation>
+    </message>
+    <message>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
@@ -552,10 +571,6 @@
     <message>
         <source>Sign</source>
         <translation>Sign</translation>
-    </message>
-    <message>
-        <source>Continue signing</source>
-        <translation>Continue signing</translation>
     </message>
     <message>
         <source>Encrypting</source>
@@ -607,6 +622,10 @@
     <message>
         <source>Failed to open document</source>
         <translation>Failed to open document</translation>
+    </message>
+    <message>
+        <source>Failed to decrypt document</source>
+        <translation>Failed to decrypt document</translation>
     </message>
     <message>
         <source>Wrong password.</source>
@@ -1304,6 +1323,10 @@
         <translation>Failed to init ldap</translation>
     </message>
     <message>
+        <source>Failed to set ldap CA cert</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Failed to init ldap search</source>
         <translation>Failed to init ldap search</translation>
     </message>
@@ -1344,29 +1367,6 @@ LDAP server is unavailable.</translation>
 <context>
     <name>MainAction</name>
     <message>
-        <source>Token selection</source>
-        <comment>accessible</comment>
-        <translation>Token selection</translation>
-    </message>
-    <message>
-        <source>Sign with
-Mobile-ID</source>
-        <translation>Sign with
-Mobile-ID</translation>
-    </message>
-    <message>
-        <source>Sign with
-Smart-ID</source>
-        <translation>Sign with
-Smart-ID</translation>
-    </message>
-    <message>
-        <source>Sign with
-E-Seal</source>
-        <translation>Sign with
-E-Seal</translation>
-    </message>
-    <message>
         <source>Encrypt</source>
         <translation>Encrypt</translation>
     </message>
@@ -1375,22 +1375,8 @@ E-Seal</translation>
         <translation>Decrypt</translation>
     </message>
     <message>
-        <source>Decrypt with
-ID-Card</source>
-        <translation>Decrypt with
-ID-Card</translation>
-    </message>
-    <message>
-        <source>Encrypt
-long-term</source>
-        <translation>Encrypt
-long-term</translation>
-    </message>
-    <message>
-        <source>Sign with
-ID-Card</source>
-        <translation>Sign with
-ID-Card</translation>
+        <source>Sign</source>
+        <translation>Sign</translation>
     </message>
 </context>
 <context>
@@ -1480,10 +1466,6 @@ ID-Card</translation>
         <translation>Signing</translation>
     </message>
     <message>
-        <source>Check internet connection</source>
-        <translation>Check internet connection</translation>
-    </message>
-    <message>
         <source>Load file from disk for signing or verifying</source>
         <comment>accessible</comment>
         <translation>Load file from disk for signing or verifying</translation>
@@ -1558,49 +1540,6 @@ ID-Card</translation>
     </message>
 </context>
 <context>
-    <name>MobileDialog</name>
-    <message>
-        <source>Enter your phone number to sign with mobile-ID</source>
-        <translation>&lt;b&gt;Enter your phone number to sign&lt;br/&gt;with mobile-ID&lt;/b&gt;</translation>
-    </message>
-    <message>
-        <source>Remember me</source>
-        <translation>Remember me</translation>
-    </message>
-    <message>
-        <source>Personal code is not valid</source>
-        <translation>Personal code is not valid</translation>
-    </message>
-    <message>
-        <source>Phone number is not entered</source>
-        <translation>Phone number is not entered</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Cancel</translation>
-    </message>
-    <message>
-        <source>Sign</source>
-        <translation>Sign</translation>
-    </message>
-    <message>
-        <source>Country code and phone number</source>
-        <translation>Country code and phone number</translation>
-    </message>
-    <message>
-        <source>Personal code</source>
-        <translation>Personal code</translation>
-    </message>
-    <message>
-        <source>Invalid country code</source>
-        <translation>Invalid country code</translation>
-    </message>
-    <message>
-        <source>Mobile-ID</source>
-        <translation>Mobile-ID</translation>
-    </message>
-</context>
-<context>
     <name>MobileProgress</name>
     <message>
         <source>Signing in process</source>
@@ -1627,20 +1566,8 @@ ID-Card</translation>
         <translation>Make sure control code matches with one in phone screen and enter mobile-ID PIN2-code.</translation>
     </message>
     <message>
-        <source>Control code:</source>
-        <translation>Control code:</translation>
-    </message>
-    <message>
         <source>SSL handshake failed. Check the proxy settings of your computer or software upgrades.</source>
         <translation>SSL handshake failed. Check the proxy settings of your computer or software upgrades.</translation>
-    </message>
-    <message>
-        <source>%v sec</source>
-        <translation>%v sec</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Cancel</translation>
     </message>
     <message>
         <source>%1 service has encountered technical errors. Please try again later.</source>
@@ -1797,14 +1724,22 @@ ID-Card</translation>
         <translation>Encrypt with password</translation>
     </message>
     <message>
-        <source>Key label (recipient name or id)</source>
-        <translation>Key label (recipient name or id)</translation>
-    </message>
-    <message>
         <source>Be sure to save the password in a secure place
 - without the password, you won’t be able to open the file again.</source>
         <translation>Be sure to save the password in a secure place
 - without the password, you won’t be able to open the file again.</translation>
+    </message>
+    <message>
+        <source>Create a name for the envelope</source>
+        <translation>Create a name for the envelope</translation>
+    </message>
+    <message>
+        <source>E.g. Contracts</source>
+        <translation>E.g. Contracts</translation>
+    </message>
+    <message>
+        <source>Create a password for the envelope</source>
+        <translation>Create a password for the envelope</translation>
     </message>
     <message>
         <source>• Length: 20–64 characters
@@ -1829,16 +1764,16 @@ ID-Card</translation>
         <translation>Encrypt</translation>
     </message>
     <message>
-        <source>Decrypt with password</source>
-        <translation>Decrypt with password</translation>
-    </message>
-    <message>
-        <source>Enter password to decrypt the document</source>
-        <translation>Enter password to decrypt the document</translation>
-    </message>
-    <message>
         <source>Decrypt</source>
         <translation>Decrypt</translation>
+    </message>
+    <message>
+        <source>Envelope name</source>
+        <translation>Envelope name</translation>
+    </message>
+    <message>
+        <source>Envelope password</source>
+        <translation>Envelope password</translation>
     </message>
     <message>
         <source>Password is empty</source>
@@ -1851,10 +1786,6 @@ ID-Card</translation>
     <message>
         <source>Passwords do not match</source>
         <translation>Passwords do not match</translation>
-    </message>
-    <message>
-        <source>Enter a password to encrypt the document</source>
-        <translation>Enter a password to encrypt the document</translation>
     </message>
 </context>
 <context>
@@ -2191,10 +2122,6 @@ ID-Card</translation>
 <context>
     <name>QSigner</name>
     <message>
-        <source>Signing certificate is not selected.</source>
-        <translation>Signing certificate is not selected.</translation>
-    </message>
-    <message>
         <source>Failed to login token</source>
         <translation>Failed to login token</translation>
     </message>
@@ -2205,10 +2132,6 @@ ID-Card</translation>
     <message>
         <source>Sign certificate is not selected</source>
         <translation>Signing certificate is not selected</translation>
-    </message>
-    <message>
-        <source>Failed to decrypt document</source>
-        <translation>Failed to decrypt document</translation>
     </message>
 </context>
 <context>
@@ -2785,22 +2708,26 @@ Additional licenses and components</translation>
     </message>
 </context>
 <context>
-    <name>SmartIDDialog</name>
+    <name>SigningDialog</name>
+    <message>
+        <source>Sign document</source>
+        <translation>Sign document</translation>
+    </message>
+    <message>
+        <source>Choose signing method</source>
+        <translation>Choose signing method</translation>
+    </message>
+    <message>
+        <source>Country code and phone number</source>
+        <translation>Country code and phone number</translation>
+    </message>
     <message>
         <source>Personal code</source>
         <translation>Personal code</translation>
     </message>
     <message>
-        <source>Enter your personal code to sign with Smart-ID</source>
-        <translation>Enter your personal code to sign with Smart-ID</translation>
-    </message>
-    <message>
         <source>Remember me</source>
         <translation>Remember me</translation>
-    </message>
-    <message>
-        <source>Personal code is not valid</source>
-        <translation>Personal code is not valid</translation>
     </message>
     <message>
         <source>Country</source>
@@ -2825,6 +2752,42 @@ Additional licenses and components</translation>
     <message>
         <source>Sign</source>
         <translation>Sign</translation>
+    </message>
+    <message>
+        <source>Control code:</source>
+        <translation>Control code:</translation>
+    </message>
+    <message>
+        <source>ID-card</source>
+        <translation>ID-card</translation>
+    </message>
+    <message>
+        <source>Mobile-ID</source>
+        <translation>Mobile-ID</translation>
+    </message>
+    <message>
+        <source>Smart-ID</source>
+        <translation>Smart-ID</translation>
+    </message>
+    <message>
+        <source>Personal code is not valid</source>
+        <translation>Personal code is not valid</translation>
+    </message>
+    <message>
+        <source>Phone number is not entered</source>
+        <translation>Phone number is not entered</translation>
+    </message>
+    <message>
+        <source>Invalid country code</source>
+        <translation>Invalid country code</translation>
+    </message>
+    <message>
+        <source>The document has already been signed by you</source>
+        <translation>The document has already been signed by you</translation>
+    </message>
+    <message>
+        <source>Continue signing</source>
+        <translation>Continue signing</translation>
     </message>
 </context>
 <context>

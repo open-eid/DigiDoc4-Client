@@ -57,7 +57,7 @@ QString CheckConnection::errorString() const
 	case QNetworkReply::ProxyAuthenticationRequiredError:
 		return QCoreApplication::translate("CheckConnection", "Check proxy username and password");
 	default:
-		return QCoreApplication::translate("CheckConnection", "Cannot connect to certificate status service!");
+		return QCoreApplication::translate("CheckConnection", "Check internet connection");
 	}
 }
 
