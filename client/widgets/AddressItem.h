@@ -22,6 +22,7 @@
 #include "widgets/Item.h"
 
 struct CKey;
+class TokenData;
 
 namespace libcdoc { struct Lock; }
 
@@ -41,17 +42,18 @@ public:
 	~AddressItem() final;
 
 	const CKey& getKey() const;
-	void idChanged(const SslCertificate &cert) final;
 	void initTabOrder(QWidget *item) final;
 	QWidget* lastTabWidget() final;
 	void stateChange(ria::qdigidoc4::ContainerState state) final;
 
 signals:
-	void decrypt(const libcdoc::Lock *lock);
+	void decrypt(const TokenData &token);
 
 private:
 	void changeEvent(QEvent *event) final;
 	void mouseReleaseEvent(QMouseEvent *event) final;
+	void setDecryptVisible();
+	static TokenData tokenForLock(const libcdoc::Lock &lock);
 	void setName();
 	void setIdType();
 	void setIdType(const SslCertificate& cert);
