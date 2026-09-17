@@ -98,6 +98,20 @@ public:
 		enableLog(Settings::LIBDIGIDOCPP_DEBUG);
 		Settings::LIBDIGIDOCPP_DEBUG = false;
 		Settings::LIBDIGIDOCPP_DEBUG.registerCallback([this](const bool &value) { enableLog(value); });
+#ifdef Q_OS_MACOS
+		if(Settings::PROXY_HOST.isSet() || Settings::PROXY_PORT.isSet()
+			|| Settings::PROXY_USER.isSet() || Settings::PROXY_PASS.isSet())
+		{
+			if(Application::setProxyCredentials({Settings::PROXY_HOST, Settings::PROXY_PORT,
+				Settings::PROXY_USER, Settings::PROXY_PASS}))
+			{
+				Settings::PROXY_HOST.clear();
+				Settings::PROXY_PORT.clear();
+				Settings::PROXY_USER.clear();
+				Settings::PROXY_PASS.clear();
+			}
+		}
+#endif
 #ifndef Q_OS_DARWIN
 		setTSLOnlineDigest(true);
 #endif
@@ -123,24 +137,44 @@ public:
 
 	std::string proxyHost() const final
 	{
+#ifdef Q_OS_MACOS
+		if(Settings::PROXY_CONFIG == Settings::ProxyManual)
+			if(const auto credentials = Application::proxyCredentials())
+				return credentials->host.toStdString();
+#endif
 		return proxyConf(&QNetworkProxy::hostName,
 			Settings::PROXY_HOST, [this] { return digidoc::XmlConfCurrent::proxyHost(); });
 	}
 
 	std::string proxyPort() const final
 	{
+#ifdef Q_OS_MACOS
+		if(Settings::PROXY_CONFIG == Settings::ProxyManual)
+			if(const auto credentials = Application::proxyCredentials())
+				return credentials->port.toStdString();
+#endif
 		return proxyConf([](const QNetworkProxy &systemProxy) { return QString::number(systemProxy.port()); },
 			Settings::PROXY_PORT, [this] { return digidoc::XmlConfCurrent::proxyPort(); });
 	}
 
 	std::string proxyUser() const final
 	{
+#ifdef Q_OS_MACOS
+		if(Settings::PROXY_CONFIG == Settings::ProxyManual)
+			if(const auto credentials = Application::proxyCredentials())
+				return credentials->user.toStdString();
+#endif
 		return proxyConf(&QNetworkProxy::user,
 			Settings::PROXY_USER, [this] { return digidoc::XmlConfCurrent::proxyUser(); });
 	}
 
 	std::string proxyPass() const final
 	{
+#ifdef Q_OS_MACOS
+		if(Settings::PROXY_CONFIG == Settings::ProxyManual)
+			if(const auto credentials = Application::proxyCredentials())
+				return credentials->password.toStdString();
+#endif
 		return proxyConf(&QNetworkProxy::password,
 			Settings::PROXY_PASS, [this] { return digidoc::XmlConfCurrent::proxyPass(); });
 	}
