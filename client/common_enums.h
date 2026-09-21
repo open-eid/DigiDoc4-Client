@@ -38,22 +38,16 @@ enum ContainerState : unsigned char {
 enum Actions : unsigned char {
     ContainerClose,
     ContainerCancel,
+    ContainerClearWarning,
     ContainerConvert,
     ContainerEncrypt,
 
     EncryptContainer,
     EncryptContainerSuccess,
     DecryptContainer,
-    DecryptToken,
     DecryptContainerSuccess,
 
     SignatureAdd,
-    SignatureMobile,
-    SignatureSmartID,
-    SignatureToken,
-    ClearSignatureWarning,
-    ClearCryptoWarning,
-    EncryptLT
 };
 
 }

@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>CardListItem</class>
+ <widget class="QWidget" name="CardListItem">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>420</width>
+    <height>114</height>
+   </rect>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">#CardListItem {
+border: 1px solid #E7EAEF;
+border-radius: 5px;
+}
+#CardListItem:hover, #CardListItem:focus {
+border-color: #EAF1F8;
+background-color: #EAF1F8;
+}
+#CardListItem:checked {
+border-color: #003168;
+background-color: #EAF1F8;
+}
+#cardName {
+color: #07142A;
+font-family: Roboto, Helvetica;
+font-size: 14px;
+font-weight: 700;
+}
+#cardIssuer {
+color: #07142A;
+font-family: Roboto, Helvetica;
+font-size: 12px;
+font-weight: 400;
+}
+#cardValidUntil {
+color: #091A36;
+font-family: Roboto, Helvetica;
+font-size: 12px;
+font-weight: 400;
+padding: 2px 8px;
+border-radius: 8px;
+background-color: #F3F5F7;
+}
+#cardValidUntil[label=&quot;error&quot;] {
+color: #AD2A45;
+background-color: #F5EBED;
+}
+#cardValidUntil[label=&quot;warning&quot;] {
+color: #83612D;
+background-color: #FDF7EE;
+}
+#cardValidUntil[label=&quot;good&quot;] {
+color: #1A641B;
+background-color: #EAF8EA;
+}</string>
+  </property>
+  <layout class="QGridLayout" name="CardListItemLayout" columnstretch="0,1">
+   <property name="leftMargin">
+    <number>16</number>
+   </property>
+   <property name="topMargin">
+    <number>16</number>
+   </property>
+   <property name="rightMargin">
+    <number>16</number>
+   </property>
+   <property name="bottomMargin">
+    <number>16</number>
+   </property>
+   <property name="horizontalSpacing">
+    <number>11</number>
+   </property>
+   <property name="verticalSpacing">
+    <number>2</number>
+   </property>
+   <item row="0" column="0" rowspan="3" alignment="Qt::AlignHCenter|Qt::AlignVCenter">
+    <widget class="QSvgWidget" name="cardIcon" native="true">
+     <property name="minimumSize">
+      <size>
+       <width>32</width>
+       <height>32</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>32</width>
+       <height>32</height>
+      </size>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QLabel" name="cardName">
+     <property name="focusPolicy">
+      <enum>Qt::FocusPolicy::TabFocus</enum>
+     </property>
+     <property name="text">
+      <string notr="true">MARI MAASIKAS, 48405050123</string>
+     </property>
+     <property name="textInteractionFlags">
+      <set>Qt::NoTextInteraction</set>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QLabel" name="cardIssuer">
+     <property name="focusPolicy">
+      <enum>Qt::FocusPolicy::TabFocus</enum>
+     </property>
+     <property name="text">
+      <string notr="true">Issuer: ESTEID-SK 2023</string>
+     </property>
+     <property name="textInteractionFlags">
+      <set>Qt::NoTextInteraction</set>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="Label" name="cardValidUntil">
+     <property name="focusPolicy">
+      <enum>Qt::FocusPolicy::TabFocus</enum>
+     </property>
+     <property name="text">
+      <string notr="true">Valid to: 02.02.2030</string>
+     </property>
+     <property name="textInteractionFlags">
+      <set>Qt::NoTextInteraction</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Label</class>
+   <extends>QLabel</extends>
+   <header>widgets/Label.h</header>
+  </customwidget>
+  <customwidget>
+   <class>QSvgWidget</class>
+   <extends>QWidget</extends>
+   <header location="global">QSvgWidget</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

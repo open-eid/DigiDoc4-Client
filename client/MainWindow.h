@@ -64,17 +64,15 @@ private:
 	void changePinClicked(QSmartCardData::PinType type, QSmartCard::PinAction action);
 	void convertToCDoc();
 	void navigateToPage(Pages page, const QStringList &files = QStringList(), bool create = true);
-	void onCryptoAction(int action, const QString &id, const QString &phone);
-	void onSignAction(int action, const QString &idCode, const QString &info2);
-	void openContainer(bool signature);
+	void onCryptoAction(int action);
+	void onSignAction(int action);
+	void openContainer(const QString &filter);
 	void resetDigiDoc(std::unique_ptr<DigiDoc> &&doc);
-	template <typename F>
-	void sign(F &&sign);
+	void sign();
 	void updateSelector();
 	void updateMyEID(const TokenData &t);
 	void updateMyEid(const QSmartCardData &data);
 	bool wrap(const QString& wrappedFile, bool pdf);
-	bool wrapContainer(bool signing);
 
 	static QStringList dropEventFiles(QDropEvent *event);
 
