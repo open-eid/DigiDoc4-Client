@@ -601,6 +601,10 @@
         <translation>Failed to encrypt document</translation>
     </message>
     <message>
+        <source>Key transfer server is not configured</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Failed to remove key</source>
         <translation>Failed to remove key</translation>
     </message>
@@ -1302,6 +1306,10 @@
     <message>
         <source>Failed to init ldap</source>
         <translation>Failed to init ldap</translation>
+    </message>
+    <message>
+        <source>Failed to set ldap CA cert</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Failed to init ldap search</source>
