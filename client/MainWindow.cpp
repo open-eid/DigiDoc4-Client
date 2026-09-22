@@ -668,39 +668,33 @@ void MainWindow::updateMyEid(const QSmartCardData &data)
 	bool pin1Blocked = data.retryCount(QSmartCardData::Pin1Type) == 0;
 	bool pin2Blocked = data.retryCount(QSmartCardData::Pin2Type) == 0;
 	bool pukBlocked = data.retryCount(QSmartCardData::PukType) == 0;
-	bool pin1Locked = data.pinLocked(QSmartCardData::Pin1Type);
 	bool pin2Locked = data.pinLocked(QSmartCardData::Pin2Type);
 	bool isPUKReplacable = data.isPUKReplacable();
 	ui->myEid->warningIcon(
-		pin1Blocked || pin1Locked ||
+		pin1Blocked ||
 		pin2Blocked || pin2Locked ||
 		pukBlocked);
 	ui->signContainerPage->cardChanged(data.signCert(), pin2Blocked || pin2Locked);
-	ui->cryptoContainerPage->cardChanged(data.authCert(), pin1Blocked || pin1Locked);
+	ui->cryptoContainerPage->cardChanged(data.authCert(), pin1Blocked);
 
 	using enum WarningText::WarningType;
-	if(pin1Locked)
-		ui->warnings->showWarning({LockedCardWarning});
-	else
-	{
-		if(pin1Blocked && pukBlocked)
-			ui->warnings->showWarning({isPUKReplacable ? Pin1PukBlockedResetWarning : Pin1PukBlockedWarning});
-		else if(pin1Blocked)
-			ui->warnings->showWarning({UnblockPin1Warning, 0,
-				[this]{ changePinClicked(QSmartCardData::Pin1Type, QSmartCard::UnblockWithPuk); }});
+	if(pin1Blocked && pukBlocked)
+		ui->warnings->showWarning({isPUKReplacable ? Pin1PukBlockedResetWarning : Pin1PukBlockedWarning});
+	else if(pin1Blocked)
+		ui->warnings->showWarning({UnblockPin1Warning, 0,
+			[this]{ changePinClicked(QSmartCardData::Pin1Type, QSmartCard::UnblockWithPuk); }});
 
-		if(pin2Locked && pin2Blocked)
-			ui->warnings->showWarning({ActivatePin2WithPUKWarning, 0,
-				[this]{ changePinClicked(QSmartCardData::Pin2Type, QSmartCard::ActivateWithPuk); }});
-		else if(pin2Blocked && pukBlocked)
-			ui->warnings->showWarning({isPUKReplacable ? Pin2PukBlockedResetWarning : Pin2PukBlockedWarning});
-		else if(pin2Blocked)
-			ui->warnings->showWarning({UnblockPin2Warning, 0,
-				[this]{ changePinClicked(QSmartCardData::Pin2Type, QSmartCard::UnblockWithPuk); }});
-		else if(pin2Locked)
-			ui->warnings->showWarning({ActivatePin2Warning, 0,
-				[this]{ changePinClicked(QSmartCardData::Pin2Type, QSmartCard::ActivateWithPin); }});
-	}
+	if(pin2Locked && pin2Blocked)
+		ui->warnings->showWarning({UnblockPin2Warning, 0,
+			[this]{ changePinClicked(QSmartCardData::Pin2Type, QSmartCard::ActivateWithPuk); }});
+	else if(pin2Blocked && pukBlocked)
+		ui->warnings->showWarning({isPUKReplacable ? Pin2PukBlockedResetWarning : Pin2PukBlockedWarning});
+	else if(pin2Blocked)
+		ui->warnings->showWarning({UnblockPin2Warning, 0,
+			[this]{ changePinClicked(QSmartCardData::Pin2Type, QSmartCard::UnblockWithPuk); }});
+	else if(pin2Locked)
+		ui->warnings->showWarning({ActivatePin2Warning, 0,
+			[this]{ changePinClicked(QSmartCardData::Pin2Type, QSmartCard::ActivateWithPin); }});
 
 	const qint64 DAY = 24 * 60 * 60;
 	qint64 expiresIn = 106 * DAY;
