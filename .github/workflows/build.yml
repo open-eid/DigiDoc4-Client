@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Estonian Information System Authority
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 name: CI
 on: [push, pull_request]
 permissions:
@@ -295,3 +298,9 @@ jobs:
       uses: github/codeql-action/upload-sarif@v4
       with:
         sarif_file: sarif-results/cpp.sarif
+  copyright:
+    name: Check copyright headers
+    uses: open-eid/.github/.github/workflows/copyright.yml@b2d87c7447ebcc01beb54c84f3978a81c1d64877 # master
+    with:
+      # Qt translation sources, rewritten by lupdate, which strips any header
+      exclude: ^client/translations/

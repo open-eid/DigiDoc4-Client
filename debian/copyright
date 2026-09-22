@@ -1,10 +1,60 @@
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Contact: info@ria.ee
 Source: https://github.com/open-eid/DigiDoc4-Client
+Comment: Some files are downloaded at build time and embedded in the binary
+ rather than being present in this source package:
+ .
+   config.json, config.ecc, config.ecpub: this authority's own signed
+   configuration, from https://id.eesti.ee/config.json (see
+   common/CMakeLists.txt).
+ .
+   eu-lotl.xml: the European Commission's List of Trusted Lists, published
+   under eIDAS Article 22 for consumption by implementations. Reuse of
+   Commission documents is permitted by Decision 2011/833/EU.
+ .
+   EE.xml: the Estonian Trusted List, published by this authority itself.
+ .
+ For an offline build, place all three configuration files in common/ and both
+ eu-lotl.xml and EE.xml in client/. The download branches are selected in
+ common/CMakeLists.txt and client/CMakeLists.txt. If the files are ever
+ committed rather than downloaded, eu-lotl.xml needs a stanza of its own.
 
 Files: *
-Copyright: 2017-2025 Estonian Information System's Authority
-License: LGPL-2.1
+Copyright: Estonian Information System Authority
+License: LGPL-2.1+
+
+Files: client/fonts/*
+Copyright: 2011 Google Inc.
+Comment: Roboto, https://github.com/google/roboto
+License: Apache-2.0
+
+Files: client/pkcs11.h
+Copyright: 2006, 2007 g10 Code GmbH
+           2006 Andreas Jellinghaus
+Comment: From the Scute project, http://www.scute.org/
+License: all-permissive
+
+Files: extensions/kde/CMakeLists.txt
+Copyright: 2010 Kalev Lember
+License: LGPL-2.1+
+
+Files: extensions/kde/qdigidoc-signer.desktop
+       extensions/nautilus/*
+Copyright: 2010 Erkko Kebbinau <erkko@smartlink.ee>
+License: LGPL-2.1+
+
+Files: extensions/nautilus/po/et.po
+       extensions/nautilus/po/nautilus-qdigidoc.pot
+Copyright: 2010 Erkko Kebbinau <erkko@smartlink.ee>
+           2014 Sander Lepik <sander@lepik.eu>
+License: LGPL-2.1+
+
+Files: client/libcdoc/cdoc/schema/*.fbs
+Copyright: 2023 Open Electronic Identity
+Comment: CDoc2 container FlatBuffers schemas, vendored with the libcdoc submodule.
+License: Expat
+
+License: LGPL-2.1+
  This library is free software; you can redistribute it and/or
  modify it under the terms of the GNU Lesser General Public
  License as published by the Free Software Foundation; either
@@ -18,3 +68,48 @@ License: LGPL-2.1
  You should have received a copy of the GNU Lesser General Public
  License with your system, in /usr/share/common-licenses/LGPL-2.1
  If not, see <http://www.gnu.org/licenses/>.
+
+License: Apache-2.0
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ .
+     http://www.apache.org/licenses/LICENSE-2.0
+ .
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+ .
+ On Debian systems the full text of the Apache License version 2.0 can be
+ found in /usr/share/common-licenses/Apache-2.0
+
+License: all-permissive
+ This file is free software; as a special exception the author gives
+    unlimited permission to copy and/or distribute it, with or without
+    modifications, as long as this notice is preserved.
+ .
+    This file is distributed in the hope that it will be useful, but
+    WITHOUT ANY WARRANTY, to the extent permitted by law; without even
+    the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+    PURPOSE.
+
+License: Expat
+ Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the "Software"), to deal
+ in the Software without restriction, including without limitation the rights
+ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:
+ .
+ The above copyright notice and this permission notice shall be included in all
+ copies or substantial portions of the Software.
+ .
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ SOFTWARE.
