@@ -4,3 +4,7 @@
 [submodule "client/libcdoc"]
 	path = client/libcdoc
 	url = ../libcdoc
+[submodule "cmake/cmake-sbom"]
+	path = cmake/cmake-sbom
+	url = https://github.com/DEMCON/cmake-sbom.git
+	branch = v1.4.0

@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Estonian Information System Authority
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 get_filename_component(TSL_FILENAME ${TSL_URL} NAME_WLE)
 set(TSL_LIST ${TSL_FILENAME} ${TSL_INCLUDE})
 list(TRANSFORM TSL_LIST APPEND .xml)

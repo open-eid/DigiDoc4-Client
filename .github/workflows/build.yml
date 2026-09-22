@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: Estonian Information System Authority
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 name: CI
 on: [push, pull_request]
 permissions:
@@ -59,11 +62,14 @@ jobs:
         cmake --build build --target zipdebug
         cmake --build build --target macdeployqt
         cmake --build build --target zip
+        cmake --install build/sbom
     - name: Archive artifacts
       uses: actions/upload-artifact@v7
       with:
         name: macOS
-        path: build/qdigidoc4*.zip
+        path: |
+          build/qdigidoc4*.zip
+          build/qdigidoc4*.spdx
   ubuntu:
     name: Build on Ubuntu ${{ matrix.container }} ${{ matrix.arch }}
     runs-on: ubuntu-24.04${{ matrix.arch == 'arm64' && '-arm' || '' }}
@@ -110,13 +116,18 @@ jobs:
       run: |
         dpkg-buildpackage -us -uc
         mv ../qdigidoc4*.* .
+        cmake -B build -S .
+        cmake --install build/sbom
+        mv build/qdigidoc4*.spdx .
     - name: Lintian
       run: lintian *.deb;
     - name: Archive artifacts
       uses: actions/upload-artifact@v7
       with:
         name: ubuntu_${{ matrix.container }}_${{ matrix.arch }}
-        path: qdigidoc4*.*
+        path: |
+          qdigidoc4*.*
+          qdigidoc4*.spdx
   fedora:
     name: Build on Fedora ${{ matrix.container }}
     runs-on: ubuntu-latest
@@ -140,11 +151,14 @@ jobs:
       run: |
         cmake -DCMAKE_INSTALL_PREFIX=/usr -B build -S .
         cmake --build build --target all package
+        cmake --install build/sbom
     - name: Archive artifacts
       uses: actions/upload-artifact@v7
       with:
         name: fedora_${{ matrix.container }}
-        path: build/qdigidoc4*.rpm
+        path: |
+          build/qdigidoc4*.rpm
+          build/qdigidoc4*.spdx
   windows:
     name: Build on Windows
     runs-on: windows-2022
@@ -200,6 +214,7 @@ jobs:
         cmake --build build --target msi
         cmake --build build --target msishellext
         cmake --build build --target appx
+        cmake --install build/sbom
     - name: Archive artifacts
       uses: actions/upload-artifact@v7
       with:
@@ -207,6 +222,7 @@ jobs:
         path: |
           build/*.msi
           build/*.appx
+          build/*.spdx
   coverity:
     name: Run Coverity tests
     if: github.repository == 'open-eid/DigiDoc4-Client' && contains(github.ref, 'coverity_scan')
@@ -295,3 +311,9 @@ jobs:
       uses: github/codeql-action/upload-sarif@v4
       with:
         sarif_file: sarif-results/cpp.sarif
+  copyright:
+    name: Check copyright headers
+    uses: open-eid/.github/.github/workflows/copyright.yml@b2d87c7447ebcc01beb54c84f3978a81c1d64877 # master
+    with:
+      # Qt translation sources, rewritten by lupdate, which strips any header
+      exclude: ^client/translations/

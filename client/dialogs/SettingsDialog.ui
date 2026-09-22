@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- SPDX-FileCopyrightText: Estonian Information System Authority -->
+<!-- SPDX-License-Identifier: LGPL-2.1-or-later -->
 <ui version="4.0">
  <class>SettingsDialog</class>
  <widget class="QDialog" name="SettingsDialog">
@@ -1698,6 +1700,7 @@ p, li { white-space: pre-wrap; margin-top:12px; margin-bottom:12px; margin-left:
 &lt;p&gt;&lt;b&gt;libxml2 is an XML toolkit implemented in C&lt;/b&gt;&lt;br /&gt;MIT License&lt;br /&gt;&lt;a href=&quot;https://gitlab.gnome.org/GNOME/libxml2/-/blob/master/Copyright?ref_type=heads&quot;&gt;https://gitlab.gnome.org/GNOME/libxml2/-/blob/master/Copyright?ref_type=heads&lt;/a&gt; &lt;/p&gt;
 &lt;p&gt;&lt;b&gt;XML Security Library is a C library based on LibXML2&lt;/b&gt;&lt;br /&gt;MIT License&lt;br /&gt;&lt;a href=&quot;https://github.com/lsh123/xmlsec/blob/master/Copyright&quot;&gt;https://github.com/lsh123/xmlsec/blob/master/Copyright&lt;/a&gt; &lt;/p&gt;
 &lt;p&gt;&lt;b&gt;JSON for Modern C++&lt;/b&gt;&lt;br /&gt;MIT License&lt;br /&gt;&lt;a href=&quot;https://github.com/nlohmann/json/blob/develop/LICENSE.MIT&quot;&gt;https://github.com/nlohmann/json/blob/develop/LICENSE.MIT&lt;/a&gt; &lt;/p&gt;
+&lt;p&gt;&lt;b&gt;Scute PKCS #11 header&lt;/b&gt;&lt;br /&gt;Copyright 2006, 2007 g10 Code GmbH, Copyright 2006 Andreas Jellinghaus&lt;br /&gt;All-permissive license, as long as the notice is preserved&lt;br /&gt;&lt;a href=&quot;https://www.scute.org/&quot;&gt;https://www.scute.org/&lt;/a&gt; &lt;/p&gt;
 &lt;p&gt;&lt;b&gt;Roboto: Google’s signature family of fonts&lt;/b&gt;&lt;br /&gt;Apache Software License, Version 2.0&lt;br /&gt;&lt;a href=&quot;https://github.com/google/roboto/blob/master/LICENSE&quot;&gt;https://github.com/google/roboto/blob/master/LICENSE&lt;/a&gt; &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="textInteractionFlags">
