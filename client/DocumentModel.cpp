@@ -20,15 +20,16 @@
 #include "DocumentModel.h"
 
 #include "Application.h"
+#include "Configuration.h"
 #include "dialogs/FileDialog.h"
 #include "dialogs/WarningDialog.h"
 
-#include <QtCore/QCoreApplication>
 #include <QtCore/QCryptographicHash>
 #include <QtCore/QDir>
 #include <QtCore/QDirIterator>
 #include <QtCore/QFileInfo>
 #include <QtCore/QJsonArray>
+#include <QtCore/QJsonObject>
 #include <QtCore/QUrl>
 #include <QtGui/QDesktopServices>
 
@@ -125,7 +126,11 @@ void DocumentModel::open(int row)
 			QStringLiteral("wpd"), QStringLiteral("rtf"), QStringLiteral("xlr"), QStringLiteral("xls"), QStringLiteral("xlsx"), QStringLiteral("pdf"), QStringLiteral("key"), QStringLiteral("odp"),
 			QStringLiteral("pps"), QStringLiteral("ppt"), QStringLiteral("pptx"), QStringLiteral("png"), QStringLiteral("jpg"), QStringLiteral("jpeg"), QStringLiteral("bmp"), QStringLiteral("ai"),
 			QStringLiteral("gif"), QStringLiteral("ico"), QStringLiteral("ps"), QStringLiteral("psd"), QStringLiteral("tif"), QStringLiteral("tiff"), QStringLiteral("csv")};
-	QJsonArray allowedExts = Application::confValue(QLatin1String("ALLOWED-EXTENSIONS")).toArray(defaultArray);
+#ifdef CONFIG_URL
+	auto allowedExts = qApp->conf()->rawObject().value(QLatin1String("ALLOWED-EXTENSIONS")).toArray(defaultArray);
+#else
+	auto allowedExts = defaultArray;
+#endif
 	if(!allowedExts.contains(QJsonValue(QFileInfo(data(row)).suffix().toLower())))
 	{
 		WarningDialog::create()

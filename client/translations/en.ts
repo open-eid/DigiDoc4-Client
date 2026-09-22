@@ -43,6 +43,14 @@
         <translation>Certificates (*.cer *.crt *.pem)</translation>
     </message>
     <message>
+        <source>Enter the personal code, institution or registry code</source>
+        <translation>Enter the personal code, institution or registry code</translation>
+    </message>
+    <message>
+        <source>Search</source>
+        <translation>Search</translation>
+    </message>
+    <message>
         <source>Are you sure that you want use certificate for encrypting, which expired on %1?&lt;br /&gt;When decrypter has updated certificates then decrypting is impossible.</source>
         <translation>Are you sure that you want use certificate for encrypting, which expired on %1?&lt;br /&gt;&lt;br /&gt;When decrypter has updated certificates then decrypting is impossible.</translation>
     </message>
@@ -599,6 +607,10 @@
     <message>
         <source>Failed to encrypt document</source>
         <translation>Failed to encrypt document</translation>
+    </message>
+    <message>
+        <source>Key transfer server is not configured</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Failed to remove key</source>
@@ -1178,10 +1190,6 @@
 <context>
     <name>ItemList</name>
     <message>
-        <source>Enter the personal code, institution or registry code</source>
-        <translation>Enter the personal code, institution or registry code</translation>
-    </message>
-    <message>
         <source>Container is not signed</source>
         <translation>Container&apos;s signatures are missing</translation>
     </message>
@@ -1217,10 +1225,6 @@
     <message>
         <source>Added recipients</source>
         <translation>Added recipients</translation>
-    </message>
-    <message>
-        <source>Search</source>
-        <translation>Search</translation>
     </message>
     <message>
         <source>Download all files</source>
@@ -1302,6 +1306,10 @@
     <message>
         <source>Failed to init ldap</source>
         <translation>Failed to init ldap</translation>
+    </message>
+    <message>
+        <source>Failed to set ldap CA cert</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Failed to init ldap search</source>
