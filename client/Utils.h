@@ -19,6 +19,7 @@
 
 #pragma once
 
+#include <QCoreApplication>
 #include <QEventLoop>
 #include <QIODevice>
 #include <QTimer>

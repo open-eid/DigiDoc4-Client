@@ -31,7 +31,7 @@ public:
 	explicit QCNG() noexcept;
 	~QCNG() noexcept final;
 
-	Status login(const TokenData &token) final;
+	Status login(const TokenData &token, const QString &pin) final;
 
 	QByteArray decrypt(const QByteArray &data, bool oaep) const final;
 	QByteArray deriveConcatKDF(const QByteArray &publicKey, QCryptographicHash::Algorithm digest,
