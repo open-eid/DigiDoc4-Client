@@ -499,11 +499,11 @@
     </message>
     <message>
         <source>You are about to delete the last file in the container</source>
-        <translation>Oled kustutamas viimast faili ümbrikus</translation>
+        <translation type="vanished">Oled kustutamas viimast faili ümbrikus</translation>
     </message>
     <message>
         <source>It is removed along with the container.</source>
-        <translation>Koos sellega eemaldatakse ka ümbrik.</translation>
+        <translation type="vanished">Koos sellega eemaldatakse ka ümbrik.</translation>
     </message>
     <message>
         <source>In order to view Validity Confirmation Sheet there has to be at least one printer installed!</source>
@@ -635,6 +635,10 @@
     <message>
         <source>Cannot read file.</source>
         <translation>Faili ei saa lugeda.</translation>
+    </message>
+    <message>
+        <source>General decryption error. Neither the card reader not network layer did not give more information. Please check your internet connection, network settings and card reader. On some readers it may also indicate the wrong pin code or locked card.</source>
+        <translation>Täpsustamata dekrüpteerimise viga. Ei kaardilugeja ega võrguühendus ei andnud täpsemat informatsiooni. Kontrollige internetiühendust, võrgu sätteid ja kaardilugejat. Mõne lugeja korral võib põhjuseks olla ka vale pin või lukustatud kaart.</translation>
     </message>
 </context>
 <context>
@@ -2166,15 +2170,15 @@ ID-kaardiga</translation>
     </message>
     <message>
         <source>Signing/decrypting is already in progress another window.</source>
-        <translation>Allkirjastamine/dekrüpteerimine on juba käimas teises aknas.</translation>
+        <translation type="vanished">Allkirjastamine/dekrüpteerimine on juba käimas teises aknas.</translation>
     </message>
     <message>
         <source>PKCS11 general error</source>
-        <translation>PKCS11 üldine viga</translation>
+        <translation type="vanished">PKCS11 üldine viga</translation>
     </message>
     <message>
         <source>PKCS11 device error</source>
-        <translation>PKCS11 seadme viga</translation>
+        <translation type="vanished">PKCS11 seadme viga</translation>
     </message>
     <message>
         <source>Unknown error</source>
@@ -2187,6 +2191,14 @@ ID-kaardiga</translation>
     <message>
         <source>PIN entry canceled</source>
         <translation>PIN sisestus katkestatus</translation>
+    </message>
+    <message>
+        <source>Signing/decrypting is already in progress in another window.</source>
+        <translation>Allkirjastamine/dekrüpteerimine juba toimub teises aknas.</translation>
+    </message>
+    <message>
+        <source>Error in smart card driver, reader or the card. On some readers it may indicate the wrong pin code or locked card.</source>
+        <translation>Viga kiipkaardi draiveris, lugejas või kaardis. Osade draiverite korral võib see tähendada ka lihtsalt vale PIN-i või lukus kaarti.</translation>
     </message>
 </context>
 <context>
@@ -3082,6 +3094,14 @@ Täiendavad litsentsid ja komponendid</translation>
     <message>
         <source>Remove</source>
         <translation>Eemalda</translation>
+    </message>
+    <message>
+        <source>You are about to delete the last file in the container</source>
+        <translation type="unfinished">Oled kustutamas viimast faili ümbrikus</translation>
+    </message>
+    <message>
+        <source>It is removed along with the container.</source>
+        <translation type="unfinished">Koos sellega eemaldatakse ka ümbrik.</translation>
     </message>
 </context>
 <context>

@@ -344,6 +344,13 @@ DDNetworkBackend::fetchKey(std::vector<uint8_t> &result, const std::string &url,
 	e.exec();
 
 	if(reply->error() != QNetworkReply::NoError && reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() != 201) {
+        if (backend.get()->status != QCryptoBackend::PinOK) {
+            // The actual error was in QCryptoBackend
+            libcdoc::result_t lresult = getDecryptStatus(backend.get()->status);
+            last_error = getLastErrorStr(lresult);
+            return lresult;
+        }
+        // Probably network problem
 		last_error = reply->errorString().toStdString();
 		return BACKEND_ERROR;
 	}
