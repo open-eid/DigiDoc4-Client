@@ -499,11 +499,11 @@
     </message>
     <message>
         <source>You are about to delete the last file in the container</source>
-        <translation>Oled kustutamas viimast faili ümbrikus</translation>
+        <translation type="vanished">Oled kustutamas viimast faili ümbrikus</translation>
     </message>
     <message>
         <source>It is removed along with the container.</source>
-        <translation>Koos sellega eemaldatakse ka ümbrik.</translation>
+        <translation type="vanished">Koos sellega eemaldatakse ka ümbrik.</translation>
     </message>
     <message>
         <source>In order to view Validity Confirmation Sheet there has to be at least one printer installed!</source>
@@ -635,6 +635,10 @@
     <message>
         <source>Cannot read file.</source>
         <translation>Faili ei saa lugeda.</translation>
+    </message>
+    <message>
+        <source>General decryption error. Neither the card reader not network layer did not give more information. Please check your internet connection, network settings and card reader. On some readers it may also indicate the wrong pin code or locked card.</source>
+        <translation>Täpsustamata dekrüpteerimise viga. Ei kaardilugeja ega võrguühendus ei andnud täpsemat informatsiooni. Kontrollige internetiühendust, võrgu sätteid ja kaardilugejat. Mõne lugeja korral võib põhjuseks olla ka vale pin või lukustatud kaart.</translation>
     </message>
 </context>
 <context>
@@ -3082,6 +3086,14 @@ Täiendavad litsentsid ja komponendid</translation>
     <message>
         <source>Remove</source>
         <translation>Eemalda</translation>
+    </message>
+    <message>
+        <source>You are about to delete the last file in the container</source>
+        <translation type="unfinished">Oled kustutamas viimast faili ümbrikus</translation>
+    </message>
+    <message>
+        <source>It is removed along with the container.</source>
+        <translation type="unfinished">Koos sellega eemaldatakse ka ümbrik.</translation>
     </message>
 </context>
 <context>

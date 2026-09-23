@@ -499,11 +499,11 @@
     </message>
     <message>
         <source>You are about to delete the last file in the container</source>
-        <translation>You are about to delete the last file in the container</translation>
+        <translation type="vanished">You are about to delete the last file in the container</translation>
     </message>
     <message>
         <source>It is removed along with the container.</source>
-        <translation>It is removed along with the container.</translation>
+        <translation type="vanished">It is removed along with the container.</translation>
     </message>
     <message>
         <source>In order to view Validity Confirmation Sheet there has to be at least one printer installed!</source>
@@ -635,6 +635,10 @@
     <message>
         <source>Cannot read file.</source>
         <translation>Cannot read file.</translation>
+    </message>
+    <message>
+        <source>General decryption error. Neither the card reader not network layer did not give more information. Please check your internet connection, network settings and card reader. On some readers it may also indicate the wrong pin code or locked card.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3082,6 +3086,14 @@ Additional licenses and components</translation>
     <message>
         <source>Remove</source>
         <translation>Remove</translation>
+    </message>
+    <message>
+        <source>You are about to delete the last file in the container</source>
+        <translation type="unfinished">You are about to delete the last file in the container</translation>
+    </message>
+    <message>
+        <source>It is removed along with the container.</source>
+        <translation type="unfinished">It is removed along with the container.</translation>
     </message>
 </context>
 <context>
