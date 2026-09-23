@@ -363,6 +363,9 @@ bool CryptoDoc::decrypt(const libcdoc::Lock *lock, const QByteArray& secret)
 		case DDCryptoBackend::IN_PROGRESS:
 			str = QCryptoBackend::errorString(QCryptoBackend::Status::InProgress);
 			break;
+		case DDCryptoBackend::BACKEND_ERROR:
+			str = QCryptoBackend::errorString(QCryptoBackend::Status::GeneralError);
+			break;
 		default:
 			str = tr("General decryption error. Neither the card reader not network layer did not give more information. Please check your internet connection, network settings and card reader. On some readers it may also indicate the wrong pin code or locked card.");
 			break;

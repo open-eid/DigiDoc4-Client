@@ -2170,15 +2170,15 @@ ID-kaardiga</translation>
     </message>
     <message>
         <source>Signing/decrypting is already in progress another window.</source>
-        <translation>Allkirjastamine/dekrüpteerimine on juba käimas teises aknas.</translation>
+        <translation type="vanished">Allkirjastamine/dekrüpteerimine on juba käimas teises aknas.</translation>
     </message>
     <message>
         <source>PKCS11 general error</source>
-        <translation>PKCS11 üldine viga</translation>
+        <translation type="vanished">PKCS11 üldine viga</translation>
     </message>
     <message>
         <source>PKCS11 device error</source>
-        <translation>PKCS11 seadme viga</translation>
+        <translation type="vanished">PKCS11 seadme viga</translation>
     </message>
     <message>
         <source>Unknown error</source>
@@ -2191,6 +2191,14 @@ ID-kaardiga</translation>
     <message>
         <source>PIN entry canceled</source>
         <translation>PIN sisestus katkestatus</translation>
+    </message>
+    <message>
+        <source>Signing/decrypting is already in progress in another window.</source>
+        <translation>Allkirjastamine/dekrüpteerimine juba toimub teises aknas.</translation>
+    </message>
+    <message>
+        <source>Error in smart card driver, reader or the card. On some readers it may indicate the wrong pin code or locked card.</source>
+        <translation>Viga kiipkaardi draiveris, lugejas või kaardis. Osade draiverite korral võib see tähendada ka lihtsalt vale PIN-i või lukus kaarti.</translation>
     </message>
 </context>
 <context>
