@@ -227,7 +227,7 @@ elseif(WIN32)
 	)
 	if(SIGNCERT)
 		list(APPEND SIGNCMD signtool.exe sign /a /v /s MY /n "${SIGNCERT}" /fd SHA256
-			/du http://installer.id.ee /tr http://timestamp.digicert.com /td SHA256)
+			/du https://installer.id.ee /tr http://timestamp.digicert.com /td SHA256)
 		add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
 			COMMAND ${SIGNCMD} "$<$<BOOL:${CROSSSIGNCERT}>:/ph;/ac;${CROSSSIGNCERT}>" $<TARGET_FILE:${PROJECT_NAME}>
 			COMMAND_EXPAND_LISTS
