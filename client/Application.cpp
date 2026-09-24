@@ -199,7 +199,7 @@ public:
 			dispatchToMain([] {
 				WarningDialog::create()
 					->withTitle(Application::tr("The renewal of Trust Service status List has failed"))
-					->withText(Application::tr(
+					->withRichText(Application::tr(
 						"Trust Service status List is used for digital signature validation. "
 						"Please check your internet connection and make sure you have the latest ID-software version "
 						"installed. An expired Trust Service List (TSL) will be used for signature validation. "
@@ -372,7 +372,7 @@ Application::Application( int &argc, char **argv )
 		{
 			dlg = WarningDialog::create()
 				->withTitle(tr("This version of ID-software on your computer is unsupported"))
-				->withText(tr("DigiDoc4 Client cannot be used until you update ID-software. "
+				->withRichText(tr("DigiDoc4 Client cannot be used until you update ID-software. "
 					"Install new ID-software from <a href=\"https://www.id.ee/en/article/install-id-software/\">www.id.ee</a>. "
 					"macOS users can download the latest ID-software version from the "
 					"<a href=\"https://itunes.apple.com/ee/developer/ria/id556524921?mt=12\">Mac App Store</a>."));
@@ -382,7 +382,7 @@ Application::Application( int &argc, char **argv )
 		{
 			dlg = WarningDialog::create()
 				->withTitle(tr("Your ID-software has expired"))
-				->withText(tr("To download the latest software version, go to the "
+				->withRichText(tr("To download the latest software version, go to the "
 					"<a href=\"https://www.id.ee/en/article/install-id-software/\">id.ee</a> website. "
 					"macOS users can download the latest ID-software version from the "
 					"<a href=\"https://itunes.apple.com/ee/developer/ria/id556524921?mt=12\">Mac App Store</a>."));
@@ -392,7 +392,7 @@ Application::Application( int &argc, char **argv )
 			{
 				auto *dlg = WarningDialog::create(activeWindow())
 					->withTitle(tr("An ID-software update has been found"))
-					->withText(tr("To download the update, go to the "
+					->withRichText(tr("To download the update, go to the "
 						"<a href=\"https://www.id.ee/en/article/install-id-software/\">id.ee</a> website. "
 						"macOS users can download the update from the "
 						"<a href=\"https://itunes.apple.com/ee/developer/ria/id556524921?mt=12\">Mac App Store</a>."));
