@@ -166,6 +166,33 @@ public:
 		return valueUserScope(Settings::TSA_URL_CUSTOM, Settings::TSA_URL, digidoc::XmlConfCurrent::TSUrl());
 	}
 
+	std::vector<digidoc::X509Cert> TSCertsArchive() const final
+	{
+		if(digidoc::X509Cert cert = toCert(fromBase64(Settings::TSA_CERT_ARCHIVE)))
+		{
+			std::vector<digidoc::X509Cert> list = toCerts(QLatin1String("CERT-BUNDLE"));
+			list.push_back(std::move(cert));
+			list.emplace_back(); // Make sure that TSA cert pinning is enabled
+			return list;
+		}
+		return TSCerts();
+	}
+
+	std::string TSUrlArchive() const final
+	{
+		if(std::string url = Settings::TSA_URL_ARCHIVE; Settings::TSA_URL_CUSTOM && !url.empty())
+			return url;
+		if(auto value = Application::confValue(Settings::TSA_URL_ARCHIVE.KEY); value.isString())
+		{
+			if(std::string url = value.toString().toStdString(); !url.empty())
+				return url;
+		}
+		if(std::string url = digidoc::XmlConfCurrent::TSUrlArchive();
+			!url.empty() && url != digidoc::XmlConfCurrent::TSUrl())
+			return url;
+		return TSUrl();
+	}
+
 	std::string TSLUrl() const final
 	{ return valueSystemScope(QLatin1String("TSL-URL"), digidoc::XmlConfCurrent::TSLUrl()); }
 	std::vector<digidoc::X509Cert> TSLCerts() const final
@@ -216,6 +243,8 @@ private:
 	{
 		if(Settings::TSA_URL == Application::confValue(Settings::TSA_URL.KEY).toString())
 			Settings::TSA_URL.clear(); // Cleanup user conf if it is default url
+		if(Settings::TSA_URL_ARCHIVE == Application::confValue(Settings::TSA_URL_ARCHIVE.KEY).toString())
+			Settings::TSA_URL_ARCHIVE.clear(); // Cleanup user conf if it is default url
 	}
 #endif
 
@@ -621,6 +650,7 @@ QVariant Application::confValue( ConfParameter parameter, const QVariant &value 
 	{
 	case SiVaUrl: r = i->verifyServiceUri().c_str(); break;
 	case TSAUrl: r = i->TSUrl().c_str(); break;
+	case TSAUrlArchive: r = i->TSUrlArchive().c_str(); break;
 	case TSLUrl: r = i->TSLUrl().c_str(); break;
 	case TSLCache: r = i->TSLCache().c_str(); break;
 	case TSLCerts:

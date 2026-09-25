@@ -2371,6 +2371,10 @@ ID-kaardiga</translation>
         <translation>Värskenduste kontrollimine on ebaõnnestunud.</translation>
     </message>
     <message>
+        <source>Select archive Time-Stamping server certificate</source>
+        <translation>Vali arhiveerimise ajatempliteenuse serveri sertifikaat</translation>
+    </message>
+    <message>
         <source>Restart DigiDoc4 Client to activate logging</source>
         <translation>Logimise aktiveerimiseks taaskäivita DigiDoc4 klient</translation>
     </message>
@@ -2540,12 +2544,20 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>Kasutan allkirjastamisel arhiveerimise ajatempli (LTA) vormingut</translation>
     </message>
     <message>
+        <source>Access to archive Time-Stamping service</source>
+        <translation>Ligipääs arhiveerimise ajatempliteenusele</translation>
+    </message>
+    <message>
         <source>Add certificate</source>
         <translation>Lisa sertifikaat</translation>
     </message>
     <message>
         <source>Show certificate</source>
         <translation>Näita sertifikaati</translation>
+    </message>
+    <message>
+        <source>Archive Time-Stamping service SSL certificate</source>
+        <translation>Arhiveerimise ajatempliteenuse SSL sertifikaat</translation>
     </message>
     <message>
         <source>Use CDOC1 file format for encryption</source>

@@ -2371,6 +2371,10 @@ ID-Card</translation>
         <translation>Checking updates has failed.</translation>
     </message>
     <message>
+        <source>Select archive Time-Stamping server certificate</source>
+        <translation>Select archive Time-Stamping server certificate</translation>
+    </message>
+    <message>
         <source>Restart DigiDoc4 Client to activate logging</source>
         <translation>Restart DigiDoc4 Client to activate logging</translation>
     </message>
@@ -2540,12 +2544,20 @@ Additional licenses and components</translation>
         <translation>Use Long Term Archival (LTA) format when signing</translation>
     </message>
     <message>
+        <source>Access to archive Time-Stamping service</source>
+        <translation>Access to archive Time-Stamping service</translation>
+    </message>
+    <message>
         <source>Add certificate</source>
         <translation>Add certificate</translation>
     </message>
     <message>
         <source>Show certificate</source>
         <translation>Show certificate</translation>
+    </message>
+    <message>
+        <source>Archive Time-Stamping service SSL certificate</source>
+        <translation>Archive Time-Stamping service SSL certificate</translation>
     </message>
     <message>
         <source>Use CDOC1 file format for encryption</source>
