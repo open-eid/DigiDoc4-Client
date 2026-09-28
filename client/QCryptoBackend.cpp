@@ -30,7 +30,7 @@
 #include <QtCore/QLoggingCategory>
 #include <QtCore/QReadWriteLock>
 #include <QtCore/QScopeGuard>
-#include <QtCore/QTimer>
+#include <QtCore/QSemaphore>
 
 #include <algorithm>
 #include <atomic>
@@ -38,7 +38,7 @@
 struct QCryptoManager::Private
 {
 	QList<TokenData> cache;
-	QReadWriteLock operationLock;
+	QSemaphore operationLock {1};
 	QReadWriteLock lock;
 	std::atomic<quint64> nextRequest {0};
 };
@@ -46,13 +46,13 @@ struct QCryptoManager::Private
 QCryptoBackend::~QCryptoBackend()
 {
 	auto *manager = qApp->cryptoManager();
-	manager->d->operationLock.unlock();
+	manager->d->operationLock.release();
 	manager->refreshToken(token);
 }
 
 std::expected<QCryptoBackend *,QCryptoBackend::Status>
 QCryptoBackend::getBackend(const TokenData& token, const QString &pin) {
-	if(!qApp->cryptoManager()->d->operationLock.tryLockForWrite(10 * 1000))
+	if(!qApp->cryptoManager()->d->operationLock.tryAcquire(1, 10 * 1000))
 		return std::unexpected(InProgress);
 #ifdef Q_OS_WIN
 	auto backend = std::make_unique<QCNG>();
@@ -102,11 +102,11 @@ QString QCryptoBackend::errorString(Status error)
 QCryptoManager::QCryptoManager()
 	: d(new Private)
 {
-	// Token enumeration runs on the manager thread.
+	// Token enumeration runs on the manager thread, on each card change.
 	moveToThread(this);
 	connect(&QPCSC::instance(), &QPCSC::cardChanged, this, &QCryptoManager::refresh);
-	start();
 	QPCSC::instance().start();
+	start();
 }
 
 QCryptoManager::~QCryptoManager()
@@ -119,9 +119,6 @@ QCryptoManager::~QCryptoManager()
 
 void QCryptoManager::run()
 {
-	QTimer timer;
-	connect(&timer, &QTimer::timeout, this, &QCryptoManager::refresh);
-	timer.start(5000);
 	refresh();
 	exec();
 }
@@ -153,10 +150,10 @@ void QCryptoManager::refreshToken(const TokenData &token)
 
 void QCryptoManager::refresh()
 {
-	if(!d->operationLock.tryLockForRead())
+	if(!d->operationLock.tryAcquire())
 		return;
 	auto unlock = qScopeGuard([this] {
-		d->operationLock.unlock();
+		d->operationLock.release();
 		Q_EMIT refreshed();
 	});
 
