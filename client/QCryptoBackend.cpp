@@ -98,13 +98,13 @@ QString QCryptoBackend::errorString(Status error)
 	switch( error )
 	{
 	case PinOK: return QString();
-	case PinCanceled: return QCoreApplication::translate("QCryptoBackend", "PIN entry canceled");
-	case PinLocked: return QCoreApplication::translate("QCryptoBackend", "PIN locked");
-	case PinIncorrect: return QCoreApplication::translate("QCryptoBackend", "PIN incorrect");
-	case InProgress: return QCoreApplication::translate("QCryptoBackend", "Signing/decrypting is already in progress in another window.");
-	case GeneralError: return QCoreApplication::translate("QCryptoBackend", "Error in smart card driver, reader or the card. On some readers it may indicate the wrong pin code or locked card.");
-	case DeviceError: return QCoreApplication::translate("QCryptoBackend", "Error in smart card driver, reader or the card. On some readers it may indicate the wrong pin code or locked card.");
-	default: return QCoreApplication::translate("QCryptoBackend", "Unknown error");
+	case PinCanceled: return tr("QCryptoBackend", "PIN entry canceled");
+	case PinLocked: return tr("QCryptoBackend", "PIN locked");
+	case PinIncorrect: return tr("QCryptoBackend", "PIN incorrect");
+	case InProgress: return tr("QCryptoBackend", "Signing/decrypting is already in progress in another window.");
+	case GeneralError: return tr("QCryptoBackend", "Error in smart card driver, reader or the card. On some readers it may indicate the wrong pin code or locked card.");
+	case DeviceError: return tr("QCryptoBackend", "Error in smart card driver, reader or the card. On some readers it may indicate the wrong pin code or locked card.");
+	default: return tr("QCryptoBackend", "Unknown error");
 	}
 }
 
