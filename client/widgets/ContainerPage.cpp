@@ -24,7 +24,7 @@
 #include "CryptoDoc.h"
 #include "DigiDoc.h"
 #include "PrintSheet.h"
-#include "QSigner.h"
+#include "QCryptoBackend.h"
 #include "Settings.h"
 #include "SslCertificate.h"
 #include "TokenData.h"
@@ -244,7 +244,7 @@ void ContainerPage::encrypt(CryptoDoc *container, bool longTerm)
 		WaitDialogHolder waitDialog(this, tr("Encrypting"));
 		if(!container->encrypt(container->fileName(), {}, {}))
 			return;
-		transition(container, qApp->signer()->tokenauth().cert());
+		transition(container, qApp->cryptoManager()->tokenauth().cert());
 		emit action(EncryptContainerSuccess, {}, {});
 		return;
 	}
