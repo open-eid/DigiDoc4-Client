@@ -29,9 +29,8 @@
 #include "SslCertificate.h"
 
 #include <QtCore/QLoggingCategory>
-#include <QtCore/QMutex>
 #include <QtCore/QReadWriteLock>
-#include <QtCore/QWaitCondition>
+#include <QtCore/QSemaphore>
 #include <QtNetwork/QSslKey>
 
 static Q_LOGGING_CATEGORY(CryptoLog, "qdigidoc4.QCryptoManager")
@@ -48,10 +47,8 @@ struct QCryptoManager::Private
 	QSmartCard smartcard;
 	TokenData auth, sign;
 	QList<TokenData> cache;
-	QReadWriteLock operationLock;
+	QSemaphore operationLock {1};
 	QReadWriteLock lock;
-	QMutex sleepMutex;
-	QWaitCondition sleepCond;
 
 	RSA_METHOD *rsa_method = RSA_meth_dup(RSA_get_default_method());
 	EC_KEY_METHOD *ec_method = EC_KEY_METHOD_new(EC_KEY_get_default_method());
@@ -60,14 +57,20 @@ struct QCryptoManager::Private
 QCryptoBackend::~QCryptoBackend()
 {
 	auto *manager = qApp->cryptoManager();
+	// Reload counters while the operation semaphore is still held, otherwise
+	// operationLock.release() would release it and queue refresh() first, letting the
+	// manager thread enumerate tokens concurrently with this PCSC reload.
 	manager->smartcard()->reloadCard(token, true);
-	manager->d->operationLock.unlock();
-	manager->d->sleepCond.wakeAll();
+
+	manager->d->operationLock.release();
+	// A card change may have been skipped by refresh() while the operation held
+	// the lock; re-sync on the main thread now that the card session is free.
+	QMetaObject::invokeMethod(manager, [manager] { manager->refresh(); }, Qt::QueuedConnection);
 }
 
 std::expected<QCryptoBackend *,QCryptoBackend::Status>
 QCryptoBackend::getBackend(const TokenData& token) {
-	if(!qApp->cryptoManager()->d->operationLock.tryLockForWrite(10 * 1000))
+	if(!qApp->cryptoManager()->d->operationLock.tryAcquire(1, (10 * 1000)))
 		return std::unexpected(InProgress);
 #ifdef Q_OS_WIN
 	auto backend = std::make_unique<QCNG>();
@@ -180,18 +183,18 @@ QCryptoManager::QCryptoManager()
 	EC_KEY_METHOD_get_sign(d->ec_method, &sign, &sign_setup, nullptr);
 	EC_KEY_METHOD_set_sign(d->ec_method, sign, sign_setup, ecdsa_do_sign);
 
-	connect(&QPCSC::instance(), &QPCSC::cardChanged, this, [this] {
-		qCDebug(CryptoLog) << "Card change detected";
-		d->sleepCond.wakeAll();
-	});
-	start();
+	// Run the manager on its own thread with an event loop, so token enumeration
+	// and reloadCard happen off the UI thread. cardChanged/selectCard are delivered
+	// via queued connections and processed by run()'s exec() loop.
+	moveToThread(this);
+	connect(&QPCSC::instance(), &QPCSC::cardChanged, this, &QCryptoManager::refresh);
 	QPCSC::instance().start();
+	start();
 }
 
 QCryptoManager::~QCryptoManager()
 {
-	requestInterruption();
-	d->sleepCond.wakeAll();
+	quit();
 	wait();
 	EC_KEY_METHOD_free(d->ec_method);
 	RSA_meth_free(d->rsa_method);
@@ -200,14 +203,8 @@ QCryptoManager::~QCryptoManager()
 
 void QCryptoManager::run()
 {
-	while(!isInterruptionRequested())
-	{
-		refresh();
-		QMutexLocker locker(&d->sleepMutex);
-		if(isInterruptionRequested())
-			break;
-		d->sleepCond.wait(&d->sleepMutex, 5000);
-	}
+	refresh();
+	exec();
 }
 
 QList<TokenData> QCryptoManager::cache() const { QReadLocker locker(&d->lock); return d->cache; }
@@ -255,7 +252,11 @@ void QCryptoManager::selectCard(const TokenData &token)
 
 void QCryptoManager::refresh()
 {
-	if(!d->operationLock.tryLockForRead())
+	// Don't enumerate tokens while a sign/decrypt operation holds the card
+	// session — the operation runs on a worker thread and PKCS11/PCSC access
+	// from two threads at once is unsafe. unlockOperation() queues a catch-up
+	// refresh when the operation finishes, so a skip here is not lost.
+	if(!d->operationLock.tryAcquire())
 		return;
 
 #ifdef Q_OS_WIN
@@ -318,5 +319,5 @@ void QCryptoManager::refresh()
 	if(aold != anew || sold != snew)
 		d->smartcard.reloadCard(update, false);
 
-	d->operationLock.unlock();
+	d->operationLock.release();
 }
