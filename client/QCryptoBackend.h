@@ -21,15 +21,18 @@
 
 #include "TokenData.h"
 
+#include <QtCore/QCoreApplication>
 #include <QtCore/QCryptographicHash>
+#include <QtCore/QThread>
 
 #include <expected>
 
-class TokenData;
+class QSmartCard;
 class QSslKey;
 
 class QCryptoBackend
 {
+	Q_DECLARE_TR_FUNCTIONS(QCryptoBackend);
 public:
 	enum Status : quint8
 	{
@@ -53,41 +56,56 @@ public:
 
 	/**
 	 * @brief Get the SSL key for the certificate
-	 * 
+	 *
 	 * @return the Qt SSL key
 	 */
 	QSslKey getKey() const;
 	QSslCertificate cert() const;
 	/**
 	 * @brief Get a new Backend object and log in with the given token
-	 * 
+	 *
 	 * @param token the token to use
-	 * @return the new backend object or an error code 
+	 * @return the new backend object or an error code
 	 */
-	static std::expected<QCryptoBackend *,Status> getBackend(const TokenData& token);
-	/**
-	 * @brief Shut down all backends
-	 * 
-	 * This should be called when the application is about to exit. It releases all static data held by backend(s) (e.g. PKCS11 library)
-	 */
-	static void shutDown();
+	static std::expected<QCryptoBackend *,Status> getBackend(const TokenData &token);
 
 	/**
 	 * @brief The status of the last operation
 	 */
 	mutable Status status = PinOK;
 
-	/**
-	 * @brief Get a list of all available tokens
-	 * 
-	 * @return list of all available tokens
-	 */
-	static QList<TokenData> getTokens();
-
 	static QString errorString(Status error);
+
 protected:
 	virtual Status login(const TokenData &cert) = 0;
 
 private:
 	TokenData token;
+};
+
+class QCryptoManager final : public QThread
+{
+	Q_OBJECT
+public:
+	explicit QCryptoManager();
+	~QCryptoManager() final;
+
+	QList<TokenData> cache() const;
+	QSmartCard *smartcard() const;
+	void selectCard(const TokenData &token);
+	TokenData tokenauth() const;
+	TokenData tokensign() const;
+
+Q_SIGNALS:
+	void cacheChanged();
+	void authDataChanged(const TokenData &token);
+	void signDataChanged(const TokenData &token);
+
+private:
+	friend class QCryptoBackend;
+	void refresh();
+	void run() final;
+
+	struct Private;
+	Private *d;
 };

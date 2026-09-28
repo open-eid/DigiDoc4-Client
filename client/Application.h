@@ -37,7 +37,7 @@ using BaseApplication = QtSingleApplication;
 namespace digidoc { class Exception; }
 class Configuration;
 class QAction;
-class QSigner;
+class QCryptoManager;
 class Application final: public BaseApplication
 {
 	Q_OBJECT
@@ -61,7 +61,7 @@ public:
 	Configuration *conf();
 	void loadTranslation( const QString &lang );
 	bool notify(QObject *object, QEvent *event ) final;
-	QSigner* signer() const;
+	QCryptoManager* cryptoManager() const;
 	int run();
 	void waitForTSL( const QString &file );
 
