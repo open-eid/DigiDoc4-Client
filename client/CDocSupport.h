@@ -52,7 +52,7 @@ struct DDConfiguration : public libcdoc::Configuration {
 //
 // CryptoBackend
 //
-// Bridges to qApp->signer()
+// Bridges to qApp->cryptoManager()
 //
 
 struct DDCryptoBackend final : public libcdoc::CryptoBackend {
