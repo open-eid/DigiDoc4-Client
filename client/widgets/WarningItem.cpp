@@ -105,7 +105,6 @@ void WarningItem::lookupWarning()
 		url = tr("https://www.politsei.ee/en/instructions/applying-for-an-id-card-for-an-adult/reminders-for-id-card-holders/");
 		_page = MyEid;
 		break;
-	case ActivatePin1WithPUKWarning:
 	case UnblockPin1Warning:
 		ui->warningText->setText(QStringLiteral("%1 %2").arg(
 			VerifyCert::tr("PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times.").arg(1),
@@ -113,7 +112,6 @@ void WarningItem::lookupWarning()
 		ui->warningAction->setText(VerifyCert::tr("Unblock"));
 		_page = MyEid;
 		break;
-	case ActivatePin2WithPUKWarning:
 	case UnblockPin2Warning:
 		ui->warningText->setText(QStringLiteral("%1 %2").arg(
 			VerifyCert::tr("PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times.").arg(2),
@@ -125,13 +123,6 @@ void WarningItem::lookupWarning()
 		ui->warningText->setText(tr("Signing with an ID-card isn't possible yet. PIN%1 code must be changed in order to sign.").arg(2));
 		ui->warningAction->setText(tr("Additional information"));
 		url = tr("https://www.id.ee/en/article/changing-id-card-pin-codes-and-puk-code/");
-		_page = MyEid;
-		break;
-	case LockedCardWarning:
-		ui->warningText->setText(tr("Authentication and signing with the ID-card isn't possible yet. "
-			"ID-card must be activated in the Police and Border Guard Board’s self-service portal in order to use it."));
-		ui->warningAction->setText(tr("Activate ID-card"));
-		url = tr("https://www.politsei.ee/en/self-service-portal/");
 		_page = MyEid;
 		break;
 	// SignDetails
