@@ -352,6 +352,9 @@ bool CryptoDoc::decrypt(const libcdoc::Lock *lock, const QByteArray& secret)
 		case libcdoc::INPUT_STREAM_ERROR:
 			str = tr("Cannot read file.");
 			break;
+		case libcdoc::NetworkBackend::NETWORK_ERROR:
+			str = tr("Network error. Please check your network connection. It may also indicate that one or more CDoc servers are unreachable.");
+			break;
 		case DDCryptoBackend::PIN_CANCELED:
 			return false;
 		case DDCryptoBackend::PIN_INCORRECT:

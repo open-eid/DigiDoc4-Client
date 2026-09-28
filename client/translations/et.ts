@@ -640,6 +640,10 @@
         <source>General decryption error. Neither the card reader not network layer did not give more information. Please check your internet connection, network settings and card reader. On some readers it may also indicate the wrong pin code or locked card.</source>
         <translation>Täpsustamata dekrüpteerimise viga. Ei kaardilugeja ega võrguühendus ei andnud täpsemat informatsiooni. Kontrollige internetiühendust, võrgu sätteid ja kaardilugejat. Mõne lugeja korral võib põhjuseks olla ka vale pin või lukustatud kaart.</translation>
     </message>
+    <message>
+        <source>Network error. Please check your network connection. It may also indicate that one or more CDoc servers are unreachable.</source>
+        <translation>Võrguühenduse viga, kontrollige oma võrguseadeid. Põhjuseks võib olla ka, et mõni CDoc server ei ole kättesaadav.</translation>
+    </message>
 </context>
 <context>
     <name>Diagnostics</name>
