@@ -42,18 +42,14 @@ enum Actions : unsigned char {
     ContainerEncrypt,
 
     EncryptContainer,
+    EncryptLT,
     EncryptContainerSuccess,
     DecryptContainer,
-    DecryptToken,
     DecryptContainerSuccess,
 
     SignatureAdd,
-    SignatureMobile,
-    SignatureSmartID,
-    SignatureToken,
     ClearSignatureWarning,
     ClearCryptoWarning,
-    EncryptLT
 };
 
 }
