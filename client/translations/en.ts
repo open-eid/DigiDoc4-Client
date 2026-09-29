@@ -498,14 +498,6 @@
         <translation>Decrypting</translation>
     </message>
     <message>
-        <source>You are about to delete the last file in the container</source>
-        <translation type="vanished">You are about to delete the last file in the container</translation>
-    </message>
-    <message>
-        <source>It is removed along with the container.</source>
-        <translation type="vanished">It is removed along with the container.</translation>
-    </message>
-    <message>
         <source>In order to view Validity Confirmation Sheet there has to be at least one printer installed!</source>
         <translation>In order to view Validity Confirmation Sheet there has to be at least one printer installed!</translation>
     </message>
@@ -2175,18 +2167,6 @@ ID-Card</translation>
     <message>
         <source>PIN locked</source>
         <translation>PIN locked</translation>
-    </message>
-    <message>
-        <source>Signing/decrypting is already in progress another window.</source>
-        <translation type="vanished">Signing/decrypting is already in progress another window.</translation>
-    </message>
-    <message>
-        <source>PKCS11 general error</source>
-        <translation type="vanished">PKCS11 general error</translation>
-    </message>
-    <message>
-        <source>PKCS11 device error</source>
-        <translation type="vanished">PKCS11 device error</translation>
     </message>
     <message>
         <source>Unknown error</source>
