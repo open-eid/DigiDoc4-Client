@@ -561,6 +561,14 @@
         <source>Encrypting</source>
         <translation>Krüpteerin</translation>
     </message>
+    <message>
+        <source>You are about to delete the last file in the container</source>
+        <translation>Oled kustutamas viimast faili ümbrikus</translation>
+    </message>
+    <message>
+        <source>It is removed along with the container.</source>
+        <translation>Koos sellega eemaldatakse ka ümbrik.</translation>
+    </message>
 </context>
 <context>
     <name>CryptoDoc</name>
@@ -3074,14 +3082,6 @@ Täiendavad litsentsid ja komponendid</translation>
     <message>
         <source>Remove</source>
         <translation>Eemalda</translation>
-    </message>
-    <message>
-        <source>You are about to delete the last file in the container</source>
-        <translation type="unfinished">Oled kustutamas viimast faili ümbrikus</translation>
-    </message>
-    <message>
-        <source>It is removed along with the container.</source>
-        <translation type="unfinished">Koos sellega eemaldatakse ka ümbrik.</translation>
     </message>
 </context>
 <context>

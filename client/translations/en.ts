@@ -561,6 +561,14 @@
         <source>Encrypting</source>
         <translation>Encrypting</translation>
     </message>
+    <message>
+        <source>You are about to delete the last file in the container</source>
+        <translation>You are about to delete the last file in the container</translation>
+    </message>
+    <message>
+        <source>It is removed along with the container.</source>
+        <translation>It is removed along with the container.</translation>
+    </message>
 </context>
 <context>
     <name>CryptoDoc</name>
@@ -3074,14 +3082,6 @@ Additional licenses and components</translation>
     <message>
         <source>Remove</source>
         <translation>Remove</translation>
-    </message>
-    <message>
-        <source>You are about to delete the last file in the container</source>
-        <translation type="unfinished">You are about to delete the last file in the container</translation>
-    </message>
-    <message>
-        <source>It is removed along with the container.</source>
-        <translation type="unfinished">It is removed along with the container.</translation>
     </message>
 </context>
 <context>
