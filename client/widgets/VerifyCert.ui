@@ -7,14 +7,8 @@
     <x>0</x>
     <y>0</y>
     <width>305</width>
-    <height>264</height>
+    <height>342</height>
    </rect>
-  </property>
-  <property name="minimumSize">
-   <size>
-    <width>305</width>
-    <height>0</height>
-   </size>
   </property>
   <property name="styleSheet">
    <string notr="true">#name {
@@ -26,7 +20,7 @@ font-weight: 700;
 #info, #validUntil {
 color: #091A36;
 font-family: Roboto, Helvetica;
-font-size: 12px;
+font-size: 14px;
 padding: 2px 10px;
 border-radius: 8px;
 background-color: #F3F5F7;
@@ -85,158 +79,114 @@ background-color: #EAF1F8;
 background-color: #BFD3E8;
 }</string>
   </property>
-  <layout class="QVBoxLayout" name="VerifyCertLayout">
+  <layout class="QVBoxLayout" name="VerifyCertLayout" stretch="0,0,0,1">
    <property name="spacing">
-    <number>5</number>
+    <number>32</number>
    </property>
    <property name="leftMargin">
-    <number>5</number>
+    <number>32</number>
    </property>
    <property name="topMargin">
-    <number>20</number>
+    <number>32</number>
    </property>
    <property name="rightMargin">
-    <number>5</number>
+    <number>32</number>
    </property>
    <property name="bottomMargin">
-    <number>20</number>
+    <number>0</number>
    </property>
    <item>
-    <layout class="QHBoxLayout" name="nameLayout" stretch="1,0,1">
-     <property name="spacing">
-      <number>0</number>
-     </property>
-     <item>
-      <layout class="QHBoxLayout" name="nameRightLayout">
-       <property name="spacing">
-        <number>0</number>
-       </property>
-       <property name="leftMargin">
-        <number>0</number>
-       </property>
-       <property name="topMargin">
-        <number>0</number>
-       </property>
-       <property name="rightMargin">
-        <number>0</number>
-       </property>
-       <property name="bottomMargin">
-        <number>0</number>
-       </property>
-       <item>
-        <spacer name="nameRightSpacer">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>0</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item>
-        <widget class="QSvgWidget" name="nameIcon" native="true">
-         <property name="minimumSize">
-          <size>
-           <width>24</width>
-           <height>24</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>24</width>
-           <height>24</height>
-          </size>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
-     <item>
-      <widget class="QLabel" name="name">
-       <property name="focusPolicy">
-        <enum>Qt::TabFocus</enum>
-       </property>
-       <property name="text">
-        <string notr="true">name</string>
-       </property>
-       <property name="textFormat">
-        <enum>Qt::RichText</enum>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <spacer name="nameRight">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeType">
-        <enum>QSizePolicy::Preferred</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>0</width>
-         <height>0</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-    </layout>
-   </item>
-   <item alignment="Qt::AlignHCenter">
-    <widget class="Label" name="validUntil">
-     <property name="focusPolicy">
-      <enum>Qt::TabFocus</enum>
-     </property>
-     <property name="text">
-      <string notr="true">Certificate is valid until %1</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <spacer name="buttonSpacerTop">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
+    <widget class="QWidget" name="nameWidget" native="true">
+     <property name="minimumSize">
       <size>
-       <width>20</width>
-       <height>6</height>
+       <width>0</width>
+       <height>92</height>
       </size>
      </property>
-    </spacer>
-   </item>
-   <item>
-    <widget class="Label" name="info">
-     <property name="focusPolicy">
-      <enum>Qt::TabFocus</enum>
-     </property>
-     <property name="text">
-      <string notr="true">PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times.</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
-     </property>
-     <property name="openExternalLinks">
-      <bool>true</bool>
-     </property>
-     <property name="textInteractionFlags">
-      <set>Qt::LinksAccessibleByKeyboard|Qt::LinksAccessibleByMouse</set>
-     </property>
+     <layout class="QGridLayout" name="nameLayout" rowstretch="0,0,1" columnstretch="0,1">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <property name="horizontalSpacing">
+       <number>4</number>
+      </property>
+      <property name="verticalSpacing">
+       <number>12</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QSvgWidget" name="nameIcon" native="true">
+        <property name="minimumSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLabel" name="name">
+        <property name="focusPolicy">
+         <enum>Qt::TabFocus</enum>
+        </property>
+        <property name="text">
+         <string notr="true">name</string>
+        </property>
+        <property name="textFormat">
+         <enum>Qt::RichText</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0" colspan="2" alignment="Qt::AlignLeft">
+       <widget class="Label" name="validUntil">
+        <property name="focusPolicy">
+         <enum>Qt::TabFocus</enum>
+        </property>
+        <property name="text">
+         <string notr="true">Certificate is valid until %1</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0" colspan="2" alignment="Qt::AlignTop">
+       <widget class="Label" name="info">
+        <property name="focusPolicy">
+         <enum>Qt::TabFocus</enum>
+        </property>
+        <property name="text">
+         <string notr="true">PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times.</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+        <property name="openExternalLinks">
+         <bool>true</bool>
+        </property>
+        <property name="textInteractionFlags">
+         <set>Qt::LinksAccessibleByKeyboard|Qt::LinksAccessibleByMouse</set>
+        </property>
+        <property name="fitToParentWidth" stdset="0">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </item>
-   <item alignment="Qt::AlignHCenter|Qt::AlignVCenter">
+   <item alignment="Qt::AlignLeft|Qt::AlignVCenter">
     <widget class="QToolButton" name="changePIN">
      <property name="cursor">
       <cursorShape>PointingHandCursor</cursorShape>
@@ -250,35 +200,10 @@ background-color: #BFD3E8;
     </widget>
    </item>
    <item>
-    <spacer name="buttonSpacerBottom">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>6</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item>
     <widget class="QWidget" name="links" native="true">
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>57</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>57</height>
-      </size>
-     </property>
      <layout class="QVBoxLayout" name="linksLayout">
       <property name="spacing">
-       <number>0</number>
+       <number>15</number>
       </property>
       <property name="leftMargin">
        <number>0</number>
@@ -292,7 +217,7 @@ background-color: #BFD3E8;
       <property name="bottomMargin">
        <number>0</number>
       </property>
-      <item alignment="Qt::AlignHCenter">
+      <item alignment="Qt::AlignLeft">
        <widget class="QToolButton" name="forgotPinLink">
         <property name="cursor">
          <cursorShape>PointingHandCursor</cursorShape>
@@ -302,7 +227,7 @@ background-color: #BFD3E8;
         </property>
        </widget>
       </item>
-      <item alignment="Qt::AlignHCenter">
+      <item alignment="Qt::AlignLeft">
        <widget class="QToolButton" name="details">
         <property name="cursor">
          <cursorShape>PointingHandCursor</cursorShape>
@@ -312,7 +237,7 @@ background-color: #BFD3E8;
         </property>
        </widget>
       </item>
-      <item alignment="Qt::AlignHCenter">
+      <item alignment="Qt::AlignLeft">
        <widget class="QToolButton" name="checkCert">
         <property name="cursor">
          <cursorShape>PointingHandCursor</cursorShape>
@@ -324,6 +249,19 @@ background-color: #BFD3E8;
       </item>
      </layout>
     </widget>
+   </item>
+   <item>
+    <spacer name="VerifyCertSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>32</height>
+      </size>
+     </property>
+    </spacer>
    </item>
   </layout>
  </widget>

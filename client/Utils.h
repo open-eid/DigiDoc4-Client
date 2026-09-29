@@ -33,15 +33,16 @@ namespace {
 		std::exception_ptr exception;
 		std::invoke_result_t<F,Args...> result{};
 		QEventLoop l;
-		std::thread([&, function = std::forward<F>(function), ...args = std::forward<Args>(args)]{
+		std::thread thread([&, function = std::forward<F>(function), ...args = std::forward<Args>(args)]{
 			try {
 				result = std::invoke(function, args...);
 			} catch(...) {
 				exception = std::current_exception();
 			}
 			l.exit();
-		}).detach();
+		});
 		l.exec();
+		thread.join();
 		if(exception)
 			std::rethrow_exception(std::move(exception));
 		return result;

@@ -65,6 +65,7 @@ SettingsDialog::SettingsDialog(int page, QWidget *parent)
 
 	ui->setupUi(this);
 	setWindowFlag(Qt::FramelessWindowHint);
+	setAttribute(Qt::WA_DeleteOnClose, true);
 	move(parent->geometry().center() - geometry().center());
 	for(QLineEdit *w: findChildren<QLineEdit*>())
 		w->setAttribute(Qt::WA_MacShowFocusRect, false);
