@@ -21,6 +21,7 @@ add_subdirectory(libcdoc EXCLUDE_FROM_ALL)
 file(GLOB WIDGETS CONFIGURE_DEPENDS
 	"dialogs/*.cpp" "dialogs/*.h" "dialogs/*.ui"
 	"effects/*.cpp" "effects/*.h" "effects/*.ui"
+	"signer/*.cpp" "signer/*.h"
 	"widgets/*.cpp" "widgets/*.h" "widgets/*.ui"
 )
 add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
@@ -66,8 +67,6 @@ add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
 	QPCSC.h
 	QPKCS11.cpp
 	QPKCS11.h
-	QSigner.cpp
-	QSigner.h
 	QSmartCard.cpp
 	QSmartCard_p.h
 	QSmartCard.h
