@@ -498,6 +498,14 @@
         <translation>Decrypting</translation>
     </message>
     <message>
+        <source>You are about to delete the last file in the container</source>
+        <translation>You are about to delete the last file in the container</translation>
+    </message>
+    <message>
+        <source>It is removed along with the container.</source>
+        <translation>It is removed along with the container.</translation>
+    </message>
+    <message>
         <source>In order to view Validity Confirmation Sheet there has to be at least one printer installed!</source>
         <translation>In order to view Validity Confirmation Sheet there has to be at least one printer installed!</translation>
     </message>
@@ -560,14 +568,6 @@
     <message>
         <source>Encrypting</source>
         <translation>Encrypting</translation>
-    </message>
-    <message>
-        <source>You are about to delete the last file in the container</source>
-        <translation>You are about to delete the last file in the container</translation>
-    </message>
-    <message>
-        <source>It is removed along with the container.</source>
-        <translation>It is removed along with the container.</translation>
     </message>
 </context>
 <context>
