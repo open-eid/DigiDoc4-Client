@@ -262,6 +262,7 @@ DDNetworkBackend::getLastErrorStr(libcdoc::result_t code) const
 			return "PIN locked";
 		case DDCryptoBackend::IN_PROGRESS:
 			return "Signing/decrypting is already in progress another window.";
+		case NETWORK_ERROR:
 		case BACKEND_ERROR:
 		case DDCryptoBackend::BACKEND_ERROR:
 			return last_error;
@@ -282,7 +283,7 @@ libcdoc::result_t DDNetworkBackend::sendKey(
 	}
 	if (!checkConnection()) {
 		last_error = "No connection";
-		return BACKEND_ERROR;
+		return NETWORK_ERROR;
 	}
 	QScopedPointer<QNetworkAccessManager, QScopedPointerDeleteLater> nam(CheckConnection::setupNAM(req, Settings::CDOC2_POST_CERT));
 	QNetworkReply *reply = nam->post(req, QJsonDocument({
@@ -296,18 +297,18 @@ libcdoc::result_t DDNetworkBackend::sendKey(
 	QNetworkReply::NetworkError n_err = reply->error();
 	if (n_err != QNetworkReply::NoError) {
 		last_error = reply->errorString().toStdString();
-		return BACKEND_ERROR;
+		return NETWORK_ERROR;
 	}
 	int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 	if (status != 201) {
 		last_error = reply->errorString().toStdString();
-		return BACKEND_ERROR;
+		return NETWORK_ERROR;
 	}
 	QString tr_id;
 	tr_id = QString::fromLatin1(reply->rawHeader("Location")).remove(QLatin1String("/key-capsules/"));
 	if (tr_id.isEmpty()) {
 		last_error = "Failed to post key capsule";
-		return BACKEND_ERROR;
+		return NETWORK_ERROR;
 	}
 	dst.transaction_id = tr_id.toStdString();
 
@@ -326,7 +327,7 @@ DDNetworkBackend::fetchKey(std::vector<uint8_t> &result, const std::string &url,
 	req.setHeader(QNetworkRequest::ContentTypeHeader, QStringLiteral("application/json"));
 	if(!checkConnection()) {
 		last_error = "No connection";
-		return BACKEND_ERROR;
+		return NETWORK_ERROR;
 	}
 
 	TokenData auth = qApp->cryptoManager()->tokenauth();
@@ -338,7 +339,7 @@ DDNetworkBackend::fetchKey(std::vector<uint8_t> &result, const std::string &url,
 	auto authKey = backend->getKey();
 	if (!authKey.handle()) {
 		last_error = "Cannot create authentication key";
-		return BACKEND_ERROR;
+		return getDecryptStatus(backend.get()->status);
 	}
 	QScopedPointer<QNetworkAccessManager,QScopedPointerDeleteLater> nam(
 				CheckConnection::setupNAM(req, auth.cert(), authKey, Settings::CDOC2_GET_CERT));
@@ -348,8 +349,15 @@ DDNetworkBackend::fetchKey(std::vector<uint8_t> &result, const std::string &url,
 	e.exec();
 
 	if(reply->error() != QNetworkReply::NoError && reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() != 201) {
+        if (backend.get()->status != QCryptoBackend::PinOK) {
+            // The actual error was in QCryptoBackend
+            libcdoc::result_t lresult = getDecryptStatus(backend.get()->status);
+            last_error = getLastErrorStr(lresult);
+            return lresult;
+        }
+        // Probably network problem
 		last_error = reply->errorString().toStdString();
-		return BACKEND_ERROR;
+		return NETWORK_ERROR;
 	}
 	QJsonObject json = QJsonDocument::fromJson(reply->readAll()).object();
 	QByteArray key_material = QByteArray::fromBase64(json.value(QLatin1String("ephemeral_key_material")).toString().toLatin1());

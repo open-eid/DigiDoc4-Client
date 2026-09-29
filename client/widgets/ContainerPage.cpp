@@ -224,8 +224,8 @@ void ContainerPage::deleteConfirm(C *c, int index)
 		return;
 	}
 	auto *dlg = WarningDialog::create(this)
-		->withTitle(tr("You are about to delete the last file in the container"))
-		->withText(tr("It is removed along with the container."))
+		->withTitle(QCoreApplication::translate("ContainerPage", "You are about to delete the last file in the container"))
+		->withText(QCoreApplication::translate("ContainerPage", "It is removed along with the container."))
 		->setCancelText(WarningDialog::Cancel)
 		->resetCancelStyle(false)
 		->addButton(WarningDialog::Remove, QMessageBox::Ok, true);
