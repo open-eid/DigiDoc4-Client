@@ -19,21 +19,40 @@
 
 #pragma once
 
-#include <QDialog>
+#include "QSmartCard.h"
 
-namespace Ui { class SmartIDDialog; }
+#include <QWidget>
 
-class SmartIDDialog final : public QDialog
+#include <QDateTime>
+
+namespace Ui {
+class MyEidInfo;
+}
+
+class SslCertificate;
+class QSmartCardData;
+
+class MyEidInfo final: public QWidget
 {
 	Q_OBJECT
 
 public:
-	explicit SmartIDDialog(QWidget *parent = nullptr);
-	~SmartIDDialog() final;
+	explicit MyEidInfo( QWidget *parent = nullptr );
+	~MyEidInfo() final;
 
-	QString country() const;
-	QString idCode() const;
+	void clearData();
+	void update(const SslCertificate &cert);
+	void update(const QSmartCardData &t);
+
+Q_SIGNALS:
+	void changePinClicked(QSmartCardData::PinType, QSmartCard::PinAction);
 
 private:
-	Ui::SmartIDDialog *ui;
+	void changeEvent(QEvent* event) final;
+	void update();
+
+	Ui::MyEidInfo *ui;
+
+	QDateTime expiry;
+	int certType = 0;
 };

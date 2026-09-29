@@ -1,5 +1,5 @@
 /*
- * QDigiDocClient
+ * QDigiDoc4
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,16 +23,29 @@
 
 #include <QCoreApplication>
 
+class QAbstractButton;
+class QLabel;
+class QProgressBar;
 class QWidget;
 
-class SmartIDProgress final: public digidoc::Signer
+struct SigningProgressUI {
+	QLabel *info {};
+	QLabel *code {};
+	QLabel *label {};
+	QProgressBar *bar {};
+	QAbstractButton *cancel {};
+	QWidget *errorParent {};
+};
+
+class MobileProgress final: public digidoc::Signer
 {
 	Q_DECLARE_TR_FUNCTIONS(MobileProgress)
 public:
-	explicit SmartIDProgress(QWidget *parent = nullptr);
-	~SmartIDProgress() final;
+	explicit MobileProgress(const SigningProgressUI &pui);
+	~MobileProgress() final;
+
+	bool init(const QString &ssid, const QString &cell);
 	digidoc::X509Cert cert() const final;
-	bool init(const QString &country, const QString &idCode, const QString &fileName);
 	std::vector<unsigned char> sign(const std::string &method, const std::vector<unsigned char> &digest) const final;
 
 private:

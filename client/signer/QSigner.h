@@ -19,22 +19,30 @@
 
 #pragma once
 
-#include <QDialog>
+#include "TokenData.h"
 
-namespace Ui { class MobileDialog; }
+#include <digidocpp/crypto/Signer.h>
 
-class MobileDialog final : public QDialog
+#include <QtCore/QCoreApplication>
+#include <QtCore/QCryptographicHash>
+
+class QCryptoBackend;
+class QSmartCard;
+class TokenData;
+
+class QSigner final : public digidoc::Signer
 {
-	Q_OBJECT
-
+	Q_DECLARE_TR_FUNCTIONS(QSigner);
 public:
-	explicit MobileDialog(QWidget *parent = nullptr);
-	~MobileDialog() final;
+	QSigner(QCryptoBackend *backend, const TokenData &token);
 
-	QString idCode();
-	QString phoneNo();
+	digidoc::X509Cert cert() const final;
+	std::vector<unsigned char> sign(const std::string &method,
+		const std::vector<unsigned char> &digest) const final;
 
 private:
-	Ui::MobileDialog *ui;
-};
+	static QCryptographicHash::Algorithm methodToNID(const std::string &method);
 
+	QCryptoBackend *m_backend;
+	TokenData m_token;
+};

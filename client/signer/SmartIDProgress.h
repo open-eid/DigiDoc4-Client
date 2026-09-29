@@ -1,5 +1,5 @@
 /*
- * QDigiDoc4
+ * QDigiDocClient
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,28 +19,23 @@
 
 #pragma once
 
-#include "TokenData.h"
+#include "MobileProgress.h"
 
 #include <digidocpp/crypto/Signer.h>
 
-#include <QtCore/QCoreApplication>
-#include <QtCore/QCryptographicHash>
+#include <QCoreApplication>
 
-class QSmartCard;
-class TokenData;
-
-class QSigner final : public digidoc::Signer
+class SmartIDProgress final: public digidoc::Signer
 {
-	Q_DECLARE_TR_FUNCTIONS(QSigner);
+	Q_DECLARE_TR_FUNCTIONS(MobileProgress)
 public:
-	explicit QSigner(const TokenData &token);
-
+	explicit SmartIDProgress(const SigningProgressUI &pui);
+	~SmartIDProgress() final;
 	digidoc::X509Cert cert() const final;
-	std::vector<unsigned char> sign(const std::string &method,
-		const std::vector<unsigned char> &digest) const final;
+	bool init(const QString &country, const QString &idCode, const QString &fileName);
+	std::vector<unsigned char> sign(const std::string &method, const std::vector<unsigned char> &digest) const final;
 
 private:
-	static QCryptographicHash::Algorithm methodToNID(const std::string &method);
-
-	TokenData m_token;
+	class Private;
+	Private *d;
 };

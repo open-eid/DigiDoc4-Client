@@ -432,6 +432,7 @@ Application::Application( int &argc, char **argv )
 
 	// Clear obsolete registriy settings
 	Settings::CDOC2_NOTIFICATION.clear();
+	Settings::MOBILEID_ORDER.clear();
 #ifndef Q_OS_DARWIN
 	Settings::DEFAULT_DIR.clear();
 #endif
