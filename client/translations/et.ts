@@ -2,13 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="et_EE">
 <context>
-    <name>Accordion</name>
-    <message>
-        <source>PIN/PUK codes and certificates</source>
-        <translation>PIN/PUK koodid ja sertifikaatide kontroll</translation>
-    </message>
-</context>
-<context>
     <name>AddRecipients</name>
     <message>
         <source>Failed to read certificate</source>
@@ -1145,53 +1138,6 @@
     </message>
 </context>
 <context>
-    <name>InfoStack</name>
-    <message>
-        <source>You&apos;re using digital identity card</source>
-        <translation>Kasutate digitaalset isikutunnistust</translation>
-    </message>
-    <message>
-        <source>Name</source>
-        <translation>Nimi</translation>
-    </message>
-    <message>
-        <source>Organization</source>
-        <translation>Organisatsioon</translation>
-    </message>
-    <message>
-        <source>Serial</source>
-        <translation>Seerianumber</translation>
-    </message>
-    <message>
-        <source>Country</source>
-        <translation>Riik</translation>
-    </message>
-    <message>
-        <source>Given names</source>
-        <translation>Eesnimi</translation>
-    </message>
-    <message>
-        <source>Surname</source>
-        <translation>Perekonnanimi</translation>
-    </message>
-    <message>
-        <source>Personal code</source>
-        <translation>Isikukood</translation>
-    </message>
-    <message>
-        <source>Citizenship</source>
-        <translation>Kodakondsus</translation>
-    </message>
-    <message>
-        <source>Expiry date</source>
-        <translation>Aegumiskuupäev</translation>
-    </message>
-    <message>
-        <source>Document</source>
-        <translation>Dokument</translation>
-    </message>
-</context>
-<context>
     <name>ItemList</name>
     <message>
         <source>Container is not signed</source>
@@ -1781,6 +1727,53 @@ ID-kaardiga</translation>
     <message>
         <source>ENG</source>
         <translation>EST</translation>
+    </message>
+</context>
+<context>
+    <name>MyEidInfo</name>
+    <message>
+        <source>Given names</source>
+        <translation>Eesnimi</translation>
+    </message>
+    <message>
+        <source>Surname</source>
+        <translation>Perekonnanimi</translation>
+    </message>
+    <message>
+        <source>Personal code</source>
+        <translation>Isikukood</translation>
+    </message>
+    <message>
+        <source>Citizenship</source>
+        <translation>Kodakondsus</translation>
+    </message>
+    <message>
+        <source>Expiry date</source>
+        <translation>Aegumiskuupäev</translation>
+    </message>
+    <message>
+        <source>Document</source>
+        <translation>Dokument</translation>
+    </message>
+    <message>
+        <source>You&apos;re using digital identity card</source>
+        <translation>Kasutate digitaalset isikutunnistust</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>Nimi</translation>
+    </message>
+    <message>
+        <source>Organization</source>
+        <translation>Organisatsioon</translation>
+    </message>
+    <message>
+        <source>Serial</source>
+        <translation>Seerianumber</translation>
+    </message>
+    <message>
+        <source>Country</source>
+        <translation>Riik</translation>
     </message>
 </context>
 <context>
