@@ -81,6 +81,8 @@ add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
 )
 if(WIN32)
 	set_source_files_properties(Diagnostics_unix.cpp PROPERTIES HEADER_FILE_ONLY TRUE)
+	target_sources(${PROJECT_NAME} PRIVATE Application_win.cpp)
+	target_link_libraries(${PROJECT_NAME} windowsapp)
 else()
 	set_source_files_properties(Diagnostics_win.cpp PROPERTIES HEADER_FILE_ONLY TRUE)
 endif()

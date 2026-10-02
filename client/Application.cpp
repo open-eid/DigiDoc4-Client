@@ -77,9 +77,7 @@ class MacMenuBar {};
 #include <QtWidgets/QToolTip>
 
 #ifdef Q_OS_WIN32
-#include <QtCore/QLibrary>
 #include <qt_windows.h>
-#include <MAPI.h>
 #endif
 
 using namespace std::chrono;
@@ -316,6 +314,7 @@ Application::Application( int &argc, char **argv )
 	, d(new Private)
 {
 	setApplicationName(QStringLiteral("qdigidoc4"));
+	setApplicationDisplayName(tr("DigiDoc4 Client"));
 	setApplicationVersion(QStringLiteral(VERSION_STR));
 	setDesktopFileName("ee.ria.qdigidoc4");
 	setOrganizationDomain(QStringLiteral("ria.ee"));
@@ -686,36 +685,10 @@ void Application::loadTranslation( const QString &lang )
 	if(d->helpAction) d->helpAction->setText(tr("DigiDoc4 Client Help"));
 }
 
-#ifndef Q_OS_MAC
+#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
 void Application::mailTo( const QUrl &url )
 {
 	QUrlQuery q(url);
-#if defined(Q_OS_WIN)
-	if(QLibrary lib("mapi32"); auto mapi = LPMAPISENDMAILW(lib.resolve("MAPISendMailW")))
-	{
-		QString file = q.queryItemValue( "attachment", QUrl::FullyDecoded );
-		QString filePath = QDir::toNativeSeparators( file );
-		QString fileName = QFileInfo( file ).fileName();
-		QString subject = q.queryItemValue( "subject", QUrl::FullyDecoded );
-		MapiFileDescW doc {};
-		doc.nPosition = -1;
-		doc.lpszPathName = PWSTR(filePath.utf16());
-		doc.lpszFileName = PWSTR(fileName.utf16());
-		MapiMessageW message {};
-		message.lpszSubject = PWSTR(subject.utf16());
-		message.lpszNoteText = PWSTR(L"");
-		message.nFileCount = 1;
-		message.lpFiles = lpMapiFileDescW(&doc);
-		switch( mapi( NULL, 0, &message, MAPI_LOGON_UI|MAPI_DIALOG, 0 ) )
-		{
-		case SUCCESS_SUCCESS:
-		case MAPI_E_USER_ABORT:
-		case MAPI_E_LOGIN_FAILURE:
-			return;
-		default: break;
-		}
-	}
-#elif defined(Q_OS_UNIX)
 	QByteArray thunderbird;
 	QProcess p;
 	QStringList env = QProcess::systemEnvironment();
@@ -764,7 +737,6 @@ void Application::mailTo( const QUrl &url )
 	}
 	if( status )
 		return;
-#endif
 	QDesktopServices::openUrl( url );
 }
 #endif
