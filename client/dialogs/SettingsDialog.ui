@@ -694,6 +694,26 @@ max-height: 22px;
          </widget>
         </item>
         <item>
+         <widget class="QLabel" name="lblTimeStampArchive">
+          <property name="focusPolicy">
+           <enum>Qt::TabFocus</enum>
+          </property>
+          <property name="text">
+           <string>Access to archive Time-Stamping service</string>
+          </property>
+          <property name="buddy">
+           <cstring>txtTimeStampArchive</cstring>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="LineEdit" name="txtTimeStampArchive">
+          <property name="clearButtonEnabled">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
          <widget class="QWidget" name="wgtTSACert" native="true">
           <layout class="QVBoxLayout" name="wgtTSACertLayout">
            <property name="spacing">
@@ -749,6 +769,78 @@ max-height: 22px;
              </item>
              <item>
               <spacer name="installTSACertSpacer">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>0</width>
+                 <height>0</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QWidget" name="wgtTSACertArchive" native="true">
+          <layout class="QVBoxLayout" name="wgtTSACertArchiveLayout">
+           <property name="spacing">
+            <number>24</number>
+           </property>
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="lblTSACertArchive">
+             <property name="focusPolicy">
+              <enum>Qt::TabFocus</enum>
+             </property>
+             <property name="text">
+              <string>Archive Time-Stamping service SSL certificate</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="CertLabel" name="txtTSACertArchive">
+             <property name="focusPolicy">
+              <enum>Qt::TabFocus</enum>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="installTSACertArchiveLayout">
+             <property name="spacing">
+              <number>16</number>
+             </property>
+             <item>
+              <widget class="QPushButton" name="btInstallTSACertArchive">
+               <property name="text">
+                <string>Add certificate</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="btShowTSACertArchive">
+               <property name="text">
+                <string>Show certificate</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="installTSACertArchiveSpacer">
                <property name="orientation">
                 <enum>Qt::Horizontal</enum>
                </property>
