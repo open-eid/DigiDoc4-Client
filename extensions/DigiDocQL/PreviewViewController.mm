@@ -24,7 +24,7 @@
 #include <digidocpp/Conf.h>
 #import <QuickLookUI/QuickLookUI.h>
 
-#include <array>
+#include <string_view>
 
 using namespace digidoc;
  
@@ -37,11 +37,23 @@ public:
     std::string TSLCache() const final
     {
         NSURL *directory = [NSFileManager.defaultManager containerURLForSecurityApplicationGroupIdentifier:@"group.ee.ria.qdigidoc4.tsl"];
-        return directory.path.UTF8String;
+        const char *path = directory.path.fileSystemRepresentation;
+        return path ? path : "";
     }
 };
 
 @implementation NSString (Digidoc)
++ (NSString*)fromUTF8:(std::string_view)value
+{
+    if (value.empty())
+        return @"";
+    NSString *result = [[NSString alloc] initWithBytes:value.data() length:value.size() encoding:NSUTF8StringEncoding];
+    if (result)
+        return result;
+    result = [[NSString alloc] initWithBytes:value.data() length:value.size() encoding:NSISOLatin1StringEncoding];
+    return result ?: @"";
+}
+
 + (NSString*)fileSize:(unsigned long)bytes
 {
     if (const auto gb = 1UL << 3; bytes >= gb)
@@ -55,30 +67,31 @@ public:
 
 + (void)parseException:(const Exception&)e result:(NSMutableArray *)result
 {
-    [result addObject:[NSString stringWithUTF8String:e.msg().c_str()]];
+    [result addObject:[self htmlEntityEncode:e.msg()]];
     for (const Exception &i : e.causes()) {
         [self parseException:i result:result];
     }
 }
 
-+ (NSString*)htmlEntityEncode:(std::string) s
++ (NSString*)htmlEntityEncodeString:(NSString*)value
 {
-    using pair = std::pair<std::string_view, std::string_view>;
-    constexpr std::array replace = std::to_array({
-        pair{"&", "&amp;"},
-        pair{"\"", "&quot;"},
-        pair{"'", "&apos;"},
-        pair{"<", "&lt;"},
-        pair{">", "&gt;"}
-    });
-    for(const auto &[from, to]: replace) {
-        size_t startPos = 0;
-        while ((startPos = s.find(from, startPos)) != std::string::npos) {
-            s.replace(startPos, from.length(), to);
-            startPos += to.length();
-        }
-    };
-    return [NSString stringWithUTF8String:s.c_str()];
+    NSMutableString *result = [NSMutableString stringWithString:value ?: @""];
+    for (NSArray<NSString*> *replacement in @[
+        @[@"&", @"&amp;"],
+        @[@"\"", @"&quot;"],
+        @[@"'", @"&apos;"],
+        @[@"<", @"&lt;"],
+        @[@">", @"&gt;"]
+    ]) {
+        [result replaceOccurrencesOfString:replacement[0] withString:replacement[1]
+            options:0 range:NSMakeRange(0, result.length)];
+    }
+    return result;
+}
+
++ (NSString*)htmlEntityEncode:(std::string_view)value
+{
+    return [self htmlEntityEncodeString:[self fromUTF8:value]];
 }
 @end
 
@@ -104,14 +117,19 @@ public:
 
         NSMutableString *h = [NSMutableString stringWithString:@R"(
 <html><head><meta charset="UTF-8"><style>
-* { font-family: 'Lucida Sans Unicode', 'Lucida Grande', sans-serif };
-body { font-size: 10pt };
-h2 { padding-left: 50px; background: url('cid:asic.icns'); background-size: 42px 42px; background-repeat:no-repeat; };
-font, dt { color: #808080 };
-dt { float: left; clear: left; margin-left: 30px; margin-right: 10px };
-dl { margin-bottom: 10px };
+:root { color-scheme: light dark; }
+* { font-family: -apple-system, system-ui, sans-serif; }
+body { font-size: 10pt; }
+h2 img { width: 42px; height: 42px; vertical-align: middle; margin-right: 8px; }
+font, dt { color: #808080; }
+dt { float: left; clear: left; margin-left: 30px; margin-right: 10px; }
+dl { margin-bottom: 10px; }
+@media (prefers-color-scheme: dark) {
+    font, dt { color: #a8a8a8; }
+}
 </style></head><body>)"];
-        [h appendFormat:@"<h2>%@<hr size='1' /></h2>", [NSString htmlEntityEncode:request.fileURL.lastPathComponent.UTF8String]];
+        [h appendFormat:@"<h2><img src=\"cid:asic.icns\" />%@<hr size='1' /></h2>",
+            [NSString htmlEntityEncodeString:request.fileURL.lastPathComponent]];
         try
         {
             static const bool initialized = [] {
@@ -137,7 +155,7 @@ dl { margin-bottom: 10px };
             for (const Signature *s : d->signatures()) {
                 [h appendFormat:@"<dl><dt>Signer</dt><dd>%@</dd>", [NSString htmlEntityEncode:s->signedBy()]];
 
-                NSString *date = [NSString stringWithUTF8String:s->trustedSigningTime().c_str()];
+                NSString *date = [NSString fromUTF8:s->trustedSigningTime()];
                 [h appendFormat:@"<dt>Time</dt><dd>%@</dd>", [dto stringFromDate:[dfrom dateFromString:date]]];
 
                 Signature::Validator v(s);
@@ -183,6 +201,10 @@ dl { margin-bottom: 10px };
             NSMutableArray *err = [NSMutableArray array];
             [NSString parseException:e result:err];
             [h appendFormat:@"Failed to load document:<br />%@", [err componentsJoinedByString:@"<br />"]];
+        } catch (const std::exception &e) {
+            [h appendFormat:@"Failed to load document:<br />%@", [NSString htmlEntityEncode:e.what()]];
+        } catch (...) {
+            [h appendString:@"Failed to load document:<br />Unknown error"];
         }
         [h appendString:@"</body></html>"];
         return [h dataUsingEncoding:NSUTF8StringEncoding];
