@@ -129,7 +129,6 @@ void VerifyCert::update()
 {
 	if(cardData.isNull() && c.isNull())
 		return clear();
-	bool isLockedCard = !cardData.isNull() && cardData.pinLocked(QSmartCardData::Pin1Type);
 	bool isLockedPin = !cardData.isNull() && pinType == QSmartCardData::Pin2Type && cardData.pinLocked(pinType);
 	bool isBlockedPin = !cardData.isNull() && cardData.retryCount(pinType) == 0;
 	bool isBlockedPuk = !cardData.isNull() && cardData.retryCount(QSmartCardData::PukType) == 0;
@@ -198,20 +197,12 @@ void VerifyCert::update()
 
 		ui->changePIN->setText(tr("Change PIN%1").arg(pinType));
 		ui->forgotPinLink->setText(tr("Change with PUK code"));
-		ui->changePIN->setHidden(isLockedCard || (isBlockedPin && isBlockedPuk) || isTempelType);
+		ui->changePIN->setHidden((isBlockedPin && isBlockedPuk) || isTempelType);
 
 		if(isTempelType)
 		{
 			ui->info->setLabel({});
 			ui->info->setText(tr("PIN can be changed only using eToken utility"));
-		}
-		else if(isLockedCard)
-		{
-			icon = QStringLiteral(":/images/icon_alert_large_warning.svg");
-			ui->info->setLabel(QStringLiteral("warning"));
-			ui->info->setText(pinType == QSmartCardData::Pin1Type ?
-				tr("The ID-card must be activated in order to authenticate") :
-				tr("The ID-card must be activated in order to sign"));
 		}
 		else if(isBlockedPin)
 		{
@@ -242,7 +233,7 @@ void VerifyCert::update()
 
 	ui->links->setHidden(pinType == QSmartCardData::PukType && ui->changePIN->isHidden());
 	ui->details->setHidden(pinType == QSmartCardData::PukType);
-	ui->forgotPinLink->setHidden(pinType == QSmartCardData::PukType || isLockedCard || isBlockedPin || isBlockedPuk || isTempelType);
+	ui->forgotPinLink->setHidden(pinType == QSmartCardData::PukType || isBlockedPin || isBlockedPuk || isTempelType);
 	ui->checkCert->setHidden(pinType == QSmartCardData::PukType || isInvalidCert);
 }
 
