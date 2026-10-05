@@ -29,6 +29,7 @@ public:
 
 	explicit LineEdit(QWidget *parent = nullptr);
 
+	void clearSensitive();
 	QString label() const;
 	void setLabel(QString _label);
 

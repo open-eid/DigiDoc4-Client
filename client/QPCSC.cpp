@@ -30,6 +30,16 @@
 static Q_LOGGING_CATEGORY(APDU,"QPCSC.APDU")
 static Q_LOGGING_CATEGORY(SCard,"QPCSC.SCard")
 
+static QByteArray formatAPDU(const QByteArray &apdu, bool sensitive)
+{
+	if(!sensitive || apdu.size() <= 5)
+		return apdu.toHex();
+
+	const qsizetype dataSize = quint8(apdu[4]);
+	return apdu.left(5).toHex() + QByteArrayLiteral("[redacted]")
+		+ apdu.mid(5 + dataSize).toHex();
+}
+
 static quint16 toUInt16(const QByteArray &data, int size)
 {
 	return size >= 2 ? quint16((quint16(data[size - 2]) << 8) | quint8(data[size - 1])) : 0;
@@ -284,12 +294,12 @@ QStringList QPCSCReader::state() const
 	return stateToString(d->state.dwEventState);
 }
 
-QPCSCReader::Result QPCSCReader::transfer( const QByteArray &apdu ) const
+QPCSCReader::Result QPCSCReader::transfer(const QByteArray &apdu, bool sensitive) const
 {
 	QByteArray data( 1024, 0 );
 	auto size = DWORD(data.size());
 
-	qCDebug(APDU).nospace().noquote() << 'T' << d->io.dwProtocol - 1 << "> " << apdu.toHex();
+	qCDebug(APDU).nospace().noquote() << 'T' << d->io.dwProtocol - 1 << "> " << formatAPDU(apdu, sensitive);
 	LONG ret = SC(Transmit, d->card, &d->io,
 		LPCBYTE(apdu.constData()), DWORD(apdu.size()), nullptr, LPBYTE(data.data()), &size);
 	if( ret != SCARD_S_SUCCESS )
@@ -304,16 +314,18 @@ QPCSCReader::Result QPCSCReader::transfer( const QByteArray &apdu ) const
 	case 0x6100: // Read more
 	{
 		QByteArray cmd( "\x00\xC0\x00\x00\x00", 5 );
+		auto cmdGuard = qScopeGuard([&] { if(sensitive) cmd.fill(0); });
 		cmd[4] = char(result.SW);
-		Result result2 = transfer( cmd );
+		Result result2 = transfer(cmd, sensitive);
 		result2.data.prepend(result.data);
 		return result2;
 	}
 	case 0x6C00: // Excpected lenght
 	{
 		QByteArray cmd = apdu;
+		auto cmdGuard = qScopeGuard([&] { if(sensitive) cmd.fill(0); });
 		cmd[4] = char(result.SW);
-		return transfer(cmd);
+		return transfer(cmd, sensitive);
 	}
 	default: return result;
 	}
@@ -347,6 +359,7 @@ QPCSCReader::Result QPCSCReader::transferCTL(const QByteArray &apdu, bool verify
 	};
 
 	QByteArray cmd;
+	auto cmdGuard = qScopeGuard([&] { cmd.fill(0); });
 	if( verify )
 	{
 		PIN_VERIFY_STRUCTURE data{};
@@ -381,8 +394,8 @@ QPCSCReader::Result QPCSCReader::transferCTL(const QByteArray &apdu, bool verify
 	if( !ioctl )
 		ioctl = features.value( verify ? FEATURE_VERIFY_PIN_DIRECT : FEATURE_MODIFY_PIN_DIRECT );
 
-	qCDebug(APDU).nospace().noquote() << 'T' << d->io.dwProtocol - 1 << "> " << apdu.toHex();
-	qCDebug(APDU).nospace().noquote() << "CTL" << "> " << cmd.toHex();
+	qCDebug(APDU).nospace().noquote() << 'T' << d->io.dwProtocol - 1 << "> " << formatAPDU(apdu, true);
+	qCDebug(APDU).nospace().noquote() << "CTL> " << cmd.left(cmd.size() - apdu.size()).toHex() << formatAPDU(apdu, true);
 	QByteArray data( 255 + 3, 0 );
 	auto size = DWORD(data.size());
 	LONG err = SC(Control, d->card, ioctl, cmd.constData(), DWORD(cmd.size()), LPVOID(data.data()), DWORD(data.size()), &size);

@@ -75,17 +75,28 @@ struct DDCryptoBackend final : public libcdoc::CryptoBackend {
 										const std::vector<uint8_t> &publicKey,
 										const std::vector<uint8_t> &salt,
 										unsigned int idx) final;
-	libcdoc::result_t getSecret(std::vector<uint8_t> &secret,
-								unsigned int idx) final;
+	libcdoc::result_t extractHKDF(std::vector<uint8_t> &dst,
+								 const std::vector<uint8_t> &salt,
+								 const std::vector<uint8_t> &pwSalt,
+								 int32_t kdfIter,
+								 unsigned int idx) final;
 	std::string getLastErrorStr(libcdoc::result_t code) const final;
 
 	std::unique_ptr<QCryptoBackend> backend;
-	std::vector<uint8_t> secret;
+	QByteArray secret;
 
 	explicit DDCryptoBackend() = default;
 
 	void setBackend(std::unique_ptr<QCryptoBackend> &&backend) {
 		this->backend = std::move(backend);
+	}
+	void setSecret(QByteArray &&value) {
+		clearSecret();
+		secret = std::move(value);
+	}
+	void clearSecret() {
+		secret.fill(0);
+		secret.clear();
 	}
 };
 

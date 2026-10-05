@@ -277,8 +277,12 @@ ContainerState CryptoDoc::state() const
 	return d->isEncrypted() ? EncryptedContainer : UnencryptedContainer;
 }
 
-bool CryptoDoc::decrypt(const libcdoc::Lock *lock, const QByteArray& secret)
+bool CryptoDoc::decrypt(const libcdoc::Lock *lock, QByteArray secret)
 {
+	auto secretGuard = qScopeGuard([&] {
+		d->crypto.clearSecret();
+		secret.fill(0);
+	});
 	if(!d->reader)
 	{
 		WarningDialog::create()
@@ -320,8 +324,7 @@ bool CryptoDoc::decrypt(const libcdoc::Lock *lock, const QByteArray& secret)
 		return false;
 	}
 
-	d->crypto.secret.assign(secret.cbegin(), secret.cend());
-
+	d->crypto.setSecret(std::move(secret));
 	TempListConsumer cons;
 	libcdoc::result_t result = waitFor([&]{
 		std::vector<uint8_t> fmk;
@@ -336,6 +339,7 @@ bool CryptoDoc::decrypt(const libcdoc::Lock *lock, const QByteArray& secret)
 		qCDebug(CRYPTO) << "Decryption result: " << result << " " << QString::fromStdString(d->reader->getLastErrorStr());
 		return result;
 	});
+	d->crypto.clearSecret();
 	if (result != libcdoc::OK) {
 		QString str;
 		const std::string &msg = d->reader->getLastErrorStr();
@@ -389,8 +393,13 @@ bool CryptoDoc::decrypt(const libcdoc::Lock *lock, const QByteArray& secret)
 
 DocumentModel *CryptoDoc::documentModel() const { return d->documents; }
 
-bool CryptoDoc::encrypt(const QString &filename, const QString& label, const QByteArray& secret)
+bool CryptoDoc::encrypt(const QString &filename, const QString& label, QByteArray secret)
 {
+	const bool encryptWithPassword = !secret.isEmpty();
+	auto secretGuard = qScopeGuard([&] {
+		d->crypto.clearSecret();
+		secret.fill(0);
+	});
 	// I think the correct semantics is to fail if container is already encrypted
 	if(d->reader)
 		return false;
@@ -404,7 +413,7 @@ bool CryptoDoc::encrypt(const QString &filename, const QString& label, const QBy
 			->open();
 		return false;
 	}
-	if(secret.isEmpty() && d->keys.empty())
+	if(!encryptWithPassword && d->keys.empty())
 	{
 		WarningDialog::create()
 			->withTitle(tr("Failed to encrypt document"))
@@ -421,6 +430,7 @@ bool CryptoDoc::encrypt(const QString &filename, const QString& label, const QBy
 		return false;
 	}
 	QString writer_last_error;
+	d->crypto.setSecret(std::move(secret));
 	libcdoc::result_t result = waitFor([&] -> libcdoc::result_t {
 		qCDebug(CRYPTO) << "Encrypt" << d->fileName;
 		auto writer = std::unique_ptr<libcdoc::CDocWriter>(libcdoc::CDocWriter::createWriter(d->version, d->fileName.toStdString(), &d->conf, &d->crypto, &d->network));
@@ -449,9 +459,8 @@ bool CryptoDoc::encrypt(const QString &filename, const QString& label, const QBy
 			}
 		}
 		// Encrypt with symmetric key
-		if (!secret.isEmpty()) {
+		if (encryptWithPassword) {
 			// NIST recommends at least 600000 iterations for PBKDF2 with SHA-256, see https://csrc.nist.gov/publications/detail/sp/800-132/final
-			d->crypto.secret.assign(secret.cbegin(), secret.cend());
 			libcdoc::Recipient rcpt = libcdoc::Recipient::makeSymmetric({}, 600000);
 			rcpt.setLabelValue(libcdoc::CDoc2::Label::LABEL, label.toStdString());
 			enc_keys.push_back(std::move(rcpt));
@@ -465,7 +474,7 @@ bool CryptoDoc::encrypt(const QString &filename, const QString& label, const QBy
 				QFile::remove(d->fileName);
 		return result;
 	});
-	d->crypto.secret.clear();
+	d->crypto.clearSecret();
 	if (result != libcdoc::OK) {
 		WarningDialog::create()
 			->withTitle(tr("Failed to encrypt document"))

@@ -28,6 +28,8 @@
 #include <QtCore/QRegularExpression>
 #include <QtNetwork/QSslKey>
 
+#include <algorithm>
+
 using namespace Qt::Literals::StringLiterals;
 
 Q_LOGGING_CATEGORY(CNG, "qdigidoc4.QCNG")
@@ -67,9 +69,9 @@ QCNG::Status QCNG::login(const TokenData &token)
 	return PinOK;
 }
 
-QByteArray QCNG::decrypt(const QByteArray &data, bool oaep) const
+std::vector<uint8_t> QCNG::decrypt(const QByteArray &data, bool oaep) const
 {
-	return exec([&](NCRYPT_PROV_HANDLE prov, NCRYPT_KEY_HANDLE key, QByteArray &result) {
+	return exec<std::vector<uint8_t>>([&](NCRYPT_PROV_HANDLE prov, NCRYPT_KEY_HANDLE key, std::vector<uint8_t> &result) {
 		BCRYPT_OAEP_PADDING_INFO padding {BCRYPT_SHA256_ALGORITHM, nullptr, 0};
 		PVOID paddingInfo = oaep ? &padding : nullptr;
 		DWORD flags = oaep ? NCRYPT_PAD_OAEP_FLAG : NCRYPT_PAD_PKCS1_FLAG;
@@ -78,19 +80,19 @@ QByteArray QCNG::decrypt(const QByteArray &data, bool oaep) const
 			paddingInfo, nullptr, 0, &size, flags);
 		if(FAILED(err))
 			return err;
-		result.resize(int(size));
+		result.resize(size);
 		err = NCryptDecrypt(key, PBYTE(data.constData()), DWORD(data.size()),
 			paddingInfo, PBYTE(result.data()), DWORD(result.size()), &size, flags);
 		if(SUCCEEDED(err))
-			result.resize(int(size));
+			result.resize(size);
 		return err;
 	});
 }
 
 template<typename F>
-QByteArray QCNG::derive(const QByteArray &publicKey, F &&func) const
+std::vector<uint8_t> QCNG::derive(const QByteArray &publicKey, F &&func) const
 {
-	return exec([&](NCRYPT_PROV_HANDLE prov, NCRYPT_KEY_HANDLE key, QByteArray &derived) {
+	return exec<std::vector<uint8_t>>([&](NCRYPT_PROV_HANDLE prov, NCRYPT_KEY_HANDLE key, std::vector<uint8_t> &derived) {
 		BCRYPT_ECCKEY_BLOB oh { BCRYPT_ECDH_PUBLIC_P384_MAGIC, ULONG((publicKey.size() - 1) / 2) };
 		switch((publicKey.size() - 1) * 4)
 		{
@@ -111,10 +113,10 @@ QByteArray QCNG::derive(const QByteArray &publicKey, F &&func) const
 	});
 }
 
-QByteArray QCNG::deriveConcatKDF(const QByteArray &publicKey, QCryptographicHash::Algorithm digest,
+std::vector<uint8_t> QCNG::deriveConcatKDF(const QByteArray &publicKey, QCryptographicHash::Algorithm digest,
 	const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) const
 {
-	return derive(publicKey, [&](NCRYPT_SECRET_HANDLE sharedSecret, QByteArray &derived) {
+	return derive(publicKey, [&](NCRYPT_SECRET_HANDLE sharedSecret, std::vector<uint8_t> &derived) {
 		std::array paramValues{
 			BCryptBuffer{ULONG(algorithmID.size()), KDF_ALGORITHMID, PBYTE(algorithmID.data())},
 			BCryptBuffer{ULONG(partyUInfo.size()), KDF_PARTYUINFO, PBYTE(partyUInfo.data())},
@@ -135,16 +137,16 @@ QByteArray QCNG::deriveConcatKDF(const QByteArray &publicKey, QCryptographicHash
 		SECURITY_STATUS err {};
 		if(FAILED(err = NCryptDeriveKey(sharedSecret, BCRYPT_KDF_SP80056A_CONCAT, &params, nullptr, 0, &size, 0)))
 			return err;
-		derived.resize(int(size));
+		derived.resize(size);
 		if(SUCCEEDED(err = NCryptDeriveKey(sharedSecret, BCRYPT_KDF_SP80056A_CONCAT, &params, PBYTE(derived.data()), size, &size, 0)))
 			derived.resize(32);
 		return err;
 	});
 }
 
-QByteArray QCNG::deriveHMACExtract(const QByteArray &publicKey, const QByteArray &salt, int keySize) const
+std::vector<uint8_t> QCNG::deriveHMACExtract(const QByteArray &publicKey, const QByteArray &salt, int keySize) const
 {
-	return derive(publicKey, [&](NCRYPT_SECRET_HANDLE sharedSecret, QByteArray &derived) {
+	return derive(publicKey, [&](NCRYPT_SECRET_HANDLE sharedSecret, std::vector<uint8_t> &derived) {
 		std::array paramValues{
 			BCryptBuffer{ULONG(salt.size()), KDF_HMAC_KEY, PBYTE(salt.data())},
 			BCryptBuffer{ULONG(sizeof(BCRYPT_SHA256_ALGORITHM)), KDF_HASH_ALGORITHM, PBYTE(BCRYPT_SHA256_ALGORITHM)},
@@ -154,20 +156,20 @@ QByteArray QCNG::deriveHMACExtract(const QByteArray &publicKey, const QByteArray
 		SECURITY_STATUS err = 0;
 		if(FAILED(err = NCryptDeriveKey(sharedSecret, BCRYPT_KDF_HMAC, &params, nullptr, 0, &size, 0)))
 			return err;
-		derived.resize(int(size));
+		derived.resize(size);
 		if(SUCCEEDED(err = NCryptDeriveKey(sharedSecret, BCRYPT_KDF_HMAC, &params, PBYTE(derived.data()), size, &size, 0)))
 			derived.resize(keySize);
 		return err;
 	});
 }
 
-template<typename F>
-QByteArray QCNG::exec(F &&func) const
+template<typename Result, typename F>
+Result QCNG::exec(F &&func) const
 {
 	if (!d)
 		return {};
 	status = UnknownError;
-	QByteArray result;
+	Result result;
 	switch(func(d->prov, d->key, result))
 	{
 	case ERROR_SUCCESS:
@@ -177,6 +179,7 @@ QByteArray QCNG::exec(F &&func) const
 	case ERROR_CANCELLED:
 		status = PinCanceled;
 	default:
+		std::fill(result.begin(), result.end(), 0);
 		return {};
 	}
 }

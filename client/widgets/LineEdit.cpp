@@ -26,6 +26,17 @@ LineEdit::LineEdit(QWidget *parent)
 	: QLineEdit(parent)
 {}
 
+void LineEdit::clearSensitive()
+{
+	QString value = text();
+	// QString is implicitly shared with QLineEdit here. Bypass detachment to
+	// overwrite the widget's backing storage before clearing its text history.
+	QChar *chars = const_cast<QChar *>(value.constData());
+	for(qsizetype i = 0; i < value.size(); ++i)
+		chars[i] = QChar();
+	setText(QString());
+}
+
 void LineEdit::paintEvent(QPaintEvent *event)
 {
 #if QT_VERSION < QT_VERSION_CHECK(6, 4, 1)
