@@ -26,9 +26,12 @@
 #include <QtNetwork/QSslCertificate>
 
 #ifdef Q_OS_WIN
-#include <Windows.h>
+#include <QtCore/QScopeGuard>
+#include <qt_windows.h>
 #include <Winldap.h>
 #include <Winber.h>
+#include <wincrypt.h>
+
 using STR_T = PWSTR;
 #define STR(X) const_cast<STR_T>(L##X)
 #define TO_STR(X) STR_T((X).utf16())
@@ -36,6 +39,7 @@ using STR_T = PWSTR;
 #define LDAP_DEPRECATED 1
 #include <sys/time.h>
 #include <ldap.h>
+
 using ULONG = int;
 using LDAP_TIMEVAL = timeval;
 using STR_T = char *;
@@ -57,21 +61,130 @@ static constexpr auto TO_QSTR(const T *str)
 		return QStringView(str);
 }
 
-class LdapSearch::Private
+struct LdapSearch::Private
 {
-public:
+#ifdef Q_OS_WIN
+	static thread_local const Private *activeInstance;
+	static BOOLEAN LDAPAPI verifyServerCertificate(PLDAP, PCCERT_CONTEXT *serverCert);
+	~Private() { if(trustStore) CertCloseStore(trustStore, 0); }
+	HCERTSTORE trustStore = CertOpenStore(CERT_STORE_PROV_MEMORY, 0, 0, CERT_STORE_CREATE_NEW_FLAG, nullptr);
+#else
+	QByteArray caCertPath;
+#endif
 	LDAP *ldap {};
 	QUrl url;
-	QByteArray caCertPath;
 	QTimer *timer {};
 };
 
-LdapSearch::LdapSearch(const QString &url, const QString &caCertPath, QObject *parent)
+#ifdef Q_OS_WIN
+thread_local const LdapSearch::Private *LdapSearch::Private::activeInstance {};
+
+BOOLEAN LDAPAPI LdapSearch::Private::verifyServerCertificate(PLDAP, PCCERT_CONTEXT *serverCert) try
+{
+	PCCERT_CONTEXT certificate = serverCert ? *serverCert : nullptr;
+	const auto freeCertificate = qScopeGuard([certificate] {
+		if(certificate)
+			CertFreeCertificateContext(certificate);
+	});
+
+	const Private *d = activeInstance;
+	if(!certificate || !d || !d->trustStore)
+		return FALSE;
+
+	CERT_CHAIN_ENGINE_CONFIG engineConfig {
+		.cbSize = sizeof(engineConfig),
+		.hExclusiveRoot = d->trustStore,
+	};
+	HCERTCHAINENGINE engine {};
+	if(!CertCreateCertificateChainEngine(&engineConfig, &engine))
+		return FALSE;
+	const auto freeEngine = qScopeGuard([engine] {
+		CertFreeCertificateChainEngine(engine);
+	});
+
+	LPSTR serverAuthOID = const_cast<LPSTR>(szOID_PKIX_KP_SERVER_AUTH);
+	CERT_CHAIN_PARA chainPara {
+		.cbSize = sizeof(chainPara),
+		.RequestedUsage {
+			.dwType = USAGE_MATCH_TYPE_OR,
+			.Usage {
+				.cUsageIdentifier = 1,
+				.rgpszUsageIdentifier = &serverAuthOID,
+			},
+		},
+	};
+
+	PCCERT_CHAIN_CONTEXT chainContext {};
+	BOOL built = CertGetCertificateChain(engine, certificate, nullptr, certificate->hCertStore,
+		&chainPara, CERT_CHAIN_REVOCATION_CHECK_CHAIN_EXCLUDE_ROOT, nullptr, &chainContext);
+	const auto freeChain = qScopeGuard([&chainContext] {
+		if(chainContext)
+			CertFreeCertificateChain(chainContext);
+	});
+
+	BOOLEAN accepted = FALSE;
+	if(built && chainContext)
+	{
+		constexpr DWORD softFailMask = CERT_TRUST_IS_OFFLINE_REVOCATION | CERT_TRUST_REVOCATION_STATUS_UNKNOWN;
+		if((chainContext->TrustStatus.dwErrorStatus & ~softFailMask) == 0)
+		{
+			const QString host = d->url.host();
+			HTTPSPolicyCallbackData sslPolicy {
+				.cbStruct = sizeof(sslPolicy),
+				.dwAuthType = AUTHTYPE_SERVER,
+				.fdwChecks = 0,
+				.pwszServerName = TO_STR(host),
+			};
+
+			CERT_CHAIN_POLICY_PARA policyPara {
+				.cbSize = sizeof(policyPara),
+				.pvExtraPolicyPara = &sslPolicy,
+			};
+
+			CERT_CHAIN_POLICY_STATUS policyStatus {
+				.cbSize = sizeof(policyStatus),
+			};
+
+			if(CertVerifyCertificateChainPolicy(CERT_CHAIN_POLICY_SSL, chainContext, &policyPara, &policyStatus) &&
+				(policyStatus.dwError == 0 ||
+				 policyStatus.dwError == DWORD(CRYPT_E_NO_REVOCATION_CHECK) ||
+				 policyStatus.dwError == DWORD(CRYPT_E_REVOCATION_OFFLINE)))
+				accepted = TRUE;
+		}
+	}
+	return accepted;
+}
+catch(...)
+{
+	return FALSE;
+}
+#endif
+
+LdapSearch::LdapSearch(const QString &url,
+#ifdef Q_OS_WIN
+	const QList<QSslCertificate> &caCerts,
+#else
+	const QString &caCertPath,
+#endif
+	QObject *parent)
 :	QObject( parent )
 ,	d(new Private)
 {
 	d->url = QUrl(url);
+#ifdef Q_OS_WIN
+	if(d->trustStore)
+	{
+		for(const QSslCertificate &cert: caCerts)
+		{
+			QByteArray der = cert.toDer();
+			CertAddEncodedCertificateToStore(d->trustStore, X509_ASN_ENCODING,
+				reinterpret_cast<const BYTE *>(der.constData()), DWORD(der.size()),
+				CERT_STORE_ADD_ALWAYS, nullptr);
+		}
+	}
+#else
 	d->caCertPath = QFile::encodeName(caCertPath);
+#endif
 	d->timer = new QTimer(this);
 	d->timer->setSingleShot(true);
 	connect(d->timer, &QTimer::timeout, this, [this]{
@@ -105,6 +218,10 @@ bool LdapSearch::init()
 		setLastError(tr("Failed to init ldap"), int(LdapGetLastError()));
 		return false;
 	}
+
+	if(ssl && d->trustStore)
+		ldap_set_option(d->ldap, LDAP_OPT_SERVER_CERTIFICATE, &Private::verifyServerCertificate);
+
 	ULONG err = 0;
 #else
 	if(!d->caCertPath.isEmpty())
@@ -138,9 +255,16 @@ bool LdapSearch::init()
 		return false;
 	}
 
-	if(auto err = ldap_simple_bind_s(d->ldap, nullptr, nullptr))
+#ifdef Q_OS_WIN
+	Private::activeInstance = d;
+#endif
+	auto bindErr = ldap_simple_bind_s(d->ldap, nullptr, nullptr);
+#ifdef Q_OS_WIN
+	Private::activeInstance = nullptr;
+#endif
+	if(bindErr)
 	{
-		setLastError(tr("Failed to init ldap"), err);
+		setLastError(tr("Failed to init ldap"), bindErr);
 		return false;
 	}
 
@@ -228,4 +352,3 @@ void LdapSearch::setLastError( const QString &msg, int err )
 	}
 	Q_EMIT error( res, details );
 }
-
