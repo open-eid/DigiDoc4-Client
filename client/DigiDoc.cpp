@@ -530,17 +530,7 @@ bool DigiDoc::isError(bool failure, const QString &title, const QString &text) c
 
 bool DigiDoc::isAsicS() const
 {
-	return b && b->mediaType() == "application/vnd.etsi.asic-s+zip" &&
-		std::any_of(m_signatures.cbegin(), m_signatures.cend(), [](const DigiDocSignature &s) {
-			return s.profile().contains(QLatin1String("BES"), Qt::CaseInsensitive);
-		});
-}
-
-bool DigiDoc::isCades() const
-{
-	return std::any_of(m_signatures.cbegin(), m_signatures.cend(), [](const DigiDocSignature &s) {
-		return s.profile().contains(QLatin1String("CADES"), Qt::CaseInsensitive);
-	});
+	return b && b->mediaType() == "application/vnd.etsi.asic-s+zip";
 }
 
 bool DigiDoc::isPDF() const
@@ -551,14 +541,12 @@ bool DigiDoc::isModified() const { return modified; }
 
 bool DigiDoc::isSupported() const
 {
-	return b && b->mediaType() == "application/vnd.etsi.asic-e+zip" && !isCades();
+	return b && b->mediaType() == "application/vnd.etsi.asic-e+zip";
 }
 
 void DigiDoc::load(std::unique_ptr<Container> &&doc, ServiceConfirmation &cb)
 {
 	parentContainer.reset();
-	m_signatures.clear();
-	m_timestamps.clear();
 	documentModel()->clearTempFolder();
 	b = std::move(doc);
 	if(b && b->mediaType() == "application/vnd.etsi.asic-s+zip" &&
@@ -575,15 +563,7 @@ void DigiDoc::load(std::unique_ptr<Container> &&doc, ServiceConfirmation &cb)
 			}
 		}
 	}
-	bool isTimeStamped = parentContainer && parentContainer->signatures().at(0)->trustedSigningTime().compare("2018-07-01T00:00:00Z") < 0;
-	for(const Signature *signature: b->signatures())
-		m_signatures.emplace_back(signature, this, isTimeStamped);
-	if(parentContainer)
-	{
-		for(const Signature *signature: parentContainer->signatures())
-			m_timestamps.emplace_back(signature, this);
-	}
-	setState(signatures().isEmpty() ? ContainerState::UnsignedSavedContainer : ContainerState::SignedContainer);
+	setState(b->signatures().empty() ? ContainerState::UnsignedSavedContainer : ContainerState::SignedContainer);
 }
 
 void DigiDoc::setState(ContainerState s)
@@ -621,7 +601,6 @@ std::unique_ptr<DigiDoc> DigiDoc::open(const QString &file, QWidget *parent)
 	qApp->waitForTSL(file);
 	try {
 		std::unique_ptr<DigiDoc> doc(new DigiDoc(parent));
-		WaitDialogHolder waitDialog(parent, tr("Opening"), false);
 		if(waitFor([&] {
 			doc->load(Container::openPtr(to(file), &cb), cb);
 			Application::addRecent(file);
@@ -681,7 +660,6 @@ bool DigiDoc::removeSignature(unsigned int num)
 	try {
 		return modified = waitFor([&] {
 			b->removeSignature(num);
-			m_signatures.removeAt(num);
 			return true;
 		});
 	}
@@ -710,7 +688,7 @@ bool DigiDoc::save(QString filename)
 	m_fileName = filename;
 	Application::addRecent(m_fileName);
 	modified = false;
-	setState(signatures().isEmpty() ? ContainerState::UnsignedSavedContainer : ContainerState::SignedContainer);
+	setState(b->signatures().empty() ? ContainerState::UnsignedSavedContainer : ContainerState::SignedContainer);
 	return true;
 }
 
@@ -792,11 +770,7 @@ bool DigiDoc::sign(const QString &city, const QString &state, const QString &zip
 			 Common::applicationOs(),
 			 Common::drivers().join(',')).toUtf8().constData());
 		qApp->waitForTSL( fileName() );
-		digidoc::Signature *s = b->sign(signer);
-		return modified = waitFor([&] {
-			m_signatures.emplace_back(s, this, false);
-			return true;
-		});
+		return modified = b->sign(signer) != nullptr;
 	}
 	catch( const Exception &e )
 	{
@@ -824,17 +798,28 @@ bool DigiDoc::sign(const QString &city, const QString &state, const QString &zip
 	return false;
 }
 
-const QList<DigiDocSignature>& DigiDoc::signatures() const
+void DigiDoc::enumSignatures(std::function<bool (DigiDocSignature &&)> &&cb) const
 {
-	return m_signatures;
+	bool isTimeStamped = parentContainer && parentContainer->signatures().at(0)->trustedSigningTime().compare("2018-07-01T00:00:00Z") < 0;
+	for(const Signature *signature: b->signatures())
+	{
+		if(!cb(DigiDocSignature(signature, this, isTimeStamped)))
+			return;
+	}
+}
+
+void DigiDoc::enumTimestamps(std::function<bool (DigiDocSignature &&)> &&cb) const
+{
+	if(!parentContainer)
+		return;
+	for(const Signature *signature: parentContainer->signatures())
+	{
+		if(!cb(DigiDocSignature(signature, this)))
+			return;
+	}
 }
 
 ContainerState DigiDoc::state()
 {
 	return containerState;
-}
-
-const QList<DigiDocSignature>& DigiDoc::timestamps() const
-{
-	return m_timestamps;
 }
