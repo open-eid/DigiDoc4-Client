@@ -6,7 +6,7 @@ Build-Depends:
  pkg-config,
  debhelper-compat (= 13),
  cmake,
- libdigidocpp-dev (>=3.0),
+ libdigidocpp-dev (>=4.6.0),
  libldap2-dev,
  libpcsclite-dev,
  libssl-dev,

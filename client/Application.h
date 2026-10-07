@@ -49,6 +49,7 @@ public:
 	{
 		SiVaUrl,
 		TSAUrl,
+		TSAUrlArchive,
 		TSLUrl,
 		TSLCerts,
 		TSLCache,
