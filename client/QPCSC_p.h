@@ -189,7 +189,7 @@ struct QPCSC::Private
 
 struct QPCSCReader::Private
 {
-	QHash<DRIVER_FEATURES,quint32> features();
+	quint32 feature(DRIVER_FEATURES key);
 
 	QPCSC::Private *d {};
 	SCARDHANDLE card {};
@@ -198,5 +198,5 @@ struct QPCSCReader::Private
 	QByteArray reader;
 	bool isTransacted {};
 
-	QHash<DRIVER_FEATURES,quint32> featuresList;
+	std::array<PCSC_TLV_STRUCTURE,FEATURE_CCID_ESC_COMMAND> features{};
 };
