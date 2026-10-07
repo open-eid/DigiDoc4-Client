@@ -25,9 +25,27 @@
 
 #include <exception>
 #include <limits>
+#include <memory>
 #include <thread>
 
 namespace {
+	template<auto F>
+	struct free_deleter
+	{
+		template<class T>
+		void operator()(T *p) const noexcept
+		{
+			F(p);
+		}
+	};
+
+	template<auto F, typename T>
+	[[nodiscard]]
+	constexpr auto make_unique_ptr(T *t) noexcept
+	{
+		return std::unique_ptr<T, free_deleter<F>>(t);
+	}
+
 	template <typename F, class... Args>
 	inline auto waitFor(F&& function, Args&& ...args) {
 		std::exception_ptr exception;
