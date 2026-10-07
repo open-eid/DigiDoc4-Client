@@ -54,7 +54,8 @@ QSigner::QSigner(const TokenData &token)
 X509Cert QSigner::cert() const
 {
 	if(m_token.cert().isNull())
-		throw Exception(__FILE__, __LINE__, tr("Sign certificate is not selected").toStdString());
+		throw Exception(__FILE__, __LINE__,
+			tr("Sign certificate is not selected").toStdString());
 	QByteArray der = m_token.cert().toDer();
 	return X509Cert((const unsigned char*)der.constData(), size_t(der.size()), X509Cert::Der);
 }
