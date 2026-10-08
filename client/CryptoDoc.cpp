@@ -331,10 +331,10 @@ bool CryptoDoc::decrypt(const libcdoc::Lock &lock, QByteArray secret, std::uniqu
 		case libcdoc::NetworkBackend::NETWORK_ERROR:
 			str = tr("Network error. Please check your network connection. It may also indicate that one or more CDoc servers are unreachable.");
 			break;
-		case DDNetworkBackend::CAPSULE_NOT_FOUND:
+		case libcdoc::NetworkBackend::CAPSULE_NOT_FOUND:
 			str = tr("The key transfer server did not find the key capsule. It may have expired.");
 			break;
-		case DDNetworkBackend::SERVER_ERROR:
+		case libcdoc::NetworkBackend::SERVER_ERROR:
 			str = tr("The key transfer server could not return the key. Please try again later.");
 			break;
 		case libcdoc::CONFIGURATION_ERROR:

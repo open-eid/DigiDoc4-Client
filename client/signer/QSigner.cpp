@@ -31,16 +31,14 @@
 
 using namespace digidoc;
 
-QSigner::QSigner(std::unique_ptr<QCryptoBackend> backend, const TokenData &token)
+QSigner::QSigner(std::unique_ptr<QCryptoBackend> backend)
 	: m_backend(std::move(backend))
-	, m_token(token)
 {
-	if(m_token.data(QStringLiteral("PSS")).toBool())
+	if(waitFor(&QCryptoBackend::isPSS, m_backend.get()))
 	{
 		std::string method;
-		switch(methodToNID(CONF(signatureDigestUri)))
+		switch(methodToParams(CONF(signatureDigestUri)).algo)
 		{
-		case QCryptographicHash::Sha224: method = "http://www.w3.org/2007/05/xmldsig-more#sha224-rsa-MGF1"; break;
 		case QCryptographicHash::Sha256: method = "http://www.w3.org/2007/05/xmldsig-more#sha256-rsa-MGF1"; break;
 		case QCryptographicHash::Sha384: method = "http://www.w3.org/2007/05/xmldsig-more#sha384-rsa-MGF1"; break;
 		case QCryptographicHash::Sha512: method = "http://www.w3.org/2007/05/xmldsig-more#sha512-rsa-MGF1"; break;
@@ -50,35 +48,40 @@ QSigner::QSigner(std::unique_ptr<QCryptoBackend> backend, const TokenData &token
 	}
 }
 
-QSigner::~QSigner() = default;
+QSigner::~QSigner() noexcept = default;
 
 X509Cert QSigner::cert() const
 {
-	if(m_token.cert().isNull())
+	if(m_backend->cert().isNull())
 		throw Exception(__FILE__, __LINE__, tr("Sign certificate is not selected").toStdString());
-	QByteArray der = m_token.cert().toDer();
+	QByteArray der = m_backend->cert().toDer();
 	return X509Cert((const unsigned char*)der.constData(), size_t(der.size()), X509Cert::Der);
 }
 
-QCryptographicHash::Algorithm QSigner::methodToNID(const std::string &method)
+QSigner::Params QSigner::methodToParams(const std::string &method)
 {
-	if(method == "http://www.w3.org/2001/04/xmldsig-more#sha224" ||
-		method == "http://www.w3.org/2001/04/xmldsig-more#rsa-sha224" ||
-		method == "http://www.w3.org/2007/05/xmldsig-more#sha224-rsa-MGF1" ||
-		method == "http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha224") return QCryptographicHash::Sha224;
 	if(method == "http://www.w3.org/2001/04/xmlenc#sha256" ||
-		method == "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256" ||
-		method == "http://www.w3.org/2007/05/xmldsig-more#sha256-rsa-MGF1" ||
-		method == "http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256") return QCryptographicHash::Sha256;
+		method == "http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256")
+		return {QCryptographicHash::Sha256, QCryptoBackend::NoPadding};
+	if(method == "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256")
+		return {QCryptographicHash::Sha256, QCryptoBackend::PKCS1Padding};
+	if(method == "http://www.w3.org/2007/05/xmldsig-more#sha256-rsa-MGF1")
+		return {QCryptographicHash::Sha256, QCryptoBackend::PSSPadding};
 	if(method == "http://www.w3.org/2001/04/xmldsig-more#sha384" ||
-		method == "http://www.w3.org/2001/04/xmldsig-more#rsa-sha384" ||
-		method == "http://www.w3.org/2007/05/xmldsig-more#sha384-rsa-MGF1" ||
-		method == "http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha384") return QCryptographicHash::Sha384;
+		method == "http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha384")
+		return {QCryptographicHash::Sha384, QCryptoBackend::NoPadding};
+	if(method == "http://www.w3.org/2001/04/xmldsig-more#rsa-sha384")
+		return {QCryptographicHash::Sha384, QCryptoBackend::PKCS1Padding};
+	if(method == "http://www.w3.org/2007/05/xmldsig-more#sha384-rsa-MGF1")
+		return {QCryptographicHash::Sha384, QCryptoBackend::PSSPadding};
 	if(method == "http://www.w3.org/2001/04/xmlenc#sha512" ||
-		method == "http://www.w3.org/2001/04/xmldsig-more#rsa-sha512" ||
-		method == "http://www.w3.org/2007/05/xmldsig-more#sha512-rsa-MGF1" ||
-		method == "http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha512") return QCryptographicHash::Sha512;
-	return QCryptographicHash::Sha256;
+		method == "http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha512")
+		return {QCryptographicHash::Sha512, QCryptoBackend::NoPadding};
+	if(method == "http://www.w3.org/2001/04/xmldsig-more#rsa-sha512")
+		return {QCryptographicHash::Sha512, QCryptoBackend::PKCS1Padding};
+	if(method == "http://www.w3.org/2007/05/xmldsig-more#sha512-rsa-MGF1")
+		return {QCryptographicHash::Sha512, QCryptoBackend::PSSPadding};
+	return {QCryptographicHash::Sha256, QCryptoBackend::NoPadding};
 }
 
 std::vector<unsigned char> QSigner::sign(const std::string &method, const std::vector<unsigned char> &digest) const
@@ -89,18 +92,15 @@ std::vector<unsigned char> QSigner::sign(const std::string &method, const std::v
 		throw e; \
 	}
 
-	QByteArray sig = waitFor(&QCryptoBackend::sign, m_backend.get(),
-		methodToNID(method), QByteArray::fromRawData((const char*)digest.data(), int(digest.size())));
-	if(sig.isEmpty())
-	{
-		auto err = tr("Failed to login token") + ' ' +
-			QCryptoBackend::errorString(m_backend->status);
-		switch(m_backend->status) {
-		case QCryptoBackend::PinCanceled: throwException(err, Exception::PINCanceled);
-		case QCryptoBackend::PinLocked:   throwException(err, Exception::PINLocked);
-		default: break;
-		}
+	const auto params = methodToParams(method);
+	auto sig = waitFor(&QCryptoBackend::sign, m_backend.get(), params.algo, params.padding, digest);
+	if(!sig.empty())
+		return sig;
+	auto err = tr("Failed to login token") + ' ' + QCryptoBackend::errorString(m_backend->status);
+	switch(m_backend->status) {
+	case QCryptoBackend::PinCanceled: throwException(err, Exception::PINCanceled);
+	case QCryptoBackend::PinLocked:   throwException(err, Exception::PINLocked);
+	default:
 		throwException(tr("Failed to sign document"), Exception::General);
 	}
-	return {sig.constBegin(), sig.constEnd()};
 }

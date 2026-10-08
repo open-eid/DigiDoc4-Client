@@ -19,7 +19,7 @@
 
 #pragma once
 
-#include "TokenData.h"
+#include "QCryptoBackend.h"
 
 #include <digidocpp/crypto/Signer.h>
 
@@ -35,16 +35,20 @@ class QSigner final : public digidoc::Signer
 {
 	Q_DECLARE_TR_FUNCTIONS(QSigner);
 public:
-	QSigner(std::unique_ptr<QCryptoBackend> backend, const TokenData &token);
-	~QSigner() final;
+	QSigner(std::unique_ptr<QCryptoBackend> backend);
+	~QSigner() noexcept final;
 
 	digidoc::X509Cert cert() const final;
 	std::vector<unsigned char> sign(const std::string &method,
 		const std::vector<unsigned char> &digest) const final;
 
 private:
-	static QCryptographicHash::Algorithm methodToNID(const std::string &method);
+	struct Params
+	{
+		QCryptographicHash::Algorithm algo;
+		QCryptoBackend::Padding padding;
+	};
+	static Params methodToParams(const std::string &method);
 
 	std::unique_ptr<QCryptoBackend> m_backend;
-	TokenData m_token;
 };
