@@ -32,16 +32,8 @@
 #include <QtCore/QMutex>
 #include <QtCore/QReadWriteLock>
 #include <QtCore/QWaitCondition>
-#include <QtNetwork/QSslKey>
 
 static Q_LOGGING_CATEGORY(CryptoLog, "qdigidoc4.QCryptoManager")
-
-// TODO: Port everything to the new OpenSSL API
-#define OPENSSL_SUPPRESS_DEPRECATED
-
-#include <openssl/ecdsa.h>
-#include <openssl/obj_mac.h>
-#include <openssl/rsa.h>
 
 struct QCryptoManager::Private
 {
@@ -52,9 +44,6 @@ struct QCryptoManager::Private
 	QReadWriteLock lock;
 	QMutex sleepMutex;
 	QWaitCondition sleepCond;
-
-	RSA_METHOD *rsa_method = RSA_meth_dup(RSA_get_default_method());
-	EC_KEY_METHOD *ec_method = EC_KEY_METHOD_new(EC_KEY_get_default_method());
 };
 
 QCryptoBackend::~QCryptoBackend()
@@ -108,78 +97,9 @@ QString QCryptoBackend::errorString(Status error)
 	}
 }
 
-static int rsa_sign(int type, const unsigned char *m, unsigned int m_len, unsigned char *sigret, unsigned int *siglen, const RSA *rsa)
-{
-	auto *backend = (QCryptoBackend*) RSA_get_ex_data(rsa, 0);
-	QCryptographicHash::Algorithm algo = QCryptographicHash::Sha256;
-	switch(type)
-	{
-	case NID_sha224: algo = QCryptographicHash::Sha224; break;
-	case NID_sha256: algo = QCryptographicHash::Sha256; break;
-	case NID_sha384: algo = QCryptographicHash::Sha384; break;
-	case NID_sha512: algo = QCryptographicHash::Sha512; break;
-	}
-	QByteArray result = backend->sign(algo, QByteArray::fromRawData((const char*)m, int(m_len)));
-	if(result.isEmpty())
-		return 0;
-	*siglen = (unsigned int)result.size();
-	memcpy(sigret, result.constData(), size_t(result.size()));
-	return 1;
-}
-
-static ECDSA_SIG*
-ecdsa_do_sign(const unsigned char *dgst, int dgst_len, const BIGNUM * /*inv*/, const BIGNUM * /*rp*/, EC_KEY *eckey)
-{
-	auto *backend = (QCryptoBackend*)EC_KEY_get_ex_data(eckey, 0);
-	QByteArray result = backend->sign(QCryptographicHash::Sha512, QByteArray::fromRawData((const char*)dgst, dgst_len));
-	if(result.isEmpty())
-		return nullptr;
-	QByteArray r = result.left(result.size()/2);
-	QByteArray s = result.right(result.size()/2);
-	ECDSA_SIG *sig = ECDSA_SIG_new();
-	ECDSA_SIG_set0(sig,
-		BN_bin2bn((const unsigned char*)r.data(), int(r.size()), nullptr),
-		BN_bin2bn((const unsigned char*)s.data(), int(s.size()), nullptr));
-	return sig;
-}
-
-QSslKey
-QCryptoBackend::getKey() const
-{
-	QSslKey key = token.cert().publicKey();
-	if(!key.handle()) {
-		status = GeneralError;
-		return {};
-	}
-	auto *manager = qApp->cryptoManager();
-	if(key.algorithm() == QSsl::Ec)
-	{
-		auto *ec = (EC_KEY*)key.handle();
-		EC_KEY_set_method(ec, manager->d->ec_method);
-		EC_KEY_set_ex_data(ec, 0, (void *) this);
-	}
-	else
-	{
-		RSA *rsa = (RSA*)key.handle();
-		RSA_set_method(rsa, manager->d->rsa_method);
-		RSA_set_ex_data(rsa, 0, (void *) this);
-	}
-	return key;
-}
-
 QCryptoManager::QCryptoManager()
 	: d(new Private)
 {
-	RSA_meth_set1_name(d->rsa_method, "QSmartCard");
-	RSA_meth_set_sign(d->rsa_method, rsa_sign);
-	using EC_KEY_sign = int (*)(int type, const unsigned char *dgst, int dlen, unsigned char *sig,
-		unsigned int *siglen, const BIGNUM *kinv, const BIGNUM *r, EC_KEY *eckey);
-	using EC_KEY_sign_setup = int (*)(EC_KEY *eckey, BN_CTX *ctx_in, BIGNUM **kinvp, BIGNUM **rp);
-	EC_KEY_sign sign = nullptr;
-	EC_KEY_sign_setup sign_setup = nullptr;
-	EC_KEY_METHOD_get_sign(d->ec_method, &sign, &sign_setup, nullptr);
-	EC_KEY_METHOD_set_sign(d->ec_method, sign, sign_setup, ecdsa_do_sign);
-
 	connect(&QPCSC::instance(), &QPCSC::cardChanged, this, [this] {
 		qCDebug(CryptoLog) << "Card change detected";
 		d->sleepCond.wakeAll();
@@ -193,8 +113,6 @@ QCryptoManager::~QCryptoManager()
 	requestInterruption();
 	d->sleepCond.wakeAll();
 	wait();
-	EC_KEY_METHOD_free(d->ec_method);
-	RSA_meth_free(d->rsa_method);
 	delete d;
 }
 

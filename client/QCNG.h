@@ -37,7 +37,7 @@ public:
 	QByteArray deriveConcatKDF(const QByteArray &publicKey, QCryptographicHash::Algorithm digest,
 		const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) const final;
 	QByteArray deriveHMACExtract(const QByteArray &publicKey, const QByteArray &salt, int keySize) const final;
-	QByteArray sign(QCryptographicHash::Algorithm type, const QByteArray &digest) const final;
+	QByteArray sign(QCryptographicHash::Algorithm type, const QByteArray &digest, Padding padding) const final;
 
 	static QList<TokenData> tokens();
 private:

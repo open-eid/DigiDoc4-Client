@@ -24,7 +24,7 @@
 #include <QtCore/QTemporaryFile>
 #include <QtCore/QUrlQuery>
 #include <QtNetwork/QNetworkAccessManager>
-#include <QtNetwork/QSslKey>
+#include <QtNetwork/QSslConfiguration>
 #include <QLoggingCategory>
 #include <QXmlStreamReader>
 #include <utility>
@@ -37,6 +37,7 @@
 #include "Utils.h"
 #include "effects/FadeInNotification.h"
 #include <cdoc/CDocReader.h>
+#include <digidocpp/Conf.h>
 #include <cdoc/Lock.h>
 #include <cdoc/Recipient.h>
 
@@ -323,41 +324,76 @@ libcdoc::result_t DDNetworkBackend::sendKey(
 libcdoc::result_t
 DDNetworkBackend::fetchKey(std::vector<uint8_t> &result, const std::string &url, const std::string &transaction_id)
 {
-	QNetworkRequest req(QStringLiteral("%1/key-capsules/%2").arg(QString::fromStdString(url), QLatin1String(transaction_id.c_str())));
-	req.setHeader(QNetworkRequest::ContentTypeHeader, QStringLiteral("application/json"));
 	if(!checkConnection()) {
 		last_error = "No connection";
 		return BACKEND_ERROR;
 	}
-
-	TokenData auth = qApp->cryptoManager()->tokenauth();
-	auto val = QCryptoBackend::getBackend(auth);
+	auto val = QCryptoBackend::getBackend(qApp->cryptoManager()->tokenauth());
 	if (!val)
 		return getDecryptStatus(val.error());
-	std::unique_ptr<QCryptoBackend> backend(val.value());
+	tls.reset(val.value());
+	libcdoc::result_t rv = libcdoc::NetworkBackend::fetchKey(result, url, transaction_id);
+	if (rv != libcdoc::OK) {
+		if (libcdoc::result_t status = getDecryptStatus(tls->status); status != libcdoc::OK)
+			rv = status;
+		tls.reset();
+		return rv;
+	}
+	crypto.setBackend(std::move(tls));
+	return libcdoc::OK;
+}
 
-	auto authKey = backend->getKey();
-	if (!authKey.handle()) {
-		last_error = "Cannot create authentication key";
+libcdoc::result_t
+DDNetworkBackend::getClientTLSCertificate(std::vector<uint8_t> &dst)
+{
+	if (!tls)
+		return BACKEND_ERROR;
+	QByteArray der = tls->cert().toDer();
+	dst.assign(der.cbegin(), der.cend());
+	return libcdoc::OK;
+}
+
+libcdoc::result_t
+DDNetworkBackend::getPeerTLSCertificates(std::vector<std::vector<uint8_t>> &dst)
+{
+	for (const QSslCertificate &cert : CheckConnection::sslConfiguration(Settings::CDOC2_GET_CERT).caCertificates()) {
+		QByteArray der = cert.toDer();
+		dst.emplace_back(der.cbegin(), der.cend());
+	}
+	return libcdoc::OK;
+}
+
+libcdoc::result_t
+DDNetworkBackend::getProxyCredentials(ProxyCredentials &credentials) const
+{
+	using digidoc::ConfCurrent;
+	credentials.host = CONF(proxyHost);
+	credentials.port = QString::fromStdString(CONF(proxyPort)).toUShort();
+	credentials.username = CONF(proxyUser);
+	credentials.password = CONF(proxyPass);
+	return libcdoc::OK;
+}
+
+libcdoc::result_t
+DDNetworkBackend::signTLS(std::vector<uint8_t> &dst, libcdoc::CryptoBackend::HashAlgorithm algorithm,
+	const std::vector<uint8_t> &digest)
+{
+	if (!tls)
+		return BACKEND_ERROR;
+	QCryptographicHash::Algorithm algo {};
+	switch (algorithm) {
+	case libcdoc::CryptoBackend::SHA_224: algo = QCryptographicHash::Sha224; break;
+	case libcdoc::CryptoBackend::SHA_256: algo = QCryptographicHash::Sha256; break;
+	case libcdoc::CryptoBackend::SHA_384: algo = QCryptographicHash::Sha384; break;
+	case libcdoc::CryptoBackend::SHA_512: algo = QCryptographicHash::Sha512; break;
+	default: return BACKEND_ERROR;
+	}
+	QByteArray sig = tls->sign(algo, toByteArray(digest), QCryptoBackend::PSSPadding);
+	if (sig.isEmpty()) {
+		last_error = QCryptoBackend::errorString(tls->status).toStdString();
 		return BACKEND_ERROR;
 	}
-	QScopedPointer<QNetworkAccessManager,QScopedPointerDeleteLater> nam(
-				CheckConnection::setupNAM(req, auth.cert(), authKey, Settings::CDOC2_GET_CERT));
-	QEventLoop e;
-	QNetworkReply *reply = nam->get(req);
-	connect(reply, &QNetworkReply::finished, &e, &QEventLoop::quit);
-	e.exec();
-
-	if(reply->error() != QNetworkReply::NoError && reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() != 201) {
-		last_error = reply->errorString().toStdString();
-		return BACKEND_ERROR;
-	}
-	QJsonObject json = QJsonDocument::fromJson(reply->readAll()).object();
-	QByteArray key_material = QByteArray::fromBase64(json.value(QLatin1String("ephemeral_key_material")).toString().toLatin1());
-	result.assign(key_material.cbegin(), key_material.cend());
-
-	crypto.setBackend(std::move(backend));
-
+	dst.assign(sig.cbegin(), sig.cend());
 	return libcdoc::OK;
 }
 

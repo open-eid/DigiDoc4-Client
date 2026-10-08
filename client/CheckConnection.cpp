@@ -119,17 +119,6 @@ QNetworkAccessManager* CheckConnection::setupNAM(QNetworkRequest &req, const QBy
 	return nam;
 }
 
-QNetworkAccessManager* CheckConnection::setupNAM(QNetworkRequest &req,
-	const QSslCertificate &cert, const QSslKey &key, const QByteArray &add)
-{
-	QNetworkAccessManager* nam = setupNAM(req, add);
-	QSslConfiguration ssl = req.sslConfiguration();
-	ssl.setPrivateKey(key);
-	ssl.setLocalCertificate(cert);
-	req.setSslConfiguration(ssl);
-	return nam;
-}
-
 QSslConfiguration CheckConnection::sslConfiguration(const QByteArray &add)
 {
 	QSslConfiguration ssl = QSslConfiguration::defaultConfiguration();
