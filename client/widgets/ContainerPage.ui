@@ -11,8 +11,37 @@
    </rect>
   </property>
   <property name="styleSheet">
-   <string notr="true">#leftPane, #rightPane {
+   <string notr="true">#leftPane, #rightPaneArea {
 background-color: #ffffff;
+}
+QTabBar::tab {
+padding: 11px 19px;
+color: #003168;
+font-weight: 700;
+background-color: #FFFFFF;
+border: 1px solid #003168;
+border-width: 1px 0px 1px 1px;
+}
+QTabBar::tab:first {
+border-top-left-radius: 4px;
+border-bottom-left-radius: 4px;
+}
+QTabBar::tab:last {
+border-top-right-radius: 4px;
+border-bottom-right-radius: 4px;
+border-right-width: 1px;
+}
+QTabBar::tab:selected {
+background-color: #003168;
+color: #FFFFFF;
+}
+QTabBar::tab:hover:!selected {
+background-color: #EDF1F6;
+}
+#passwordMethodInfo {
+color: #07142A;
+font-family: Roboto, Helvetica;
+font-size: 14px;
 }
 #leftPane {
 border: solid #F3F5F7;
@@ -149,7 +178,7 @@ background-color: #BFD3E8;
     </widget>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="containerListsLayout">
+    <layout class="QHBoxLayout" name="containerListsLayout" stretch="1,1">
      <property name="spacing">
       <number>0</number>
      </property>
@@ -157,7 +186,132 @@ background-color: #BFD3E8;
       <widget class="FileList" name="leftPane"/>
      </item>
      <item>
-      <widget class="ItemList" name="rightPane"/>
+      <widget class="QWidget" name="rightPaneArea" native="true">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <layout class="QVBoxLayout" name="rightPaneAreaLayout">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QWidget" name="encryptMethodArea" native="true">
+          <layout class="QVBoxLayout" name="encryptMethodAreaLayout">
+           <property name="spacing">
+            <number>0</number>
+           </property>
+           <property name="leftMargin">
+            <number>32</number>
+           </property>
+           <property name="topMargin">
+            <number>32</number>
+           </property>
+           <property name="rightMargin">
+            <number>32</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
+           <item>
+            <widget class="QTabBar" name="encryptMethod" native="true"/>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QStackedWidget" name="rightPaneStack">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="currentIndex">
+           <number>0</number>
+          </property>
+          <widget class="QWidget" name="pageRecipients">
+           <layout class="QVBoxLayout" name="pageRecipientsLayout">
+            <property name="spacing">
+             <number>0</number>
+            </property>
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="ItemList" name="rightPane"/>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="pagePassword">
+           <layout class="QVBoxLayout" name="pagePasswordLayout">
+            <property name="leftMargin">
+             <number>32</number>
+            </property>
+            <property name="topMargin">
+             <number>24</number>
+            </property>
+            <property name="rightMargin">
+             <number>32</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="passwordMethodInfo">
+              <property name="text">
+               <string>Password encryption is meant for long-term storage. The password cannot be changed or recovered.</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignHCenter|Qt::AlignTop</set>
+              </property>
+              <property name="wordWrap">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="pagePasswordSpacer">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>0</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </widget>
+         </widget>
+        </item>
+       </layout>
+      </widget>
      </item>
     </layout>
    </item>
@@ -331,6 +485,11 @@ background-color: #E1C1C6;
   </layout>
  </widget>
  <customwidgets>
+  <customwidget>
+   <class>QTabBar</class>
+   <extends>QWidget</extends>
+   <header location="global">QTabBar</header>
+  </customwidget>
   <customwidget>
    <class>ItemList</class>
    <extends>QScrollArea</extends>

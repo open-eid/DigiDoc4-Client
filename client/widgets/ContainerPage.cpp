@@ -41,6 +41,7 @@
 #include <QFileInfo>
 #include <QFontMetrics>
 #include <QMessageBox>
+#include <QTabBar>
 
 #include <QtCore/QUrlQuery>
 #include <QtGui/QDesktopServices>
@@ -75,6 +76,19 @@ ContainerPage::ContainerPage(QWidget *parent)
 	connect(ui->leftPane, &FileList::addFiles, this, &ContainerPage::addFiles);
 	connect(ui->leftPane, &ItemList::addItem, this, [this](int code) { emit action(code); });
 	connect(ui->rightPane, &ItemList::addItem, this, [this](int code) { emit action(code); });
+	ui->encryptMethodArea->hide();
+	ui->encryptMethod->setExpanding(true);
+	ui->encryptMethod->setDrawBase(false);
+	ui->encryptMethod->setIconSize({16, 16});
+	ui->encryptMethod->addTab(tr("Encrypt for recipients"));
+	ui->encryptMethod->addTab(tr("Encrypt with password"));
+	connect(ui->encryptMethod, &QTabBar::currentChanged, this, [this](int index) {
+		for(int i = 0; i < ui->encryptMethod->count(); ++i)
+			ui->encryptMethod->setTabIcon(i, i == index ?
+				QIcon(QStringLiteral(":/images/icon_check_white.svg")) : QIcon());
+		ui->rightPaneStack->setCurrentIndex(index);
+	});
+	ui->encryptMethod->setTabIcon(0, QIcon(QStringLiteral(":/images/icon_check_white.svg")));
 	connect(ui->email, &QAbstractButton::clicked, this, [this] {
 		if(!QFileInfo::exists(fileName))
 			return;
@@ -160,12 +174,12 @@ void ContainerPage::decrypt(CryptoDoc *container, const libcdoc::Lock *lock, con
 }
 
 template<class C>
-void ContainerPage::deleteConfirm(C *c, int index)
+bool ContainerPage::deleteConfirm(C *c, int index)
 {
 	if(c->documentModel()->rowCount() > 1)
 	{
 		ui->leftPane->removeItem(index);
-		return;
+		return true;
 	}
 	auto *dlg = WarningDialog::create(this)
 		->withTitle(tr("You are about to delete the last file in the container"))
@@ -174,33 +188,34 @@ void ContainerPage::deleteConfirm(C *c, int index)
 		->resetCancelStyle(false)
 		->addButton(WarningDialog::Remove, QMessageBox::Ok, true);
 	if (dlg->exec() != QMessageBox::Ok)
-		return;
+		return false;
 	window()->setWindowFilePath({});
 	window()->setWindowTitle(QCoreApplication::translate("MainWindow", "DigiDoc4 Client"));
 	if(QFile::exists(c->fileName()))
 		QFile::remove(c->fileName());
 	emit action(ContainerClose);
+	return false;
 }
 
-void ContainerPage::encrypt(CryptoDoc *container, bool longTerm)
+void ContainerPage::encrypt(CryptoDoc *container)
 {
-	if(!longTerm) {
-		WaitDialogHolder waitDialog(this, tr("Encrypting"));
-		if(!container->encrypt(container->fileName(), {}, {}))
+	QString label;
+	QByteArray secret;
+	QSslCertificate cert;
+	if(isPasswordEncryption()) {
+		PasswordDialog p(PasswordDialog::Mode::ENCRYPT, this);
+		if(!p.exec())
 			return;
-		transition(container, qApp->cryptoManager()->tokenauth().cert());
-		emit action(EncryptContainerSuccess);
-		return;
+		label = p.label();
+		secret = p.secret();
+	} else {
+		cert = qApp->cryptoManager()->tokenauth().cert();
 	}
 
-	PasswordDialog p(PasswordDialog::Mode::ENCRYPT, this);
-	if(!p.exec())
-		return;
-
 	WaitDialogHolder waitDialog(this, tr("Encrypting"));
-	if(!container->encrypt(container->fileName(), p.label(), p.secret()))
+	if(!container->encrypt(container->fileName(), label, secret))
 		return;
-	transition(container, QSslCertificate{});
+	transition(container, cert);
 	emit action(EncryptContainerSuccess);
 }
 
@@ -212,36 +227,9 @@ void ContainerPage::setHeader(const QString &file)
 	elideFileName();
 }
 
-void ContainerPage::showEncryptAction(CryptoDoc *container)
+bool ContainerPage::isPasswordEncryption() const
 {
-	if (!container->keys().empty()) {
-		mainAction->showAction(EncryptContainer);
-		mainAction->setEnabled(true);
-	} else if (container->supportsSymmetricKeys()) {
-		mainAction->showAction(EncryptLT);
-		mainAction->setEnabled(true);
-	} else {
-		mainAction->showAction(EncryptContainer);
-		mainAction->setEnabled(false);
-	}
-	ui->mainActionSpacer->changeSize(198, 20, QSizePolicy::Fixed);
-	ui->navigationArea->layout()->invalidate();
-}
-
-void ContainerPage::showSigningButton()
-{
-	if (!isSupported)
-	{
-		mainAction->hide();
-		ui->mainActionSpacer->changeSize(1, 20, QSizePolicy::Fixed);
-	}
-	else
-	{
-		mainAction->showAction(SignatureAdd);
-		mainAction->setEnabled(isSupported);
-		ui->mainActionSpacer->changeSize(198, 20, QSizePolicy::Fixed);
-	}
-	ui->navigationArea->layout()->invalidate();
+	return !ui->encryptMethodArea->isHidden() && ui->encryptMethod->currentIndex() == 1;
 }
 
 void ContainerPage::transition(CryptoDoc *container, const QSslCertificate &cert)
@@ -262,19 +250,19 @@ void ContainerPage::transition(CryptoDoc *container, const QSslCertificate &cert
 			container->addEncryptionKey(key);
 			ui->rightPane->addWidget(new AddressItem(key, AddressItem::Icon, ui->rightPane));
 		}
-		showEncryptAction(container);
+		mainAction->setEnabled(isEncryptEnabled(container));
 	});
 	disconnect(ui->rightPane, &ItemList::removed, container, nullptr);
 	connect(ui->rightPane, &ItemList::removed, container, [this, container](int index) {
 		container->removeKey(index);
 		ui->rightPane->removeItem(index);
-		showEncryptAction(container);
+		mainAction->setEnabled(isEncryptEnabled(container));
 	});
 	disconnect(this, &ContainerPage::certChanged, container, nullptr);
 	connect(this, &ContainerPage::certChanged, container, [this, container](const SslCertificate &cert) {
 		isSupported = container->state() & UnencryptedContainer || container->canDecrypt(cert);
 		if(container->state() & EncryptedContainer)
-			updateDecryptionButton();
+			mainAction->setEnabled(isSupported && !isBlocked);
 	});
 	disconnect(ui->changeLocation, &QPushButton::clicked, container, nullptr);
 	connect(ui->changeLocation, &QPushButton::clicked, container, [container, this] {
@@ -291,15 +279,16 @@ void ContainerPage::transition(CryptoDoc *container, const QSslCertificate &cert
 	connect(container, &CryptoDoc::destroyed, this, [this] {
 		clear(ContainerClearWarning);
 	});
+	disconnect(ui->encryptMethod, &QTabBar::currentChanged, container, nullptr);
+	connect(ui->encryptMethod, &QTabBar::currentChanged, container, [this, container] {
+		mainAction->setEnabled(isEncryptEnabled(container));
+	});
 	disconnect(mainAction, &MainAction::action, container, nullptr);
 	connect(mainAction, &MainAction::action, container, [container, this](int action) {
 		switch (action)
 		{
 		case EncryptContainer:
-			encrypt(container, false);
-			break;
-		case EncryptLT:
-			encrypt(container, true);
+			encrypt(container);
 			break;
 		case DecryptContainer:
 			decrypt(container, nullptr, {});
@@ -310,6 +299,7 @@ void ContainerPage::transition(CryptoDoc *container, const QSslCertificate &cert
 	});
 
 	clear(ContainerClearWarning);
+	ui->encryptMethod->setCurrentIndex(0);
 	isSupported = container->state() & UnencryptedContainer || container->canDecrypt(cert);
 	setHeader(container->fileName());
 	ui->leftPane->init(fileName, QT_TRANSLATE_NOOP("ItemList", "Encrypted files"));
@@ -341,7 +331,8 @@ void ContainerPage::transition(DigiDoc* container)
 	using enum WarningText::WarningType;
 	disconnect(ui->leftPane, &ItemList::removed, container, nullptr);
 	connect(ui->leftPane, &ItemList::removed, container, [this, container](int index) {
-		deleteConfirm(container, index);
+		if(deleteConfirm(container, index))
+			transition(container);
 	});
 	disconnect(ui->summary, &QAbstractButton::clicked, container, nullptr);
 	connect(ui->summary, &QAbstractButton::clicked, container, [this,container] {
@@ -458,21 +449,21 @@ void ContainerPage::transition(DigiDoc* container)
 	updatePanes(container->state(), nullptr);
 }
 
-void ContainerPage::updateDecryptionButton()
+bool ContainerPage::isEncryptEnabled(CryptoDoc *container) const
 {
-	mainAction->showAction(DecryptContainer);
-	mainAction->setEnabled(isSupported && !isBlocked);
-	ui->mainActionSpacer->changeSize(198, 20, QSizePolicy::Fixed);
-	ui->navigationArea->layout()->invalidate();
+	return isPasswordEncryption() || (container && !container->keys().empty());
 }
 
 void ContainerPage::updatePanes(ria::qdigidoc4::ContainerState state, CryptoDoc *crypto_container)
 {
 	ui->leftPane->stateChange(state);
 	ui->rightPane->stateChange(state);
+	ui->encryptMethodArea->setVisible(state == UnencryptedContainer && crypto_container && crypto_container->supportsSymmetricKeys());
+	if(ui->encryptMethodArea->isHidden())
+		ui->encryptMethod->setCurrentIndex(0);
 	ui->save->setVisible(state == UnsignedContainer);
-	ui->rightPane->setHidden(state == UnsignedContainer);
-	auto setButtonsVisible = [](const QVector<QWidget*> &buttons, bool visible) {
+	ui->rightPaneArea->setHidden(state == UnsignedContainer);
+	auto setButtonsVisible = [](std::initializer_list<QWidget*> buttons, bool visible) {
 		for(QWidget *button: buttons) button->setVisible(visible);
 	};
 
@@ -483,7 +474,6 @@ void ContainerPage::updatePanes(ria::qdigidoc4::ContainerState state, CryptoDoc 
 
 		ui->changeLocation->show();
 		ui->rightPane->clear();
-		showSigningButton();
 		setButtonsVisible({ ui->saveAs, ui->email, ui->summary, ui->extend }, false);
 		break;
 	case UnsignedSavedContainer:
@@ -492,7 +482,6 @@ void ContainerPage::updatePanes(ria::qdigidoc4::ContainerState state, CryptoDoc 
 		ui->changeLocation->show();
 		ui->rightPane->init(ItemList::ItemSignature, QT_TRANSLATE_NOOP("ItemList", "Container is not signed"));
 		ui->summary->setVisible(Settings::SHOW_PRINT_SUMMARY);
-		showSigningButton();
 		setButtonsVisible({ ui->saveAs, ui->email }, true);
 		ui->extend->hide();
 		break;
@@ -502,28 +491,52 @@ void ContainerPage::updatePanes(ria::qdigidoc4::ContainerState state, CryptoDoc 
 		ui->changeLocation->hide();
 		ui->rightPane->init(ItemList::ItemSignature, QT_TRANSLATE_NOOP("ItemList", "Container signatures"));
 		ui->summary->setVisible(Settings::SHOW_PRINT_SUMMARY);
-		showSigningButton();
 		setButtonsVisible({ ui->saveAs, ui->email, ui->extend }, true);
 		break;
 	case UnencryptedContainer:
 		cancelText = QT_TR_NOOP("Start");
 		convertText = QT_TR_NOOP("Sign");
-		showEncryptAction(crypto_container);
 		setButtonsVisible({ ui->changeLocation, ui->convert }, true);
 		setButtonsVisible({ ui->saveAs, ui->email, ui->extend }, false);
 		break;
 	case EncryptedContainer:
 		cancelText = QT_TR_NOOP("Start");
 		convertText = QT_TR_NOOP("Sign");
-		updateDecryptionButton();
-		setButtonsVisible({ ui->changeLocation, ui->convert }, false);
+		setButtonsVisible({ ui->changeLocation, ui->convert, ui->extend }, false);
 		setButtonsVisible({ ui->saveAs, ui->email }, true);
-		ui->extend->hide();
 		break;
 	default:
 		// Uninitialized cannot be shown on container page
 		break;
 	}
+
+	switch(state)
+	{
+	case UnsignedContainer:
+	case UnsignedSavedContainer:
+	case SignedContainer:
+		if(isSupported)
+		{
+			mainAction->showAction(SignatureAdd);
+			mainAction->setEnabled(true);
+		}
+		else
+			mainAction->hide();
+		break;
+	case UnencryptedContainer:
+		mainAction->showAction(EncryptContainer);
+		mainAction->setEnabled(isEncryptEnabled(crypto_container));
+		break;
+	case EncryptedContainer:
+		mainAction->showAction(DecryptContainer);
+		mainAction->setEnabled(isSupported && !isBlocked);
+		break;
+	default:
+		mainAction->hide();
+		break;
+	}
+	ui->mainActionSpacer->changeSize(mainAction->isHidden() ? 1 : 198, 20, QSizePolicy::Fixed);
+	ui->navigationArea->layout()->invalidate();
 
 	translateLabels();
 }

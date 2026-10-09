@@ -61,13 +61,12 @@ private:
 	void clear(int code);
 	void decrypt(CryptoDoc *container, const libcdoc::Lock *lock, const QByteArray &secret);
 	template<class C>
-	void deleteConfirm(C *c, int index);
+	bool deleteConfirm(C *c, int index);
 	void elideFileName();
-	void encrypt(CryptoDoc *container, bool longTerm);
+	void encrypt(CryptoDoc *container);
 	bool eventFilter(QObject *o, QEvent *e) final;
-	void showEncryptAction(CryptoDoc *container);
-	void showSigningButton();
-	void updateDecryptionButton();
+	bool isPasswordEncryption() const;
+	bool isEncryptEnabled(CryptoDoc *container) const;
 	void updatePanes(ria::qdigidoc4::ContainerState state, CryptoDoc *crypto_container);
 	void translateLabels();
 
