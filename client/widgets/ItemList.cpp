@@ -34,7 +34,6 @@ ItemList::ItemList(QWidget *parent)
 	ui->infoIcon->hide();
 	ui->add->hide();
 	connect(ui->add, &QToolButton::clicked, this, &ItemList::add);
-	connect(this, &ItemList::idChanged, this, [this](const SslCertificate &cert){ this->cert = cert; });
 }
 
 ItemList::~ItemList()
@@ -77,9 +76,7 @@ void ItemList::addWidget(Item *widget, int index, QWidget *tabIndex)
 	}
 	ui->itemLayout->insertWidget(index, widget);
 	connect(widget, &Item::remove, this, &ItemList::remove);
-	connect(this, &ItemList::idChanged, widget, &Item::idChanged);
 	widget->stateChange(state);
-	widget->idChanged(cert);
 	widget->show();
 	items.push_back(widget);
 	widget->initTabOrder(tabIndex);
