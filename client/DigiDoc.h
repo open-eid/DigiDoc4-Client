@@ -95,7 +95,6 @@ public:
 	bool addFile(const QString &file, const QString &mime = QStringLiteral("application/octet-stream")) final;
 	QString data(int row) const final;
 	quint64 fileSize(int row) const final;
-	QString mime(int row) const final;
 	bool removeRow(int row) final;
 	int rowCount() const final;
 	QString save(int row, const QString &path) const final;
