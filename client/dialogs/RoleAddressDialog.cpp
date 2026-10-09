@@ -23,10 +23,24 @@
 #include "Settings.h"
 #include "effects/Overlay.h"
 
+#include <QtGui/QValidator>
 #include <QtWidgets/QCompleter>
 #include <QtWidgets/QListView>
 
 class RoleAddressDialog::Private: public Ui::RoleAddressDialog {};
+
+class SanitizingValidator: public QValidator {
+public:
+	using QValidator::QValidator;
+	State validate(QString &input, int &pos) const override {
+		static const QRegularExpression invalid(
+			QStringLiteral("[\\x00-\\x08\\x0B\\x0C\\x0E-\\x1F\\x{FFFE}\\x{FFFF}]"));
+		int before = input.size();
+		input.remove(invalid);
+		pos = qMax(0, pos - (before - input.size()));
+		return Acceptable;
+	}
+};
 
 RoleAddressDialog::RoleAddressDialog(QWidget *parent)
 	: QDialog(parent)
@@ -37,17 +51,18 @@ RoleAddressDialog::RoleAddressDialog(QWidget *parent)
 	d->buttonLayout->setDirection(QBoxLayout::RightToLeft);
 #endif
 	setWindowFlags(Qt::Dialog | Qt::CustomizeWindowHint);
-	for(QLineEdit *w: findChildren<QLineEdit*>())
-		w->setAttribute(Qt::WA_MacShowFocusRect, false);
 
 	connect( d->cancel, &QPushButton::clicked, this, &RoleAddressDialog::reject );
 	connect( d->sign, &QPushButton::clicked, this, &RoleAddressDialog::accept );
 
+	auto *validator = new SanitizingValidator(this);
 	auto list = findChildren<QLineEdit*>();
 	if(!list.isEmpty())
 		list.first()->setFocus();
 	for(QLineEdit *line: list)
 	{
+		line->setAttribute(Qt::WA_MacShowFocusRect, false);
+		line->setValidator(validator);
 		Settings::Option<QStringList> s{line->objectName(), {}};
 		auto *completer = new QCompleter(s, line);
 		completer->setMaxVisibleItems(10);
