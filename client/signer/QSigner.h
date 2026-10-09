@@ -26,6 +26,7 @@
 #include <QtCore/QCoreApplication>
 #include <QtCore/QCryptographicHash>
 
+class QCryptoBackend;
 class QSmartCard;
 class TokenData;
 
@@ -33,7 +34,7 @@ class QSigner final : public digidoc::Signer
 {
 	Q_DECLARE_TR_FUNCTIONS(QSigner);
 public:
-	explicit QSigner(const TokenData &token);
+	QSigner(QCryptoBackend *backend, const TokenData &token);
 
 	digidoc::X509Cert cert() const final;
 	std::vector<unsigned char> sign(const std::string &method,
@@ -42,5 +43,6 @@ public:
 private:
 	static QCryptographicHash::Algorithm methodToNID(const std::string &method);
 
+	QCryptoBackend *m_backend;
 	TokenData m_token;
 };
