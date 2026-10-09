@@ -1,7 +1,8 @@
+# SPDX-FileCopyrightText: 2010 Erkko Kebbinau <erkko@smartlink.ee>
+# SPDX-FileCopyrightText: 2014 Sander Lepik <sander@lepik.eu>
+# SPDX-License-Identifier: LGPL-2.1-or-later
+#
 # Translation template for qdigidoc package.
-# This file is distributed under the same license as the qdigidoc package.
-# Erkko Kebbinau <erkko@smartlink.ee>, 2010.
-# Sander Lepik <sander@lepik.eu>, 2014.
 #
 #, fuzzy
 msgid ""
