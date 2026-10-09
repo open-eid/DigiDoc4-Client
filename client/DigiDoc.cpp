@@ -153,7 +153,11 @@ QDateTime DigiDocSignature::ocspTime() const
 
 DigiDocSignature::SignatureStatus DigiDocSignature::status(DigiDocSignature::SignatureStatus result, const digidoc::Exception &e)
 {
-	for(const Exception &child: e.causes())
+	const Exception::Causes causes = e.causes();
+	if(causes.empty())
+		return std::max(result, Invalid);
+
+	for(const Exception &child: causes)
 	{
 		switch( child.code() )
 		{
@@ -180,7 +184,8 @@ DigiDocSignature::SignatureStatus DigiDocSignature::status(DigiDocSignature::Sig
 		default:
 			result = std::max( result, Invalid );
 		}
-		result = std::max(result, status(result, child));
+		if(!child.causes().empty())
+			result = std::max(result, status(result, child));
 	}
 	return result;
 }
