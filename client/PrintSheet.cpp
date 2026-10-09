@@ -162,7 +162,10 @@ PrintSheet::PrintSheet( DigiDoc *doc, QPrinter *printer )
 		}
 		customText( tr("VALIDITY OF SIGNATURE"), valid );
 		customText( tr("ROLE / RESOLUTION"), sig.role() );
-		customText( tr("PLACE OF CONFIRMATION (CITY, STATE, ZIP, COUNTRY)"), sig.location() );
+		const auto l = sig.location();
+		QStringList location{l.city, l.streetAddress, l.stateOrProvince, l.postalCode, l.countryName};
+		location.removeAll({});
+		customText(tr("PLACE OF CONFIRMATION (CITY, STREET, STATE, ZIP, COUNTRY)"), location.join(QStringLiteral(", ")));
 		customText( tr("SERIAL NUMBER OF SIGNER CERTIFICATE"), cert.serialNumber() );
 
 		newPage( 50 );
@@ -172,10 +175,10 @@ PrintSheet::PrintSheet( DigiDoc *doc, QPrinter *printer )
 		int issuerHeight = drawTextRect( QRect( left, top, 200, 20 ),
 			cert.issuerInfo( QSslCertificate::CommonName ) );
 		drawTextRect( QRect( left+200, top, right - left - 200, issuerHeight ),
-			SslCertificate::toHex(cert.authorityKeyIdentifier()));
+			cert.authorityKeyIdentifier().toHex(' ').toUpper());
 		top += 20 + issuerHeight;
 
-		customText(tr("HASH VALUE OF SIGNATURE"), SslCertificate::toHex(sig.messageImprint()));
+		customText(tr("HASH VALUE OF SIGNATURE"), sig.messageImprint().toHex(' ').toUpper());
 		top += 15;
 	}
 	save();

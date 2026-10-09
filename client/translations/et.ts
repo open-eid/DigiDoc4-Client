@@ -2079,6 +2079,10 @@ ID-kaardiga</translation>
         <translation>AEG</translation>
     </message>
     <message>
+        <source>PLACE OF CONFIRMATION (CITY, STREET, STATE, ZIP, COUNTRY)</source>
+        <translation>ALLKIRJASTAJA ASUKOHT (LINN, TÄNAV, MAAKOND, INDEKS, RIIK)</translation>
+    </message>
+    <message>
         <source>NOTES</source>
         <translation>MÄRKUSED</translation>
     </message>
@@ -2097,10 +2101,6 @@ ID-kaardiga</translation>
     <message>
         <source>ROLE / RESOLUTION</source>
         <translation>ROLL/RESOLUTSIOON</translation>
-    </message>
-    <message>
-        <source>PLACE OF CONFIRMATION (CITY, STATE, ZIP, COUNTRY)</source>
-        <translation>ALLKIRJASTAJA  ASUKOHT (LINN, MAAKOND, INDEKS, RIIK)</translation>
     </message>
     <message>
         <source>ISSUER OF CERTIFICATE</source>
@@ -2594,6 +2594,10 @@ Täiendavad litsentsid ja komponendid</translation>
     <message>
         <source>Role and address</source>
         <translation>Roll ja aadress</translation>
+    </message>
+    <message>
+        <source>Street</source>
+        <translation>Tänav</translation>
     </message>
     <message>
         <source>City</source>

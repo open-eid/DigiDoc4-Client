@@ -46,6 +46,14 @@ public:
 	{
 		DigestWeak = 1 << 2
 	};
+	struct Location
+	{
+		QString city;
+		QString stateOrProvince;
+		QString postalCode;
+		QString countryName;
+		QString streetAddress;
+	};
 	DigiDocSignature(const digidoc::Signature *signature = {}, const DigiDoc *parent = {}, bool isTimeStamped = false);
 
 	QSslCertificate	cert() const;
@@ -53,8 +61,7 @@ public:
 	const DigiDoc *container() const;
 	bool		isInvalid() const;
 	QString		lastError() const;
-	QString		location() const;
-	QStringList	locations() const;
+	Location	location() const;
 	QByteArray	messageImprint() const;
 	QSslCertificate ocspCert() const;
 	QDateTime	ocspTime() const;
