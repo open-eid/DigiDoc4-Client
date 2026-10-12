@@ -153,12 +153,25 @@ WarningDialog* WarningDialog::create(QWidget *parent)
 
 WarningDialog* WarningDialog::withText(const QString &text)
 {
+	ui->text->setTextFormat(Qt::PlainText);
+	ui->text->setOpenExternalLinks(false);
+	ui->text->setTextInteractionFlags(Qt::TextSelectableByMouse|Qt::TextSelectableByKeyboard);
+	ui->text->setText(text);
+	ui->text->setHidden(text.isEmpty());
+	return this;
+}
+WarningDialog* WarningDialog::withRichText(const QString &text)
+{
+	ui->text->setTextFormat(Qt::RichText);
+	ui->text->setOpenExternalLinks(true);
+	ui->text->setTextInteractionFlags(Qt::TextBrowserInteraction);
 	ui->text->setText(text);
 	ui->text->setHidden(text.isEmpty());
 	return this;
 }
 WarningDialog* WarningDialog::withTitle(const QString &title)
 {
+	ui->title->setTextFormat(Qt::PlainText);
 	ui->title->setText(title);
 	ui->title->setHidden(title.isEmpty());
 	return this;
@@ -166,6 +179,9 @@ WarningDialog* WarningDialog::withTitle(const QString &title)
 
 WarningDialog* WarningDialog::withDetails(const QString &details)
 {
+	ui->details->setTextFormat(Qt::PlainText);
+	ui->details->setOpenExternalLinks(false);
+	ui->details->setTextInteractionFlags(Qt::TextSelectableByMouse|Qt::TextSelectableByKeyboard);
 	ui->details->setText(details);
 	ui->details->hide();
 	ui->showDetails->setHidden(details.isEmpty());

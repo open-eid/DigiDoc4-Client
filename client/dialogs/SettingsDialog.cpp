@@ -347,12 +347,12 @@ SettingsDialog::SettingsDialog(int page, QWidget *parent)
 #ifdef Q_OS_MACOS
 		WarningDialog::create(this)
 			->withTitle(tr("Restart DigiDoc4 Client to activate logging"))
-			->withText(tr("Read more <a href=\"https://www.id.ee/en/article/log-file-generation-in-digidoc4-client/\">here</a>."))
+			->withRichText(tr("Read more <a href=\"https://www.id.ee/en/article/log-file-generation-in-digidoc4-client/\">here</a>."))
 			->open();
 #else
 		auto *dlg = WarningDialog::create(this)
 			->withTitle(tr("Restart DigiDoc4 Client to activate logging"))
-			->withText(tr("Read more <a href=\"https://www.id.ee/en/article/log-file-generation-in-digidoc4-client/\">here</a>. Restart now?"))
+			->withRichText(tr("Read more <a href=\"https://www.id.ee/en/article/log-file-generation-in-digidoc4-client/\">here</a>. Restart now?"))
 			->setCancelText(WarningDialog::NO)
 			->addButton(WarningDialog::YES, QMessageBox::Yes);
 		connect(dlg, &WarningDialog::finished, qApp, [](int result) {
@@ -466,7 +466,7 @@ SettingsDialog::~SettingsDialog()
 QString SettingsDialog::certInfo(const SslCertificate &c)
 {
 	return tr("Issued to: %1<br />Valid to: %2 %3").arg(
-		c.subjectInfo(QSslCertificate::CommonName),
+		c.subjectInfo(QSslCertificate::CommonName).toHtmlEscaped(),
 		c.expiryDate().toString(QStringLiteral("dd.MM.yyyy")),
 		!c.isValid() ? QStringLiteral("<font color='red'>(%1)</font>").arg(tr("expired")) : QString());
 }
