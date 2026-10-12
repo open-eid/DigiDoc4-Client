@@ -99,7 +99,6 @@ public:
 Q_SIGNALS:
 	void cacheChanged();
 	void authDataChanged(const TokenData &token);
-	void signDataChanged(const TokenData &token);
 
 private:
 	friend class QCryptoBackend;
