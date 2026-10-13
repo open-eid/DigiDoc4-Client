@@ -88,9 +88,11 @@ const Option<QString> Settings::SIVA_URL { QStringLiteral("SIVA-URL") };
 const Option<bool, bool (*)()> Settings::SIVA_URL_CUSTOM
 	{ QStringLiteral("SIVA-URL-CUSTOM"), [] { return Settings::SIVA_URL.isSet(); } };
 const Option<QByteArray> Settings::TSA_CERT { QStringLiteral("TSA-CERT") };
+const Option<QByteArray> Settings::TSA_CERT_ARCHIVE { QStringLiteral("TSA-CERT-ARCHIVE") };
 const Option<QString> Settings::TSA_URL { QStringLiteral("TSA-URL") };
+const Option<QString> Settings::TSA_URL_ARCHIVE { QStringLiteral("TSA-URL-ARCHIVE") };
 const Option<bool, bool (*)()> Settings::TSA_URL_CUSTOM
-	{ QStringLiteral("TSA-URL-CUSTOM"), [] { return Settings::TSA_URL.isSet(); } };
+	{ QStringLiteral("TSA-URL-CUSTOM"), [] { return Settings::TSA_URL.isSet() || Settings::TSA_URL_ARCHIVE.isSet(); } };
 const Option<bool> Settings::DEFAULT_LTA { QStringLiteral("DefaultLTA"), false };
 
 const Option<QString> Settings::DEFAULT_DIR { QStringLiteral("DefaultDir") };

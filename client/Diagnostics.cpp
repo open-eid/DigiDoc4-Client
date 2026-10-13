@@ -52,6 +52,7 @@ void Diagnostics::generalInfo(QTextStream &s)
 		<< "<br />RPUUID: " << (Settings::MID_UUID_CUSTOM ? tr("is set manually") : tr("is set by default"))
 		<< "<br />TSL_URL: " << Application::confValue(Application::TSLUrl).toString()
 		<< "<br />TSA_URL: " << Application::confValue(Application::TSAUrl).toString()
+		<< "<br />TSA_URL_ARCHIVE: " << Application::confValue(Application::TSAUrlArchive).toString()
 		<< "<br />SIVA_URL: " << Application::confValue(Application::SiVaUrl).toString()
 		<< "<br /><b>CDOC2:</b>"
 		<< "<br />" << Settings::CDOC2_DEFAULT.KEY << ": " << Settings::CDOC2_DEFAULT
