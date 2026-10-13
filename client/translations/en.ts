@@ -2779,6 +2779,10 @@ Additional licenses and components</translation>
         <translation>Invalid country code</translation>
     </message>
     <message>
+        <source>Enter %1 code</source>
+        <translation>Enter %1 code</translation>
+    </message>
+    <message>
         <source>Please enter %1 code in the new window that will appear shortly</source>
         <translation>Please enter %1 code in the new window that will appear shortly</translation>
     </message>
@@ -2789,6 +2793,14 @@ Additional licenses and components</translation>
     <message>
         <source>Continue signing</source>
         <translation>Continue signing</translation>
+    </message>
+    <message>
+        <source>Remaining attempts: %1</source>
+        <translation>Remaining attempts: %1</translation>
+    </message>
+    <message>
+        <source>Failed to sign document</source>
+        <translation>Failed to sign document</translation>
     </message>
 </context>
 <context>

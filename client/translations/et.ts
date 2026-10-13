@@ -2779,6 +2779,10 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>Vigane riigikood</translation>
     </message>
     <message>
+        <source>Enter %1 code</source>
+        <translation>Sisesta %1-kood</translation>
+    </message>
+    <message>
         <source>Please enter %1 code in the new window that will appear shortly</source>
         <translation>Palun sisesta %1-kood peatselt ilmuvas uues aknas</translation>
     </message>
@@ -2789,6 +2793,14 @@ Täiendavad litsentsid ja komponendid</translation>
     <message>
         <source>Continue signing</source>
         <translation>Jätka allkirjastamisega</translation>
+    </message>
+    <message>
+        <source>Remaining attempts: %1</source>
+        <translation>Katseid jäänud: %1</translation>
+    </message>
+    <message>
+        <source>Failed to sign document</source>
+        <translation>Dokumendi allkirjastamine ebaõnnestus</translation>
     </message>
 </context>
 <context>
