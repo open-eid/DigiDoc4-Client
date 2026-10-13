@@ -1,4 +1,4 @@
-﻿/*
+/*
  * EsteidShellExtension
  *
  * This library is free software; you can redistribute it and/or
@@ -24,7 +24,17 @@
 #include <shlwapi.h>
 #include <uxtheme.h>
 
+#include <memory>
+
 extern "C" IMAGE_DOS_HEADER __ImageBase;
+
+struct CoTaskMemDeleter
+{
+	void operator()(void *value) const noexcept
+	{
+		CoTaskMemFree(value);
+	}
+};
 
 template<bool IsCrypto>
 struct EsteidShellExtension : public winrt::implements<EsteidShellExtension<IsCrypto>, IExplorerCommand>
@@ -42,11 +52,19 @@ struct EsteidShellExtension : public winrt::implements<EsteidShellExtension<IsCr
 			else return SHLocalStrDupW(L"Sign with DigiDoc4", ppszName);
 		}
 	}
-	STDMETHODIMP GetIcon(IShellItemArray */*psiItemArray*/, LPWSTR *ppszIcon) final
+	STDMETHODIMP GetIcon(IShellItemArray */*psiItemArray*/, LPWSTR *ppszIcon) final try
 	{
-		auto p = digidocPath() + L",0";
+		auto p = digidocPath();
+		if(p.empty())
+			return E_FAIL;
+		p += L",0";
 		return SHLocalStrDupW(p.data(), ppszIcon);
 	}
+	catch(...)
+	{
+		return winrt::to_hresult();
+	}
+
 	STDMETHODIMP GetToolTip(IShellItemArray */*psiItemArray*/, LPWSTR *ppszInfotip) final
 	{
 		switch(PRIMARYLANGID(GetUserDefaultUILanguage()))
@@ -59,17 +77,20 @@ struct EsteidShellExtension : public winrt::implements<EsteidShellExtension<IsCr
 			else return SHLocalStrDupW(L"Digitally sign selected files", ppszInfotip);
 		}
 	}
+
 	STDMETHODIMP GetCanonicalName(GUID *pguidCommandName) final
 	{
 		*pguidCommandName = GUID_NULL;
 		return S_OK;
 	}
+
 	STDMETHODIMP GetState(IShellItemArray */*psiItemArray*/, BOOL /*fOkToBeSlow*/, EXPCMDSTATE *pCmdState) final
 	{
 		*pCmdState = ECS_ENABLED;
 		return S_OK;
 	}
-	STDMETHODIMP Invoke(IShellItemArray *psiItemArray, IBindCtx */*pbc*/) final
+
+	STDMETHODIMP Invoke(IShellItemArray *psiItemArray, IBindCtx */*pbc*/) final try
 	{
 		if(!psiItemArray)
 			return S_OK;
@@ -81,24 +102,26 @@ struct EsteidShellExtension : public winrt::implements<EsteidShellExtension<IsCr
 			return S_OK;
 
 		std::wstring digidoc = digidocPath();
+		if(digidoc.empty())
+			return E_FAIL;
 		std::wstring parameters;
 		if constexpr (IsCrypto) parameters += L"\"-crypto\" ";
 		else parameters += L"\"-sign\" ";
 		for (DWORD i = 0; i < count; ++i)
 		{
-			IShellItem* psi{};
-			if(auto hr = psiItemArray->GetItemAt(i, &psi); FAILED(hr))
+			winrt::com_ptr<IShellItem> item;
+			if(auto hr = psiItemArray->GetItemAt(i, item.put()); FAILED(hr))
 				return hr;
-			LPWSTR path{};
-			auto hr = psi->GetDisplayName(SIGDN_FILESYSPATH, &path);
-			psi->Release();
+			LPWSTR value{};
+			auto hr = item->GetDisplayName(SIGDN_FILESYSPATH, &value);
 			if(FAILED(hr))
 				return hr;
+			std::unique_ptr<wchar_t, CoTaskMemDeleter> path(value);
+			if(!path)
+				return E_UNEXPECTED;
 			parameters += L"\"";
-			parameters += path;
+			parameters += path.get();
 			parameters += L"\" ";
-			if(path)
-				CoTaskMemFree(path);
 		}
 		SHELLEXECUTEINFO seInfo{
 			.cbSize = sizeof(SHELLEXECUTEINFO),
@@ -106,32 +129,47 @@ struct EsteidShellExtension : public winrt::implements<EsteidShellExtension<IsCr
 			.lpParameters = parameters.c_str(),
 			.nShow = SW_SHOW
 		};
-		return ShellExecuteEx(&seInfo) ? S_OK : S_FALSE;
+		if(ShellExecuteEx(&seInfo))
+			return S_OK;
+		if(auto error = GetLastError(); error != ERROR_SUCCESS)
+			return HRESULT_FROM_WIN32(error);
+		return E_FAIL;
 	}
+	catch(...)
+	{
+		return winrt::to_hresult();
+	}
+
 	STDMETHODIMP GetFlags(EXPCMDFLAGS *pFlags) final
 	{
 		*pFlags = ECF_DEFAULT;
 		return S_OK;
 	}
+
 	STDMETHODIMP EnumSubCommands(IEnumExplorerCommand **ppEnum) final
 	{
 		*ppEnum = {};
 		return E_NOTIMPL;
 	}
 
-	static std::wstring digidocPath()
+	static std::wstring digidocPath() try
 	{
-		std::wstring path(MAX_PATH, 0);
-		if(auto size = GetModuleFileNameW(reinterpret_cast<HMODULE>(&__ImageBase), path.data(), DWORD(path.size())); size > 0)
-			path.resize(size);
-		else
-			path.clear();
-		if(auto pos = path.find_last_of('\\'); pos != std::wstring::npos)
-		{
-			path.resize(pos);
-			path += L"\\qdigidoc4.exe";
-		}
+		// The maximum extended-length path is 32,767 characters plus the null terminator.
+		std::wstring path(32768, 0);
+		auto size = GetModuleFileNameW(
+			reinterpret_cast<HMODULE>(&__ImageBase), path.data(), DWORD(path.size()));
+		if(size == 0 || size >= path.size())
+			return {};
+		path.resize(size);
+		auto pos = path.find_last_of(L"\\/");
+		if(pos == std::wstring::npos)
+			return {};
+		path.resize(pos + 1);
+		path += L"qdigidoc4.exe";
 		return path;
+	}
+	catch (...) {
+		return {};
 	}
 };
 
