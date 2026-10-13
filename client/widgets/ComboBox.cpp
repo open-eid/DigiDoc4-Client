@@ -52,7 +52,7 @@ void ComboBox::showPopup()
 	auto *l = new QVBoxLayout(content);
 	l->setContentsMargins(0, 0, 0, 0);
 	l->setSpacing(0);
-	auto addWidget = [=](const QString &text, int index) {
+	auto addWidget = [=, this](const QString &text, int index) {
 		auto *b = new QPushButton(text, content);
 		b->setFont(font());
 		b->setMinimumHeight(height());
