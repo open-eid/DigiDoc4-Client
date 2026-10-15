@@ -60,7 +60,6 @@ public:
 signals:
 	void add();
 	void addItem(int code);
-	void idChanged(const SslCertificate &cert);
 	void keysSelected(QList<Item *> keys);
 	void removed(int row);
 
@@ -82,7 +81,6 @@ private:
 	const char *title = "";
 	const char *addTitle = "";
 	const char *headerText = "";
-	SslCertificate cert;
 
 	friend class AddRecipients;
 };

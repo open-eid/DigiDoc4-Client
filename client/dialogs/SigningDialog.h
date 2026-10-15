@@ -13,8 +13,6 @@ class SigningDialog final : public QDialog
 {
 	Q_OBJECT
 public:
-	enum Method { IDCard, MobileID, SmartID };
-
 	explicit SigningDialog(DigiDoc *doc, QWidget *parent = nullptr);
 	~SigningDialog() final;
 
@@ -22,9 +20,13 @@ public:
 		const QString &state, const QString &zip, const QString &role);
 
 private:
-	void updateCards();
+	enum Method { IDCard, MobileID, SmartID };
+
+	void changeEvent(QEvent *event) final;
+	void updateCards(QList<TokenData> tokens);
+	void updateNoCard();
 	void updateSelection(bool usable);
-	bool performSign();
+	void performSign();
 	Method currentMethod() const;
 	bool confirmAlreadySigned();
 

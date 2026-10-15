@@ -20,17 +20,15 @@
 #pragma once
 
 #include "QSmartCard.h"
+#include "TokenData.h"
 
 #include <QWidget>
-
-#include <QDateTime>
 
 namespace Ui {
 class MyEidInfo;
 }
 
-class SslCertificate;
-class QSmartCardData;
+class CardPopup;
 
 class MyEidInfo final: public QWidget
 {
@@ -40,19 +38,33 @@ public:
 	explicit MyEidInfo( QWidget *parent = nullptr );
 	~MyEidInfo() final;
 
-	void clearData();
-	void update(const SslCertificate &cert);
-	void update(const QSmartCardData &t);
+	QSmartCardData cardData() const;
+	void changePin(QSmartCardData::PinType type, QSmartCard::PinAction action);
 
 Q_SIGNALS:
-	void changePinClicked(QSmartCardData::PinType, QSmartCard::PinAction);
+	void dataChanged(const QSmartCardData &data);
 
 private:
 	void changeEvent(QEvent* event) final;
-	void update();
+	bool eventFilter(QObject *watched, QEvent *event) final;
+	void hideEvent(QHideEvent *event) final;
+	void showEvent(QShowEvent *event) final;
+	void selectCard(const TokenData &token);
+	void refresh();
+	void updateEmptyState(bool enumerationComplete = false);
+	QList<TokenData> otherCards() const;
+	void updateSelector();
+	void updateCards(QList<TokenData> tokens);
+	void updateData();
+	void updateLabels();
 
 	Ui::MyEidInfo *ui;
+	CardPopup *cardPopup = nullptr;
 
-	QDateTime expiry;
-	int certType = 0;
+	QList<TokenData> cards;
+	TokenData selectedToken;
+	QSmartCardData currentData;
+	quint64 request = 0;
+	bool readFailed = false;
+	const char *emptyStateText = QT_TR_NOOP("Reading card...");
 };

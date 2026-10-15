@@ -19,7 +19,7 @@
 
 #pragma once
 
-#include <QObject>
+#include <QCoreApplication>
 #include <QSharedDataPointer>
 
 #include <memory>
@@ -28,6 +28,7 @@ class SslCertificate;
 class QSmartCardDataPrivate;
 class QSslKey;
 class TokenData;
+class QWidget;
 
 class QSmartCardData
 {
@@ -81,9 +82,9 @@ private:
 	friend class QSmartCardPrivate;
 };
 
-class QSmartCard final: public QObject
+class QSmartCard final
 {
-	Q_OBJECT
+	Q_DECLARE_TR_FUNCTIONS(QSmartCard)
 public:
 	enum PinAction : quint8
 	{
@@ -94,22 +95,11 @@ public:
 		UnblockWithPuk,
 	};
 
-	explicit QSmartCard(QObject *parent = nullptr);
-	~QSmartCard() noexcept final;
-
-	QSmartCardData data() const;
-	TokenData tokenData() const;
-	void reloadCard(const TokenData &token, bool reloadCounters);
-
-	bool pinChange(QSmartCardData::PinType type, PinAction action = ChangeWithPin, QWidget* parent = nullptr);
-
-Q_SIGNALS:
-	void tokenChanged(const TokenData &data);
-	void dataChanged(const QSmartCardData &data);
+	static bool pinChange(TokenData token, QSmartCardData current, QSmartCardData::PinType type,
+		PinAction action = ChangeWithPin, QWidget* parent = nullptr);
+	static QSmartCardData readCard(const TokenData &token);
+	static QSmartCardData readCounters(QSmartCardData data);
 
 private:
-	Q_DISABLE_COPY_MOVE(QSmartCard)
-
-	struct Private;
-	std::unique_ptr<Private> d;
+	QSmartCard() = delete;
 };

@@ -76,13 +76,13 @@ border-top: 1px solid #E7EAEF;
      <property name="minimumSize">
       <size>
        <width>914</width>
-       <height>40</height>
+       <height>52</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
        <width>16777215</width>
-       <height>40</height>
+       <height>52</height>
       </size>
      </property>
      <property name="styleSheet">

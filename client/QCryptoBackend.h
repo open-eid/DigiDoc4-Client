@@ -20,6 +20,7 @@
 #pragma once
 
 #include "TokenData.h"
+#include "QSmartCard.h"
 
 #include <QtCore/QCoreApplication>
 #include <QtCore/QCryptographicHash>
@@ -27,7 +28,6 @@
 
 #include <expected>
 
-class QSmartCard;
 class QSslKey;
 
 class QCryptoBackend
@@ -67,7 +67,7 @@ public:
 	 * @param token the token to use
 	 * @return the new backend object or an error code
 	 */
-	static std::expected<QCryptoBackend *,Status> getBackend(const TokenData &token);
+	static std::expected<QCryptoBackend *,Status> getBackend(const TokenData &token, const QString &pin = {});
 
 	/**
 	 * @brief The status of the last operation
@@ -77,7 +77,7 @@ public:
 	static QString errorString(Status error);
 
 protected:
-	virtual Status login(const TokenData &cert) = 0;
+	virtual Status login(const TokenData &cert, const QString &pin) = 0;
 
 private:
 	TokenData token;
@@ -91,14 +91,14 @@ public:
 	~QCryptoManager() final;
 
 	QList<TokenData> cache() const;
-	QSmartCard *smartcard() const;
-	void selectCard(const TokenData &token);
-	TokenData tokenauth() const;
-	TokenData tokensign() const;
+	quint64 readCard(const TokenData &token, const QSmartCardData &previous);
+	void refreshToken(const TokenData &token);
 
 Q_SIGNALS:
-	void cacheChanged();
-	void authDataChanged(const TokenData &token);
+	void cacheChanged(const QList<TokenData> &tokens);
+	void tokenChanged(const TokenData &token);
+	void cardDataReady(quint64 request, const QSmartCardData &data);
+	void refreshed();
 
 private:
 	friend class QCryptoBackend;
