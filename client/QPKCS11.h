@@ -29,11 +29,11 @@ public:
 	explicit QPKCS11();
 	~QPKCS11() noexcept final;
 
-	QByteArray decrypt(const QByteArray &data, bool oaep) const final;
-	QByteArray derive(const QByteArray &publicKey) const;
-	QByteArray deriveConcatKDF(const QByteArray &publicKey, QCryptographicHash::Algorithm digest,
+	std::vector<uint8_t> decrypt(const QByteArray &data, bool oaep) const final;
+	std::vector<uint8_t> derive(const QByteArray &publicKey) const;
+	std::vector<uint8_t> deriveConcatKDF(const QByteArray &publicKey, QCryptographicHash::Algorithm digest,
 		const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) const final;
-	QByteArray deriveHMACExtract(const QByteArray &publicKey, const QByteArray &salt, int keySize) const final;
+	std::vector<uint8_t> deriveHMACExtract(const QByteArray &publicKey, const QByteArray &salt, int keySize) const final;
 	QByteArray sign(QCryptographicHash::Algorithm type, const QByteArray &digest) const final;
 
 	Status login(const TokenData &t) final;

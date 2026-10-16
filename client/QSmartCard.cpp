@@ -111,7 +111,7 @@ QPCSCReader::Result Card::transfer(bool verify, QByteArray &&apdu,
 		apdu.fill('0');
 	});
 	if(!reader.isPinPad())
-		return reader.transfer(apdu);
+		return reader.transfer(apdu, true);
 	quint16 language = 0x0000;
 	if(Settings::LANGUAGE == QLatin1String("en")) language = 0x0409;
 	else if(Settings::LANGUAGE == QLatin1String("et")) language = 0x0425;
@@ -133,9 +133,8 @@ QByteArrayView Card::parseFCI(QByteArrayView data, quint8 expectedTag)
 	return {};
 }
 
-QByteArray Card::pinTemplate(const QString &data) const
+QByteArray Card::pinTemplate(QByteArray pin) const
 {
-	QByteArray pin = data.toUtf8();
 #if QT_VERSION >= QT_VERSION_CHECK(6, 4, 0)
 	pin.resize(12, fillChar);
 #else
@@ -553,17 +552,9 @@ bool QSmartCard::pinChange(QSmartCardData::PinType type, QSmartCard::PinAction a
 			d->t.data(QSmartCardData::Id).toString(), d->t.isPUKReplacable(), parent);
 		if (!p.exec())
 			return false;
-		QString oldPinString = p.firstCodeText();
-		QString newPinString = p.newCodeText();
-		oldPin = card->pinTemplate(oldPinString);
-		newPin = card->pinTemplate(newPinString);
-		// Try to clean QLineEdit internal PIN copy using constData that does not detach memory
-		auto chars = const_cast<QChar*>(oldPinString.constData());
-		for (int i = 0; i < oldPinString.length(); ++i)
-			chars[i] = '\0';
-		chars = const_cast<QChar*>(newPinString.constData());
-		for (int i = 0; i < newPinString.length(); ++i)
-			chars[i] = '\0';
+		auto [oldCode, newCode] = p.takeCodes();
+		oldPin = card->pinTemplate(std::move(oldCode));
+		newPin = card->pinTemplate(std::move(newCode));
 	}
 	auto clean = qScopeGuard([&oldPin, &newPin] {
 		oldPin.fill('\0');
@@ -692,4 +683,3 @@ void QSmartCard::reloadCard(const TokenData &token, bool reloadCounters)
 }
 
 TokenData QSmartCard::tokenData() const { return d->token; }
-
