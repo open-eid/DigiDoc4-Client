@@ -42,6 +42,12 @@ FileList::FileList(QWidget *parent)
 	connect(ui->download, &QToolButton::clicked, this, &FileList::saveAll);
 }
 
+FileList::~FileList()
+{
+	for(FileItem *item: findChildren<FileItem*>())
+		disconnect(item, &FileItem::destroyed, this, &FileList::updateDownload);
+}
+
 void FileList::addFile( const QString& file )
 {
 	auto *item = new FileItem(file, state);

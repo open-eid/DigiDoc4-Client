@@ -33,6 +33,7 @@ class FileList final : public ItemList
 
 public:
 	explicit FileList(QWidget *parent = nullptr);
+	~FileList() final;
 
 	void addFile(const QString& file);
 	void clear() final;

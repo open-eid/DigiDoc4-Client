@@ -187,8 +187,7 @@ bool SigningDialog::confirmAlreadySigned()
 	case MobileID: code = ui->idCodeMID->text(); break;
 	case SmartID: code = ui->idCodeSID->text(); break;
 	}
-	if(code.isEmpty() || std::none_of(digiDoc->signatures().cbegin(), digiDoc->signatures().cend(),
-			[&code](const DigiDocSignature &sig) { return SslCertificate(sig.cert()).personalCode() == code; }))
+	if(!digiDoc->isSigned(code))
 		return true;
 	return WarningDialog::create(this)
 		->withTitle(tr("The document has already been signed by you"))
