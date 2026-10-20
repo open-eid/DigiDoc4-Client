@@ -148,10 +148,10 @@ QString CDocumentModel::containerName() const
 QString CDocumentModel::copy(int row, const QString &dst) const
 {
 	auto &file = d->files.at(row);
-	if( QFile::exists( dst ) )
-		QFile::remove( dst );
 	file.data->seek(0);
-	if(QFile f(dst); f.open(QFile::WriteOnly) && copyIODevice(file.data.get(), &f) == file.size)
+	// Overwrite in place: on macOS replacing the file would invalidate the
+	// sandbox's security-scoped bookmark for a path picked in a file dialog
+	if(QFile f(dst); f.open(QFile::WriteOnly|QFile::Truncate) && copyIODevice(file.data.get(), &f) == file.size)
 		return dst;
 	WarningDialog::create()
 		->withTitle(FileDialog::tr("Failed to save file"))
@@ -168,11 +168,6 @@ QString CDocumentModel::data(int row) const
 quint64 CDocumentModel::fileSize(int row) const
 {
 	return d->files.at(row).size;
-}
-
-QString CDocumentModel::mime(int row) const
-{
-	return FileDialog::normalized(QString::fromStdString(d->files.at(row).mime));
 }
 
 void CDocumentModel::open(int row)
@@ -209,8 +204,6 @@ QString CDocumentModel::save(int row, const QString &path) const
 {
 	if(d->isEncrypted())
 		return {};
-	if(QFileInfo::exists(path))
-		return path;
 	QString fileName = copy(row, path);
 	if(!QFileInfo::exists(fileName))
 		return {};
@@ -421,6 +414,7 @@ bool CryptoDoc::encrypt(const QString &filename, const QString& label, const QBy
 		return false;
 	}
 	QString writer_last_error;
+	auto keepAlive = FileDialog::keepAccessAlive(d->fileName);
 	libcdoc::result_t result = waitFor([&] -> libcdoc::result_t {
 		qCDebug(CRYPTO) << "Encrypt" << d->fileName;
 		auto writer = std::unique_ptr<libcdoc::CDocWriter>(libcdoc::CDocWriter::createWriter(d->version, d->fileName.toStdString(), &d->conf, &d->crypto, &d->network));
@@ -498,6 +492,7 @@ bool CryptoDoc::move(const QString &to)
 bool CryptoDoc::open(const QString &file)
 {
 	clear(file);
+	auto keepAlive = FileDialog::keepAccessAlive(file, QFile::ReadOnly);
 	d->createCDocReader(file);
 	if(!d->reader) {
 		WarningDialog::create()
@@ -533,6 +528,7 @@ bool CryptoDoc::saveCopy(const QString &filename)
 	QFileInfo dst(filename);
 	if(src == dst)
 		return true;
+	auto keepAlive = FileDialog::keepAccessAlive(filename);
 	std::error_code ec;
 	std::filesystem::copy_file(src.filesystemFilePath(), dst.filesystemFilePath(),
 		std::filesystem::copy_options::overwrite_existing, ec);
