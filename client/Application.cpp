@@ -17,8 +17,6 @@
  *
  */
 
-#define NOMINMAX
-
 #include "Application.h"
 
 #include "Common.h"
