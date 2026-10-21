@@ -91,10 +91,6 @@
         <translation>mobile-ID</translation>
     </message>
     <message>
-        <source>Expires on</source>
-        <translation>Expires on</translation>
-    </message>
-    <message>
         <source>Added</source>
         <translation>Added</translation>
     </message>
@@ -119,12 +115,16 @@
         <translation>e-Seal</translation>
     </message>
     <message>
-        <source>Authentication certificate</source>
-        <translation>Authentication certificate</translation>
+        <source>%1 (decryption expired %2)</source>
+        <translation>%1 (decryption expired %2)</translation>
     </message>
     <message>
-        <source>Expired on</source>
-        <translation>Expired on</translation>
+        <source>%1 (decryption until %2)</source>
+        <translation>%1 (decryption until %2)</translation>
+    </message>
+    <message>
+        <source>Authentication certificate</source>
+        <translation>Authentication certificate</translation>
     </message>
     <message>
         <source>Unsupported cryptographic algorithm or recipient type</source>
@@ -137,14 +137,6 @@
     <message>
         <source>pw</source>
         <translation>Password</translation>
-    </message>
-    <message>
-        <source>Decryption is possible until:</source>
-        <translation>Decryption is possible until:</translation>
-    </message>
-    <message>
-        <source>Decryption has expired</source>
-        <translation>Decryption has expired</translation>
     </message>
     <message>
         <source>ID-CARD</source>
