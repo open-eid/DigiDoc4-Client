@@ -27,6 +27,7 @@
 #include <QtCore/QJsonObject>
 #include <QtCore/QTextStream>
 #include <QtNetwork/QSslCertificate>
+#include <QtNetwork/QSslSocket>
 
 #include <digidocpp/Conf.h>
 
@@ -39,6 +40,15 @@ static QTextStream &operator<<(QTextStream &s, bool result)
 
 void Diagnostics::generalInfo(QTextStream &s)
 {
+	if(!QSslSocket::supportsSsl())
+	{
+		s << "<b><font color=\"#AD2A45\">" << Application::tr("Secure network support is unavailable")
+			<< "</font></b><br />" << Application::tr(
+				"DigiDoc4 Client could not load a compatible TLS library. "
+				"Mobile-ID, Smart-ID, configuration updates, and other online services may not work. "
+				"Check for conflicting OpenSSL installations or reinstall ID-software.")
+			<< "<br /><br />";
+	}
 	s << "<b>" << tr("Arguments:") << "</b> " << Application::arguments().join(' ') << "<br />"
 		<< "<b>" << tr("Library paths:") << "</b> " << QCoreApplication::libraryPaths().join(';') << "<br />"
 		<< "<b>" << "URLs:" << "</b>"
