@@ -141,8 +141,10 @@ AddRecipients::AddRecipients(ItemList* itemList, bool keyShares, QWidget *parent
 	connect(this, &AddRecipients::finished, this, &AddRecipients::close);
 
 	connect(ui->leftPane, &ItemList::add, this, [this] {
-		for(Item *item: ui->leftPane->items)
-			addRecipientToRightPane(item);
+		for(Item *item: ui->leftPane->items) {
+			if(auto *address = qobject_cast<AddressItem*>(item))
+				addRecipientToRightPane(address->selectedKeys());
+		}
 	});
 	connect(ui->rightPane, &ItemList::removed, ui->rightPane, &ItemList::removeItem );
 
@@ -163,8 +165,10 @@ AddRecipients::AddRecipients(ItemList* itemList, bool keyShares, QWidget *parent
 	connect(ui->fromFile, &QPushButton::clicked, this, &AddRecipients::addRecipientFromFile);
 	connect(ui->fromHistory, &QPushButton::clicked, this, &AddRecipients::addRecipientFromHistory);
 
-	for(Item *item: itemList->items)
-		addRecipientToRightPane(item, false);
+	for(Item *item: itemList->items) {
+		if(auto *address = qobject_cast<AddressItem*>(item))
+			addRecipientToRightPane(address->keys(), false);
+	}
 }
 
 AddRecipients::~AddRecipients()
@@ -246,76 +250,106 @@ void AddRecipients::addRecipient(const CKey &key, bool select)
 	{
 		leftItem = new AddressItem(key, AddressItem::Add, ui->leftPane);
 		ui->leftPane->addWidget(leftItem);
-		leftItem->setDisabled(rightList.contains(key));
-		connect(leftItem, &AddressItem::add, this, [this](Item *item) { addRecipientToRightPane(item); });
+		connect(leftItem, &AddressItem::add, this, [this](Item *item) {
+			addRecipientToRightPane(qobject_cast<AddressItem*>(item)->selectedKeys());
+		});
 		if(auto *add = ui->leftPane->findChild<QWidget*>(QStringLiteral("add")))
 			add->setVisible(true);
 	}
+	else if(std::ranges::find(leftItem->keys(), key) == leftItem->keys().cend())
+		// The person's other certificate, e.g. Digi-ID next to the ID-card
+		leftItem->addKey(key);
+	setAdded(leftItem);
 	if(select)
-		addRecipientToRightPane(leftItem);
+		addRecipientToRightPane({key});
 }
 
-void AddRecipients::addRecipientToRightPane(Item *item, bool update)
+bool AddRecipients::acceptKey(const CKey &key)
 {
-	auto *address = qobject_cast<AddressItem*>(item);
-	if(!address) return;
-	const CKey& key = address->getKey();
-	if (rightList.contains(key)) return;
-
-	// A Mobile-ID / Smart-ID recipient has no certificate to check
-	if(update && !key.rcpt_cert.isNull())
+	if(key.rcpt_cert.isNull())
+		return true;
+	if(auto expiryDate = key.rcpt_cert.expiryDate(); expiryDate <= QDateTime::currentDateTime())
 	{
-		if(auto expiryDate = key.rcpt_cert.expiryDate(); expiryDate <= QDateTime::currentDateTime())
+		if(Settings::CDOC2_DEFAULT && Settings::CDOC2_USE_KEYSERVER)
 		{
-			if(Settings::CDOC2_DEFAULT && Settings::CDOC2_USE_KEYSERVER)
-			{
-				WarningDialog::create(this)
-					->withTitle(tr("Failed to add certificate"))
-					->withText(tr("An expired certificate cannot be used for encryption."))
-					->open();
-				return;
-			}
-			auto *dlg = WarningDialog::create(this)->withRichText(tr(
-				"Are you sure that you want use certificate for encrypting, which expired on %1?<br />"
-				"When decrypter has updated certificates then decrypting is impossible.")
-				.arg(expiryDate.toString(QStringLiteral("dd.MM.yyyy hh:mm:ss"))))
-				->setCancelText(WarningDialog::NO)
-				->addButton(WarningDialog::YES, QMessageBox::Yes);
-			if(dlg->exec() != QMessageBox::Yes)
-				return;
+			WarningDialog::create(this)
+				->withTitle(tr("Failed to add certificate"))
+				->withText(tr("An expired certificate cannot be used for encryption."))
+				->open();
+			return false;
 		}
-		QSslConfiguration backup = QSslConfiguration::defaultConfiguration();
-		QSslConfiguration::setDefaultConfiguration(CheckConnection::sslConfiguration());
-		QList<QSslError> errors = QSslCertificate::verify({key.rcpt_cert});
-		QSslConfiguration::setDefaultConfiguration(backup);
-		errors.removeAll(QSslError(QSslError::CertificateExpired, key.rcpt_cert));
-		if(!errors.isEmpty())
-		{
-			auto *dlg = WarningDialog::create(this)
-				->withText(tr("Recipient’s certification chain contains certificates that are not trusted. Continue with encryption?"))
-				->setCancelText(WarningDialog::NO)
-				->addButton(WarningDialog::YES, QMessageBox::Yes);
-			if(dlg->exec() != QMessageBox::Yes)
-				return;
-		}
+		auto *dlg = WarningDialog::create(this)->withRichText(tr(
+			"Are you sure that you want use certificate for encrypting, which expired on %1?<br />"
+			"When decrypter has updated certificates then decrypting is impossible.")
+			.arg(expiryDate.toString(QStringLiteral("dd.MM.yyyy hh:mm:ss"))))
+			->setCancelText(WarningDialog::NO)
+			->addButton(WarningDialog::YES, QMessageBox::Yes);
+		if(dlg->exec() != QMessageBox::Yes)
+			return false;
 	}
+	QSslConfiguration backup = QSslConfiguration::defaultConfiguration();
+	QSslConfiguration::setDefaultConfiguration(CheckConnection::sslConfiguration());
+	QList<QSslError> errors = QSslCertificate::verify({key.rcpt_cert});
+	QSslConfiguration::setDefaultConfiguration(backup);
+	errors.removeAll(QSslError(QSslError::CertificateExpired, key.rcpt_cert));
+	if(!errors.isEmpty())
+	{
+		auto *dlg = WarningDialog::create(this)
+			->withText(tr("Recipient’s certification chain contains certificates that are not trusted. Continue with encryption?"))
+			->setCancelText(WarningDialog::NO)
+			->addButton(WarningDialog::YES, QMessageBox::Yes);
+		if(dlg->exec() != QMessageBox::Yes)
+			return false;
+	}
+	return true;
+}
 
-	rightList.append(key);
+void AddRecipients::addRecipientToRightPane(const std::vector<CKey> &keys, bool update)
+{
+	for(const CKey &key: keys)
+	{
+		if(rightList.contains(key) || (update && !acceptKey(key)))
+			continue;
+		rightList.append(key);
 
-	auto *rightItem = new AddressItem(key, AddressItem::Remove, ui->rightPane);
-	connect(rightItem, &AddressItem::remove, this, [this](Item *item) {
-		auto *rightItem = qobject_cast<AddressItem*>(item);
-		if(auto *leftItem = itemListValue(ui->leftPane, rightItem->getKey()))
-			leftItem->setDisabled(false);
-		rightList.removeAll(rightItem->getKey());
-		ui->confirm->setDisabled(rightList.isEmpty());
-	});
-	ui->rightPane->addWidget(rightItem);
-	ui->confirm->setEnabled(true);
-	ui->confirm->setDefault(true);
-	historyCertData.addAndSave(key.rcpt_cert);
-	if(auto *leftItem = itemListValue(ui->leftPane, key))
-		leftItem->setDisabled(true);
+		// One card per person; their further certificates join it
+		if(AddressItem *rightItem = itemListValue(ui->rightPane, key))
+			rightItem->addKey(key);
+		else
+		{
+			rightItem = new AddressItem(key, AddressItem::Remove, ui->rightPane);
+			connect(rightItem, &AddressItem::remove, this, [this](Item *item) {
+				auto *rightItem = qobject_cast<AddressItem*>(item);
+				for(const CKey &key: rightItem->keys())
+					rightList.removeAll(key);
+				if(auto *leftItem = itemListValue(ui->leftPane, rightItem->getKey()))
+					setAdded(leftItem);
+				ui->confirm->setDisabled(rightList.isEmpty());
+			});
+			ui->rightPane->addWidget(rightItem);
+		}
+		ui->confirm->setEnabled(true);
+		ui->confirm->setDefault(true);
+		if(!key.rcpt_cert.isNull())
+			historyCertData.addAndSave(key.rcpt_cert);
+		if(auto *leftItem = itemListValue(ui->leftPane, key))
+			setAdded(leftItem);
+	}
+}
+
+void AddRecipients::setAdded(AddressItem *leftItem)
+{
+	// Stays open while some of the person's certificates are still to be added.
+	// An expired one cannot be ticked, so it does not hold the card open.
+	bool added = false, open = false;
+	for(const CKey &key: leftItem->keys())
+	{
+		if(rightList.contains(key))
+			added = true;
+		else if(key.rcpt_cert.isNull() || key.rcpt_cert.expiryDate() > QDateTime::currentDateTime())
+			open = true;
+	}
+	leftItem->setDisabled(added && !open);
 }
 
 bool AddRecipients::isUpdated() const
@@ -325,9 +359,15 @@ bool AddRecipients::isUpdated() const
 
 AddressItem* AddRecipients::itemListValue(ItemList *list, const CKey &key)
 {
+	// Keys without a personal code get a card of their own
+	const QString code = key.personalCode();
 	for(auto *item: list->items)
 	{
-		if(auto *address = qobject_cast<AddressItem*>(item); address && (key == address->getKey()))
+		auto *address = qobject_cast<AddressItem*>(item);
+		if(!address)
+			continue;
+		if(code.isEmpty() ? std::ranges::find(address->keys(), key) != address->keys().cend() :
+				address->getKey().personalCode() == code)
 			return address;
 	}
 	return nullptr;
@@ -339,7 +379,7 @@ QList<CKey> AddRecipients::keys() const
 	for(auto *item: ui->rightPane->items)
 	{
 		if(auto *address = qobject_cast<AddressItem *>(item))
-			recipients.append(address->getKey());
+			recipients.append(QList<CKey>(address->keys().cbegin(), address->keys().cend()));
 	}
 	return recipients;
 }
@@ -373,7 +413,8 @@ void AddRecipients::search(const QString &term, bool select, const QString &type
 		ldap_corp->search(QStringLiteral("(serialNumber=%1)" ).arg(cleanTerm), userData);
 	else if(IKValidator::isValid(cleanTerm))
 	{
-		// Mobile-ID / Smart-ID certificates are not in LDAP; any person can be offered it
+		// Mobile-ID / Smart-ID certificates are not in LDAP; any person can be
+		// offered it, and their certificates join the same card as they arrive
 		if(keyShares)
 			addRecipient(CKey::share(cleanTerm), false);
 		userData[QStringLiteral("personSearch")] = true;

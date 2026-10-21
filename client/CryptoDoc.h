@@ -54,6 +54,9 @@ public:
 	// holding its private key is the one that can open the container.
 	bool canDecrypt(const QSslCertificate &cert) const;
 	bool isSupported() const;
+	// Personal code of the person the key is addressed to, empty when it is
+	// not addressed to a person (password, symmetric or unsupported lock)
+	QString personalCode() const;
 	bool operator== (const CKey& rhs) const;
 };
 
@@ -80,7 +83,7 @@ public:
 	const std::vector<CKey>& keys() const;
 	bool move(const QString &to);
 	bool open(const QString &file);
-	void removeKey(unsigned int id);
+	void removeKeys(const std::vector<CKey> &keys);
 	void clearKeys();
 	bool saveCopy(const QString &filename);
 	ria::qdigidoc4::ContainerState state() const;

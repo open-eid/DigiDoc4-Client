@@ -21,6 +21,8 @@
 
 #include "widgets/Item.h"
 
+#include <vector>
+
 struct CKey;
 
 class AddressItem final : public Item
@@ -38,7 +40,13 @@ public:
 	explicit AddressItem(const CKey &k, Type type, QWidget *parent = {});
 	~AddressItem() final;
 
+	// Adds another key of the same person to this card
+	void addKey(const CKey &key);
 	const CKey& getKey() const;
+	const std::vector<CKey>& keys() const;
+	// Keys ticked on an Add card, all keys on the others
+	std::vector<CKey> selectedKeys() const;
+	// Recipient as shown on the row, as plain text
 	QString name() const;
 	void initTabOrder(QWidget *item) final;
 	QWidget* lastTabWidget() final;
@@ -49,11 +57,14 @@ signals:
 
 private:
 	void changeEvent(QEvent *event) final;
+	bool eventFilter(QObject *watched, QEvent *event) final;
+	void setAddEnabled();
 	void mouseReleaseEvent(QMouseEvent *event) final;
 	void setDecryptVisible();
 	void setName();
-	void setIdType();
-	void setIdType(const SslCertificate& cert);
+	bool setRecipient(const CKey &key);
+	void setKeyText(size_t i);
+	QString typeName(const SslCertificate &cert) const;
 
 	struct Private;
 	Private *ui;

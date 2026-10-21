@@ -60,7 +60,7 @@ CKey
 CKey::share(const QString &personalCode)
 {
 	libcdoc::Lock lock(libcdoc::Lock::SHARE_SERVER);
-	// The form CDoc2 stores it in, so a new recipient reads the same as an encrypted one
+	// The form CDoc2 stores it in, so personalCode() reads both the same way
 	lock.setString(libcdoc::Lock::RECIPIENT_ID, "etsi/PNOEE-" + personalCode.toStdString());
 	return CKey(lock);
 }
@@ -74,6 +74,23 @@ CKey::canDecrypt(const QSslCertificate &cert) const
 	// RCPT_KEY is i2d_PublicKey, not the SubjectPublicKeyInfo QSslKey::toDer() gives
 	return SslCertificate(cert).publicKeyDer() ==
 		QByteArray::fromRawData((const char*)key.data(), qsizetype(key.size()));
+}
+
+QString
+CKey::personalCode() const
+{
+	if(!rcpt_cert.isNull())
+		return SslCertificate(rcpt_cert).personalCode();
+	if(lock.isCDoc1()) {
+		const std::vector<uint8_t> &der = lock.getBytes(libcdoc::Lock::CERT);
+		return SslCertificate(QByteArray::fromRawData((const char*)der.data(), qsizetype(der.size())), QSsl::Der).personalCode();
+	}
+	std::string id;
+	if(lock.isPKI())
+		id = libcdoc::Lock::parseLabel(lock.label)[std::string(libcdoc::CDoc2::Label::SERIAL_NUMBER)];
+	else if(std::string rcpt = lock.getString(libcdoc::Lock::RECIPIENT_ID); rcpt.starts_with("etsi/"))
+		id = rcpt.substr(5); // Mobile-ID / Smart-ID key share: "etsi/PNOEE-48010010101"
+	return SslCertificate::personalCode(QString::fromStdString(id));
 }
 
 bool
@@ -618,10 +635,10 @@ bool CryptoDoc::open(const QString &file)
 	return true;
 }
 
-void CryptoDoc::removeKey(unsigned int id)
+void CryptoDoc::removeKeys(const std::vector<CKey> &keys)
 {
 	if(!d->isEncryptedWarning(tr("Failed to remove key")))
-		d->keys.erase(d->keys.begin() + id);
+		std::erase_if(d->keys, [&keys](const CKey &key) { return std::ranges::find(keys, key) != keys.cend(); });
 }
 
 void CryptoDoc::clearKeys()
