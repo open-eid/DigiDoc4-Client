@@ -28,7 +28,6 @@
 #include <expected>
 
 class QSmartCard;
-class QSslKey;
 
 class QCryptoBackend
 {
@@ -45,6 +44,11 @@ public:
 		GeneralError,
 		UnknownError
 	};
+	enum Padding : quint8
+	{
+		PKCS1Padding,
+		PSSPadding,
+	};
 
 	virtual ~QCryptoBackend();
 
@@ -52,14 +56,8 @@ public:
 	virtual QByteArray deriveConcatKDF(const QByteArray &publicKey, QCryptographicHash::Algorithm digest,
 		const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) const = 0;
 	virtual QByteArray deriveHMACExtract(const QByteArray &publicKey, const QByteArray &salt, int keySize) const = 0;
-	virtual QByteArray sign(QCryptographicHash::Algorithm method, const QByteArray &digest) const = 0;
+	virtual QByteArray sign(QCryptographicHash::Algorithm method, const QByteArray &digest, Padding padding) const = 0;
 
-	/**
-	 * @brief Get the SSL key for the certificate
-	 *
-	 * @return the Qt SSL key
-	 */
-	QSslKey getKey() const;
 	QSslCertificate cert() const;
 	/**
 	 * @brief Get a new Backend object and log in with the given token

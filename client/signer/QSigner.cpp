@@ -103,7 +103,8 @@ std::vector<unsigned char> QSigner::sign(const std::string &method, const std::v
 	std::unique_ptr<QCryptoBackend> backend(val.value());
 
 	QByteArray sig = waitFor(&QCryptoBackend::sign, backend.get(),
-		methodToNID(method), QByteArray::fromRawData((const char*)digest.data(), int(digest.size())));
+		methodToNID(method), QByteArray::fromRawData((const char*)digest.data(), int(digest.size())),
+		method.ends_with("-rsa-MGF1") ? QCryptoBackend::PSSPadding : QCryptoBackend::PKCS1Padding);
 	if(sig.isEmpty())
 	{
 		auto err = tr("Failed to login token") + ' ' +

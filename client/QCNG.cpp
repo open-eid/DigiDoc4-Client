@@ -45,7 +45,6 @@ struct QCNG::Private
 {
 	SCOPE<NCRYPT_PROV_HANDLE> prov;
 	SCOPE<NCRYPT_KEY_HANDLE> key;
-	bool pss;
 };
 
 QCNG::QCNG() noexcept = default;
@@ -62,7 +61,6 @@ QCNG::Status QCNG::login(const TokenData &token)
 		return DeviceError;
 	// https://docs.microsoft.com/en-us/archive/blogs/alejacma/smart-cards-pin-gets-cached
 	NCryptSetProperty(p->key, NCRYPT_PIN_PROPERTY, nullptr, 0, 0);
-	p->pss =  token.data(u"PSS"_s).toBool();
 	d = std::move(p);
 	return PinOK;
 }
@@ -276,7 +274,7 @@ QList<TokenData> QCNG::tokens()
 	return result;
 }
 
-QByteArray QCNG::sign(QCryptographicHash::Algorithm type, const QByteArray &digest) const
+QByteArray QCNG::sign(QCryptographicHash::Algorithm type, const QByteArray &digest, Padding padding) const
 {
 	return exec([&](NCRYPT_PROV_HANDLE prov, NCRYPT_KEY_HANDLE key, QByteArray &result) {
 		BCRYPT_PSS_PADDING_INFO rsaPSS { NCRYPT_SHA256_ALGORITHM, 32 };
@@ -295,24 +293,24 @@ QByteArray QCNG::sign(QCryptographicHash::Algorithm type, const QByteArray &dige
 			return err;
 		algo.resize(size/2 - 1);
 		bool isRSA = algo == QLatin1String("RSA");
-		DWORD padding {};
+		DWORD flags {};
 		PVOID paddingInfo {};
-		if(isRSA && d->pss)
+		if(isRSA && padding == PSSPadding)
 		{
-			padding = BCRYPT_PAD_PSS;
+			flags = BCRYPT_PAD_PSS;
 			paddingInfo = &rsaPSS;
 		}
 		else if(isRSA)
 		{
-			padding = BCRYPT_PAD_PKCS1;
+			flags = BCRYPT_PAD_PKCS1;
 			paddingInfo = &rsaPKCS1;
 		}
 		SECURITY_STATUS err = NCryptSignHash(key, paddingInfo, PBYTE(digest.constData()), DWORD(digest.size()),
-			nullptr, 0, &size, padding);
+			nullptr, 0, &size, flags);
 		if(FAILED(err))
 			return err;
 		result.resize(int(size));
 		return NCryptSignHash(key, paddingInfo, PBYTE(digest.constData()), DWORD(digest.size()),
-			PBYTE(result.data()), DWORD(result.size()), &size, padding);
+			PBYTE(result.data()), DWORD(result.size()), &size, flags);
 	});
 }

@@ -232,7 +232,6 @@ struct QPKCS11::Private
 	std::shared_ptr<QPKCS11Library> l;
 	CK_SESSION_HANDLE session = 0;
 	QByteArray id;
-	bool isPSS = false;
 };
 
 QPKCS11::QPKCS11()
@@ -372,7 +371,6 @@ QPKCS11::Status QPKCS11::login(const TokenData &t)
 	d->closeSession();
 	auto currentSlot = t.data(QStringLiteral("slot")).value<CK_SLOT_ID>();
 	d->id = t.data(QStringLiteral("id")).toByteArray();
-	d->isPSS = t.data(QStringLiteral("PSS")).toBool();
 
 	CK_TOKEN_INFO token;
 	if(d->l->f->C_GetTokenInfo(currentSlot, &token) != CKR_OK ||
@@ -490,7 +488,7 @@ QList<TokenData> QPKCS11::tokens()
 	return list;
 }
 
-QByteArray QPKCS11::sign(QCryptographicHash::Algorithm type, const QByteArray &digest) const
+QByteArray QPKCS11::sign(QCryptographicHash::Algorithm type, const QByteArray &digest, Padding padding) const
 {
 	std::vector<CK_OBJECT_HANDLE> key = d->l->findObject(d->session, CKO_PRIVATE_KEY, d->id);
 	if(key.size() != 1) {
@@ -527,7 +525,7 @@ QByteArray QPKCS11::sign(QCryptographicHash::Algorithm type, const QByteArray &d
 			break;
 		default: break;
 		}
-		if(d->isPSS)
+		if(padding == PSSPadding)
 		{
 			mech = { CKM_RSA_PKCS_PSS, &pssParams, sizeof(CK_RSA_PKCS_PSS_PARAMS) };
 			data.clear();
