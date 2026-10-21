@@ -35,7 +35,7 @@ struct Card
 	virtual ~Card() noexcept = default;
 	virtual QPCSCReader::Result change(QSmartCardData::PinType type, const QByteArray &pin, const QByteArray &newpin) const = 0;
 	virtual bool loadPerso(QSmartCardDataPrivate *d) const = 0;
-	virtual QByteArray pinTemplate(const QString &pin) const;
+	virtual QByteArray pinTemplate(QByteArray pin) const;
 	virtual QPCSCReader::Result replace(QSmartCardData::PinType type, const QByteArray &puk, const QByteArray &pin) const = 0;
 	QPCSCReader::Result transfer(bool verify, QByteArray &&apdu,
 		QSmartCardData::PinType type, quint8 newPINOffset, bool requestCurrentPIN) const;
