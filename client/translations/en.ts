@@ -644,6 +644,10 @@
         <translation>Key transfer server is not configured</translation>
     </message>
     <message>
+        <source>Key share servers for Mobile-ID and Smart-ID are not configured</source>
+        <translation>Key share servers for Mobile-ID and Smart-ID are not configured</translation>
+    </message>
+    <message>
         <source>Failed to remove key</source>
         <translation>Failed to remove key</translation>
     </message>

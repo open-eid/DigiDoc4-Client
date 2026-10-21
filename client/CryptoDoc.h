@@ -44,6 +44,8 @@ struct CKey {
 public:
 	CKey(const libcdoc::Lock& _lock) : lock(_lock) {}
 	CKey(QSslCertificate rcpt_cert);
+	// Mobile-ID / Smart-ID recipient, encrypted for through key share servers
+	static CKey share(const QString &personalCode);
 
 	libcdoc::Lock lock;
     QSslCertificate rcpt_cert;
@@ -63,6 +65,7 @@ public:
 	~CryptoDoc() final;
 
 	bool supportsSymmetricKeys() const;
+	bool supportsKeyShares() const;
 	bool addEncryptionKey(const CKey& key);
 	void clear(const QString &file = {}, int version = -1);
 	bool decrypt(const libcdoc::Lock &lock, const QByteArray& secret, std::unique_ptr<QCryptoBackend> &&backend);

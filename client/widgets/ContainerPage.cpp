@@ -225,7 +225,7 @@ void ContainerPage::transition(CryptoDoc *container)
 	});
 	disconnect(ui->rightPane, &ItemList::add, container, nullptr);
 	connect(ui->rightPane, &ItemList::add, container, [this, container] {
-		AddRecipients dlg(ui->rightPane, this);
+		AddRecipients dlg(ui->rightPane, container->supportsKeyShares(), this);
 		if(!dlg.exec() || !dlg.isUpdated())
 			return;
 		container->clearKeys();
