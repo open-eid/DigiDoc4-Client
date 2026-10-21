@@ -29,7 +29,6 @@ class AddRecipients;
 }
 
 class AddressItem;
-class Item;
 class ItemList;
 class LdapSearch;
 class QSslCertificate;
@@ -52,8 +51,11 @@ private:
 	void addRecipientFromHistory();
 	void addRecipient(const QSslCertificate& cert, bool select = true);
 	void addRecipient(const CKey &key, bool select);
-	void addRecipientToRightPane(Item *item, bool update = true);
+	void addRecipientToRightPane(const std::vector<CKey> &keys, bool update = true);
+	bool acceptKey(const CKey &key);
+	void setAdded(AddressItem *leftItem);
 
+	// The card of the person the key belongs to
 	static AddressItem* itemListValue(ItemList *list, const CKey &key);
 	void search(const QString &term, bool select = false, const QString &type = {});
 	void showError(const QString &title, const QString &details);
