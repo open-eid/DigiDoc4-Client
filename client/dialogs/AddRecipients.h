@@ -39,7 +39,8 @@ class AddRecipients final : public QDialog
 	Q_OBJECT
 
 public:
-	explicit AddRecipients(ItemList* itemList, QWidget *parent = nullptr);
+	// keyShares offers Mobile-ID / Smart-ID for a searched personal code
+	explicit AddRecipients(ItemList* itemList, bool keyShares, QWidget *parent = nullptr);
 	~AddRecipients() final;
 
 	QList<CKey> keys() const;
@@ -50,6 +51,7 @@ private:
 	void addRecipientFromFile();
 	void addRecipientFromHistory();
 	void addRecipient(const QSslCertificate& cert, bool select = true);
+	void addRecipient(const CKey &key, bool select);
 	void addRecipientToRightPane(Item *item, bool update = true);
 
 	static AddressItem* itemListValue(ItemList *list, const CKey &key);
@@ -63,6 +65,7 @@ private:
 	QList<LdapSearch*> ldap_person;
 	LdapSearch *ldap_corp;
 	int multiSearch = 0;
+	const bool keyShares;
 
 	QTemporaryFile ldapCACerts;
 	HistoryList historyCertData;
