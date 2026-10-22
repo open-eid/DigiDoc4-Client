@@ -8,7 +8,7 @@
     xmlns:uap10="http://schemas.microsoft.com/appx/manifest/uap/windows10/10"
     IgnorableNamespaces="com desktop4 desktop5 rescap uap uap10">
   <Identity Name="RiigiInfossteemiAmet.DigiDoc4ShellExt" ProcessorArchitecture="${PLATFORM}" Version="${PROJECT_VERSION}.0"
-    Publisher="${SIGNCERT_SUBJECT}" />
+    Publisher="${APPX_PUBLISHER}" />
   <Properties>
     <DisplayName>DigiDoc4 Shell Extension</DisplayName>
     <PublisherDisplayName>Riigi Infosüsteemi Amet</PublisherDisplayName>

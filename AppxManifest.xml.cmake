@@ -9,7 +9,7 @@
     xmlns:uap3="http://schemas.microsoft.com/appx/manifest/uap/windows10/3"
     IgnorableNamespaces="com desktop desktop4 desktop5 rescap uap uap3">
   <Identity Name="RiigiInfossteemiAmet.DigiDoc4client" ProcessorArchitecture="${PLATFORM}" Version="${PROJECT_VERSION}.0"
-    Publisher="CN=8BBBE4D8-620A-4884-A12A-72F1A2030D8B" />
+    Publisher="${APPX_PUBLISHER}" />
   <Properties>
     <DisplayName>DigiDoc4 Client</DisplayName>
     <PublisherDisplayName>Riigi Infosüsteemi Amet</PublisherDisplayName>
