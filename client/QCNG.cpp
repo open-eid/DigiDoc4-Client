@@ -52,7 +52,7 @@ QCNG::QCNG() noexcept = default;
 
 QCNG::~QCNG() noexcept = default;
 
-QCNG::Status QCNG::login(const TokenData &token)
+QCNG::Status QCNG::login(const TokenData &token, const QString & /*pin*/)
 {
 	std::unique_ptr<Private> p = std::make_unique<Private>();
 	if(FAILED(NCryptOpenStorageProvider(&p->prov, LPCWSTR(token.data(u"provider"_s).toString().utf16()), 0)))

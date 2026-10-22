@@ -53,7 +53,7 @@ background-color: #2F70B6;
 #infoPin {
 margin-top: 16px;
 }
-#errorCodeMID, #errorPhone, #errorCodeSID, #errorCountry {
+#errorPin, #errorCodeMID, #errorPhone, #errorCodeSID, #errorCountry {
 color: #AD2A45;
 }
 QLineEdit, QComboBox {
@@ -272,24 +272,72 @@ background-color: #EDF1F6;
              <number>0</number>
             </property>
             <item>
-             <widget class="QWidget" name="cardListContainer" native="true">
-              <layout class="QVBoxLayout" name="cardListLayout">
-               <property name="spacing">
-                <number>8</number>
-               </property>
-               <property name="leftMargin">
-                <number>0</number>
-               </property>
-               <property name="topMargin">
-                <number>0</number>
-               </property>
-               <property name="rightMargin">
-                <number>0</number>
-               </property>
-               <property name="bottomMargin">
-                <number>0</number>
-               </property>
-              </layout>
+             <widget class="CardList" name="cardList">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">#cardList, #cardList &gt; QWidget, #cardListContainer {
+background-color: transparent;
+}
+QScrollBar {
+border: none;
+background: transparent;
+}
+QScrollBar:vertical {
+width: 16px;
+padding: 4px 4px 4px 4px;
+margin: 0px;
+}
+QScrollBar::handle:vertical {
+background-color: #B5BFCF;
+border: none;
+margin: 0px;
+border-radius: 4px;
+min-height: 16px;
+}
+QScrollBar::add-line:vertical,
+QScrollBar::sub-line:vertical {
+height: 0px;
+border: none;
+background: none;
+}
+QScrollBar::add-page,
+QScrollBar::sub-page {
+background: transparent;
+}</string>
+              </property>
+              <property name="frameShape">
+               <enum>QFrame::Shape::NoFrame</enum>
+              </property>
+              <property name="horizontalScrollBarPolicy">
+               <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
+              </property>
+              <property name="widgetResizable">
+               <bool>true</bool>
+              </property>
+              <widget class="QWidget" name="cardListContainer">
+               <layout class="QVBoxLayout" name="cardListLayout">
+                <property name="spacing">
+                 <number>8</number>
+                </property>
+                <property name="leftMargin">
+                 <number>0</number>
+                </property>
+                <property name="topMargin">
+                 <number>0</number>
+                </property>
+                <property name="rightMargin">
+                 <number>0</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>0</number>
+                </property>
+               </layout>
+              </widget>
              </widget>
             </item>
             <item>
@@ -307,6 +355,45 @@ background-color: #EDF1F6;
                <bool>true</bool>
               </property>
              </widget>
+            </item>
+            <item>
+             <layout class="QVBoxLayout" name="layoutPin">
+              <property name="spacing">
+               <number>6</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="labelPin">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>20</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string notr="true">Enter PIN2 code</string>
+                </property>
+                <property name="buddy">
+                 <cstring>pin</cstring>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="PinLineEdit" name="pin"/>
+              </item>
+              <item>
+               <widget class="QLabel" name="errorPin">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>20</height>
+                 </size>
+                </property>
+                <property name="focusPolicy">
+                 <enum>Qt::TabFocus</enum>
+                </property>
+               </widget>
+              </item>
+             </layout>
             </item>
            </layout>
           </widget>
@@ -694,6 +781,12 @@ background-color: #EDF1F6;
  </widget>
  <customwidgets>
   <customwidget>
+   <class>CardList</class>
+   <extends>QScrollArea</extends>
+   <header>widgets/CardList.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
    <class>ShrinkingStack</class>
    <extends>QStackedWidget</extends>
    <header>widgets/ShrinkingStack.h</header>
@@ -708,6 +801,11 @@ background-color: #EDF1F6;
    <class>LineEdit</class>
    <extends>QLineEdit</extends>
    <header>widgets/LineEdit.h</header>
+  </customwidget>
+  <customwidget>
+   <class>PinLineEdit</class>
+   <extends>LineEdit</extends>
+   <header>widgets/PinLineEdit.h</header>
   </customwidget>
   <customwidget>
    <class>NoCardInfo</class>

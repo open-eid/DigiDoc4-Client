@@ -20,14 +20,21 @@
 #include "widgets/CardListItem.h"
 #include "widgets/NoCardInfo.h"
 
+#include <QtCore/QPointer>
 #include <QtWidgets/QMessageBox>
+
+static void setError(LineEdit *input, QLabel *error, const QString &msg)
+{
+	input->setLabel(msg.isEmpty() ? QString() : QStringLiteral("error"));
+	error->setText(msg);
+	error->setHidden(msg.isEmpty());
+}
 
 SigningDialog::SigningDialog(DigiDoc *doc, QWidget *parent)
 	: QDialog(parent)
 	, digiDoc(doc)
 	, ui(new Ui::SigningDialog)
 {
-	static const QStringList countryCodes {QStringLiteral("372"), QStringLiteral("370")};
 	new Overlay(this);
 	ui->setupUi(this);
 	ui->progressPage->hide();
@@ -37,27 +44,27 @@ SigningDialog::SigningDialog(DigiDoc *doc, QWidget *parent)
 #endif
 
 	// Tab bar
-	ui->tabs->addTab(tr("ID-card"));
-	ui->tabs->addTab(tr("Mobile-ID"));
-	ui->tabs->addTab(tr("Smart-ID"));
+	ui->tabs->addTab({});
+	ui->tabs->addTab({});
+	ui->tabs->addTab({});
+	updateTabs();
 	connect(ui->tabs, &QTabBar::currentChanged, ui->tabStack, &QStackedWidget::setCurrentIndex);
 
 	// ID-card tab
 	updateCards();
 	connect(qApp->cryptoManager(), &QCryptoManager::cacheChanged, this, &SigningDialog::updateCards);
 	connect(qApp->cryptoManager()->smartcard(), &QSmartCard::dataChanged, this, &SigningDialog::updateCards);
+	connect(ui->pin, &QLineEdit::textEdited, this, [this] {
+		setError(ui->pin, ui->errorPin, {});
+		ui->sign->setEnabled(ui->pin->hasAcceptableInput());
+	});
+	connect(ui->pin, &QLineEdit::returnPressed, ui->sign, &QPushButton::click);
 	connect(ui->tabs, &QTabBar::currentChanged, this, [this](int index) {
 		if(index == IDCard)
 			updateCards();
 		else
 			ui->sign->setEnabled(true);
 	});
-
-	auto setError = [](LineEdit *input, QLabel *error, const QString &msg) {
-		input->setLabel(msg.isEmpty() ? QString() : QStringLiteral("error"));
-		error->setText(msg);
-		error->setHidden(msg.isEmpty());
-	};
 
 	// Mobile-ID tab
 	ui->idCodeMID->setValidator(new NumberValidator(ui->idCodeMID));
@@ -78,12 +85,12 @@ SigningDialog::SigningDialog(DigiDoc *doc, QWidget *parent)
 	};
 	connect(ui->idCodeMID, &QLineEdit::returnPressed, ui->sign, &QPushButton::click);
 	connect(ui->idCodeMID, &QLineEdit::textEdited, this, saveMIDSettings);
-	connect(ui->idCodeMID, &QLineEdit::textEdited, this, [this, setError] {
+	connect(ui->idCodeMID, &QLineEdit::textEdited, this, [this] {
 		setError(ui->idCodeMID, ui->errorCodeMID, {});
 	});
 	connect(ui->phoneNo, &QLineEdit::returnPressed, ui->sign, &QPushButton::click);
 	connect(ui->phoneNo, &QLineEdit::textEdited, this, saveMIDSettings);
-	connect(ui->phoneNo, &QLineEdit::textEdited, this, [this, setError] {
+	connect(ui->phoneNo, &QLineEdit::textEdited, this, [this] {
 		setError(ui->phoneNo, ui->errorPhone, {});
 	});
 	connect(ui->cbRememberMID, &QCheckBox::clicked, this, saveMIDSettings);
@@ -108,7 +115,7 @@ SigningDialog::SigningDialog(DigiDoc *doc, QWidget *parent)
 	};
 	connect(ui->idCodeSID, &QLineEdit::returnPressed, ui->sign, &QPushButton::click);
 	connect(ui->idCodeSID, &QLineEdit::textEdited, this, saveSIDSettings);
-	connect(ui->idCodeSID, &QLineEdit::textEdited, this, [this, setError] {
+	connect(ui->idCodeSID, &QLineEdit::textEdited, this, [this] {
 		setError(ui->idCodeSID, ui->errorCodeSID, {});
 	});
 	connect(ui->idCountry, &QComboBox::currentTextChanged, this, [this, ik, saveSIDSettings] {
@@ -118,43 +125,7 @@ SigningDialog::SigningDialog(DigiDoc *doc, QWidget *parent)
 	});
 	connect(ui->cbRememberSID, &QCheckBox::clicked, this, saveSIDSettings);
 
-	// Sign button — validates per-tab then delegates to performSign()
-	connect(ui->sign, &QPushButton::clicked, this, [this, setError] {
-		switch(currentMethod()) {
-		case IDCard:
-			if(performSign()) accept();
-			else reject();
-			break;
-		case MobileID: {
-			const QString code = ui->idCodeMID->text();
-			const QString phone = ui->phoneNo->text();
-			if(!IKValidator::isValid(code))
-				setError(ui->idCodeMID, ui->errorCodeMID, tr("Personal code is not valid"));
-			else
-				setError(ui->idCodeMID, ui->errorCodeMID, {});
-			if(phone.size() < 8 || countryCodes.contains(phone))
-				setError(ui->phoneNo, ui->errorPhone, tr("Phone number is not entered"));
-			else if(!countryCodes.contains(phone.left(3)))
-				setError(ui->phoneNo, ui->errorPhone, tr("Invalid country code"));
-			else
-				setError(ui->phoneNo, ui->errorPhone, {});
-			if(ui->errorCodeMID->text().isEmpty() && ui->errorPhone->text().isEmpty()) {
-				if(performSign()) accept();
-				else reject();
-			}
-			break;
-		}
-		case SmartID:
-			if(ui->idCodeSID->validator() && !IKValidator::isValid(ui->idCodeSID->text()))
-				setError(ui->idCodeSID, ui->errorCodeSID, tr("Personal code is not valid"));
-			else {
-				setError(ui->idCodeSID, ui->errorCodeSID, {});
-				if(performSign()) accept();
-				else reject();
-			}
-			break;
-		}
-	});
+	connect(ui->sign, &QPushButton::clicked, this, &SigningDialog::performSign);
 	connect(ui->cancel, &QPushButton::clicked, this, &QDialog::reject);
 	connect(this, &QDialog::finished, this, &QDialog::close);
 }
@@ -196,19 +167,47 @@ bool SigningDialog::confirmAlreadySigned()
 		->exec() == QMessageBox::Ok;
 }
 
+void SigningDialog::changeEvent(QEvent *event)
+{
+	if(event->type() == QEvent::LanguageChange)
+	{
+		ui->retranslateUi(this);
+		updateTabs();
+		updateSelection(std::ranges::any_of(ui->cardListContainer->findChildren<CardListItem*>(),
+			&CardListItem::isChecked));
+	}
+	QDialog::changeEvent(event);
+}
+
+void SigningDialog::updateTabs()
+{
+	ui->tabs->setTabText(IDCard, tr("ID-card"));
+	ui->tabs->setTabText(MobileID, tr("Mobile-ID"));
+	ui->tabs->setTabText(SmartID, tr("Smart-ID"));
+}
+
 void SigningDialog::updateCards()
 {
 	qDeleteAll(ui->cardListContainer->findChildren<CardListItem*>());
+
+	auto select = [this](const TokenData &t) {
+		if(!(t == m_selectedToken)) {
+			ui->pin->clear();
+			setError(ui->pin, ui->errorPin, {});
+		}
+		m_selectedToken = t;
+	};
 
 	QList<TokenData> tokens = qApp->cryptoManager()->cache();
 	bool localValid = std::any_of(tokens.cbegin(), tokens.cend(),
 		[this](const TokenData &t) { return t == m_selectedToken; });
 	if(!localValid)
-		m_selectedToken = qApp->cryptoManager()->tokensign();
+		select(qApp->cryptoManager()->tokensign());
 
 	const QSmartCardData data = qApp->cryptoManager()->smartcard()->data();
 	bool any = false;
 	bool selectedUsable = false;
+	CardListItem *selectedCard = nullptr;
 	for(TokenData &token : tokens) {
 		SslCertificate c(token.cert());
 		if(!c.keyUsage().contains(SslCertificate::NonRepudiation))
@@ -217,17 +216,19 @@ void SigningDialog::updateCards()
 			(!data.isNull() && data.card() == token.card() &&
 				(data.retryCount(QSmartCardData::Pin2Type) == 0 || data.pinLocked(QSmartCardData::Pin2Type)));
 		token.setData(QStringLiteral("blocked"), blocked);
-		bool usable = c.isValid() && !blocked;
 		auto *w = new CardListItem(ui->cardListContainer);
 		w->update(token, token.card() == m_selectedToken.card());
-		connect(w, &CardListItem::selected, this, [this](const TokenData &t) {
-			m_selectedToken = t;
+		connect(w, &CardListItem::selected, this, [this, select](const TokenData &t) {
+			select(t);
 			updateSelection(true);
 		});
 		ui->cardListContainer->layout()->addWidget(w);
+		w->show();
 		any = true;
-		if(token == m_selectedToken)
-			selectedUsable = usable;
+		if(token == m_selectedToken) {
+			selectedUsable = c.isValid() && !blocked;
+			selectedCard = w;
+		}
 	}
 
 	if(!any) {
@@ -239,26 +240,44 @@ void SigningDialog::updateCards()
 			ui->noCard->update(NoCardInfo::NoCard);
 	}
 	ui->noCard->setVisible(!any);
-	ui->cardListContainer->setVisible(any);
+	ui->cardList->setVisible(any);
+	if(selectedCard)
+		QMetaObject::invokeMethod(ui->cardList, [list = ui->cardList, card = QPointer<CardListItem>(selectedCard)] {
+			if(card)
+				list->ensureWidgetVisible(card, 0, 0);
+		}, Qt::QueuedConnection);
 	updateSelection(selectedUsable);
 }
 
 void SigningDialog::updateSelection(bool usable)
 {
-	ui->infoPin->setVisible(usable);
-	if(usable)
-		ui->infoPin->setText(tr("Please enter %1 code in the new window that will appear shortly").arg(
-			SslCertificate(m_selectedToken.cert()).type() & SslCertificate::TempelType ?
-				QStringLiteral("PIN") : QSmartCardData::typeString(QSmartCardData::Pin2Type)));
+	bool isSeal = SslCertificate(m_selectedToken.cert()).type() & SslCertificate::TempelType;
+	QString pinName = isSeal ? QStringLiteral("PIN") : QSmartCardData::typeString(QSmartCardData::Pin2Type);
+	bool showPin = false;
+#ifndef Q_OS_WIN
+	if(usable && !m_selectedToken.data(QStringLiteral("pinpad")).toBool()) {
+		showPin = true;
+		int minLen = m_selectedToken.data(QStringLiteral("pinMin")).toInt();
+		int maxLen = m_selectedToken.data(QStringLiteral("pinMax")).toInt();
+		ui->pin->setPinLen(std::max(minLen, 5), std::max(maxLen, 12), !isSeal);
+		ui->labelPin->setText(tr("Enter %1 code").arg(pinName));
+	}
+#endif
+	ui->labelPin->setVisible(showPin);
+	ui->pin->setVisible(showPin);
+	ui->errorPin->setVisible(showPin && !ui->errorPin->text().isEmpty());
+	if(!showPin)
+		ui->pin->clear();
+
+	ui->infoPin->setVisible(usable && !showPin);
+	if(usable && !showPin)
+		ui->infoPin->setText(tr("Please enter %1 code in the new window that will appear shortly").arg(pinName));
 	if(currentMethod() == IDCard)
-		ui->sign->setEnabled(usable);
+		ui->sign->setEnabled(usable && (!showPin || ui->pin->hasAcceptableInput()));
 }
 
-bool SigningDialog::performSign()
+void SigningDialog::performSign()
 {
-	if(!confirmAlreadySigned())
-		return false;
-
 	auto showPage = [this](QWidget *page)
 	{
 		ui->formPage->setVisible(page == ui->formPage);
@@ -267,23 +286,70 @@ bool SigningDialog::performSign()
 
 	switch(currentMethod()) {
 	case IDCard: {
-		QSigner signer(m_selectedToken);
-		return digiDoc->sign(m_city, m_state, m_zip, m_country, m_role, &signer);
+		if(!confirmAlreadySigned())
+			return reject();
+		QString pin = ui->pin->isVisible() ? ui->pin->text() : QString();
+		auto val = QCryptoBackend::getBackend(m_selectedToken, pin);
+		if(!val) {
+			switch(val.error()) {
+			case QCryptoBackend::PinIncorrect: {
+				QString msg = QCryptoBackend::errorString(QCryptoBackend::PinIncorrect);
+				if(QSmartCardData data = qApp->cryptoManager()->smartcard()->data(); data.card() == m_selectedToken.card())
+					msg += QStringLiteral(". ") + tr("Remaining attempts: %1").arg(data.retryCount(QSmartCardData::Pin2Type));
+				ui->pin->clear();
+				setError(ui->pin, ui->errorPin, msg);
+				ui->pin->setFocus();
+				ui->sign->setEnabled(false);
+				return;
+			}
+			case QCryptoBackend::PinCanceled:
+				return reject();
+			default:
+				WarningDialog::create(this)
+					->withTitle(tr("Failed to sign document"))
+					->withText(QCryptoBackend::errorString(val.error()))
+					->exec();
+				return reject();
+			}
+		}
+		QSigner signer(std::unique_ptr<QCryptoBackend>(val.value()), m_selectedToken);
+		return digiDoc->sign(m_city, m_state, m_zip, m_country, m_role, &signer) ? accept() : reject();
 	}
 	case MobileID: {
+		static const QStringList countryCodes {QStringLiteral("372"), QStringLiteral("370")};
+		const QString code = ui->idCodeMID->text();
+		const QString phone = ui->phoneNo->text();
+		setError(ui->idCodeMID, ui->errorCodeMID, IKValidator::isValid(code) ? QString() : tr("Personal code is not valid"));
+		if(phone.size() < 8 || countryCodes.contains(phone))
+			setError(ui->phoneNo, ui->errorPhone, tr("Phone number is not entered"));
+		else if(!countryCodes.contains(phone.left(3)))
+			setError(ui->phoneNo, ui->errorPhone, tr("Invalid country code"));
+		else
+			setError(ui->phoneNo, ui->errorPhone, {});
+		if(!ui->errorCodeMID->text().isEmpty() || !ui->errorPhone->text().isEmpty())
+			return;
+		if(!confirmAlreadySigned())
+			return reject();
 		SigningProgressUI pui { ui->progressInfo, ui->progressCode, ui->progressLabel, ui->progressBar, ui->progressCancel, this };
 		showPage(ui->progressPage);
 		MobileProgress m(pui);
-		return m.init(ui->idCodeMID->text(), ui->phoneNo->text()) &&
-			digiDoc->sign(m_city, m_state, m_zip, m_country, m_role, &m);
+		return m.init(code, phone) &&
+			digiDoc->sign(m_city, m_state, m_zip, m_country, m_role, &m) ? accept() : reject();
 	}
 	case SmartID: {
+		const QString code = ui->idCodeSID->text();
+		if(ui->idCodeSID->validator() && !IKValidator::isValid(code)) {
+			setError(ui->idCodeSID, ui->errorCodeSID, tr("Personal code is not valid"));
+			return;
+		}
+		setError(ui->idCodeSID, ui->errorCodeSID, {});
+		if(!confirmAlreadySigned())
+			return reject();
 		SigningProgressUI pui { ui->progressInfo, ui->progressCode, ui->progressLabel, ui->progressBar, ui->progressCancel, this };
 		showPage(ui->progressPage);
 		SmartIDProgress s(pui);
-		return s.init(ui->idCountry->currentData().toString(), ui->idCodeSID->text(), digiDoc->fileName()) &&
-			digiDoc->sign(m_city, m_state, m_zip, m_country, m_role, &s);
+		return s.init(ui->idCountry->currentData().toString(), code, digiDoc->fileName()) &&
+			digiDoc->sign(m_city, m_state, m_zip, m_country, m_role, &s) ? accept() : reject();
 	}
 	}
-	return false;
 }
