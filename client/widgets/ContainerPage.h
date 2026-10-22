@@ -23,16 +23,15 @@
 
 #include "common_enums.h"
 
+#include <memory>
+
 namespace libcdoc { struct Lock; }
 namespace Ui { class ContainerPage; }
 
 class CryptoDoc;
 class DigiDoc;
 class MainAction;
-class QSslCertificate;
-class SignatureItem;
-class SslCertificate;
-class TokenData;
+class QCryptoBackend;
 struct WarningText;
 
 class ContainerPage final : public QWidget
@@ -43,23 +42,21 @@ public:
 	explicit ContainerPage( QWidget *parent = nullptr );
 	~ContainerPage() final;
 
-	void cardChanged(const SslCertificate &cert, bool isBlocked = false);
-	void tokenChanged(const TokenData &token);
 	void setHeader(const QString &file);
 	void togglePrinting(bool enable);
-	void transition(CryptoDoc *container, const QSslCertificate &cert);
+	void transition(CryptoDoc *container);
 	void transition(DigiDoc* container);
 
 Q_SIGNALS:
 	void action(int code);
 	void addFiles(const QStringList &files);
-	void certChanged(const SslCertificate &cert);
 	void warning(const WarningText &warningText);
 
 private:
 	void changeEvent(QEvent* event) final;
 	void clear(int code);
-	void decrypt(CryptoDoc *container, const libcdoc::Lock *lock, const QByteArray &secret);
+	void decrypt(CryptoDoc *container, const libcdoc::Lock &lock, const QByteArray &secret,
+		std::unique_ptr<QCryptoBackend> &&backend);
 	template<class C>
 	bool deleteConfirm(C *c, int index);
 	void elideFileName();
@@ -77,5 +74,4 @@ private:
 	const char *cancelText = QT_TR_NOOP("Cancel");
 	const char *convertText = QT_TR_NOOP("Encrypt");
 	bool isSupported = false;
-	bool isBlocked = false;
 };
