@@ -5,6 +5,7 @@
 #include "ui_CardListItem.h"
 
 #include "QCryptoBackend.h"
+#include "QSmartCard.h"
 #include "SslCertificate.h"
 
 #include <QtCore/QDateTime>
@@ -36,10 +37,10 @@ TokenData CardListItem::token() const
 
 void CardListItem::refresh()
 {
+	const auto type = QSmartCardData::pinType(t.cert());
 	if(QSmartCardData data = QSmartCard::readCard(t, true); !data.isNull()) {
-		t.setData(QStringLiteral("blocked"),
-			data.retryCount(QSmartCardData::Pin2Type) == 0 || data.pinLocked(QSmartCardData::Pin2Type));
-		update(t, isChecked());
+		t.setData(QStringLiteral("blocked"), data.retryCount(type) == 0 || data.pinLocked(type));
+		update(t, isChecked(), reason);
 	}
 }
 
@@ -61,22 +62,25 @@ void CardListItem::changeEvent(QEvent *ev)
 	if(ev->type() == QEvent::LanguageChange)
 	{
 		ui->retranslateUi(this);
-		update(t, isChecked());
+		update(t, isChecked(), reason);
 	}
 }
 
-void CardListItem::update(const TokenData &token, bool selected)
+void CardListItem::update(const TokenData &token, bool selected, const char *reason)
 {
 	t = token;
+	this->reason = reason;
 	SslCertificate c(t.cert());
 	bool blocked = t.data(QStringLiteral("blocked")).toBool();
-	bool usable = c.isValid() && !blocked;
+	bool usable = c.isValid() && !blocked && !reason;
 	QString name = !c.subjectInfo("GN").isEmpty() || !c.subjectInfo("SN").isEmpty() ?
 		c.toString(QStringLiteral("GN SN")) : c.toString(QStringLiteral("CN"));
 	ui->cardName->setText(QStringLiteral("%1, %2").arg(name, c.personalCode()));
 	ui->cardName->setAccessibleName(ui->cardName->text().toLower());
 	ui->cardIssuer->setText(QStringLiteral("%1: %2").arg(tr("Issuer"), c.issuerInfo(QSslCertificate::CommonName)));
-	if(blocked)
+	if(reason)
+		ui->cardValidUntil->setText(tr(reason));
+	else if(blocked)
 		ui->cardValidUntil->setText(QCryptoBackend::errorString(QCryptoBackend::PinLocked));
 	else
 		ui->cardValidUntil->setText(QStringLiteral("%1: %2").arg(tr("Valid to"),

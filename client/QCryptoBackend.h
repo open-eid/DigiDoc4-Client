@@ -20,7 +20,6 @@
 #pragma once
 
 #include "TokenData.h"
-#include "QSmartCard.h"
 
 #include <QtCore/QCoreApplication>
 #include <QtCore/QCryptographicHash>
@@ -28,6 +27,7 @@
 
 #include <expected>
 
+class QSmartCardData;
 class QSslKey;
 
 class QCryptoBackend
@@ -74,7 +74,7 @@ public:
 	 */
 	mutable Status status = PinOK;
 
-	static QString errorString(Status error);
+	static QString errorString(Status error, const TokenData &token = {});
 
 protected:
 	virtual Status login(const TokenData &cert, const QString &pin) = 0;

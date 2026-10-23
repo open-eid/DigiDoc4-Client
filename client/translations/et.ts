@@ -246,6 +246,21 @@
     </message>
 </context>
 <context>
+    <name>CardList</name>
+    <message>
+        <source>The PCSC service, required for using the ID-card, is not working. Check your computer settings.</source>
+        <translation>ID-kaardi kasutamiseks vajalik PCSC teenus ei tööta. Kontrolli arvuti seadeid.</translation>
+    </message>
+    <message>
+        <source>No readers found</source>
+        <translation>Ühtegi kiipkaardilugejat pole ühendatud</translation>
+    </message>
+    <message>
+        <source>No card in reader</source>
+        <translation>Lugejas ei ole kaarti; kontrolli, kas ID-kaart on õiget pidi lugejas</translation>
+    </message>
+</context>
+<context>
     <name>CardListItem</name>
     <message>
         <source>Issuer</source>
@@ -254,6 +269,10 @@
     <message>
         <source>Valid to</source>
         <translation>Kehtib kuni</translation>
+    </message>
+    <message>
+        <source>This card cannot decrypt the container</source>
+        <translation>Selle kaardiga ei saa dekrüpteerida</translation>
     </message>
 </context>
 <context>
@@ -510,10 +529,6 @@
         <translation>Koos sellega eemaldatakse ka ümbrik.</translation>
     </message>
     <message>
-        <source>Failed to decrypt document</source>
-        <translation type="unfinished">Dokumendi dekrüpteerimine ebaõnnestus</translation>
-    </message>
-    <message>
         <source>In order to view Validity Confirmation Sheet there has to be at least one printer installed!</source>
         <translation>Digitaalallkirjade kinnituslehe kuvamiseks peab olema arvutis vähemalt üks printer seadistatud!</translation>
     </message>
@@ -647,6 +662,33 @@
     <message>
         <source>Cannot read file.</source>
         <translation>Faili ei saa lugeda.</translation>
+    </message>
+</context>
+<context>
+    <name>DecryptionDialog</name>
+    <message>
+        <source>Decrypt document</source>
+        <translation>Dekrüpteeri dokument</translation>
+    </message>
+    <message>
+        <source>Decryption</source>
+        <translation>Dekrüpteerimine</translation>
+    </message>
+    <message>
+        <source>Select the certificate to decrypt with</source>
+        <translation>Vali sertifikaat, millega dekrüpteerida</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Katkesta</translation>
+    </message>
+    <message>
+        <source>Decrypt</source>
+        <translation>Dekrüpteeri</translation>
+    </message>
+    <message>
+        <source>Failed to decrypt document</source>
+        <translation>Dokumendi dekrüpteerimine ebaõnnestus</translation>
     </message>
 </context>
 <context>
@@ -1791,26 +1833,22 @@ LDAP serveriga ei saa ühendust.</translation>
     </message>
 </context>
 <context>
-    <name>PinPopup</name>
+    <name>PinLogin</name>
     <message>
-        <source>For using sign certificate enter PIN2 at the reader</source>
-        <translation>Sertifikaadi kasutamiseks sisesta PIN2 kaardilugeja sõrmistikult</translation>
+        <source>Enter %1 code</source>
+        <translation>Sisesta %1-kood</translation>
     </message>
     <message>
-        <source>For using sign certificate enter PIN2</source>
-        <translation>Sertifikaadi kasutamiseks sisesta PIN2</translation>
+        <source>After you continue, enter %1 code on the card reader keypad</source>
+        <translation>Pärast jätkamist sisesta %1-kood kaardilugeja sõrmistikult</translation>
     </message>
     <message>
-        <source>Selected action requires sign certificate.</source>
-        <translation>Valitud tegevuse jaoks on vaja kasutada allkirjastamise sertifikaati.</translation>
+        <source>Please enter %1 code in the new window that will appear shortly</source>
+        <translation>Palun sisesta %1-kood peatselt ilmuvas uues aknas</translation>
     </message>
     <message>
-        <source>For using authentication certificate enter PIN1 at the reader</source>
-        <translation>Sertifikaadi kasutamiseks sisesta PIN1 kaardilugeja sõrmistikult</translation>
-    </message>
-    <message>
-        <source>For using authentication certificate enter PIN1</source>
-        <translation>Sertifikaadi kasutamiseks sisesta PIN1</translation>
+        <source>Enter %1 code on the card reader keypad</source>
+        <translation>Sisesta %1-kood kaardilugeja sõrmistikult</translation>
     </message>
     <message>
         <source>%1 will be locked next failed attempt</source>
@@ -1819,22 +1857,6 @@ LDAP serveriga ei saa ühendust.</translation>
     <message>
         <source>%1 has been entered incorrectly at least once</source>
         <translation>%1 on vähemalt ühe korra valesti sisestatud</translation>
-    </message>
-    <message>
-        <source>Selected action requires authentication certificate.</source>
-        <translation>Valitud tegevuse jaoks on vaja kasutada isikutuvastuse sertifikaati.</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Katkesta</translation>
-    </message>
-    <message>
-        <source>You need to use a personal identification certificate for the selected activity.</source>
-        <translation>Valitud tegevuse jaoks on vaja kasutada isikutuvastuse sertifikaati.</translation>
-    </message>
-    <message>
-        <source>Enter PIN1 to use the certificate</source>
-        <translation>Sertifikaadi kasutamiseks sisesta PIN1</translation>
     </message>
 </context>
 <context>
@@ -1977,6 +1999,33 @@ LDAP serveriga ei saa ühendust.</translation>
     </message>
 </context>
 <context>
+    <name>PinpadPopup</name>
+    <message>
+        <source>To change %1 code with the PUK code on a PinPad reader the PUK code has to be entered first and then the %1 code twice.</source>
+        <translation>PinPad lugejaga %1 muutmiseks tuleb kõigepealt&lt;br&gt;sisestada PUK ning siis kaks korda %1.</translation>
+    </message>
+    <message>
+        <source>To unblock the %1 code on a PinPad reader the PUK code has to be entered first and then the %1 code twice.</source>
+        <translation>PinPad lugejaga %1 blokeeringu tühistamiseks&lt;br&gt;tuleb kõigepealt sisestada PUK ning siis kaks korda %1.</translation>
+    </message>
+    <message>
+        <source>To change %1 on a PinPad reader the old %1 code has to be entered first and then the new %1 code twice.</source>
+        <translation>PinPad lugejaga %1 muutmiseks&lt;br&gt;tuleb kõigepealt sisestada vana %1 ning siis kaks korda uus %1.</translation>
+    </message>
+    <message>
+        <source>PUK remaining attempts: %1</source>
+        <translation>PUK katseid jäänud: %1</translation>
+    </message>
+    <message>
+        <source>Remaining attempts: %1</source>
+        <translation>Katseid jäänud: %1</translation>
+    </message>
+    <message>
+        <source>You need to use a personal identification certificate for the selected activity.</source>
+        <translation>Valitud tegevuse jaoks on vaja kasutada isikutuvastuse sertifikaati.</translation>
+    </message>
+</context>
+<context>
     <name>PrintSheet</name>
     <message>
         <source>SIGNED FILES</source>
@@ -2090,6 +2139,10 @@ LDAP serveriga ei saa ühendust.</translation>
         <translation>PIN on lukus</translation>
     </message>
     <message>
+        <source>Remaining attempts: %1</source>
+        <translation>Katseid jäänud: %1</translation>
+    </message>
+    <message>
         <source>Signing/decrypting is already in progress another window.</source>
         <translation>Allkirjastamine/dekrüpteerimine on juba käimas teises aknas.</translation>
     </message>
@@ -2138,18 +2191,6 @@ LDAP serveriga ei saa ühendust.</translation>
 </context>
 <context>
     <name>QSmartCard</name>
-    <message>
-        <source>To change %1 on a PinPad reader the old %1 code has to be entered first and then the new %1 code twice.</source>
-        <translation>PinPad lugejaga %1 muutmiseks&lt;br&gt;tuleb kõigepealt sisestada vana %1 ning siis kaks korda uus %1.</translation>
-    </message>
-    <message>
-        <source>To change %1 code with the PUK code on a PinPad reader the PUK code has to be entered first and then the %1 code twice.</source>
-        <translation>PinPad lugejaga %1 muutmiseks tuleb kõigepealt&lt;br&gt;sisestada PUK ning siis kaks korda %1.</translation>
-    </message>
-    <message>
-        <source>To unblock the %1 code on a PinPad reader the PUK code has to be entered first and then the %1 code twice.</source>
-        <translation>PinPad lugejaga %1 blokeeringu tühistamiseks&lt;br&gt;tuleb kõigepealt sisestada PUK ning siis kaks korda %1.</translation>
-    </message>
     <message>
         <source>Changing %1 failed</source>
         <translation>%1 muutmine ebaõnnestus</translation>
@@ -2788,14 +2829,6 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>Vigane riigikood</translation>
     </message>
     <message>
-        <source>Enter %1 code</source>
-        <translation>Sisesta %1-kood</translation>
-    </message>
-    <message>
-        <source>Please enter %1 code in the new window that will appear shortly</source>
-        <translation>Palun sisesta %1-kood peatselt ilmuvas uues aknas</translation>
-    </message>
-    <message>
         <source>The document has already been signed by you</source>
         <translation>Dokument on Sinu poolt juba allkirjastatud</translation>
     </message>
@@ -2804,24 +2837,8 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>Jätka allkirjastamisega</translation>
     </message>
     <message>
-        <source>Remaining attempts: %1</source>
-        <translation>Katseid jäänud: %1</translation>
-    </message>
-    <message>
         <source>Failed to sign document</source>
         <translation>Dokumendi allkirjastamine ebaõnnestus</translation>
-    </message>
-    <message>
-        <source>No card in reader</source>
-        <translation>Lugejas ei ole kaarti; kontrolli, kas ID-kaart on õiget pidi lugejas</translation>
-    </message>
-    <message>
-        <source>No readers found</source>
-        <translation>Ühtegi kiipkaardilugejat pole ühendatud</translation>
-    </message>
-    <message>
-        <source>The PCSC service, required for using the ID-card, is not working. Check your computer settings.</source>
-        <translation>ID-kaardi kasutamiseks vajalik PCSC teenus ei tööta. Kontrolli arvuti seadeid.</translation>
     </message>
 </context>
 <context>

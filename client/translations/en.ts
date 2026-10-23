@@ -246,6 +246,21 @@
     </message>
 </context>
 <context>
+    <name>CardList</name>
+    <message>
+        <source>The PCSC service, required for using the ID-card, is not working. Check your computer settings.</source>
+        <translation>The PCSC service, required for using the ID-card, is not working. Check your computer settings.</translation>
+    </message>
+    <message>
+        <source>No readers found</source>
+        <translation>No card readers found</translation>
+    </message>
+    <message>
+        <source>No card in reader</source>
+        <translation>No card in card reader; check if ID-card is inserted correctly</translation>
+    </message>
+</context>
+<context>
     <name>CardListItem</name>
     <message>
         <source>Issuer</source>
@@ -254,6 +269,10 @@
     <message>
         <source>Valid to</source>
         <translation>Valid to</translation>
+    </message>
+    <message>
+        <source>This card cannot decrypt the container</source>
+        <translation>This card cannot decrypt the container</translation>
     </message>
 </context>
 <context>
@@ -510,10 +529,6 @@
         <translation>It is removed along with the container.</translation>
     </message>
     <message>
-        <source>Failed to decrypt document</source>
-        <translation type="unfinished">Failed to decrypt document</translation>
-    </message>
-    <message>
         <source>In order to view Validity Confirmation Sheet there has to be at least one printer installed!</source>
         <translation>In order to view Validity Confirmation Sheet there has to be at least one printer installed!</translation>
     </message>
@@ -647,6 +662,33 @@
     <message>
         <source>Cannot read file.</source>
         <translation>Cannot read file.</translation>
+    </message>
+</context>
+<context>
+    <name>DecryptionDialog</name>
+    <message>
+        <source>Decrypt document</source>
+        <translation>Decrypt document</translation>
+    </message>
+    <message>
+        <source>Decryption</source>
+        <translation>Decryption</translation>
+    </message>
+    <message>
+        <source>Select the certificate to decrypt with</source>
+        <translation>Select the certificate to decrypt with</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Cancel</translation>
+    </message>
+    <message>
+        <source>Decrypt</source>
+        <translation>Decrypt</translation>
+    </message>
+    <message>
+        <source>Failed to decrypt document</source>
+        <translation>Failed to decrypt document</translation>
     </message>
 </context>
 <context>
@@ -1791,26 +1833,22 @@ LDAP server is unavailable.</translation>
     </message>
 </context>
 <context>
-    <name>PinPopup</name>
+    <name>PinLogin</name>
     <message>
-        <source>For using sign certificate enter PIN2 at the reader</source>
-        <translation>For using sign certificate enter PIN2 at the reader</translation>
+        <source>Enter %1 code</source>
+        <translation>Enter %1 code</translation>
     </message>
     <message>
-        <source>For using sign certificate enter PIN2</source>
-        <translation>For using sign certificate enter PIN2</translation>
+        <source>After you continue, enter %1 code on the card reader keypad</source>
+        <translation>After you continue, enter %1 code on the card reader keypad</translation>
     </message>
     <message>
-        <source>Selected action requires sign certificate.</source>
-        <translation>Selected action requires sign certificate.</translation>
+        <source>Please enter %1 code in the new window that will appear shortly</source>
+        <translation>Please enter %1 code in the new window that will appear shortly</translation>
     </message>
     <message>
-        <source>For using authentication certificate enter PIN1 at the reader</source>
-        <translation>For using authentication certificate enter PIN1 at the reader</translation>
-    </message>
-    <message>
-        <source>For using authentication certificate enter PIN1</source>
-        <translation>For using authentication certificate enter PIN1</translation>
+        <source>Enter %1 code on the card reader keypad</source>
+        <translation>Enter %1 code on the card reader keypad</translation>
     </message>
     <message>
         <source>%1 will be locked next failed attempt</source>
@@ -1819,22 +1857,6 @@ LDAP server is unavailable.</translation>
     <message>
         <source>%1 has been entered incorrectly at least once</source>
         <translation>%1 has been entered incorrectly at least once</translation>
-    </message>
-    <message>
-        <source>Selected action requires authentication certificate.</source>
-        <translation>Selected action requires authentication certificate.</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Cancel</translation>
-    </message>
-    <message>
-        <source>You need to use a personal identification certificate for the selected activity.</source>
-        <translation>You need to use a personal identification certificate for the selected activity.</translation>
-    </message>
-    <message>
-        <source>Enter PIN1 to use the certificate</source>
-        <translation>Enter PIN1 to use the certificate</translation>
     </message>
 </context>
 <context>
@@ -1977,6 +1999,33 @@ LDAP server is unavailable.</translation>
     </message>
 </context>
 <context>
+    <name>PinpadPopup</name>
+    <message>
+        <source>To change %1 code with the PUK code on a PinPad reader the PUK code has to be entered first and then the %1 code twice.</source>
+        <translation>To change %1 code with the PUK code on a PinPad reader&lt;br&gt;the PUK code has to be entered first and then the %1 code twice.</translation>
+    </message>
+    <message>
+        <source>To unblock the %1 code on a PinPad reader the PUK code has to be entered first and then the %1 code twice.</source>
+        <translation>To unblock the %1 code on a PinPad reader the PUK&lt;br&gt;code has to be entered first and then the %1 code twice.</translation>
+    </message>
+    <message>
+        <source>To change %1 on a PinPad reader the old %1 code has to be entered first and then the new %1 code twice.</source>
+        <translation>To change %1 on a PinPad reader the old %1 code&lt;br&gt;has to be entered first and then the new %1 code twice.</translation>
+    </message>
+    <message>
+        <source>PUK remaining attempts: %1</source>
+        <translation>PUK remaining attempts: %1</translation>
+    </message>
+    <message>
+        <source>Remaining attempts: %1</source>
+        <translation>Remaining attempts: %1</translation>
+    </message>
+    <message>
+        <source>You need to use a personal identification certificate for the selected activity.</source>
+        <translation>You need to use a personal identification certificate for the selected activity.</translation>
+    </message>
+</context>
+<context>
     <name>PrintSheet</name>
     <message>
         <source>SIGNED FILES</source>
@@ -2090,6 +2139,10 @@ LDAP server is unavailable.</translation>
         <translation>PIN locked</translation>
     </message>
     <message>
+        <source>Remaining attempts: %1</source>
+        <translation>Remaining attempts: %1</translation>
+    </message>
+    <message>
         <source>Signing/decrypting is already in progress another window.</source>
         <translation>Signing/decrypting is already in progress another window.</translation>
     </message>
@@ -2138,18 +2191,6 @@ LDAP server is unavailable.</translation>
 </context>
 <context>
     <name>QSmartCard</name>
-    <message>
-        <source>To change %1 on a PinPad reader the old %1 code has to be entered first and then the new %1 code twice.</source>
-        <translation>To change %1 on a PinPad reader the old %1 code&lt;br&gt;has to be entered first and then the new %1 code twice.</translation>
-    </message>
-    <message>
-        <source>To change %1 code with the PUK code on a PinPad reader the PUK code has to be entered first and then the %1 code twice.</source>
-        <translation>To change %1 code with the PUK code on a PinPad reader&lt;br&gt;the PUK code has to be entered first and then the %1 code twice.</translation>
-    </message>
-    <message>
-        <source>To unblock the %1 code on a PinPad reader the PUK code has to be entered first and then the %1 code twice.</source>
-        <translation>To unblock the %1 code on a PinPad reader the PUK&lt;br&gt;code has to be entered first and then the %1 code twice.</translation>
-    </message>
     <message>
         <source>Changing %1 failed</source>
         <translation>Changing %1 failed</translation>
@@ -2788,14 +2829,6 @@ Additional licenses and components</translation>
         <translation>Invalid country code</translation>
     </message>
     <message>
-        <source>Enter %1 code</source>
-        <translation>Enter %1 code</translation>
-    </message>
-    <message>
-        <source>Please enter %1 code in the new window that will appear shortly</source>
-        <translation>Please enter %1 code in the new window that will appear shortly</translation>
-    </message>
-    <message>
         <source>The document has already been signed by you</source>
         <translation>The document has already been signed by you</translation>
     </message>
@@ -2804,24 +2837,8 @@ Additional licenses and components</translation>
         <translation>Continue signing</translation>
     </message>
     <message>
-        <source>Remaining attempts: %1</source>
-        <translation>Remaining attempts: %1</translation>
-    </message>
-    <message>
         <source>Failed to sign document</source>
         <translation>Failed to sign document</translation>
-    </message>
-    <message>
-        <source>No card in reader</source>
-        <translation>No card in card reader; check if ID-card is inserted correctly</translation>
-    </message>
-    <message>
-        <source>No readers found</source>
-        <translation>No card readers found</translation>
-    </message>
-    <message>
-        <source>The PCSC service, required for using the ID-card, is not working. Check your computer settings.</source>
-        <translation>The PCSC service, required for using the ID-card, is not working. Check your computer settings.</translation>
     </message>
 </context>
 <context>
