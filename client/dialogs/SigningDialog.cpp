@@ -18,7 +18,6 @@
 #include "signer/MobileProgress.h"
 #include "signer/SmartIDProgress.h"
 #include "widgets/CardListItem.h"
-#include "widgets/NoCardInfo.h"
 
 #include <QtCore/QPointer>
 #include <QtWidgets/QMessageBox>
@@ -51,9 +50,9 @@ SigningDialog::SigningDialog(DigiDoc *doc, QWidget *parent)
 	connect(ui->tabs, &QTabBar::currentChanged, ui->tabStack, &QStackedWidget::setCurrentIndex);
 
 	// ID-card tab
-	updateCards();
+	ui->noCardIcon->load(QStringLiteral(":/images/icon_IDkaart_red.svg"));
+	updateCards(qApp->cryptoManager()->cache());
 	connect(qApp->cryptoManager(), &QCryptoManager::cacheChanged, this, &SigningDialog::updateCards);
-	connect(qApp->cryptoManager()->smartcard(), &QSmartCard::dataChanged, this, &SigningDialog::updateCards);
 	connect(ui->pin, &QLineEdit::textEdited, this, [this] {
 		setError(ui->pin, ui->errorPin, {});
 		ui->sign->setEnabled(ui->pin->hasAcceptableInput());
@@ -61,7 +60,7 @@ SigningDialog::SigningDialog(DigiDoc *doc, QWidget *parent)
 	connect(ui->pin, &QLineEdit::returnPressed, ui->sign, &QPushButton::click);
 	connect(ui->tabs, &QTabBar::currentChanged, this, [this](int index) {
 		if(index == IDCard)
-			updateCards();
+			updateSelection();
 		else
 			ui->sign->setEnabled(true);
 	});
@@ -172,11 +171,22 @@ void SigningDialog::changeEvent(QEvent *event)
 	if(event->type() == QEvent::LanguageChange)
 	{
 		ui->retranslateUi(this);
+		updateNoCard();
 		updateTabs();
-		updateSelection(std::ranges::any_of(ui->cardListContainer->findChildren<CardListItem*>(),
-			&CardListItem::isChecked));
+		updatePinControls();
 	}
 	QDialog::changeEvent(event);
+}
+
+void SigningDialog::updateNoCard()
+{
+	if(!QPCSC::instance().serviceRunning())
+		ui->noCardStatus->setText(tr("The PCSC service, required for using the ID-card, is not working. Check your computer settings."));
+	else if(QPCSC::instance().readers().isEmpty())
+		ui->noCardStatus->setText(tr("No readers found"));
+	else
+		ui->noCardStatus->setText(tr("No card in reader"));
+	ui->noCard->setAccessibleDescription(ui->noCardStatus->text());
 }
 
 void SigningDialog::updateTabs()
@@ -186,59 +196,28 @@ void SigningDialog::updateTabs()
 	ui->tabs->setTabText(SmartID, tr("Smart-ID"));
 }
 
-void SigningDialog::updateCards()
+void SigningDialog::updateCards(QList<TokenData> tokens)
 {
 	qDeleteAll(ui->cardListContainer->findChildren<CardListItem*>());
 
-	auto select = [this](const TokenData &t) {
-		if(!(t == m_selectedToken)) {
-			ui->pin->clear();
-			setError(ui->pin, ui->errorPin, {});
-		}
-		m_selectedToken = t;
-	};
-
-	QList<TokenData> tokens = qApp->cryptoManager()->cache();
-	bool localValid = std::any_of(tokens.cbegin(), tokens.cend(),
-		[this](const TokenData &t) { return t == m_selectedToken; });
-	if(!localValid)
-		select(qApp->cryptoManager()->tokensign());
-
-	const QSmartCardData data = qApp->cryptoManager()->smartcard()->data();
 	bool any = false;
-	bool selectedUsable = false;
 	CardListItem *selectedCard = nullptr;
-	for(TokenData &token : tokens) {
+	for(const TokenData &token : tokens) {
 		SslCertificate c(token.cert());
 		if(!c.keyUsage().contains(SslCertificate::NonRepudiation))
 			continue;
-		bool blocked = token.data(QStringLiteral("blocked")).toBool() ||
-			(!data.isNull() && data.card() == token.card() &&
-				(data.retryCount(QSmartCardData::Pin2Type) == 0 || data.pinLocked(QSmartCardData::Pin2Type)));
-		token.setData(QStringLiteral("blocked"), blocked);
 		auto *w = new CardListItem(ui->cardListContainer);
-		w->update(token, token.card() == m_selectedToken.card());
-		connect(w, &CardListItem::selected, this, [this, select](const TokenData &t) {
-			select(t);
-			updateSelection(true);
-		});
+		w->update(token, token == m_selectedToken);
+		connect(w, &CardListItem::selected, this, &SigningDialog::updateSelection);
 		ui->cardListContainer->layout()->addWidget(w);
 		w->show();
 		any = true;
-		if(token == m_selectedToken) {
-			selectedUsable = c.isValid() && !blocked;
+		if(token == m_selectedToken)
 			selectedCard = w;
-		}
 	}
 
-	if(!any) {
-		if(!QPCSC::instance().serviceRunning())
-			ui->noCard->update(NoCardInfo::NoPCSC);
-		else if(QPCSC::instance().readers().isEmpty())
-			ui->noCard->update(NoCardInfo::NoReader);
-		else
-			ui->noCard->update(NoCardInfo::NoCard);
-	}
+	if(!any)
+		updateNoCard();
 	ui->noCard->setVisible(!any);
 	ui->cardList->setVisible(any);
 	if(selectedCard)
@@ -246,11 +225,30 @@ void SigningDialog::updateCards()
 			if(card)
 				list->ensureWidgetVisible(card, 0, 0);
 		}, Qt::QueuedConnection);
-	updateSelection(selectedUsable);
+	updateSelection();
 }
 
-void SigningDialog::updateSelection(bool usable)
+void SigningDialog::updateSelection()
 {
+	for(auto *w: ui->cardListContainer->findChildren<CardListItem*>()) {
+		if(!w->isChecked())
+			continue;
+		if(!(w->token() == m_selectedToken)) {
+			ui->pin->clear();
+			setError(ui->pin, ui->errorPin, {});
+		}
+		if(currentMethod() == IDCard)
+			w->refresh();
+		m_selectedToken = w->token();
+		break;
+	}
+	updatePinControls();
+}
+
+void SigningDialog::updatePinControls()
+{
+	bool usable = std::ranges::any_of(ui->cardListContainer->findChildren<CardListItem*>(),
+		[](CardListItem *w) { return w->isChecked() && w->isEnabled(); });
 	bool isSeal = SslCertificate(m_selectedToken.cert()).type() & SslCertificate::TempelType;
 	QString pinName = isSeal ? QStringLiteral("PIN") : QSmartCardData::typeString(QSmartCardData::Pin2Type);
 	bool showPin = false;
@@ -266,6 +264,7 @@ void SigningDialog::updateSelection(bool usable)
 	ui->labelPin->setVisible(showPin);
 	ui->pin->setVisible(showPin);
 	ui->errorPin->setVisible(showPin && !ui->errorPin->text().isEmpty());
+	ui->layoutPin->invalidate();
 	if(!showPin)
 		ui->pin->clear();
 
@@ -294,7 +293,7 @@ void SigningDialog::performSign()
 			switch(val.error()) {
 			case QCryptoBackend::PinIncorrect: {
 				QString msg = QCryptoBackend::errorString(QCryptoBackend::PinIncorrect);
-				if(QSmartCardData data = qApp->cryptoManager()->smartcard()->data(); data.card() == m_selectedToken.card())
+				if(QSmartCardData data = QSmartCard::readCard(m_selectedToken, true); !data.isNull())
 					msg += QStringLiteral(". ") + tr("Remaining attempts: %1").arg(data.retryCount(QSmartCardData::Pin2Type));
 				ui->pin->clear();
 				setError(ui->pin, ui->errorPin, msg);

@@ -194,7 +194,7 @@ checkConnection()
 		return true;
 	}
 	return dispatchToMain([check] {
-		FadeInNotification::error(Application::mainWindow()->findChild<QWidget*>(QStringLiteral("topBar")),
+		FadeInNotification::error(Application::mainWindow()->findChild<QWidget*>(QStringLiteral("content")),
 								  check.errorString());
 		return false;
 	});

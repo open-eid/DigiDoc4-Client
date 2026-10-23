@@ -202,14 +202,13 @@ bool QPCSC::serviceRunning() const
 
 
 
-QPCSCReader::QPCSCReader( const QString &reader, QPCSC *parent )
+QPCSCReader::QPCSCReader(const QString &reader)
 	: d(new Private)
 {
-	d->d = parent->d;
 	d->reader = reader.toUtf8();
 	d->state.szReader = d->reader.constData();
-	if(parent->d->context)
-		SC(GetStatusChange, d->d->context, 0, &d->state, 1U);
+	if(SC(EstablishContext, DWORD(SCARD_SCOPE_USER), nullptr, nullptr, &d->context) == SCARD_S_SUCCESS)
+		SC(GetStatusChange, d->context, 0, &d->state, 1U);
 }
 
 QPCSCReader::QPCSCReader(QPCSCReader &&other) noexcept
@@ -224,6 +223,8 @@ QPCSCReader::~QPCSCReader() noexcept
 		SC(EndTransaction, d->card, SCARD_LEAVE_CARD);
 	if(d->card)
 		SC(Disconnect, d->card, SCARD_LEAVE_CARD);
+	if(d->context)
+		SC(ReleaseContext, d->context);
 	delete d;
 }
 
@@ -234,10 +235,18 @@ QByteArray QPCSCReader::atr() const
 
 bool QPCSCReader::connect(Connect connect, Mode mode)
 {
-	if(SC(Connect, d->d->context, d->state.szReader, connect, mode, &d->card, &d->io.dwProtocol) != SCARD_S_SUCCESS)
+	if(SC(Connect, d->context, d->state.szReader, connect, mode, &d->card, &d->io.dwProtocol) != SCARD_S_SUCCESS)
 		return false;
+	// Diagnostics opens the reader directly even when no card is present.
+	if(connect == Direct)
+		return true;
 	d->isTransacted = SC(BeginTransaction, d->card) == SCARD_S_SUCCESS;
-	return true;
+	if(!d->isTransacted)
+	{
+		SC(Disconnect, d->card, SCARD_LEAVE_CARD);
+		d->card = {};
+	}
+	return d->isTransacted;
 }
 
 bool QPCSCReader::isPinPad() const

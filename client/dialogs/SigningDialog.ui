@@ -341,7 +341,59 @@ background: transparent;
              </widget>
             </item>
             <item>
-             <widget class="NoCardInfo" name="noCard" native="true"/>
+             <widget class="QWidget" name="noCard">
+              <property name="styleSheet">
+               <string notr="true">QLabel {
+color: #07142A;
+font-family: Roboto, Helvetica;
+font-size: 14px;
+font-weight: 400;
+}</string>
+              </property>
+              <layout class="QHBoxLayout" name="noCardLayout">
+               <property name="spacing">
+                <number>8</number>
+               </property>
+               <property name="leftMargin">
+                <number>8</number>
+               </property>
+               <property name="topMargin">
+                <number>0</number>
+               </property>
+               <property name="rightMargin">
+                <number>8</number>
+               </property>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
+               <item>
+                <widget class="QSvgWidget" name="noCardIcon" native="true">
+                 <property name="minimumSize">
+                  <size>
+                   <width>24</width>
+                   <height>24</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>24</width>
+                   <height>24</height>
+                  </size>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="noCardStatus">
+                 <property name="focusPolicy">
+                  <enum>Qt::TabFocus</enum>
+                 </property>
+                 <property name="text">
+                  <string>No card in reader</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
             </item>
             <item>
              <widget class="QLabel" name="infoPin">
@@ -808,9 +860,9 @@ background: transparent;
    <header>widgets/PinLineEdit.h</header>
   </customwidget>
   <customwidget>
-   <class>NoCardInfo</class>
+   <class>QSvgWidget</class>
    <extends>QWidget</extends>
-   <header>widgets/NoCardInfo.h</header>
+   <header location="global">QSvgWidget</header>
    <container>1</container>
   </customwidget>
   <customwidget>

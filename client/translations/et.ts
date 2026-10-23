@@ -1412,10 +1412,6 @@ LDAP serveriga ei saa ühendust.</translation>
         <translation>Ümbriku salvestamine ebaõnnestus</translation>
     </message>
     <message>
-        <source>Connect the card reader to your computer and insert your ID card into the reader</source>
-        <translation>Ühenda kaardilugeja arvutiga ja sisesta ID-kaart lugejasse</translation>
-    </message>
-    <message>
         <source>Signing</source>
         <translation>Allkirjastamine</translation>
     </message>
@@ -1443,10 +1439,6 @@ LDAP serveriga ei saa ühendust.</translation>
         <source>Select my EID page</source>
         <extracomment>accessible</extracomment>
         <translation>Vali leht minu eID</translation>
-    </message>
-    <message>
-        <source>The card in the card reader is not an Estonian ID-card</source>
-        <translation>Lugejas olev kaart ei ole Eesti ID-kaart</translation>
     </message>
     <message>
         <source>My eID</source>
@@ -1698,24 +1690,29 @@ LDAP serveriga ei saa ühendust.</translation>
         <source>Country</source>
         <translation>Riik</translation>
     </message>
-</context>
-<context>
-    <name>NoCardInfo</name>
     <message>
-        <source>No card in reader</source>
-        <translation>Lugejas ei ole kaarti; kontrolli, kas ID-kaart on õiget pidi lugejas</translation>
+        <source>No card reader found. Connect a card reader to your computer.</source>
+        <translation>Kaardilugejat ei leitud. Ühenda kaardilugeja arvutiga.</translation>
     </message>
     <message>
-        <source>No readers found</source>
-        <translation>Ühtegi kiipkaardilugejat pole ühendatud</translation>
+        <source>No card in the reader. Insert your ID-card into the reader.</source>
+        <translation>Lugejas ei ole kaarti. Sisesta ID-kaart lugejasse.</translation>
     </message>
     <message>
-        <source>Loading data</source>
-        <translation>Loen andmeid</translation>
+        <source>The card in the reader is not supported. Insert an Estonian ID-card.</source>
+        <translation>Lugejas olevat kaarti ei toetata. Sisesta Eesti ID-kaart.</translation>
     </message>
     <message>
         <source>The PCSC service, required for using the ID-card, is not working. Check your computer settings.</source>
         <translation>ID-kaardi kasutamiseks vajalik PCSC teenus ei tööta. Kontrolli arvuti seadeid.</translation>
+    </message>
+    <message>
+        <source>Reading card...</source>
+        <translation>Kaardi lugemine...</translation>
+    </message>
+    <message>
+        <source>Failed to read card data</source>
+        <translation>Kaardi andmete lugemine ebaõnnestus</translation>
     </message>
 </context>
 <context>
@@ -2809,6 +2806,18 @@ Täiendavad litsentsid ja komponendid</translation>
     <message>
         <source>Failed to sign document</source>
         <translation>Dokumendi allkirjastamine ebaõnnestus</translation>
+    </message>
+    <message>
+        <source>No card in reader</source>
+        <translation>Lugejas ei ole kaarti; kontrolli, kas ID-kaart on õiget pidi lugejas</translation>
+    </message>
+    <message>
+        <source>No readers found</source>
+        <translation>Ühtegi kiipkaardilugejat pole ühendatud</translation>
+    </message>
+    <message>
+        <source>The PCSC service, required for using the ID-card, is not working. Check your computer settings.</source>
+        <translation>ID-kaardi kasutamiseks vajalik PCSC teenus ei tööta. Kontrolli arvuti seadeid.</translation>
     </message>
 </context>
 <context>
