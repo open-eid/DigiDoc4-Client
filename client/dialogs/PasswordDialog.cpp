@@ -38,6 +38,7 @@ PasswordDialog::PasswordDialog(Mode mode, QWidget *parent)
 	if(mode == DECRYPT) {
 		ui->title->setText(tr("Decrypt"));
 		ui->labelLabel->setText(tr("Envelope name"));
+		ui->labelLine->setPlaceholderText({});
 		ui->passwordLabel->setText(tr("Envelope password"));
 		ui->ok->setText(tr("Decrypt"));
 		ui->passwordLine->setFocus();
