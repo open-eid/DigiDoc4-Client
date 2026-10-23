@@ -2,10 +2,20 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
 #include "CardList.h"
+#include "QPCSC.h"
 
 #include <QtCore/QEvent>
 #include <QtWidgets/QLayout>
 #include <QtWidgets/QScrollBar>
+
+QString CardList::emptyText()
+{
+	auto &pcsc = QPCSC::instance();
+	if(!pcsc.serviceRunning())
+		return tr("The PCSC service, required for using the ID-card, is not working. Check your computer settings.");
+	const QStringList readers = pcsc.readers();
+	return readers.isEmpty() ? tr("No readers found") : tr("No card in reader");
+}
 
 QSize CardList::sizeHint() const
 {
