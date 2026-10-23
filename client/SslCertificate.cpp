@@ -51,7 +51,9 @@ struct free_argument<R (&)(T *)>
 template<class T>
 static auto toQByteArray(T &x)
 {
-	return QByteArray((const char*)x->data, x->length);
+    const auto *str = std::to_address(x);
+    return QByteArray((const char*)ASN1_STRING_get0_data(str),
+                      ASN1_STRING_length(str));
 }
 
 template <auto Func, typename Arg>
