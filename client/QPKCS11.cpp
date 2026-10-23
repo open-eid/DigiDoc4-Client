@@ -26,7 +26,6 @@
 #include "SslCertificate.h"
 #include "TokenData.h"
 #include "Utils.h"
-#include "dialogs/PinPopup.h"
 
 #include <QtCore/QDebug>
 #include <QtCore/QtEndian>
@@ -387,33 +386,16 @@ QPKCS11::Status QPKCS11::login(const TokenData &t, const QString &pin)
 	if(!d->l->isFinDriver && !(token.flags & CKF_LOGIN_REQUIRED))
 		return PinOK;
 
-	SslCertificate cert(t.cert());
-	bool isSign = cert.keyUsage().keys().contains(SslCertificate::NonRepudiation);
-	PinPopup::TokenFlags f;
 	if(token.flags & CKF_USER_PIN_LOCKED) return PinLocked;
-	if(token.flags & CKF_USER_PIN_COUNT_LOW) f = PinPopup::PinCountLow;
-	if(token.flags & CKF_USER_PIN_FINAL_TRY) f = PinPopup::PinFinalTry;
-	CK_RV err = dispatchToMain([&]{
-		if(token.flags & CKF_PROTECTED_AUTHENTICATION_PATH) {
-			f |= PinPopup::PinpadFlag;
-			PinPopup p(isSign ? QSmartCardData::Pin2Type : QSmartCardData::Pin1Type, f, cert, Application::mainWindow());
-			p.open();
-			p.startTimer();
-			return waitFor(d->l->f->C_Login, d->session, CKU_USER, nullptr, 0);
-		} else {
-			QByteArray pinData;
-			if(pin.isEmpty()) {
-				PinPopup p(isSign ? QSmartCardData::Pin2Type : QSmartCardData::Pin1Type, f, cert, Application::mainWindow());
-				p.setPinLen(token.ulMinPinLen, token.ulMaxPinLen < 12 ? 12 : token.ulMaxPinLen);
-				if(!p.exec())
-					return CKR_FUNCTION_CANCELED;
-				pinData = p.pin().toUtf8();
-			} else {
-				pinData = pin.toUtf8();
-			}
-			return d->l->f->C_Login(d->session, CKU_USER, CK_UTF8CHAR_PTR(pinData.constData()), CK_ULONG(pinData.size()));
-		}
-	});
+	CK_RV err {};
+	if(token.flags & CKF_PROTECTED_AUTHENTICATION_PATH) {
+		err = waitFor(d->l->f->C_Login, d->session, CKU_USER, nullptr, 0);
+	} else if(pin.isEmpty()) {
+		return PinCanceled;
+	} else {
+		QByteArray pinData = pin.toUtf8();
+		err = d->l->f->C_Login(d->session, CKU_USER, CK_UTF8CHAR_PTR(pinData.constData()), CK_ULONG(pinData.size()));
+	}
 
 	switch(err)
 	{
@@ -477,6 +459,8 @@ QList<TokenData> QPKCS11::tokens()
 			t.setData(QStringLiteral("id"), id);
 			t.setData(QStringLiteral("blocked"), (token.flags & (CKF_USER_PIN_LOCKED|CKF_USER_PIN_TO_BE_CHANGED)) > 0);
 			t.setData(QStringLiteral("pinpad"), (token.flags & CKF_PROTECTED_AUTHENTICATION_PATH) > 0);
+			t.setData(QStringLiteral("pinCountLow"), (token.flags & CKF_USER_PIN_COUNT_LOW) > 0);
+			t.setData(QStringLiteral("pinFinalTry"), (token.flags & CKF_USER_PIN_FINAL_TRY) > 0);
 			t.setData(QStringLiteral("pinMin"), int(token.ulMinPinLen));
 			t.setData(QStringLiteral("pinMax"), int(token.ulMaxPinLen));
 

@@ -26,6 +26,7 @@
 
 class SslCertificate;
 class QSmartCardDataPrivate;
+class QSslCertificate;
 class QSslKey;
 class TokenData;
 class QWidget;
@@ -73,6 +74,7 @@ public:
 	bool pinLocked(PinType type) const;
 
 	static quint8 minPinLen(QSmartCardData::PinType type);
+	static PinType pinType(const QSslCertificate &cert);
 	static QString typeString( PinType type );
 
 private:

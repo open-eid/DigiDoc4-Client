@@ -74,7 +74,7 @@ public:
 	 */
 	mutable Status status = PinOK;
 
-	static QString errorString(Status error);
+	static QString errorString(Status error, const TokenData &token = {});
 
 protected:
 	virtual Status login(const TokenData &cert, const QString &pin) = 0;
