@@ -19,7 +19,7 @@ public:
 
 	TokenData token() const;
 	void refresh();
-	void update(const TokenData &token, bool selected);
+	void update(const TokenData &token, bool selected, bool checkValidity = true);
 
 signals:
 	void selected(const TokenData &token);
@@ -31,4 +31,5 @@ protected:
 private:
 	Ui::CardListItem *ui;
 	TokenData t;
+	bool checkValidity = true;
 };

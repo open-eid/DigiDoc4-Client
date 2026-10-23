@@ -27,8 +27,8 @@
 #include "QCryptoBackend.h"
 #include "Settings.h"
 #include "SslCertificate.h"
-#include "TokenData.h"
 #include "dialogs/AddRecipients.h"
+#include "dialogs/DecryptionDialog.h"
 #include "dialogs/FileDialog.h"
 #include "dialogs/PasswordDialog.h"
 #include "dialogs/WarningDialog.h"
@@ -278,7 +278,14 @@ void ContainerPage::transition(CryptoDoc *container)
 		hasUnsupported = hasUnsupported || (key.rcpt_cert.isNull() && !key.lock.isValid());
 		auto *addr = new AddressItem(key, AddressItem::Icon, ui->rightPane);
 		ui->rightPane->addWidget(addr);
-		connect(addr, &AddressItem::decrypt, container, [container, key, this](const TokenData &token) {
+		connect(addr, &AddressItem::decrypt, container, [container, key, addr, this] {
+			if(!key.isSupported()) {
+				WarningDialog::create(this)
+					->withTitle(CryptoDoc::tr("Failed to decrypt document"))
+					->withText(QCoreApplication::translate("AddressItem", "Unsupported cryptographic algorithm or recipient type"))
+					->open();
+				return;
+			}
 			if (key.lock.type == libcdoc::Lock::Type::PASSWORD) {
 				PasswordDialog p(PasswordDialog::Mode::DECRYPT, this);
 				auto params = libcdoc::Lock::parseLabel(key.lock.label);
@@ -287,13 +294,15 @@ void ContainerPage::transition(CryptoDoc *container)
 					return;
 				decrypt(container, key.lock, p.secret(), {});
 			}
-			else if(auto val = QCryptoBackend::getBackend(token))
-				decrypt(container, key.lock, {}, std::unique_ptr<QCryptoBackend>(val.value()));
-			else if(val.error() != QCryptoBackend::PinCanceled) {
-				WarningDialog::create(this)
-					->withTitle(tr("Failed to decrypt document"))
-					->withText(QCryptoBackend::errorString(val.error()))
-					->exec();
+			else {
+				std::unique_ptr<QCryptoBackend> backend;
+				{
+					DecryptionDialog dialog(key, addr->name(), this);
+					if(!dialog.exec())
+						return;
+					backend = dialog.takeBackend();
+				}
+				decrypt(container, key.lock, {}, std::move(backend));
 			}
 		});
 	}

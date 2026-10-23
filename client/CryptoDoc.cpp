@@ -57,6 +57,38 @@ CKey::CKey(QSslCertificate _rcpt_cert) : lock(libcdoc::Lock::PUBLIC_KEY), rcpt_c
 }
 
 bool
+CKey::canDecrypt(const QSslCertificate &cert) const
+{
+	if(!lock.isPKI() || !isSupported())
+		return false;
+	const std::vector<uint8_t> &key = lock.getBytes(libcdoc::Lock::RCPT_KEY);
+	// RCPT_KEY is i2d_PublicKey, not the SubjectPublicKeyInfo QSslKey::toDer() gives
+	return SslCertificate(cert).publicKeyDer() ==
+		QByteArray::fromRawData((const char*)key.data(), qsizetype(key.size()));
+}
+
+bool
+CKey::isSupported() const
+{
+	if(!lock.isCDoc1())
+		return lock.isValid();
+	if(lock.encrypted_fmk.empty())
+		return false;
+	const std::string method = lock.getString(libcdoc::Lock::METHOD);
+	switch(lock.pk_type)
+	{
+	case libcdoc::Algorithm::RSA:
+		return method == libcdoc::Crypto::RSA_MTH;
+	case libcdoc::Algorithm::ECC:
+		return !lock.getBytes(libcdoc::Lock::KEY_MATERIAL).empty() &&
+			(method == libcdoc::Crypto::KWAES128_MTH || method == libcdoc::Crypto::KWAES192_MTH ||
+				method == libcdoc::Crypto::KWAES256_MTH);
+	default:
+		return false;
+	}
+}
+
+bool
 CKey::operator==(const CKey& rhs) const
 {
 	if (!lock.isPKI() || !rhs.lock.isPKI()) return false;
