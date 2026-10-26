@@ -42,6 +42,8 @@ public:
 	static std::unique_ptr<QFile> keepAccessAlive(const QString &path,
 		QIODevice::OpenMode mode = QIODevice::WriteOnly|QIODevice::Append);
 	static bool isSignedPDF(const QString &path);
+	static QString logPath(const QString &name);
+	static bool openLogFile(QFile &f, const QString &path);
 	static void setFileZone(const QString &target, const QString &source);
 	static void setReadOnly(const QString &path, bool readonly = true);
 	static QString normalized(const QString &file);
