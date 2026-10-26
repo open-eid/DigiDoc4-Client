@@ -14,7 +14,9 @@ class DecryptionDialog final : public QDialog
 {
 	Q_OBJECT
 public:
-	explicit DecryptionDialog(const CKey &key, const QString &recipient,
+	enum Method { IDCard, MobileID, SmartID };
+
+	explicit DecryptionDialog(CryptoDoc *doc, const CKey &key, const QString &recipient,
 		QWidget *parent = nullptr);
 	~DecryptionDialog() final;
 	std::unique_ptr<QCryptoBackend> takeBackend();
@@ -26,11 +28,20 @@ private:
 	void updateSelection();
 	void updatePinControls();
 	void updateNoCard();
+	void updateProgressInfo();
+	void updateTabs();
+	void updateShareButton();
 	bool performLogin();
+	bool performShareDecrypt();
+	Method currentMethod() const;
 
+	CryptoDoc *cryptoDoc;
 	std::unique_ptr<QCryptoBackend> m_backend;
 	std::unique_ptr<Overlay> m_overlay;
 	CKey m_key;
 	Ui::DecryptionDialog *ui;
 	TokenData m_selectedToken;
+	bool m_confirmDecrypt = false;
+	// The lock's share servers have known authentication and relying party servers
+	bool m_sharesKnown = true;
 };

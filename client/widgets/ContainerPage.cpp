@@ -275,7 +275,9 @@ void ContainerPage::transition(CryptoDoc *container)
 	ui->rightPane->init(ItemList::ItemAddress, QT_TRANSLATE_NOOP("ItemList", "Recipients"));
 	bool hasUnsupported = false;
 	for (const auto &key : container->keys()) {
-		hasUnsupported = hasUnsupported || (key.rcpt_cert.isNull() && !key.lock.isValid());
+		// libcdoc writes no label for a key share, which isValid() requires
+		hasUnsupported = hasUnsupported || (key.rcpt_cert.isNull() && !key.lock.isValid() &&
+			key.lock.type != libcdoc::Lock::SHARE_SERVER);
 		auto *addr = new AddressItem(key, AddressItem::Icon, ui->rightPane);
 		ui->rightPane->addWidget(addr);
 		connect(addr, &AddressItem::decrypt, container, [container, key, addr, this] {
@@ -297,12 +299,19 @@ void ContainerPage::transition(CryptoDoc *container)
 			else {
 				std::unique_ptr<QCryptoBackend> backend;
 				{
-					DecryptionDialog dialog(key, addr->name(), this);
+					DecryptionDialog dialog(container, key, addr->name(), this);
 					if(!dialog.exec())
 						return;
 					backend = dialog.takeBackend();
 				}
-				decrypt(container, key.lock, {}, std::move(backend));
+				// A card's login is handed over; Mobile-ID / Smart-ID has already decrypted in the
+				// dialog, which shows its control codes meanwhile
+				if(backend)
+					decrypt(container, key.lock, {}, std::move(backend));
+				else {
+					transition(container);
+					emit action(DecryptContainerSuccess);
+				}
 			}
 		});
 	}
