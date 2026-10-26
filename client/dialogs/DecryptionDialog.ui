@@ -56,6 +56,9 @@ QProgressBar::chunk {
 border-radius: 3px;
 background-color: #2F70B6;
 }
+#errorPhone, #errorShares {
+color: #AD2A45;
+}
 QLineEdit {
 padding: 10px 14px;
 border: 1px solid #C4CBD8;
@@ -64,7 +67,7 @@ background-color: #FFFFFF;
 placeholder-text-color: #607496;
 font-size: 16px;
 }
-QLineEdit[label="error"] {
+QLineEdit[label=&quot;error&quot;] {
 border-color: #BE7884;
 }
 QPushButton {
@@ -97,7 +100,31 @@ QPushButton:default:disabled {
 border-color: #82A9D3;
 background-color: #82A9D3;
 }
-</string>
+QTabBar::tab {
+padding: 11px 19px;
+color: #003168;
+border: none;
+font-weight: 700;
+background-color: #FFFFFF;
+border: 1px solid #003168;
+border-width: 1px 0px 1px 1px;
+}
+QTabBar::tab:first {
+border-top-left-radius: 4px;
+border-bottom-left-radius: 4px;
+}
+QTabBar::tab:last {
+border-top-right-radius: 4px;
+border-bottom-right-radius: 4px;
+border-right-width: 1px;
+}
+QTabBar::tab:selected {
+background-color: #003168;
+color: #FFFFFF;
+}
+QTabBar::tab:hover:!selected {
+background-color: #EDF1F6;
+}</string>
   </property>
   <layout class="QVBoxLayout" name="DecryptionDialogLayout">
    <property name="spacing">
@@ -193,49 +220,61 @@ background-color: #82A9D3;
        </layout>
       </item>
       <item>
-       <widget class="QWidget" name="tabIDCard">
-        <layout class="QVBoxLayout" name="tabIDCardLayout">
-         <property name="spacing">
-          <number>12</number>
-         </property>
-         <property name="leftMargin">
-          <number>0</number>
-         </property>
-         <property name="topMargin">
-          <number>0</number>
-         </property>
-         <property name="rightMargin">
-          <number>0</number>
-         </property>
-         <property name="bottomMargin">
-          <number>0</number>
-         </property>
-         <item>
-          <widget class="QLabel" name="labelCert">
-           <property name="minimumSize">
-            <size>
-             <width>0</width>
-             <height>20</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>Select the certificate to decrypt with</string>
-           </property>
-           <property name="wordWrap">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="CardList" name="cardList">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">#cardList, #cardList &gt; QWidget, #cardListContainer {
+       <layout class="QVBoxLayout" name="tabLayout">
+        <property name="spacing">
+         <number>16</number>
+        </property>
+        <item>
+         <widget class="QTabBar" name="tabs" native="true"/>
+        </item>
+        <item>
+         <widget class="ShrinkingStack" name="tabStack">
+          <property name="currentIndex">
+           <number>0</number>
+          </property>
+          <widget class="QWidget" name="tabIDCard">
+           <layout class="QVBoxLayout" name="tabIDCardLayout">
+            <property name="spacing">
+             <number>12</number>
+            </property>
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="labelCert">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>20</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>Select the certificate to decrypt with</string>
+              </property>
+              <property name="wordWrap">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="CardList" name="cardList">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">#cardList, #cardList &gt; QWidget, #cardListContainer {
 background-color: transparent;
 }
 QScrollBar {
@@ -264,143 +303,240 @@ QScrollBar::add-page,
 QScrollBar::sub-page {
 background: transparent;
 }</string>
-           </property>
-           <property name="frameShape">
-            <enum>QFrame::NoFrame</enum>
-           </property>
-           <property name="horizontalScrollBarPolicy">
-            <enum>Qt::ScrollBarAlwaysOff</enum>
-           </property>
-           <property name="widgetResizable">
-            <bool>true</bool>
-           </property>
-           <widget class="QWidget" name="cardListContainer">
-            <layout class="QVBoxLayout" name="cardListLayout">
-             <property name="spacing">
-              <number>8</number>
-             </property>
-             <property name="leftMargin">
-              <number>0</number>
-             </property>
-             <property name="topMargin">
-              <number>0</number>
-             </property>
-             <property name="rightMargin">
-              <number>0</number>
-             </property>
-             <property name="bottomMargin">
-              <number>0</number>
-             </property>
-            </layout>
-           </widget>
-          </widget>
-         </item>
-         <item>
-          <widget class="QWidget" name="noCard">
-           <property name="styleSheet">
-            <string notr="true">QLabel {
+              </property>
+              <property name="frameShape">
+               <enum>QFrame::NoFrame</enum>
+              </property>
+              <property name="horizontalScrollBarPolicy">
+               <enum>Qt::ScrollBarAlwaysOff</enum>
+              </property>
+              <property name="widgetResizable">
+               <bool>true</bool>
+              </property>
+              <widget class="QWidget" name="cardListContainer">
+               <layout class="QVBoxLayout" name="cardListLayout">
+                <property name="spacing">
+                 <number>8</number>
+                </property>
+                <property name="leftMargin">
+                 <number>0</number>
+                </property>
+                <property name="topMargin">
+                 <number>0</number>
+                </property>
+                <property name="rightMargin">
+                 <number>0</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>0</number>
+                </property>
+               </layout>
+              </widget>
+             </widget>
+            </item>
+            <item>
+             <widget class="QWidget" name="noCard">
+              <property name="styleSheet">
+               <string notr="true">QLabel {
 color: #07142A;
 font-family: Roboto, Helvetica;
 font-size: 14px;
 font-weight: 400;
 }</string>
-           </property>
-           <layout class="QHBoxLayout" name="noCardLayout">
+              </property>
+              <layout class="QHBoxLayout" name="noCardLayout">
+               <property name="spacing">
+                <number>8</number>
+               </property>
+               <property name="leftMargin">
+                <number>8</number>
+               </property>
+               <property name="topMargin">
+                <number>0</number>
+               </property>
+               <property name="rightMargin">
+                <number>8</number>
+               </property>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
+               <item>
+                <widget class="QSvgWidget" name="noCardIcon" native="true">
+                 <property name="minimumSize">
+                  <size>
+                   <width>24</width>
+                   <height>24</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>24</width>
+                   <height>24</height>
+                  </size>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="noCardStatus">
+                 <property name="focusPolicy">
+                  <enum>Qt::TabFocus</enum>
+                 </property>
+                 <property name="text">
+                  <string>No card in reader</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="infoPin">
+              <property name="focusPolicy">
+               <enum>Qt::TabFocus</enum>
+              </property>
+              <property name="textFormat">
+               <enum>Qt::PlainText</enum>
+              </property>
+              <property name="wordWrap">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <layout class="QVBoxLayout" name="layoutPin">
+              <property name="spacing">
+               <number>6</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="labelPin">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>20</height>
+                 </size>
+                </property>
+                <property name="buddy">
+                 <cstring>pin</cstring>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="PinLineEdit" name="pin"/>
+              </item>
+              <item>
+               <widget class="QLabel" name="errorPin">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>20</height>
+                 </size>
+                </property>
+                <property name="focusPolicy">
+                 <enum>Qt::TabFocus</enum>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="tabMobile">
+           <layout class="QVBoxLayout" name="tabMobileLayout">
             <property name="spacing">
-             <number>8</number>
+             <number>24</number>
             </property>
             <property name="leftMargin">
-             <number>8</number>
+             <number>0</number>
             </property>
             <property name="topMargin">
              <number>0</number>
             </property>
             <property name="rightMargin">
-             <number>8</number>
+             <number>0</number>
             </property>
             <property name="bottomMargin">
              <number>0</number>
             </property>
             <item>
-             <widget class="QSvgWidget" name="noCardIcon" native="true">
-              <property name="minimumSize">
-               <size>
-                <width>24</width>
-                <height>24</height>
-               </size>
+             <layout class="QVBoxLayout" name="layoutPhone">
+              <property name="spacing">
+               <number>6</number>
               </property>
-              <property name="maximumSize">
-               <size>
-                <width>24</width>
-                <height>24</height>
-               </size>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="noCardStatus">
-              <property name="focusPolicy">
-               <enum>Qt::TabFocus</enum>
-              </property>
-              <property name="text">
-               <string>No card in reader</string>
-              </property>
-             </widget>
+              <item>
+               <widget class="QLabel" name="labelPhone">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>20</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>Country code and phone number</string>
+                </property>
+                <property name="buddy">
+                 <cstring>phoneNo</cstring>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="LineEdit" name="phoneNo">
+                <property name="placeholderText">
+                 <string notr="true">37254321</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="errorPhone">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>20</height>
+                 </size>
+                </property>
+                <property name="focusPolicy">
+                 <enum>Qt::TabFocus</enum>
+                </property>
+               </widget>
+              </item>
+             </layout>
             </item>
            </layout>
           </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="infoPin">
-           <property name="focusPolicy">
-            <enum>Qt::TabFocus</enum>
-           </property>
-           <property name="textFormat">
-            <enum>Qt::PlainText</enum>
-           </property>
-           <property name="wordWrap">
-            <bool>true</bool>
-           </property>
+          <widget class="QWidget" name="tabSmartID">
+           <layout class="QVBoxLayout" name="tabSmartIDLayout">
+            <property name="spacing">
+             <number>24</number>
+            </property>
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+           </layout>
           </widget>
-         </item>
-         <item>
-          <layout class="QVBoxLayout" name="layoutPin">
-           <property name="spacing">
-            <number>6</number>
-           </property>
-           <item>
-            <widget class="QLabel" name="labelPin">
-             <property name="minimumSize">
-              <size>
-               <width>0</width>
-               <height>20</height>
-              </size>
-             </property>
-             <property name="buddy">
-              <cstring>pin</cstring>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="PinLineEdit" name="pin" />
-           </item>
-           <item>
-            <widget class="QLabel" name="errorPin">
-             <property name="minimumSize">
-              <size>
-               <width>0</width>
-               <height>20</height>
-              </size>
-             </property>
-             <property name="focusPolicy">
-              <enum>Qt::TabFocus</enum>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-        </layout>
-       </widget>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="errorShares">
+          <property name="focusPolicy">
+           <enum>Qt::TabFocus</enum>
+          </property>
+          <property name="text">
+           <string>The key share servers of this container are not configured</string>
+          </property>
+          <property name="wordWrap">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
       <item>
        <layout class="QHBoxLayout" name="buttonLayout">
@@ -478,7 +614,7 @@ font-weight: 400;
          </size>
         </property>
         <property name="text">
-         <string notr="true" />
+         <string>Control code:</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -517,7 +653,7 @@ font-weight: 400;
          </size>
         </property>
         <property name="maximum">
-         <number>30</number>
+         <number>75</number>
         </property>
         <property name="value">
          <number>0</number>
@@ -553,6 +689,12 @@ font-weight: 400;
    <container>1</container>
   </customwidget>
   <customwidget>
+   <class>ShrinkingStack</class>
+   <extends>QStackedWidget</extends>
+   <header>widgets/ShrinkingStack.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
    <class>LineEdit</class>
    <extends>QLineEdit</extends>
    <header>widgets/LineEdit.h</header>
@@ -568,7 +710,12 @@ font-weight: 400;
    <header location="global">QSvgWidget</header>
    <container>1</container>
   </customwidget>
+  <customwidget>
+   <class>QTabBar</class>
+   <extends>QWidget</extends>
+   <header>qtabbar.h</header>
+  </customwidget>
  </customwidgets>
- <resources />
- <connections />
+ <resources/>
+ <connections/>
 </ui>

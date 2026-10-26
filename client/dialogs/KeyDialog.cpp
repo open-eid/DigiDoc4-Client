@@ -48,7 +48,9 @@ KeyDialog::KeyDialog(const CKey &k, QWidget *parent )
 		view->addTopLevelItem(i);
 	};
 
-	addItem(tr("Recipient"), QString::fromStdString(k.lock.label));
+	// A key share recipient has no label before it is encrypted for
+	addItem(tr("Recipient"), QString::fromStdString(k.lock.label.empty() ?
+		k.lock.getString(libcdoc::Lock::RECIPIENT_ID) : k.lock.label));
 	addItem(tr("Lock type"), [type = k.lock.type] {
 		switch(type) {
 			using enum libcdoc::Lock::Type;
@@ -57,9 +59,7 @@ KeyDialog::KeyDialog(const CKey &k, QWidget *parent )
 		case PUBLIC_KEY: return QStringLiteral("PUBLIC_KEY");
 		case CDOC1: return QStringLiteral("CDOC1");
 		case SERVER: return QStringLiteral("SERVER");
-#if 0
 		case SHARE_SERVER: return QStringLiteral("SHARE_SERVER");
-#endif
 		case UNKNOWN:
 		default: return QStringLiteral("UNKNOWN");
 		}
