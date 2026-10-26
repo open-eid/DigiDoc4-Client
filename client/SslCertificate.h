@@ -101,6 +101,7 @@ public:
 	QString		keyName() const;
 	QHash<KeyUsage,QString> keyUsage() const;
 	QString		personalCode() const;
+	static QString	personalCode(const QString &serialNumber);
 	QStringList policies() const;
 	bool		showCN() const;
 	QString		signatureAlgorithm() const;
