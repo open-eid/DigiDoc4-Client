@@ -34,6 +34,15 @@ TokenData CardListItem::token() const
 	return t;
 }
 
+void CardListItem::refresh()
+{
+	if(QSmartCardData data = QSmartCard::readCard(t, true); !data.isNull()) {
+		t.setData(QStringLiteral("blocked"),
+			data.retryCount(QSmartCardData::Pin2Type) == 0 || data.pinLocked(QSmartCardData::Pin2Type));
+		update(t, isChecked());
+	}
+}
+
 void CardListItem::paintEvent(QPaintEvent*)
 {
 	QStyleOptionButton opt;
