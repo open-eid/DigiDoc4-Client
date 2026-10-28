@@ -246,16 +246,6 @@ bool CryptoDoc::addEncryptionKey(const CKey& key) {
 	return true;
 }
 
-bool CryptoDoc::canDecrypt(const QSslCertificate &cert) {
-	if (!d->reader)
-		return false;
-	if (cert.isNull())
-		return false;
-	QByteArray der = cert.toDer();
-	return d->reader->getLockForCert(
-		std::vector<uint8_t>(der.cbegin(), der.cend())) >= 0;
-}
-
 void CryptoDoc::clear(const QString &file, int version)
 {
 	d->documents->clearTempFolder();
@@ -270,7 +260,7 @@ ContainerState CryptoDoc::state() const
 	return d->isEncrypted() ? EncryptedContainer : UnencryptedContainer;
 }
 
-bool CryptoDoc::decrypt(const libcdoc::Lock *lock, const QByteArray& secret)
+bool CryptoDoc::decrypt(const libcdoc::Lock &lock, const QByteArray& secret, std::unique_ptr<QCryptoBackend> &&backend)
 {
 	if(!d->reader)
 	{
@@ -281,31 +271,10 @@ bool CryptoDoc::decrypt(const libcdoc::Lock *lock, const QByteArray& secret)
 		return false;
 	}
 
-	int lock_idx = -1;
+	// libcdoc addresses the lock by its position; labels can repeat, the lock itself is unique
 	const std::vector<libcdoc::Lock> &locks = d->reader->getLocks();
-	if (lock == nullptr) {
-		QByteArray der = qApp->cryptoManager()->tokenauth().cert().toDer();
-		lock_idx = d->reader->getLockForCert(
-			std::vector<uint8_t>(der.cbegin(), der.cend()));
-		if (lock_idx < 0) {
-			WarningDialog::create()
-				->withTitle(tr("Failed to decrypt document"))
-				->withText(tr("You do not have the key to decrypt this document"))
-				->open();
-			return false;
-		}
-		lock = &locks.at(lock_idx);
-	} else {
-		for (lock_idx = 0; lock_idx < locks.size(); lock_idx++) {
-			if (lock->label == locks[lock_idx].label) {
-				lock = &locks.at(lock_idx);
-				break;
-			}
-		}
-		if (lock_idx >= locks.size())
-			lock_idx = -1;
-	}
-	if (!lock || (lock->isSymmetric() && secret.isEmpty())) {
+	auto it = std::ranges::find(locks, lock);
+	if (it == locks.cend() || (lock.isSymmetric() && secret.isEmpty())) {
 		WarningDialog::create()
 			->withTitle(tr("Failed to decrypt document"))
 			->withText(tr("You do not have the key to decrypt this document"))
@@ -313,6 +282,11 @@ bool CryptoDoc::decrypt(const libcdoc::Lock *lock, const QByteArray& secret)
 		return false;
 	}
 
+	auto lock_idx = unsigned(std::distance(locks.cbegin(), it));
+	d->crypto.setBackend(std::move(backend));
+	auto resetBackend = qScopeGuard([this] {
+		d->crypto.setBackend({});
+	});
 	d->crypto.secret.assign(secret.cbegin(), secret.cend());
 
 	TempListConsumer cons;
@@ -333,8 +307,11 @@ bool CryptoDoc::decrypt(const libcdoc::Lock *lock, const QByteArray& secret)
 		QString str;
 		const std::string &msg = d->reader->getLastErrorStr();
 		switch (result) {
+		case libcdoc::NOT_SUPPORTED:
+			str = QCoreApplication::translate("AddressItem", "Unsupported cryptographic algorithm or recipient type");
+			break;
 		case libcdoc::WRONG_KEY:
-			str = (lock->type == libcdoc::Lock::PASSWORD) ? tr("Wrong password.") : tr("Wrong key.");
+			str = (lock.type == libcdoc::Lock::PASSWORD) ? tr("Wrong password.") : tr("Wrong key.");
 			break;
 		case libcdoc::HASH_MISMATCH:
 		case libcdoc::DATA_FORMAT_ERROR:
