@@ -24,7 +24,7 @@
 #include "Utils.h"
 
 #include <digidocpp/Conf.h>
-#include <digidocpp/crypto/Signer.h>
+#include <digidocpp/Exception.h>
 #include <digidocpp/crypto/X509Cert.h>
 
 #include <QtNetwork/QSslCertificate>

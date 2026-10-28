@@ -25,6 +25,7 @@
 #include "Utils.h"
 #include "dialogs/WarningDialog.h"
 
+#include <digidocpp/Exception.h>
 #include <digidocpp/crypto/X509Cert.h>
 
 #include <QtCore/QDir>
