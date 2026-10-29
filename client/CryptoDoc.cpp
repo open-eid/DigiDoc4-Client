@@ -56,6 +56,15 @@ CKey::CKey(QSslCertificate _rcpt_cert) : lock(libcdoc::Lock::PUBLIC_KEY), rcpt_c
 	lock.setBytes(libcdoc::Lock::CERT, std::vector<uint8_t>(der.cbegin(), der.cend()));
 }
 
+CKey
+CKey::share(const QString &personalCode)
+{
+	libcdoc::Lock lock(libcdoc::Lock::SHARE_SERVER);
+	// The form CDoc2 stores it in, so a new recipient reads the same as an encrypted one
+	lock.setString(libcdoc::Lock::RECIPIENT_ID, "etsi/PNOEE-" + personalCode.toStdString());
+	return CKey(lock);
+}
+
 bool
 CKey::canDecrypt(const QSslCertificate &cert) const
 {
@@ -94,6 +103,8 @@ CKey::isSupported() const
 bool
 CKey::operator==(const CKey& rhs) const
 {
+	if (lock.type == libcdoc::Lock::SHARE_SERVER && rhs.lock.type == libcdoc::Lock::SHARE_SERVER)
+		return lock.getString(libcdoc::Lock::RECIPIENT_ID) == rhs.lock.getString(libcdoc::Lock::RECIPIENT_ID);
 	if (!lock.isPKI() || !rhs.lock.isPKI()) return false;
 	return lock.getBytes(libcdoc::Lock::RCPT_KEY) == rhs.lock.getBytes(libcdoc::Lock::RCPT_KEY);
 }
@@ -263,6 +274,12 @@ bool
 CryptoDoc::supportsSymmetricKeys() const
 {
 	return !d->reader && (d->version == 2);
+}
+
+bool
+CryptoDoc::supportsKeyShares() const
+{
+	return supportsSymmetricKeys() && !DDConfiguration::defaultShareServer().empty();
 }
 
 bool CryptoDoc::addEncryptionKey(const CKey& key) {
@@ -489,6 +506,16 @@ bool CryptoDoc::encrypt(const QString &filename, const QString& label, const QBy
 			->open();
 		return false;
 	}
+	const std::string share_server = DDConfiguration::defaultShareServer();
+	if(std::ranges::any_of(d->keys, [](const CKey &key) { return key.lock.type == libcdoc::Lock::SHARE_SERVER; }) &&
+		(d->version != 2 || share_server.empty()))
+	{
+		WarningDialog::create()
+			->withTitle(tr("Failed to encrypt document"))
+			->withText(tr("Key share servers for Mobile-ID and Smart-ID are not configured"))
+			->open();
+		return false;
+	}
 	QString writer_last_error;
 	auto keepAlive = FileDialog::keepAccessAlive(d->fileName);
 	libcdoc::result_t result = waitFor([&] -> libcdoc::result_t {
@@ -513,6 +540,11 @@ bool CryptoDoc::encrypt(const QString &filename, const QString& label, const QBy
 					case libcdoc::Lock::PUBLIC_KEY:
 					case libcdoc::Lock::SERVER:
 						enc_keys.push_back(libcdoc::Recipient::makePublicKey(key.lock, keyserver_id));
+						break;
+					case libcdoc::Lock::SHARE_SERVER:
+						// "etsi/PNOEE-..." -> "PNOEE-...", libcdoc adds the prefix back
+						enc_keys.push_back(libcdoc::Recipient::makeShare({}, share_server,
+							key.lock.getString(libcdoc::Lock::RECIPIENT_ID).substr(5)));
 						break;
 					default:
 						break;

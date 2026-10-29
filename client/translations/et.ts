@@ -644,6 +644,10 @@
         <translation>Võtmeedastusserver ei ole seadistatud</translation>
     </message>
     <message>
+        <source>Key share servers for Mobile-ID and Smart-ID are not configured</source>
+        <translation>Mobiil-ID ja Smart-ID võtmeosade servereid ei ole seadistatud</translation>
+    </message>
+    <message>
         <source>Failed to remove key</source>
         <translation>Võtme eemaldamine ebaõnnestus</translation>
     </message>

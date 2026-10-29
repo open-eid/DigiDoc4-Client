@@ -247,6 +247,14 @@ DDConfiguration::shareServersKnown(const std::string &shareUrls)
 }
 
 std::string
+DDConfiguration::defaultShareServer()
+{
+	QString id = Settings::CDOC2_DEFAULT_KEYSERVER;
+	QJsonObject data = Application::confValue(QLatin1String("CDOC2-CONF")).toObject().value(id).toObject();
+	return data.value(QLatin1String("SHARES")).toArray().size() >= 2 ? id.toStdString() : std::string();
+}
+
+std::string
 DDConfiguration::getValue(std::string_view domain, std::string_view param) const
 {
 	if (param == libcdoc::Configuration::AUTH_SERVER) {
