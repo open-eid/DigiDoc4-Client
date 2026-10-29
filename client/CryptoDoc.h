@@ -25,6 +25,7 @@
 #include <QtCore/QLoggingCategory>
 #include <QtNetwork/QSslCertificate>
 
+#include <functional>
 #include <memory>
 
 #include <cdoc/Lock.h>
@@ -47,6 +48,8 @@ public:
 	libcdoc::Lock lock;
     QSslCertificate rcpt_cert;
 
+	// True when cert is the one this lock is addressed to, i.e. the card
+	// holding its private key is the one that can open the container.
 	bool canDecrypt(const QSslCertificate &cert) const;
 	bool isSupported() const;
 	bool operator== (const CKey& rhs) const;
@@ -63,6 +66,11 @@ public:
 	bool addEncryptionKey(const CKey& key);
 	void clear(const QString &file = {}, int version = -1);
 	bool decrypt(const libcdoc::Lock &lock, const QByteArray& secret, std::unique_ptr<QCryptoBackend> &&backend);
+	// Mobile-ID with phone, Smart-ID without, for a key share lock; onFeedback gets
+	// each verification code to show while the user confirms on their device
+	bool decrypt(const libcdoc::Lock &lock, const QString &phone, std::function<void(int code)> onFeedback);
+	// Ends a Mobile-ID / Smart-ID decryption in progress
+	void cancel();
 	bool encrypt(const QString &filename = {}, const QString& label = {}, const QByteArray& secret = {});
 	DocumentModel* documentModel() const;
 	QString fileName() const;

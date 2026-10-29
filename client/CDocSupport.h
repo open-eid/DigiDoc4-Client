@@ -24,6 +24,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QIODevice>
 #include <QtCore/QFile>
+#include <QtCore/QUrl>
 
 #include <cdoc/Configuration.h>
 #include <cdoc/CryptoBackend.h>
@@ -32,6 +33,9 @@
 #include <cdoc/Io.h>
 #include <cdoc/Recipient.h>
 
+#include <atomic>
+#include <functional>
+
 //
 // libcdoc handler implementations
 //
@@ -39,12 +43,22 @@
 //
 // Configuration
 //
-// Provides KEYSERVER_SEND_URL and KEYSERVER_FETCH_URL
+// Provides KEYSERVER_SEND_URL and KEYSERVER_FETCH_URL, and the Mobile-ID / Smart-ID
+// AUTH_SERVER, RP_SERVER and SHARE_SERVER_URLS from the CDOC2-CONF entries
 //
 
 struct DDConfiguration : public libcdoc::Configuration {
 	std::string getValue(std::string_view domain,
 						 std::string_view param) const final;
+	// Whether the authentication and relying party servers for a lock's share
+	// servers (Lock::SHARE_URLS) are configured, i.e. Mobile-ID / Smart-ID can open it
+	static bool shareServersKnown(const std::string &shareUrls);
+	// Mobile-ID / Smart-ID decryption: Configuration::SHARE_SIGNER_MID or
+	// SHARE_SIGNER_SID, the Mobile-ID phone number, and the lock's share servers
+	// (Lock::SHARE_URLS) that select the CDOC2-CONF entry
+	std::string shareSigner;
+	std::string phone;
+	std::string shareUrls;
 
 	explicit DDConfiguration() = default;
 };
@@ -108,6 +122,17 @@ struct DDNetworkBackend final : public libcdoc::NetworkBackend, private QObject 
 	libcdoc::result_t
 	fetchKey(std::vector<uint8_t> &result, const std::string &keyserver_id,
 			 const std::string &transaction_id) final;
+	// Key share and Mobile-ID / Smart-ID requests, over Qt for the proxy and TLS setup
+	libcdoc::result_t get(const std::string &url, std::vector<uint8_t> &body,
+		std::map<std::string, std::string> &headers, bool client_cert) final;
+	libcdoc::result_t post(const std::string &url, std::vector<uint8_t> &body,
+		std::map<std::string, std::string> &headers, bool client_cert) final;
+	libcdoc::result_t getAuthResponse(const std::string &url, std::vector<uint8_t> &body,
+		std::map<std::string, std::string> &headers) final;
+	libcdoc::result_t getSignResponse(const std::string &url, const std::string &post_path,
+		std::vector<uint8_t> &body, std::map<std::string, std::string> &headers,
+		const std::string &poll_path_prefix) final;
+	libcdoc::result_t showFeedback(SIDMIDFeedback &feedback) final;
 
 	libcdoc::result_t
 	getClientTLSCertificate(std::vector<uint8_t> &dst) final {
@@ -122,6 +147,18 @@ struct DDNetworkBackend final : public libcdoc::NetworkBackend, private QObject 
 
 	DDCryptoBackend &crypto;
 	std::string last_error;
+	// Gets each Mobile-ID / Smart-ID verification code, on the main thread
+	std::function<void(int code)> onFeedback;
+	// Set from the main thread to end a Mobile-ID / Smart-ID session
+	std::atomic_bool canceled = false;
+
+private:
+	libcdoc::result_t request(bool post, const std::string &url, std::vector<uint8_t> &body,
+		std::map<std::string, std::string> &headers, bool client_cert);
+	libcdoc::result_t send(bool post, const QUrl &url, std::vector<uint8_t> &body,
+		std::map<std::string, std::string> &headers, int timeout = 30'000);
+	libcdoc::result_t poll(const QUrl &url, QLatin1String field, std::vector<uint8_t> &body,
+		std::map<std::string, std::string> &headers);
 };
 
 //

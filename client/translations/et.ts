@@ -131,6 +131,10 @@
         <translation>Mittetoetatud krüptograafiline algoritm või adressaadi tüüp</translation>
     </message>
     <message>
+        <source>Mobile-ID / Smart-ID</source>
+        <translation>Mobiil-ID / Smart-ID</translation>
+    </message>
+    <message>
         <source>pw</source>
         <translation>Parool</translation>
     </message>
@@ -529,6 +533,10 @@
         <translation>Koos sellega eemaldatakse ka ümbrik.</translation>
     </message>
     <message>
+        <source>Failed to decrypt document</source>
+        <translation type="unfinished">Dokumendi dekrüpteerimine ebaõnnestus</translation>
+    </message>
+    <message>
         <source>In order to view Validity Confirmation Sheet there has to be at least one printer installed!</source>
         <translation>Digitaalallkirjade kinnituslehe kuvamiseks peab olema arvutis vähemalt üks printer seadistatud!</translation>
     </message>
@@ -679,12 +687,56 @@
         <translation>Vali sertifikaat, millega dekrüpteerida</translation>
     </message>
     <message>
+        <source>No card in reader</source>
+        <translation>Lugejas ei ole kaarti; kontrolli, kas ID-kaart on õiget pidi lugejas</translation>
+    </message>
+    <message>
+        <source>Country code and phone number</source>
+        <translation>Riigikood ja telefoninumber</translation>
+    </message>
+    <message>
+        <source>The key share servers of this container are not configured</source>
+        <translation>Selle ümbriku võtmeosade serverid ei ole seadistatud</translation>
+    </message>
+    <message>
         <source>Cancel</source>
         <translation>Katkesta</translation>
     </message>
     <message>
         <source>Decrypt</source>
         <translation>Dekrüpteeri</translation>
+    </message>
+    <message>
+        <source>Control code:</source>
+        <translation>Kontrollkood:</translation>
+    </message>
+    <message>
+        <source>ID-card</source>
+        <translation>ID-kaart</translation>
+    </message>
+    <message>
+        <source>Mobile-ID</source>
+        <translation>Mobiil-ID</translation>
+    </message>
+    <message>
+        <source>Smart-ID</source>
+        <translation>Smart-ID</translation>
+    </message>
+    <message>
+        <source>Confirm decryption: make sure the control code matches the one on your phone screen and enter your Mobile-ID PIN1.</source>
+        <translation>Kinnita dekrüpteerimine: veendu kontrollkoodi õigsuses ja sisesta telefonil mobiil-ID PIN1-kood.</translation>
+    </message>
+    <message>
+        <source>Log in: make sure the control code matches the one on your phone screen and enter your Mobile-ID PIN1.</source>
+        <translation>Logi sisse: veendu kontrollkoodi õigsuses ja sisesta telefonil mobiil-ID PIN1-kood.</translation>
+    </message>
+    <message>
+        <source>Confirm decryption: make sure the control code matches the one in your Smart-ID app and enter your PIN1.</source>
+        <translation>Kinnita dekrüpteerimine: veendu kontrollkoodi õigsuses ja sisesta nutiseadmes Smart-ID PIN1-kood.</translation>
+    </message>
+    <message>
+        <source>Log in: make sure the control code matches the one in your Smart-ID app and enter your PIN1.</source>
+        <translation>Logi sisse: veendu kontrollkoodi õigsuses ja sisesta nutiseadmes Smart-ID PIN1-kood.</translation>
     </message>
     <message>
         <source>Failed to decrypt document</source>
@@ -1860,6 +1912,21 @@ LDAP serveriga ei saa ühendust.</translation>
     </message>
 </context>
 <context>
+    <name>PinPopup</name>
+    <message>
+        <source>You need to use a personal identification certificate for the selected activity.</source>
+        <translation type="unfinished">Valitud tegevuse jaoks on vaja kasutada isikutuvastuse sertifikaati.</translation>
+    </message>
+    <message>
+        <source>%1 will be locked next failed attempt</source>
+        <translation type="unfinished">Vale koodi sisestamisel %1 lukustub</translation>
+    </message>
+    <message>
+        <source>%1 has been entered incorrectly at least once</source>
+        <translation type="unfinished">%1 on vähemalt ühe korra valesti sisestatud</translation>
+    </message>
+</context>
+<context>
     <name>PinUnblock</name>
     <message>
         <source>PIN2 code is used to digitally sign documents.</source>
@@ -1996,6 +2063,17 @@ LDAP serveriga ei saa ühendust.</translation>
     <message>
         <source>Change</source>
         <translation>Muuda</translation>
+    </message>
+</context>
+<context>
+    <name>PinpadLogin</name>
+    <message>
+        <source>After you continue, enter %1 code on the card reader keypad</source>
+        <translation type="unfinished">Pärast jätkamist sisesta %1-kood kaardilugeja sõrmistikult</translation>
+    </message>
+    <message>
+        <source>Enter %1 code on the card reader keypad</source>
+        <translation type="unfinished">Sisesta %1-kood kaardilugeja sõrmistikult</translation>
     </message>
 </context>
 <context>
@@ -2763,6 +2841,10 @@ Täiendavad litsentsid ja komponendid</translation>
     <message>
         <source>Choose signing method</source>
         <translation>Vali allkirjastamise meetod</translation>
+    </message>
+    <message>
+        <source>No card in reader</source>
+        <translation type="unfinished">Lugejas ei ole kaarti; kontrolli, kas ID-kaart on õiget pidi lugejas</translation>
     </message>
     <message>
         <source>Country code and phone number</source>
