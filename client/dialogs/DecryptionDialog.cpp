@@ -20,11 +20,11 @@
 
 #include <memory>
 
-DecryptionDialog::DecryptionDialog(CryptoDoc *doc, const CKey &key, const QString &recipient, QWidget *parent)
+DecryptionDialog::DecryptionDialog(CryptoDoc *doc, std::vector<CKey> keys, const QString &recipient, QWidget *parent)
 	: QDialog(parent)
 	, cryptoDoc(doc)
 	, m_overlay(std::make_unique<Overlay>(this))
-	, m_key(key)
+	, m_keys(std::move(keys))
 	, ui(new Ui::DecryptionDialog)
 {
 	ui->setupUi(this);
@@ -42,18 +42,27 @@ DecryptionDialog::DecryptionDialog(CryptoDoc *doc, const CKey &key, const QStrin
 	ui->tabs->addTab({});
 	updateTabs();
 	// Tab bar: a card's lock opens only with the card, a key share only with
-	// Mobile-ID or Smart-ID, so the methods that cannot open this lock are hidden
-	const bool share = m_key.lock.type == libcdoc::Lock::SHARE_SERVER;
+	// Mobile-ID or Smart-ID, so the methods none of the recipient's locks open are hidden
+	const bool share = shareKey();
+	const bool card = std::ranges::any_of(m_keys, [](const CKey &key) { return key.lock.isPKI(); });
 	// Checked on each opening, so an updated central configuration is picked up
-	m_sharesKnown = !share || DDConfiguration::shareServersKnown(m_key.lock.getString(libcdoc::Lock::SHARE_URLS));
-	ui->errorShares->setVisible(!m_sharesKnown);
-	ui->tabs->setTabVisible(IDCard, !share);
+	m_sharesKnown = !share || DDConfiguration::shareServersKnown(shareKey()->lock.getString(libcdoc::Lock::SHARE_URLS));
+	ui->tabs->setTabVisible(IDCard, card);
 	ui->tabs->setTabVisible(MobileID, share);
 	ui->tabs->setTabVisible(SmartID, share);
 	ui->tabs->setVisible(share);
 	connect(ui->tabs, &QTabBar::currentChanged, ui->tabStack, &QStackedWidget::setCurrentIndex);
-	connect(ui->tabs, &QTabBar::currentChanged, this, &DecryptionDialog::updateShareButton);
-	ui->tabs->setCurrentIndex(share ? MobileID : IDCard);
+	connect(ui->tabs, &QTabBar::currentChanged, this, [this](int index) {
+		// A person with both a card and a key share sees all tabs; the card list is kept
+		// current by cacheChanged, so only the Decrypt button and the share warning follow
+		ui->errorShares->setVisible(!m_sharesKnown && index != IDCard);
+		if(index == IDCard)
+			updateSelection();
+		else
+			updateShareButton();
+	});
+	ui->tabs->setCurrentIndex(card ? IDCard : MobileID);
+	ui->errorShares->setVisible(!m_sharesKnown && ui->tabs->currentIndex() != IDCard);
 	ui->tabStack->setCurrentIndex(ui->tabs->currentIndex());
 
 	// ID-card tab
@@ -96,6 +105,11 @@ DecryptionDialog::~DecryptionDialog()
 std::unique_ptr<QCryptoBackend> DecryptionDialog::takeBackend()
 {
 	return std::move(m_backend);
+}
+
+const CKey* DecryptionDialog::selectedKey() const
+{
+	return keyFor(m_selectedToken);
 }
 
 DecryptionDialog::Method DecryptionDialog::currentMethod() const
@@ -154,13 +168,33 @@ void DecryptionDialog::updateNoCard()
 	ui->noCard->setAccessibleDescription(ui->noCardStatus->text());
 }
 
+const CKey* DecryptionDialog::keyFor(const TokenData &token) const
+{
+	// A card can be addressed both directly and through the key server;
+	// the direct lock needs no network and cannot expire on the server.
+	const CKey *found = nullptr;
+	for(const CKey &key: m_keys) {
+		if(key.canDecrypt(token.cert()) && (!found || found->lock.type == libcdoc::Lock::SERVER))
+			found = &key;
+	}
+	return found;
+}
+
+const CKey* DecryptionDialog::shareKey() const
+{
+	auto it = std::ranges::find(m_keys, libcdoc::Lock::SHARE_SERVER, [](const CKey &key) { return key.lock.type; });
+	return it != m_keys.cend() ? &*it : nullptr;
+}
+
 void DecryptionDialog::updateCards()
 {
 	qDeleteAll(ui->cardListContainer->findChildren<CardListItem*>());
 
+	// Only a card one of the locks is addressed to can open it; the others are listed
+	// but not selectable, so it stays visible which card is missing or blocked.
 	auto usableToken = [this](const TokenData &token) {
 		SslCertificate c(token.cert());
-		return c.isValid() && !token.data(QStringLiteral("blocked")).toBool() && m_key.canDecrypt(token.cert());
+		return c.isValid() && !token.data(QStringLiteral("blocked")).toBool() && keyFor(token);
 	};
 
 	const QList<TokenData> tokens = qApp->cryptoManager()->cache();
@@ -188,7 +222,7 @@ void DecryptionDialog::updateCards()
 		if(!SslCertificate(token.cert()).isEncryptionCert())
 			continue;
 		auto *w = new CardListItem(ui->cardListContainer);
-		w->update(token, token == m_selectedToken, m_key.canDecrypt(token.cert()) ?
+		w->update(token, token == m_selectedToken, keyFor(token) ?
 			nullptr : QT_TRANSLATE_NOOP("CardListItem", "This card cannot decrypt the container"));
 		connect(w, &CardListItem::selected, this, &DecryptionDialog::updateSelection);
 		ui->cardListContainer->layout()->addWidget(w);
@@ -285,7 +319,7 @@ bool DecryptionDialog::performShareDecrypt()
 		self->ui->progressBar->setValue(0);
 		timer->start();
 	};
-	bool result = cryptoDoc->decrypt(m_key.lock,
+	bool result = cryptoDoc->decrypt(shareKey()->lock,
 		currentMethod() == MobileID ? ui->phoneNo->text() : QString(), feedback);
 	if(!self)
 		return result;

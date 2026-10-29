@@ -91,10 +91,6 @@
         <translation>mobiil-ID</translation>
     </message>
     <message>
-        <source>Expires on</source>
-        <translation>Aegub</translation>
-    </message>
-    <message>
         <source>Added</source>
         <translation>Lisatud</translation>
     </message>
@@ -119,12 +115,16 @@
         <translation>e-Tempel</translation>
     </message>
     <message>
-        <source>Authentication certificate</source>
-        <translation>Isikutuvastamise sertifikaat</translation>
+        <source>%1 (decryption expired %2)</source>
+        <translation>%1 (dekrüpteerimine aegus %2)</translation>
     </message>
     <message>
-        <source>Expired on</source>
-        <translation>Aegus</translation>
+        <source>%1 (decryption until %2)</source>
+        <translation>%1 (dekrüpteerimine kuni %2)</translation>
+    </message>
+    <message>
+        <source>Authentication certificate</source>
+        <translation>Isikutuvastamise sertifikaat</translation>
     </message>
     <message>
         <source>Unsupported cryptographic algorithm or recipient type</source>
@@ -137,14 +137,6 @@
     <message>
         <source>pw</source>
         <translation>Parool</translation>
-    </message>
-    <message>
-        <source>Decryption is possible until:</source>
-        <translation>Dekrüpteerimine on võimalik kuni:</translation>
-    </message>
-    <message>
-        <source>Decryption has expired</source>
-        <translation>Dekrüpteerimine on aegunud</translation>
     </message>
     <message>
         <source>ID-CARD</source>
