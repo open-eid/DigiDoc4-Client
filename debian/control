@@ -27,6 +27,7 @@ Depends:
  ${shlibs:Depends},
  ${misc:Depends}
 Recommends:
+ qt6-xdgdesktopportal-platformtheme,
  python3-nautilus:amd64 | python3-nautilus:arm64
 Replaces:
  qdigidoc (<< 3.14)
