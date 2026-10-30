@@ -303,6 +303,8 @@ bool CryptoDoc::decrypt(const libcdoc::Lock &lock, const QByteArray& secret, std
 		qCDebug(CRYPTO) << "Decryption result: " << result << " " << QString::fromStdString(d->reader->getLastErrorStr());
 		return result;
 	});
+	if (result == libcdoc::CRYPTO_ERROR && d->crypto.backend_status != libcdoc::OK)
+		result = d->crypto.backend_status;
 	if (result != libcdoc::OK) {
 		QString str;
 		const std::string &msg = d->reader->getLastErrorStr();
@@ -339,7 +341,7 @@ bool CryptoDoc::decrypt(const libcdoc::Lock &lock, const QByteArray& secret, std
 			str = QCryptoBackend::errorString(QCryptoBackend::Status::GeneralError);
 			break;
 		default:
-			str = tr("General decryption error. Neither the card reader not network layer did not give more information. Please check your internet connection, network settings and card reader. On some readers it may also indicate the wrong pin code or locked card.");
+			str = tr("General decryption error. Neither the card reader nor the network layer gave more information. Please check your internet connection, network settings and card reader. On some readers it may also indicate the wrong pin code or locked card.");
 			break;
 		}
 		WarningDialog::create()

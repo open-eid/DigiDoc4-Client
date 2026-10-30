@@ -103,8 +103,9 @@ QString QCryptoBackend::errorString(Status error)
 	case PinLocked: return tr("PIN locked");
 	case PinIncorrect: return tr("PIN incorrect");
 	case InProgress: return tr("Signing/decrypting is already in progress in another window.");
-	case GeneralError: return tr("Error in smart card driver, reader or the card. On some readers it may indicate the wrong pin code or locked card.");
-	case DeviceError: return tr("Error in smart card driver, reader or the card. On some readers it may indicate the wrong pin code or locked card.");
+	case GeneralError:
+	case DeviceError:
+		return tr("Error in smart card driver, reader or the card. On some readers it may indicate the wrong pin code or locked card.");
 	default: return tr("Unknown error");
 	}
 }
