@@ -7,7 +7,6 @@ Build-Depends:
  debhelper-compat (= 13),
  cmake,
  libdigidocpp-dev (>=3.0),
- libldap2-dev,
  libpcsclite-dev,
  libssl-dev,
  libflatbuffers-dev,

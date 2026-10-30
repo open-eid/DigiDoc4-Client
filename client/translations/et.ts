@@ -1277,16 +1277,8 @@
 <context>
     <name>LdapSearch</name>
     <message>
-        <source>Failed to init ldap</source>
-        <translation>LDAP initsialiseerimine ebaõnnestus</translation>
-    </message>
-    <message>
-        <source>Failed to set ldap CA cert</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Failed to init ldap search</source>
-        <translation>LDAP otsingu initsialiseerimine ebaõnnestus</translation>
+        <source>The LDAP server certificate is not trusted.</source>
+        <translation>LDAP serveri sertifikaat ei ole usaldusväärne.</translation>
     </message>
     <message>
         <source>Failed to get result</source>
@@ -1299,16 +1291,12 @@ LDAP server is unavailable.</source>
 LDAP serveriga ei saa ühendust.</translation>
     </message>
     <message>
+        <source>The LDAP search could not be completed because the server returned a referral.</source>
+        <translation>LDAP otsingut ei saanud lõpetada, sest server suunas päringu edasi.</translation>
+    </message>
+    <message>
         <source>Error Code: %1 (%2)</source>
         <translation>Veakood: %1 (%2)</translation>
-    </message>
-    <message>
-        <source>Failed to set ldap version</source>
-        <translation>Ldap versiooni seadistamine ebaõnnestus</translation>
-    </message>
-    <message>
-        <source>Failed to start ssl</source>
-        <translation>Ssl käivitamine ebaõnnestus</translation>
     </message>
 </context>
 <context>

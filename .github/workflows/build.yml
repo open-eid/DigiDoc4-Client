@@ -5,7 +5,7 @@ permissions:
 env:
   BUILD_NUMBER: ${{ github.run_number }}
   CMAKE_BUILD_PARALLEL_LEVEL: 4
-  UBUNTU_DEPS: ./libdigidocpp-pkg/*.deb cmake libldap2-dev gettext libpcsclite-dev libssl-dev libgl-dev libqt6svg6-dev qt6-tools-dev qt6-tools-dev-tools qt6-l10n-tools libflatbuffers-dev libxml2-dev zlib1g-dev
+  UBUNTU_DEPS: ./libdigidocpp-pkg/*.deb cmake gettext libpcsclite-dev libssl-dev libgl-dev libqt6svg6-dev qt6-tools-dev qt6-tools-dev-tools qt6-l10n-tools libflatbuffers-dev libxml2-dev zlib1g-dev
 jobs:
   macos:
     name: Build on macOS
@@ -53,7 +53,6 @@ jobs:
       run: |
         cmake "-GNinja" -B build -S . -DCMAKE_BUILD_TYPE=RelWithDebInfo \
           -DOPENSSL_ROOT_DIR=${LIBS_PATH}/OpenSSL \
-          -DLDAP_ROOT=${LIBS_PATH}/OpenLDAP \
           -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64"
         cmake --build build
         cmake --build build --target zipdebug
@@ -134,7 +133,7 @@ jobs:
         path: libdigidocpp-pkg
         repo: open-eid/libdigidocpp
     - name: Install Deps
-      run: dnf install -y ./libdigidocpp-pkg/*.rpm git gcc-c++ cmake rpm-build gettext openssl-devel openldap-devel pcsc-lite-devel qt6-qtsvg-devel qt6-qttools-devel flatbuffers-devel flatbuffers-compiler zlib-devel
+      run: dnf install -y ./libdigidocpp-pkg/*.rpm git gcc-c++ cmake rpm-build gettext openssl-devel pcsc-lite-devel qt6-qtsvg-devel qt6-qttools-devel flatbuffers-devel flatbuffers-compiler zlib-devel
     - *Checkout
     - name: Build
       run: |
