@@ -303,6 +303,8 @@ bool CryptoDoc::decrypt(const libcdoc::Lock &lock, const QByteArray& secret, std
 		qCDebug(CRYPTO) << "Decryption result: " << result << " " << QString::fromStdString(d->reader->getLastErrorStr());
 		return result;
 	});
+	if (result == libcdoc::CRYPTO_ERROR && d->crypto.backend_status != libcdoc::OK)
+		result = d->crypto.backend_status;
 	if (result != libcdoc::OK) {
 		QString str;
 		const std::string &msg = d->reader->getLastErrorStr();
@@ -321,6 +323,9 @@ bool CryptoDoc::decrypt(const libcdoc::Lock &lock, const QByteArray& secret, std
 		case libcdoc::INPUT_STREAM_ERROR:
 			str = tr("Cannot read file.");
 			break;
+		case libcdoc::NetworkBackend::NETWORK_ERROR:
+			str = tr("Network error. Please check your network connection. It may also indicate that one or more CDoc servers are unreachable.");
+			break;
 		case DDCryptoBackend::PIN_CANCELED:
 			return false;
 		case DDCryptoBackend::PIN_INCORRECT:
@@ -332,8 +337,11 @@ bool CryptoDoc::decrypt(const libcdoc::Lock &lock, const QByteArray& secret, std
 		case DDCryptoBackend::IN_PROGRESS:
 			str = QCryptoBackend::errorString(QCryptoBackend::Status::InProgress);
 			break;
+		case DDCryptoBackend::BACKEND_ERROR:
+			str = QCryptoBackend::errorString(QCryptoBackend::Status::GeneralError);
+			break;
 		default:
-			str = tr("Please check your internet connection and network settings.");
+			str = tr("General decryption error. Neither the card reader nor the network layer gave more information. Please check your internet connection, network settings and card reader. On some readers it may also indicate the wrong pin code or locked card.");
 			break;
 		}
 		WarningDialog::create()

@@ -648,6 +648,14 @@
         <source>Cannot read file.</source>
         <translation>Cannot read file.</translation>
     </message>
+    <message>
+        <source>General decryption error. Neither the card reader nor the network layer gave more information. Please check your internet connection, network settings and card reader. On some readers it may also indicate the wrong pin code or locked card.</source>
+        <translation>General decryption error. Neither the card reader nor the network layer gave more information. Please check your internet connection, network settings and card reader. On some readers it may also indicate the wrong pin code or locked card.</translation>
+    </message>
+    <message>
+        <source>Network error. Please check your network connection. It may also indicate that one or more CDoc servers are unreachable.</source>
+        <translation>Network error. Please check your network connection. It may also indicate that one or more CDoc servers are unreachable.</translation>
+    </message>
 </context>
 <context>
     <name>Diagnostics</name>
@@ -2090,18 +2098,6 @@ LDAP server is unavailable.</translation>
         <translation>PIN locked</translation>
     </message>
     <message>
-        <source>Signing/decrypting is already in progress another window.</source>
-        <translation>Signing/decrypting is already in progress another window.</translation>
-    </message>
-    <message>
-        <source>PKCS11 general error</source>
-        <translation>PKCS11 general error</translation>
-    </message>
-    <message>
-        <source>PKCS11 device error</source>
-        <translation>PKCS11 device error</translation>
-    </message>
-    <message>
         <source>Unknown error</source>
         <translation>Unknown error</translation>
     </message>
@@ -2112,6 +2108,14 @@ LDAP server is unavailable.</translation>
     <message>
         <source>PIN entry canceled</source>
         <translation>PIN entry canceled</translation>
+    </message>
+    <message>
+        <source>Signing/decrypting is already in progress in another window.</source>
+        <translation>Signing/decrypting is already in progress in another window.</translation>
+    </message>
+    <message>
+        <source>Error in smart card driver, reader or the card. On some readers it may indicate the wrong pin code or locked card.</source>
+        <translation>Error in smart card driver, reader or the card. On some readers it may indicate the wrong pin code or locked card.</translation>
     </message>
 </context>
 <context>
