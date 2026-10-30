@@ -31,6 +31,50 @@ color: #07142A;
 font-family: Roboto, Helvetica;
 font-size: 14px;
 }
+QScrollBar {
+border: none;
+background: transparent;
+}
+QScrollBar:vertical {
+width: 12px;
+padding: 4px 4px 4px 0px;
+margin: 0px;
+}
+QScrollBar:horizontal {
+height: 10px;
+padding: 0px 4px 4px 4px;
+margin: 0px;
+}
+QScrollBar::handle:vertical {
+background-color: #B5BFCF;
+border: none;
+margin: 0px;
+border-radius: 4px;
+min-height: 16px;
+}
+QScrollBar::handle:horizontal {
+background-color: #B5BFCF;
+border: none;
+margin: 0px;
+border-radius: 3px;
+min-width: 16px;
+}
+QScrollBar::add-line:vertical,
+QScrollBar::sub-line:vertical {
+height: 0px;
+border: none;
+background: none;
+}
+QScrollBar::add-line:horizontal,
+QScrollBar::sub-line:horizontal {
+width: 0px;
+border: none;
+background: none;
+}
+QScrollBar::add-page,
+QScrollBar::sub-page {
+background: transparent;
+}
 #lblMenuSettings, #lblGeneralLang, #lblDefaultDirectory, #lblTimeStamp, #lblMID, #lblSiVa, #pageEncryptionLabel, #pageProxyLabel {
 color: #003168;
 font-weight: 700;
@@ -1555,24 +1599,6 @@ max-height: 22px;
 color: #07142A;
 background: #FFFFFF;
 border-bottom: 1px solid #E7EAEF;
-}
-QScrollBar {
-width: 10px;
-padding: 5px 5px 5px 0px;
-margin: 2px 0px 2px 0px;
-border: none;
-background: #FFFFFF;
-}
-QScrollBar::handle:vertical {
-background-color: #C4CBD8;
-margin: 0px;
-border-radius: 2px;
-height: 145px;
-}
-QScrollBar::add-line:vertical,
-QScrollBar::sub-line:vertical {
-border: none;
-background: none;
 }</string>
          </property>
          <property name="frameShape">
@@ -1658,24 +1684,6 @@ Additional licenses and components</string>
           <string notr="true">QTextEdit {
 color: #07142A;
 background: #FFFFFF;
-}
-QScrollBar {
-width: 10px;
-padding: 5px 5px 5px 0px;
-margin: 2px 0px 2px 0px;
-border: none;
-background: #FFFFFF;
-}
-QScrollBar::handle:vertical {
-background-color: #C4CBD8;
-margin: 0px;
-border-radius: 2px;
-height: 145px;
-}
-QScrollBar::add-line:vertical,
-QScrollBar::sub-line:vertical {
-border: none;
-background: none;
 }</string>
          </property>
          <property name="frameShape">
@@ -1689,12 +1697,12 @@ background: none;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; }
 &lt;/style&gt;&lt;/head&gt;&lt;body&gt;
-&lt;p&gt;&lt;b&gt;Qt cross-platform application and UI framework&lt;/b&gt;&lt;br /&gt;GNU Lesser General Public License (LGPL) version 3&lt;br /&gt;&lt;a href=&quot;http://doc.qt.io/qt-6/licensing.html&quot;&gt;http://doc.qt.io/qt-6/licensing.html&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;b&gt;The OpenSSL project&lt;/b&gt;&lt;br /&gt;This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit (http://www.openssl.org/)&lt;br /&gt;&lt;a href=&quot;https://www.openssl.org/source/apache-license-2.0.txt&quot;&gt;https://www.openssl.org/source/apache-license-2.0.txt&lt;/a&gt; &lt;/p&gt;
-&lt;p&gt;&lt;b&gt;OpenLDAP community developed LDAP software&lt;/b&gt;&lt;br /&gt;The OpenLDAP Public License&lt;br /&gt;&lt;a href=&quot;http://www.openldap.org/software/release/license.html&quot;&gt;http://www.openldap.org/software/release/license.html&lt;/a&gt; &lt;/p&gt;
-&lt;p&gt;&lt;b&gt;libdigidocpp&lt;/b&gt;&lt;br /&gt;GNU Lesser General Public License (LGPL) version 2.1&lt;br /&gt;&lt;a href=&quot;http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html&quot;&gt;http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html&lt;/a&gt; &lt;/p&gt;
-&lt;p&gt;&lt;b&gt;DigiDoc4 Client&lt;/b&gt;&lt;br /&gt;GNU Lesser General Public License (LGPL) version 2.1&lt;br /&gt;&lt;a href=&quot;http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html&quot;&gt;http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html&lt;/a&gt; &lt;/p&gt;
-&lt;p&gt;&lt;b&gt;zlib A Massively Spiffy Yet Delicately Unobtrusive Compression Library&lt;/b&gt;&lt;br /&gt;&lt;a href=&quot;http://zlib.net/zlib_license.html&quot;&gt;http://zlib.net/zlib_license.html&lt;/a&gt; &lt;/p&gt;
+&lt;p&gt;&lt;b&gt;Qt cross-platform application and UI framework&lt;/b&gt;&lt;br /&gt;GNU Lesser General Public License (LGPL) version 3&lt;br /&gt;&lt;a href=&quot;https://doc.qt.io/qt-6/licensing.html&quot;&gt;https://doc.qt.io/qt-6/licensing.html&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;b&gt;The OpenSSL project&lt;/b&gt;&lt;br /&gt;This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit (https://www.openssl.org/)&lt;br /&gt;&lt;a href=&quot;https://opensource.org/license/apache-2.0&quot;&gt;https://opensource.org/license/apache-2.0&lt;/a&gt; &lt;/p&gt;
+&lt;p&gt;&lt;b&gt;OpenLDAP community developed LDAP software&lt;/b&gt;&lt;br /&gt;The OpenLDAP Public License&lt;br /&gt;&lt;a href=&quot;https://www.openldap.org/software/release/license.html&quot;&gt;https://www.openldap.org/software/release/license.html&lt;/a&gt; &lt;/p&gt;
+&lt;p&gt;&lt;b&gt;libdigidocpp&lt;/b&gt;&lt;br /&gt;GNU Lesser General Public License (LGPL) version 2.1&lt;br /&gt;&lt;a href=&quot;https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html&quot;&gt;https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html&lt;/a&gt; &lt;/p&gt;
+&lt;p&gt;&lt;b&gt;DigiDoc4 Client&lt;/b&gt;&lt;br /&gt;GNU Lesser General Public License (LGPL) version 2.1&lt;br /&gt;&lt;a href=&quot;https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html&quot;&gt;https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html&lt;/a&gt; &lt;/p&gt;
+&lt;p&gt;&lt;b&gt;zlib A Massively Spiffy Yet Delicately Unobtrusive Compression Library&lt;/b&gt;&lt;br /&gt;&lt;a href=&quot;https://zlib.net/zlib_license.html&quot;&gt;https://zlib.net/zlib_license.html&lt;/a&gt; &lt;/p&gt;
 &lt;p&gt;&lt;b&gt;libxml2 is an XML toolkit implemented in C&lt;/b&gt;&lt;br /&gt;MIT License&lt;br /&gt;&lt;a href=&quot;https://gitlab.gnome.org/GNOME/libxml2/-/blob/master/Copyright?ref_type=heads&quot;&gt;https://gitlab.gnome.org/GNOME/libxml2/-/blob/master/Copyright?ref_type=heads&lt;/a&gt; &lt;/p&gt;
 &lt;p&gt;&lt;b&gt;XML Security Library is a C library based on LibXML2&lt;/b&gt;&lt;br /&gt;MIT License&lt;br /&gt;&lt;a href=&quot;https://github.com/lsh123/xmlsec/blob/master/Copyright&quot;&gt;https://github.com/lsh123/xmlsec/blob/master/Copyright&lt;/a&gt; &lt;/p&gt;
 &lt;p&gt;&lt;b&gt;JSON for Modern C++&lt;/b&gt;&lt;br /&gt;MIT License&lt;br /&gt;&lt;a href=&quot;https://github.com/nlohmann/json/blob/develop/LICENSE.MIT&quot;&gt;https://github.com/nlohmann/json/blob/develop/LICENSE.MIT&lt;/a&gt; &lt;/p&gt;

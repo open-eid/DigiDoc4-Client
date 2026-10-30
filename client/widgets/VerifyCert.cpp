@@ -30,6 +30,12 @@ VerifyCert::VerifyCert(QWidget *parent)
 	, ui(new Ui::VerifyCert)
 {
 	ui->setupUi( this );
+	connect(ui->info, &Label::wordWrapChanged, this, [this](bool wordWrap) {
+		Qt::Alignment alignment = Qt::AlignTop;
+		if(!wordWrap)
+			alignment |= Qt::AlignLeft;
+		ui->nameLayout->setAlignment(ui->info, alignment);
+	});
 
 	connect(ui->changePIN, &QToolButton::clicked, this, [this] {
 		if(cardData.retryCount(pinType) == 0 && cardData.pinLocked(pinType))
@@ -64,24 +70,24 @@ VerifyCert::VerifyCert(QWidget *parent)
 		case SslCertificate::Revoked:
 			if(SslCertificate::CertType::TempelType == c.type())
 				dlg->withTitle(tr("Certificate is not valid"))
-					->withText(tr("A valid certificate is required for electronic use. ") + readMore);
+					->withRichText(tr("A valid certificate is required for electronic use. ") + readMore);
 			else if(c.keyUsage().contains(SslCertificate::NonRepudiation))
 				dlg->withTitle(tr("Your ID-card signing certificate is not valid"))
-					->withText(tr("You need valid certificates to use your ID-card electronically. ") + readMore);
+					->withRichText(tr("You need valid certificates to use your ID-card electronically. ") + readMore);
 			else
 				dlg->withTitle(tr("Your ID-card authentication certificate is not valid"))
-					->withText(tr("You need valid certificates to use your ID-card electronically. ") + readMore);
+					->withRichText(tr("You need valid certificates to use your ID-card electronically. ") + readMore);
 			break;
 		case SslCertificate::Unknown:
 			if(SslCertificate::CertType::TempelType == c.type())
 				dlg->withTitle(tr("Certificate status is unknown"))
-					->withText(tr("A valid certificate is required for electronic use. ") + readMore);
+					->withRichText(tr("A valid certificate is required for electronic use. ") + readMore);
 			else if(c.keyUsage().contains(SslCertificate::NonRepudiation))
 				dlg->withTitle(tr("Your ID-card signing certificate status is unknown"))
-					->withText(tr("You need valid certificates to use your ID-card electronically. ") + readMore);
+					->withRichText(tr("You need valid certificates to use your ID-card electronically. ") + readMore);
 			else
 				dlg->withTitle(tr("Your ID-card authentication certificate status is unknown"))
-					->withText(tr("You need valid certificates to use your ID-card electronically. ") + readMore);
+					->withRichText(tr("You need valid certificates to use your ID-card electronically. ") + readMore);
 			break;
 		default:
 			dlg->withTitle(tr("Certificate status check failed"))

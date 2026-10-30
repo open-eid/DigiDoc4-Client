@@ -19,22 +19,21 @@
 
 #include "QSigner.h"
 
-#include "Application.h"
 #include "QCryptoBackend.h"
-#include "QSmartCard.h"
 #include "TokenData.h"
 #include "Utils.h"
 
 #include <digidocpp/Conf.h>
-#include <digidocpp/crypto/Signer.h>
+#include <digidocpp/Exception.h>
 #include <digidocpp/crypto/X509Cert.h>
 
 #include <QtNetwork/QSslCertificate>
 
 using namespace digidoc;
 
-QSigner::QSigner(const TokenData &token)
-	: m_token(token)
+QSigner::QSigner(std::unique_ptr<QCryptoBackend> backend, const TokenData &token)
+	: m_backend(std::move(backend))
+	, m_token(token)
 {
 	if(m_token.data(QStringLiteral("PSS")).toBool())
 	{
@@ -50,6 +49,8 @@ QSigner::QSigner(const TokenData &token)
 		setMethod(method);
 	}
 }
+
+QSigner::~QSigner() = default;
 
 X509Cert QSigner::cert() const
 {
@@ -88,27 +89,13 @@ std::vector<unsigned char> QSigner::sign(const std::string &method, const std::v
 		throw e; \
 	}
 
-	auto val = QCryptoBackend::getBackend(m_token);
-	if(!val)
-	{
-		auto err = tr("Failed to login token") + ' ' +
-			QCryptoBackend::errorString(val.error());
-		switch(val.error()) {
-		case QCryptoBackend::PinCanceled: throwException(err, Exception::PINCanceled);
-		case QCryptoBackend::PinLocked:   throwException(err, Exception::PINLocked);
-		case QCryptoBackend::InProgress:  throwException(err, Exception::General);
-		default:                          throwException(err, Exception::PINFailed);
-		}
-	}
-	std::unique_ptr<QCryptoBackend> backend(val.value());
-
-	QByteArray sig = waitFor(&QCryptoBackend::sign, backend.get(),
+	QByteArray sig = waitFor(&QCryptoBackend::sign, m_backend.get(),
 		methodToNID(method), QByteArray::fromRawData((const char*)digest.data(), int(digest.size())));
 	if(sig.isEmpty())
 	{
 		auto err = tr("Failed to login token") + ' ' +
-			QCryptoBackend::errorString(backend->status);
-		switch(backend->status) {
+			QCryptoBackend::errorString(m_backend->status);
+		switch(m_backend->status) {
 		case QCryptoBackend::PinCanceled: throwException(err, Exception::PINCanceled);
 		case QCryptoBackend::PinLocked:   throwException(err, Exception::PINLocked);
 		default: break;

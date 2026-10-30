@@ -19,21 +19,32 @@
 
 #pragma once
 
-#include <QDialog>
+#include "TokenData.h"
 
-namespace Ui { class SmartIDDialog; }
+#include <digidocpp/crypto/Signer.h>
 
-class SmartIDDialog final : public QDialog
+#include <QtCore/QCoreApplication>
+#include <QtCore/QCryptographicHash>
+
+#include <memory>
+
+class QCryptoBackend;
+class TokenData;
+
+class QSigner final : public digidoc::Signer
 {
-	Q_OBJECT
-
+	Q_DECLARE_TR_FUNCTIONS(QSigner);
 public:
-	explicit SmartIDDialog(QWidget *parent = nullptr);
-	~SmartIDDialog() final;
+	QSigner(std::unique_ptr<QCryptoBackend> backend, const TokenData &token);
+	~QSigner() final;
 
-	QString country() const;
-	QString idCode() const;
+	digidoc::X509Cert cert() const final;
+	std::vector<unsigned char> sign(const std::string &method,
+		const std::vector<unsigned char> &digest) const final;
 
 private:
-	Ui::SmartIDDialog *ui;
+	static QCryptographicHash::Algorithm methodToNID(const std::string &method);
+
+	std::unique_ptr<QCryptoBackend> m_backend;
+	TokenData m_token;
 };

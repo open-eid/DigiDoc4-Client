@@ -35,7 +35,6 @@ public:
 	bool serviceRunning() const;
 
 Q_SIGNALS:
-	void statusChanged(const QString &reader, const QStringList &state);
 	void cardChanged();
 
 private:
@@ -96,7 +95,7 @@ public:
 		T1 = 2
 	};
 
-	explicit QPCSCReader( const QString &reader, QPCSC *parent );
+	explicit QPCSCReader(const QString &reader);
 	QPCSCReader(QPCSCReader &&) noexcept;
 	~QPCSCReader() noexcept final;
 

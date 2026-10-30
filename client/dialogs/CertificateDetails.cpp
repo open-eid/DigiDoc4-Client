@@ -21,24 +21,30 @@
 #include "CertificateDetails.h"
 #include "ui_CertificateDetails.h"
 
-#include "Application.h"
 #include "DateTime.h"
 #include "SslCertificate.h"
+#include "Utils.h"
 #include "effects/Overlay.h"
 #include "dialogs/WarningDialog.h"
 
 #include <QtCore/QDir>
 #include <QtCore/QStandardPaths>
 #include <QtCore/QTextStream>
-#include <QtGui/QDesktopServices>
 #include <QtNetwork/QSslKey>
 #include <QtWidgets/QFileDialog>
+
+#ifdef Q_OS_WIN
+#include <qt_windows.h>
+#include <cryptuiapi.h>
+#include <wincrypt.h>
+#endif
 
 CertificateDetails::CertificateDetails(const SslCertificate &cert, QWidget *parent)
 	: QDialog(parent)
 {
 	Ui::CertificateDetails ui;
 	ui.setupUi(this);
+	setAttribute(Qt::WA_DeleteOnClose);
 #ifdef Q_OS_MAC
 	setWindowFlags(Qt::Dialog | Qt::FramelessWindowHint | Qt::Sheet);
 #else
@@ -46,17 +52,19 @@ CertificateDetails::CertificateDetails(const SslCertificate &cert, QWidget *pare
 #endif
 	new Overlay(this);
 
+	const QHash<SslCertificate::EnhancedKeyUsage,QString> enhancedKeyUsageHash = cert.enhancedKeyUsage();
+
 	QString i;
 	QTextStream s( &i );
 	s << "<b>" << tr("This certificate is intended for following purpose(s):") << "</b>";
 	s << "<ul>";
-	for(const QString &ext: cert.enhancedKeyUsage())
-		s << "<li>" << tr(ext.toStdString().c_str()) << "</li>";
+	for(const QString &ext: enhancedKeyUsageHash)
+		s << "<li>" << ext << "</li>";
 	s << "</ul>";
 	s << "<br />";
-	s << "<b>" << tr("Issued to:") << "</b><br />" << cert.subjectInfo( QSslCertificate::CommonName);
+	s << "<b>" << tr("Issued to:") << "</b><br />" << cert.subjectInfo( QSslCertificate::CommonName).toHtmlEscaped();
 	s << "<br /><br />";
-	s << "<b>" << tr("Issued by:") << "</b><br />" << cert.issuerInfo(QSslCertificate::CommonName);
+	s << "<b>" << tr("Issued by:") << "</b><br />" << cert.issuerInfo(QSslCertificate::CommonName).toHtmlEscaped();
 	s << "<br /><br />";
 	s << "<b>" << tr("Valid:") << "</b><br />";
 	s << "<b>" << tr("From") << "</b> " << cert.effectiveDate().toLocalTime().toString(QStringLiteral("dd.MM.yyyy")) << "<br />";
@@ -72,9 +80,7 @@ CertificateDetails::CertificateDetails(const SslCertificate &cert, QWidget *pare
 		if( file.isEmpty() )
 			return;
 
-		if(QFile f(file); f.open(QIODevice::WriteOnly))
-			f.write(cert.toPem());
-		else
+		if(QFile f(file); !f.open(QIODevice::WriteOnly) || f.write(cert.toPem()) < 0)
 			WarningDialog::create(this)->withTitle(QCoreApplication::translate("FileDialog", "Failed to save file"))->open();
 	});
 	connect(ui.close, &QPushButton::clicked, this, &CertificateDetails::accept);
@@ -98,48 +104,38 @@ CertificateDetails::CertificateDetails(const SslCertificate &cert, QWidget *pare
 		tblDetails->setItem(row, 1, item);
 	};
 
-	addItem(tr("Version"), QString("V" + cert.version()));
+	auto joinInfo = [](const QList<QByteArray> &attrs, auto infoFn) {
+		QStringList text, textExt;
+		for(const QByteArray &obj: attrs)
+		{
+			QString data = infoFn(obj);
+			if(data.isEmpty())
+				continue;
+			textExt.append(QStringLiteral("%1 = %2").arg(obj.constData(), data));
+			text.append(std::move(data));
+		}
+		return std::pair(text.join(QStringLiteral(", ")), textExt.join('\n'));
+	};
+
+	addItem(tr("Version"), "V" + cert.version());
 	addItem(tr("Serial number"), cert.serialNumber());
 	addItem(tr("Signature algorithm"), cert.signatureAlgorithm());
-
-	QStringList text, textExt;
-	static const QByteArray ORGID_OID = QByteArrayLiteral("2.5.4.97");
-	for(const QByteArray &obj: cert.issuerInfoAttributes())
-	{
-		const QString &data = cert.issuerInfo( obj );
-		if( data.isEmpty() )
-			continue;
-		text << data;
-		// organizationIdentifier OID might not be known by SSL backend
-		textExt << QStringLiteral("%1 = %2").arg(
-			obj.constData() == ORGID_OID ? "organizationIdentifier" : obj.constData(), data);
-	}
-	addItem(tr("Issuer"), text.join(QStringLiteral(", ")), textExt.join('\n'));
+	auto [issuerText, issuerTextExt] = joinInfo(cert.issuerInfoAttributes(),
+		[&cert](const QByteArray &obj) { return cert.issuerInfo(obj); });
+	addItem(tr("Issuer"), issuerText, issuerTextExt);
 	addItem(tr("Valid from"), DateTime(cert.effectiveDate().toLocalTime()).toStringZ(QStringLiteral("dd.MM.yyyy hh:mm:ss")));
 	addItem(tr("Valid to"), DateTime(cert.expiryDate().toLocalTime()).toStringZ(QStringLiteral("dd.MM.yyyy hh:mm:ss")));
-
-	text.clear();
-	textExt.clear();
-	for(const QByteArray &obj: cert.subjectInfoAttributes())
-	{
-		const QString &data = cert.subjectInfo( obj );
-		if( data.isEmpty() )
-			continue;
-		text << data;
-		textExt << QStringLiteral("%1 = %2").arg(obj.constData(), data);
-	}
-	addItem(tr("Subject"), text.join(QStringLiteral(", ")), textExt.join('\n'));
+	auto [subjectText, subjectTextExt] = joinInfo(cert.subjectInfoAttributes(),
+		[&cert](const QByteArray &obj) { return cert.subjectInfo(obj); });
+	addItem(tr("Subject"), subjectText, subjectTextExt);
 	addItem(tr("Public key"), cert.keyName(), cert.publicKey().toDer().toHex(' ').toUpper());
-	QStringList enhancedKeyUsage = cert.enhancedKeyUsage().values();
-	if( !enhancedKeyUsage.isEmpty() )
+	if(QStringList enhancedKeyUsage = enhancedKeyUsageHash.values(); !enhancedKeyUsage.isEmpty())
 		addItem(tr("Enhanced key usage"), enhancedKeyUsage.join(QStringLiteral(", ")), enhancedKeyUsage.join('\n'));
-	QStringList policies = cert.policies();
-	if( !policies.isEmpty() )
+	if(QStringList policies = cert.policies(); !policies.isEmpty())
 		addItem(tr("Certificate policies"), policies.join(QStringLiteral(", ")));
 	addItem(tr("Authority key identifier"), cert.authorityKeyIdentifier().toHex(' ').toUpper());
 	addItem(tr("Subject key identifier"), cert.subjectKeyIdentifier().toHex(' ').toUpper());
-	QStringList keyUsage = cert.keyUsage().values();
-	if( !keyUsage.isEmpty() )
+	if(QStringList keyUsage = cert.keyUsage().values(); !keyUsage.isEmpty())
 		addItem(tr("Key usage"), keyUsage.join(QStringLiteral(", ")), keyUsage.join('\n'));
 
 	// Disable resizing
@@ -150,17 +146,17 @@ CertificateDetails::CertificateDetails(const SslCertificate &cert, QWidget *pare
 void CertificateDetails::showCertificate(const QSslCertificate &cert, QWidget *parent, const QString &suffix)
 {
 #ifdef Q_OS_UNIX
-	CertificateDetails(cert, parent).exec();
+	(new CertificateDetails(cert, parent))->open();
 #else
-	Q_UNUSED(parent);
-	QString name = cert.subjectInfo("serialNumber").join('_');
-	if(name.isEmpty())
-		name = cert.serialNumber().replace(':', "");
-	QString path = QStringLiteral("%1/%2%3.cer").arg(QDir::tempPath(), name, suffix);
-	if(QFile f(path); f.open(QIODevice::WriteOnly))
-		f.write(cert.toPem());
-	qApp->addTempFile(path);
-	QDesktopServices::openUrl(QUrl::fromLocalFile(path));
+	Q_UNUSED(suffix);
+	QByteArray der = cert.toDer();
+	if(auto ctx = make_unique_ptr<CertFreeCertificateContext>(CertCreateCertificateContext(
+		X509_ASN_ENCODING, LPBYTE(der.constData()), DWORD(der.size()))))
+	{
+		CryptUIDlgViewContext(CERT_STORE_CERTIFICATE_CONTEXT, ctx.get(),
+			parent && parent->window() ? HWND(parent->window()->winId()) : nullptr,
+			nullptr, 0, nullptr);
+	}
 #endif
 }
 #endif

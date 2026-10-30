@@ -135,13 +135,11 @@ void FileList::save(FileItem *item)
 		QString dest = FileDialog::getSaveFileName(this, FileDialog::tr("Save file"),
 			QFileInfo(container).dir().absolutePath() + QDir::separator() + file,
 			QStringLiteral("%1 (*%2)").arg(capitalized, extension));
-
-		if(!dest.endsWith(QStringLiteral(".%1").arg(extension)) && !extension.isEmpty())
-				dest.append(QStringLiteral(".%1").arg(extension));
-
 		if(dest.isEmpty())
 			return;
-		QFile::remove( dest );
+
+		if(!dest.endsWith(QStringLiteral(".%1").arg(extension)) && !extension.isEmpty())
+			dest.append(QStringLiteral(".%1").arg(extension));
 		documentModel->save(i, dest);
 	}
 }
@@ -160,13 +158,12 @@ void FileList::saveAll()
 		{
 			if(b == QMessageBox::YesToAll)
 			{
-				QFile::remove( dest );
 				documentModel->save( i, dest );
 				continue;
 			}
 			b = WarningDialog::create(this)
 				->withTitle(FileDialog::tr("Failed to save files"))
-				->withText(tr("%1 already exists.<br />Do you want replace it?").arg(dest))
+				->withRichText(tr("%1 already exists.<br />Do you want replace it?").arg(dest.toHtmlEscaped()))
 				->setCancelText(WarningDialog::Cancel)
 				->addButton(WarningDialog::YES, QMessageBox::Yes)
 				->addButton(WarningDialog::NO, QMessageBox::No)
@@ -185,7 +182,7 @@ void FileList::saveAll()
 					continue;
 				break;
 			default:
-				QFile::remove(dest);
+				break;
 			}
 		}
 		documentModel->save( i, dest );

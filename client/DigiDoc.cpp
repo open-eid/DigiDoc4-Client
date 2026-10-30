@@ -41,6 +41,7 @@
 #include <QtWidgets/QMessageBox>
 
 #include <algorithm>
+#include <fstream>
 
 using namespace digidoc;
 using namespace ria::qdigidoc4;
@@ -74,7 +75,7 @@ struct ServiceConfirmation final: public ContainerOpenCB
 		return dispatchToMain([this] {
 			return WarningDialog::create(parent)
 				->withTitle(DigiDoc::tr("Send document to SiVa"))
-				->withText(DigiDoc::tr(
+				->withRichText(DigiDoc::tr(
 					"This type of signed document will be transmitted to the "
 					"Digital Signature Validation Service SiVa to verify the validity of the digital signature. "
 					"Read more information about transmitted data to Digital Signature Validation service from "
@@ -119,20 +120,15 @@ bool DigiDocSignature::isInvalid() const
 
 QString DigiDocSignature::lastError() const { return m_lastError; }
 
-QString DigiDocSignature::location() const
-{
-	QStringList l = locations();
-	l.removeAll({});
-	return l.join(QStringLiteral(", "));
-}
-
-QStringList DigiDocSignature::locations() const
+DigiDocSignature::Location DigiDocSignature::location() const
 {
 	return {
-		from( s->city() ).trimmed(),
-		from( s->stateOrProvince() ).trimmed(),
-		from( s->postalCode() ).trimmed(),
-		from( s->countryName() ).trimmed()};
+		from(s->city()).trimmed(),
+		from(s->stateOrProvince()).trimmed(),
+		from(s->postalCode()).trimmed(),
+		from(s->countryName()).trimmed(),
+		from(s->streetAddress()).trimmed(),
+	};
 }
 
 QByteArray DigiDocSignature::messageImprint() const
@@ -153,7 +149,11 @@ QDateTime DigiDocSignature::ocspTime() const
 
 DigiDocSignature::SignatureStatus DigiDocSignature::status(DigiDocSignature::SignatureStatus result, const digidoc::Exception &e)
 {
-	for(const Exception &child: e.causes())
+	const Exception::Causes causes = e.causes();
+	if(causes.empty())
+		return std::max(result, Invalid);
+
+	for(const Exception &child: causes)
 	{
 		switch( child.code() )
 		{
@@ -180,7 +180,8 @@ DigiDocSignature::SignatureStatus DigiDocSignature::status(DigiDocSignature::Sig
 		default:
 			result = std::max( result, Invalid );
 		}
-		result = std::max(result, status(result, child));
+		if(!child.causes().empty())
+			result = std::max(result, status(result, child));
 	}
 	return result;
 }
@@ -343,14 +344,6 @@ quint64 SDocumentModel::fileSize(int row) const
 	return doc->b->dataFiles().at(size_t(row))->fileSize();
 }
 
-QString SDocumentModel::mime(int row) const
-{
-	if(row >= rowCount())
-		return {};
-
-	return from(doc->b->dataFiles().at(size_t(row))->mediaType());
-}
-
 bool SDocumentModel::removeRow(int row)
 {
 	if(!doc->b)
@@ -376,11 +369,23 @@ QString SDocumentModel::save(int row, const QString &path) const
 {
 	if(row >= rowCount())
 		return {};
-	if(QFileInfo::exists(path))
-		return path;
-	doc->b->dataFiles().at(size_t(row))->saveAs(path.toStdString());
-	if(!QFileInfo::exists(path))
+	// Overwrite in place: on macOS replacing the file would invalidate the
+	// sandbox's security-scoped bookmark for a path picked in a file dialog
+	auto keepAlive = FileDialog::keepAccessAlive(path);
+	std::ofstream ofs(QFileInfo(path).filesystemFilePath(), std::ofstream::binary);
+	if(ofs)
+	{
+		doc->b->dataFiles().at(size_t(row))->saveAs(ofs);
+		ofs.close();
+	}
+	if(!ofs)
+	{
+		WarningDialog::create()
+			->withTitle(FileDialog::tr("Failed to save file"))
+			->withText(path)
+			->open();
 		return {};
+	}
 	FileDialog::setFileZone(path, doc->fileName());
 	return path;
 }
@@ -619,6 +624,7 @@ std::unique_ptr<DigiDoc> DigiDoc::open(const QString &file, QWidget *parent)
 		parent = Application::activeWindow();
 	ServiceConfirmation cb(parent);
 	qApp->waitForTSL(file);
+	auto keepAlive = FileDialog::keepAccessAlive(file, QFile::ReadOnly);
 	try {
 		std::unique_ptr<DigiDoc> doc(new DigiDoc(parent));
 		WaitDialogHolder waitDialog(parent, tr("Opening"), false);
@@ -718,6 +724,7 @@ bool DigiDoc::saveAs(const QString &filename)
 {
 	try
 	{
+		auto keepAlive = FileDialog::keepAccessAlive(filename);
 		return waitFor([&] {
 			parentContainer ? parentContainer->save(to(filename)) : b->save(to(filename));
 			return true;
@@ -743,14 +750,14 @@ void DigiDoc::setLastError(const QString &title, const Exception &e)
 	case Exception::CertificateUnknown:
 		dlg->withText(tr("Certificate status unknown")); break;
 	case Exception::OCSPTimeSlot:
-		dlg->withText(tr("Please check your computer time. <a href='https://www.id.ee/en/article/digidoc4-client-error-please-check-your-computer-time-2/'>Additional information</a>")); break;
+		dlg->withRichText(tr("Please check your computer time. <a href='https://www.id.ee/en/article/digidoc4-client-error-please-check-your-computer-time-2/'>Additional information</a>")); break;
 	case Exception::OCSPRequestUnauthorized:
 		dlg->withText(tr("You have not granted IP-based access. "
 			"Check your validity confirmation service access settings.")); break;
 	case Exception::TSForbidden:
 		dlg->withText(tr("Check your Time-Stamping service access settings.")); break;
 	case Exception::TSTooManyRequests:
-		dlg->withText(tr("The limit for digital signatures per month has been reached for this IP address. "
+		dlg->withRichText(tr("The limit for digital signatures per month has been reached for this IP address. "
 			"<a href=\"https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/\">Additional information</a>")); break;
 	case Exception::PINCanceled:
 		dlg->deleteLater();

@@ -17,8 +17,6 @@
  *
  */
 
-#define NOMINMAX
-
 #include "Application.h"
 
 #include "Common.h"
@@ -48,13 +46,12 @@ class MacMenuBar {};
 #include <digidocpp/XmlConf.h>
 #include <digidocpp/crypto/X509Cert.h>
 
-#include <qtsingleapplication/src/qtlocalpeer.h>
-
 #include <QAction>
 #include <QtCore/QFileInfo>
 #include <QtCore/QJsonArray>
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonObject>
+#include <QtCore/QLockFile>
 #include <QtCore/QProcess>
 #include <QtCore/QRegularExpression>
 #include <QtCore/QTimer>
@@ -77,9 +74,7 @@ class MacMenuBar {};
 #include <QtWidgets/QToolTip>
 
 #ifdef Q_OS_WIN32
-#include <QtCore/QLibrary>
 #include <qt_windows.h>
-#include <MAPI.h>
 #endif
 
 using namespace std::chrono;
@@ -98,6 +93,20 @@ public:
 		enableLog(Settings::LIBDIGIDOCPP_DEBUG);
 		Settings::LIBDIGIDOCPP_DEBUG = false;
 		Settings::LIBDIGIDOCPP_DEBUG.registerCallback([this](const bool &value) { enableLog(value); });
+#ifdef Q_OS_MACOS
+		if(Settings::PROXY_HOST.isSet() || Settings::PROXY_PORT.isSet()
+			|| Settings::PROXY_USER.isSet() || Settings::PROXY_PASS.isSet())
+		{
+			if(Application::setProxyCredentials({Settings::PROXY_HOST, Settings::PROXY_PORT,
+				Settings::PROXY_USER, Settings::PROXY_PASS}))
+			{
+				Settings::PROXY_HOST.clear();
+				Settings::PROXY_PORT.clear();
+				Settings::PROXY_USER.clear();
+				Settings::PROXY_PASS.clear();
+			}
+		}
+#endif
 #ifndef Q_OS_DARWIN
 		setTSLOnlineDigest(true);
 #endif
@@ -123,24 +132,44 @@ public:
 
 	std::string proxyHost() const final
 	{
+#ifdef Q_OS_MACOS
+		if(Settings::PROXY_CONFIG == Settings::ProxyManual)
+			if(const auto credentials = Application::proxyCredentials())
+				return credentials->host.toStdString();
+#endif
 		return proxyConf(&QNetworkProxy::hostName,
 			Settings::PROXY_HOST, [this] { return digidoc::XmlConfCurrent::proxyHost(); });
 	}
 
 	std::string proxyPort() const final
 	{
+#ifdef Q_OS_MACOS
+		if(Settings::PROXY_CONFIG == Settings::ProxyManual)
+			if(const auto credentials = Application::proxyCredentials())
+				return credentials->port.toStdString();
+#endif
 		return proxyConf([](const QNetworkProxy &systemProxy) { return QString::number(systemProxy.port()); },
 			Settings::PROXY_PORT, [this] { return digidoc::XmlConfCurrent::proxyPort(); });
 	}
 
 	std::string proxyUser() const final
 	{
+#ifdef Q_OS_MACOS
+		if(Settings::PROXY_CONFIG == Settings::ProxyManual)
+			if(const auto credentials = Application::proxyCredentials())
+				return credentials->user.toStdString();
+#endif
 		return proxyConf(&QNetworkProxy::user,
 			Settings::PROXY_USER, [this] { return digidoc::XmlConfCurrent::proxyUser(); });
 	}
 
 	std::string proxyPass() const final
 	{
+#ifdef Q_OS_MACOS
+		if(Settings::PROXY_CONFIG == Settings::ProxyManual)
+			if(const auto credentials = Application::proxyCredentials())
+				return credentials->password.toStdString();
+#endif
 		return proxyConf(&QNetworkProxy::password,
 			Settings::PROXY_PASS, [this] { return digidoc::XmlConfCurrent::proxyPass(); });
 	}
@@ -199,7 +228,7 @@ public:
 			dispatchToMain([] {
 				WarningDialog::create()
 					->withTitle(Application::tr("The renewal of Trust Service status List has failed"))
-					->withText(Application::tr(
+					->withRichText(Application::tr(
 						"Trust Service status List is used for digital signature validation. "
 						"Please check your internet connection and make sure you have the latest ID-software version "
 						"installed. An expired Trust Service List (TSL) will be used for signature validation. "
@@ -290,9 +319,8 @@ private:
 	std::optional<std::string> log;
 };
 
-class Application::Private
+struct Application::Private
 {
-public:
 	Configuration *conf {};
 	QAction		*closeAction {}, *newClientAction {}, *helpAction {};
 	std::unique_ptr<MacMenuBar> bar;
@@ -301,10 +329,8 @@ public:
 	QTranslator	appTranslator, qtTranslator;
 	QString		lang;
 	QTimer		lastWindowTimer;
+	std::unique_ptr<QLockFile> lockFile;
 	volatile bool ready = false;
-#ifdef Q_OS_WIN
-	QStringList	tempFiles;
-#endif // Q_OS_WIN
 
 	~Private() {
 		delete cryptoManager;
@@ -312,7 +338,7 @@ public:
 };
 
 Application::Application( int &argc, char **argv )
-	: BaseApplication(argc, argv)
+	: QApplication(argc, argv)
 	, d(new Private)
 {
 	setApplicationName(QStringLiteral("qdigidoc4"));
@@ -339,12 +365,20 @@ Application::Application( int &argc, char **argv )
 	QStringList args = arguments();
 	args.removeFirst();
 #ifndef Q_OS_MAC
-	if( isRunning() )
-	{
-		sendMessage(args.join(QStringLiteral("\", \"")));
+	d->lockFile = Common::acquireInstanceLock(args);
+	if(!d->lockFile)
 		return;
-	}
-	connect(this, &Application::messageReceived, this, qOverload<const QString&>(&Application::parseArgs));
+	if(!Common::startLocalServer(this, [this](const QStringList &msg) {
+		QStringList params;
+		params.reserve(msg.size());
+		for(const QString &param: msg)
+		{
+			QUrl url(param, QUrl::StrictMode);
+			params.append(param != QLatin1String("-crypto") && !url.toLocalFile().isEmpty() ? url.toLocalFile() : param);
+		}
+		parseArgs(std::move(params));
+	}))
+		qWarning() << "Failed to start local server for activation messages";
 #endif
 
 	QPalette p = palette();
@@ -372,7 +406,7 @@ Application::Application( int &argc, char **argv )
 		{
 			dlg = WarningDialog::create()
 				->withTitle(tr("This version of ID-software on your computer is unsupported"))
-				->withText(tr("DigiDoc4 Client cannot be used until you update ID-software. "
+				->withRichText(tr("DigiDoc4 Client cannot be used until you update ID-software. "
 					"Install new ID-software from <a href=\"https://www.id.ee/en/article/install-id-software/\">www.id.ee</a>. "
 					"macOS users can download the latest ID-software version from the "
 					"<a href=\"https://itunes.apple.com/ee/developer/ria/id556524921?mt=12\">Mac App Store</a>."));
@@ -382,7 +416,7 @@ Application::Application( int &argc, char **argv )
 		{
 			dlg = WarningDialog::create()
 				->withTitle(tr("Your ID-software has expired"))
-				->withText(tr("To download the latest software version, go to the "
+				->withRichText(tr("To download the latest software version, go to the "
 					"<a href=\"https://www.id.ee/en/article/install-id-software/\">id.ee</a> website. "
 					"macOS users can download the latest ID-software version from the "
 					"<a href=\"https://itunes.apple.com/ee/developer/ria/id556524921?mt=12\">Mac App Store</a>."));
@@ -392,7 +426,7 @@ Application::Application( int &argc, char **argv )
 			{
 				auto *dlg = WarningDialog::create(activeWindow())
 					->withTitle(tr("An ID-software update has been found"))
-					->withText(tr("To download the update, go to the "
+					->withRichText(tr("To download the update, go to the "
 						"<a href=\"https://www.id.ee/en/article/install-id-software/\">id.ee</a> website. "
 						"macOS users can download the update from the "
 						"<a href=\"https://itunes.apple.com/ee/developer/ria/id556524921?mt=12\">Mac App Store</a>."));
@@ -432,6 +466,7 @@ Application::Application( int &argc, char **argv )
 
 	// Clear obsolete registriy settings
 	Settings::CDOC2_NOTIFICATION.clear();
+	Settings::MOBILEID_ORDER.clear();
 #ifndef Q_OS_DARWIN
 	Settings::DEFAULT_DIR.clear();
 #endif
@@ -451,6 +486,7 @@ Application::Application( int &argc, char **argv )
 	connect(this, &Application::lastWindowClosed, this, [&]{ d->lastWindowTimer.start(10s); });
 
 #ifdef Q_OS_MAC
+	initMacServices();
 	d->bar = std::make_unique<MacMenuBar>();
 	d->bar->fileMenu()->addAction( d->newClientAction );
 	d->bar->fileMenu()->addAction( d->closeAction );
@@ -520,29 +556,21 @@ Application::~Application()
 {
 	for(QWidget *top: topLevelWidgets())
 		top->close();
-#ifdef Q_OS_WIN
-	for(const QString &file: qAsConst(d->tempFiles))
-		QFile::remove(file);
-	d->tempFiles.clear();
-#endif // Q_OS_WIN
 
 #ifndef Q_OS_MAC
-	if( isRunning() )
+	if(!d->lockFile)
 	{
 		delete d;
 		return;
 	}
-	if(auto *obj = findChild<QtLocalPeer*>())
-		delete obj;
-#else
-	deinitMacEvents();
 #endif
 	QEventLoop e;
 	connect(this, &Application::TSLLoadingFinished, &e, &QEventLoop::quit);
 	if( !d->ready )
 		e.exec();
-	digidoc::terminate();
 	delete d;
+	d = nullptr;
+	digidoc::terminate();
 
 	QDesktopServices::unsetUrlHandler(QStringLiteral("browse"));
 	QDesktopServices::unsetUrlHandler(QStringLiteral("mailto"));
@@ -557,13 +585,6 @@ Application::~Application()
 
 #ifndef Q_OS_MAC
 void Application::addRecent( const QString & ) {}
-#endif
-
-#ifdef Q_OS_WIN
-void Application::addTempFile(const QString &file)
-{
-	d->tempFiles.append(file);
-}
 #endif
 
 void Application::browse( const QUrl &url )
@@ -639,13 +660,7 @@ QVariant Application::confValue( ConfParameter parameter, const QVariant &value 
 
 bool Application::event(QEvent *event)
 {
-	switch(int(event->type()))
-	{
-	case REOpenEvent::Type:
-		if( !activeWindow() )
-			showClient();
-		return true;
-	case QEvent::FileOpen:
+	if(event->type() == QEvent::FileOpen)
 	{
 		QString fileName = static_cast<QFileOpenEvent*>(event)->file().normalized(QString::NormalizationForm_C);
 #if QT_VERSION < QT_VERSION_CHECK(6, 5, 0)
@@ -655,14 +670,7 @@ bool Application::event(QEvent *event)
 #endif
 		return true;
 	}
-#ifdef Q_OS_MAC
-	// Load here because cocoa NSApplication overides events
-	case QEvent::ApplicationActivate:
-		initMacEvents();
-		return BaseApplication::event(event);
-#endif
-	default: return BaseApplication::event(event);
-	}
+	return QApplication::event(event);
 }
 
 void Application::initDiagnosticConf()
@@ -686,36 +694,10 @@ void Application::loadTranslation( const QString &lang )
 	if(d->helpAction) d->helpAction->setText(tr("DigiDoc4 Client Help"));
 }
 
-#ifndef Q_OS_MAC
+#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
 void Application::mailTo( const QUrl &url )
 {
 	QUrlQuery q(url);
-#if defined(Q_OS_WIN)
-	if(QLibrary lib("mapi32"); auto mapi = LPMAPISENDMAILW(lib.resolve("MAPISendMailW")))
-	{
-		QString file = q.queryItemValue( "attachment", QUrl::FullyDecoded );
-		QString filePath = QDir::toNativeSeparators( file );
-		QString fileName = QFileInfo( file ).fileName();
-		QString subject = q.queryItemValue( "subject", QUrl::FullyDecoded );
-		MapiFileDescW doc {};
-		doc.nPosition = -1;
-		doc.lpszPathName = PWSTR(filePath.utf16());
-		doc.lpszFileName = PWSTR(fileName.utf16());
-		MapiMessageW message {};
-		message.lpszSubject = PWSTR(subject.utf16());
-		message.lpszNoteText = PWSTR(L"");
-		message.nFileCount = 1;
-		message.lpFiles = lpMapiFileDescW(&doc);
-		switch( mapi( NULL, 0, &message, MAPI_LOGON_UI|MAPI_DIALOG, 0 ) )
-		{
-		case SUCCESS_SUCCESS:
-		case MAPI_E_USER_ABORT:
-		case MAPI_E_LOGIN_FAILURE:
-			return;
-		default: break;
-		}
-	}
-#elif defined(Q_OS_UNIX)
 	QByteArray thunderbird;
 	QProcess p;
 	QStringList env = QProcess::systemEnvironment();
@@ -764,7 +746,6 @@ void Application::mailTo( const QUrl &url )
 	}
 	if( status )
 		return;
-#endif
 	QDesktopServices::openUrl( url );
 }
 #endif
@@ -843,17 +824,6 @@ void Application::openHelp()
 	QDesktopServices::openUrl(QUrl(tr("https://www.id.ee/en/id-help/")));
 }
 
-void Application::parseArgs( const QString &msg )
-{
-	QStringList params;
-	for(const QString &param: msg.split(QStringLiteral("\", \""), Qt::SkipEmptyParts))
-	{
-		QUrl url( param, QUrl::StrictMode );
-		params.append(param != QLatin1String("-crypto") && !url.toLocalFile().isEmpty() ? url.toLocalFile() : param);
-	}
-	parseArgs(std::move(params));
-}
-
 void Application::parseArgs(QStringList args)
 {
 	bool crypto = args.removeAll(QStringLiteral("-crypto")) > 0;
@@ -886,7 +856,7 @@ uint Application::readTSLVersion(const QString &path)
 int Application::run()
 {
 #ifndef Q_OS_MAC
-	if( isRunning() ) return 0;
+	if(!d->lockFile) return 0;
 #endif
 	return exec();
 }

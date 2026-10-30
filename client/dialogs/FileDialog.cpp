@@ -22,11 +22,14 @@
 #include "Settings.h"
 #include "dialogs/WarningDialog.h"
 
+#include <QtCore/QByteArrayView>
 #include <QtCore/QCoreApplication>
 #include <QtCore/QRegularExpression>
 #include <QtCore/QTemporaryFile>
 
 #include <algorithm>
+#include <array>
+#include <cstring>
 
 #ifdef Q_OS_WIN
 #include <ShObjIdl.h>
@@ -48,8 +51,6 @@ class CPtr
 #include <sys/xattr.h>
 #endif
 
-#include <array>
-
 QString FileDialog::createNewFileName(const QString &file, bool signature, QWidget *parent)
 {
 	const QString extension = signature ? QStringLiteral(".asice") :
@@ -64,11 +65,10 @@ QString FileDialog::createNewFileName(const QString &file, bool signature, QWidg
 	if(!QFile::exists(fileName) && fileIsWritable(fileName))
 		return fileName;
 #endif
-	fileName = FileDialog::getSaveFileName(parent, tr("Create %1").arg(type), fileName,
+	// An existing file is overwritten in place on saving, rather than removed here:
+	// on macOS that would invalidate the sandbox's security-scoped bookmark for it
+	return FileDialog::getSaveFileName(parent, tr("Create %1").arg(type), fileName,
 		QStringLiteral("%1 (*%2)").arg(capitalized, extension));
-	if(!fileName.isEmpty())
-		QFile::remove(fileName);
-	return fileName;
 }
 
 FileDialog::FileType FileDialog::detect(const QString &filename)
@@ -104,6 +104,27 @@ bool FileDialog::fileIsWritable( const QString &filename )
 	return result;
 }
 
+std::unique_ptr<QFile> FileDialog::keepAccessAlive(const QString &path, QIODevice::OpenMode mode)
+{
+#ifdef Q_OS_MACOS
+	// Qt 6.11's macOS sandbox file engine only keeps a user-selected path's
+	// security-scoped access active while some QFile instance for that exact
+	// path exists (not merely open). That covers files picked in a file dialog
+	// and files opened from Finder alike. Code that reads or writes the file
+	// without going through QFile (libdigidocpp, libcdoc, std::filesystem)
+	// bypasses that entirely, so callers doing raw I/O on such a path must keep
+	// the object this returns alive for the duration of that I/O.
+	auto file = std::make_unique<QFile>(path);
+	bool opened = file->open(mode);
+	Q_UNUSED(opened)
+	return file;
+#else
+	Q_UNUSED(path)
+	Q_UNUSED(mode)
+	return {};
+#endif
+}
+
 bool FileDialog::isSignedPDF(const QString &path)
 {
 	if(!path.endsWith(QLatin1String("pdf"), Qt::CaseInsensitive))
@@ -111,9 +132,36 @@ bool FileDialog::isSignedPDF(const QString &path)
 	QFile file(path);
 	if(!file.open(QIODevice::ReadOnly))
 		return false;
-	QByteArray blob = file.readAll();
-	static const auto list = {"adbe.pkcs7.detached", "adbe.pkcs7.sha1", "adbe.x509.rsa_sha1", "ETSI.CAdES.detached"};
-	return std::any_of(list.begin(), list.end(), [&blob](const char *token) { return blob.indexOf(token) > 0; });
+
+	static constexpr std::array TOKENS {
+		QByteArrayView("adbe.pkcs7.detached"),
+		QByteArrayView("adbe.pkcs7.sha1"),
+		QByteArrayView("adbe.x509.rsa_sha1"),
+		QByteArrayView("ETSI.CAdES.detached"),
+	};
+	static constexpr qsizetype CHUNK_SIZE = 1024 * 1024;
+	static constexpr qsizetype OVERLAP = [] {
+		qsizetype longest = 0;
+		for(QByteArrayView token: TOKENS)
+			longest = std::max(longest, token.size());
+		return longest - 1;
+	}();
+
+	QByteArray buffer(OVERLAP + CHUNK_SIZE, Qt::Uninitialized);
+	qsizetype carry = 0; // bytes already valid at the front of buffer, kept from the previous chunk's tail
+	while(!file.atEnd())
+	{
+		qint64 readResult = file.read(buffer.data() + carry, CHUNK_SIZE);
+		if(readResult <= 0)
+			break;
+		qsizetype total = carry + qsizetype(readResult);
+		QByteArrayView view(buffer.constData(), total);
+		if(std::ranges::any_of(TOKENS, [view](QByteArrayView token) { return view.contains(token); }))
+			return true;
+		carry = std::min(total, OVERLAP);
+		std::memmove(buffer.data(), buffer.constData() + total - carry, size_t(carry));
+	}
+	return false;
 }
 
 void FileDialog::setFileZone(const QString &target, const QString &source)
@@ -293,17 +341,15 @@ QString FileDialog::getSaveFileName(QWidget *parent, const QString &caption, con
 
 QString FileDialog::normalized(const QString &data)
 {
-	static constexpr std::array<const unsigned char[3],5> list {{
-		{0xE2, 0x80, 0x8E}, // \u200E LEFT-TO-RIGHT MARK
-		{0xE2, 0x80, 0x8F}, // \u200F RIGHT-TO-LEFT MARK
-		{0xE2, 0x80, 0xAA}, // \u202A LEFT-TO-RIGHT EMBEDDING
-		{0xE2, 0x80, 0xAB}, // \u202B RIGHT-TO-LEFT EMBEDDING
-		{0xE2, 0x80, 0xAE}, // \u202E RIGHT-TO-LEFT OVERRIDE
-	}};
-	QString result = data.normalized(QString::NormalizationForm_C);
-	for (const unsigned char *replace: list)
-		result = result.remove((const char*)replace);
-	return result;
+	static const QRegularExpression control(QStringLiteral(
+		"["
+		"\\x{061C}" // ARABIC LETTER MARK
+		"\\x{200E}" // LEFT-TO-RIGHT MARK
+		"\\x{200F}" // RIGHT-TO-LEFT MARK
+		"\\x{202A}-\\x{202E}" // LEFT-TO-RIGHT EMBEDDING, RIGHT-TO-LEFT EMBEDDING, POP DIRECTIONAL FORMATTING, LEFT-TO-RIGHT OVERRIDE, RIGHT-TO-LEFT OVERRIDE
+		"\\x{2066}-\\x{2069}" // LEFT-TO-RIGHT ISOLATE, RIGHT-TO-LEFT ISOLATE, FIRST STRONG ISOLATE, POP DIRECTIONAL ISOLATE
+		"]"));
+	return data.normalized(QString::NormalizationForm_C).remove(control);
 }
 
 QString FileDialog::result( const QString &str )

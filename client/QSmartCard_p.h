@@ -80,12 +80,6 @@ struct THALESCard: public Card
 	static const QByteArray AID;
 };
 
-struct QSmartCard::Private
-{
-	TokenData		token;
-	QSmartCardData	t;
-};
-
 class QSmartCardDataPrivate: public QSharedData
 {
 public:

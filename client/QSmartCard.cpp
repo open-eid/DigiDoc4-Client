@@ -19,7 +19,9 @@
 
 #include "QSmartCard_p.h"
 
+#include "Application.h"
 #include "IKValidator.h"
+#include "QCryptoBackend.h"
 #include "Settings.h"
 #include "Utils.h"
 #include "dialogs/PinPopup.h"
@@ -50,7 +52,7 @@ bool QSmartCardData::operator ==(const QSmartCardData &other) const
 QString QSmartCardData::card() const { return d->card; }
 
 bool QSmartCardData::isNull() const
-{ return d->data.isEmpty() && d->authCert.isNull() && d->signCert.isNull(); }
+{ return d->data.isEmpty() && d->authCert.isNull() && d->signCert.isNull() && d->retry.isEmpty(); }
 bool QSmartCardData::isPinpad() const { return d->pinpad; }
 bool QSmartCardData::isPUKReplacable() const { return d->pukReplacable; }
 bool QSmartCardData::isValid() const
@@ -94,7 +96,7 @@ const QByteArray Card::VERIFY = APDU("00200000 00");
 
 std::unique_ptr<Card> Card::card(const QString &reader)
 {
-	QPCSCReader r(reader, &QPCSC::instance());
+	QPCSCReader r(reader);
 	auto atr = r.atr();
 	if(IDEMIACard::isSupported(atr))
 		return std::make_unique<IDEMIACard>(std::move(r));
@@ -122,9 +124,11 @@ QPCSCReader::Result Card::transfer(bool verify, QByteArray &&apdu,
 
 QByteArrayView Card::parseFCI(QByteArrayView data, quint8 expectedTag)
 {
-	for(auto i = data.begin(); i != data.end();)
+	for(auto i = data.begin(); std::distance(i, data.end()) >= 2;)
 	{
 		quint8 tag(*i++), size(*i++);
+		if(size > std::distance(i, data.end()))
+			return {};
 		if(tag == expectedTag)
 			return {i, size};
 		if((tag & 0x20) == 0)
@@ -489,17 +493,12 @@ bool THALESCard::updateCounters(QSmartCardDataPrivate *d) const
 
 
 
-QSmartCard::QSmartCard(QObject *parent)
-	: QObject(parent)
-	, d(new Private)
-{}
-
-QSmartCard::~QSmartCard() noexcept = default;
-
-QSmartCardData QSmartCard::data() const { return d->t; }
-
-bool QSmartCard::pinChange(QSmartCardData::PinType type, QSmartCard::PinAction action, QWidget* parent)
+bool QSmartCard::pinChange(TokenData token, QSmartCardData current, QSmartCardData::PinType type,
+	QSmartCard::PinAction action, QWidget* parent)
 {
+	if(current.isNull())
+		return false;
+	auto notify = qScopeGuard([token] { qApp->cryptoManager()->refreshToken(token); });
 	std::unique_ptr<PinPopup,QScopedPointerDeleteLater> popup;
 	QByteArray oldPin, newPin;
 	QSmartCardData::PinType src = type;
@@ -510,14 +509,14 @@ bool QSmartCard::pinChange(QSmartCardData::PinType type, QSmartCard::PinAction a
 		src = QSmartCardData::PukType;
 	}
 
-	auto card = Card::card(d->t.reader());
+	auto card = Card::card(current.reader());
 	if(!card)
 	{
 		FadeInNotification::warning(parent, tr("Changing %1 failed").arg(QSmartCardData::typeString(type)));
 		return false;
 	}
 
-	if(d->t.isPinpad())
+	if(current.isPinpad())
 	{
 		QString bodyText;
 		switch(action)
@@ -535,22 +534,22 @@ bool QSmartCard::pinChange(QSmartCardData::PinType type, QSmartCard::PinAction a
 		}
 
 		PinPopup::TokenFlags flags = PinPopup::PinpadChangeFlag;
-		switch(d->t.retryCount(src))
+		switch(current.retryCount(src))
 		{
 		case 2: flags |= PinPopup::PinCountLow; break;
 		case 1: flags |= PinPopup::PinFinalTry; break;
 		case 0: flags |= PinPopup::PinLocked; break;
 		default: break;
 		}
-		popup.reset(new PinPopup(src, flags, d->t.authCert(), parent, bodyText));
+		popup.reset(new PinPopup(src, flags, current.authCert(), parent, bodyText));
 		popup->open();
 		oldPin = card->pinTemplate({});
 		newPin = card->pinTemplate({});
 	}
 	else
 	{
-		PinUnblock p(type, action, d->t.retryCount(src), d->t.data(QSmartCardData::BirthDate).toDate(),
-			d->t.data(QSmartCardData::Id).toString(), d->t.isPUKReplacable(), parent);
+		PinUnblock p(type, action, current.retryCount(src), current.data(QSmartCardData::BirthDate).toDate(),
+			current.data(QSmartCardData::Id).toString(), current.isPUKReplacable(), parent);
 		if (!p.exec())
 			return false;
 		QString oldPinString = p.firstCodeText();
@@ -581,7 +580,7 @@ bool QSmartCard::pinChange(QSmartCardData::PinType type, QSmartCard::PinAction a
 	switch(response.SW)
 	{
 	case 0x9000:
-		card->updateCounters(d->t.d);
+		card->updateCounters(current.d);
 		switch(action)
 		{
 			using enum QSmartCard::PinAction;
@@ -592,7 +591,7 @@ bool QSmartCard::pinChange(QSmartCardData::PinType type, QSmartCard::PinAction a
 		case ChangeWithPin:
 		case ChangeWithPuk:
 			FadeInNotification::success(parent, tr("%1 changed!").arg(QSmartCardData::typeString(type)));
-			return false; // Do not update ui, there is no warning in MainWindow when PIN usage count is low
+			return false; // My eID refreshes counters after the session closes.
 		case UnblockWithPuk:
 			FadeInNotification::success(parent, tr("%1 has been changed and the certificate has been unblocked!")
 				.arg(QSmartCardData::typeString(type)));
@@ -602,15 +601,15 @@ bool QSmartCard::pinChange(QSmartCardData::PinType type, QSmartCard::PinAction a
 	case 0x63C0: //pin retry count 0
 	case 0x6983:
 	case 0x6984:
-		card->updateCounters(d->t.d);
+		card->updateCounters(current.d);
 		FadeInNotification::warning(parent, tr("%1 blocked").arg(QSmartCardData::typeString(src)));
 		return true;
 	case 0x63C1: // Validate error, 1 tries left
 	case 0x63C2: // Validate error, 2 tries left
 	case 0x63C3:
-		card->updateCounters(d->t.d);
+		card->updateCounters(current.d);
 		FadeInNotification::warning(parent, tr("Wrong %1 code. You can try %n more time(s).", nullptr,
-			d->t.retryCount(src)).arg(QSmartCardData::typeString(src)));
+			current.retryCount(src)).arg(QSmartCardData::typeString(src)));
 		return false;
 	case 0x6400:
 		FadeInNotification::warning(parent, tr("%1 timeout").arg(QSmartCardData::typeString(type)));
@@ -634,31 +633,13 @@ bool QSmartCard::pinChange(QSmartCardData::PinType type, QSmartCard::PinAction a
 	}
 }
 
-void QSmartCard::reloadCard(const TokenData &token, bool reloadCounters)
+QSmartCardData QSmartCard::readCard(const TokenData &token, bool countersOnly)
 {
-	qCDebug(CLog) << "Polling";
-	d->token = token;
-	Q_EMIT tokenChanged(token);
-	if(d->token.isNull() || d->token.card().isEmpty() || d->token.reader().isEmpty())
-	{
-		qCDebug(CLog) << "Is null or no reader";
-		d->t.d = new QSmartCardDataPrivate();
-		return;
-	}
-
-	if(d->token.card() != d->t.card())
-	{
-		qCDebug(CLog) << "Different token";
-		d->t.d = new QSmartCardDataPrivate();
-	}
-	else if(reloadCounters)
-		qCDebug(CLog) << "Reload counter";
-	else
-		return;
-
-	QString reader = d->token.reader();
-	if(d->token.reader().endsWith(QLatin1String("..."))) {
-		for(auto truncated = QStringView(d->token.reader()).left(d->token.reader().size() - 3);
+	if(token.isNull() || token.card().isEmpty() || token.reader().isEmpty())
+		return {};
+	QString reader = token.reader();
+	if(reader.endsWith(QLatin1String("..."))) {
+		for(auto truncated = QStringView(reader).left(reader.size() - 3);
 			const QString &test: QPCSC::instance().readers()) {
 			if(test.startsWith(truncated))
 				reader = test;
@@ -667,29 +648,29 @@ void QSmartCard::reloadCard(const TokenData &token, bool reloadCounters)
 
 	qCDebug(CLog) << "Read" << reader;
 	auto card = Card::card(reader);
-	if(!card)
-		return;
-	if(!card->reader.connect())
-		return;
-	qCDebug(CLog) << "Read card" << d->token.card() << "info";
-	QSharedDataPointer<QSmartCardDataPrivate> t = d->t.d;
-	t->card = d->token.card();
-	t->reader = card->reader.name();
-	t->pinpad = card->reader.isPinPad();
-	t->data.clear();
-	t->authCert.clear();
-	t->signCert.clear();
-	t->retry.clear();
-	t->locked.clear();
-
-	if(card->loadPerso(t))
-	{
-		d->t.d = std::move(t);
-		emit dataChanged(d->t);
-	}
-	else
-		qCDebug(CLog) << "Failed to read card info, try again next round";
+	if(!card || !card->reader.connect())
+		return {};
+	qCDebug(CLog) << "Read card" << token.card() << "info";
+	QSmartCardData data;
+	data.d->card = token.card();
+	data.d->reader = card->reader.name();
+	data.d->pinpad = card->reader.isPinPad();
+	if(countersOnly ? card->updateCounters(data.d) && data.d->retry.size() == 3 : card->loadPerso(data.d))
+		return data;
+	qCDebug(CLog) << (countersOnly ? "Failed to read card counters" : "Failed to read card info");
+	return {};
 }
 
-TokenData QSmartCard::tokenData() const { return d->token; }
-
+QSmartCardData QSmartCard::readCounters(QSmartCardData data)
+{
+	const QSmartCardData previous = data;
+	auto card = Card::card(data.reader());
+	if(!card || !card->reader.connect())
+		return previous;
+	data.d->retry.clear();
+	data.d->locked.clear();
+	if(card->updateCounters(data.d) && data.d->retry.size() == 3)
+		return data;
+	qCDebug(CLog) << "Failed to read card counters";
+	return previous;
+}

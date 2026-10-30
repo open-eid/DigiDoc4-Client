@@ -29,7 +29,6 @@ class MainWindow;
 
 class CryptoDoc;
 class DigiDoc;
-class TokenData;
 
 class MainWindow final : public QWidget
 {
@@ -56,25 +55,19 @@ protected:
 	void dragEnterEvent( QDragEnterEvent *event ) final;
 	void dragLeaveEvent( QDragLeaveEvent *event ) final;
 	void dropEvent( QDropEvent *event ) final;
-	void mouseReleaseEvent(QMouseEvent *event) final;
 	void showEvent(QShowEvent *event) final;
 
 private:
 	void adjustDrops();
-	void changePinClicked(QSmartCardData::PinType type, QSmartCard::PinAction action);
 	void convertToCDoc();
 	void navigateToPage(Pages page, const QStringList &files = QStringList(), bool create = true);
-	void onCryptoAction(int action, const QString &id, const QString &phone);
-	void onSignAction(int action, const QString &idCode, const QString &info2);
-	void openContainer(bool signature);
+	void onCryptoAction(int action);
+	void onSignAction(int action);
+	void openContainer(const QString &filter);
 	void resetDigiDoc(std::unique_ptr<DigiDoc> &&doc);
-	template <typename F>
-	void sign(F &&sign);
-	void updateSelector();
-	void updateMyEID(const TokenData &t);
+	void sign();
 	void updateMyEid(const QSmartCardData &data);
 	bool wrap(const QString& wrappedFile, bool pdf);
-	bool wrapContainer(bool signing);
 
 	static QStringList dropEventFiles(QDropEvent *event);
 

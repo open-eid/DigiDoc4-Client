@@ -2,13 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="et_EE">
 <context>
-    <name>Accordion</name>
-    <message>
-        <source>PIN/PUK codes and certificates</source>
-        <translation>PIN/PUK koodid ja sertifikaatide kontroll</translation>
-    </message>
-</context>
-<context>
     <name>AddRecipients</name>
     <message>
         <source>Failed to read certificate</source>
@@ -85,10 +78,6 @@
 </context>
 <context>
     <name>AddressItem</name>
-    <message>
-        <source> (Yourself)</source>
-        <translation> (Sina ise)</translation>
-    </message>
     <message>
         <source>digi-ID</source>
         <translation>digi-ID</translation>
@@ -254,6 +243,17 @@
     <message>
         <source>Added file(s) exceeds the maximum size limit of the container (∼120MB). &lt;a href=&apos;https://www.id.ee/en/article/encrypting-large-120-mb-files/&apos;&gt;Read more about it&lt;/a&gt;</source>
         <translation>Lisatud fail(id) ületab turvaümbriku maksimaalset suurust (~120MB). &lt;a href=&apos;https://www.id.ee/artikkel/suuremahuliste-120-mb-failide-krupteerimine/&apos;&gt;Loe täpsemalt siit&lt;/a&gt;</translation>
+    </message>
+</context>
+<context>
+    <name>CardListItem</name>
+    <message>
+        <source>Issuer</source>
+        <translation>Väljaandja</translation>
+    </message>
+    <message>
+        <source>Valid to</source>
+        <translation>Kehtib kuni</translation>
     </message>
 </context>
 <context>
@@ -464,8 +464,8 @@
         <translation>Kontrolli proksi kasutajanime ja parooli</translation>
     </message>
     <message>
-        <source>Cannot connect to certificate status service!</source>
-        <translation>Kehtivuskinnitusteenus ei ole kättesaadav!</translation>
+        <source>Check internet connection</source>
+        <translation>Kontrolli internetiühendust</translation>
     </message>
 </context>
 <context>
@@ -486,12 +486,16 @@
         <translation>Ümbrik:</translation>
     </message>
     <message>
-        <source>The document has already been signed by you</source>
-        <translation>Dokument on Sinu poolt juba allkirjastatud</translation>
-    </message>
-    <message>
         <source>DigiDoc4 Client</source>
         <translation>DigiDoc4 klient</translation>
+    </message>
+    <message>
+        <source>Encrypt for recipients</source>
+        <translation>Krüpteeri adressaadi alusel</translation>
+    </message>
+    <message>
+        <source>Encrypt with password</source>
+        <translation>Krüpteeri parooliga</translation>
     </message>
     <message>
         <source>Decrypting</source>
@@ -504,6 +508,10 @@
     <message>
         <source>It is removed along with the container.</source>
         <translation>Koos sellega eemaldatakse ka ümbrik.</translation>
+    </message>
+    <message>
+        <source>Failed to decrypt document</source>
+        <translation type="unfinished">Dokumendi dekrüpteerimine ebaõnnestus</translation>
     </message>
     <message>
         <source>In order to view Validity Confirmation Sheet there has to be at least one printer installed!</source>
@@ -528,6 +536,10 @@
     <message>
         <source>Change</source>
         <translation>Muuda</translation>
+    </message>
+    <message>
+        <source>Password encryption is meant for long-term storage. The password cannot be changed or recovered.</source>
+        <translation>Parooliga krüpteerimine on mõeldud pikaajaliseks salvestamiseks. Parooli ei saa muuta ega taastada.</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -560,10 +572,6 @@
     <message>
         <source>Sign</source>
         <translation>Allkirjasta</translation>
-    </message>
-    <message>
-        <source>Continue signing</source>
-        <translation>Jätka allkirjastamisega</translation>
     </message>
     <message>
         <source>Encrypting</source>
@@ -1020,10 +1028,6 @@
         <translation>DigiDoc on loodud Eesti eID-de haldamiseks ja on ametlik rakendus dokumentide digitaalseks allkirjastamiseks ja krüpteerimiseks.</translation>
     </message>
     <message>
-        <source>Skip introductions</source>
-        <translation>Jäta tutvustused vahele →</translation>
-    </message>
-    <message>
         <source>The DigiDoc application allows you to:</source>
         <translation>DigiDoc rakendus võimaldab Sinul:</translation>
     </message>
@@ -1121,82 +1125,47 @@
     </message>
     <message>
         <source>Continue</source>
-        <translation>Edasi</translation>
-    </message>
-    <message>
-        <source>View introduction</source>
-        <translation>Vaata tutvustust</translation>
+        <translation>Jätka</translation>
     </message>
     <message>
         <source>View next intro</source>
-        <translation>Vaata järgmist tutvustust</translation>
+        <translation>Järgmine tutvustus</translation>
     </message>
     <message>
         <source>Enter the application</source>
         <translation>Sisene rakendusse</translation>
     </message>
     <message>
-        <source>Go to signing intro</source>
-        <translation>Mine allkirjastamise tutvustuse juurde</translation>
-    </message>
-    <message>
-        <source>Go to EID intro</source>
-        <translation>Mine eID tutvustuse juurde</translation>
-    </message>
-    <message>
-        <source>Go to encryption intro</source>
-        <translation>Mine krüpteerimise tutvustuse juurde</translation>
-    </message>
-    <message>
         <source>&quot;My eID&quot; also provides a good overview of the status and contact information of the ID card inserted in the card reader.</source>
         <translation>&quot;Minu eID&quot; annab ka hea ülevaate kaardilugejasse sisestatud ID-kaardi staatusest ja kontaktandmetest.</translation>
     </message>
-</context>
-<context>
-    <name>InfoStack</name>
     <message>
-        <source>You&apos;re using digital identity card</source>
-        <translation>Kasutate digitaalset isikutunnistust</translation>
+        <source>Initial introduction</source>
+        <translation>Esmane tutvustus</translation>
     </message>
     <message>
-        <source>Name</source>
-        <translation>Nimi</translation>
+        <source>1. About the DigiDoc application</source>
+        <translation>1. DigiDoc rakendusest</translation>
     </message>
     <message>
-        <source>Organization</source>
-        <translation>Organisatsioon</translation>
+        <source>2. Signing</source>
+        <translation>2. Allkirjastamine</translation>
     </message>
     <message>
-        <source>Serial</source>
-        <translation>Seerianumber</translation>
+        <source>3. Encryption</source>
+        <translation>3. Krüpteerimine</translation>
     </message>
     <message>
-        <source>Country</source>
-        <translation>Riik</translation>
+        <source>4. Managing your eIDs</source>
+        <translation>4. Oma eID-de haldus</translation>
     </message>
     <message>
-        <source>Given names</source>
-        <translation>Eesnimi</translation>
+        <source>Close introduction</source>
+        <translation>Sulge tutvustus</translation>
     </message>
     <message>
-        <source>Surname</source>
-        <translation>Perekonnanimi</translation>
-    </message>
-    <message>
-        <source>Personal code</source>
-        <translation>Isikukood</translation>
-    </message>
-    <message>
-        <source>Citizenship</source>
-        <translation>Kodakondsus</translation>
-    </message>
-    <message>
-        <source>Expiry date</source>
-        <translation>Aegumiskuupäev</translation>
-    </message>
-    <message>
-        <source>Document</source>
-        <translation>Dokument</translation>
+        <source>DigiDoc4 version %1, released %2</source>
+        <translation>DigiDoc4 versioon %1, avalikustatud %2</translation>
     </message>
 </context>
 <context>
@@ -1364,53 +1333,12 @@ LDAP serveriga ei saa ühendust.</translation>
 <context>
     <name>MainAction</name>
     <message>
-        <source>Token selection</source>
-        <comment>accessible</comment>
-        <translation>Vali vahend</translation>
-    </message>
-    <message>
-        <source>Sign with
-Mobile-ID</source>
-        <translation>Allkirjasta
-Mobiil-ID’ga</translation>
-    </message>
-    <message>
-        <source>Sign with
-Smart-ID</source>
-        <translation>Allkirjasta
-Smart-ID’ga</translation>
-    </message>
-    <message>
-        <source>Sign with
-E-Seal</source>
-        <translation>Allkirjasta
-E-templiga</translation>
-    </message>
-    <message>
         <source>Encrypt</source>
         <translation>Krüpteeri</translation>
     </message>
     <message>
-        <source>Decrypt</source>
-        <translation>Dekrüpteeri</translation>
-    </message>
-    <message>
-        <source>Decrypt with
-ID-Card</source>
-        <translation>Dekrüpteeri
-ID-kaardiga</translation>
-    </message>
-    <message>
-        <source>Encrypt
-long-term</source>
-        <translation>Krüpteeri
-säilitamiseks</translation>
-    </message>
-    <message>
-        <source>Sign with
-ID-Card</source>
-        <translation>Allkirjasta
-ID-kaardiga</translation>
+        <source>Sign</source>
+        <translation>Allkirjasta</translation>
     </message>
 </context>
 <context>
@@ -1492,16 +1420,8 @@ ID-kaardiga</translation>
         <translation>Ümbriku salvestamine ebaõnnestus</translation>
     </message>
     <message>
-        <source>Connect the card reader to your computer and insert your ID card into the reader</source>
-        <translation>Ühenda kaardilugeja arvutiga ja sisesta ID-kaart lugejasse</translation>
-    </message>
-    <message>
         <source>Signing</source>
         <translation>Allkirjastamine</translation>
-    </message>
-    <message>
-        <source>Check internet connection</source>
-        <translation>Kontrolli internetiühendust</translation>
     </message>
     <message>
         <source>Load file from disk for signing or verifying</source>
@@ -1527,10 +1447,6 @@ ID-kaardiga</translation>
         <source>Select my EID page</source>
         <extracomment>accessible</extracomment>
         <translation>Vali leht minu eID</translation>
-    </message>
-    <message>
-        <source>The card in the card reader is not an Estonian ID-card</source>
-        <translation>Lugejas olev kaart ei ole Eesti ID-kaart</translation>
     </message>
     <message>
         <source>My eID</source>
@@ -1578,49 +1494,6 @@ ID-kaardiga</translation>
     </message>
 </context>
 <context>
-    <name>MobileDialog</name>
-    <message>
-        <source>Enter your phone number to sign with mobile-ID</source>
-        <translation>&lt;b&gt;Sisesta oma telefoninumber&lt;br/&gt;mobiil-IDga allkirjastamiseks&lt;/b&gt;</translation>
-    </message>
-    <message>
-        <source>Remember me</source>
-        <translation>Pea mind meeles</translation>
-    </message>
-    <message>
-        <source>Personal code is not valid</source>
-        <translation>Isikukood pole kehtiv</translation>
-    </message>
-    <message>
-        <source>Phone number is not entered</source>
-        <translation>Telefoninumber pole sisestatud</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Katkesta</translation>
-    </message>
-    <message>
-        <source>Sign</source>
-        <translation>Allkirjastan</translation>
-    </message>
-    <message>
-        <source>Country code and phone number</source>
-        <translation>Riigikood ja telefoninumber</translation>
-    </message>
-    <message>
-        <source>Personal code</source>
-        <translation>Isikukood</translation>
-    </message>
-    <message>
-        <source>Invalid country code</source>
-        <translation>Vigane riigikood</translation>
-    </message>
-    <message>
-        <source>Mobile-ID</source>
-        <translation>Mobiil-ID</translation>
-    </message>
-</context>
-<context>
     <name>MobileProgress</name>
     <message>
         <source>Signing in process</source>
@@ -1647,20 +1520,8 @@ ID-kaardiga</translation>
         <translation>Veendu kontrollkoodi õigsuses ja sisesta telefonil mobiil-ID PIN2-kood.</translation>
     </message>
     <message>
-        <source>Control code:</source>
-        <translation>Kontrollkood:</translation>
-    </message>
-    <message>
         <source>SSL handshake failed. Check the proxy settings of your computer or software upgrades.</source>
         <translation>SSL ühenduskanali loomine ebaõnnestus. Kontrolli arvuti puhverserveri seadeid või tarkvara uuendusi.</translation>
-    </message>
-    <message>
-        <source>%v sec</source>
-        <translation>%v sek</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Katkesta</translation>
     </message>
     <message>
         <source>%1 service has encountered technical errors. Please try again later.</source>
@@ -1792,22 +1653,78 @@ ID-kaardiga</translation>
     </message>
 </context>
 <context>
-    <name>NoCardInfo</name>
+    <name>MyEidInfo</name>
     <message>
-        <source>No card in reader</source>
-        <translation>Lugejas ei ole kaarti; kontrolli, kas ID-kaart on õiget pidi lugejas</translation>
+        <source>Given names</source>
+        <translation>Eesnimi</translation>
     </message>
     <message>
-        <source>No readers found</source>
-        <translation>Ühtegi kiipkaardilugejat pole ühendatud</translation>
+        <source>Surname</source>
+        <translation>Perekonnanimi</translation>
     </message>
     <message>
-        <source>Loading data</source>
-        <translation>Loen andmeid</translation>
+        <source>Personal code</source>
+        <translation>Isikukood</translation>
+    </message>
+    <message>
+        <source>Citizenship</source>
+        <translation>Kodakondsus</translation>
+    </message>
+    <message>
+        <source>Expiry date</source>
+        <translation>Aegumiskuupäev</translation>
+    </message>
+    <message>
+        <source>Document</source>
+        <translation>Dokument</translation>
+    </message>
+    <message>
+        <source>You&apos;re using digital identity card</source>
+        <translation>Kasutate digitaalset isikutunnistust</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>Nimi</translation>
+    </message>
+    <message>
+        <source>Organization</source>
+        <translation>Organisatsioon</translation>
+    </message>
+    <message>
+        <source>Serial</source>
+        <translation>Seerianumber</translation>
+    </message>
+    <message>
+        <source>Country</source>
+        <translation>Riik</translation>
+    </message>
+    <message>
+        <source>No card reader found. Connect a card reader to your computer.</source>
+        <translation>Kaardilugejat ei leitud. Ühenda kaardilugeja arvutiga.</translation>
+    </message>
+    <message>
+        <source>No card in the reader. Insert your ID-card into the reader.</source>
+        <translation>Lugejas ei ole kaarti. Sisesta ID-kaart lugejasse.</translation>
+    </message>
+    <message>
+        <source>The card in the reader is not supported. Insert an Estonian ID-card.</source>
+        <translation>Lugejas olevat kaarti ei toetata. Sisesta Eesti ID-kaart.</translation>
     </message>
     <message>
         <source>The PCSC service, required for using the ID-card, is not working. Check your computer settings.</source>
         <translation>ID-kaardi kasutamiseks vajalik PCSC teenus ei tööta. Kontrolli arvuti seadeid.</translation>
+    </message>
+    <message>
+        <source>Reading card...</source>
+        <translation>Kaardi lugemine...</translation>
+    </message>
+    <message>
+        <source>Failed to read card data</source>
+        <translation>Kaardi andmete lugemine ebaõnnestus</translation>
+    </message>
+    <message>
+        <source>Select card</source>
+        <translation>Vali kaart</translation>
     </message>
 </context>
 <context>
@@ -1817,14 +1734,22 @@ ID-kaardiga</translation>
         <translation>Krüpteeri parooliga</translation>
     </message>
     <message>
-        <source>Key label (recipient name or id)</source>
-        <translation>Võtme nimi (saaja nimi või kood)</translation>
-    </message>
-    <message>
         <source>Be sure to save the password in a secure place
 - without the password, you won’t be able to open the file again.</source>
         <translation>Salvesta parool kindlasti turvalisse kohta
 - ilma paroolita ei saa faili enam avada.</translation>
+    </message>
+    <message>
+        <source>Create a name for the envelope</source>
+        <translation>Loo ümbrikule nimi</translation>
+    </message>
+    <message>
+        <source>E.g. Contracts</source>
+        <translation>Nt. Lepingud</translation>
+    </message>
+    <message>
+        <source>Create a password for the envelope</source>
+        <translation>Loo ümbrikule parool</translation>
     </message>
     <message>
         <source>• Length: 20–64 characters
@@ -1849,16 +1774,16 @@ ID-kaardiga</translation>
         <translation>Krüpteeri</translation>
     </message>
     <message>
-        <source>Decrypt with password</source>
-        <translation>Dekrüpteeri parooliga</translation>
-    </message>
-    <message>
-        <source>Enter password to decrypt the document</source>
-        <translation>Sisestage parool dokumendi dekrüpteerimiseks</translation>
-    </message>
-    <message>
         <source>Decrypt</source>
         <translation>Dekrüpteeri</translation>
+    </message>
+    <message>
+        <source>Envelope name</source>
+        <translation>Ümbriku nimi</translation>
+    </message>
+    <message>
+        <source>Envelope password</source>
+        <translation>Ümbriku parool</translation>
     </message>
     <message>
         <source>Password is empty</source>
@@ -1870,11 +1795,7 @@ ID-kaardiga</translation>
     </message>
     <message>
         <source>Passwords do not match</source>
-        <translation>Paroolid ei ühti</translation>
-    </message>
-    <message>
-        <source>Enter a password to encrypt the document</source>
-        <translation>Loo ümbrikule parool</translation>
+        <translation>Paroolid ei kattu</translation>
     </message>
 </context>
 <context>
@@ -2094,6 +2015,10 @@ ID-kaardiga</translation>
         <translation>AEG</translation>
     </message>
     <message>
+        <source>PLACE OF CONFIRMATION (CITY, STREET, STATE, ZIP, COUNTRY)</source>
+        <translation>ALLKIRJASTAJA ASUKOHT (LINN, TÄNAV, MAAKOND, INDEKS, RIIK)</translation>
+    </message>
+    <message>
         <source>NOTES</source>
         <translation>MÄRKUSED</translation>
     </message>
@@ -2112,10 +2037,6 @@ ID-kaardiga</translation>
     <message>
         <source>ROLE / RESOLUTION</source>
         <translation>ROLL/RESOLUTSIOON</translation>
-    </message>
-    <message>
-        <source>PLACE OF CONFIRMATION (CITY, STATE, ZIP, COUNTRY)</source>
-        <translation>ALLKIRJASTAJA  ASUKOHT (LINN, MAAKOND, INDEKS, RIIK)</translation>
     </message>
     <message>
         <source>ISSUER OF CERTIFICATE</source>
@@ -2607,6 +2528,10 @@ Täiendavad litsentsid ja komponendid</translation>
         <translation>Roll ja aadress</translation>
     </message>
     <message>
+        <source>Street</source>
+        <translation>Tänav</translation>
+    </message>
+    <message>
         <source>City</source>
         <translation>Linn</translation>
     </message>
@@ -2793,22 +2718,26 @@ Täiendavad litsentsid ja komponendid</translation>
     </message>
 </context>
 <context>
-    <name>SmartIDDialog</name>
+    <name>SigningDialog</name>
+    <message>
+        <source>Sign document</source>
+        <translation>Allkirjasta dokument</translation>
+    </message>
+    <message>
+        <source>Choose signing method</source>
+        <translation>Vali allkirjastamise meetod</translation>
+    </message>
+    <message>
+        <source>Country code and phone number</source>
+        <translation>Riigikood ja telefoninumber</translation>
+    </message>
     <message>
         <source>Personal code</source>
         <translation>Isikukood</translation>
     </message>
     <message>
-        <source>Enter your personal code to sign with Smart-ID</source>
-        <translation>Sisesta oma isikukood Smart-IDga allkirjastamiseks</translation>
-    </message>
-    <message>
         <source>Remember me</source>
         <translation>Pea mind meeles</translation>
-    </message>
-    <message>
-        <source>Personal code is not valid</source>
-        <translation>Isikukood pole kehtiv</translation>
     </message>
     <message>
         <source>Country</source>
@@ -2832,7 +2761,71 @@ Täiendavad litsentsid ja komponendid</translation>
     </message>
     <message>
         <source>Sign</source>
-        <translation>Allkirjastan</translation>
+        <translation>Allkirjasta</translation>
+    </message>
+    <message>
+        <source>Control code:</source>
+        <translation>Kontrollkood:</translation>
+    </message>
+    <message>
+        <source>ID-card</source>
+        <translation>ID-kaart</translation>
+    </message>
+    <message>
+        <source>Mobile-ID</source>
+        <translation>Mobiil-ID</translation>
+    </message>
+    <message>
+        <source>Smart-ID</source>
+        <translation>Smart-ID</translation>
+    </message>
+    <message>
+        <source>Personal code is not valid</source>
+        <translation>Isikukood pole kehtiv</translation>
+    </message>
+    <message>
+        <source>Phone number is not entered</source>
+        <translation>Telefoninumber pole sisestatud</translation>
+    </message>
+    <message>
+        <source>Invalid country code</source>
+        <translation>Vigane riigikood</translation>
+    </message>
+    <message>
+        <source>Enter %1 code</source>
+        <translation>Sisesta %1-kood</translation>
+    </message>
+    <message>
+        <source>Please enter %1 code in the new window that will appear shortly</source>
+        <translation>Palun sisesta %1-kood peatselt ilmuvas uues aknas</translation>
+    </message>
+    <message>
+        <source>The document has already been signed by you</source>
+        <translation>Dokument on Sinu poolt juba allkirjastatud</translation>
+    </message>
+    <message>
+        <source>Continue signing</source>
+        <translation>Jätka allkirjastamisega</translation>
+    </message>
+    <message>
+        <source>Remaining attempts: %1</source>
+        <translation>Katseid jäänud: %1</translation>
+    </message>
+    <message>
+        <source>Failed to sign document</source>
+        <translation>Dokumendi allkirjastamine ebaõnnestus</translation>
+    </message>
+    <message>
+        <source>No card in reader</source>
+        <translation>Lugejas ei ole kaarti; kontrolli, kas ID-kaart on õiget pidi lugejas</translation>
+    </message>
+    <message>
+        <source>No readers found</source>
+        <translation>Ühtegi kiipkaardilugejat pole ühendatud</translation>
+    </message>
+    <message>
+        <source>The PCSC service, required for using the ID-card, is not working. Check your computer settings.</source>
+        <translation>ID-kaardi kasutamiseks vajalik PCSC teenus ei tööta. Kontrolli arvuti seadeid.</translation>
     </message>
 </context>
 <context>

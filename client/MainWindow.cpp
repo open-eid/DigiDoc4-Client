@@ -25,21 +25,17 @@
 #include "CryptoDoc.h"
 #include "DigiDoc.h"
 #include "QCryptoBackend.h"
-#include "QPCSC.h"
-#include "QSigner.h"
 #include "Settings.h"
 #include "SslCertificate.h"
 #include "TokenData.h"
 #include "effects/FadeInNotification.h"
 #include "effects/Overlay.h"
 #include "dialogs/FileDialog.h"
-#include "dialogs/MobileProgress.h"
 #include "dialogs/RoleAddressDialog.h"
 #include "dialogs/SettingsDialog.h"
-#include "dialogs/SmartIDProgress.h"
+#include "dialogs/SigningDialog.h"
 #include "dialogs/WaitDialog.h"
 #include "dialogs/WarningDialog.h"
-#include "widgets/CardPopup.h"
 #include "widgets/WarningItem.h"
 #include "widgets/WarningList.h"
 
@@ -59,7 +55,6 @@ MainWindow::MainWindow( QWidget *parent )
 	ui->setupUi(this);
 
 	ui->signIntroButton->setFocus();
-	ui->noReaderInfoText->setProperty("currenttext", ui->noReaderInfoText->text());
 
 	ui->version->setText(QStringLiteral("%1%2").arg(tr("Ver. "), Application::applicationVersion()));
 	connect(ui->version, &QPushButton::clicked, this, [this] {showSettings(SettingsDialog::DiagnosticsSettings);});
@@ -81,28 +76,14 @@ MainWindow::MainWindow( QWidget *parent )
 	connect(ui->help, &QToolButton::clicked, qApp, &Application::openHelp);
 	connect(ui->settings, &QToolButton::clicked, this, [this] { showSettings(SettingsDialog::GeneralSettings); });
 
-#ifdef Q_OS_WIN
-	// Add grey line on Windows in order to separate white title bar from card selection bar
-	QWidget *separator = new QWidget(this);
-	separator->setFixedHeight(1);
-	separator->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-	separator->setStyleSheet(QStringLiteral("background-color: #D9D9D9;"));
-	separator->resize(8000, 1);
-	separator->move(mapToGlobal(ui->topBar->pos()));
-	separator->show();
-#endif
-
-	// Refresh ID card info in card widget
-	connect(qApp->cryptoManager(), &QCryptoManager::cacheChanged, this, &MainWindow::updateSelector);
-	connect(qApp->cryptoManager(), &QCryptoManager::signDataChanged, ui->signContainerPage, &ContainerPage::tokenChanged);
-	connect(qApp->cryptoManager(), &QCryptoManager::authDataChanged, ui->cryptoContainerPage, &ContainerPage::tokenChanged);
-
 	// Refresh card info on "My EID" page
-	connect(qApp->cryptoManager()->smartcard(), &QSmartCard::tokenChanged, this, &MainWindow::updateMyEID);
-	connect(qApp->cryptoManager()->smartcard(), &QSmartCard::dataChanged, this, &MainWindow::updateMyEid);
+	connect(ui->eidPage, &MyEidInfo::dataChanged, this, &MainWindow::updateMyEid);
 
-	connect(ui->signIntroButton, &QPushButton::clicked, this, [this] { openContainer(true); });
-	connect(ui->cryptoIntroButton, &QPushButton::clicked, this, [this] { openContainer(false); });
+	connect(ui->signIntroButton, &QPushButton::clicked, this, [this] {
+		openContainer(QStringLiteral("*.bdoc *.ddoc *.asice *.sce *.asics *.scs *.edoc *.adoc%1")
+			.arg(Application::confValue(Application::SiVaUrl).toString().isEmpty() ? QLatin1String() : QLatin1String(" *.pdf")));
+	});
+	connect(ui->cryptoIntroButton, &QPushButton::clicked, this, [this] { openContainer(QLatin1String("*.cdoc *.cdoc2")); });
 	connect(ui->signContainerPage, &ContainerPage::action, this, &MainWindow::onSignAction);
 	connect(ui->signContainerPage, &ContainerPage::addFiles, this, [this](const QStringList &files) { openFiles(files); } );
 	connect(ui->signContainerPage, &ContainerPage::warning, this, [this](WarningText warningText) {
@@ -117,13 +98,7 @@ MainWindow::MainWindow( QWidget *parent )
 		ui->crypto->warningIcon(true);
 	});
 
-	connect(ui->accordion, &Accordion::changePinClicked, this, &MainWindow::changePinClicked);
-	connect(ui->cardInfo, &CardWidget::selected, ui->selector, &QToolButton::toggle);
-
-	ui->signContainerPage->tokenChanged(qApp->cryptoManager()->tokensign());
-	ui->cryptoContainerPage->tokenChanged(qApp->cryptoManager()->tokenauth());
-	updateMyEID(qApp->cryptoManager()->smartcard()->tokenData());
-	updateMyEid(qApp->cryptoManager()->smartcard()->data());
+	updateMyEid(ui->eidPage->cardData());
 }
 
 MainWindow::~MainWindow() noexcept = default;
@@ -148,18 +123,10 @@ void MainWindow::changeEvent(QEvent* event)
 	if (event->type() == QEvent::LanguageChange)
 	{
 		ui->retranslateUi(this);
-		ui->noReaderInfoText->setText(tr(ui->noReaderInfoText->property("currenttext").toByteArray()));
 		ui->version->setText(QStringLiteral("%1%2").arg(tr("Ver. "), Application::applicationVersion()));
 		setWindowTitle(windowFilePath().isEmpty() ? tr("DigiDoc4 Client") : FileDialog::normalized(QFileInfo(windowFilePath()).fileName()));
-		ui->selector->setChecked(false);
 	}
 	QWidget::changeEvent(event);
-}
-
-void MainWindow::changePinClicked(QSmartCardData::PinType type, QSmartCard::PinAction action)
-{
-	if(qApp->cryptoManager()->smartcard()->pinChange(type, action, ui->topBar))
-		updateMyEid(qApp->cryptoManager()->smartcard()->data());
 }
 
 void MainWindow::closeEvent(QCloseEvent * /*event*/)
@@ -212,14 +179,6 @@ QStringList MainWindow::dropEventFiles(QDropEvent *event)
 			files << url.toLocalFile();
 	}
 	return files;
-}
-
-void MainWindow::mouseReleaseEvent(QMouseEvent *event)
-{
-	if(auto *cardPopup = findChild<CardPopup*>())
-		cardPopup->deleteLater();
-	ui->signContainerPage->clearPopups();
-	QWidget::mouseReleaseEvent(event);
 }
 
 void MainWindow::navigateToPage( Pages page, const QStringList &files, bool create )
@@ -275,7 +234,7 @@ void MainWindow::navigateToPage( Pages page, const QStringList &files, bool crea
 		if(navigate)
 		{
 			cryptoDoc = std::move(cryptoContainer);
-			ui->cryptoContainerPage->transition(cryptoDoc.get(), qApp->cryptoManager()->tokenauth().cert());
+			ui->cryptoContainerPage->transition(cryptoDoc.get());
 		}
 	}
 
@@ -283,32 +242,14 @@ void MainWindow::navigateToPage( Pages page, const QStringList &files, bool crea
 		selectPage(page);
 }
 
-void MainWindow::onSignAction(int action, const QString &idCode, const QString &info2)
+void MainWindow::onSignAction(int action)
 {
 	switch(action)
 	{
 	case SignatureAdd:
-	case SignatureToken:
-		sign([this](const QString &city, const QString &state, const QString &zip, const QString &country, const QString &role) {
-			QSigner signer(qApp->cryptoManager()->tokensign());
-			return digiDoc->sign(city, state, zip, country, role, &signer);
-		});
+		sign();
 		break;
-	case SignatureMobile:
-		sign([this, idCode, info2](const QString &city, const QString &state, const QString &zip, const QString &country, const QString &role) {
-			MobileProgress m(this);
-			return m.init(idCode, info2) &&
-				digiDoc->sign(city, state, zip, country, role, &m);
-		});
-		break;
-	case SignatureSmartID:
-		sign([this, idCode, info2](const QString &city, const QString &state, const QString &zip, const QString &country, const QString &role) {
-			SmartIDProgress s(this);
-			return s.init(info2, idCode, digiDoc->fileName()) &&
-				digiDoc->sign(city, state, zip, country, role, &s);
-		});
-		break;
-	case ClearSignatureWarning:
+	case ContainerClearWarning:
 		ui->signature->warningIcon(false);
 		ui->warnings->closeWarnings(SignDetails);
 		break;
@@ -354,13 +295,13 @@ void MainWindow::convertToCDoc()
 
 	cryptoDoc = std::move(cryptoContainer);
 	digiDoc.reset();
-	ui->cryptoContainerPage->transition(cryptoDoc.get(), qApp->cryptoManager()->tokenauth().cert());
+	ui->cryptoContainerPage->transition(cryptoDoc.get());
 	selectPage(CryptoDetails);
 
-	FadeInNotification::success(ui->topBar, tr("Converted to crypto container!"));
+	FadeInNotification::success(ui->content, tr("Converted to crypto container!"));
 }
 
-void MainWindow::onCryptoAction(int action, const QString &/*id*/, const QString &/*phone*/)
+void MainWindow::onCryptoAction(int action)
 {
 	switch(action)
 	{
@@ -371,15 +312,15 @@ void MainWindow::onCryptoAction(int action, const QString &/*id*/, const QString
 		break;
 	case ContainerConvert:
 		if(cryptoDoc && wrap(cryptoDoc->fileName(), false))
-			FadeInNotification::success(ui->topBar, tr("Converted to signed document!"));
+			FadeInNotification::success(ui->content, tr("Converted to signed document!"));
 		break;
 	case DecryptContainerSuccess:
-		FadeInNotification::success(ui->topBar, tr("Decryption succeeded!"));
+		FadeInNotification::success(ui->content, tr("Decryption succeeded!"));
 		break;
 	case EncryptContainerSuccess:
-		FadeInNotification::success(ui->topBar, tr("Encryption succeeded!"));
+		FadeInNotification::success(ui->content, tr("Encryption succeeded!"));
 		break;
-	case ClearCryptoWarning:
+	case ContainerClearWarning:
 		ui->crypto->warningIcon(false);
 		ui->warnings->closeWarnings(CryptoDetails);
 		break;
@@ -451,13 +392,20 @@ void MainWindow::openFiles(QStringList files, bool addFile, bool forceCreate)
 	default:
 		if(addFile)
 		{
-			bool crypto = state & CryptoContainers;
-			if(wrapContainer(!crypto))
+			page = (state & CryptoContainers) ? CryptoDetails : SignDetails;
+			if(WarningDialog::create(this)
+				->withTitle(page == CryptoDetails ?
+					tr("Files can not be added to the cryptocontainer") :
+					tr("Files can not be added to the signed container"))
+				->withText(page == CryptoDetails ?
+					tr("The system will create a new container which shall contain the cypto-document and the files you wish to add.") :
+					tr("The system will create a new container which shall contain the signed document and the files you wish to add."))
+				->setCancelText(WarningDialog::Cancel)
+				->addButton(tr("Continue"), QMessageBox::Ok)
+				->exec() == QMessageBox::Ok)
 				files.insert(files.begin(), digiDoc->fileName());
 			else
 				create = false;
-
-			page = crypto ? CryptoDetails : SignDetails;
 		}
 		else
 		{
@@ -472,15 +420,10 @@ void MainWindow::openFiles(QStringList files, bool addFile, bool forceCreate)
 	navigateToPage(page, files, create);
 }
 
-void MainWindow::openContainer(bool signature)
+void MainWindow::openContainer(const QString &filter)
 {
-	QString filter = QFileDialog::tr("All Files (*)") + QStringLiteral(";;") + FileDialog::tr("Documents (%1)");
-	if(signature)
-		filter = filter.arg(QStringLiteral("*.bdoc *.ddoc *.asice *.sce *.asics *.scs *.edoc *.adoc%1")
-			.arg(Application::confValue(Application::SiVaUrl).toString().isEmpty() ? QLatin1String() : QLatin1String(" *.pdf")));
-	else
-		filter = filter.arg(QLatin1String("*.cdoc *.cdoc2"));
-	QStringList files = FileDialog::getOpenFileNames(this, tr("Select documents"), {}, filter);
+	QStringList files = FileDialog::getOpenFileNames(this, tr("Select documents"), {},
+		QFileDialog::tr("All Files (*)") + QStringLiteral(";;") + FileDialog::tr("Documents (%1)").arg(filter));
 	if(!files.isEmpty())
 		openFiles(std::move(files));
 }
@@ -520,7 +463,6 @@ void MainWindow::selectPage(Pages page)
 	ui->startScreen->setCurrentIndex(page);
 	ui->warnings->updateWarnings(page);
 	adjustDrops();
-	updateSelector();
 }
 
 void MainWindow::showEvent(QShowEvent * /*event*/)
@@ -546,17 +488,16 @@ void MainWindow::showSettings(int page)
 		settings->show();
 		return;
 	}
-	SettingsDialog dlg(page, this);
-	connect(&dlg, &SettingsDialog::togglePrinting, ui->signContainerPage, &ContainerPage::togglePrinting);
-	dlg.exec();
+	auto *dlg = new SettingsDialog(page, this);
+	connect(dlg, &SettingsDialog::togglePrinting, ui->signContainerPage, &ContainerPage::togglePrinting);
+	dlg->open();
 }
 
-template<typename F>
-void MainWindow::sign(F &&sign)
+void MainWindow::sign()
 {
-	if(!CheckConnection().check())
+	if(CheckConnection check; !check.check())
 	{
-		FadeInNotification::error(ui->topBar, tr("Check internet connection"));
+		FadeInNotification::error(ui->content, check.errorString());
 		return;
 	}
 
@@ -564,29 +505,35 @@ void MainWindow::sign(F &&sign)
 	if(RoleAddressDialog(this).get(city, country, state, zip, role) == QDialog::Rejected)
 		return;
 
-	WaitDialogHolder waitDialog(this, tr("Signing"));
 	if(digiDoc->isPDF())
 	{
-		QString wrappedFile = digiDoc->fileName();
-		if(!wrap(wrappedFile, true))
+		QString pdfFile = digiDoc->fileName();
+		if(!wrap(pdfFile, true))
 			return;
 
-		if(!sign(city, state, zip, country, role))
+		SigningDialog dlg(digiDoc.get(), ui->signContainerPage);
+		dlg.setRoleAddress(city, country, state, zip, role);
+		if(dlg.exec() != QDialog::Accepted)
 		{
 			digiDoc.reset();
-			openFiles({std::move(wrappedFile)});
+			openFiles({std::move(pdfFile)});
 			return;
 		}
 	}
-	else if(!sign(city, state, zip, country, role))
-		return;
+	else
+	{
+		SigningDialog dlg(digiDoc.get(), ui->signContainerPage);
+		dlg.setRoleAddress(city, country, state, zip, role);
+		if(dlg.exec() != QDialog::Accepted)
+			return;
+	}
+	WaitDialogHolder waitDialog(this, tr("Signing"));
 
 	if(!digiDoc->save())
 		return;
 
 	ui->signContainerPage->transition(digiDoc.get());
-
-	FadeInNotification::success(ui->topBar, tr("The container has been successfully signed!"));
+	FadeInNotification::success(ui->content, tr("The container has been successfully signed!"));
 }
 
 bool MainWindow::wrap(const QString& wrappedFile, bool pdf)
@@ -612,57 +559,8 @@ bool MainWindow::wrap(const QString& wrappedFile, bool pdf)
 	return true;
 }
 
-bool MainWindow::wrapContainer(bool signing)
-{
-	return WarningDialog::create(this)
-		->withTitle(signing ? tr("Files can not be added to the signed container") : tr("Files can not be added to the cryptocontainer"))
-		->withText(signing ?
-			tr("The system will create a new container which shall contain the signed document and the files you wish to add.") :
-			tr("The system will create a new container which shall contain the cypto-document and the files you wish to add."))
-		->setCancelText(WarningDialog::Cancel)
-		->addButton(tr("Continue"), QMessageBox::Ok)
-		->exec() == QMessageBox::Ok;
-}
-
-void MainWindow::updateMyEID(const TokenData &t)
-{
-	updateSelector();
-	ui->myEid->invalidIcon(false);
-	ui->myEid->warningIcon(false);
-	ui->warnings->closeWarnings(MyEid);
-	SslCertificate cert(t.cert());
-	auto type = cert.type();
-	ui->infoStack->setHidden(type == SslCertificate::UnknownType);
-	ui->accordion->setHidden(type == SslCertificate::UnknownType);
-	ui->noReaderInfo->setVisible(type == SslCertificate::UnknownType);
-
-	auto setText = [this](const char *text) {
-		ui->noReaderInfoText->setProperty("currenttext", text);
-		ui->noReaderInfoText->setText(tr(text));
-	};
-	if(!t.isNull())
-	{
-		setText(QT_TR_NOOP("The card in the card reader is not an Estonian ID-card"));
-		if(ui->cardInfo->token().card() != t.card())
-			ui->accordion->clear();
-		if(type & SslCertificate::TempelType)
-		{
-			ui->infoStack->update(cert);
-			ui->accordion->updateInfo(cert);
-		}
-	}
-	else
-	{
-		ui->infoStack->clearData();
-		ui->accordion->clear();
-		setText(QT_TR_NOOP("Connect the card reader to your computer and insert your ID card into the reader"));
-	}
-}
-
 void MainWindow::updateMyEid(const QSmartCardData &data)
 {
-	ui->infoStack->update(data);
-	ui->accordion->updateInfo(data);
 	ui->myEid->warningIcon(false);
 	ui->myEid->invalidIcon(false);
 	ui->warnings->closeWarnings(MyEid);
@@ -678,8 +576,6 @@ void MainWindow::updateMyEid(const QSmartCardData &data)
 		pin1Blocked || pin1Locked ||
 		pin2Blocked || pin2Locked ||
 		pukBlocked);
-	ui->signContainerPage->cardChanged(data.signCert(), pin2Blocked || pin2Locked);
-	ui->cryptoContainerPage->cardChanged(data.authCert(), pin1Blocked || pin1Locked);
 
 	using enum WarningText::WarningType;
 	if(pin1Locked)
@@ -690,19 +586,19 @@ void MainWindow::updateMyEid(const QSmartCardData &data)
 			ui->warnings->showWarning({isPUKReplacable ? Pin1PukBlockedResetWarning : Pin1PukBlockedWarning});
 		else if(pin1Blocked)
 			ui->warnings->showWarning({UnblockPin1Warning, 0,
-				[this]{ changePinClicked(QSmartCardData::Pin1Type, QSmartCard::UnblockWithPuk); }});
+				[this]{ ui->eidPage->changePin(QSmartCardData::Pin1Type, QSmartCard::UnblockWithPuk); }});
 
 		if(pin2Locked && pin2Blocked)
 			ui->warnings->showWarning({ActivatePin2WithPUKWarning, 0,
-				[this]{ changePinClicked(QSmartCardData::Pin2Type, QSmartCard::ActivateWithPuk); }});
+				[this]{ ui->eidPage->changePin(QSmartCardData::Pin2Type, QSmartCard::ActivateWithPuk); }});
 		else if(pin2Blocked && pukBlocked)
 			ui->warnings->showWarning({isPUKReplacable ? Pin2PukBlockedResetWarning : Pin2PukBlockedWarning});
 		else if(pin2Blocked)
 			ui->warnings->showWarning({UnblockPin2Warning, 0,
-				[this]{ changePinClicked(QSmartCardData::Pin2Type, QSmartCard::UnblockWithPuk); }});
+				[this]{ ui->eidPage->changePin(QSmartCardData::Pin2Type, QSmartCard::UnblockWithPuk); }});
 		else if(pin2Locked)
 			ui->warnings->showWarning({ActivatePin2Warning, 0,
-				[this]{ changePinClicked(QSmartCardData::Pin2Type, QSmartCard::ActivateWithPin); }});
+				[this]{ ui->eidPage->changePin(QSmartCardData::Pin2Type, QSmartCard::ActivateWithPin); }});
 	}
 
 	const qint64 DAY = 24 * 60 * 60;
@@ -722,75 +618,4 @@ void MainWindow::updateMyEid(const QSmartCardData &data)
 		ui->myEid->warningIcon(true);
 		ui->warnings->showWarning({CertExpiryWarning});
 	}
-}
-
-void MainWindow::updateSelector()
-{
-	TokenData selected;
-	enum Filter: uint8_t {
-		Signing,
-		Decrypting,
-		MyEID,
-	} filter = Signing;
-	switch(ui->startScreen->currentIndex())
-	{
-	case SignIntro:
-	case SignDetails:
-		selected = qApp->cryptoManager()->tokensign();
-		filter = Signing;
-		break;
-	case CryptoIntro:
-	case CryptoDetails:
-		selected = qApp->cryptoManager()->tokenauth();
-		filter = Decrypting;
-		break;
-	case MyEid:
-	default:
-		selected = qApp->cryptoManager()->smartcard()->tokenData();
-		filter = MyEID;
-		break;
-	}
-	QVector<TokenData> list;
-	for(const TokenData &token: qApp->cryptoManager()->cache())
-	{
-		if(token.card() == selected.card())
-			continue;
-		if(std::any_of(list.cbegin(), list.cend(), [token](const TokenData &item) { return token.card() == item.card(); }))
-			continue;
-		SslCertificate cert(token.cert());
-		if(filter == Signing && !cert.keyUsage().contains(SslCertificate::NonRepudiation))
-			continue;
-		if(filter == Decrypting && cert.keyUsage().contains(SslCertificate::NonRepudiation))
-			continue;
-		if(filter == MyEID &&
-			!(cert.type() & SslCertificate::EstEidType || cert.type() & SslCertificate::DigiIDType || cert.type() & SslCertificate::TempelType))
-			continue;
-		list.append(token);
-	}
-	ui->noCardInfo->setVisible(selected.isNull());
-	ui->selector->setHidden(list.isEmpty());
-	ui->selector->setChecked(false);
-	ui->cardInfo->setVisible(ui->noCardInfo->isHidden());
-	ui->cardInfo->setCursor(ui->selector->isVisible() ? Qt::PointingHandCursor : Qt::ArrowCursor);
-	ui->cardInfo->update(selected, list.size() > 1);
-	if (!QPCSC::instance().serviceRunning())
-		ui->noCardInfo->update(NoCardInfo::NoPCSC);
-	else if(QPCSC::instance().readers().isEmpty())
-		ui->noCardInfo->update(NoCardInfo::NoReader);
-	else
-		ui->noCardInfo->update(NoCardInfo::NoCard);
-	disconnect(ui->selector, &QToolButton::toggled, this, nullptr);
-	if(list.isEmpty())
-		return;
-	connect(ui->selector, &QToolButton::toggled, this, [this, list](bool show) {
-		if(show)
-		{
-			auto *cardPopup = new CardPopup(list, this);
-			connect(cardPopup, &CardPopup::activated, qApp->cryptoManager(), &QCryptoManager::selectCard);
-			connect(cardPopup, &CardPopup::activated, this, [this] { ui->selector->setChecked(false); });
-			cardPopup->show();
-		}
-		else if(auto *cardPopup = findChild<CardPopup*>())
-			cardPopup->deleteLater();
-	});
 }

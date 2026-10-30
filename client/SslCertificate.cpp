@@ -20,6 +20,7 @@
 #include "SslCertificate.h"
 
 #include "Common.h"
+#include "Utils.h"
 
 #include <digidocpp/Exception.h>
 #include <digidocpp/crypto/X509Cert.h>
@@ -35,18 +36,6 @@
 #include <openssl/ocsp.h>
 #include <openssl/x509v3.h>
 
-#include <memory>
-
-template<auto D>
-struct free_deleter
-{
-	template<class T>
-	void operator()(T *p) const noexcept
-	{
-		D(p);
-	}
-};
-
 template<typename> struct free_argument;
 template<class T, class R>
 struct free_argument<R (*)(T *)>
@@ -59,17 +48,12 @@ struct free_argument<R (&)(T *)>
 	using type = T;
 };
 
-template<auto F, typename T>
-[[nodiscard]]
-constexpr auto make_unique_ptr(T *t) noexcept
-{
-	return std::unique_ptr<T, free_deleter<F>>(t);
-}
-
 template<class T>
 static auto toQByteArray(T &x)
 {
-	return QByteArray((const char*)x->data, x->length);
+    const auto *str = std::to_address(x);
+    return QByteArray((const char*)ASN1_STRING_get0_data(str),
+                      ASN1_STRING_length(str));
 }
 
 template <auto Func, typename Arg>
@@ -233,7 +217,7 @@ QHash<SslCertificate::KeyUsage,QString> SslCertificate::keyUsage() const
 
 QString SslCertificate::personalCode() const
 {
-	// http://www.etsi.org/deliver/etsi_en/319400_319499/31941201/01.01.01_60/en_31941201v010101p.pdf
+	// https://www.etsi.org/deliver/etsi_en/319400_319499/31941201/01.01.01_60/en_31941201v010101p.pdf
 	static const QStringList types {"PAS", "IDC", "PNO", "TAX", "TIN"};
 	QString data = subjectInfo(QSslCertificate::SerialNumber);
 	if(data.size() > 6 && (types.contains(data.left(3)) || data[2] == ':') && data[5] == '-')
@@ -279,11 +263,6 @@ QByteArray SslCertificate::subjectKeyIdentifier() const
 {
 	auto id = extension<ASN1_OCTET_STRING_free>(NID_subject_key_identifier);
 	return !id ? QByteArray() : toQByteArray(id);
-}
-
-QByteArray SslCertificate::toHex(const QByteArray &in, char separator)
-{
-	return in.toHex(separator).toUpper();
 }
 
 QString SslCertificate::toString( const QString &format ) const

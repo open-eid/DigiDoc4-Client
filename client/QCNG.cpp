@@ -52,12 +52,12 @@ QCNG::QCNG() noexcept = default;
 
 QCNG::~QCNG() noexcept = default;
 
-QCNG::Status QCNG::login(const TokenData &token)
+QCNG::Status QCNG::login(const TokenData &token, const QString & /*pin*/)
 {
 	std::unique_ptr<Private> p = std::make_unique<Private>();
 	if(FAILED(NCryptOpenStorageProvider(&p->prov, LPCWSTR(token.data(u"provider"_s).toString().utf16()), 0)))
 		return DeviceError;
-	if(FAILED(NCryptOpenKey(p->prov, &p->key, LPWSTR(token.data(u"key"_s).toString().utf16()),
+	if(FAILED(NCryptOpenKey(p->prov, &p->key, LPCWSTR(token.data(u"key"_s).toString().utf16()),
 		token.data(u"spec"_s).value<DWORD>(), 0)))
 		return DeviceError;
 	// https://docs.microsoft.com/en-us/archive/blogs/alejacma/smart-cards-pin-gets-cached
@@ -115,12 +115,12 @@ QByteArray QCNG::deriveConcatKDF(const QByteArray &publicKey, QCryptographicHash
 	const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) const
 {
 	return derive(publicKey, [&](NCRYPT_SECRET_HANDLE sharedSecret, QByteArray &derived) {
-		std::array paramValues{
-			BCryptBuffer{ULONG(algorithmID.size()), KDF_ALGORITHMID, PBYTE(algorithmID.data())},
-			BCryptBuffer{ULONG(partyUInfo.size()), KDF_PARTYUINFO, PBYTE(partyUInfo.data())},
-			BCryptBuffer{ULONG(partyVInfo.size()), KDF_PARTYVINFO, PBYTE(partyVInfo.data())},
-			BCryptBuffer{ULONG(sizeof(BCRYPT_SHA256_ALGORITHM)), KDF_HASH_ALGORITHM, PBYTE(BCRYPT_SHA256_ALGORITHM)}
-		};
+		auto paramValues = std::to_array<BCryptBuffer>({
+			{ULONG(algorithmID.size()), KDF_ALGORITHMID, PBYTE(algorithmID.data())},
+			{ULONG(partyUInfo.size()), KDF_PARTYUINFO, PBYTE(partyUInfo.data())},
+			{ULONG(partyVInfo.size()), KDF_PARTYVINFO, PBYTE(partyVInfo.data())},
+			{ULONG(sizeof(BCRYPT_SHA256_ALGORITHM)), KDF_HASH_ALGORITHM, PBYTE(BCRYPT_SHA256_ALGORITHM)}
+		});
 		switch(digest)
 		{
 		case QCryptographicHash::Sha256: break;
@@ -145,10 +145,10 @@ QByteArray QCNG::deriveConcatKDF(const QByteArray &publicKey, QCryptographicHash
 QByteArray QCNG::deriveHMACExtract(const QByteArray &publicKey, const QByteArray &salt, int keySize) const
 {
 	return derive(publicKey, [&](NCRYPT_SECRET_HANDLE sharedSecret, QByteArray &derived) {
-		std::array paramValues{
-			BCryptBuffer{ULONG(salt.size()), KDF_HMAC_KEY, PBYTE(salt.data())},
-			BCryptBuffer{ULONG(sizeof(BCRYPT_SHA256_ALGORITHM)), KDF_HASH_ALGORITHM, PBYTE(BCRYPT_SHA256_ALGORITHM)},
-		};
+		auto paramValues = std::to_array<BCryptBuffer>({
+			{ULONG(salt.size()), KDF_HMAC_KEY, PBYTE(salt.data())},
+			{ULONG(sizeof(BCRYPT_SHA256_ALGORITHM)), KDF_HASH_ALGORITHM, PBYTE(BCRYPT_SHA256_ALGORITHM)},
+		});
 		BCryptBufferDesc params{BCRYPTBUFFER_VERSION, ULONG(paramValues.size()), paramValues.data()};
 		DWORD size = 0;
 		SECURITY_STATUS err = 0;
@@ -185,14 +185,15 @@ QList<TokenData> QCNG::tokens()
 {
 	QList<TokenData> result;
 	auto prop = [](NCRYPT_HANDLE handle, LPCWSTR param) -> QByteArray {
+		QByteArray data;
 		if(!handle)
-			return {};
+			return data;
 		DWORD size {};
 		if(NCryptGetProperty(handle, param, nullptr, 0, &size, 0))
-			return {};
-		QByteArray data(int(size), '\0');
+			return data;
+		data.resize(int(size));
 		if(NCryptGetProperty(handle, param, PBYTE(data.data()), size, &size, 0))
-			return {};
+			data.clear();
 		return data;
 	};
 	auto enumKeys = [&result, &prop](const QString &provider, QString reader = {}) {
@@ -247,7 +248,7 @@ QList<TokenData> QCNG::tokens()
 				{"3BD518008131FE7D8073C82110F4"}, // SafeNet 5110 FIPS
 				{"3BFF9600008131FE4380318065B0846566FB12017882900085"}, // SafeNet 5110+ FIPS
 			};
-			t.setData(u"PSS"_s, usePSS.contains(QPCSCReader(reader, &QPCSC::instance()).atr()));
+			t.setData(u"PSS"_s, usePSS.contains(QPCSCReader(reader).atr()));
 		}
 	};
 
@@ -290,7 +291,8 @@ QByteArray QCNG::sign(QCryptographicHash::Algorithm type, const QByteArray &dige
 		BCRYPT_PKCS1_PADDING_INFO rsaPKCS1 { rsaPSS.pszAlgId };
 		DWORD size {};
 		QString algo(5, '\0');
-		NCryptGetProperty(key, NCRYPT_ALGORITHM_GROUP_PROPERTY, PBYTE(algo.data()), DWORD((algo.size() + 1) * 2), &size, 0);
+		if(auto err = NCryptGetProperty(key, NCRYPT_ALGORITHM_GROUP_PROPERTY, PBYTE(algo.data()), DWORD((algo.size() + 1) * 2), &size, 0))
+			return err;
 		algo.resize(size/2 - 1);
 		bool isRSA = algo == QLatin1String("RSA");
 		DWORD padding {};

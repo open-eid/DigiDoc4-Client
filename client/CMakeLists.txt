@@ -21,6 +21,7 @@ add_subdirectory(libcdoc EXCLUDE_FROM_ALL)
 file(GLOB WIDGETS CONFIGURE_DEPENDS
 	"dialogs/*.cpp" "dialogs/*.h" "dialogs/*.ui"
 	"effects/*.cpp" "effects/*.h" "effects/*.ui"
+	"signer/*.cpp" "signer/*.h"
 	"widgets/*.cpp" "widgets/*.h" "widgets/*.ui"
 )
 add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
@@ -66,8 +67,6 @@ add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
 	QPCSC.h
 	QPKCS11.cpp
 	QPKCS11.h
-	QSigner.cpp
-	QSigner.h
 	QSmartCard.cpp
 	QSmartCard_p.h
 	QSmartCard.h
@@ -81,6 +80,8 @@ add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
 )
 if(WIN32)
 	set_source_files_properties(Diagnostics_unix.cpp PROPERTIES HEADER_FILE_ONLY TRUE)
+	target_sources(${PROJECT_NAME} PRIVATE Application_win.cpp)
+	target_link_libraries(${PROJECT_NAME} windowsapp)
 else()
 	set_source_files_properties(Diagnostics_win.cpp PROPERTIES HEADER_FILE_ONLY TRUE)
 endif()
@@ -138,7 +139,7 @@ if( APPLE )
 	set_source_files_properties(${RESOURCE_FILES} PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
 	set_source_files_properties( Application_mac.mm dialogs/CertificateDetails_mac.mm PROPERTIES COMPILE_FLAGS "-fobjc-arc" )
 	set_source_files_properties( LdapSearch.cpp PROPERTIES COMPILE_FLAGS "-Wno-deprecated-declarations" )
-	target_link_libraries(${PROJECT_NAME} "-framework QuickLookUI" "-fobjc-arc")
+	target_link_libraries(${PROJECT_NAME} "-framework QuickLookUI" "-framework Security" "-fobjc-arc")
 	find_library(PKCS11_MODULE NAMES opensc-pkcs11.so HINTS /Library/OpenSC/lib)
 	add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
 		COMMAND cp -a ${PKCS11_MODULE} $<TARGET_FILE_DIR:${PROJECT_NAME}>
@@ -227,7 +228,7 @@ elseif(WIN32)
 	)
 	if(SIGNCERT)
 		list(APPEND SIGNCMD signtool.exe sign /a /v /s MY /n "${SIGNCERT}" /fd SHA256
-			/du http://installer.id.ee /tr http://timestamp.digicert.com /td SHA256)
+			/du https://installer.id.ee /tr http://timestamp.digicert.com /td SHA256)
 		add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
 			COMMAND ${SIGNCMD} "$<$<BOOL:${CROSSSIGNCERT}>:/ph;/ac;${CROSSSIGNCERT}>" $<TARGET_FILE:${PROJECT_NAME}>
 			COMMAND_EXPAND_LISTS
@@ -303,31 +304,5 @@ else()
 			DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/${RES}x${RES}/mimetypes/
 			RENAME application-x-cdoc.png
 		)
-		foreach(TGT
-				application-vnd.etsi.asic-s+zip.png
-				application-x-ddoc.png
-				application-vnd.lt.archyvai.adoc-2008.png)
-			install(CODE "execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink application-vnd.etsi.asic-e+zip.png \
-				\$ENV{DESTDIR}/${CMAKE_INSTALL_FULL_DATADIR}/icons/hicolor/${RES}x${RES}/mimetypes/${TGT})")
-		endforeach()
-		foreach(TGT
-				application-x-cdoc2.png)
-			install(CODE "execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink application-x-cdoc.png \
-				\$ENV{DESTDIR}/${CMAKE_INSTALL_FULL_DATADIR}/icons/hicolor/${RES}x${RES}/mimetypes/${TGT})")
-		endforeach()
-		# Workaround Ubuntu 21.10 Yaru icon theme issues
-		install(CODE "execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory \
-			\$ENV{DESTDIR}/${CMAKE_INSTALL_FULL_DATADIR}/icons/Yaru/${RES}x${RES}/mimetypes/)")
-		foreach(TGT
-				application-vnd.etsi.asic-e+zip.png
-				application-vnd.etsi.asic-s+zip.png
-				application-x-ddoc.png
-				application-vnd.lt.archyvai.adoc-2008.png
-				application-x-cdoc.png
-				application-x-cdoc2.png)
-			install(CODE "execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink \
-				${CMAKE_INSTALL_FULL_DATADIR}/icons/hicolor/${RES}x${RES}/mimetypes/${TGT} \
-				\$ENV{DESTDIR}/${CMAKE_INSTALL_FULL_DATADIR}/icons/Yaru/${RES}x${RES}/mimetypes/${TGT})")
-		endforeach()
 	endforeach()
 endif()
