@@ -74,7 +74,11 @@ MainWindow::MainWindow( QWidget *parent )
 		selectPage(Pages(page));
 	});
 	connect(ui->help, &QToolButton::clicked, qApp, &Application::openHelp);
-	connect(ui->settings, &QToolButton::clicked, this, [this] { showSettings(SettingsDialog::GeneralSettings); });
+	connect(ui->settings, &QToolButton::clicked, this, [this] {
+		auto page = ui->startScreen->currentIndex();
+		bool isEncryption = page == CryptoIntro || page == CryptoDetails;
+		showSettings(isEncryption ? SettingsDialog::EncryptionSettings : SettingsDialog::GeneralSettings);
+	});
 
 	// Refresh card info on "My EID" page
 	connect(ui->eidPage, &MyEidInfo::dataChanged, this, &MainWindow::updateMyEid);

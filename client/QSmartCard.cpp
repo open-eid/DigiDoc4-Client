@@ -24,7 +24,7 @@
 #include "QCryptoBackend.h"
 #include "Settings.h"
 #include "Utils.h"
-#include "dialogs/PinPopup.h"
+#include "dialogs/PinpadPopup.h"
 #include "dialogs/PinUnblock.h"
 #include "effects/FadeInNotification.h"
 
@@ -76,6 +76,11 @@ quint8 QSmartCardData::minPinLen(QSmartCardData::PinType type)
 	case QSmartCardData::PukType: return 8;
 	}
 	return 4;
+}
+
+QSmartCardData::PinType QSmartCardData::pinType(const QSslCertificate &cert)
+{
+	return SslCertificate(cert).keyUsage().contains(SslCertificate::NonRepudiation) ? Pin2Type : Pin1Type;
 }
 
 QString QSmartCardData::typeString(QSmartCardData::PinType type)
@@ -499,7 +504,7 @@ bool QSmartCard::pinChange(TokenData token, QSmartCardData current, QSmartCardDa
 	if(current.isNull())
 		return false;
 	auto notify = qScopeGuard([token] { qApp->cryptoManager()->refreshToken(token); });
-	std::unique_ptr<PinPopup,QScopedPointerDeleteLater> popup;
+	std::unique_ptr<PinpadPopup,QScopedPointerDeleteLater> popup;
 	QByteArray oldPin, newPin;
 	QSmartCardData::PinType src = type;
 	if(action != QSmartCard::ChangeWithPin && action != QSmartCard::ActivateWithPin)
@@ -518,30 +523,7 @@ bool QSmartCard::pinChange(TokenData token, QSmartCardData current, QSmartCardDa
 
 	if(current.isPinpad())
 	{
-		QString bodyText;
-		switch(action)
-		{
-		case QSmartCard::ActivateWithPuk:
-		case QSmartCard::ChangeWithPuk:
-			bodyText = tr("To change %1 code with the PUK code on a PinPad reader the PUK code has to be entered first and then the %1 code twice.").arg(QSmartCardData::typeString(type));
-			break;
-		case QSmartCard::UnblockWithPuk:
-			bodyText = tr("To unblock the %1 code on a PinPad reader the PUK code has to be entered first and then the %1 code twice.").arg(QSmartCardData::typeString(type));
-			break;
-		default:
-			bodyText = tr("To change %1 on a PinPad reader the old %1 code has to be entered first and then the new %1 code twice.").arg(QSmartCardData::typeString(type));
-			break;
-		}
-
-		PinPopup::TokenFlags flags = PinPopup::PinpadChangeFlag;
-		switch(current.retryCount(src))
-		{
-		case 2: flags |= PinPopup::PinCountLow; break;
-		case 1: flags |= PinPopup::PinFinalTry; break;
-		case 0: flags |= PinPopup::PinLocked; break;
-		default: break;
-		}
-		popup.reset(new PinPopup(src, flags, current.authCert(), parent, bodyText));
+		popup.reset(new PinpadPopup(type, action, current, parent));
 		popup->open();
 		oldPin = card->pinTemplate({});
 		newPin = card->pinTemplate({});

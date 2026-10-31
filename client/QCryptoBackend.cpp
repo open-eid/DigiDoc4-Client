@@ -25,6 +25,7 @@
 #endif
 #include "QPCSC.h"
 #include "QPKCS11.h"
+#include "QSmartCard.h"
 #include "SslCertificate.h"
 
 #include <QtCore/QLoggingCategory>
@@ -74,16 +75,7 @@ QCryptoBackend::getBackend(const TokenData& token, const QString &pin) {
 	if(backend->cert().isNull())
 		return backend.release();
 
-	Status status;
-	if(pin.isEmpty())
-	{
-		do {
-			status = backend->login(token, {});
-		} while (status == PinIncorrect);
-	}
-	else
-		status = backend->login(token, pin);
-	if (status != PinOK)
+	if(Status status = backend->login(token, pin); status != PinOK)
 		return std::unexpected(status);
 
 	return backend.release();
@@ -94,14 +86,18 @@ QSslCertificate QCryptoBackend::cert() const
 	return token.cert();
 }
 
-QString QCryptoBackend::errorString(Status error)
+QString QCryptoBackend::errorString(Status error, const TokenData &token)
 {
 	switch( error )
 	{
 	case PinOK: return QString();
 	case PinCanceled: return tr("PIN entry canceled");
 	case PinLocked: return tr("PIN locked");
-	case PinIncorrect: return tr("PIN incorrect");
+	case PinIncorrect:
+		if(QSmartCardData data = QSmartCard::readCard(token, true); !data.isNull())
+			return tr("PIN incorrect") + QStringLiteral(". ") +
+				tr("Remaining attempts: %1").arg(data.retryCount(QSmartCardData::pinType(token.cert())));
+		return tr("PIN incorrect");
 	case InProgress: return tr("Signing/decrypting is already in progress another window.");
 	case GeneralError: return tr("PKCS11 general error");
 	case DeviceError: return tr("PKCS11 device error");
@@ -251,7 +247,10 @@ void QCryptoManager::refresh()
 	{
 		QWriteLocker locker(&d->lock);
 		if(!std::ranges::equal(newCache, d->cache, [](const TokenData &a, const TokenData &b) {
-			return a == b && a.data(QStringLiteral("blocked")) == b.data(QStringLiteral("blocked"));
+			return a == b &&
+				a.data(QStringLiteral("blocked")) == b.data(QStringLiteral("blocked")) &&
+				a.data(QStringLiteral("pinCountLow")) == b.data(QStringLiteral("pinCountLow")) &&
+				a.data(QStringLiteral("pinFinalTry")) == b.data(QStringLiteral("pinFinalTry"));
 		}))
 		{
 			d->cache = newCache;
