@@ -1,3 +1,28 @@
+DigiDoc4 version [4.11.1](https://github.com/open-eid/DigiDoc4-Client/releases/tag/v4.11.1) release notes
+--------------------------------------
+- Code, Text and translation improvements and updates
+
+[Full Changelog](https://github.com/open-eid/DigiDoc4-Client/compare/v4.11.0...v4.11.1)
+
+DigiDoc4 version [4.11.0](https://github.com/open-eid/DigiDoc4-Client/releases/tag/v4.11.0) release notes
+--------------------------------------
+- Extend signatures to long-term archival (LTA) format
+- Improved warning messages for signatures not created with a qualified signature creation device (QSCD)
+- Use the LDAP trust store from the central configuration
+- Added new MaskTech cards and SafeNet 5110+ CC (940C) token, removed unsupported cards
+- Do not mention unblocking when the PUK code is blocked
+- Use the SHA-512 algorithm for SHA-512 RSA-PSS signing with the Windows CNG backend
+- Included the new Windows Explorer shell extension
+- Use the modern macOS sharing API and clean up obsolete macOS settings
+- Fixed shell injection in the Nautilus extension and made finding the icon more robust
+- Fixed file name encoding in encrypted containers and label generation with non-C locales
+- Improved temporary file handling and limited the size of downloaded network responses to 1 MB
+- Removed Russian translations
+- Updated OpenSSL to 3.5.7 and other libraries
+- Code, Text and translation improvements and updates
+
+[Full Changelog](https://github.com/open-eid/DigiDoc4-Client/compare/v4.10.0...v4.11.0)
+
 DigiDoc4 version [4.10.0](https://github.com/open-eid/DigiDoc4-Client/releases/tag/v4.10.0) release notes
 --------------------------------------
 - Code, Text and translation improvements and updates
