@@ -66,7 +66,7 @@ public:
 	static uint readTSLVersion(const QString &path);
 	static void showClient(QStringList params = {}, bool crypto = false, bool sign = false, bool newWindow = false);
 	static void updateTSLCache(const QDateTime &tslTime);
-#if defined(Q_OS_MAC)
+#ifdef Q_OS_MACOS
 	struct ProxyCredentials
 	{
 		ProxyCredentials(QString host, QString port, QString user, QString password);
@@ -100,7 +100,7 @@ private:
 	static void msgHandler(QtMsgType type, const QMessageLogContext &ctx, const QString &msg);
 	static void parseArgs(QStringList args);
 	static void showWarning(const QString &title, const digidoc::Exception &e);
-#if defined(Q_OS_MAC)
+#ifdef Q_OS_MACOS
 	static void initMacServices();
 #endif
 
