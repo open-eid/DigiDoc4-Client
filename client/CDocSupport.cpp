@@ -336,6 +336,8 @@ DDNetworkBackend::getLastErrorStr(libcdoc::result_t code) const
 			return "Signing/decrypting is already in progress another window.";
 		case NETWORK_ERROR:
 		case BACKEND_ERROR:
+		case CAPSULE_NOT_FOUND:
+		case SERVER_ERROR:
 		case DDCryptoBackend::BACKEND_ERROR:
 			return last_error;
 	}
@@ -438,7 +440,7 @@ DDNetworkBackend::fetchKey(std::vector<uint8_t> &result, const std::string &url,
 	}
 	if(httpStatus != 200) {
 		last_error = QStringLiteral("Key-capsule request failed with HTTP status %1").arg(httpStatus).toStdString();
-		return BACKEND_ERROR;
+		return httpStatus == 404 ? CAPSULE_NOT_FOUND : SERVER_ERROR;
 	}
 
 	QJsonParseError parseError;

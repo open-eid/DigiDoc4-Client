@@ -601,6 +601,18 @@
         <translation>Sul puudub võti millega dekrüpteerida seda turvaümbrikut</translation>
     </message>
     <message>
+        <source>The key transfer server did not find the key capsule. It may have expired.</source>
+        <translation>Võtmeedastusserver ei leidnud võtmekapslit. See võib olla aegunud.</translation>
+    </message>
+    <message>
+        <source>The key transfer server could not return the key. Please try again later.</source>
+        <translation>Võtmeedastusserver ei saanud võtit tagastada. Palun proovi hiljem uuesti.</translation>
+    </message>
+    <message>
+        <source>General decryption error. Neither the card reader nor the network layer gave more information. Please check your internet connection, network settings and card reader. On some readers it may also indicate a wrong PIN or a locked card.</source>
+        <translation>Täpsustamata dekrüpteerimise viga. Ei kaardilugeja ega võrguühendus ei andnud täpsemat informatsiooni. Palun kontrolli internetiühendust, võrgu sätteid ja kaardilugejat. Mõne lugeja korral võib põhjuseks olla ka vale PIN või lukustatud kaart.</translation>
+    </message>
+    <message>
         <source>No keys specified</source>
         <translation>Ühtegi adressaati ei ole lisatud</translation>
     </message>
@@ -649,12 +661,8 @@
         <translation>Faili ei saa lugeda.</translation>
     </message>
     <message>
-        <source>General decryption error. Neither the card reader nor the network layer gave more information. Please check your internet connection, network settings and card reader. On some readers it may also indicate the wrong pin code or locked card.</source>
-        <translation>Täpsustamata dekrüpteerimise viga. Ei kaardilugeja ega võrguühendus ei andnud täpsemat informatsiooni. Kontrollige internetiühendust, võrgu sätteid ja kaardilugejat. Mõne lugeja korral võib põhjuseks olla ka vale pin või lukustatud kaart.</translation>
-    </message>
-    <message>
         <source>Network error. Please check your network connection. It may also indicate that one or more CDoc servers are unreachable.</source>
-        <translation>Võrguühenduse viga, kontrollige oma võrguseadeid. Põhjuseks võib olla ka, et mõni CDoc server ei ole kättesaadav.</translation>
+        <translation>Võrguühenduse viga. Palun kontrolli oma võrgu sätteid. Põhjuseks võib olla ka, et mõni CDoc server ei ole kättesaadav.</translation>
     </message>
 </context>
 <context>
