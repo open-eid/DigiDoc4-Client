@@ -20,7 +20,6 @@
 #pragma once
 
 #include "TokenData.h"
-#include "QSmartCard.h"
 
 #include <QtCore/QCoreApplication>
 #include <QtCore/QCryptographicHash>
@@ -30,7 +29,7 @@
 #include <expected>
 #include <vector>
 
-class QSslKey;
+class QSmartCardData;
 
 class QCryptoBackend
 {
@@ -47,21 +46,22 @@ public:
 		GeneralError,
 		UnknownError
 	};
+	enum Padding : quint8
+	{
+		NoPadding,
+		PKCS1Padding,
+		PSSPadding,
+	};
 
 	virtual ~QCryptoBackend();
 
-	virtual std::vector<uint8_t> decrypt(const QByteArray &data, bool oaep) const = 0;
-	virtual std::vector<uint8_t> deriveConcatKDF(const QByteArray &publicKey, QCryptographicHash::Algorithm digest,
-		const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) const = 0;
-	virtual std::vector<uint8_t> deriveHMACExtract(const QByteArray &publicKey, const QByteArray &salt, int keySize) const = 0;
-	virtual QByteArray sign(QCryptographicHash::Algorithm method, const QByteArray &digest) const = 0;
+	virtual std::vector<uint8_t> decrypt(QByteArrayView data, bool oaep) const = 0;
+	virtual std::vector<uint8_t> deriveConcatKDF(QByteArrayView publicKey, QCryptographicHash::Algorithm digest,
+		QByteArrayView algorithmID, QByteArrayView partyUInfo, QByteArrayView partyVInfo) const = 0;
+	virtual std::vector<uint8_t> deriveHMACExtract(QByteArrayView publicKey, QByteArrayView salt, int keySize) const = 0;
+	virtual bool isPSS() const = 0;
+	virtual std::vector<uint8_t> sign(QCryptographicHash::Algorithm algo, Padding padding, QByteArrayView digest) const = 0;
 
-	/**
-	 * @brief Get the SSL key for the certificate
-	 *
-	 * @return the Qt SSL key
-	 */
-	QSslKey getKey() const;
 	QSslCertificate cert() const;
 	/**
 	 * @brief Get a new Backend object and log in with the given token
@@ -76,9 +76,10 @@ public:
 	 */
 	mutable Status status = PinOK;
 
-	static QString errorString(Status error);
+	static QString errorString(Status error, const TokenData &token = {});
 
 protected:
+	const TokenData &tokenData() const { return token; }
 	virtual Status login(const TokenData &cert, const QString &pin) = 0;
 
 private:

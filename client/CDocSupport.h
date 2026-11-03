@@ -105,7 +105,8 @@ struct DDCryptoBackend final : public libcdoc::CryptoBackend {
 //
 // NetworkBackend
 //
-// Bridges to QNetworkAccessManager
+// Supplies libcdoc's HTTP client with the key server certificates, the
+// authentication key and the proxy settings
 //
 
 struct DDNetworkBackend final : public libcdoc::NetworkBackend, private QObject {
@@ -124,19 +125,19 @@ struct DDNetworkBackend final : public libcdoc::NetworkBackend, private QObject 
 	fetchKey(std::vector<uint8_t> &result, const std::string &keyserver_id,
 			 const std::string &transaction_id) final;
 
-	libcdoc::result_t
-	getClientTLSCertificate(std::vector<uint8_t> &dst) final {
-		return libcdoc::NOT_IMPLEMENTED;
-	}
-	libcdoc::result_t getPeerTLSCertificates(
-		std::vector<std::vector<uint8_t>> &dst) final {
-		return libcdoc::NOT_IMPLEMENTED;
-	}
+	libcdoc::result_t getClientTLSCertificate(std::vector<uint8_t> &dst) final;
+	libcdoc::result_t getPeerTLSCertificates(std::vector<std::vector<uint8_t>> &dst) final;
+	libcdoc::result_t getProxyCredentials(ProxyCredentials &credentials) const final;
+	libcdoc::result_t signTLS(std::vector<uint8_t> &dst, libcdoc::CryptoBackend::HashAlgorithm algorithm,
+		const std::vector<uint8_t> &digest) final;
 
 	explicit DDNetworkBackend(DDCryptoBackend &_crypto) : crypto(_crypto) {}
 
 	DDCryptoBackend &crypto;
 	std::string last_error;
+
+private:
+	bool sending = false;
 };
 
 //
