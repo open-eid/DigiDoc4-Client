@@ -601,6 +601,18 @@
         <translation>Sul puudub võti millega dekrüpteerida seda turvaümbrikut</translation>
     </message>
     <message>
+        <source>The key transfer server did not find the key capsule. It may have expired.</source>
+        <translation>Võtmeedastusserver ei leidnud võtmekapslit. See võib olla aegunud.</translation>
+    </message>
+    <message>
+        <source>The key transfer server could not return the key. Please try again later.</source>
+        <translation>Võtmeedastusserver ei saanud võtit tagastada. Palun proovi hiljem uuesti.</translation>
+    </message>
+    <message>
+        <source>General decryption error. Neither the card reader nor the network layer gave more information. Please check your internet connection, network settings and card reader. On some readers it may also indicate a wrong PIN or a locked card.</source>
+        <translation>Täpsustamata dekrüpteerimise viga. Ei kaardilugeja ega võrguühendus ei andnud täpsemat informatsiooni. Palun kontrolli internetiühendust, võrgu sätteid ja kaardilugejat. Mõne lugeja korral võib põhjuseks olla ka vale PIN või lukustatud kaart.</translation>
+    </message>
+    <message>
         <source>No keys specified</source>
         <translation>Ühtegi adressaati ei ole lisatud</translation>
     </message>
@@ -647,6 +659,10 @@
     <message>
         <source>Cannot read file.</source>
         <translation>Faili ei saa lugeda.</translation>
+    </message>
+    <message>
+        <source>Network error. Please check your network connection. It may also indicate that one or more CDoc servers are unreachable.</source>
+        <translation>Võrguühenduse viga. Palun kontrolli oma võrgu sätteid. Põhjuseks võib olla ka, et mõni CDoc server ei ole kättesaadav.</translation>
     </message>
 </context>
 <context>
@@ -2090,18 +2106,6 @@ LDAP serveriga ei saa ühendust.</translation>
         <translation>PIN on lukus</translation>
     </message>
     <message>
-        <source>Signing/decrypting is already in progress another window.</source>
-        <translation>Allkirjastamine/dekrüpteerimine on juba käimas teises aknas.</translation>
-    </message>
-    <message>
-        <source>PKCS11 general error</source>
-        <translation>PKCS11 üldine viga</translation>
-    </message>
-    <message>
-        <source>PKCS11 device error</source>
-        <translation>PKCS11 seadme viga</translation>
-    </message>
-    <message>
         <source>Unknown error</source>
         <translation>Tundmatu viga</translation>
     </message>
@@ -2112,6 +2116,14 @@ LDAP serveriga ei saa ühendust.</translation>
     <message>
         <source>PIN entry canceled</source>
         <translation>PIN sisestus katkestatus</translation>
+    </message>
+    <message>
+        <source>Signing/decrypting is already in progress in another window.</source>
+        <translation>Allkirjastamine/dekrüpteerimine juba toimub teises aknas.</translation>
+    </message>
+    <message>
+        <source>Error in smart card driver, reader or the card. On some readers it may indicate the wrong pin code or locked card.</source>
+        <translation>Viga kiipkaardi draiveris, lugejas või kaardis. Osade draiverite korral võib see tähendada ka lihtsalt vale PIN-i või lukus kaarti.</translation>
     </message>
 </context>
 <context>

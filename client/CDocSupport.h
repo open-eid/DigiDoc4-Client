@@ -84,11 +84,13 @@ struct DDCryptoBackend final : public libcdoc::CryptoBackend {
 
 	std::unique_ptr<QCryptoBackend> backend;
 	QByteArray secret;
+	libcdoc::result_t backend_status = libcdoc::OK;
 
 	explicit DDCryptoBackend() = default;
 
 	void setBackend(std::unique_ptr<QCryptoBackend> &&backend) {
 		this->backend = std::move(backend);
+		backend_status = libcdoc::OK;
 	}
 	void setSecret(QByteArray &&value) {
 		clearSecret();
@@ -108,6 +110,8 @@ struct DDCryptoBackend final : public libcdoc::CryptoBackend {
 
 struct DDNetworkBackend final : public libcdoc::NetworkBackend, private QObject {
 	static constexpr int BACKEND_ERROR = -303;
+	static constexpr int CAPSULE_NOT_FOUND = -304;
+	static constexpr int SERVER_ERROR = -305;
 
 	std::string getLastErrorStr(libcdoc::result_t code) const final;
 	libcdoc::result_t sendKey(libcdoc::NetworkBackend::CapsuleInfo &dst,

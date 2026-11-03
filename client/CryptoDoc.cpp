@@ -308,6 +308,8 @@ bool CryptoDoc::decrypt(const libcdoc::Lock &lock, QByteArray secret, std::uniqu
 		return result;
 	});
 	d->crypto.clearSecret();
+	if (result == libcdoc::CRYPTO_ERROR && d->crypto.backend_status != libcdoc::OK)
+		result = d->crypto.backend_status;
 	if (result != libcdoc::OK) {
 		QString str;
 		const std::string &msg = d->reader->getLastErrorStr();
@@ -326,6 +328,18 @@ bool CryptoDoc::decrypt(const libcdoc::Lock &lock, QByteArray secret, std::uniqu
 		case libcdoc::INPUT_STREAM_ERROR:
 			str = tr("Cannot read file.");
 			break;
+		case libcdoc::NetworkBackend::NETWORK_ERROR:
+			str = tr("Network error. Please check your network connection. It may also indicate that one or more CDoc servers are unreachable.");
+			break;
+		case DDNetworkBackend::CAPSULE_NOT_FOUND:
+			str = tr("The key transfer server did not find the key capsule. It may have expired.");
+			break;
+		case DDNetworkBackend::SERVER_ERROR:
+			str = tr("The key transfer server could not return the key. Please try again later.");
+			break;
+		case libcdoc::CONFIGURATION_ERROR:
+			str = tr("Key transfer server is not configured");
+			break;
 		case DDCryptoBackend::PIN_CANCELED:
 			return false;
 		case DDCryptoBackend::PIN_INCORRECT:
@@ -337,8 +351,11 @@ bool CryptoDoc::decrypt(const libcdoc::Lock &lock, QByteArray secret, std::uniqu
 		case DDCryptoBackend::IN_PROGRESS:
 			str = QCryptoBackend::errorString(QCryptoBackend::Status::InProgress);
 			break;
+		case DDCryptoBackend::BACKEND_ERROR:
+			str = QCryptoBackend::errorString(QCryptoBackend::Status::GeneralError);
+			break;
 		default:
-			str = tr("Please check your internet connection and network settings.");
+			str = tr("General decryption error. Neither the card reader nor the network layer gave more information. Please check your internet connection, network settings and card reader. On some readers it may also indicate a wrong PIN or a locked card.");
 			break;
 		}
 		WarningDialog::create()
