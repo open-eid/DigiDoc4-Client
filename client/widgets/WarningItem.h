@@ -38,9 +38,6 @@ struct WarningText {
 		UnblockPin1Warning,
 		UnblockPin2Warning,
 		ActivatePin2Warning,
-		ActivatePin1WithPUKWarning,
-		ActivatePin2WithPUKWarning,
-		LockedCardWarning,
 
 		InvalidSignatureError,
 		InvalidTimestampError,

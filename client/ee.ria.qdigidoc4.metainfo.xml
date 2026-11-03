@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- SPDX-FileCopyrightText: Estonian Information System Authority -->
+<!-- SPDX-License-Identifier: LGPL-2.1-or-later -->
 <component type="desktop-application">
   <id>ee.ria.qdigidoc4</id>
   <name>DigiDoc4</name>
@@ -62,6 +64,19 @@
     <release version="4.11.0" date="2026-07-21">
       <description>
         <ul>
+          <li>Extend signatures to long-term archival (LTA) format</li>
+          <li>Improved warning messages for signatures not created with a qualified signature creation device (QSCD)</li>
+          <li>Use the LDAP trust store from the central configuration</li>
+          <li>Added new MaskTech cards and SafeNet 5110+ CC (940C) token, removed unsupported cards</li>
+          <li>Do not mention unblocking when the PUK code is blocked</li>
+          <li>Use the SHA-512 algorithm for SHA-512 RSA-PSS signing with the Windows CNG backend</li>
+          <li>Included the new Windows Explorer shell extension</li>
+          <li>Use the modern macOS sharing API and clean up obsolete macOS settings</li>
+          <li>Fixed shell injection in the Nautilus extension and made finding the icon more robust</li>
+          <li>Fixed file name encoding in encrypted containers and label generation with non-C locales</li>
+          <li>Improved temporary file handling and limited the size of downloaded network responses to 1 MB</li>
+          <li>Removed Russian translations</li>
+          <li>Updated OpenSSL to 3.5.7 and other libraries</li>
           <li>Code, Text and translation improvements and updates</li>
         </ul>
       </description>
