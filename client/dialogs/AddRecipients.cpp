@@ -51,9 +51,10 @@ struct AddRecipients::Private: public Ui::AddRecipients
 	QPushButton *btnFind;
 };
 
-AddRecipients::AddRecipients(ItemList* itemList, QWidget *parent)
+AddRecipients::AddRecipients(ItemList* itemList, bool keyShares, QWidget *parent)
 	: QDialog(parent)
 	, ui(new Private)
+	, keyShares(keyShares)
 {
 #ifndef Q_OS_WIN
 	if(const auto list = Application::confValue(QLatin1String("LDAP-CERTS")).toArray();
@@ -235,7 +236,11 @@ void AddRecipients::addRecipientFromHistory()
 
 void AddRecipients::addRecipient(const QSslCertificate& cert, bool select)
 {
-	CKey key(cert);
+	addRecipient(CKey(cert), select);
+}
+
+void AddRecipients::addRecipient(const CKey &key, bool select)
+{
 	AddressItem *leftItem = itemListValue(ui->leftPane, key);
 	if(!leftItem)
 	{
@@ -257,7 +262,8 @@ void AddRecipients::addRecipientToRightPane(Item *item, bool update)
 	const CKey& key = address->getKey();
 	if (rightList.contains(key)) return;
 
-	if(update)
+	// A Mobile-ID / Smart-ID recipient has no certificate to check
+	if(update && !key.rcpt_cert.isNull())
 	{
 		if(auto expiryDate = key.rcpt_cert.expiryDate(); expiryDate <= QDateTime::currentDateTime())
 		{
@@ -367,6 +373,9 @@ void AddRecipients::search(const QString &term, bool select, const QString &type
 		ldap_corp->search(QStringLiteral("(serialNumber=%1)" ).arg(cleanTerm), userData);
 	else if(IKValidator::isValid(cleanTerm))
 	{
+		// Mobile-ID / Smart-ID certificates are not in LDAP; any person can be offered it
+		if(keyShares)
+			addRecipient(CKey::share(cleanTerm), false);
 		userData[QStringLiteral("personSearch")] = true;
 		for(auto *ldap: ldap_person) {
 			ldap->search(QStringLiteral("(serialNumber=PNOEE-%1)").arg(cleanTerm), userData);
