@@ -131,6 +131,10 @@
         <translation>Unsupported cryptographic algorithm or recipient type</translation>
     </message>
     <message>
+        <source>Mobile-ID / Smart-ID</source>
+        <translation>Mobile-ID / Smart-ID</translation>
+    </message>
+    <message>
         <source>pw</source>
         <translation>Password</translation>
     </message>
@@ -529,6 +533,10 @@
         <translation>It is removed along with the container.</translation>
     </message>
     <message>
+        <source>Failed to decrypt document</source>
+        <translation type="obsolete">Failed to decrypt document</translation>
+    </message>
+    <message>
         <source>In order to view Validity Confirmation Sheet there has to be at least one printer installed!</source>
         <translation>In order to view Validity Confirmation Sheet there has to be at least one printer installed!</translation>
     </message>
@@ -699,6 +707,14 @@
         <translation>No card in card reader; check if ID-card is inserted correctly</translation>
     </message>
     <message>
+        <source>Country code and phone number</source>
+        <translation type="unfinished">Country code and phone number</translation>
+    </message>
+    <message>
+        <source>The key share servers of this container are not configured</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
@@ -709,6 +725,38 @@
     <message>
         <source>No matching card found</source>
         <translation>No matching card found</translation>
+    </message>
+    <message>
+        <source>Control code:</source>
+        <translation>Control code:</translation>
+    </message>
+    <message>
+        <source>ID-card</source>
+        <translation>ID-card</translation>
+    </message>
+    <message>
+        <source>Mobile-ID</source>
+        <translation>Mobile-ID</translation>
+    </message>
+    <message>
+        <source>Smart-ID</source>
+        <translation>Smart-ID</translation>
+    </message>
+    <message>
+        <source>Confirm decryption: make sure the control code matches the one on your phone screen and enter your Mobile-ID PIN1.</source>
+        <translation>Confirm decryption: make sure the control code matches the one on your phone screen and enter your Mobile-ID PIN1.</translation>
+    </message>
+    <message>
+        <source>Log in: make sure the control code matches the one on your phone screen and enter your Mobile-ID PIN1.</source>
+        <translation>Log in: make sure the control code matches the one on your phone screen and enter your Mobile-ID PIN1.</translation>
+    </message>
+    <message>
+        <source>Confirm decryption: make sure the control code matches the one in your Smart-ID app and enter your PIN1.</source>
+        <translation>Confirm decryption: make sure the control code matches the one in your Smart-ID app and enter your PIN1.</translation>
+    </message>
+    <message>
+        <source>Log in: make sure the control code matches the one in your Smart-ID app and enter your PIN1.</source>
+        <translation>Log in: make sure the control code matches the one in your Smart-ID app and enter your PIN1.</translation>
     </message>
     <message>
         <source>Failed to decrypt document</source>
@@ -1884,6 +1932,21 @@ LDAP server is unavailable.</translation>
     </message>
 </context>
 <context>
+    <name>PinPopup</name>
+    <message>
+        <source>You need to use a personal identification certificate for the selected activity.</source>
+        <translation type="obsolete">You need to use a personal identification certificate for the selected activity.</translation>
+    </message>
+    <message>
+        <source>%1 will be locked next failed attempt</source>
+        <translation type="obsolete">%1 will be locked next failed attempt</translation>
+    </message>
+    <message>
+        <source>%1 has been entered incorrectly at least once</source>
+        <translation type="obsolete">%1 has been entered incorrectly at least once</translation>
+    </message>
+</context>
+<context>
     <name>PinUnblock</name>
     <message>
         <source>PIN2 code is used to digitally sign documents.</source>
@@ -2020,6 +2083,17 @@ LDAP server is unavailable.</translation>
     <message>
         <source>Change</source>
         <translation>Change</translation>
+    </message>
+</context>
+<context>
+    <name>PinpadLogin</name>
+    <message>
+        <source>After you continue, enter %1 code on the card reader keypad</source>
+        <translation type="obsolete">After you continue, enter %1 code on the card reader keypad</translation>
+    </message>
+    <message>
+        <source>Enter %1 code on the card reader keypad</source>
+        <translation type="obsolete">Enter %1 code on the card reader keypad</translation>
     </message>
 </context>
 <context>

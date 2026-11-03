@@ -57,6 +57,10 @@ AddressItem::AddressItem(const CKey &key, Type type, QWidget *parent)
 							  ui->key.rcpt_cert.subjectInfo("SN").join(' ')
 						: ui->key.rcpt_cert.subjectInfo("CN").join(' ');
 		ui->decrypt->hide();
+	} else if (ui->key.lock.type == libcdoc::Lock::SHARE_SERVER) {
+		// Mobile-ID / Smart-ID key share, addressed by personal code and without a label
+		ui->code = SslCertificate::personalCode(QString::fromStdString(
+			ui->key.lock.getString(libcdoc::Lock::RECIPIENT_ID)).remove(QLatin1String("etsi/")));
 	} else if (ui->key.lock.isValid()) {
 		// Known lock type
 		ui->code.clear();
@@ -141,7 +145,7 @@ QString AddressItem::name() const
 void AddressItem::setDecryptVisible()
 {
 	ui->decrypt->setVisible(ui->state == EncryptedContainer && (ui->key.lock.isPKI() ||
-		ui->key.lock.type == libcdoc::Lock::PASSWORD));
+		ui->key.lock.type == libcdoc::Lock::PASSWORD || ui->key.lock.type == libcdoc::Lock::SHARE_SERVER));
 }
 
 void AddressItem::setName()
@@ -190,6 +194,8 @@ void AddressItem::setIdType() {
 	if (!ui->key.rcpt_cert.isNull()) {
 		// Recipient certificate
 		setIdType(SslCertificate(ui->key.rcpt_cert));
+	} else if (ui->key.lock.type == libcdoc::Lock::SHARE_SERVER) {
+		ui->idType->setText(tr("Mobile-ID / Smart-ID"));
 	} else if (ui->key.lock.isValid()) {
 		// Known lock type
 		// Needed to include translation for "ID-CARD"
