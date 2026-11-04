@@ -18,9 +18,7 @@
  */
 
 #include <QtCore/QBuffer>
-#include <QtCore/QJsonDocument>
 #include <QtCore/QJsonObject>
-#include <QtCore/QJsonParseError>
 #include <QtCore/QMessageAuthenticationCode>
 #include <QtCore/QtEndian>
 #include <QtCore/QTemporaryFile>
@@ -28,11 +26,12 @@
 #if QT_VERSION >= QT_VERSION_CHECK(6, 8, 0)
 #include <QtCore/QSpan>
 #endif
-#include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QPasswordDigestor>
+#include <QtNetwork/QSslConfiguration>
 #include <QtNetwork/QSslKey>
 #include <QLoggingCategory>
 #include <QXmlStreamReader>
+#include <charconv>
 #include <optional>
 #include <utility>
 
@@ -44,6 +43,7 @@
 #include "Utils.h"
 #include "effects/FadeInNotification.h"
 #include <cdoc/CDocReader.h>
+#include <digidocpp/Conf.h>
 #include <cdoc/Lock.h>
 #include <cdoc/Recipient.h>
 
@@ -54,10 +54,6 @@ QDebug operator<<(QDebug d, std::string_view str) {
 	return d << QUtf8StringView(str);
 }
 #endif
-
-static QByteArray asByteArray(const std::vector<uint8_t> &data) {
-	return QByteArray::fromRawData(reinterpret_cast<const char *>(data.data()), data.size());
-}
 
 static QByteArray asByteArray(QByteArrayView data) {
 	return QByteArray::fromRawData(data.data(), data.size());
@@ -183,7 +179,7 @@ DDCryptoBackend::decryptRSA(std::vector<uint8_t>& dst, const std::vector<uint8_t
 {
 	if (!backend)
 		return BACKEND_ERROR;
-	dst = backend->decrypt(asByteArray(data), oaep);
+	dst = backend->decrypt(data, oaep);
 	return backend_status = getDecryptResultStatus(dst, std::move(backend));
 }
 
@@ -198,8 +194,7 @@ DDCryptoBackend::deriveConcatKDF(std::vector<uint8_t>& dst, const std::vector<ui
 	};
 	if (!backend)
 		return BACKEND_ERROR;
-	dst = backend->deriveConcatKDF(asByteArray(publicKey), SHA_MTH.value(digest),
-		asByteArray(algorithmID), asByteArray(partyUInfo), asByteArray(partyVInfo));
+	dst = backend->deriveConcatKDF(publicKey, SHA_MTH.value(digest), algorithmID, partyUInfo, partyVInfo);
 	return backend_status = getDecryptResultStatus(dst, std::move(backend));
 }
 
@@ -208,7 +203,7 @@ DDCryptoBackend::deriveHMACExtract(std::vector<uint8_t>& dst, const std::vector<
 {
 	if (!backend)
 		return BACKEND_ERROR;
-	dst = backend->deriveHMACExtract(asByteArray(key_material), asByteArray(salt), ECC_KEY_LEN);
+	dst = backend->deriveHMACExtract(key_material, salt, ECC_KEY_LEN);
 	return backend_status = getDecryptResultStatus(dst, std::move(backend));
 }
 
@@ -348,51 +343,18 @@ libcdoc::result_t DDNetworkBackend::sendKey(
 	libcdoc::NetworkBackend::CapsuleInfo &dst, const std::string &url,
 	const std::vector<uint8_t> &rcpt_key,
 	const std::vector<uint8_t> &key_material, const std::string &type, uint64_t expiry_ts) {
-	QNetworkRequest req(QString::fromStdString(url + "/key-capsules"));
-	req.setHeader(QNetworkRequest::ContentTypeHeader, QStringLiteral("application/json"));
-	if (expiry_ts) {
-		uint64_t expiry = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now() + std::chrono::months(6));
-		expiry_ts = std::min(expiry_ts, expiry);
-		req.setRawHeader("x-expiry-time", QDateTime::fromSecsSinceEpoch(expiry_ts, Qt::UTC).toString(Qt::ISODate).toLatin1());
-	}
 	if (!checkConnection()) {
 		last_error = "No connection";
 		return NETWORK_ERROR;
 	}
-	QScopedPointer<QNetworkAccessManager, QScopedPointerDeleteLater> nam(CheckConnection::setupNAM(req, Settings::CDOC2_POST_CERT));
-	QNetworkReply *reply = nam->post(req, QJsonDocument({
-		{QLatin1String("recipient_id"), QLatin1String(asByteArray(rcpt_key).toBase64())},
-		{QLatin1String("ephemeral_key_material"), QLatin1String(asByteArray(key_material).toBase64())},
-		{QLatin1String("capsule_type"), QLatin1String(type.c_str())},
-	}).toJson());
-	QEventLoop e;
-	connect(reply, &QNetworkReply::finished, &e, &QEventLoop::quit);
-	e.exec();
-	QNetworkReply::NetworkError n_err = reply->error();
-	if (n_err != QNetworkReply::NoError) {
-		last_error = reply->errorString().toStdString();
-		return NETWORK_ERROR;
-	}
-	int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-	if (status != 201) {
-		last_error = reply->errorString().toStdString();
-		return NETWORK_ERROR;
-	}
-	QString tr_id;
-	tr_id = QString::fromLatin1(reply->rawHeader("Location")).remove(QLatin1String("/key-capsules/"));
-	if (tr_id.isEmpty()) {
-		last_error = "Failed to post key capsule";
-		return NETWORK_ERROR;
-	}
-	dst.transaction_id = tr_id.toStdString();
-
-	if (const QByteArray &expiry = reply->rawHeader("x-expiry-time"); !expiry.isEmpty()) {
-		dst.expiry_time = QDateTime::fromString(QLatin1String(expiry), Qt::ISODate).toSecsSinceEpoch();
-	} else {
-		dst.expiry_time = expiry_ts;
-	}
-	return libcdoc::OK;
-};
+	// The key server takes capsules on its own address, with its own certificate
+	sending = true;
+	auto reset = qScopeGuard([this] { sending = false; });
+	libcdoc::result_t rv = libcdoc::NetworkBackend::sendKey(dst, url, rcpt_key, key_material, type, expiry_ts);
+	if (rv != libcdoc::OK)
+		last_error = libcdoc::NetworkBackend::getLastErrorStr(rv);
+	return rv;
+}
 
 libcdoc::result_t
 DDNetworkBackend::fetchKey(std::vector<uint8_t> &result, const std::string &url, const std::string &transaction_id)
@@ -401,68 +363,81 @@ DDNetworkBackend::fetchKey(std::vector<uint8_t> &result, const std::string &url,
 		last_error = "Missing key-capsule transaction identifier";
 		return BACKEND_ERROR;
 	}
-	QByteArray requestUrl = QByteArray::fromStdString(url + "/key-capsules/");
-	requestUrl += QByteArray::fromStdString(transaction_id).toPercentEncoding();
-	QNetworkRequest req(QUrl::fromEncoded(requestUrl, QUrl::StrictMode));
-	req.setHeader(QNetworkRequest::ContentTypeHeader, QStringLiteral("application/json"));
 	if(!checkConnection()) {
 		last_error = "No connection";
 		return NETWORK_ERROR;
 	}
-
 	if (!crypto.backend) {
 		last_error = "No authentication backend";
 		return BACKEND_ERROR;
 	}
-	auto authKey = crypto.backend->getKey();
-	if (!authKey.handle()) {
-		last_error = "Cannot create authentication key";
-		return getDecryptStatus(crypto.backend->status);
-	}
-	QScopedPointer<QNetworkAccessManager,QScopedPointerDeleteLater> nam(
-				CheckConnection::setupNAM(req, crypto.backend->cert(), authKey, Settings::CDOC2_GET_CERT));
-	QEventLoop e;
-	QNetworkReply *reply = nam->get(req);
-	connect(reply, &QNetworkReply::finished, &e, &QEventLoop::quit);
-	e.exec();
-
-	// Qt reports HTTP 4xx/5xx as reply errors too, only a missing status means that no response arrived
-	const int httpStatus = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-	if(reply->error() != QNetworkReply::NoError && httpStatus == 0) {
-		if (crypto.backend->status != QCryptoBackend::PinOK) {
-			// The actual error was in QCryptoBackend
-			last_error = QCryptoBackend::errorString(crypto.backend->status).toStdString();
-			return getDecryptStatus(crypto.backend->status);
-		}
-		// Probably network problem
-		last_error = reply->errorString().toStdString();
-		return NETWORK_ERROR;
-	}
-	if(httpStatus != 200) {
-		last_error = QStringLiteral("Key-capsule request failed with HTTP status %1").arg(httpStatus).toStdString();
+	libcdoc::result_t rv = libcdoc::NetworkBackend::fetchKey(result, url, transaction_id);
+	if (rv == libcdoc::OK)
+		return rv;
+	// The TLS handshake signs with the card, which may have failed
+	if (libcdoc::result_t status = getDecryptStatus(crypto.backend->status); status != libcdoc::OK)
+		return status;
+	last_error = libcdoc::NetworkBackend::getLastErrorStr(rv);
+	// libcdoc reports an HTTP error status as NETWORK_ERROR too, but then the server did answer
+	constexpr std::string_view httpStatusPrefix = "Http status ";
+	if (int httpStatus = 0; rv == NETWORK_ERROR && last_error.starts_with(httpStatusPrefix) &&
+		std::from_chars(last_error.data() + httpStatusPrefix.size(), last_error.data() + last_error.size(), httpStatus).ec == std::errc{})
 		return httpStatus == 404 ? CAPSULE_NOT_FOUND : SERVER_ERROR;
-	}
+	return rv;
+}
 
-	QJsonParseError parseError;
-	const QJsonDocument document = QJsonDocument::fromJson(reply->readAll(), &parseError);
-	if(parseError.error != QJsonParseError::NoError || !document.isObject()) {
-		last_error = "Invalid key-capsule JSON response";
+libcdoc::result_t
+DDNetworkBackend::getClientTLSCertificate(std::vector<uint8_t> &dst)
+{
+	if (!crypto.backend)
 		return BACKEND_ERROR;
-	}
-	const QJsonValue keyValue = document.object().value(QLatin1String("ephemeral_key_material"));
-	if(!keyValue.isString()) {
-		last_error = "Missing key material in key-capsule response";
-		return BACKEND_ERROR;
-	}
-	const auto decoded = QByteArray::fromBase64Encoding(
-		keyValue.toString().toLatin1(), QByteArray::AbortOnBase64DecodingErrors);
-	static constexpr qsizetype MAX_KEY_MATERIAL_SIZE = 16 * 1024;
-	if(!decoded || decoded.decoded.isEmpty() || decoded.decoded.size() > MAX_KEY_MATERIAL_SIZE) {
-		last_error = "Invalid key material in key-capsule response";
-		return BACKEND_ERROR;
-	}
-	result.assign(decoded.decoded.cbegin(), decoded.decoded.cend());
+	QByteArray der = crypto.backend->cert().toDer();
+	dst.assign(der.cbegin(), der.cend());
+	return libcdoc::OK;
+}
 
+libcdoc::result_t
+DDNetworkBackend::getPeerTLSCertificates(std::vector<std::vector<uint8_t>> &dst)
+{
+	for (const QSslCertificate &cert : CheckConnection::sslConfiguration(
+			sending ? Settings::CDOC2_POST_CERT : Settings::CDOC2_GET_CERT).caCertificates()) {
+		QByteArray der = cert.toDer();
+		dst.emplace_back(der.cbegin(), der.cend());
+	}
+	return libcdoc::OK;
+}
+
+libcdoc::result_t
+DDNetworkBackend::getProxyCredentials(ProxyCredentials &credentials) const
+{
+	using digidoc::ConfCurrent;
+	credentials.host = CONF(proxyHost);
+	credentials.port = QString::fromStdString(CONF(proxyPort)).toUShort();
+	credentials.username = CONF(proxyUser);
+	credentials.password = CONF(proxyPass);
+	return libcdoc::OK;
+}
+
+libcdoc::result_t
+DDNetworkBackend::signTLS(std::vector<uint8_t> &dst, libcdoc::CryptoBackend::HashAlgorithm algorithm,
+	const std::vector<uint8_t> &digest)
+{
+	if (!crypto.backend)
+		return BACKEND_ERROR;
+	QCryptographicHash::Algorithm algo {};
+	switch (algorithm) {
+	case libcdoc::CryptoBackend::SHA_256: algo = QCryptographicHash::Sha256; break;
+	case libcdoc::CryptoBackend::SHA_384: algo = QCryptographicHash::Sha384; break;
+	case libcdoc::CryptoBackend::SHA_512: algo = QCryptographicHash::Sha512; break;
+	default: return BACKEND_ERROR;
+	}
+	auto padding = crypto.backend->cert().publicKey().algorithm() == QSsl::Rsa ?
+		QCryptoBackend::PSSPadding : QCryptoBackend::NoPadding;
+	dst = crypto.backend->sign(algo, padding, digest);
+	if (dst.empty()) {
+		last_error = QCryptoBackend::errorString(crypto.backend->status).toStdString();
+		return BACKEND_ERROR;
+	}
 	return libcdoc::OK;
 }
 

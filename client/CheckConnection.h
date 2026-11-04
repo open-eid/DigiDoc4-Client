@@ -29,8 +29,6 @@ public:
 	QString errorDetails() const;
 
 	static QNetworkAccessManager* setupNAM(QNetworkRequest &req, const QByteArray &add = {});
-	static QNetworkAccessManager* setupNAM(QNetworkRequest &req,
-		const QSslCertificate &cert, const QSslKey &key, const QByteArray &add = {});
 	static QSslConfiguration sslConfiguration(const QByteArray &add = {});
 
 private:
