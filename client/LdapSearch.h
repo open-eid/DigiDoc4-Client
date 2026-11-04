@@ -20,26 +20,28 @@
 #pragma once
 
 #include <QtCore/QObject>
+#include <QtNetwork/QSslConfiguration>
 
 class QSslCertificate;
+class QUrl;
 class LdapSearch final: public QObject
 {
 	Q_OBJECT
 
 public:
-	LdapSearch(const QString &url, const QString &caCertPath = {}, QObject *parent = nullptr);
-	~LdapSearch() final;
+	enum Match : quint8 {
+		Equals,
+		Contains,
+	};
 
-	void search(const QString &search, const QVariantMap &userData);
+	explicit LdapSearch(QObject *parent = nullptr);
+
+	void search(const QUrl &url, const QString &attribute, const QString &value, Match match, const QVariantMap &userData);
 
 Q_SIGNALS:
 	void searchResult(const QList<QSslCertificate> &result, int resultCount, const QVariantMap &userData);
 	void error(const QString &title, const QString &details);
 
 private:
-	bool init();
-	void setLastError( const QString &msg, int err );
-
-	class Private;
-	Private *d;
+	QSslConfiguration ssl = QSslConfiguration::defaultConfiguration();
 };
