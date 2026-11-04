@@ -57,10 +57,12 @@ public:
 	void waitForTSL( const QString &file );
 
 	static void addRecent( const QString &file );
+	static void closeLog();
 	template<class T>
 	static QJsonValue confValue(const T &key);
 	static QVariant confValue(ConfParameter parameter, const QVariant &value = {});
 	static void initDiagnosticConf();
+	static bool isContainerExtension(QStringView suffix);
 	static QWidget* mainWindow();
 	static void openHelp();
 	static uint readTSLVersion(const QString &path);
@@ -104,7 +106,6 @@ private:
 	static void initMacServices();
 #endif
 
-	static const QStringList CONTAINER_EXT;
 	struct Private;
 	Private *d;
 };

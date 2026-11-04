@@ -21,7 +21,6 @@
 #include "pkcs11.h"
 
 #include "Application.h"
-#include "CryptoDoc.h"
 #include "QPCSC.h"
 #include "SslCertificate.h"
 #include "TokenData.h"
@@ -31,6 +30,7 @@
 #include <QtCore/QDebug>
 #include <QtCore/QtEndian>
 #include <QtCore/QLibrary>
+#include <QtCore/QLoggingCategory>
 #include <QtCore/QScopeGuard>
 #if QT_VERSION >= QT_VERSION_CHECK(6, 8, 0)
 #include <QtCore/QSpan>
@@ -43,6 +43,9 @@
 #include <algorithm>
 #include <array>
 #include <mutex>
+
+static Q_LOGGING_CATEGORY(PKCS11, "qdigidoc4.pkcs11", QtInfoMsg)
+Q_DECLARE_LOGGING_CATEGORY(CRYPTO)
 
 template<class Container>
 static QString toQString(const Container &c)
@@ -68,11 +71,11 @@ struct QPKCS11Library
 QPKCS11Library::QPKCS11Library(const QString &driver)
 	: lib(driver)
 {
-	qWarning() << "Loading:" << driver;
+	qCInfo(PKCS11) << "Loading:" << driver;
 	if(auto l = CK_C_GetFunctionList(lib.resolve("C_GetFunctionList"));
 		!l || l(&f) != CKR_OK)
 	{
-		qWarning() << "Failed to resolve symbols" << lib.errorString();
+		qCWarning(PKCS11) << "Failed to resolve symbols" << lib.errorString();
 		return;
 	}
 
@@ -80,14 +83,14 @@ QPKCS11Library::QPKCS11Library(const QString &driver)
 	CK_RV err = f->C_Initialize(&init_args);
 	if(err != CKR_OK && err != CKR_CRYPTOKI_ALREADY_INITIALIZED)
 	{
-		qWarning() << "Failed to initalize";
+		qCWarning(PKCS11) << "Failed to initalize";
 		f = nullptr;
 		return;
 	}
 
 	CK_INFO info{};
 	f->C_GetInfo(&info);
-	qWarning()
+	qCInfo(PKCS11)
 		<< QStringLiteral("%1 (%2.%3)").arg(toQString(info.manufacturerID))
 			.arg(info.cryptokiVersion.major).arg(info.cryptokiVersion.minor) << '\n'
 		<< QStringLiteral("%1 (%2.%3)").arg(toQString(info.libraryDescription))
@@ -120,7 +123,7 @@ static std::shared_ptr<QPKCS11Library> loadLibrary(const QString &driver)
 std::shared_ptr<QPKCS11Library> QPKCS11Library::current()
 {
 	static const QMultiHash<QString,QByteArray> drivers {
-#ifdef Q_OS_MAC
+#ifdef Q_OS_MACOS
 		{ QApplication::applicationDirPath() + "/opensc-pkcs11.so", {} },
 		{ "/Library/latvia-eid/lib/eidlv-pkcs11.bundle/Contents/MacOS/eidlv-pkcs11", "3BDB960080B1FE451F830012428F536549440F900020" }, // LV-G2
 		{ "/Library/latvia-eid/lib/eidlv-pkcs11.bundle/Contents/MacOS/eidlv-pkcs11", "3BDC960080B1FE451F830012428F54654944320F900012" }, // LV-G2.1
@@ -309,7 +312,8 @@ std::vector<uint8_t> QPKCS11::derive(const QByteArray &publicKey) const
 		{CKA_VALUE_LEN, &value_len, sizeof(value_len)},
 	});
 	CK_OBJECT_HANDLE newkey = CK_INVALID_HANDLE;
-	if(d->l->f->C_DeriveKey(d->session, &mech, key.front(), newkey_template.data(), CK_ULONG(newkey_template.size()), &newkey) != CKR_OK) {
+	if(CK_RV rv = d->l->f->C_DeriveKey(d->session, &mech, key.front(), newkey_template.data(), CK_ULONG(newkey_template.size()), &newkey); rv != CKR_OK) {
+		qCWarning(PKCS11) << "C_DeriveKey failed:" << Qt::hex << rv;
 		status = GeneralError;
 		return {};
 	}
@@ -378,7 +382,6 @@ std::vector<uint8_t> QPKCS11::deriveHMACExtract(const QByteArray &publicKey, con
 	if(key.empty())
 		return key;
 	auto keyGuard = qScopeGuard([&] { std::fill(key.begin(), key.end(), 0); });
-	auto ctx = make_unique_ptr<EVP_PKEY_CTX_free>(EVP_PKEY_CTX_new_id(EVP_PKEY_HKDF, nullptr));
 	std::vector<uint8_t> out(static_cast<size_t>(keySize));
 	auto outlen = out.size();
 	auto isError = [this](int err) {
@@ -391,7 +394,8 @@ std::vector<uint8_t> QPKCS11::deriveHMACExtract(const QByteArray &publicKey, con
 		}
 		return err < 1;
 	};
-	if(!ctx ||
+	if(auto ctx = make_unique_ptr<EVP_PKEY_CTX_free>(EVP_PKEY_CTX_new_id(EVP_PKEY_HKDF, nullptr));
+		!ctx ||
 		isError(EVP_PKEY_derive_init(ctx.get())) ||
 		isError(EVP_PKEY_CTX_hkdf_mode(ctx.get(), EVP_PKEY_HKDEF_MODE_EXTRACT_ONLY)) ||
 		isError(EVP_PKEY_CTX_set_hkdf_md(ctx.get(), EVP_sha256())) ||

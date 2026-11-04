@@ -42,12 +42,15 @@
 #include "Settings.h"
 #include "TokenData.h"
 #include "Utils.h"
+#include "dialogs/FileDialog.h"
 #include "effects/FadeInNotification.h"
 #include <cdoc/CDocReader.h>
 #include <cdoc/Lock.h>
 #include <cdoc/Recipient.h>
 
 #include "CDocSupport.h"
+
+Q_DECLARE_LOGGING_CATEGORY(CRYPTO)
 
 #if QT_VERSION < QT_VERSION_CHECK(6, 5, 0)
 QDebug operator<<(QDebug d, std::string_view str) {
@@ -143,7 +146,7 @@ CDocSupport::getCDocFileList(const QString &filename)
 	}
 	if(xml.hasError()) {
 		// Malformed container, whatever was collected so far is incomplete
-		qWarning() << "Failed to parse" << filename << ":" << xml.errorString();
+		qCWarning(CRYPTO) << "Failed to parse" << filename << ":" << xml.errorString();
 		files.clear();
 	}
 
@@ -477,22 +480,25 @@ level2Str(libcdoc::LogLevel level) noexcept
 	case LEVEL_INFO: return QLatin1String("INFO");
 	case LEVEL_DEBUG: return QLatin1String("DEBUG");
 	case LEVEL_TRACE: return QLatin1String("TRACE");
-	default: return QLatin1String("UNKNWON");
+	default: return QLatin1String("UNKNOWN");
 	}
 }
 
 void DDCDocLogger::logMessage(libcdoc::LogLevel level, std::string_view file, int line, std::string_view message) {
-	if (!ofs.isOpen()) {
+	QMutexLocker locker(&mutex);
+	if (level > minLevel || !ofs.isOpen()) {
 		return;
 	}
 	auto time = QDateTime::currentDateTime().toString(QStringLiteral("[yyyy-MM-dd hh:mm:ss]"));
 	if (auto pos = file.find_last_of("\\/"); pos != std::string_view::npos)
-		file = file.substr(pos);
+		file = file.substr(pos + 1);
  
-	ofs.write(QStringLiteral("%1 %2 %3:%4 %5\n")
+	QByteArray text = QStringLiteral("%1 %2 %3:%4 ")
 		.arg(time, level2Str(level), QLatin1String(file.data(), file.size()))
-		.arg(line)
-		.arg(QLatin1String(message.data(), message.size())).toUtf8());
+		.arg(line).toUtf8();
+	text.append(message.data(), qsizetype(message.size()));
+	text += '\n';
+	FileDialog::writeLog(ofs, text);
 }
 
 DDCDocLogger *
@@ -505,16 +511,26 @@ DDCDocLogger::getLogger()
 void DDCDocLogger::setUpLogger(const QString &path)
 {
 	DDCDocLogger *logger = getLogger();
-	logger->setMinLogLevel(libcdoc::LEVEL_WARNING);
-	logger->ofs.setFileName(path);
-	if(logger->ofs.open(QFile::WriteOnly|QFile::Append))
+	logger->setMinLogLevel(libcdoc::LEVEL_TRACE);
+	if(FileDialog::openLogFile(logger->ofs, path))
 		libcdoc::setLogger(logger);
 }
 
 void DDCDocLogger::setLogLevel(libcdoc::LogLevel level)
 {
 	DDCDocLogger *logger = getLogger();
-	logger->setMinLogLevel(level);
+	QMutexLocker locker(&logger->mutex);
+	logger->minLevel = level;
+}
+
+QByteArray DDCDocLogger::logData()
+{
+	DDCDocLogger *logger = getLogger();
+	QMutexLocker locker(&logger->mutex);
+	QFile file(logger->ofs.fileName());
+	if(!file.open(QIODevice::ReadOnly))
+		return {};
+	return file.readAll();
 }
 
 TempListConsumer::~TempListConsumer()
