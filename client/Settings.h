@@ -134,7 +134,7 @@ struct Settings
 	static const Option<QString> PROXY_PORT;
 	static const Option<QString> PROXY_USER;
 	static const Option<QString> PROXY_PASS;
-#ifdef Q_OS_MAC
+#ifdef Q_OS_MACOS
 	static const Option<QString> PLUGINS;
 #endif
 };

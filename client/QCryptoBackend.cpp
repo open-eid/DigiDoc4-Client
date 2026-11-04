@@ -22,9 +22,10 @@
 #include "Application.h"
 #ifdef Q_OS_WIN
 #include "QCNG.h"
+#else
+#include "QPKCS11.h"
 #endif
 #include "QPCSC.h"
-#include "QPKCS11.h"
 #include "SslCertificate.h"
 
 #include <QtCore/QLoggingCategory>
