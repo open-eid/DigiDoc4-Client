@@ -1,0 +1,16 @@
+# SPDX-FileCopyrightText: Estonian Information System Authority
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+name: Checks
+on:
+  push:
+  pull_request:
+    types: [opened, synchronize, reopened, edited]
+permissions:
+  contents: read
+jobs:
+  checks:
+    uses: open-eid/.github/.github/workflows/checks.yml@9a79743c8863d5acdf6bdcd68c8f7e38c30b4991 # master
+    with:
+      # Qt Linguist translations share the .ts extension with TypeScript
+      exclude: '^client/translations/.*\.ts$'
