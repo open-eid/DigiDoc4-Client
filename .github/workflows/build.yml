@@ -28,7 +28,7 @@ jobs:
         submodules: recursive
         persist-credentials: false
     - name: Download artifact
-      uses: dawidd6/action-download-artifact@eab87c9830c39eff17e5a6eadb20bfb4bc880477 # v27
+      uses: dawidd6/action-download-artifact@a92c7ae74cf1df8810783758581e485ac3aaa309 # v28
       with:
         workflow: build.yml
         branch: master
@@ -88,7 +88,7 @@ jobs:
       DEBEMAIL: github-actions@github.com
     steps:
     - name: Download artifact
-      uses: dawidd6/action-download-artifact@eab87c9830c39eff17e5a6eadb20bfb4bc880477 # v27
+      uses: dawidd6/action-download-artifact@a92c7ae74cf1df8810783758581e485ac3aaa309 # v28
       with:
         workflow: build.yml
         branch: master
@@ -137,7 +137,7 @@ jobs:
         container: [43, 44, 45]
     steps:
     - name: Download artifact
-      uses: dawidd6/action-download-artifact@eab87c9830c39eff17e5a6eadb20bfb4bc880477 # v27
+      uses: dawidd6/action-download-artifact@a92c7ae74cf1df8810783758581e485ac3aaa309 # v28
       with:
         workflow: build.yml
         branch: master
@@ -169,7 +169,7 @@ jobs:
     steps:
     - *Checkout
     - name: Download artifact
-      uses: dawidd6/action-download-artifact@eab87c9830c39eff17e5a6eadb20bfb4bc880477 # v27
+      uses: dawidd6/action-download-artifact@a92c7ae74cf1df8810783758581e485ac3aaa309 # v28
       with:
         workflow: build.yml
         branch: master
@@ -233,7 +233,7 @@ jobs:
     steps:
     - *Checkout
     - name: Download artifact
-      uses: dawidd6/action-download-artifact@eab87c9830c39eff17e5a6eadb20bfb4bc880477 # v27
+      uses: dawidd6/action-download-artifact@a92c7ae74cf1df8810783758581e485ac3aaa309 # v28
       with:
         workflow: build.yml
         branch: master
@@ -283,7 +283,7 @@ jobs:
     steps:
     - *Checkout
     - name: Download artifact
-      uses: dawidd6/action-download-artifact@eab87c9830c39eff17e5a6eadb20bfb4bc880477 # v27
+      uses: dawidd6/action-download-artifact@a92c7ae74cf1df8810783758581e485ac3aaa309 # v28
       with:
         workflow: build.yml
         branch: master
