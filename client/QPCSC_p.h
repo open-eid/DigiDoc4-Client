@@ -27,7 +27,6 @@
 
 #ifdef Q_OS_WIN
 #undef UNICODE
-#define NOMINMAX
 #include <winsock2.h>
 #include <winscard.h>
 #elif defined(Q_OS_MAC)
@@ -44,7 +43,7 @@
 #define SCARD_CTL_CODE(code) (0x42000000 + (code))
 #endif
 
-// http://pcscworkgroup.com/Download/Specifications/pcsc10_v2.02.09.pdf
+// https://pcscworkgroup.com/Download/Specifications/pcsc10_v2.02.09.pdf
 // http://ludovic.rousseau.free.fr/softwares/pcsc-lite/SecurePIN%20discussion%20v5.pdf
 #define CM_IOCTL_GET_FEATURE_REQUEST SCARD_CTL_CODE(3400)
 
@@ -189,14 +188,14 @@ struct QPCSC::Private
 
 struct QPCSCReader::Private
 {
-	QHash<DRIVER_FEATURES,quint32> features();
+	quint32 feature(DRIVER_FEATURES key);
 
-	QPCSC::Private *d {};
+	SCARDCONTEXT context {};
 	SCARDHANDLE card {};
 	SCARD_IO_REQUEST io {SCARD_PROTOCOL_UNDEFINED, sizeof(SCARD_IO_REQUEST)};
 	SCARD_READERSTATE state {};
 	QByteArray reader;
 	bool isTransacted {};
 
-	QHash<DRIVER_FEATURES,quint32> featuresList;
+	std::array<PCSC_TLV_STRUCTURE,FEATURE_CCID_ESC_COMMAND> features{};
 };

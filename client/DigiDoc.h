@@ -46,6 +46,14 @@ public:
 	{
 		DigestWeak = 1 << 2
 	};
+	struct Location
+	{
+		QString city;
+		QString stateOrProvince;
+		QString postalCode;
+		QString countryName;
+		QString streetAddress;
+	};
 	DigiDocSignature(const digidoc::Signature *signature = {}, const DigiDoc *parent = {}, bool isTimeStamped = false);
 
 	QSslCertificate	cert() const;
@@ -53,8 +61,7 @@ public:
 	const DigiDoc *container() const;
 	bool		isInvalid() const;
 	QString		lastError() const;
-	QString		location() const;
-	QStringList	locations() const;
+	Location	location() const;
 	QByteArray	messageImprint() const;
 	QSslCertificate ocspCert() const;
 	QDateTime	ocspTime() const;
@@ -95,7 +102,6 @@ public:
 	bool addFile(const QString &file, const QString &mime = QStringLiteral("application/octet-stream")) final;
 	QString data(int row) const final;
 	quint64 fileSize(int row) const final;
-	QString mime(int row) const final;
 	bool removeRow(int row) final;
 	int rowCount() const final;
 	QString save(int row, const QString &path) const final;
@@ -158,12 +164,11 @@ private:
 	QWidget *parentWidget() const;
 	explicit DigiDoc(QWidget *parent = {});
 	bool isError(bool failure, const QString &title, const QString &text) const;
-	void load(std::unique_ptr<digidoc::Container> &&doc, ServiceConfirmation &cb);
+	void load(std::unique_ptr<digidoc::Container> &&doc);
 	static void setLastError(const QString &title, const digidoc::Exception &e);
 	void setState(ContainerState s);
 
 	std::unique_ptr<digidoc::Container> b;
-	std::unique_ptr<digidoc::Container> parentContainer;
 	std::unique_ptr<DocumentModel>		m_documentModel;
 
 	ContainerState containerState = ria::qdigidoc4::UnsignedContainer;

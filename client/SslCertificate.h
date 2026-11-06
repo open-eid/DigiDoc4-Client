@@ -88,6 +88,10 @@ public:
 	QByteArray	authorityKeyIdentifier() const;
 	QHash<EnhancedKeyUsage,QString> enhancedKeyUsage() const;
 	bool		isCA() const;
+	bool		isEncryptionCert() const {
+		const auto usage = keyUsage();
+		return usage.contains(KeyEncipherment) || usage.contains(KeyAgreement);
+	}
 	bool isValid() const {
 		const QDateTime currentTime = QDateTime::currentDateTime();
 		return currentTime >= effectiveDate() &&
@@ -101,7 +105,6 @@ public:
 	bool		showCN() const;
 	QString		signatureAlgorithm() const;
 	QByteArray	subjectKeyIdentifier() const;
-	static QByteArray	toHex(const QByteArray &in, char separator = ' ');
 	QString		toString( const QString &format ) const;
 	CertType	type() const;
 	Validity	validateOnline() const;

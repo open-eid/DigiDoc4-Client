@@ -57,7 +57,7 @@ QString CheckConnection::errorString() const
 	case QNetworkReply::ProxyAuthenticationRequiredError:
 		return QCoreApplication::translate("CheckConnection", "Check proxy username and password");
 	default:
-		return QCoreApplication::translate("CheckConnection", "Cannot connect to certificate status service!");
+		return QCoreApplication::translate("CheckConnection", "Check internet connection");
 	}
 }
 
@@ -116,17 +116,6 @@ QNetworkAccessManager* CheckConnection::setupNAM(QNetworkRequest &req, const QBy
 		}
 		reply->ignoreSslErrors(ignore);
 	});
-	return nam;
-}
-
-QNetworkAccessManager* CheckConnection::setupNAM(QNetworkRequest &req,
-	const QSslCertificate &cert, const QSslKey &key, const QByteArray &add)
-{
-	QNetworkAccessManager* nam = setupNAM(req, add);
-	QSslConfiguration ssl = req.sslConfiguration();
-	ssl.setPrivateKey(key);
-	ssl.setLocalCertificate(cert);
-	req.setSslConfiguration(ssl);
 	return nam;
 }
 

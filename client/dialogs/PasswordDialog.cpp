@@ -36,8 +36,9 @@ PasswordDialog::PasswordDialog(Mode mode, QWidget *parent)
 	ui->password2Line->setHidden(mode == Mode::DECRYPT);
 	ui->password2Error->hide();
 	if(mode == DECRYPT) {
-		ui->title->setText(tr("Decrypt with password"));
-		ui->passwordLabel->setText(tr("Enter password to decrypt the document"));
+		ui->title->setText(tr("Decrypt"));
+		ui->labelLabel->setText(tr("Envelope name"));
+		ui->passwordLabel->setText(tr("Envelope password"));
 		ui->ok->setText(tr("Decrypt"));
 		ui->passwordLine->setFocus();
 	}

@@ -38,9 +38,6 @@ struct WarningText {
 		UnblockPin1Warning,
 		UnblockPin2Warning,
 		ActivatePin2Warning,
-		ActivatePin1WithPUKWarning,
-		ActivatePin2WithPUKWarning,
-		LockedCardWarning,
 
 		InvalidSignatureError,
 		InvalidTimestampError,
@@ -53,7 +50,7 @@ struct WarningText {
 		EmptyFileWarning,
 	} type = NoWarning;
 	int counter = 0;
-	std::function<void()> cb;
+	std::function<void()> cb{};
 };
 
 

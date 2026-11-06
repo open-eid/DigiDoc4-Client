@@ -18,7 +18,6 @@
  */
 
 #include "SmartIDProgress.h"
-#include "ui_MobileProgress.h"
 
 #include "Application.h"
 #include "CheckConnection.h"
@@ -26,6 +25,7 @@
 #include "Utils.h"
 #include "dialogs/WarningDialog.h"
 
+#include <digidocpp/Exception.h>
 #include <digidocpp/crypto/X509Cert.h>
 
 #include <QtCore/QCryptographicHash>
@@ -39,26 +39,27 @@
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkRequest>
 #include <QtNetwork/QNetworkReply>
-
-#include <chrono>
+#include <QtWidgets/QAbstractButton>
+#include <QtWidgets/QDialog>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QProgressBar>
 
 Q_LOGGING_CATEGORY(SIDLog,"RIA.SmartID")
 
 using namespace digidoc;
 
-class SmartIDProgress::Private final: public QDialog, public Ui::MobileProgress
+class SmartIDProgress::Private final: public QObject
 {
 	Q_OBJECT
 public:
-	using QDialog::QDialog;
-	void reject() final { l.exit(QDialog::Rejected); }
-	void setVisible(bool visible) final {
-		if(visible && !hider) hider = std::make_unique<WaitDialogHider>();
-		QDialog::setVisible(visible);
-		if(!visible && hider) hider.reset();
-	}
-	QTimer *timer{};
-	QTimeLine *statusTimer{};
+	explicit Private(const SigningProgressUI &pui, QObject *parent = nullptr)
+		: QObject(parent)
+		, ui(pui)
+	{}
+
+	const SigningProgressUI &ui;
+
+	QTimeLine *statusTimer {};
 	QNetworkAccessManager *manager {};
 	QNetworkRequest req;
 	QString documentNumber, sessionID, fileName;
@@ -69,57 +70,41 @@ public:
 	QString UUID = useCustomUUID ? Settings::SID_UUID : QString();
 	QString NAME = Settings::SID_NAME;
 	QString URL = !UUID.isNull() && useCustomUUID ? Settings::SID_SK_URL : Settings::SID_PROXY_URL;
-	std::unique_ptr<WaitDialogHider> hider;
 };
 
-
-
-SmartIDProgress::SmartIDProgress(QWidget *parent)
-	: d(new Private(parent))
+SmartIDProgress::SmartIDProgress(const SigningProgressUI &pui)
+	: d(new Private(pui))
 {
 	const_cast<QLoggingCategory&>(SIDLog()).setEnabled(QtDebugMsg,
 		QFile::exists(QStringLiteral("%1/%2.log").arg(QDir::tempPath(), QApplication::applicationName())));
-	d->setWindowFlags(Qt::Dialog|Qt::CustomizeWindowHint);
-	d->setupUi(d);
-	d->signProgressBar->setMaximum(100);
-	d->code->setBuddy(d->signProgressBar);
-	d->code->clear();
-#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
-const auto styleSheet = R"(QProgressBar {
-background-color: #d3d3d3;;
-border-style: solid;
-border-radius: 3px;
-min-height: 6px;
-max-height: 6px;
-margin: 15px 5px;
-}
-QProgressBar::chunk {
-border-style: solid;
-border-radius: 3px;
-background-color: #007aff;
-})";
-	d->signProgressBar->setStyleSheet(styleSheet);
-#endif
-	QObject::connect(d->cancel, &QPushButton::clicked, d, &QDialog::reject);
+	d->ui.bar->setMaximum(100);
+	d->ui.bar->setValue(0);
+	d->ui.code->setBuddy(d->ui.bar);
+	d->ui.code->clear();
+	d->ui.info->clear();
+	QObject::connect(pui.cancel, &QAbstractButton::clicked, [this] {
+		d->l.exit(QDialog::Rejected);
+	});
 
-	d->statusTimer = new QTimeLine(d->signProgressBar->maximum() * 1000, d);
+	d->statusTimer = new QTimeLine(d->ui.bar->maximum() * 1000, d);
 	d->statusTimer->setEasingCurve(QEasingCurve::Linear);
-	d->statusTimer->setFrameRange(d->signProgressBar->minimum(), d->signProgressBar->maximum());
-	QObject::connect(d->statusTimer, &QTimeLine::frameChanged, d->signProgressBar, &QProgressBar::setValue);
+	d->statusTimer->setFrameRange(d->ui.bar->minimum(), d->ui.bar->maximum());
+	QObject::connect(d->statusTimer, &QTimeLine::frameChanged, d->ui.bar, &QProgressBar::setValue);
 
 	d->req.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 	d->manager = CheckConnection::setupNAM(d->req);
 	d->manager->setParent(d);
 	QNetworkAccessManager::connect(d->manager, &QNetworkAccessManager::finished, d, [&, this](QNetworkReply *reply){
 		QScopedPointer<QNetworkReply,QScopedPointerDeleteLater> scope(reply);
-		auto returnError = [=, this](const QString &err, const QString &details = {}) {
+		auto returnError = [=, this](const QString &err, const QString &details = {}, bool richText = false) {
 			qCWarning(SIDLog) << err;
 			d->statusTimer->stop();
-			delete d->timer;
-			d->timer = nullptr;
-			d->hide();
-			auto *dlg = WarningDialog::create(d->parentWidget())->withText(err)->withDetails(details)
-				->withTitle(QCoreApplication::translate("DigiDoc", "Failed to sign container"));
+			auto *dlg = WarningDialog::create(d->ui.errorParent);
+			if(richText)
+				dlg->withRichText(err);
+			else
+				dlg->withText(err);
+			dlg->withDetails(details)->withTitle(QCoreApplication::translate("DigiDoc", "Failed to sign container"));
 			QObject::connect(dlg, &WarningDialog::finished, &d->l, &QEventLoop::exit);
 			dlg->open();
 		};
@@ -147,17 +132,17 @@ background-color: #007aff;
 			{
 			case 403:
 				return returnError(tr("Check your %1 service access settings. "
-					"<a href=\"https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/\">Additional information</a>").arg(tr("Smart-ID")));
+					"<a href=\"https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/\">Additional information</a>").arg(tr("Smart-ID")), {}, true);
 			case 409:
 				return returnError(tr("Failed to send request. The number of unsuccesful request from this IP address has been exceeded. Please try again later."));
 			case 429:
 				return returnError(tr("The limit for %1 digital signatures per month has been reached. "
-					"<a href=\"https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/\">Additional information</a>").arg(tr("Smart-ID")));
+					"<a href=\"https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/\">Additional information</a>").arg(tr("Smart-ID")), {}, true);
 			case 471:
 				return returnError(tr("Your Smart-ID certificate level must be qualified to sign documents in DigiDoc4 Client."));
 			case 480:
 				return returnError(tr("Your signing software needs an upgrade. Please update your ID software, which you can get from "
-					"<a href=\"https://www.id.ee/en/\">www.id.ee</a>. Additional info is available ID-helpline (+372) 666 8888."));
+					"<a href=\"https://www.id.ee/en/\">www.id.ee</a>. Additional info is available ID-helpline (+372) 666 8888."), {}, true);
 			case 580:
 				return returnError(tr("Failed to send request. A valid session is associated with this personal code. "
 					"It is not possible to start a new signing before the current session expires. Please try again later."));
@@ -203,7 +188,6 @@ background-color: #007aff;
 				QByteArray b64 = QByteArray::fromBase64(
 					result.value(QLatin1String("signature")).toObject().value(QLatin1String("value")).toString().toUtf8());
 				d->signature.assign(b64.cbegin(), b64.cend());
-				d->hide();
 				d->l.exit(QDialog::Accepted);
 			}
 			else if(result.contains(QLatin1String("cert")))
@@ -212,7 +196,6 @@ background-color: #007aff;
 					QByteArray b64 = QByteArray::fromBase64(
 						result.value(QLatin1String("cert")).toObject().value(QLatin1String("value")).toString().toUtf8());
 					d->cert = X509Cert((const unsigned char*)b64.constData(), size_t(b64.size()), X509Cert::Der);
-					d->hide();
 					d->l.exit(QDialog::Accepted);
 				} catch(const Exception &e) {
 					returnError(tr("Failed to parse certificate: ") + QString::fromStdString(e.msg()));
@@ -240,7 +223,7 @@ bool SmartIDProgress::init(const QString &country, const QString &idCode, const 
 {
 	if(!d->UUID.isEmpty() && QUuid(d->UUID).isNull())
 	{
-		WarningDialog::create(d->parentWidget())
+		WarningDialog::create(d->ui.errorParent)
 			->withText(tr("Failed to send request. Check your %1 service access settings.").arg(tr("Smart-ID")))
 			->withTitle(QCoreApplication::translate("DigiDoc", "Failed to sign container"))
 			->open();
@@ -262,15 +245,9 @@ bool SmartIDProgress::init(const QString &country, const QString &idCode, const 
 	d->req.setUrl(QUrl(QStringLiteral("%1/certificatechoice/etsi/PNO%2-%3").arg(d->URL, country, idCode)));
 	qCDebug(SIDLog).noquote() << d->req.url() << data;
 	d->manager->post(d->req, data);
-	d->info->setText(tr("Open the Smart-ID application on your smart device and confirm device for signing."));
-	d->code->setAccessibleName(d->info->text());
+	d->ui.info->setText(tr("Open the Smart-ID application on your smart device and confirm device for signing."));
+	d->ui.code->setAccessibleName(d->ui.info->text());
 	d->statusTimer->start();
-	d->adjustSize();
-	d->timer = new QTimer(d);
-	d->timer->setSingleShot(true);
-	QObject::connect(d->timer, &QTimer::timeout, d, &SmartIDProgress::Private::show);
-	using namespace std::chrono;
-	d->timer->start(3s);
 	return d->l.exec() == QDialog::Accepted;
 }
 
@@ -291,9 +268,9 @@ std::vector<unsigned char> SmartIDProgress::sign(const std::string &method, cons
 
 	QByteArray codeDiest = QCryptographicHash::hash(QByteArray::fromRawData((const char*)digest.data(), int(digest.size())), QCryptographicHash::Sha256);
 	uint code = codeDiest.right(2).toHex().toUInt(nullptr, 16) % 10000;
-	d->code->setText(QStringLiteral("%1").arg(code, 4, 10, QChar('0')));
-	d->info->setText(tr("Make sure control code matches with one in phone screen and enter Smart-ID PIN2-code."));
-	d->code->setAccessibleName(QStringLiteral("%1 %2. %3").arg(d->label->text(), d->code->text(), d->info->text()));
+	d->ui.code->setText(QStringLiteral("%1").arg(code, 4, 10, QChar('0')));
+	d->ui.info->setText(tr("Make sure control code matches with one in phone screen and enter Smart-ID PIN2-code."));
+	d->ui.code->setAccessibleName(QStringLiteral("%1 %2. %3").arg(d->ui.label->text(), d->ui.code->text(), d->ui.info->text()));
 
 	QJsonObject req{
 		{"relyingPartyUUID", (d->UUID.isEmpty() ? QStringLiteral("00000000-0000-0000-0000-000000000000") : d->UUID)},
@@ -313,8 +290,6 @@ std::vector<unsigned char> SmartIDProgress::sign(const std::string &method, cons
 	qCDebug(SIDLog).noquote() << d->req.url() << data;
 	d->manager->post(d->req, data);
 	d->statusTimer->start();
-	d->adjustSize();
-	d->show();
 	switch(d->l.exec())
 	{
 	case QDialog::Accepted: return d->signature;

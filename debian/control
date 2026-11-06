@@ -6,7 +6,7 @@ Build-Depends:
  pkg-config,
  debhelper-compat (= 13),
  cmake,
- libdigidocpp-dev (>=3.0),
+ libdigidocpp-dev (>=4.6.0),
  libldap2-dev,
  libpcsclite-dev,
  libssl-dev,
@@ -27,6 +27,7 @@ Depends:
  ${shlibs:Depends},
  ${misc:Depends}
 Recommends:
+ qt6-xdgdesktopportal-platformtheme,
  python3-nautilus:amd64 | python3-nautilus:arm64
 Replaces:
  qdigidoc (<< 3.14)

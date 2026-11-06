@@ -18,6 +18,50 @@
 font-family: Roboto, Helvetica;
 font-size: 14px;
 }
+QScrollBar {
+border: none;
+background: transparent;
+}
+QScrollBar:vertical {
+width: 12px;
+padding: 4px 4px 4px 0px;
+margin: 0px;
+}
+QScrollBar:horizontal {
+height: 10px;
+padding: 0px 4px 4px 4px;
+margin: 0px;
+}
+QScrollBar::handle:vertical {
+background-color: #B5BFCF;
+border: none;
+margin: 0px;
+border-radius: 4px;
+min-height: 16px;
+}
+QScrollBar::handle:horizontal {
+background-color: #B5BFCF;
+border: none;
+margin: 0px;
+border-radius: 3px;
+min-width: 16px;
+}
+QScrollBar::add-line:vertical,
+QScrollBar::sub-line:vertical {
+height: 0px;
+border: none;
+background: none;
+}
+QScrollBar::add-line:horizontal,
+QScrollBar::sub-line:horizontal {
+width: 0px;
+border: none;
+background: none;
+}
+QScrollBar::add-page,
+QScrollBar::sub-page {
+background: transparent;
+}
 #CertificateDetails {
 background-color: #FFFFFF;
 border-radius: 4px;
@@ -118,15 +162,25 @@ font-size: 22px;
         <string notr="true">QTableWidget {
 background-color: #FFFFFF;
 }
+QTableWidget::item {
+padding: 0px 12px;
+}
 QTableWidget::item:selected {
-background-color: #E7EAEF;
+background-color: #EAF1F8;
 color: #07142A;
 }
 QHeaderView::section {
-border: 1px solid #E7EAEF;
-border-width: 0px 0px 1px 0px;
-padding: 0px 0px 8px 5px;
-background-color: #FFFFFF;
+border: none;
+padding: 8px 12px;
+background-color: #F5F5F5;
+}
+QHeaderView::section:first {
+border-top-left-radius: 8px;
+border-bottom-left-radius: 8px;
+}
+QHeaderView::section:last {
+border-top-right-radius: 8px;
+border-bottom-right-radius: 8px;
 }</string>
        </property>
        <property name="frameShape">

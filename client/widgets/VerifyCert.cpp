@@ -30,6 +30,12 @@ VerifyCert::VerifyCert(QWidget *parent)
 	, ui(new Ui::VerifyCert)
 {
 	ui->setupUi( this );
+	connect(ui->info, &Label::wordWrapChanged, this, [this](bool wordWrap) {
+		Qt::Alignment alignment = Qt::AlignTop;
+		if(!wordWrap)
+			alignment |= Qt::AlignLeft;
+		ui->nameLayout->setAlignment(ui->info, alignment);
+	});
 
 	connect(ui->changePIN, &QToolButton::clicked, this, [this] {
 		if(cardData.retryCount(pinType) == 0 && cardData.pinLocked(pinType))
@@ -64,24 +70,24 @@ VerifyCert::VerifyCert(QWidget *parent)
 		case SslCertificate::Revoked:
 			if(SslCertificate::CertType::TempelType == c.type())
 				dlg->withTitle(tr("Certificate is not valid"))
-					->withText(tr("A valid certificate is required for electronic use. ") + readMore);
+					->withRichText(tr("A valid certificate is required for electronic use. ") + readMore);
 			else if(c.keyUsage().contains(SslCertificate::NonRepudiation))
 				dlg->withTitle(tr("Your ID-card signing certificate is not valid"))
-					->withText(tr("You need valid certificates to use your ID-card electronically. ") + readMore);
+					->withRichText(tr("You need valid certificates to use your ID-card electronically. ") + readMore);
 			else
 				dlg->withTitle(tr("Your ID-card authentication certificate is not valid"))
-					->withText(tr("You need valid certificates to use your ID-card electronically. ") + readMore);
+					->withRichText(tr("You need valid certificates to use your ID-card electronically. ") + readMore);
 			break;
 		case SslCertificate::Unknown:
 			if(SslCertificate::CertType::TempelType == c.type())
 				dlg->withTitle(tr("Certificate status is unknown"))
-					->withText(tr("A valid certificate is required for electronic use. ") + readMore);
+					->withRichText(tr("A valid certificate is required for electronic use. ") + readMore);
 			else if(c.keyUsage().contains(SslCertificate::NonRepudiation))
 				dlg->withTitle(tr("Your ID-card signing certificate status is unknown"))
-					->withText(tr("You need valid certificates to use your ID-card electronically. ") + readMore);
+					->withRichText(tr("You need valid certificates to use your ID-card electronically. ") + readMore);
 			else
 				dlg->withTitle(tr("Your ID-card authentication certificate status is unknown"))
-					->withText(tr("You need valid certificates to use your ID-card electronically. ") + readMore);
+					->withRichText(tr("You need valid certificates to use your ID-card electronically. ") + readMore);
 			break;
 		default:
 			dlg->withTitle(tr("Certificate status check failed"))
@@ -129,7 +135,6 @@ void VerifyCert::update()
 {
 	if(cardData.isNull() && c.isNull())
 		return clear();
-	bool isLockedCard = !cardData.isNull() && cardData.pinLocked(QSmartCardData::Pin1Type);
 	bool isLockedPin = !cardData.isNull() && pinType == QSmartCardData::Pin2Type && cardData.pinLocked(pinType);
 	bool isBlockedPin = !cardData.isNull() && cardData.retryCount(pinType) == 0;
 	bool isBlockedPuk = !cardData.isNull() && cardData.retryCount(QSmartCardData::PukType) == 0;
@@ -198,20 +203,12 @@ void VerifyCert::update()
 
 		ui->changePIN->setText(tr("Change PIN%1").arg(pinType));
 		ui->forgotPinLink->setText(tr("Change with PUK code"));
-		ui->changePIN->setHidden(isLockedCard || (isBlockedPin && isBlockedPuk) || isTempelType);
+		ui->changePIN->setHidden((isBlockedPin && isBlockedPuk) || isTempelType);
 
 		if(isTempelType)
 		{
 			ui->info->setLabel({});
 			ui->info->setText(tr("PIN can be changed only using eToken utility"));
-		}
-		else if(isLockedCard)
-		{
-			icon = QStringLiteral(":/images/icon_alert_large_warning.svg");
-			ui->info->setLabel(QStringLiteral("warning"));
-			ui->info->setText(pinType == QSmartCardData::Pin1Type ?
-				tr("The ID-card must be activated in order to authenticate") :
-				tr("The ID-card must be activated in order to sign"));
 		}
 		else if(isBlockedPin)
 		{
@@ -242,7 +239,7 @@ void VerifyCert::update()
 
 	ui->links->setHidden(pinType == QSmartCardData::PukType && ui->changePIN->isHidden());
 	ui->details->setHidden(pinType == QSmartCardData::PukType);
-	ui->forgotPinLink->setHidden(pinType == QSmartCardData::PukType || isLockedCard || isBlockedPin || isBlockedPuk || isTempelType);
+	ui->forgotPinLink->setHidden(pinType == QSmartCardData::PukType || isBlockedPin || isBlockedPuk || isTempelType);
 	ui->checkCert->setHidden(pinType == QSmartCardData::PukType || isInvalidCert);
 }
 

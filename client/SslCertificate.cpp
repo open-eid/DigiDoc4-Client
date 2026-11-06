@@ -20,6 +20,7 @@
 #include "SslCertificate.h"
 
 #include "Common.h"
+#include "Utils.h"
 
 #include <digidocpp/Exception.h>
 #include <digidocpp/crypto/X509Cert.h>
@@ -35,18 +36,6 @@
 #include <openssl/ocsp.h>
 #include <openssl/x509v3.h>
 
-#include <memory>
-
-template<auto D>
-struct free_deleter
-{
-	template<class T>
-	void operator()(T *p) const noexcept
-	{
-		D(p);
-	}
-};
-
 template<typename> struct free_argument;
 template<class T, class R>
 struct free_argument<R (*)(T *)>
@@ -59,17 +48,12 @@ struct free_argument<R (&)(T *)>
 	using type = T;
 };
 
-template<auto F, typename T>
-[[nodiscard]]
-constexpr auto make_unique_ptr(T *t) noexcept
-{
-	return std::unique_ptr<T, free_deleter<F>>(t);
-}
-
 template<class T>
 static auto toQByteArray(T &x)
 {
-	return QByteArray((const char*)x->data, x->length);
+    const auto *str = std::to_address(x);
+    return QByteArray((const char*)ASN1_STRING_get0_data(str),
+                      ASN1_STRING_length(str));
 }
 
 template <auto Func, typename Arg>
@@ -233,7 +217,7 @@ QHash<SslCertificate::KeyUsage,QString> SslCertificate::keyUsage() const
 
 QString SslCertificate::personalCode() const
 {
-	// http://www.etsi.org/deliver/etsi_en/319400_319499/31941201/01.01.01_60/en_31941201v010101p.pdf
+	// https://www.etsi.org/deliver/etsi_en/319400_319499/31941201/01.01.01_60/en_31941201v010101p.pdf
 	static const QStringList types {"PAS", "IDC", "PNO", "TAX", "TIN"};
 	QString data = subjectInfo(QSslCertificate::SerialNumber);
 	if(data.size() > 6 && (types.contains(data.left(3)) || data[2] == ':') && data[5] == '-')
@@ -279,11 +263,6 @@ QByteArray SslCertificate::subjectKeyIdentifier() const
 {
 	auto id = extension<ASN1_OCTET_STRING_free>(NID_subject_key_identifier);
 	return !id ? QByteArray() : toQByteArray(id);
-}
-
-QByteArray SslCertificate::toHex(const QByteArray &in, char separator)
-{
-	return in.toHex(separator).toUpper();
 }
 
 QString SslCertificate::toString( const QString &format ) const
@@ -356,30 +335,34 @@ SslCertificate::Validity SslCertificate::validateOnline() const
 	if(urls.isEmpty())
 		return Error;
 
-	QEventLoop e;
 	QNetworkAccessManager m;
-	QNetworkAccessManager::connect(&m, &QNetworkAccessManager::finished, &e, &QEventLoop::quit);
-	QNetworkAccessManager::connect(&m, &QNetworkAccessManager::sslErrors, &m,
-		[](QNetworkReply *reply, const QList<QSslError> &errors){
-		reply->ignoreSslErrors(errors);
-	});
 
 	// Get issuer
 	QNetworkRequest r(urls.values(SslCertificate::ad_CAIssuers).first());
 	r.setRawHeader("User-Agent", QStringLiteral("%1/%2 (%3)")
 		.arg(QCoreApplication::applicationName(), QCoreApplication::applicationVersion(), Common::applicationOs()).toUtf8());
+	r.setTransferTimeout(15000);
 	QNetworkReply *repl = m.get(r);
-	e.exec();
+	waitForSignal(&m, &QNetworkAccessManager::finished);
 	QSslCertificate issuer(repl->readAll(), QSsl::Der);
 	repl->deleteLater();
 	if(issuer.isNull())
 		return Error;
 
+	// Verify cert
+	auto *cert = static_cast<X509 *>(handle());
+	auto *issuerCert = static_cast<X509 *>(issuer.handle());
+	if(EVP_PKEY *issuerKey = X509_get0_pubkey(issuerCert);
+		!issuerKey ||
+		X509_check_issued(issuerCert, cert) != X509_V_OK ||
+		X509_verify(cert, issuerKey) != 1)
+		return Invalid;
+
 	// Build request
 	auto ocspReq = make_unique_ptr<OCSP_REQUEST_free>(OCSP_REQUEST_new());
 	if(!ocspReq)
 		return Error;
-	OCSP_CERTID *certId = OCSP_cert_to_id(nullptr, (X509*)handle(), (X509*)issuer.handle());
+	OCSP_CERTID *certId = OCSP_cert_to_id(nullptr, cert, issuerCert);
 	if(!OCSP_request_add0_id(ocspReq.get(), certId))
 		return Error;
 
@@ -387,7 +370,7 @@ SslCertificate::Validity SslCertificate::validateOnline() const
 	r.setUrl(urls.values(SslCertificate::ad_OCSP).first());
 	r.setHeader(QNetworkRequest::ContentTypeHeader, "application/ocsp-request");
 	repl = m.post(r, i2dDer<i2d_OCSP_REQUEST>(ocspReq.get()));
-	e.exec();
+	waitForSignal(&m, &QNetworkAccessManager::finished);
 
 	// Parse response
 	QByteArray respData = repl->readAll();
@@ -401,7 +384,10 @@ SslCertificate::Validity SslCertificate::validateOnline() const
 	auto basic = make_unique_ptr<OCSP_BASICRESP_free>(OCSP_response_get1_basic(resp.get()));
 	if(!basic)
 		return Error;
-	if(OCSP_basic_verify(basic.get(), nullptr, nullptr, OCSP_NOVERIFY) <= 0)
+	auto store = make_unique_ptr<X509_STORE_free>(X509_STORE_new());
+	if(!store || !X509_STORE_add_cert(store.get(), issuerCert))
+		return Error;
+	if(OCSP_basic_verify(basic.get(), nullptr, store.get(), OCSP_PARTIAL_CHAIN) <= 0)
 		return Invalid;
 	int status = -1;
 	if(OCSP_resp_find_status(basic.get(), certId, &status, nullptr, nullptr, nullptr, nullptr) <= 0)

@@ -21,6 +21,7 @@ add_subdirectory(libcdoc EXCLUDE_FROM_ALL)
 file(GLOB WIDGETS CONFIGURE_DEPENDS
 	"dialogs/*.cpp" "dialogs/*.h" "dialogs/*.ui"
 	"effects/*.cpp" "effects/*.h" "effects/*.ui"
+	"signer/*.cpp" "signer/*.h"
 	"widgets/*.cpp" "widgets/*.h" "widgets/*.ui"
 )
 add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
@@ -64,10 +65,10 @@ add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
 	QPCSC.cpp
 	QPCSC_p.h
 	QPCSC.h
-	QPKCS11.cpp
-	QPKCS11.h
-	QSigner.cpp
-	QSigner.h
+	$<IF:$<PLATFORM_ID:Windows>,
+		QCNG.cpp QCNG.h,
+		QPKCS11.cpp QPKCS11.h
+	>
 	QSmartCard.cpp
 	QSmartCard_p.h
 	QSmartCard.h
@@ -81,6 +82,8 @@ add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
 )
 if(WIN32)
 	set_source_files_properties(Diagnostics_unix.cpp PROPERTIES HEADER_FILE_ONLY TRUE)
+	target_sources(${PROJECT_NAME} PRIVATE Application_win.cpp)
+	target_link_libraries(${PROJECT_NAME} windowsapp)
 else()
 	set_source_files_properties(Diagnostics_win.cpp PROPERTIES HEADER_FILE_ONLY TRUE)
 endif()
@@ -138,7 +141,7 @@ if( APPLE )
 	set_source_files_properties(${RESOURCE_FILES} PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
 	set_source_files_properties( Application_mac.mm dialogs/CertificateDetails_mac.mm PROPERTIES COMPILE_FLAGS "-fobjc-arc" )
 	set_source_files_properties( LdapSearch.cpp PROPERTIES COMPILE_FLAGS "-Wno-deprecated-declarations" )
-	target_link_libraries(${PROJECT_NAME} "-framework QuickLookUI" "-fobjc-arc")
+	target_link_libraries(${PROJECT_NAME} "-framework QuickLookUI" "-framework Security" "-fobjc-arc")
 	find_library(PKCS11_MODULE NAMES opensc-pkcs11.so HINTS /Library/OpenSC/lib)
 	add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
 		COMMAND cp -a ${PKCS11_MODULE} $<TARGET_FILE_DIR:${PROJECT_NAME}>
@@ -194,7 +197,6 @@ if( APPLE )
 		COMMAND zip -r ${CMAKE_BINARY_DIR}/${PROJECT_NAME}-dbg_${VERSION}$ENV{VER_SUFFIX}.zip ${PROJECT_NAME}.dSYM
 	)
 elseif(WIN32)
-	target_sources(${PROJECT_NAME} PRIVATE QCNG.cpp QCNG.h)
 	target_compile_options(${PROJECT_NAME} PRIVATE "/guard:cf")
 	target_link_options(${PROJECT_NAME} PRIVATE "/guard:cf" $<$<BOOL:${CROSSSIGNCERT}>:/INTEGRITYCHECK>)
 	target_link_libraries(${PROJECT_NAME} NCrypt Crypt32 Cryptui winscard)
@@ -227,7 +229,7 @@ elseif(WIN32)
 	)
 	if(SIGNCERT)
 		list(APPEND SIGNCMD signtool.exe sign /a /v /s MY /n "${SIGNCERT}" /fd SHA256
-			/du http://installer.id.ee /tr http://timestamp.digicert.com /td SHA256)
+			/du https://installer.id.ee /tr http://timestamp.digicert.com /td SHA256)
 		add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
 			COMMAND ${SIGNCMD} "$<$<BOOL:${CROSSSIGNCERT}>:/ph;/ac;${CROSSSIGNCERT}>" $<TARGET_FILE:${PROJECT_NAME}>
 			COMMAND_EXPAND_LISTS
@@ -271,12 +273,13 @@ elseif(WIN32)
 			--skip-plugin-types generic,networkinformation,iconengines --exclude-plugins qjpeg,qico,qgif,qcertonlybackend,qschannelbackend appx
 		COMMAND ${CMAKE_COMMAND} -E copy ${LIBS_PATH}/digidoc-tool.exe appx
 		COMMAND makeappx.exe pack -d appx -p ${MSI_FILE}.appx
-		# https://msdn.microsoft.com/en-us/library/windows/desktop/jj835832(v=vs.85).aspx
-		#Popups GUI
-		#COMMAND MakeCert.exe /n "CN=8BBBE4D8-620A-4884-A12A-72F1A2030D8B" /r /h 0 /eku "1.3.6.1.5.5.7.3.3,1.3.6.1.4.1.311.10.3.13" /m 120 /a sha256 /sv qdigidoc4.pvk qdigidoc4.cer
-		#COMMAND Pvk2Pfx.exe /pvk qdigidoc4.pvk /spc qdigidoc4.cer /pfx qdigidoc4.pfx /f
-		COMMAND signtool.exe sign -f ${CMAKE_SOURCE_DIR}/qdigidoc4.pfx -fd SHA256 -v ${MSI_FILE}.appx
+		COMMAND powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass
+			-File ${CMAKE_SOURCE_DIR}/SignAppx.ps1
+			-PackagePath ${MSI_FILE}.appx
+			-ManifestPath AppxManifest.xml
+			-CertificatePath ${MSI_FILE}.cer
 		WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+		VERBATIM
 	)
 else()
 	find_package( Threads REQUIRED )
@@ -303,31 +306,5 @@ else()
 			DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/${RES}x${RES}/mimetypes/
 			RENAME application-x-cdoc.png
 		)
-		foreach(TGT
-				application-vnd.etsi.asic-s+zip.png
-				application-x-ddoc.png
-				application-vnd.lt.archyvai.adoc-2008.png)
-			install(CODE "execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink application-vnd.etsi.asic-e+zip.png \
-				\$ENV{DESTDIR}/${CMAKE_INSTALL_FULL_DATADIR}/icons/hicolor/${RES}x${RES}/mimetypes/${TGT})")
-		endforeach()
-		foreach(TGT
-				application-x-cdoc2.png)
-			install(CODE "execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink application-x-cdoc.png \
-				\$ENV{DESTDIR}/${CMAKE_INSTALL_FULL_DATADIR}/icons/hicolor/${RES}x${RES}/mimetypes/${TGT})")
-		endforeach()
-		# Workaround Ubuntu 21.10 Yaru icon theme issues
-		install(CODE "execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory \
-			\$ENV{DESTDIR}/${CMAKE_INSTALL_FULL_DATADIR}/icons/Yaru/${RES}x${RES}/mimetypes/)")
-		foreach(TGT
-				application-vnd.etsi.asic-e+zip.png
-				application-vnd.etsi.asic-s+zip.png
-				application-x-ddoc.png
-				application-vnd.lt.archyvai.adoc-2008.png
-				application-x-cdoc.png
-				application-x-cdoc2.png)
-			install(CODE "execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink \
-				${CMAKE_INSTALL_FULL_DATADIR}/icons/hicolor/${RES}x${RES}/mimetypes/${TGT} \
-				\$ENV{DESTDIR}/${CMAKE_INSTALL_FULL_DATADIR}/icons/Yaru/${RES}x${RES}/mimetypes/${TGT})")
-		endforeach()
 	endforeach()
 endif()

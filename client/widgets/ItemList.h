@@ -51,6 +51,7 @@ public:
 	void init(ListType itemType, const char *header);
 	void addHeader(const char *label);
 	void addHeaderWidget(Item *widget);
+	void addTopWidget(QWidget *widget, QWidget *firstTab = {}, QWidget *lastTab = {});
 	void addWidget(Item *widget);
 	virtual void clear();
 	virtual void removeItem(int row);
@@ -59,14 +60,11 @@ public:
 signals:
 	void add();
 	void addItem(int code);
-	void idChanged(const SslCertificate &cert);
 	void keysSelected(QList<Item *> keys);
 	void removed(int row);
-	void search(const QString &term);
 
 protected:
 	void changeEvent(QEvent* event) override;
-	bool eventFilter(QObject *o, QEvent *e) override;
 	int index(Item *item) const;
 	virtual void remove(Item *item);
 
@@ -79,10 +77,10 @@ private:
 
 	QList<Item*> items;
 	QLabel *header = nullptr;
+	QWidget *topWidget = nullptr;
 	const char *title = "";
 	const char *addTitle = "";
 	const char *headerText = "";
-	SslCertificate cert;
 
 	friend class AddRecipients;
 };

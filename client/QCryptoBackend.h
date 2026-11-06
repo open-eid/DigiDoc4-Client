@@ -20,16 +20,19 @@
 #pragma once
 
 #include "TokenData.h"
+#include "QSmartCard.h"
 
+#include <QtCore/QCoreApplication>
 #include <QtCore/QCryptographicHash>
+#include <QtCore/QThread>
 
+#include <cstdint>
 #include <expected>
-
-class TokenData;
-class QSslKey;
+#include <vector>
 
 class QCryptoBackend
 {
+	Q_DECLARE_TR_FUNCTIONS(QCryptoBackend);
 public:
 	enum Status : quint8
 	{
@@ -42,52 +45,68 @@ public:
 		GeneralError,
 		UnknownError
 	};
+	enum Padding : quint8
+	{
+		NoPadding,
+		PKCS1Padding,
+		PSSPadding,
+	};
 
 	virtual ~QCryptoBackend();
 
-	virtual QByteArray decrypt(const QByteArray &data, bool oaep) const = 0;
-	virtual QByteArray deriveConcatKDF(const QByteArray &publicKey, QCryptographicHash::Algorithm digest,
-		const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) const = 0;
-	virtual QByteArray deriveHMACExtract(const QByteArray &publicKey, const QByteArray &salt, int keySize) const = 0;
-	virtual QByteArray sign(QCryptographicHash::Algorithm method, const QByteArray &digest) const = 0;
+	virtual std::vector<uint8_t> decrypt(QByteArrayView data, bool oaep) const = 0;
+	virtual std::vector<uint8_t> deriveConcatKDF(QByteArrayView publicKey, QCryptographicHash::Algorithm digest,
+		QByteArrayView algorithmID, QByteArrayView partyUInfo, QByteArrayView partyVInfo) const = 0;
+	virtual std::vector<uint8_t> deriveHMACExtract(QByteArrayView publicKey, QByteArrayView salt, int keySize) const = 0;
+	virtual bool isPSS() const = 0;
+	virtual std::vector<uint8_t> sign(QCryptographicHash::Algorithm algo, Padding padding, QByteArrayView digest) const = 0;
 
-	/**
-	 * @brief Get the SSL key for the certificate
-	 * 
-	 * @return the Qt SSL key
-	 */
-	QSslKey getKey() const;
 	QSslCertificate cert() const;
 	/**
 	 * @brief Get a new Backend object and log in with the given token
-	 * 
+	 *
 	 * @param token the token to use
-	 * @return the new backend object or an error code 
+	 * @return the new backend object or an error code
 	 */
-	static std::expected<QCryptoBackend *,Status> getBackend(const TokenData& token);
-	/**
-	 * @brief Shut down all backends
-	 * 
-	 * This should be called when the application is about to exit. It releases all static data held by backend(s) (e.g. PKCS11 library)
-	 */
-	static void shutDown();
+	static std::expected<QCryptoBackend *,Status> getBackend(const TokenData &token, const QString &pin = {});
 
 	/**
 	 * @brief The status of the last operation
 	 */
 	mutable Status status = PinOK;
 
-	/**
-	 * @brief Get a list of all available tokens
-	 * 
-	 * @return list of all available tokens
-	 */
-	static QList<TokenData> getTokens();
-
 	static QString errorString(Status error);
+
 protected:
-	virtual Status login(const TokenData &cert) = 0;
+	const TokenData &tokenData() const { return token; }
+	virtual Status login(const TokenData &cert, const QString &pin) = 0;
 
 private:
 	TokenData token;
+};
+
+class QCryptoManager final : public QThread
+{
+	Q_OBJECT
+public:
+	explicit QCryptoManager();
+	~QCryptoManager() final;
+
+	QList<TokenData> cache() const;
+	quint64 readCard(const TokenData &token, const QSmartCardData &previous);
+	void refreshToken(const TokenData &token);
+
+Q_SIGNALS:
+	void cacheChanged(const QList<TokenData> &tokens);
+	void tokenChanged(const TokenData &token);
+	void cardDataReady(quint64 request, const QSmartCardData &data);
+	void refreshed();
+
+private:
+	friend class QCryptoBackend;
+	void refresh();
+	void run() final;
+
+	struct Private;
+	Private *d;
 };

@@ -63,6 +63,7 @@ signals:
 
 private:
 	void checkConnection();
+	void applyProxy() const;
 	void retranslate(const QString& lang);
 	void saveFile(const QString &name, const QString &path);
 	void saveFile(const QString &name, const QByteArray &content);
@@ -73,6 +74,7 @@ private:
 	void updateCDoc2Cert(const QSslCertificate &c);
 	void updateSiVaCert(const QSslCertificate &c);
 	void updateTSACert(const QSslCertificate &c);
+	void updateTSACertArchive(const QSslCertificate &c);
 	void updateDiagnostics();
 	void useDefaultSettings();
 

@@ -52,6 +52,7 @@ void Diagnostics::generalInfo(QTextStream &s)
 		<< "<br />RPUUID: " << (Settings::MID_UUID_CUSTOM ? tr("is set manually") : tr("is set by default"))
 		<< "<br />TSL_URL: " << Application::confValue(Application::TSLUrl).toString()
 		<< "<br />TSA_URL: " << Application::confValue(Application::TSAUrl).toString()
+		<< "<br />TSA_URL_ARCHIVE: " << Application::confValue(Application::TSAUrlArchive).toString()
 		<< "<br />SIVA_URL: " << Application::confValue(Application::SiVaUrl).toString()
 		<< "<br /><b>CDOC2:</b>"
 		<< "<br />" << Settings::CDOC2_DEFAULT.KEY << ": " << Settings::CDOC2_DEFAULT
@@ -93,7 +94,7 @@ void Diagnostics::generalInfo(QTextStream &s)
 	for( const QString &readername: QPCSC::instance().readers() )
 	{
 		s << "<br />" << readername;
-		QPCSCReader reader( readername, &QPCSC::instance() );
+		QPCSCReader reader(readername);
 		if( !reader.isPresent() )
 		{
 #ifndef Q_OS_WIN /* Apple 10.5.7 and pcsc-lite previous to v1.5.5 do not support 0 as protocol identifier */

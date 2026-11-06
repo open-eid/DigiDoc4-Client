@@ -19,15 +19,9 @@
 
 #pragma once
 
-#include <QtCore/QtGlobal>
-
-#ifdef Q_OS_MAC
 #include <QtWidgets/QApplication>
-using BaseApplication = QApplication;
-#else
-#include "qtsingleapplication/src/QtSingleApplication"
-using BaseApplication = QtSingleApplication;
-#endif
+
+#include <optional>
 
 #if defined(qApp)
 #undef qApp
@@ -37,8 +31,8 @@ using BaseApplication = QtSingleApplication;
 namespace digidoc { class Exception; }
 class Configuration;
 class QAction;
-class QSigner;
-class Application final: public BaseApplication
+class QCryptoManager;
+class Application final: public QApplication
 {
 	Q_OBJECT
 
@@ -47,6 +41,7 @@ public:
 	{
 		SiVaUrl,
 		TSAUrl,
+		TSAUrlArchive,
 		TSLUrl,
 		TSLCerts,
 		TSLCache,
@@ -55,13 +50,10 @@ public:
 	explicit Application( int &argc, char **argv );
 	~Application() final;
 
-#ifdef Q_OS_WIN
-	void addTempFile(const QString &file);
-#endif
 	Configuration *conf();
 	void loadTranslation( const QString &lang );
 	bool notify(QObject *object, QEvent *event ) final;
-	QSigner* signer() const;
+	QCryptoManager* cryptoManager() const;
 	int run();
 	void waitForTSL( const QString &file );
 
@@ -76,7 +68,24 @@ public:
 	static void showClient(QStringList params = {}, bool crypto = false, bool sign = false, bool newWindow = false);
 	static void updateTSLCache(const QDateTime &tslTime);
 #if defined(Q_OS_MAC)
+	struct ProxyCredentials
+	{
+		ProxyCredentials(QString host, QString port, QString user, QString password);
+		ProxyCredentials(ProxyCredentials &&) noexcept = default;
+		~ProxyCredentials();
+
+		Q_DISABLE_COPY(ProxyCredentials)
+		ProxyCredentials &operator=(ProxyCredentials &&) = delete;
+
+		QString host;
+		QString port;
+		QString user;
+		QString password;
+	};
+
 	static QString groupContainerPath();
+	static std::optional<ProxyCredentials> proxyCredentials();
+	static bool setProxyCredentials(ProxyCredentials credentials);
 #endif
 
 private Q_SLOTS:
@@ -90,24 +99,15 @@ private:
 	bool event(QEvent *event) final;
 	static void closeWindow();
 	static void msgHandler(QtMsgType type, const QMessageLogContext &ctx, const QString &msg);
-	static void parseArgs(const QString &msg = {});
 	static void parseArgs(QStringList args);
 	static void showWarning(const QString &title, const digidoc::Exception &e);
 #if defined(Q_OS_MAC)
-	static void initMacEvents();
-	static void deinitMacEvents();
+	static void initMacServices();
 #endif
 
 	static const QStringList CONTAINER_EXT;
-	class Private;
+	struct Private;
 	Private *d;
-};
-
-class REOpenEvent: public QEvent
-{
-public:
-	enum : quint16 { Type = QEvent::User + 1 };
-	REOpenEvent(): QEvent( QEvent::Type(Type) ) {}
 };
 
 extern template QJsonValue Application::confValue<QString>(const QString &key);

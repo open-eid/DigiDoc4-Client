@@ -29,14 +29,15 @@ public:
 	explicit QPKCS11();
 	~QPKCS11() noexcept final;
 
-	QByteArray decrypt(const QByteArray &data, bool oaep) const final;
-	QByteArray derive(const QByteArray &publicKey) const;
-	QByteArray deriveConcatKDF(const QByteArray &publicKey, QCryptographicHash::Algorithm digest,
-		const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) const final;
-	QByteArray deriveHMACExtract(const QByteArray &publicKey, const QByteArray &salt, int keySize) const final;
-	QByteArray sign(QCryptographicHash::Algorithm type, const QByteArray &digest) const final;
+	std::vector<uint8_t> decrypt(QByteArrayView data, bool oaep) const final;
+	std::vector<uint8_t> derive(QByteArrayView publicKey) const;
+	std::vector<uint8_t> deriveConcatKDF(QByteArrayView publicKey, QCryptographicHash::Algorithm digest,
+		QByteArrayView algorithmID, QByteArrayView partyUInfo, QByteArrayView partyVInfo) const final;
+	std::vector<uint8_t> deriveHMACExtract(QByteArrayView publicKey, QByteArrayView salt, int keySize) const final;
+	bool isPSS() const final;
+	std::vector<uint8_t> sign(QCryptographicHash::Algorithm algo, Padding padding, QByteArrayView digest) const final;
 
-	Status login(const TokenData &t) final;
+	Status login(const TokenData &t, const QString &pin) final;
 
 	static QList<TokenData> tokens();
 

@@ -2,13 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="en_US">
 <context>
-    <name>Accordion</name>
-    <message>
-        <source>PIN/PUK codes and certificates</source>
-        <translation>PIN/PUK codes and certificates</translation>
-    </message>
-</context>
-<context>
     <name>AddRecipients</name>
     <message>
         <source>Failed to read certificate</source>
@@ -41,6 +34,14 @@
     <message>
         <source>Certificates (*.cer *.crt *.pem)</source>
         <translation>Certificates (*.cer *.crt *.pem)</translation>
+    </message>
+    <message>
+        <source>Enter the personal code, institution or registry code</source>
+        <translation>Enter the personal code, institution or registry code</translation>
+    </message>
+    <message>
+        <source>Search</source>
+        <translation>Search</translation>
     </message>
     <message>
         <source>Are you sure that you want use certificate for encrypting, which expired on %1?&lt;br /&gt;When decrypter has updated certificates then decrypting is impossible.</source>
@@ -77,10 +78,6 @@
 </context>
 <context>
     <name>AddressItem</name>
-    <message>
-        <source> (Yourself)</source>
-        <translation> (Yourself)</translation>
-    </message>
     <message>
         <source>digi-ID</source>
         <translation>digi-ID</translation>
@@ -246,6 +243,17 @@
     <message>
         <source>Added file(s) exceeds the maximum size limit of the container (∼120MB). &lt;a href=&apos;https://www.id.ee/en/article/encrypting-large-120-mb-files/&apos;&gt;Read more about it&lt;/a&gt;</source>
         <translation>Added file(s) exceeds the maximum size limit of the container (∼120MB). &lt;a href=&apos;https://www.id.ee/en/article/encrypting-large-120-mb-files/&apos;&gt;Read more about it&lt;/a&gt;</translation>
+    </message>
+</context>
+<context>
+    <name>CardListItem</name>
+    <message>
+        <source>Issuer</source>
+        <translation>Issuer</translation>
+    </message>
+    <message>
+        <source>Valid to</source>
+        <translation>Valid to</translation>
     </message>
 </context>
 <context>
@@ -456,8 +464,8 @@
         <translation>Check proxy username and password</translation>
     </message>
     <message>
-        <source>Cannot connect to certificate status service!</source>
-        <translation>Cannot connect to certificate status service!</translation>
+        <source>Check internet connection</source>
+        <translation>Check internet connection</translation>
     </message>
 </context>
 <context>
@@ -478,12 +486,16 @@
         <translation>Container:</translation>
     </message>
     <message>
-        <source>The document has already been signed by you</source>
-        <translation>The document has already been signed by you</translation>
-    </message>
-    <message>
         <source>DigiDoc4 Client</source>
         <translation>DigiDoc4 Client</translation>
+    </message>
+    <message>
+        <source>Encrypt for recipients</source>
+        <translation>Encrypt for recipients</translation>
+    </message>
+    <message>
+        <source>Encrypt with password</source>
+        <translation>Encrypt with password</translation>
     </message>
     <message>
         <source>Decrypting</source>
@@ -496,6 +508,10 @@
     <message>
         <source>It is removed along with the container.</source>
         <translation>It is removed along with the container.</translation>
+    </message>
+    <message>
+        <source>Failed to decrypt document</source>
+        <translation type="unfinished">Failed to decrypt document</translation>
     </message>
     <message>
         <source>In order to view Validity Confirmation Sheet there has to be at least one printer installed!</source>
@@ -520,6 +536,10 @@
     <message>
         <source>Change</source>
         <translation>Change</translation>
+    </message>
+    <message>
+        <source>Password encryption is meant for long-term storage. The password cannot be changed or recovered.</source>
+        <translation>Password encryption is meant for long-term storage. The password cannot be changed or recovered.</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -554,10 +574,6 @@
         <translation>Sign</translation>
     </message>
     <message>
-        <source>Continue signing</source>
-        <translation>Continue signing</translation>
-    </message>
-    <message>
         <source>Encrypting</source>
         <translation>Encrypting</translation>
     </message>
@@ -585,6 +601,18 @@
         <translation>You do not have the key to decrypt this document</translation>
     </message>
     <message>
+        <source>The key transfer server did not find the key capsule. It may have expired.</source>
+        <translation>The key transfer server did not find the key capsule. It may have expired.</translation>
+    </message>
+    <message>
+        <source>The key transfer server could not return the key. Please try again later.</source>
+        <translation>The key transfer server could not return the key. Please try again later.</translation>
+    </message>
+    <message>
+        <source>General decryption error. Neither the card reader nor the network layer gave more information. Please check your internet connection, network settings and card reader. On some readers it may also indicate a wrong PIN or a locked card.</source>
+        <translation>General decryption error. Neither the card reader nor the network layer gave more information. Please check your internet connection, network settings and card reader. On some readers it may also indicate a wrong PIN or a locked card.</translation>
+    </message>
+    <message>
         <source>No keys specified</source>
         <translation>No recipients specified</translation>
     </message>
@@ -601,12 +629,20 @@
         <translation>Failed to encrypt document</translation>
     </message>
     <message>
+        <source>Key transfer server is not configured</source>
+        <translation>Key transfer server is not configured</translation>
+    </message>
+    <message>
         <source>Failed to remove key</source>
         <translation>Failed to remove key</translation>
     </message>
     <message>
         <source>Failed to open document</source>
         <translation>Failed to open document</translation>
+    </message>
+    <message>
+        <source>Failed to decrypt document</source>
+        <translation>Failed to decrypt document</translation>
     </message>
     <message>
         <source>Wrong password.</source>
@@ -623,6 +659,10 @@
     <message>
         <source>Cannot read file.</source>
         <translation>Cannot read file.</translation>
+    </message>
+    <message>
+        <source>Network error. Please check your network connection. It may also indicate that one or more CDoc servers are unreachable.</source>
+        <translation>Network error. Please check your network connection. It may also indicate that one or more CDoc servers are unreachable.</translation>
     </message>
 </context>
 <context>
@@ -996,10 +1036,6 @@
         <translation>DigiDoc is created for managing Estonian eIDs and is the official digital signing and encryption application.</translation>
     </message>
     <message>
-        <source>Skip introductions</source>
-        <translation>Skip introductions →</translation>
-    </message>
-    <message>
         <source>The DigiDoc application allows you to:</source>
         <translation>The DigiDoc application allows you to:</translation>
     </message>
@@ -1100,10 +1136,6 @@
         <translation>Continue</translation>
     </message>
     <message>
-        <source>View introduction</source>
-        <translation>View introduction</translation>
-    </message>
-    <message>
         <source>View next intro</source>
         <translation>View next intro</translation>
     </message>
@@ -1112,75 +1144,40 @@
         <translation>Enter the application</translation>
     </message>
     <message>
-        <source>Go to signing intro</source>
-        <translation>Go to signing intro</translation>
-    </message>
-    <message>
-        <source>Go to EID intro</source>
-        <translation>Go to EID intro</translation>
-    </message>
-    <message>
-        <source>Go to encryption intro</source>
-        <translation>Go to encryption intro</translation>
-    </message>
-    <message>
         <source>&quot;My eID&quot; also provides a good overview of the status and contact information of the ID card inserted in the card reader.</source>
         <translation>&quot;My eID&quot; also provides a good overview of the status and contact information of the ID card inserted in the card reader.</translation>
     </message>
-</context>
-<context>
-    <name>InfoStack</name>
     <message>
-        <source>You&apos;re using digital identity card</source>
-        <translation>You&apos;re using digital identity card</translation>
+        <source>Initial introduction</source>
+        <translation>Initial introduction</translation>
     </message>
     <message>
-        <source>Name</source>
-        <translation>Name</translation>
+        <source>1. About the DigiDoc application</source>
+        <translation>1. About the DigiDoc application</translation>
     </message>
     <message>
-        <source>Organization</source>
-        <translation>Organization</translation>
+        <source>2. Signing</source>
+        <translation>2. Signing</translation>
     </message>
     <message>
-        <source>Serial</source>
-        <translation>Serial</translation>
+        <source>3. Encryption</source>
+        <translation>3. Encryption</translation>
     </message>
     <message>
-        <source>Country</source>
-        <translation>Country</translation>
+        <source>4. Managing your eIDs</source>
+        <translation>4. Managing your eIDs</translation>
     </message>
     <message>
-        <source>Given names</source>
-        <translation>Given names</translation>
+        <source>Close introduction</source>
+        <translation>Close introduction</translation>
     </message>
     <message>
-        <source>Surname</source>
-        <translation>Surname</translation>
-    </message>
-    <message>
-        <source>Personal code</source>
-        <translation>Personal code</translation>
-    </message>
-    <message>
-        <source>Citizenship</source>
-        <translation>Citizenship</translation>
-    </message>
-    <message>
-        <source>Expiry date</source>
-        <translation>Expiry date</translation>
-    </message>
-    <message>
-        <source>Document</source>
-        <translation>Document</translation>
+        <source>DigiDoc4 version %1, released %2</source>
+        <translation>DigiDoc4 version %1, released %2</translation>
     </message>
 </context>
 <context>
     <name>ItemList</name>
-    <message>
-        <source>Enter the personal code, institution or registry code</source>
-        <translation>Enter the personal code, institution or registry code</translation>
-    </message>
     <message>
         <source>Container is not signed</source>
         <translation>Container&apos;s signatures are missing</translation>
@@ -1217,10 +1214,6 @@
     <message>
         <source>Added recipients</source>
         <translation>Added recipients</translation>
-    </message>
-    <message>
-        <source>Search</source>
-        <translation>Search</translation>
     </message>
     <message>
         <source>Download all files</source>
@@ -1304,6 +1297,10 @@
         <translation>Failed to init ldap</translation>
     </message>
     <message>
+        <source>Failed to set ldap CA cert</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Failed to init ldap search</source>
         <translation>Failed to init ldap search</translation>
     </message>
@@ -1344,53 +1341,12 @@ LDAP server is unavailable.</translation>
 <context>
     <name>MainAction</name>
     <message>
-        <source>Token selection</source>
-        <comment>accessible</comment>
-        <translation>Token selection</translation>
-    </message>
-    <message>
-        <source>Sign with
-Mobile-ID</source>
-        <translation>Sign with
-Mobile-ID</translation>
-    </message>
-    <message>
-        <source>Sign with
-Smart-ID</source>
-        <translation>Sign with
-Smart-ID</translation>
-    </message>
-    <message>
-        <source>Sign with
-E-Seal</source>
-        <translation>Sign with
-E-Seal</translation>
-    </message>
-    <message>
         <source>Encrypt</source>
         <translation>Encrypt</translation>
     </message>
     <message>
-        <source>Decrypt</source>
-        <translation>Decrypt</translation>
-    </message>
-    <message>
-        <source>Decrypt with
-ID-Card</source>
-        <translation>Decrypt with
-ID-Card</translation>
-    </message>
-    <message>
-        <source>Encrypt
-long-term</source>
-        <translation>Encrypt
-long-term</translation>
-    </message>
-    <message>
-        <source>Sign with
-ID-Card</source>
-        <translation>Sign with
-ID-Card</translation>
+        <source>Sign</source>
+        <translation>Sign</translation>
     </message>
 </context>
 <context>
@@ -1472,16 +1428,8 @@ ID-Card</translation>
         <translation>Cannot alter container</translation>
     </message>
     <message>
-        <source>Connect the card reader to your computer and insert your ID card into the reader</source>
-        <translation>Connect the card reader to your computer and insert your ID-card into the reader</translation>
-    </message>
-    <message>
         <source>Signing</source>
         <translation>Signing</translation>
-    </message>
-    <message>
-        <source>Check internet connection</source>
-        <translation>Check internet connection</translation>
     </message>
     <message>
         <source>Load file from disk for signing or verifying</source>
@@ -1507,10 +1455,6 @@ ID-Card</translation>
         <source>Select my EID page</source>
         <extracomment>accessible</extracomment>
         <translation>Select my EID page</translation>
-    </message>
-    <message>
-        <source>The card in the card reader is not an Estonian ID-card</source>
-        <translation>The card in the card reader is not an Estonian ID-card</translation>
     </message>
     <message>
         <source>My eID</source>
@@ -1558,49 +1502,6 @@ ID-Card</translation>
     </message>
 </context>
 <context>
-    <name>MobileDialog</name>
-    <message>
-        <source>Enter your phone number to sign with mobile-ID</source>
-        <translation>&lt;b&gt;Enter your phone number to sign&lt;br/&gt;with mobile-ID&lt;/b&gt;</translation>
-    </message>
-    <message>
-        <source>Remember me</source>
-        <translation>Remember me</translation>
-    </message>
-    <message>
-        <source>Personal code is not valid</source>
-        <translation>Personal code is not valid</translation>
-    </message>
-    <message>
-        <source>Phone number is not entered</source>
-        <translation>Phone number is not entered</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Cancel</translation>
-    </message>
-    <message>
-        <source>Sign</source>
-        <translation>Sign</translation>
-    </message>
-    <message>
-        <source>Country code and phone number</source>
-        <translation>Country code and phone number</translation>
-    </message>
-    <message>
-        <source>Personal code</source>
-        <translation>Personal code</translation>
-    </message>
-    <message>
-        <source>Invalid country code</source>
-        <translation>Invalid country code</translation>
-    </message>
-    <message>
-        <source>Mobile-ID</source>
-        <translation>Mobile-ID</translation>
-    </message>
-</context>
-<context>
     <name>MobileProgress</name>
     <message>
         <source>Signing in process</source>
@@ -1627,20 +1528,8 @@ ID-Card</translation>
         <translation>Make sure control code matches with one in phone screen and enter mobile-ID PIN2-code.</translation>
     </message>
     <message>
-        <source>Control code:</source>
-        <translation>Control code:</translation>
-    </message>
-    <message>
         <source>SSL handshake failed. Check the proxy settings of your computer or software upgrades.</source>
         <translation>SSL handshake failed. Check the proxy settings of your computer or software upgrades.</translation>
-    </message>
-    <message>
-        <source>%v sec</source>
-        <translation>%v sec</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Cancel</translation>
     </message>
     <message>
         <source>%1 service has encountered technical errors. Please try again later.</source>
@@ -1772,22 +1661,78 @@ ID-Card</translation>
     </message>
 </context>
 <context>
-    <name>NoCardInfo</name>
+    <name>MyEidInfo</name>
     <message>
-        <source>No card in reader</source>
-        <translation>No card in card reader; check if ID-card is inserted correctly</translation>
+        <source>Given names</source>
+        <translation>Given names</translation>
     </message>
     <message>
-        <source>No readers found</source>
-        <translation>No card readers found</translation>
+        <source>Surname</source>
+        <translation>Surname</translation>
     </message>
     <message>
-        <source>Loading data</source>
-        <translation>Loading data</translation>
+        <source>Personal code</source>
+        <translation>Personal code</translation>
+    </message>
+    <message>
+        <source>Citizenship</source>
+        <translation>Citizenship</translation>
+    </message>
+    <message>
+        <source>Expiry date</source>
+        <translation>Expiry date</translation>
+    </message>
+    <message>
+        <source>Document</source>
+        <translation>Document</translation>
+    </message>
+    <message>
+        <source>You&apos;re using digital identity card</source>
+        <translation>You&apos;re using digital identity card</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>Name</translation>
+    </message>
+    <message>
+        <source>Organization</source>
+        <translation>Organization</translation>
+    </message>
+    <message>
+        <source>Serial</source>
+        <translation>Serial</translation>
+    </message>
+    <message>
+        <source>Country</source>
+        <translation>Country</translation>
+    </message>
+    <message>
+        <source>No card reader found. Connect a card reader to your computer.</source>
+        <translation>No card reader found. Connect a card reader to your computer.</translation>
+    </message>
+    <message>
+        <source>No card in the reader. Insert your ID-card into the reader.</source>
+        <translation>No card in the reader. Insert your ID-card into the reader.</translation>
+    </message>
+    <message>
+        <source>The card in the reader is not supported. Insert an Estonian ID-card.</source>
+        <translation>The card in the reader is not supported. Insert an Estonian ID-card.</translation>
     </message>
     <message>
         <source>The PCSC service, required for using the ID-card, is not working. Check your computer settings.</source>
         <translation>The PCSC service, required for using the ID-card, is not working. Check your computer settings.</translation>
+    </message>
+    <message>
+        <source>Reading card...</source>
+        <translation>Reading card...</translation>
+    </message>
+    <message>
+        <source>Failed to read card data</source>
+        <translation>Failed to read card data</translation>
+    </message>
+    <message>
+        <source>Select card</source>
+        <translation>Select card</translation>
     </message>
 </context>
 <context>
@@ -1797,14 +1742,22 @@ ID-Card</translation>
         <translation>Encrypt with password</translation>
     </message>
     <message>
-        <source>Key label (recipient name or id)</source>
-        <translation>Key label (recipient name or id)</translation>
-    </message>
-    <message>
         <source>Be sure to save the password in a secure place
 - without the password, you won’t be able to open the file again.</source>
         <translation>Be sure to save the password in a secure place
 - without the password, you won’t be able to open the file again.</translation>
+    </message>
+    <message>
+        <source>Create a name for the envelope</source>
+        <translation>Create a name for the envelope</translation>
+    </message>
+    <message>
+        <source>E.g. Contracts</source>
+        <translation>E.g. Contracts</translation>
+    </message>
+    <message>
+        <source>Create a password for the envelope</source>
+        <translation>Create a password for the envelope</translation>
     </message>
     <message>
         <source>• Length: 20–64 characters
@@ -1829,16 +1782,16 @@ ID-Card</translation>
         <translation>Encrypt</translation>
     </message>
     <message>
-        <source>Decrypt with password</source>
-        <translation>Decrypt with password</translation>
-    </message>
-    <message>
-        <source>Enter password to decrypt the document</source>
-        <translation>Enter password to decrypt the document</translation>
-    </message>
-    <message>
         <source>Decrypt</source>
         <translation>Decrypt</translation>
+    </message>
+    <message>
+        <source>Envelope name</source>
+        <translation>Envelope name</translation>
+    </message>
+    <message>
+        <source>Envelope password</source>
+        <translation>Envelope password</translation>
     </message>
     <message>
         <source>Password is empty</source>
@@ -1851,10 +1804,6 @@ ID-Card</translation>
     <message>
         <source>Passwords do not match</source>
         <translation>Passwords do not match</translation>
-    </message>
-    <message>
-        <source>Enter a password to encrypt the document</source>
-        <translation>Enter a password to encrypt the document</translation>
     </message>
 </context>
 <context>
@@ -2074,6 +2023,10 @@ ID-Card</translation>
         <translation>TIME</translation>
     </message>
     <message>
+        <source>PLACE OF CONFIRMATION (CITY, STREET, STATE, ZIP, COUNTRY)</source>
+        <translation>PLACE OF CONFIRMATION (CITY, STREET, STATE, ZIP, COUNTRY)</translation>
+    </message>
+    <message>
         <source>NOTES</source>
         <translation>NOTES</translation>
     </message>
@@ -2092,10 +2045,6 @@ ID-Card</translation>
     <message>
         <source>ROLE / RESOLUTION</source>
         <translation>ROLE / RESOLUTION</translation>
-    </message>
-    <message>
-        <source>PLACE OF CONFIRMATION (CITY, STATE, ZIP, COUNTRY)</source>
-        <translation>PLACE OF CONFIRMATION (CITY, STATE, ZIP, COUNTRY)</translation>
     </message>
     <message>
         <source>ISSUER OF CERTIFICATE</source>
@@ -2157,18 +2106,6 @@ ID-Card</translation>
         <translation>PIN locked</translation>
     </message>
     <message>
-        <source>Signing/decrypting is already in progress another window.</source>
-        <translation>Signing/decrypting is already in progress another window.</translation>
-    </message>
-    <message>
-        <source>PKCS11 general error</source>
-        <translation>PKCS11 general error</translation>
-    </message>
-    <message>
-        <source>PKCS11 device error</source>
-        <translation>PKCS11 device error</translation>
-    </message>
-    <message>
         <source>Unknown error</source>
         <translation>Unknown error</translation>
     </message>
@@ -2179,6 +2116,14 @@ ID-Card</translation>
     <message>
         <source>PIN entry canceled</source>
         <translation>PIN entry canceled</translation>
+    </message>
+    <message>
+        <source>Signing/decrypting is already in progress in another window.</source>
+        <translation>Signing/decrypting is already in progress in another window.</translation>
+    </message>
+    <message>
+        <source>Error in smart card driver, reader or the card. On some readers it may indicate the wrong pin code or locked card.</source>
+        <translation>Error in smart card driver, reader or the card. On some readers it may indicate the wrong pin code or locked card.</translation>
     </message>
 </context>
 <context>
@@ -2191,10 +2136,6 @@ ID-Card</translation>
 <context>
     <name>QSigner</name>
     <message>
-        <source>Signing certificate is not selected.</source>
-        <translation>Signing certificate is not selected.</translation>
-    </message>
-    <message>
         <source>Failed to login token</source>
         <translation>Failed to login token</translation>
     </message>
@@ -2205,10 +2146,6 @@ ID-Card</translation>
     <message>
         <source>Sign certificate is not selected</source>
         <translation>Signing certificate is not selected</translation>
-    </message>
-    <message>
-        <source>Failed to decrypt document</source>
-        <translation>Failed to decrypt document</translation>
     </message>
 </context>
 <context>
@@ -2361,6 +2298,10 @@ ID-Card</translation>
     <message>
         <source>Checking updates has failed.</source>
         <translation>Checking updates has failed.</translation>
+    </message>
+    <message>
+        <source>Select archive Time-Stamping server certificate</source>
+        <translation>Select archive Time-Stamping server certificate</translation>
     </message>
     <message>
         <source>Restart DigiDoc4 Client to activate logging</source>
@@ -2532,12 +2473,20 @@ Additional licenses and components</translation>
         <translation>Use Long Term Archival (LTA) format when signing</translation>
     </message>
     <message>
+        <source>Access to archive Time-Stamping service</source>
+        <translation>Access to archive Time-Stamping service</translation>
+    </message>
+    <message>
         <source>Add certificate</source>
         <translation>Add certificate</translation>
     </message>
     <message>
         <source>Show certificate</source>
         <translation>Show certificate</translation>
+    </message>
+    <message>
+        <source>Archive Time-Stamping service SSL certificate</source>
+        <translation>Archive Time-Stamping service SSL certificate</translation>
     </message>
     <message>
         <source>Use CDOC1 file format for encryption</source>
@@ -2597,6 +2546,10 @@ Additional licenses and components</translation>
     <message>
         <source>Role and address</source>
         <translation>Role and address</translation>
+    </message>
+    <message>
+        <source>Street</source>
+        <translation>Street</translation>
     </message>
     <message>
         <source>City</source>
@@ -2785,22 +2738,26 @@ Additional licenses and components</translation>
     </message>
 </context>
 <context>
-    <name>SmartIDDialog</name>
+    <name>SigningDialog</name>
+    <message>
+        <source>Sign document</source>
+        <translation>Sign document</translation>
+    </message>
+    <message>
+        <source>Choose signing method</source>
+        <translation>Choose signing method</translation>
+    </message>
+    <message>
+        <source>Country code and phone number</source>
+        <translation>Country code and phone number</translation>
+    </message>
     <message>
         <source>Personal code</source>
         <translation>Personal code</translation>
     </message>
     <message>
-        <source>Enter your personal code to sign with Smart-ID</source>
-        <translation>Enter your personal code to sign with Smart-ID</translation>
-    </message>
-    <message>
         <source>Remember me</source>
         <translation>Remember me</translation>
-    </message>
-    <message>
-        <source>Personal code is not valid</source>
-        <translation>Personal code is not valid</translation>
     </message>
     <message>
         <source>Country</source>
@@ -2825,6 +2782,70 @@ Additional licenses and components</translation>
     <message>
         <source>Sign</source>
         <translation>Sign</translation>
+    </message>
+    <message>
+        <source>Control code:</source>
+        <translation>Control code:</translation>
+    </message>
+    <message>
+        <source>ID-card</source>
+        <translation>ID-card</translation>
+    </message>
+    <message>
+        <source>Mobile-ID</source>
+        <translation>Mobile-ID</translation>
+    </message>
+    <message>
+        <source>Smart-ID</source>
+        <translation>Smart-ID</translation>
+    </message>
+    <message>
+        <source>Personal code is not valid</source>
+        <translation>Personal code is not valid</translation>
+    </message>
+    <message>
+        <source>Phone number is not entered</source>
+        <translation>Phone number is not entered</translation>
+    </message>
+    <message>
+        <source>Invalid country code</source>
+        <translation>Invalid country code</translation>
+    </message>
+    <message>
+        <source>Enter %1 code</source>
+        <translation>Enter %1 code</translation>
+    </message>
+    <message>
+        <source>Please enter %1 code in the new window that will appear shortly</source>
+        <translation>Please enter %1 code in the new window that will appear shortly</translation>
+    </message>
+    <message>
+        <source>The document has already been signed by you</source>
+        <translation>The document has already been signed by you</translation>
+    </message>
+    <message>
+        <source>Continue signing</source>
+        <translation>Continue signing</translation>
+    </message>
+    <message>
+        <source>Remaining attempts: %1</source>
+        <translation>Remaining attempts: %1</translation>
+    </message>
+    <message>
+        <source>Failed to sign document</source>
+        <translation>Failed to sign document</translation>
+    </message>
+    <message>
+        <source>No card in reader</source>
+        <translation>No card in card reader; check if ID-card is inserted correctly</translation>
+    </message>
+    <message>
+        <source>No readers found</source>
+        <translation>No card readers found</translation>
+    </message>
+    <message>
+        <source>The PCSC service, required for using the ID-card, is not working. Check your computer settings.</source>
+        <translation>The PCSC service, required for using the ID-card, is not working. Check your computer settings.</translation>
     </message>
 </context>
 <context>
@@ -3025,14 +3046,6 @@ Additional licenses and components</translation>
         <translation>Please check your internet connection.</translation>
     </message>
     <message>
-        <source>The ID-card must be activated in order to authenticate</source>
-        <translation>The ID-card must be activated in order to authenticate</translation>
-    </message>
-    <message>
-        <source>The ID-card must be activated in order to sign</source>
-        <translation>The ID-card must be activated in order to sign</translation>
-    </message>
-    <message>
         <source>PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times.</source>
         <translation>PIN%1 has been blocked because PIN%1 code has been entered incorrectly 3 times.</translation>
     </message>
@@ -3153,18 +3166,6 @@ Additional licenses and components</translation>
     <message>
         <source>https://www.id.ee/en/article/changing-id-card-pin-codes-and-puk-code/</source>
         <translation>https://www.id.ee/en/article/changing-id-card-pin-codes-and-puk-code/</translation>
-    </message>
-    <message>
-        <source>Authentication and signing with the ID-card isn&apos;t possible yet. ID-card must be activated in the Police and Border Guard Board’s self-service portal in order to use it.</source>
-        <translation>Authentication and signing with the ID-card isn&apos;t possible yet. ID-card must be activated in the Police and Border Guard Board’s self-service portal in order to use it.</translation>
-    </message>
-    <message>
-        <source>Activate ID-card</source>
-        <translation>Activate ID-card</translation>
-    </message>
-    <message>
-        <source>https://www.politsei.ee/en/self-service-portal/</source>
-        <translation>https://www.politsei.ee/en/self-service-portal/</translation>
     </message>
     <message>
         <source>This ASiC-S container contains XAdES signature. You are not allowed to add or remove signatures to this container.</source>

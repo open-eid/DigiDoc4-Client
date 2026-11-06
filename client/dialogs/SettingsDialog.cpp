@@ -25,7 +25,7 @@
 #include "Configuration.h"
 #include "Diagnostics.h"
 #include "FileDialog.h"
-#include "QSigner.h"
+#include "QCryptoBackend.h"
 #include "Settings.h"
 #include "SslCertificate.h"
 #include "TokenData.h"
@@ -57,6 +57,37 @@ using namespace Qt::StringLiterals;
 
 #define qdigidoc4log QStringLiteral("%1/%2.log").arg(QDir::tempPath(), QApplication::applicationName())
 
+namespace
+{
+
+void applyProxyConfig(int config, const QString &host, const QString &port,
+	const QString &user, const QString &pass)
+{
+	switch(config)
+	{
+	case Settings::ProxyNone:
+		QNetworkProxyFactory::setUseSystemConfiguration(false);
+		QNetworkProxy::setApplicationProxy({});
+		break;
+	case Settings::ProxySystem:
+		QNetworkProxyFactory::setUseSystemConfiguration(true);
+		break;
+	default:
+		QNetworkProxyFactory::setUseSystemConfiguration(false);
+		// QAuthenticator encodes Basic credentials with toLatin1() while proxies and
+		// libdigidocpp's Connect::sendProxyAuth() send them as UTF-8. Pre-encode the
+		// credentials so that toLatin1() restores the UTF-8 bytes; the conversion is
+		// a no-op for US-ASCII credentials. Only Basic is usable anyway, libdigidocpp
+		// implements no other proxy authentication scheme.
+		QNetworkProxy::setApplicationProxy(QNetworkProxy(QNetworkProxy::HttpProxy,
+			host, port.toUShort(),
+			QString::fromLatin1(user.toUtf8()), QString::fromLatin1(pass.toUtf8())));
+		break;
+	}
+}
+
+}
+
 SettingsDialog::SettingsDialog(int page, QWidget *parent)
 	: QDialog(parent)
 	, ui(new Ui::SettingsDialog)
@@ -65,6 +96,7 @@ SettingsDialog::SettingsDialog(int page, QWidget *parent)
 
 	ui->setupUi(this);
 	setWindowFlag(Qt::FramelessWindowHint);
+	setAttribute(Qt::WA_DeleteOnClose, true);
 	move(parent->geometry().center() - geometry().center());
 	for(QLineEdit *w: findChildren<QLineEdit*>())
 		w->setAttribute(Qt::WA_MacShowFocusRect, false);
@@ -101,11 +133,21 @@ SettingsDialog::SettingsDialog(int page, QWidget *parent)
 	ui->txtTimeStamp->setVisible(ui->rdTimeStampCustom->isChecked());
 	ui->txtTimeStamp->setPlaceholderText(Application::confValue(Settings::TSA_URL.KEY).toString());
 	ui->txtTimeStamp->setText(Settings::TSA_URL);
+	ui->txtTimeStampArchive->setReadOnly(Settings::TSA_URL_ARCHIVE.isLocked());
+	ui->lblTimeStampArchive->setVisible(ui->rdTimeStampCustom->isChecked());
+	ui->txtTimeStampArchive->setVisible(ui->rdTimeStampCustom->isChecked());
+	ui->txtTimeStampArchive->setPlaceholderText(Application::confValue(Application::TSAUrlArchive).toString());
+	ui->txtTimeStampArchive->setText(Settings::TSA_URL_ARCHIVE);
 	ui->wgtTSACert->setDisabled(Settings::TSA_CERT.isLocked());
 	ui->wgtTSACert->setVisible(ui->rdTimeStampCustom->isChecked());
+	ui->wgtTSACertArchive->setDisabled(Settings::TSA_CERT_ARCHIVE.isLocked());
+	ui->wgtTSACertArchive->setVisible(ui->rdTimeStampCustom->isChecked());
 	connect(ui->rdTimeStampCustom, &QRadioButton::toggled, ui->txtTimeStamp, [this](bool checked) {
 		ui->txtTimeStamp->setVisible(checked);
+		ui->lblTimeStampArchive->setVisible(checked);
+		ui->txtTimeStampArchive->setVisible(checked);
 		ui->wgtTSACert->setVisible(checked);
+		ui->wgtTSACertArchive->setVisible(checked);
 		Settings::TSA_URL_CUSTOM = checked;
 	});
 	connect(ui->txtTimeStamp, &QLineEdit::textChanged, this, [this](const QString &url) {
@@ -114,6 +156,14 @@ SettingsDialog::SettingsDialog(int page, QWidget *parent)
 		{
 			Settings::TSA_CERT.clear();
 			updateTSACert(QSslCertificate());
+		}
+	});
+	connect(ui->txtTimeStampArchive, &QLineEdit::textChanged, this, [this](const QString &url) {
+		Settings::TSA_URL_ARCHIVE = url;
+		if(url.isEmpty())
+		{
+			Settings::TSA_CERT_ARCHIVE.clear();
+			updateTSACertArchive(QSslCertificate());
 		}
 	});
 	connect(ui->helpTimeStamp, &QToolButton::clicked, this, []{
@@ -128,6 +178,15 @@ SettingsDialog::SettingsDialog(int page, QWidget *parent)
 		updateTSACert(cert);
 	});
 	updateTSACert(QSslCertificate(QByteArray::fromBase64(Settings::TSA_CERT), QSsl::Der));
+	connect(ui->btInstallTSACertArchive, &QPushButton::clicked, this, [this] {
+		QSslCertificate cert = selectCert(tr("Select archive Time-Stamping server certificate"),
+			tr("Archive Time-Stamping service SSL certificate"));
+		if(cert.isNull())
+			return;
+		Settings::TSA_CERT_ARCHIVE = cert.toDer().toBase64();
+		updateTSACertArchive(cert);
+	});
+	updateTSACertArchive(QSslCertificate(QByteArray::fromBase64(Settings::TSA_CERT_ARCHIVE), QSsl::Der));
 
 	// pageServices - MID
 	ui->rdMIDUUIDDefault->setDisabled(Settings::MID_UUID_CUSTOM.isLocked());
@@ -205,7 +264,7 @@ SettingsDialog::SettingsDialog(int page, QWidget *parent)
 		ui->txtCdoc2UUID->setDisabled(disabled);
 		ui->txtCdoc2Fetch->setDisabled(disabled);
 		ui->txtCdoc2Post->setDisabled(disabled);
-		ui->txtCdoc2UUID->setClearButtonEnabled(!disabled);
+		ui->txtCdoc2UUID->setClearButtonEnabled(false);
 		ui->txtCdoc2Fetch->setClearButtonEnabled(!disabled);
 		ui->txtCdoc2Post->setClearButtonEnabled(!disabled);
 		ui->wgtCDoc2Cert->setHidden(disabled);
@@ -263,7 +322,12 @@ SettingsDialog::SettingsDialog(int page, QWidget *parent)
 	updateCDoc2Cert(QSslCertificate(QByteArray::fromBase64(Settings::CDOC2_GET_CERT), QSsl::Der));
 
 	// pageProxy
+#ifdef Q_OS_MACOS
+	connect(this, &SettingsDialog::accepted, this, &SettingsDialog::saveProxy);
+	connect(this, &SettingsDialog::rejected, this, [] { loadProxy(digidoc::Conf::instance()); });
+#else
 	connect(this, &SettingsDialog::finished, this, &SettingsDialog::saveProxy);
+#endif
 	ui->proxyGroup->setId(ui->rdProxyNone, Settings::ProxyNone);
 	ui->proxyGroup->setId(ui->rdProxySystem, Settings::ProxySystem);
 	ui->proxyGroup->setId(ui->rdProxyManual, Settings::ProxyManual);
@@ -271,14 +335,20 @@ SettingsDialog::SettingsDialog(int page, QWidget *parent)
 	connect(ui->rdProxyManual, &QRadioButton::toggled, ui->wgtProxyManual, &QWidget::setVisible);
 	ui->proxyGroup->button(Settings::PROXY_CONFIG)->setChecked(true);
 #ifdef Q_OS_MACOS
-	ui->txtProxyHost->setText(Settings::PROXY_HOST);
-	ui->txtProxyPort->setText(Settings::PROXY_PORT);
-	ui->txtProxyUsername->setText(Settings::PROXY_USER);
-	ui->txtProxyPassword->setText(Settings::PROXY_PASS);
-	connect(ui->txtProxyHost, &QLineEdit::textChanged, this, Settings::PROXY_HOST);
-	connect(ui->txtProxyPort, &QLineEdit::textChanged, this, Settings::PROXY_PORT);
-	connect(ui->txtProxyUsername, &QLineEdit::textChanged, this, Settings::PROXY_USER);
-	connect(ui->txtProxyPassword, &QLineEdit::textChanged, this, Settings::PROXY_PASS);
+	if(const auto credentials = Application::proxyCredentials())
+	{
+		ui->txtProxyHost->setText(credentials->host);
+		ui->txtProxyPort->setText(credentials->port);
+		ui->txtProxyUsername->setText(credentials->user);
+		ui->txtProxyPassword->setText(credentials->password);
+	}
+	else
+	{
+		ui->txtProxyHost->setText(Settings::PROXY_HOST);
+		ui->txtProxyPort->setText(Settings::PROXY_PORT);
+		ui->txtProxyUsername->setText(Settings::PROXY_USER);
+		ui->txtProxyPassword->setText(Settings::PROXY_PASS);
+	}
 #else
 	if(auto *i = digidoc::XmlConfCurrent::instance())
 	{
@@ -304,12 +374,12 @@ SettingsDialog::SettingsDialog(int page, QWidget *parent)
 #ifdef Q_OS_MACOS
 		WarningDialog::create(this)
 			->withTitle(tr("Restart DigiDoc4 Client to activate logging"))
-			->withText(tr("Read more <a href=\"https://www.id.ee/en/article/log-file-generation-in-digidoc4-client/\">here</a>."))
+			->withRichText(tr("Read more <a href=\"https://www.id.ee/en/article/log-file-generation-in-digidoc4-client/\">here</a>."))
 			->open();
 #else
 		auto *dlg = WarningDialog::create(this)
 			->withTitle(tr("Restart DigiDoc4 Client to activate logging"))
-			->withText(tr("Read more <a href=\"https://www.id.ee/en/article/log-file-generation-in-digidoc4-client/\">here</a>. Restart now?"))
+			->withRichText(tr("Read more <a href=\"https://www.id.ee/en/article/log-file-generation-in-digidoc4-client/\">here</a>. Restart now?"))
 			->setCancelText(WarningDialog::NO)
 			->addButton(WarningDialog::YES, QMessageBox::Yes);
 		connect(dlg, &WarningDialog::finished, qApp, [](int result) {
@@ -376,7 +446,7 @@ SettingsDialog::SettingsDialog(int page, QWidget *parent)
 #ifdef Q_OS_WIN
 	connect(ui->btnNavFromHistory, &QPushButton::clicked, this, [this] {
 		// remove certificates from browsing history of Edge and Google Chrome, and do it for all users.
-		QList<TokenData> cache = qApp->signer()->cache();
+		QList<TokenData> cache = qApp->cryptoManager()->cache();
 		HCERTSTORE s = CertOpenStore(CERT_STORE_PROV_SYSTEM_W,
 			X509_ASN_ENCODING, 0, CERT_SYSTEM_STORE_CURRENT_USER, L"MY");
 		if(!s)
@@ -423,7 +493,7 @@ SettingsDialog::~SettingsDialog()
 QString SettingsDialog::certInfo(const SslCertificate &c)
 {
 	return tr("Issued to: %1<br />Valid to: %2 %3").arg(
-		c.subjectInfo(QSslCertificate::CommonName),
+		c.subjectInfo(QSslCertificate::CommonName).toHtmlEscaped(),
 		c.expiryDate().toString(QStringLiteral("dd.MM.yyyy")),
 		!c.isValid() ? QStringLiteral("<font color='red'>(%1)</font>").arg(tr("expired")) : QString());
 }
@@ -431,7 +501,11 @@ QString SettingsDialog::certInfo(const SslCertificate &c)
 void SettingsDialog::checkConnection()
 {
 	QApplication::setOverrideCursor( Qt::WaitCursor );
+#ifdef Q_OS_MACOS
+	applyProxy();
+#else
 	saveProxy();
+#endif
 	if(CheckConnection connection; !connection.check())
 	{
 		Application::restoreOverrideCursor();
@@ -482,6 +556,11 @@ void SettingsDialog::updateSiVaCert(const QSslCertificate &c)
 	updateCert(c, ui->btShowSiVaCert, ui->txtSiVaCert);
 }
 
+void SettingsDialog::updateTSACertArchive(const QSslCertificate &c)
+{
+	updateCert(c, ui->btShowTSACertArchive, ui->txtTSACertArchive);
+}
+
 void SettingsDialog::updateTSACert(const QSslCertificate &c)
 {
 	updateCert(c, ui->btShowTSACert, ui->txtTSACert);
@@ -508,7 +587,16 @@ void SettingsDialog::selectLanguage()
 void SettingsDialog::saveProxy()
 {
 	Settings::PROXY_CONFIG = ui->proxyGroup->checkedId();
-#ifndef Q_OS_MACOS
+#ifdef Q_OS_MACOS
+	if(Application::setProxyCredentials({ui->txtProxyHost->text(), ui->txtProxyPort->text(),
+		ui->txtProxyUsername->text(), ui->txtProxyPassword->text()}))
+	{
+		Settings::PROXY_HOST.clear();
+		Settings::PROXY_PORT.clear();
+		Settings::PROXY_USER.clear();
+		Settings::PROXY_PASS.clear();
+	}
+#else
 	if(auto *i = digidoc::XmlConfCurrent::instance())
 	{
 		i->setProxyHost(ui->txtProxyHost->text().toStdString());
@@ -520,26 +608,19 @@ void SettingsDialog::saveProxy()
 	loadProxy(digidoc::Conf::instance());
 }
 
+void SettingsDialog::applyProxy() const
+{
+	applyProxyConfig(ui->proxyGroup->checkedId(), ui->txtProxyHost->text(),
+		ui->txtProxyPort->text(), ui->txtProxyUsername->text(), ui->txtProxyPassword->text());
+}
+
 void SettingsDialog::loadProxy( const digidoc::Conf *conf )
 {
-	switch(Settings::PROXY_CONFIG)
-	{
-	case Settings::ProxyNone:
-		QNetworkProxyFactory::setUseSystemConfiguration(false);
-		QNetworkProxy::setApplicationProxy({});
-		break;
-	case Settings::ProxySystem:
-		QNetworkProxyFactory::setUseSystemConfiguration(true);
-		break;
-	default:
-		QNetworkProxyFactory::setUseSystemConfiguration(false);
-		QNetworkProxy::setApplicationProxy(QNetworkProxy(QNetworkProxy::HttpProxy,
-			QString::fromStdString(conf->proxyHost()),
-			QString::fromStdString(conf->proxyPort()).toUShort(),
-			QString::fromStdString(conf->proxyUser()),
-			QString::fromStdString(conf->proxyPass())));
-		break;
-	}
+	applyProxyConfig(Settings::PROXY_CONFIG,
+		QString::fromStdString(conf->proxyHost()),
+		QString::fromStdString(conf->proxyPort()),
+		QString::fromStdString(conf->proxyUser()),
+		QString::fromStdString(conf->proxyPass()));
 }
 
 void SettingsDialog::updateDiagnostics()

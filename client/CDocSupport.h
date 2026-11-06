@@ -52,7 +52,7 @@ struct DDConfiguration : public libcdoc::Configuration {
 //
 // CryptoBackend
 //
-// Bridges to qApp->signer()
+// Bridges to qApp->cryptoManager()
 //
 
 struct DDCryptoBackend final : public libcdoc::CryptoBackend {
@@ -75,24 +75,38 @@ struct DDCryptoBackend final : public libcdoc::CryptoBackend {
 										const std::vector<uint8_t> &publicKey,
 										const std::vector<uint8_t> &salt,
 										unsigned int idx) final;
-	libcdoc::result_t getSecret(std::vector<uint8_t> &secret,
-								unsigned int idx) final;
+	libcdoc::result_t extractHKDF(std::vector<uint8_t> &dst,
+								 const std::vector<uint8_t> &salt,
+								 const std::vector<uint8_t> &pwSalt,
+								 int32_t kdfIter,
+								 unsigned int idx) final;
 	std::string getLastErrorStr(libcdoc::result_t code) const final;
 
 	std::unique_ptr<QCryptoBackend> backend;
-	std::vector<uint8_t> secret;
+	QByteArray secret;
+	libcdoc::result_t backend_status = libcdoc::OK;
 
 	explicit DDCryptoBackend() = default;
 
 	void setBackend(std::unique_ptr<QCryptoBackend> &&backend) {
 		this->backend = std::move(backend);
+		backend_status = libcdoc::OK;
+	}
+	void setSecret(QByteArray &&value) {
+		clearSecret();
+		secret = std::move(value);
+	}
+	void clearSecret() {
+		secret.fill(0);
+		secret.clear();
 	}
 };
 
 //
 // NetworkBackend
 //
-// Bridges to QNetworkAccessManager
+// Supplies libcdoc's HTTP client with the key server certificates, the
+// authentication key and the proxy settings
 //
 
 struct DDNetworkBackend final : public libcdoc::NetworkBackend, private QObject {
@@ -109,19 +123,20 @@ struct DDNetworkBackend final : public libcdoc::NetworkBackend, private QObject 
 	fetchKey(std::vector<uint8_t> &result, const std::string &keyserver_id,
 			 const std::string &transaction_id) final;
 
-	libcdoc::result_t
-	getClientTLSCertificate(std::vector<uint8_t> &dst) final {
-		return libcdoc::NOT_IMPLEMENTED;
-	}
-	libcdoc::result_t getPeerTLSCertificates(
-		std::vector<std::vector<uint8_t>> &dst) final {
-		return libcdoc::NOT_IMPLEMENTED;
-	}
+	libcdoc::result_t getClientTLSCertificate(std::vector<uint8_t> &dst) final;
+	libcdoc::result_t getPeerTLSCertificates(std::vector<std::vector<uint8_t>> &dst) final;
+	libcdoc::result_t getProxyCredentials(ProxyCredentials &credentials) const final;
+	libcdoc::result_t signTLS(std::vector<uint8_t> &dst, libcdoc::CryptoBackend::HashAlgorithm algorithm,
+		const std::vector<uint8_t> &digest) final;
 
 	explicit DDNetworkBackend(DDCryptoBackend &_crypto) : crypto(_crypto) {}
 
 	DDCryptoBackend &crypto;
 	std::string last_error;
+
+private:
+	bool sending = false;
+	mutable std::string proxyPassword;
 };
 
 //

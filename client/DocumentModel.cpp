@@ -60,7 +60,10 @@ QString DocumentModel::saveTemp(int row) const
 		dir.mkpath(hash);
 		dir = QDir(dir.filePath(hash));
 	}
-	return save(row, dir.filePath(FileDialog::safeName(name)));
+	QString path = dir.filePath(FileDialog::safeName(name));
+	if(QFileInfo::exists(path))
+		return path;
+	return save(row, path);
 }
 
 void DocumentModel::removeTempFile(const QString &file)

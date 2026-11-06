@@ -130,7 +130,7 @@ void Diagnostics::run()
 		"digidocpp"
 #else
 		"libdigidocpp1", "qdigidoc4", "firefox-pkcs11-loader", "web-eid",
-		"libxml2", "libpcsclite1", "pcsc-lite", "opensc"
+		"libxml2", "libxml2-16", "libpcsclite1", "pcsc-lite", "opensc"
 #endif
 		}).join(QStringLiteral("<br />")) << "<br /><br />";
 	emit update( info );

@@ -23,7 +23,6 @@
 #include "CDocSupport.h"
 #include "TokenData.h"
 #include "QCryptoBackend.h"
-#include "QSigner.h"
 #include "Settings.h"
 #include "SslCertificate.h"
 #include "Utils.h"
@@ -122,7 +121,7 @@ bool CDocumentModel::addFile(const QString &file, const QString &mime)
 	{
 		WarningDialog::create()
 			->withTitle(DocumentModel::tr("Failed to add file"))
-			->withText(tr("Added file(s) exceeds the maximum size limit of the container (∼120MB). "
+			->withRichText(tr("Added file(s) exceeds the maximum size limit of the container (∼120MB). "
 				"<a href='https://www.id.ee/en/article/encrypting-large-120-mb-files/'>Read more about it</a>"))
 			->open();
 		return false;
@@ -149,10 +148,10 @@ QString CDocumentModel::containerName() const
 QString CDocumentModel::copy(int row, const QString &dst) const
 {
 	auto &file = d->files.at(row);
-	if( QFile::exists( dst ) )
-		QFile::remove( dst );
 	file.data->seek(0);
-	if(QFile f(dst); f.open(QFile::WriteOnly) && copyIODevice(file.data.get(), &f) == file.size)
+	// Overwrite in place: on macOS replacing the file would invalidate the
+	// sandbox's security-scoped bookmark for a path picked in a file dialog
+	if(QFile f(dst); f.open(QFile::WriteOnly|QFile::Truncate) && copyIODevice(file.data.get(), &f) == file.size)
 		return dst;
 	WarningDialog::create()
 		->withTitle(FileDialog::tr("Failed to save file"))
@@ -169,11 +168,6 @@ QString CDocumentModel::data(int row) const
 quint64 CDocumentModel::fileSize(int row) const
 {
 	return d->files.at(row).size;
-}
-
-QString CDocumentModel::mime(int row) const
-{
-	return FileDialog::normalized(QString::fromStdString(d->files.at(row).mime));
 }
 
 void CDocumentModel::open(int row)
@@ -210,8 +204,6 @@ QString CDocumentModel::save(int row, const QString &path) const
 {
 	if(d->isEncrypted())
 		return {};
-	if(QFileInfo::exists(path))
-		return path;
 	QString fileName = copy(row, path);
 	if(!QFileInfo::exists(fileName))
 		return {};
@@ -254,16 +246,6 @@ bool CryptoDoc::addEncryptionKey(const CKey& key) {
 	return true;
 }
 
-bool CryptoDoc::canDecrypt(const QSslCertificate &cert) {
-	if (!d->reader)
-		return false;
-	if (cert.isNull())
-		return false;
-	QByteArray der = cert.toDer();
-	return d->reader->getLockForCert(
-		std::vector<uint8_t>(der.cbegin(), der.cend())) >= 0;
-}
-
 void CryptoDoc::clear(const QString &file, int version)
 {
 	d->documents->clearTempFolder();
@@ -278,50 +260,38 @@ ContainerState CryptoDoc::state() const
 	return d->isEncrypted() ? EncryptedContainer : UnencryptedContainer;
 }
 
-bool CryptoDoc::decrypt(const libcdoc::Lock *lock, const QByteArray& secret)
+bool CryptoDoc::decrypt(const libcdoc::Lock &lock, QByteArray secret, std::unique_ptr<QCryptoBackend> &&backend)
 {
+	auto secretGuard = qScopeGuard([&] {
+		d->crypto.clearSecret();
+		secret.fill(0);
+	});
 	if(!d->reader)
 	{
 		WarningDialog::create()
-			->withTitle(QSigner::tr("Failed to decrypt document"))
+			->withTitle(tr("Failed to decrypt document"))
 			->withText(tr("Container is not open"))
 			->open();
 		return false;
 	}
 
-	int lock_idx = -1;
+	// libcdoc addresses the lock by its position; labels can repeat, the lock itself is unique
 	const std::vector<libcdoc::Lock> &locks = d->reader->getLocks();
-	if (lock == nullptr) {
-		QByteArray der = qApp->signer()->tokenauth().cert().toDer();
-		lock_idx = d->reader->getLockForCert(
-			std::vector<uint8_t>(der.cbegin(), der.cend()));
-		if (lock_idx < 0) {
-			WarningDialog::create()
-				->withTitle(QSigner::tr("Failed to decrypt document"))
-				->withText(tr("You do not have the key to decrypt this document"))
-				->open();
-			return false;
-		}
-		lock = &locks.at(lock_idx);
-	} else {
-		for (lock_idx = 0; lock_idx < locks.size(); lock_idx++) {
-			if (lock->label == locks[lock_idx].label) {
-				lock = &locks.at(lock_idx);
-				break;
-			}
-		}
-		if (lock_idx >= locks.size())
-			lock_idx = -1;
-	}
-	if (!lock || (lock->isSymmetric() && secret.isEmpty())) {
+	auto it = std::ranges::find(locks, lock);
+	if (it == locks.cend() || (lock.isSymmetric() && secret.isEmpty())) {
 		WarningDialog::create()
-			->withTitle(QSigner::tr("Failed to decrypt document"))
+			->withTitle(tr("Failed to decrypt document"))
 			->withText(tr("You do not have the key to decrypt this document"))
 			->open();
 		return false;
 	}
 
-	d->crypto.secret.assign(secret.cbegin(), secret.cend());
+	auto lock_idx = unsigned(std::distance(locks.cbegin(), it));
+	d->crypto.setBackend(std::move(backend));
+	auto resetBackend = qScopeGuard([this] {
+		d->crypto.setBackend({});
+	});
+	d->crypto.setSecret(std::move(secret));
 
 	TempListConsumer cons;
 	libcdoc::result_t result = waitFor([&]{
@@ -337,12 +307,18 @@ bool CryptoDoc::decrypt(const libcdoc::Lock *lock, const QByteArray& secret)
 		qCDebug(CRYPTO) << "Decryption result: " << result << " " << QString::fromStdString(d->reader->getLastErrorStr());
 		return result;
 	});
+	d->crypto.clearSecret();
+	if (result == libcdoc::CRYPTO_ERROR && d->crypto.backend_status != libcdoc::OK)
+		result = d->crypto.backend_status;
 	if (result != libcdoc::OK) {
 		QString str;
 		const std::string &msg = d->reader->getLastErrorStr();
 		switch (result) {
+		case libcdoc::NOT_SUPPORTED:
+			str = QCoreApplication::translate("AddressItem", "Unsupported cryptographic algorithm or recipient type");
+			break;
 		case libcdoc::WRONG_KEY:
-			str = (lock->type == libcdoc::Lock::PASSWORD) ? tr("Wrong password.") : tr("Wrong key.");
+			str = (lock.type == libcdoc::Lock::PASSWORD) ? tr("Wrong password.") : tr("Wrong key.");
 			break;
 		case libcdoc::HASH_MISMATCH:
 		case libcdoc::DATA_FORMAT_ERROR:
@@ -351,6 +327,18 @@ bool CryptoDoc::decrypt(const libcdoc::Lock *lock, const QByteArray& secret)
 		case libcdoc::INPUT_ERROR:
 		case libcdoc::INPUT_STREAM_ERROR:
 			str = tr("Cannot read file.");
+			break;
+		case libcdoc::NetworkBackend::NETWORK_ERROR:
+			str = tr("Network error. Please check your network connection. It may also indicate that one or more CDoc servers are unreachable.");
+			break;
+		case libcdoc::NetworkBackend::CAPSULE_NOT_FOUND:
+			str = tr("The key transfer server did not find the key capsule. It may have expired.");
+			break;
+		case libcdoc::NetworkBackend::SERVER_ERROR:
+			str = tr("The key transfer server could not return the key. Please try again later.");
+			break;
+		case libcdoc::CONFIGURATION_ERROR:
+			str = tr("Key transfer server is not configured");
 			break;
 		case DDCryptoBackend::PIN_CANCELED:
 			return false;
@@ -363,12 +351,15 @@ bool CryptoDoc::decrypt(const libcdoc::Lock *lock, const QByteArray& secret)
 		case DDCryptoBackend::IN_PROGRESS:
 			str = QCryptoBackend::errorString(QCryptoBackend::Status::InProgress);
 			break;
+		case DDCryptoBackend::BACKEND_ERROR:
+			str = QCryptoBackend::errorString(QCryptoBackend::Status::GeneralError);
+			break;
 		default:
-			str = tr("Please check your internet connection and network settings.");
+			str = tr("General decryption error. Neither the card reader nor the network layer gave more information. Please check your internet connection, network settings and card reader. On some readers it may also indicate a wrong PIN or a locked card.");
 			break;
 		}
 		WarningDialog::create()
-			->withTitle(QSigner::tr("Failed to decrypt document"))
+			->withTitle(tr("Failed to decrypt document"))
 			->withText(str)
 			->withDetails(QString::fromStdString(msg))
 			->open();
@@ -390,8 +381,13 @@ bool CryptoDoc::decrypt(const libcdoc::Lock *lock, const QByteArray& secret)
 
 DocumentModel *CryptoDoc::documentModel() const { return d->documents; }
 
-bool CryptoDoc::encrypt(const QString &filename, const QString& label, const QByteArray& secret)
+bool CryptoDoc::encrypt(const QString &filename, const QString& label, QByteArray secret)
 {
+	const bool encryptWithPassword = !secret.isEmpty();
+	auto secretGuard = qScopeGuard([&] {
+		d->crypto.clearSecret();
+		secret.fill(0);
+	});
 	// I think the correct semantics is to fail if container is already encrypted
 	if(d->reader)
 		return false;
@@ -405,7 +401,7 @@ bool CryptoDoc::encrypt(const QString &filename, const QString& label, const QBy
 			->open();
 		return false;
 	}
-	if(secret.isEmpty() && d->keys.empty())
+	if(!encryptWithPassword && d->keys.empty())
 	{
 		WarningDialog::create()
 			->withTitle(tr("Failed to encrypt document"))
@@ -413,7 +409,17 @@ bool CryptoDoc::encrypt(const QString &filename, const QString& label, const QBy
 			->open();
 		return false;
 	}
+	if(d->version == 2 && Settings::CDOC2_USE_KEYSERVER && QString(Settings::CDOC2_DEFAULT_KEYSERVER).isEmpty())
+	{
+		WarningDialog::create()
+			->withTitle(tr("Failed to encrypt document"))
+			->withText(tr("Key transfer server is not configured"))
+			->open();
+		return false;
+	}
+	d->crypto.setSecret(std::move(secret));
 	QString writer_last_error;
+	auto keepAlive = FileDialog::keepAccessAlive(d->fileName);
 	libcdoc::result_t result = waitFor([&] -> libcdoc::result_t {
 		qCDebug(CRYPTO) << "Encrypt" << d->fileName;
 		auto writer = std::unique_ptr<libcdoc::CDocWriter>(libcdoc::CDocWriter::createWriter(d->version, d->fileName.toStdString(), &d->conf, &d->crypto, &d->network));
@@ -424,27 +430,28 @@ bool CryptoDoc::encrypt(const QString &filename, const QString& label, const QBy
 		if ((d->version == 2) && Settings::CDOC2_USE_KEYSERVER) {
 			keyserver_id = Settings::CDOC2_DEFAULT_KEYSERVER;
 		}
-		// Encrypt for address list
-		for (const auto &key : d->keys) {
-			if (!key.rcpt_cert.isNull()) {
-				QByteArray ba = key.rcpt_cert.toDer();
-				enc_keys.push_back(libcdoc::Recipient::makeCertificate({}, {ba.cbegin(), ba.cend()}, keyserver_id));
-			} else {
-				switch (key.lock.type) {
-				case libcdoc::Lock::CDOC1:
-				case libcdoc::Lock::PUBLIC_KEY:
-				case libcdoc::Lock::SERVER:
-					enc_keys.push_back(libcdoc::Recipient::makePublicKey(key.lock, keyserver_id));
-					break;
-				default:
-					break;
+		// Encrypt for address list, password encryption excludes recipients
+		if (!encryptWithPassword) {
+			for (const auto &key : d->keys) {
+				if (!key.rcpt_cert.isNull()) {
+					QByteArray ba = key.rcpt_cert.toDer();
+					enc_keys.push_back(libcdoc::Recipient::makeCertificate({}, {ba.cbegin(), ba.cend()}, keyserver_id));
+				} else {
+					switch (key.lock.type) {
+					case libcdoc::Lock::CDOC1:
+					case libcdoc::Lock::PUBLIC_KEY:
+					case libcdoc::Lock::SERVER:
+						enc_keys.push_back(libcdoc::Recipient::makePublicKey(key.lock, keyserver_id));
+						break;
+					default:
+						break;
+					}
 				}
 			}
 		}
 		// Encrypt with symmetric key
-		if (!secret.isEmpty()) {
+		if (encryptWithPassword) {
 			// NIST recommends at least 600000 iterations for PBKDF2 with SHA-256, see https://csrc.nist.gov/publications/detail/sp/800-132/final
-			d->crypto.secret.assign(secret.cbegin(), secret.cend());
 			libcdoc::Recipient rcpt = libcdoc::Recipient::makeSymmetric({}, 600000);
 			rcpt.setLabelValue(libcdoc::CDoc2::Label::LABEL, label.toStdString());
 			enc_keys.push_back(std::move(rcpt));
@@ -458,7 +465,7 @@ bool CryptoDoc::encrypt(const QString &filename, const QString& label, const QBy
 				QFile::remove(d->fileName);
 		return result;
 	});
-	d->crypto.secret.clear();
+	d->crypto.clearSecret();
 	if (result != libcdoc::OK) {
 		WarningDialog::create()
 			->withTitle(tr("Failed to encrypt document"))
@@ -489,6 +496,7 @@ bool CryptoDoc::move(const QString &to)
 bool CryptoDoc::open(const QString &file)
 {
 	clear(file);
+	auto keepAlive = FileDialog::keepAccessAlive(file, QFile::ReadOnly);
 	d->createCDocReader(file);
 	if(!d->reader) {
 		WarningDialog::create()
@@ -498,9 +506,11 @@ bool CryptoDoc::open(const QString &file)
 		return false;
 	}
 	d->version = d->reader->version;
-	std::vector<libcdoc::FileInfo> files = CDocSupport::getCDocFileList(file);
-	for (auto& f : files) {
-		d->files.push_back({f.name, {}, f.size, {}});
+	if (d->version == 1) {
+		std::vector<libcdoc::FileInfo> files = CDocSupport::getCDocFileList(file);
+		for (auto& f : files) {
+			d->files.push_back({std::move(f.name), {}, f.size, {}});
+		}
 	}
 	Application::addRecent( file );
 	return true;
@@ -524,6 +534,7 @@ bool CryptoDoc::saveCopy(const QString &filename)
 	QFileInfo dst(filename);
 	if(src == dst)
 		return true;
+	auto keepAlive = FileDialog::keepAccessAlive(filename);
 	std::error_code ec;
 	std::filesystem::copy_file(src.filesystemFilePath(), dst.filesystemFilePath(),
 		std::filesystem::copy_options::overwrite_existing, ec);

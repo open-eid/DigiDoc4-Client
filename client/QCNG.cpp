@@ -28,6 +28,8 @@
 #include <QtCore/QRegularExpression>
 #include <QtNetwork/QSslKey>
 
+#include <algorithm>
+
 using namespace Qt::Literals::StringLiterals;
 
 Q_LOGGING_CATEGORY(CNG, "qdigidoc4.QCNG")
@@ -45,31 +47,42 @@ struct QCNG::Private
 {
 	SCOPE<NCRYPT_PROV_HANDLE> prov;
 	SCOPE<NCRYPT_KEY_HANDLE> key;
-	bool pss;
 };
 
 QCNG::QCNG() noexcept = default;
 
 QCNG::~QCNG() noexcept = default;
 
-QCNG::Status QCNG::login(const TokenData &token)
+bool QCNG::isPSS() const
+{
+	if(!d || cert().publicKey().algorithm() != QSsl::Rsa || tokenData().reader().isEmpty())
+		return false;
+	static const QSet<QByteArray> usePSS {
+		{"3BFF9600008131804380318065B0850300EF120FFE82900066"}, // eToken 5110 CC (830)
+		{"3BFF9600008131FE4380318065B0855956FB120FFE82900000"}, // eToken 5110 CC (940)
+		{"3BD518008131FE7D8073C82110F4"}, // SafeNet 5110 FIPS
+		{"3BFF9600008131FE4380318065B0846566FB12017882900085"}, // SafeNet 5110+ FIPS
+	};
+	return usePSS.contains(QPCSCReader(tokenData().reader()).atr());
+}
+
+QCNG::Status QCNG::login(const TokenData &token, const QString & /*pin*/)
 {
 	std::unique_ptr<Private> p = std::make_unique<Private>();
 	if(FAILED(NCryptOpenStorageProvider(&p->prov, LPCWSTR(token.data(u"provider"_s).toString().utf16()), 0)))
 		return DeviceError;
-	if(FAILED(NCryptOpenKey(p->prov, &p->key, LPWSTR(token.data(u"key"_s).toString().utf16()),
+	if(FAILED(NCryptOpenKey(p->prov, &p->key, LPCWSTR(token.data(u"key"_s).toString().utf16()),
 		token.data(u"spec"_s).value<DWORD>(), 0)))
 		return DeviceError;
 	// https://docs.microsoft.com/en-us/archive/blogs/alejacma/smart-cards-pin-gets-cached
 	NCryptSetProperty(p->key, NCRYPT_PIN_PROPERTY, nullptr, 0, 0);
-	p->pss =  token.data(u"PSS"_s).toBool();
 	d = std::move(p);
 	return PinOK;
 }
 
-QByteArray QCNG::decrypt(const QByteArray &data, bool oaep) const
+std::vector<uint8_t> QCNG::decrypt(QByteArrayView data, bool oaep) const
 {
-	return exec([&](NCRYPT_PROV_HANDLE prov, NCRYPT_KEY_HANDLE key, QByteArray &result) {
+	return exec([&](NCRYPT_PROV_HANDLE prov, NCRYPT_KEY_HANDLE key, std::vector<uint8_t> &result) {
 		BCRYPT_OAEP_PADDING_INFO padding {BCRYPT_SHA256_ALGORITHM, nullptr, 0};
 		PVOID paddingInfo = oaep ? &padding : nullptr;
 		DWORD flags = oaep ? NCRYPT_PAD_OAEP_FLAG : NCRYPT_PAD_PKCS1_FLAG;
@@ -78,19 +91,19 @@ QByteArray QCNG::decrypt(const QByteArray &data, bool oaep) const
 			paddingInfo, nullptr, 0, &size, flags);
 		if(FAILED(err))
 			return err;
-		result.resize(int(size));
+		result.resize(size);
 		err = NCryptDecrypt(key, PBYTE(data.constData()), DWORD(data.size()),
 			paddingInfo, PBYTE(result.data()), DWORD(result.size()), &size, flags);
 		if(SUCCEEDED(err))
-			result.resize(int(size));
+			result.resize(size);
 		return err;
 	});
 }
 
 template<typename F>
-QByteArray QCNG::derive(const QByteArray &publicKey, F &&func) const
+std::vector<uint8_t> QCNG::derive(QByteArrayView publicKey, F &&func) const
 {
-	return exec([&](NCRYPT_PROV_HANDLE prov, NCRYPT_KEY_HANDLE key, QByteArray &derived) {
+	return exec([&](NCRYPT_PROV_HANDLE prov, NCRYPT_KEY_HANDLE key, std::vector<uint8_t> &derived) {
 		BCRYPT_ECCKEY_BLOB oh { BCRYPT_ECDH_PUBLIC_P384_MAGIC, ULONG((publicKey.size() - 1) / 2) };
 		switch((publicKey.size() - 1) * 4)
 		{
@@ -111,16 +124,16 @@ QByteArray QCNG::derive(const QByteArray &publicKey, F &&func) const
 	});
 }
 
-QByteArray QCNG::deriveConcatKDF(const QByteArray &publicKey, QCryptographicHash::Algorithm digest,
-	const QByteArray &algorithmID, const QByteArray &partyUInfo, const QByteArray &partyVInfo) const
+std::vector<uint8_t> QCNG::deriveConcatKDF(QByteArrayView publicKey, QCryptographicHash::Algorithm digest,
+	QByteArrayView algorithmID, QByteArrayView partyUInfo, QByteArrayView partyVInfo) const
 {
-	return derive(publicKey, [&](NCRYPT_SECRET_HANDLE sharedSecret, QByteArray &derived) {
-		std::array paramValues{
-			BCryptBuffer{ULONG(algorithmID.size()), KDF_ALGORITHMID, PBYTE(algorithmID.data())},
-			BCryptBuffer{ULONG(partyUInfo.size()), KDF_PARTYUINFO, PBYTE(partyUInfo.data())},
-			BCryptBuffer{ULONG(partyVInfo.size()), KDF_PARTYVINFO, PBYTE(partyVInfo.data())},
-			BCryptBuffer{ULONG(sizeof(BCRYPT_SHA256_ALGORITHM)), KDF_HASH_ALGORITHM, PBYTE(BCRYPT_SHA256_ALGORITHM)}
-		};
+	return derive(publicKey, [&](NCRYPT_SECRET_HANDLE sharedSecret, std::vector<uint8_t> &derived) {
+		auto paramValues = std::to_array<BCryptBuffer>({
+			{ULONG(algorithmID.size()), KDF_ALGORITHMID, PBYTE(algorithmID.data())},
+			{ULONG(partyUInfo.size()), KDF_PARTYUINFO, PBYTE(partyUInfo.data())},
+			{ULONG(partyVInfo.size()), KDF_PARTYVINFO, PBYTE(partyVInfo.data())},
+			{ULONG(sizeof(BCRYPT_SHA256_ALGORITHM)), KDF_HASH_ALGORITHM, PBYTE(BCRYPT_SHA256_ALGORITHM)}
+		});
 		switch(digest)
 		{
 		case QCryptographicHash::Sha256: break;
@@ -135,26 +148,26 @@ QByteArray QCNG::deriveConcatKDF(const QByteArray &publicKey, QCryptographicHash
 		SECURITY_STATUS err {};
 		if(FAILED(err = NCryptDeriveKey(sharedSecret, BCRYPT_KDF_SP80056A_CONCAT, &params, nullptr, 0, &size, 0)))
 			return err;
-		derived.resize(int(size));
+		derived.resize(size);
 		if(SUCCEEDED(err = NCryptDeriveKey(sharedSecret, BCRYPT_KDF_SP80056A_CONCAT, &params, PBYTE(derived.data()), size, &size, 0)))
 			derived.resize(32);
 		return err;
 	});
 }
 
-QByteArray QCNG::deriveHMACExtract(const QByteArray &publicKey, const QByteArray &salt, int keySize) const
+std::vector<uint8_t> QCNG::deriveHMACExtract(QByteArrayView publicKey, QByteArrayView salt, int keySize) const
 {
-	return derive(publicKey, [&](NCRYPT_SECRET_HANDLE sharedSecret, QByteArray &derived) {
-		std::array paramValues{
-			BCryptBuffer{ULONG(salt.size()), KDF_HMAC_KEY, PBYTE(salt.data())},
-			BCryptBuffer{ULONG(sizeof(BCRYPT_SHA256_ALGORITHM)), KDF_HASH_ALGORITHM, PBYTE(BCRYPT_SHA256_ALGORITHM)},
-		};
+	return derive(publicKey, [&](NCRYPT_SECRET_HANDLE sharedSecret, std::vector<uint8_t> &derived) {
+		auto paramValues = std::to_array<BCryptBuffer>({
+			{ULONG(salt.size()), KDF_HMAC_KEY, PBYTE(salt.data())},
+			{ULONG(sizeof(BCRYPT_SHA256_ALGORITHM)), KDF_HASH_ALGORITHM, PBYTE(BCRYPT_SHA256_ALGORITHM)},
+		});
 		BCryptBufferDesc params{BCRYPTBUFFER_VERSION, ULONG(paramValues.size()), paramValues.data()};
 		DWORD size = 0;
 		SECURITY_STATUS err = 0;
 		if(FAILED(err = NCryptDeriveKey(sharedSecret, BCRYPT_KDF_HMAC, &params, nullptr, 0, &size, 0)))
 			return err;
-		derived.resize(int(size));
+		derived.resize(size);
 		if(SUCCEEDED(err = NCryptDeriveKey(sharedSecret, BCRYPT_KDF_HMAC, &params, PBYTE(derived.data()), size, &size, 0)))
 			derived.resize(keySize);
 		return err;
@@ -162,12 +175,12 @@ QByteArray QCNG::deriveHMACExtract(const QByteArray &publicKey, const QByteArray
 }
 
 template<typename F>
-QByteArray QCNG::exec(F &&func) const
+std::vector<uint8_t> QCNG::exec(F &&func) const
 {
 	if (!d)
 		return {};
 	status = UnknownError;
-	QByteArray result;
+	std::vector<uint8_t> result;
 	switch(func(d->prov, d->key, result))
 	{
 	case ERROR_SUCCESS:
@@ -177,6 +190,7 @@ QByteArray QCNG::exec(F &&func) const
 	case ERROR_CANCELLED:
 		status = PinCanceled;
 	default:
+		std::fill(result.begin(), result.end(), 0);
 		return {};
 	}
 }
@@ -185,14 +199,15 @@ QList<TokenData> QCNG::tokens()
 {
 	QList<TokenData> result;
 	auto prop = [](NCRYPT_HANDLE handle, LPCWSTR param) -> QByteArray {
+		QByteArray data;
 		if(!handle)
-			return {};
+			return data;
 		DWORD size {};
 		if(NCryptGetProperty(handle, param, nullptr, 0, &size, 0))
-			return {};
-		QByteArray data(int(size), '\0');
+			return data;
+		data.resize(int(size));
 		if(NCryptGetProperty(handle, param, PBYTE(data.data()), size, &size, 0))
-			return {};
+			data.clear();
 		return data;
 	};
 	auto enumKeys = [&result, &prop](const QString &provider, QString reader = {}) {
@@ -206,8 +221,6 @@ QList<TokenData> QCNG::tokens()
 		SECURITY_STATUS err = NCryptOpenStorageProvider(&h, LPCWSTR(provider.utf16()), 0);
 		NCryptKeyName *keyname{};
 		SCOPE<PVOID,NCryptFreeBuffer> pos{};
-		BCRYPT_PSS_PADDING_INFO rsaPSS { NCRYPT_SHA256_ALGORITHM, 32 };
-		DWORD size {};
 		while(NCryptEnumKeys(h, reader.isEmpty() ? nullptr : LPCWSTR(scope.utf16()), &keyname, &pos, NCRYPT_SILENT_FLAG) == ERROR_SUCCESS)
 		{
 			SCOPE<NCryptKeyName*,NCryptFreeBuffer> keyname_scope{keyname};
@@ -238,16 +251,6 @@ QList<TokenData> QCNG::tokens()
 				<< "alg" << QStringView(keyname->pszAlgid)
 				<< "flags" << keyname->dwFlags
 				<< t.card();
-			if(cert.publicKey().algorithm() != QSsl::Rsa || reader.isEmpty())
-				continue;
-
-			static const QSet<QByteArray> usePSS {
-				{"3BFF9600008131804380318065B0850300EF120FFE82900066"}, // eToken 5110 CC (830)
-				{"3BFF9600008131FE4380318065B0855956FB120FFE82900000"}, // eToken 5110 CC (940)
-				{"3BD518008131FE7D8073C82110F4"}, // SafeNet 5110 FIPS
-				{"3BFF9600008131FE4380318065B0846566FB12017882900085"}, // SafeNet 5110+ FIPS
-			};
-			t.setData(u"PSS"_s, usePSS.contains(QPCSCReader(reader, &QPCSC::instance()).atr()));
 		}
 	};
 
@@ -275,42 +278,39 @@ QList<TokenData> QCNG::tokens()
 	return result;
 }
 
-QByteArray QCNG::sign(QCryptographicHash::Algorithm type, const QByteArray &digest) const
+std::vector<uint8_t> QCNG::sign(QCryptographicHash::Algorithm algo, Padding padding, QByteArrayView digest) const
 {
-	return exec([&](NCRYPT_PROV_HANDLE prov, NCRYPT_KEY_HANDLE key, QByteArray &result) {
+	return exec([&](NCRYPT_PROV_HANDLE prov, NCRYPT_KEY_HANDLE key, std::vector<uint8_t> &result) {
 		BCRYPT_PSS_PADDING_INFO rsaPSS { NCRYPT_SHA256_ALGORITHM, 32 };
-		switch(type)
+		switch(algo)
 		{
-		case QCryptographicHash::Sha224: rsaPSS = { L"SHA224", 24 }; break;
 		case QCryptographicHash::Sha256: rsaPSS = { NCRYPT_SHA256_ALGORITHM, 32 }; break;
 		case QCryptographicHash::Sha384: rsaPSS = { NCRYPT_SHA384_ALGORITHM, 48 }; break;
 		case QCryptographicHash::Sha512: rsaPSS = { NCRYPT_SHA512_ALGORITHM, 64 }; break;
 		default: return NTE_INVALID_PARAMETER;
 		}
 		BCRYPT_PKCS1_PADDING_INFO rsaPKCS1 { rsaPSS.pszAlgId };
-		DWORD size {};
-		QString algo(5, '\0');
-		NCryptGetProperty(key, NCRYPT_ALGORITHM_GROUP_PROPERTY, PBYTE(algo.data()), DWORD((algo.size() + 1) * 2), &size, 0);
-		algo.resize(size/2 - 1);
-		bool isRSA = algo == QLatin1String("RSA");
-		DWORD padding {};
+		DWORD flags {};
 		PVOID paddingInfo {};
-		if(isRSA && d->pss)
+		switch(padding)
 		{
-			padding = BCRYPT_PAD_PSS;
+		case Padding::PSSPadding:
+			flags = BCRYPT_PAD_PSS;
 			paddingInfo = &rsaPSS;
-		}
-		else if(isRSA)
-		{
-			padding = BCRYPT_PAD_PKCS1;
+			break;
+		case Padding::PKCS1Padding:
+			flags = BCRYPT_PAD_PKCS1;
 			paddingInfo = &rsaPKCS1;
+			break;
+		default: break;
 		}
+		DWORD size {};
 		SECURITY_STATUS err = NCryptSignHash(key, paddingInfo, PBYTE(digest.constData()), DWORD(digest.size()),
-			nullptr, 0, &size, padding);
+			nullptr, 0, &size, flags);
 		if(FAILED(err))
 			return err;
-		result.resize(int(size));
+		result.resize(size);
 		return NCryptSignHash(key, paddingInfo, PBYTE(digest.constData()), DWORD(digest.size()),
-			PBYTE(result.data()), DWORD(result.size()), &size, padding);
+			PBYTE(result.data()), DWORD(result.size()), &size, flags);
 	});
 }

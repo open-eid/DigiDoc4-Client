@@ -64,7 +64,7 @@ if(SIGNCERT)
     execute_process(
         COMMAND powershell -NoProfile -NonInteractive -Command
             "(Get-ChildItem Cert:\\CurrentUser\\My | Where-Object { $_.Subject -like '*${SIGNCERT}*' } | Select-Object -First 1).Subject"
-        OUTPUT_VARIABLE SIGNCERT_SUBJECT
+        OUTPUT_VARIABLE APPX_PUBLISHER
         OUTPUT_STRIP_TRAILING_WHITESPACE
     )
 endif()
@@ -88,25 +88,34 @@ if(SIGNCERT)
         target_link_options(${PROJECT_NAME} PRIVATE "/INTEGRITYCHECK")
     endif()
     add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-        COMMAND signtool.exe sign /a /v /s MY /n "${SIGNCERT}" /fd SHA256 /du http://installer.id.ee
+        COMMAND signtool.exe sign /a /v /s MY /n "${SIGNCERT}" /fd SHA256 /du https://installer.id.ee
             "$<$<BOOL:${CROSSSIGNCERT}>:/ph;/ac;${CROSSSIGNCERT}>"
             /tr http://timestamp.digicert.com /td SHA256 $<TARGET_FILE:EsteidShellExtension>
         COMMAND_EXPAND_LISTS
     )
     add_custom_command(TARGET msishellext POST_BUILD
-        COMMAND signtool.exe sign /a /v /s MY /n "${SIGNCERT}" /fd SHA256 /du http://installer.id.ee
+        COMMAND signtool.exe sign /a /v /s MY /n "${SIGNCERT}" /fd SHA256 /du https://installer.id.ee
             /tr http://timestamp.digicert.com /td SHA256
             "${CMAKE_BINARY_DIR}/Digidoc_ShellExt-${VERSION}$ENV{VER_SUFFIX}.$ENV{PLATFORM}.msi"
     )
     add_custom_command(TARGET ${PROJECT_NAME}V2 POST_BUILD
-        COMMAND signtool.exe sign /a /v /s MY /n "${SIGNCERT}" /fd SHA256 /du http://installer.id.ee
+        COMMAND signtool.exe sign /a /v /s MY /n "${SIGNCERT}" /fd SHA256 /du https://installer.id.ee
             "$<$<BOOL:${CROSSSIGNCERT}>:/ph;/ac;${CROSSSIGNCERT}>"
             /tr http://timestamp.digicert.com /td SHA256 $<TARGET_FILE:EsteidShellExtensionV2>
         COMMAND_EXPAND_LISTS
     )
     add_custom_command(TARGET msixshellext POST_BUILD
-        COMMAND signtool.exe sign /a /v /s MY /n "${SIGNCERT}" /fd SHA256 /du http://installer.id.ee
+        COMMAND signtool.exe sign /a /v /s MY /n "${SIGNCERT}" /fd SHA256 /du https://installer.id.ee
             /tr http://timestamp.digicert.com /td SHA256
             "${CMAKE_BINARY_DIR}/${SHELLEXT_MSIX_FILE}"
+    )
+else()
+    add_custom_command(TARGET msixshellext POST_BUILD
+        COMMAND powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass
+            -File ${CMAKE_SOURCE_DIR}/SignAppx.ps1
+            -PackagePath ${CMAKE_BINARY_DIR}/${SHELLEXT_MSIX_FILE}
+            -ManifestPath ${CMAKE_BINARY_DIR}/AppxManifest-ShellExt.xml
+            -CertificatePath ${CMAKE_BINARY_DIR}/${SHELLEXT_MSIX_FILE}.cer
+        VERBATIM
     )
 endif()

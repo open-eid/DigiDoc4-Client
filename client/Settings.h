@@ -38,6 +38,9 @@ struct Settings
 		operator std::string() const requires(std::is_same_v<T,QString>) {
 			return operator T().toStdString();
 		}
+		bool operator ==(std::string_view value) const requires(std::is_same_v<T,QString>) {
+			return operator QVariant() == QLatin1String(value.data(), value.size());
+		}
 		void operator =(const QVariant &value) const {
 			if(value == defaultValue())
 				clear();
@@ -109,7 +112,9 @@ struct Settings
 	static const Option<QString> SIVA_URL;
 	static const Option<bool, bool (*)()> SIVA_URL_CUSTOM;
 	static const Option<QByteArray> TSA_CERT;
+	static const Option<QByteArray> TSA_CERT_ARCHIVE;
 	static const Option<QString> TSA_URL;
+	static const Option<QString> TSA_URL_ARCHIVE;
 	static const Option<bool, bool (*)()> TSA_URL_CUSTOM;
 	static const Option<bool> DEFAULT_LTA;
 
@@ -131,7 +136,7 @@ struct Settings
 	static const Option<QString> PROXY_PORT;
 	static const Option<QString> PROXY_USER;
 	static const Option<QString> PROXY_PASS;
-#ifdef Q_OS_MAC
+#ifdef Q_OS_MACOS
 	static const Option<QString> PLUGINS;
 #endif
 };

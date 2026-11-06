@@ -24,7 +24,6 @@
 #include "Common.h"
 #include "MainWindow.h"
 #include "QCryptoBackend.h"
-#include "QSigner.h"
 #include "Settings.h"
 #include "TokenData.h"
 #include "Utils.h"
@@ -33,6 +32,7 @@
 
 #include <digidocpp/DataFile.h>
 #include <digidocpp/Signature.h>
+#include <digidocpp/crypto/Signer.h>
 #include <digidocpp/crypto/X509Cert.h>
 
 #include <QtCore/QDateTime>
@@ -41,9 +41,20 @@
 #include <QtWidgets/QMessageBox>
 
 #include <algorithm>
+#include <fstream>
 
 using namespace digidoc;
 using namespace ria::qdigidoc4;
+
+struct ExtendSigner final: public Signer
+{
+	X509Cert cert() const final { return X509Cert(); }
+	std::vector<unsigned char> sign(const std::string & /*method*/,
+		const std::vector<unsigned char> & /*digest*/) const final
+	{
+		throw Exception(__FILE__, __LINE__, "Not implemented");
+	}
+};
 
 static std::string to(const QString &str) { return str.toStdString(); }
 static QString from(const std::string &str) { return FileDialog::normalized(QString::fromStdString(str)); }
@@ -64,7 +75,7 @@ struct ServiceConfirmation final: public ContainerOpenCB
 		return dispatchToMain([this] {
 			return WarningDialog::create(parent)
 				->withTitle(DigiDoc::tr("Send document to SiVa"))
-				->withText(DigiDoc::tr(
+				->withRichText(DigiDoc::tr(
 					"This type of signed document will be transmitted to the "
 					"Digital Signature Validation Service SiVa to verify the validity of the digital signature. "
 					"Read more information about transmitted data to Digital Signature Validation service from "
@@ -109,20 +120,15 @@ bool DigiDocSignature::isInvalid() const
 
 QString DigiDocSignature::lastError() const { return m_lastError; }
 
-QString DigiDocSignature::location() const
-{
-	QStringList l = locations();
-	l.removeAll({});
-	return l.join(QStringLiteral(", "));
-}
-
-QStringList DigiDocSignature::locations() const
+DigiDocSignature::Location DigiDocSignature::location() const
 {
 	return {
-		from( s->city() ).trimmed(),
-		from( s->stateOrProvince() ).trimmed(),
-		from( s->postalCode() ).trimmed(),
-		from( s->countryName() ).trimmed()};
+		from(s->city()).trimmed(),
+		from(s->stateOrProvince()).trimmed(),
+		from(s->postalCode()).trimmed(),
+		from(s->countryName()).trimmed(),
+		from(s->streetAddress()).trimmed(),
+	};
 }
 
 QByteArray DigiDocSignature::messageImprint() const
@@ -143,7 +149,11 @@ QDateTime DigiDocSignature::ocspTime() const
 
 DigiDocSignature::SignatureStatus DigiDocSignature::status(DigiDocSignature::SignatureStatus result, const digidoc::Exception &e)
 {
-	for(const Exception &child: e.causes())
+	const Exception::Causes causes = e.causes();
+	if(causes.empty())
+		return std::max(result, Invalid);
+
+	for(const Exception &child: causes)
 	{
 		switch( child.code() )
 		{
@@ -170,7 +180,8 @@ DigiDocSignature::SignatureStatus DigiDocSignature::status(DigiDocSignature::Sig
 		default:
 			result = std::max( result, Invalid );
 		}
-		result = std::max(result, status(result, child));
+		if(!child.causes().empty())
+			result = std::max(result, status(result, child));
 	}
 	return result;
 }
@@ -333,14 +344,6 @@ quint64 SDocumentModel::fileSize(int row) const
 	return doc->b->dataFiles().at(size_t(row))->fileSize();
 }
 
-QString SDocumentModel::mime(int row) const
-{
-	if(row >= rowCount())
-		return {};
-
-	return from(doc->b->dataFiles().at(size_t(row))->mediaType());
-}
-
 bool SDocumentModel::removeRow(int row)
 {
 	if(!doc->b)
@@ -366,11 +369,23 @@ QString SDocumentModel::save(int row, const QString &path) const
 {
 	if(row >= rowCount())
 		return {};
-	if(QFileInfo::exists(path))
-		return path;
-	doc->b->dataFiles().at(size_t(row))->saveAs(path.toStdString());
-	if(!QFileInfo::exists(path))
+	// Overwrite in place: on macOS replacing the file would invalidate the
+	// sandbox's security-scoped bookmark for a path picked in a file dialog
+	auto keepAlive = FileDialog::keepAccessAlive(path);
+	std::ofstream ofs(QFileInfo(path).filesystemFilePath(), std::ofstream::binary);
+	if(ofs)
+	{
+		doc->b->dataFiles().at(size_t(row))->saveAs(ofs);
+		ofs.close();
+	}
+	if(!ofs)
+	{
+		WarningDialog::create()
+			->withTitle(FileDialog::tr("Failed to save file"))
+			->withText(path)
+			->open();
 		return {};
+	}
 	FileDialog::setFileZone(path, doc->fileName());
 	return path;
 }
@@ -424,22 +439,23 @@ bool DigiDoc::extend()
 {
 	QWidget *parent = parentWidget();
 	try {
-		auto *signer = qApp->signer();
-		signer->setUserAgent(QStringLiteral("%1/%2 (%3) Devices: %4").arg(
+		ExtendSigner signer;
+		signer.setUserAgent(QStringLiteral("%1/%2 (%3) Devices: %4").arg(
 			QCoreApplication::applicationName(),
 			QCoreApplication::applicationVersion(),
 			Common::applicationOs(),
 			Common::drivers().join(',')).toUtf8().constData());
 		qApp->waitForTSL(fileName());
-		ServiceConfirmation cb(parent);
 		QString current = m_fileName;
 		size_t extendCount = 0;
-		bool wrapped = false;
+		const auto signatures = b->signatures();
+		const bool timestampedContainer = std::any_of(signatures.cbegin(), signatures.cend(), [](const Signature *signature) {
+			return signature->profile() == "TimeStampToken";
+		});
 		if(std::unique_ptr<Container> extended = waitFor([&] {
-			return Container::extendContainerValidity(*b, signer, extendCount);
+			return Container::extendContainerValidity(*b, &signer, extendCount);
 		}))
 		{
-			wrapped = true;
 			const QString asics = QCoreApplication::translate("MainWindow", "Documents (%1)").arg(QLatin1String("*.asics *.scs"));
 			QFileInfo f(current);
 			QString name = f.absolutePath() + '/' + f.completeBaseName() + QStringLiteral(".asics");
@@ -447,14 +463,20 @@ bool DigiDoc::extend()
 			if(filename.isEmpty())
 				return false;
 			auto original = std::exchange(b, std::move(extended));
-			auto originalParent = std::exchange(parentContainer, {});
 			if(!saveAs(filename))
 			{
 				b = std::move(original);
-				parentContainer = std::move(originalParent);
 				return false;
 			}
-			load(std::move(b), cb);
+			std::unique_ptr<Container> reopened;
+			try {
+				ServiceConfirmation cb(parent);
+				reopened = waitFor([&] { return Container::openPtr(to(filename), &cb); });
+			} catch(...) {
+				b = std::move(original);
+				throw;
+			}
+			load(std::move(reopened));
 			m_fileName = filename;
 			Application::addRecent(m_fileName);
 			modified = false;
@@ -466,8 +488,8 @@ bool DigiDoc::extend()
 		}
 		if(!save())
 			return false;
-		load(std::move(b), cb);
-		if(extendCount < b->signatures().size())
+		load(std::move(b));
+		if(!timestampedContainer && extendCount < b->signatures().size())
 		{
 			WarningDialog::create(parent)
 				->withTitle(tr("Container validity extended"))
@@ -546,34 +568,26 @@ bool DigiDoc::isSupported() const
 	return b && b->mediaType() == "application/vnd.etsi.asic-e+zip" && !isCades();
 }
 
-void DigiDoc::load(std::unique_ptr<Container> &&doc, ServiceConfirmation &cb)
+void DigiDoc::load(std::unique_ptr<Container> &&doc)
 {
-	parentContainer.reset();
 	m_signatures.clear();
 	m_timestamps.clear();
 	documentModel()->clearTempFolder();
 	b = std::move(doc);
-	if(b && b->mediaType() == "application/vnd.etsi.asic-s+zip" &&
-		b->dataFiles().size() == 1 &&
-		b->signatures().size() == 1)
+	const auto containerSignatures = b->signatures();
+	const bool isTimeStamped = std::any_of(containerSignatures.cbegin(), containerSignatures.cend(), [](const Signature *signature) {
+		return signature->profile() == "TimeStampToken" &&
+			signature->trustedSigningTime().compare("2018-07-01T00:00:00Z") < 0;
+	});
+	const bool hasEnclosedSignatures = b->mediaType() == "application/vnd.etsi.asic-s+zip" &&
+		std::any_of(containerSignatures.cbegin(), containerSignatures.cend(), [](const Signature *signature) {
+			return signature->profile() != "TimeStampToken";
+		});
+	for(const Signature *signature: containerSignatures)
 	{
-		if(from(b->dataFiles().at(0)->fileName()).endsWith(QStringLiteral(".ddoc"), Qt::CaseInsensitive))
-		{
-			if(QString tmppath = documentModel()->saveTemp(0); !tmppath.isEmpty())
-			{
-				try {
-					parentContainer = std::exchange(b, Container::openPtr(to(tmppath), &cb));
-				} catch(const Exception &) {}
-			}
-		}
-	}
-	bool isTimeStamped = parentContainer && parentContainer->signatures().at(0)->trustedSigningTime().compare("2018-07-01T00:00:00Z") < 0;
-	for(const Signature *signature: b->signatures())
-		m_signatures.emplace_back(signature, this, isTimeStamped);
-	if(parentContainer)
-	{
-		for(const Signature *signature: parentContainer->signatures())
-			m_timestamps.emplace_back(signature, this);
+		const bool isTimestamp = signature->profile() == "TimeStampToken";
+		auto &list = hasEnclosedSignatures && isTimestamp ? m_timestamps : m_signatures;
+		list.emplace_back(signature, this, !isTimestamp && isTimeStamped);
 	}
 	setState(signatures().isEmpty() ? ContainerState::UnsignedSavedContainer : ContainerState::SignedContainer);
 }
@@ -611,11 +625,12 @@ std::unique_ptr<DigiDoc> DigiDoc::open(const QString &file, QWidget *parent)
 		parent = Application::activeWindow();
 	ServiceConfirmation cb(parent);
 	qApp->waitForTSL(file);
+	auto keepAlive = FileDialog::keepAccessAlive(file, QFile::ReadOnly);
 	try {
 		std::unique_ptr<DigiDoc> doc(new DigiDoc(parent));
 		WaitDialogHolder waitDialog(parent, tr("Opening"), false);
 		if(waitFor([&] {
-			doc->load(Container::openPtr(to(file), &cb), cb);
+			doc->load(Container::openPtr(to(file), &cb));
 			Application::addRecent(file);
 			doc->m_fileName = file;
 			return true;
@@ -710,8 +725,9 @@ bool DigiDoc::saveAs(const QString &filename)
 {
 	try
 	{
+		auto keepAlive = FileDialog::keepAccessAlive(filename);
 		return waitFor([&] {
-			parentContainer ? parentContainer->save(to(filename)) : b->save(to(filename));
+			b->save(to(filename));
 			return true;
 		});
 	}
@@ -735,14 +751,14 @@ void DigiDoc::setLastError(const QString &title, const Exception &e)
 	case Exception::CertificateUnknown:
 		dlg->withText(tr("Certificate status unknown")); break;
 	case Exception::OCSPTimeSlot:
-		dlg->withText(tr("Please check your computer time. <a href='https://www.id.ee/en/article/digidoc4-client-error-please-check-your-computer-time-2/'>Additional information</a>")); break;
+		dlg->withRichText(tr("Please check your computer time. <a href='https://www.id.ee/en/article/digidoc4-client-error-please-check-your-computer-time-2/'>Additional information</a>")); break;
 	case Exception::OCSPRequestUnauthorized:
 		dlg->withText(tr("You have not granted IP-based access. "
 			"Check your validity confirmation service access settings.")); break;
 	case Exception::TSForbidden:
 		dlg->withText(tr("Check your Time-Stamping service access settings.")); break;
 	case Exception::TSTooManyRequests:
-		dlg->withText(tr("The limit for digital signatures per month has been reached for this IP address. "
+		dlg->withRichText(tr("The limit for digital signatures per month has been reached for this IP address. "
 			"<a href=\"https://www.id.ee/en/article/for-organisations-that-sign-large-quantities-of-documents-using-digidoc4-client/\">Additional information</a>")); break;
 	case Exception::PINCanceled:
 		dlg->deleteLater();
