@@ -322,7 +322,7 @@ void SigningDialog::performSign()
 				return reject();
 			}
 		}
-		QSigner signer(std::unique_ptr<QCryptoBackend>(val.value()), m_selectedToken);
+		QSigner signer(std::unique_ptr<QCryptoBackend>(val.value()));
 		return digiDoc->sign(m_city, m_state, m_zip, m_country, m_role, &signer) ? accept() : reject();
 	}
 	case MobileID: {
