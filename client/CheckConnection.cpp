@@ -111,7 +111,7 @@ QNetworkAccessManager* CheckConnection::setupNAM(QNetworkRequest &req, const QBy
 				}
 				Q_FALLTHROUGH();
 			default:
-				qDebug() << "SSL Error:" << error.error() << error.certificate().subjectInfo(QSslCertificate::CommonName);
+				qWarning() << "SSL Error:" << error.error() << error.certificate().subjectInfo(QSslCertificate::CommonName);
 			}
 		}
 		reply->ignoreSslErrors(ignore);

@@ -32,7 +32,7 @@
 
 using namespace Qt::Literals::StringLiterals;
 
-Q_LOGGING_CATEGORY(CNG, "qdigidoc4.QCNG")
+Q_LOGGING_CATEGORY(CNG, "qdigidoc4.cng", QtWarningMsg)
 
 template<typename T, auto D = NCryptFreeObject>
 struct SCOPE
@@ -246,7 +246,7 @@ QList<TokenData> QCNG::tokens()
 			t.setData(u"provider"_s, provider);
 			t.setData(u"key"_s, QString::fromWCharArray(keyname->pszName));
 			t.setData(u"spec"_s, QVariant::fromValue(keyname->dwLegacyKeySpec));
-			qCWarning(CNG) << "key" << t.data(u"provider"_s)
+			qCDebug(CNG) << "key" << t.data(u"provider"_s)
 				<< "spec" << t.data(u"spec"_s)
 				<< "alg" << QStringView(keyname->pszAlgid)
 				<< "flags" << keyname->dwFlags
@@ -254,26 +254,26 @@ QList<TokenData> QCNG::tokens()
 		}
 	};
 
-	qCWarning(CNG) << "Start enumerationg providers";
+	qCDebug(CNG) << "Start enumerating providers";
 	DWORD count {};
 	SCOPE<NCryptProviderName*,NCryptFreeBuffer> providers {};
 	NCryptEnumStorageProviders(&count, &providers, NCRYPT_SILENT_FLAG);
 	for(DWORD i {}; i < count; ++i)
 	{
 		QString provider = QString::fromWCharArray(providers[i].pszName);
-		qCWarning(CNG) << "Found provider" << provider;
+		qCInfo(CNG) << "Found provider" << provider;
 		if(provider == QStringView(MS_SMART_CARD_KEY_STORAGE_PROVIDER))
 		{
 			for( const QString &reader: QPCSC::instance().readers() )
 			{
-				qCWarning(CNG) << reader;
+				qCInfo(CNG) << reader;
 				enumKeys(provider, reader);
 			}
 		}
 		else
 			enumKeys(provider);
 	}
-	qCWarning(CNG) << "End enumerationg providers";
+	qCDebug(CNG) << "End enumerating providers";
 
 	return result;
 }

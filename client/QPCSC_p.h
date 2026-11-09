@@ -29,7 +29,7 @@
 #undef UNICODE
 #include <winsock2.h>
 #include <winscard.h>
-#elif defined(Q_OS_MAC)
+#elifdef Q_OS_MACOS
 #include <PCSC/wintypes.h>
 #include <PCSC/winscard.h>
 #include <arpa/inet.h>
