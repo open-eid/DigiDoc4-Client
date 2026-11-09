@@ -18,19 +18,27 @@
  */
 
 #include <QtCore/QBuffer>
+#include <QtCore/QDeadlineTimer>
+#include <QtCore/QJsonArray>
+#include <QtCore/QJsonDocument>
 #include <QtCore/QJsonObject>
 #include <QtCore/QMessageAuthenticationCode>
+#include <QtCore/QSettings>
 #include <QtCore/QtEndian>
 #include <QtCore/QTemporaryFile>
+#include <QtCore/QThread>
+#include <QtCore/QTimer>
 #include <QtCore/QUrlQuery>
 #if QT_VERSION >= QT_VERSION_CHECK(6, 8, 0)
 #include <QtCore/QSpan>
 #endif
+#include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QPasswordDigestor>
 #include <QtNetwork/QSslConfiguration>
 #include <QtNetwork/QSslKey>
 #include <QLoggingCategory>
 #include <QXmlStreamReader>
+#include <algorithm>
 #include <optional>
 #include <utility>
 
@@ -277,10 +285,63 @@ checkConnection()
 	});
 }
 
+static QString
+trimUrl(QString url)
+{
+	while (url.endsWith(QLatin1Char('/')))
+		url.chop(1);
+	return url;
+}
+
+// Mobile-ID / Smart-ID authentication (AUTH) or relying party (RP) server, unless
+// overridden in the user settings from the CDOC2-CONF entry whose SHARES include
+// all of the lock's share servers. Another entry's servers would not authorize these
+// share servers, and would learn the user's identity only to fail after the login.
+static std::string
+shareServer(QLatin1String key, QLatin1String field, const std::string &shareUrls)
+{
+	if (QString url = QSettings().value(key).toString(); !url.isEmpty())
+		return url.toStdString();
+	QStringList lockUrls;
+	for (const QString &share : QString::fromStdString(shareUrls).split(QLatin1Char(';'), Qt::SkipEmptyParts))
+		lockUrls.append(trimUrl(share.section(QLatin1Char(','), 0, 0)));
+	QJsonObject list = Application::confValue(QLatin1String("CDOC2-CONF")).toObject();
+	for (const QJsonValue &value : list) {
+		QJsonObject data = value.toObject();
+		QStringList shares;
+		for (const QJsonValue &url : data.value(QLatin1String("SHARES")).toArray())
+			shares.append(trimUrl(url.toString()));
+		if (!lockUrls.isEmpty() && std::all_of(lockUrls.cbegin(), lockUrls.cend(),
+				[&shares](const QString &url) { return shares.contains(url); }))
+			return data.value(field).toString().toStdString();
+	}
+	return {};
+}
+
+bool
+DDConfiguration::shareServersKnown(const std::string &shareUrls)
+{
+	return !shareServer(QLatin1String("CDOC2-SHARES-AUTH"), QLatin1String("AUTH"), shareUrls).empty() &&
+		!shareServer(QLatin1String("CDOC2-SHARES-RP"), QLatin1String("RP"), shareUrls).empty();
+}
+
 std::string
 DDConfiguration::getValue(std::string_view domain, std::string_view param) const
 {
-	if (param == libcdoc::Configuration::KEYSERVER_SEND_URL) {
+	if (param == libcdoc::Configuration::AUTH_SERVER) {
+		return shareServer(QLatin1String("CDOC2-SHARES-AUTH"), QLatin1String("AUTH"), shareUrls);
+	} else if (param == libcdoc::Configuration::RP_SERVER) {
+		return shareServer(QLatin1String("CDOC2-SHARES-RP"), QLatin1String("RP"), shareUrls);
+	} else if (param == libcdoc::Configuration::SHARE_SIGNER) {
+		return shareSigner;
+	} else if (param == libcdoc::Configuration::PHONE_NUMBER) {
+		return phone;
+	} else if (param == libcdoc::Configuration::SHARE_SERVER_URLS) {
+		QJsonObject list = Application::confValue(QLatin1String("CDOC2-CONF")).toObject();
+		QJsonObject data = list.value(QLatin1String(domain.data(), domain.size())).toObject();
+		if (QJsonArray shares = data.value(QLatin1String("SHARES")).toArray(); !shares.isEmpty())
+			return QJsonDocument(shares).toJson(QJsonDocument::Compact).toStdString();
+	} else if (param == libcdoc::Configuration::KEYSERVER_SEND_URL) {
 #ifdef CONFIG_URL
 		QJsonObject list = Application::confValue(QLatin1String("CDOC2-CONF")).toObject();
 		QJsonObject data = list.value(QLatin1String(domain.data(), domain.size())).toObject();
@@ -336,6 +397,19 @@ DDNetworkBackend::getLastErrorStr(libcdoc::result_t code) const
 			return last_error;
 	}
 	return libcdoc::NetworkBackend::getLastErrorStr(code);
+}
+
+static std::string
+replyError(QNetworkReply *reply)
+{
+	QString error = reply->errorString();
+	QJsonObject problem = QJsonDocument::fromJson(reply->readAll()).object();
+	QString detail = problem.value(QLatin1String("errorMessage")).toString();
+	if (detail.isEmpty())
+		detail = problem.value(QLatin1String("errorCode")).toString();
+	if (!detail.isEmpty())
+		error += QLatin1String(": ") + detail;
+	return error.toStdString();
 }
 
 libcdoc::result_t DDNetworkBackend::sendKey(
@@ -433,6 +507,187 @@ DDNetworkBackend::signTLS(std::vector<uint8_t> &dst, libcdoc::CryptoBackend::Has
 		last_error = QCryptoBackend::errorString(crypto.backend->status).toStdString();
 		return BACKEND_ERROR;
 	}
+	return libcdoc::OK;
+}
+
+libcdoc::result_t
+DDNetworkBackend::get(const std::string &url, std::vector<uint8_t> &body,
+	std::map<std::string, std::string> &headers, bool client_cert)
+{
+	return request(false, url, body, headers, client_cert);
+}
+
+libcdoc::result_t
+DDNetworkBackend::post(const std::string &url, std::vector<uint8_t> &body,
+	std::map<std::string, std::string> &headers, bool client_cert)
+{
+	return request(true, url, body, headers, client_cert);
+}
+
+libcdoc::result_t
+DDNetworkBackend::request(bool post, const std::string &url, std::vector<uint8_t> &body,
+	std::map<std::string, std::string> &headers, bool client_cert)
+{
+	if (client_cert) {
+		// Only the key server authenticates with the card, and fetchKey does that itself
+		last_error = "Client certificate is not supported";
+		return libcdoc::NOT_IMPLEMENTED;
+	}
+	if (!checkConnection()) {
+		last_error = "No connection";
+		return NETWORK_ERROR;
+	}
+	return send(post, QUrl(QString::fromStdString(url)), body, headers);
+}
+
+libcdoc::result_t
+DDNetworkBackend::send(bool post, const QUrl &url, std::vector<uint8_t> &body,
+	std::map<std::string, std::string> &headers, int timeout)
+{
+	if (canceled)
+		return DDCryptoBackend::PIN_CANCELED;
+	QNetworkRequest req(url);
+	req.setHeader(QNetworkRequest::ContentTypeHeader, QStringLiteral("application/json"));
+	for (const auto &[name, value] : headers)
+		req.setRawHeader(QByteArray::fromStdString(name), QByteArray::fromStdString(value));
+	QScopedPointer<QNetworkAccessManager, QScopedPointerDeleteLater> nam(CheckConnection::setupNAM(req));
+	QNetworkReply *reply = post ? nam->post(req, asByteArray(body)) : nam->get(req);
+	QEventLoop e;
+	connect(reply, &QNetworkReply::finished, &e, &QEventLoop::quit);
+	QDeadlineTimer deadline(timeout);
+	QTimer timer;
+	connect(&timer, &QTimer::timeout, reply, [&] {
+		if(canceled || deadline.hasExpired())
+			reply->abort();
+	});
+	timer.start(100);
+	if(!reply->isFinished())
+		e.exec();
+	if(canceled)
+		return DDCryptoBackend::PIN_CANCELED;
+	if(deadline.hasExpired()) {
+		last_error = "Timeout waiting for server response";
+		return NETWORK_ERROR;
+	}
+	// Without a status no response arrived; an HTTP error is the server's answer
+	int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+	if (reply->error() != QNetworkReply::NoError || status < 200 || status >= 300) {
+		last_error = replyError(reply);
+		return status == 0 ? NETWORK_ERROR : BACKEND_ERROR;
+	}
+	// Callers look headers up in lower case, as libcdoc's own client stores them
+	headers.clear();
+	for (const auto &[name, value] : reply->rawHeaderPairs())
+		headers.emplace(name.toLower().toStdString(), value.toStdString());
+	QByteArray data = reply->readAll();
+	body.assign(data.cbegin(), data.cend());
+	return libcdoc::OK;
+}
+
+// The Mobile-ID / Smart-ID round-trips below follow libcdoc's own, which use its
+// built-in HTTP client and so would need the servers' certificates pinned
+
+libcdoc::result_t
+DDNetworkBackend::getAuthResponse(const std::string &url, std::vector<uint8_t> &body,
+	std::map<std::string, std::string> &headers)
+{
+	if (!checkConnection()) {
+		last_error = "No connection";
+		return NETWORK_ERROR;
+	}
+	QUrl start(QString::fromStdString(url));
+	QString path = start.path();
+	if (path.endsWith(QLatin1Char('/')))
+		path.chop(1);
+	start.setPath(path + QLatin1String("/auth/start"));
+	if (auto result = send(true, start, body, headers); result != libcdoc::OK)
+		return result;
+	// The status is polled on the server the session was started on
+	QString location = QString::fromStdString(headers["location"]);
+	if (!location.startsWith(path + QLatin1String("/auth/status/"))) {
+		last_error = "Unexpected Location header value";
+		return BACKEND_ERROR;
+	}
+	bool ok = false;
+	SIDMIDFeedback feedback { .code = QJsonDocument::fromJson(asByteArray(body)).object()
+		.value(QLatin1String("vc")).toString().toInt(&ok) };
+	if (!ok || feedback.code < 0 || feedback.code > 9999) {
+		last_error = "Invalid verification code in response";
+		return BACKEND_ERROR;
+	}
+	if (auto result = showFeedback(feedback); result != libcdoc::OK)
+		return result;
+	QUrl status = start;
+	status.setPath(location);
+	headers.clear();
+	return poll(status, QLatin1String("status"), body, headers);
+}
+
+libcdoc::result_t
+DDNetworkBackend::getSignResponse(const std::string &url, const std::string &post_path,
+	std::vector<uint8_t> &body, std::map<std::string, std::string> &headers,
+	const std::string &poll_path_prefix)
+{
+	if (!checkConnection()) {
+		last_error = "No connection";
+		return NETWORK_ERROR;
+	}
+	QUrl sign(QString::fromStdString(url));
+	QString path = sign.path();
+	if (path.endsWith(QLatin1Char('/')))
+		path.chop(1);
+	sign.setPath(path + QString::fromStdString(post_path));
+	// The session token headers go with every poll as well
+	const std::map<std::string, std::string> request_headers = headers;
+	if (auto result = send(true, sign, body, headers); result != libcdoc::OK)
+		return result;
+	QString session = QJsonDocument::fromJson(asByteArray(body)).object()
+		.value(QLatin1String("sessionID")).toString();
+	if (session.isEmpty()) {
+		last_error = "No session ID in response";
+		return BACKEND_ERROR;
+	}
+	QUrl status = sign;
+	status.setPath(path + QString::fromStdString(poll_path_prefix) + session);
+	headers = request_headers;
+	return poll(status, QLatin1String("state"), body, headers);
+}
+
+libcdoc::result_t
+DDNetworkBackend::poll(const QUrl &url, QLatin1String field, std::vector<uint8_t> &body,
+	std::map<std::string, std::string> &headers)
+{
+	const std::map<std::string, std::string> request_headers = headers;
+	for (QDeadlineTimer deadline(std::chrono::minutes(2)); !deadline.hasExpired();) {
+		headers = request_headers;
+		if (auto result = send(false, url, body, headers,
+			int(std::min<qint64>(30'000, deadline.remainingTime()))); result != libcdoc::OK)
+			return result;
+		QJsonObject json = QJsonDocument::fromJson(asByteArray(body)).object();
+		QString state = json.value(field).toString();
+		if (state == QLatin1String("COMPLETE"))
+			return libcdoc::OK;
+		if (state != QLatin1String("RUNNING") && state != QLatin1String("STARTED")) {
+			// A session that ended without success says why in endResult (e.g. NOT_MID_CLIENT),
+			// which the caller turns into its Mobile-ID / Smart-ID error
+			if (json.contains(QLatin1String("endResult")))
+				return libcdoc::OK;
+			last_error = "Invalid Mobile-ID / Smart-ID state: " + state.toStdString();
+			return BACKEND_ERROR;
+		}
+		QThread::msleep(500);
+	}
+	last_error = "Timeout waiting for Mobile-ID / Smart-ID";
+	return libcdoc::NetworkBackend::MIDSID_TIMEOUT;
+}
+
+libcdoc::result_t
+DDNetworkBackend::showFeedback(SIDMIDFeedback &feedback)
+{
+	if (canceled)
+		return DDCryptoBackend::PIN_CANCELED;
+	if (onFeedback)
+		QMetaObject::invokeMethod(qApp, [callback = onFeedback, code = feedback.code] { callback(code); });
 	return libcdoc::OK;
 }
 

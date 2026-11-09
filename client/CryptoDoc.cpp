@@ -292,6 +292,47 @@ ContainerState CryptoDoc::state() const
 	return d->isEncrypted() ? EncryptedContainer : UnencryptedContainer;
 }
 
+// Mobile-ID / Smart-ID results, worded and translated as when signing
+struct MIDSIDResult
+{
+	Q_DECLARE_TR_FUNCTIONS(MobileProgress)
+public:
+	static QString text(libcdoc::result_t result, bool mid)
+	{
+		switch (result) {
+		case libcdoc::NetworkBackend::MIDSID_NOT_MID_CLIENT:
+			return tr("User is not a mobile-ID client");
+		case libcdoc::NetworkBackend::MIDSID_USER_CANCELLED:
+		case libcdoc::NetworkBackend::MIDSID_USER_REFUSED:
+		case libcdoc::NetworkBackend::MIDSID_USER_REFUSED_CERT_CHOICE:
+		case libcdoc::NetworkBackend::MIDSID_USER_REFUSED_INTERACTION:
+			return tr("User denied or cancelled");
+		case libcdoc::NetworkBackend::MIDSID_TIMEOUT:
+			return mid ? tr("Your mobile-ID transaction has expired. Please try again.") :
+				tr("Your Smart-ID transaction has expired or user account not found.");
+		case libcdoc::NetworkBackend::MIDSID_PHONE_ABSENT:
+			return tr("Phone is not in coverage area");
+		case libcdoc::NetworkBackend::MIDSID_DELIVERY_ERROR:
+			return tr("Request sending error");
+		case libcdoc::NetworkBackend::MIDSID_SIM_ERROR:
+			return tr("SIM error");
+		case libcdoc::NetworkBackend::MIDSID_SIGNATURE_HASH_MISMATCH:
+			return tr("Your mobile-ID transaction has failed. Please contact your mobile network operator.");
+		case libcdoc::NetworkBackend::MIDSID_WRONG_VC:
+			return tr("Error: an incorrect control code was chosen");
+		case libcdoc::NetworkBackend::MIDSID_DOCUMENT_UNUSABLE:
+		case libcdoc::NetworkBackend::MIDSID_REQUIRED_INTERACTION_NOT_SUPPORTED_BY_APP:
+		case libcdoc::NetworkBackend::MIDSID_PROTOCOL_FAILURE:
+		case libcdoc::NetworkBackend::MIDSID_EXPECTED_LINKED_SESSION:
+		case libcdoc::NetworkBackend::MIDSID_SERVER_ERROR:
+		case libcdoc::NetworkBackend::ACCOUNT_UNUSABLE:
+			return tr("Your Smart-ID transaction has failed. Please check your Smart-ID application or contact Smart-ID customer support.");
+		default:
+			return {};
+		}
+	}
+};
+
 bool CryptoDoc::decrypt(const libcdoc::Lock &lock, QByteArray secret, std::unique_ptr<QCryptoBackend> &&backend)
 {
 	auto secretGuard = qScopeGuard([&] {
@@ -319,6 +360,7 @@ bool CryptoDoc::decrypt(const libcdoc::Lock &lock, QByteArray secret, std::uniqu
 	}
 
 	auto lock_idx = unsigned(std::distance(locks.cbegin(), it));
+	d->network.canceled = false;
 	d->crypto.setBackend(std::move(backend));
 	auto resetBackend = qScopeGuard([this] {
 		d->crypto.setBackend({});
@@ -387,7 +429,9 @@ bool CryptoDoc::decrypt(const libcdoc::Lock &lock, QByteArray secret, std::uniqu
 			str = QCryptoBackend::errorString(QCryptoBackend::Status::GeneralError);
 			break;
 		default:
-			str = tr("General decryption error. Neither the card reader nor the network layer gave more information. Please check your internet connection, network settings and card reader. On some readers it may also indicate a wrong PIN or a locked card.");
+			str = MIDSIDResult::text(result, d->conf.shareSigner == libcdoc::Configuration::SHARE_SIGNER_MID);
+			if (str.isEmpty())
+				str = tr("General decryption error. Neither the card reader nor the network layer gave more information. Please check your internet connection, network settings and card reader. On some readers it may also indicate a wrong PIN or a locked card.");
 			break;
 		}
 		WarningDialog::create()
@@ -409,6 +453,26 @@ bool CryptoDoc::decrypt(const libcdoc::Lock &lock, QByteArray secret, std::uniqu
 	}
 	d->reader.reset();
 	return !d->isEncrypted();
+}
+
+bool CryptoDoc::decrypt(const libcdoc::Lock &lock, const QString &phone, std::function<void(int code)> onFeedback)
+{
+	d->conf.shareSigner = phone.isEmpty() ? libcdoc::Configuration::SHARE_SIGNER_SID : libcdoc::Configuration::SHARE_SIGNER_MID;
+	d->conf.phone = phone.isEmpty() ? std::string() : '+' + phone.toStdString();
+	d->conf.shareUrls = lock.getString(libcdoc::Lock::SHARE_URLS);
+	d->network.onFeedback = std::move(onFeedback);
+	auto reset = qScopeGuard([this] {
+		d->conf.shareSigner.clear();
+		d->conf.phone.clear();
+		d->conf.shareUrls.clear();
+		d->network.onFeedback = {};
+	});
+	return decrypt(lock, QByteArray(), std::unique_ptr<QCryptoBackend>());
+}
+
+void CryptoDoc::cancel()
+{
+	d->network.canceled = true;
 }
 
 DocumentModel *CryptoDoc::documentModel() const { return d->documents; }

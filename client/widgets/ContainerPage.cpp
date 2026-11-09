@@ -297,12 +297,19 @@ void ContainerPage::transition(CryptoDoc *container)
 			else {
 				std::unique_ptr<QCryptoBackend> backend;
 				{
-					DecryptionDialog dialog(key, addr->name(), this);
+					DecryptionDialog dialog(container, key, addr->name(), this);
 					if(!dialog.exec())
 						return;
 					backend = dialog.takeBackend();
 				}
-				decrypt(container, key.lock, {}, std::move(backend));
+				// A card's login is handed over; Mobile-ID / Smart-ID has already decrypted in the
+				// dialog, which shows its control codes meanwhile
+				if(backend)
+					decrypt(container, key.lock, {}, std::move(backend));
+				else {
+					transition(container);
+					emit action(DecryptContainerSuccess);
+				}
 			}
 		});
 	}
