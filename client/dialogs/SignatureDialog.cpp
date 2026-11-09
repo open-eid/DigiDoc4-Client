@@ -262,6 +262,12 @@ void SignatureDialog::addItem(QTreeWidget *view, const QString &variable, const 
 {
 	if(value.isEmpty())
 		return;
+	static const QStringList openableSchemes{QStringLiteral("http"), QStringLiteral("https")};
+	if(!value.isValid() || !openableSchemes.contains(value.scheme(), Qt::CaseInsensitive))
+	{
+		addItem(view, variable, value.toString());
+		return;
+	}
 	QPushButton *button = itemButton(value.toString(), view);
 	connect(button, &QPushButton::clicked, this, [=]{ QDesktopServices::openUrl( value ); });
 	addItem(view, variable, button);
