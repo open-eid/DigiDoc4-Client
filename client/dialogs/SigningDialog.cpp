@@ -7,11 +7,11 @@
 #include "Application.h"
 #include "DigiDoc.h"
 #include "IKValidator.h"
-#include "QPCSC.h"
 #include "QCryptoBackend.h"
 #include "QSmartCard.h"
 #include "Settings.h"
 #include "SslCertificate.h"
+#include "dialogs/PinLogin.h"
 #include "dialogs/WarningDialog.h"
 #include "effects/Overlay.h"
 #include "signer/QSigner.h"
@@ -54,7 +54,7 @@ SigningDialog::SigningDialog(DigiDoc *doc, QWidget *parent)
 	updateCards(qApp->cryptoManager()->cache());
 	connect(qApp->cryptoManager(), &QCryptoManager::cacheChanged, this, &SigningDialog::updateCards);
 	connect(ui->pin, &QLineEdit::textEdited, this, [this] {
-		setError(ui->pin, ui->errorPin, {});
+		PinLogin::clearError(ui);
 		ui->sign->setEnabled(ui->pin->hasAcceptableInput());
 	});
 	connect(ui->pin, &QLineEdit::returnPressed, ui->sign, &QPushButton::click);
@@ -131,6 +131,7 @@ SigningDialog::SigningDialog(DigiDoc *doc, QWidget *parent)
 
 SigningDialog::~SigningDialog()
 {
+	ui->pin->clearSensitive();
 	delete ui;
 }
 
@@ -180,12 +181,7 @@ void SigningDialog::changeEvent(QEvent *event)
 
 void SigningDialog::updateNoCard()
 {
-	if(!QPCSC::instance().serviceRunning())
-		ui->noCardStatus->setText(tr("The PCSC service, required for using the ID-card, is not working. Check your computer settings."));
-	else if(QPCSC::instance().readers().isEmpty())
-		ui->noCardStatus->setText(tr("No readers found"));
-	else
-		ui->noCardStatus->setText(tr("No card in reader"));
+	ui->noCardStatus->setText(CardList::emptyText());
 	ui->noCard->setAccessibleDescription(ui->noCardStatus->text());
 }
 
@@ -211,12 +207,16 @@ void SigningDialog::updateCards(QList<TokenData> tokens)
 {
 	qDeleteAll(ui->cardListContainer->findChildren<CardListItem*>());
 
+	tokens.removeIf([](const TokenData &token) {
+		return !SslCertificate(token.cert()).keyUsage().contains(SslCertificate::NonRepudiation);
+	});
+	PinLogin::selectToken(m_selectedToken, tokens, [](const TokenData &token) {
+		return SslCertificate(token.cert()).isValid() && !token.data(QStringLiteral("blocked")).toBool();
+	});
+
 	bool any = false;
 	CardListItem *selectedCard = nullptr;
 	for(const TokenData &token : tokens) {
-		SslCertificate c(token.cert());
-		if(!c.keyUsage().contains(SslCertificate::NonRepudiation))
-			continue;
 		auto *w = new CardListItem(ui->cardListContainer);
 		w->update(token, token == m_selectedToken);
 		connect(w, &CardListItem::selected, this, &SigningDialog::updateSelection);
@@ -241,49 +241,15 @@ void SigningDialog::updateCards(QList<TokenData> tokens)
 
 void SigningDialog::updateSelection()
 {
-	for(auto *w: ui->cardListContainer->findChildren<CardListItem*>()) {
-		if(!w->isChecked())
-			continue;
-		if(!(w->token() == m_selectedToken)) {
-			ui->pin->clear();
-			setError(ui->pin, ui->errorPin, {});
-		}
-		if(currentMethod() == IDCard)
-			w->refresh();
-		m_selectedToken = w->token();
-		break;
-	}
+	PinLogin::updateSelection(ui, m_selectedToken, currentMethod() == IDCard);
 	updatePinControls();
 }
 
 void SigningDialog::updatePinControls()
 {
-	bool usable = std::ranges::any_of(ui->cardListContainer->findChildren<CardListItem*>(),
-		[](CardListItem *w) { return w->isChecked() && w->isEnabled(); });
-	bool isSeal = SslCertificate(m_selectedToken.cert()).type() & SslCertificate::TempelType;
-	QString pinName = isSeal ? QStringLiteral("PIN") : QSmartCardData::typeString(QSmartCardData::Pin2Type);
-	bool showPin = false;
-#ifndef Q_OS_WIN
-	if(usable && !m_selectedToken.data(QStringLiteral("pinpad")).toBool()) {
-		showPin = true;
-		int minLen = m_selectedToken.data(QStringLiteral("pinMin")).toInt();
-		int maxLen = m_selectedToken.data(QStringLiteral("pinMax")).toInt();
-		ui->pin->setPinLen(std::max(minLen, 5), std::max(maxLen, 12), !isSeal);
-		ui->labelPin->setText(tr("Enter %1 code").arg(pinName));
-	}
-#endif
-	ui->labelPin->setVisible(showPin);
-	ui->pin->setVisible(showPin);
-	ui->errorPin->setVisible(showPin && !ui->errorPin->text().isEmpty());
-	ui->layoutPin->invalidate();
-	if(!showPin)
-		ui->pin->clear();
-
-	ui->infoPin->setVisible(usable && !showPin);
-	if(usable && !showPin)
-		ui->infoPin->setText(tr("Please enter %1 code in the new window that will appear shortly").arg(pinName));
+	const bool ready = PinLogin::update(ui, m_selectedToken);
 	if(currentMethod() == IDCard)
-		ui->sign->setEnabled(usable && (!showPin || ui->pin->hasAcceptableInput()));
+		ui->sign->setEnabled(ready);
 }
 
 void SigningDialog::performSign()
@@ -298,20 +264,12 @@ void SigningDialog::performSign()
 	case IDCard: {
 		if(!confirmAlreadySigned())
 			return reject();
-		QString pin = ui->pin->isVisible() ? ui->pin->text() : QString();
-		auto val = QCryptoBackend::getBackend(m_selectedToken, pin);
+		auto val = PinLogin::login(ui, m_selectedToken);
 		if(!val) {
 			switch(val.error()) {
-			case QCryptoBackend::PinIncorrect: {
-				QString msg = QCryptoBackend::errorString(QCryptoBackend::PinIncorrect);
-				if(QSmartCardData data = QSmartCard::readCard(m_selectedToken, true); !data.isNull())
-					msg += QStringLiteral(". ") + tr("Remaining attempts: %1").arg(data.retryCount(QSmartCardData::Pin2Type));
-				ui->pin->clear();
-				setError(ui->pin, ui->errorPin, msg);
-				ui->pin->setFocus();
-				ui->sign->setEnabled(false);
+			case QCryptoBackend::PinIncorrect:
+				updatePinControls();
 				return;
-			}
 			case QCryptoBackend::PinCanceled:
 				return reject();
 			default:
@@ -323,7 +281,7 @@ void SigningDialog::performSign()
 			}
 		}
 		QSigner signer(std::unique_ptr<QCryptoBackend>(val.value()));
-		return digiDoc->sign(m_city, m_state, m_zip, m_country, m_role, &signer) ? accept() : reject();
+		return digiDoc->sign(m_city, m_state, m_zip, m_country, m_role, signer) ? accept() : reject();
 	}
 	case MobileID: {
 		static const QStringList countryCodes {QStringLiteral("372"), QStringLiteral("370")};
@@ -344,7 +302,7 @@ void SigningDialog::performSign()
 		showPage(ui->progressPage);
 		MobileProgress m(pui);
 		return m.init(code, phone) &&
-			digiDoc->sign(m_city, m_state, m_zip, m_country, m_role, &m) ? accept() : QDialog::reject();
+			digiDoc->sign(m_city, m_state, m_zip, m_country, m_role, m) ? accept() : QDialog::reject();
 	}
 	case SmartID: {
 		const QString code = ui->idCodeSID->text();
@@ -359,7 +317,7 @@ void SigningDialog::performSign()
 		showPage(ui->progressPage);
 		SmartIDProgress s(pui);
 		return s.init(ui->idCountry->currentData().toString(), code, digiDoc->fileName()) &&
-			digiDoc->sign(m_city, m_state, m_zip, m_country, m_role, &s) ? accept() : QDialog::reject();
+			digiDoc->sign(m_city, m_state, m_zip, m_country, m_role, s) ? accept() : QDialog::reject();
 	}
 	}
 }

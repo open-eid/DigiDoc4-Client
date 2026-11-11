@@ -781,26 +781,26 @@ void DigiDoc::setLastError(const QString &title, const Exception &e)
 }
 
 bool DigiDoc::sign(const QString &city, const QString &state, const QString &zip,
-	const QString &country, const QString &role, Signer *signer)
+	const QString &country, const QString &role, Signer &signer)
 {
 	if(isError(b->dataFiles().empty(), tr("Failed to sign container"), tr("Cannot add signature to empty container")))
 		return false;
 
 	try
 	{
-		signer->setSignatureProductionPlace(to(city), to(state), to(zip), to(country));
+		signer.setSignatureProductionPlace(to(city), to(state), to(zip), to(country));
 		std::vector<std::string> roles;
 		if(!role.isEmpty())
 			roles.push_back(to(role));
-		signer->setSignerRoles(roles);
-		signer->setProfile(Settings::DEFAULT_LTA ? "time-stamp-archive" : "time-stamp");
-		signer->setUserAgent(QStringLiteral("%1/%2 (%3) Devices: %4").arg(
+		signer.setSignerRoles(roles);
+		signer.setProfile(Settings::DEFAULT_LTA ? "time-stamp-archive" : "time-stamp");
+		signer.setUserAgent(QStringLiteral("%1/%2 (%3) Devices: %4").arg(
 			 QCoreApplication::applicationName(),
 			 QCoreApplication::applicationVersion(),
 			 Common::applicationOs(),
 			 Common::drivers().join(',')).toUtf8().constData());
 		qApp->waitForTSL( fileName() );
-		digidoc::Signature *s = b->sign(signer);
+		digidoc::Signature *s = b->sign(&signer);
 		return modified = waitFor([&] {
 			m_signatures.emplace_back(s, this, false);
 			return true;

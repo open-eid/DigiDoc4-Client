@@ -149,7 +149,7 @@ public:
 		const QString &zip,
 		const QString &country,
 		const QString &role,
-		digidoc::Signer *signer);
+		digidoc::Signer &signer);
 	const QList<DigiDocSignature>& signatures() const;
 	ContainerState state();
 	const QList<DigiDocSignature>& timestamps() const;
