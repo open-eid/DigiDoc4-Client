@@ -1,9 +1,5 @@
-# - Try to find the LDAP client libraries
-# Once done this will define
-#
-#  LDAP_FOUND - system has libldap
-#  LDAP_INCLUDE_DIR - the ldap include directory
-#  LDAP_LIBRARIES - libldap + liblber library
+# SPDX-FileCopyrightText: Estonian Information System Authority
+# SPDX-License-Identifier: LGPL-2.1-or-later
 
 set(CMAKE_FIND_FRAMEWORK LAST)
 find_path(LDAP_INCLUDE_DIR ldap.h Winldap.h)
