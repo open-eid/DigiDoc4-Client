@@ -22,7 +22,7 @@
 #include "Application.h"
 #include "CheckConnection.h"
 #include "Settings.h"
-#include "Utils.h"
+#include "dialogs/FileDialog.h"
 #include "dialogs/WarningDialog.h"
 
 #include <digidocpp/Exception.h>
@@ -229,7 +229,7 @@ bool SmartIDProgress::init(const QString &country, const QString &idCode, const 
 			->open();
 		return false;
 	}
-	QFileInfo info(fileName);
+	QFileInfo info(FileDialog::normalized(fileName));
 	QString displayFile = info.completeBaseName();
 	if(displayFile.size() > 6)
 		displayFile = displayFile.left(3) + QStringLiteral("...") + displayFile.right(3);
@@ -280,12 +280,10 @@ std::vector<unsigned char> SmartIDProgress::sign(const std::string &method, cons
 		{"hashType", digestMethod},
 		{"allowedInteractionsOrder", QJsonArray{QJsonObject{
 			 {"type", "confirmationMessageAndVerificationCodeChoice"},
-			 {"displayText200", "%1"}
+			 {"displayText200", QStringLiteral("%1 %2").arg(tr("Sign document"), d->fileName)}
 		}}},
 	};
-	// Workaround SID proxy issues
-	QString escape = QStringLiteral("%1 %2").arg(tr("Sign document"), d->fileName);
-	QByteArray data = QString::fromUtf8(QJsonDocument(req).toJson()).arg(escapeUnicode(escape)).toUtf8();
+	QByteArray data = QJsonDocument(req).toJson();
 	d->req.setUrl(QUrl(QStringLiteral("%1/signature/document/%2").arg(d->URL, d->documentNumber)));
 	qCDebug(SIDLog).noquote() << d->req.url() << data;
 	d->manager->post(d->req, data);
