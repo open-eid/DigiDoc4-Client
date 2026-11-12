@@ -343,6 +343,7 @@ QString FileDialog::normalized(const QString &data)
 {
 	static const QRegularExpression control(QStringLiteral(
 		"["
+		"\\x{009C}" // Qt treats STRING TERMINATOR as a length-variant separator
 		"\\x{061C}" // ARABIC LETTER MARK
 		"\\x{200E}" // LEFT-TO-RIGHT MARK
 		"\\x{200F}" // RIGHT-TO-LEFT MARK
