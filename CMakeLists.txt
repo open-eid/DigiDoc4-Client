@@ -71,3 +71,9 @@ endif()
 
 add_subdirectory( common )
 add_subdirectory( client )
+
+option(BUILD_TESTING "Build the client unit tests" OFF)
+if(BUILD_TESTING)
+    enable_testing()
+    add_subdirectory(test)
+endif()

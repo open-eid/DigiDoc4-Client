@@ -54,5 +54,27 @@
             "name": "windows",
             "configurePreset": "windows"
         }
+    ],
+    "testPresets": [
+        {
+            "name": "default",
+            "configurePreset": "default",
+            "output": {
+                "outputOnFailure": true
+            },
+            "execution": {
+                "noTestsAction": "error"
+            }
+        },
+        {
+            "name": "macos",
+            "inherits": "default",
+            "configurePreset": "macos"
+        },
+        {
+            "name": "windows",
+            "inherits": "default",
+            "configurePreset": "windows"
+        }
     ]
 }

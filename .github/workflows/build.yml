@@ -60,8 +60,10 @@ jobs:
     - name: Build
       run: |
         cmake --preset macos -DCMAKE_BUILD_TYPE=RelWithDebInfo \
-          -DOPENSSL_ROOT_DIR=${LIBS_PATH}/OpenSSL
+          -DOPENSSL_ROOT_DIR=${LIBS_PATH}/OpenSSL \
+          -DBUILD_TESTING=ON
         cmake --build --preset macos
+        ctest --preset macos
         cmake --build --preset macos --target zipdebug
         cmake --build --preset macos --target macdeployqt
         cmake --build --preset macos --target zip
