@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.22)
 if(NOT EXISTS ${CMAKE_SOURCE_DIR}/common/CMakeLists.txt)
     message(FATAL_ERROR "common submodule directory empty, did you 'git clone --recursive'?")
 endif()
+set(CMAKE_OSX_DEPLOYMENT_TARGET 14.0 CACHE STRING "Minimum macOS deployment version")
 project(qdigidoc4 VERSION 4.12.0
     DESCRIPTION "DigiDoc4 application for digital signing and encryption"
     HOMEPAGE_URL https://github.com/open-eid/DigiDoc4-Client
@@ -68,3 +69,9 @@ endif()
 
 add_subdirectory( common )
 add_subdirectory( client )
+
+option(BUILD_TESTING "Build the client unit tests" OFF)
+if(BUILD_TESTING)
+    enable_testing()
+    add_subdirectory(test)
+endif()

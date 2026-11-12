@@ -3,5 +3,9 @@
 %:
 	dh $@
 
+# dh_auto_test runs the unit tests with ctest; DEB_BUILD_OPTIONS=nocheck skips building them
+override_dh_auto_configure:
+	dh_auto_configure -- -DBUILD_TESTING=$(if $(filter nocheck,$(DEB_BUILD_OPTIONS)),OFF,ON)
+
 override_dh_builddeb:
 	dh_builddeb -- -Zgzip
