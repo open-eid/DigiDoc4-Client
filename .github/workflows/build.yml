@@ -215,7 +215,6 @@ jobs:
           -Dlibdigidocpp_ROOT=${{ github.workspace }}/libs/PFiles64 ^
           ${{ matrix.platform == 'arm64' && '-DQT_HOST_PATH=%QT_HOST_PATH%' || '' }}
         cmake --build build --target msi
-        cmake --build build --target msishellext
         cmake --build build --target appx
     - name: Archive artifacts
       uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
