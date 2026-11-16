@@ -60,6 +60,7 @@ private:
 	template<class C>
 	bool deleteConfirm(C *c, int index);
 	void elideFileName();
+	void showRecipients(CryptoDoc *container);
 	void encrypt(CryptoDoc *container);
 	bool eventFilter(QObject *o, QEvent *e) final;
 	bool isPasswordEncryption() const;

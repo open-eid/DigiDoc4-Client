@@ -229,17 +229,13 @@ void ContainerPage::transition(CryptoDoc *container)
 		if(!dlg.exec() || !dlg.isUpdated())
 			return;
 		container->clearKeys();
-		ui->rightPane->clear();
 		for(auto &key: dlg.keys())
-		{
 			container->addEncryptionKey(key);
-			ui->rightPane->addWidget(new AddressItem(key, AddressItem::Icon, ui->rightPane));
-		}
+		showRecipients(container);
 		mainAction->setEnabled(isEncryptEnabled(container));
 	});
 	disconnect(ui->rightPane, &ItemList::removed, container, nullptr);
 	connect(ui->rightPane, &ItemList::removed, container, [this, container](int index) {
-		container->removeKey(index);
 		ui->rightPane->removeItem(index);
 		mainAction->setEnabled(isEncryptEnabled(container));
 	});
@@ -273,13 +269,39 @@ void ContainerPage::transition(CryptoDoc *container)
 	setHeader(container->fileName());
 	ui->leftPane->init(fileName, QT_TRANSLATE_NOOP("ItemList", "Encrypted files"));
 	ui->rightPane->init(ItemList::ItemAddress, QT_TRANSLATE_NOOP("ItemList", "Recipients"));
-	bool hasUnsupported = false;
+	showRecipients(container);
+	if(std::ranges::any_of(container->keys(), [](const CKey &key) {
+		return key.rcpt_cert.isNull() && !key.isSupported();
+	}))
+		emit warning({WarningText::UnsupportedCDocWarning});
+	ui->leftPane->setModel(container->documentModel());
+	updatePanes(container->state(), container);
+}
+
+void ContainerPage::showRecipients(CryptoDoc *container)
+{
+	ui->rightPane->clear();
+	// One row per person, so e.g. their ID-card and Digi-ID share one Decrypt
+	// button, or are removed together before encrypting.
+	QHash<QString, AddressItem*> people;
 	for (const auto &key : container->keys()) {
-		hasUnsupported = hasUnsupported || (key.rcpt_cert.isNull() && !key.isSupported());
+		QString code = key.personalCode();
+		if(AddressItem *person = people.value(code)) {
+			person->addKey(key);
+			continue;
+		}
 		auto *addr = new AddressItem(key, AddressItem::Icon, ui->rightPane);
+		// A row is a person and takes all their keys with it. Connected ahead of
+		// the pane, whose removed() handler then sees the keys already gone.
+		connect(addr, &AddressItem::remove, container, [container, addr] {
+			container->removeKeys(addr->keys());
+		});
 		ui->rightPane->addWidget(addr);
+		if(!code.isEmpty())
+			people.insert(code, addr);
 		connect(addr, &AddressItem::decrypt, container, [container, key, addr, this] {
-			if(!key.isSupported()) {
+			// A person's row can hold several locks; the dialog offers only those it can open
+			if(std::ranges::none_of(addr->keys(), &CKey::isSupported)) {
 				WarningDialog::create(this)
 					->withTitle(CryptoDoc::tr("Failed to decrypt document"))
 					->withText(QCoreApplication::translate("AddressItem", "Unsupported cryptographic algorithm or recipient type"))
@@ -296,16 +318,19 @@ void ContainerPage::transition(CryptoDoc *container)
 			}
 			else {
 				std::unique_ptr<QCryptoBackend> backend;
+				libcdoc::Lock lock;
 				{
-					DecryptionDialog dialog(container, key, addr->name(), this);
+					DecryptionDialog dialog(container, addr->keys(), addr->name(), this);
 					if(!dialog.exec())
 						return;
 					backend = dialog.takeBackend();
+					if(const CKey *selected = dialog.selectedKey())
+						lock = selected->lock;
 				}
-				// A card's login is handed over; Mobile-ID / Smart-ID has already decrypted in the
-				// dialog, which shows its control codes meanwhile
+				// A card's login is handed over with the lock its card opens; Mobile-ID /
+				// Smart-ID has already decrypted in the dialog, which shows its control codes
 				if(backend)
-					decrypt(container, key.lock, {}, std::move(backend));
+					decrypt(container, lock, {}, std::move(backend));
 				else {
 					transition(container);
 					emit action(DecryptContainerSuccess);
@@ -313,10 +338,6 @@ void ContainerPage::transition(CryptoDoc *container)
 			}
 		});
 	}
-	if(hasUnsupported)
-		emit warning({WarningText::UnsupportedCDocWarning});
-	ui->leftPane->setModel(container->documentModel());
-	updatePanes(container->state(), container);
 }
 
 void ContainerPage::transition(DigiDoc* container)

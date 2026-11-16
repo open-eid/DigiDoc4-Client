@@ -15,6 +15,10 @@
 border-bottom: 1px solid #E7EAEF;
 background-color: #FFFFFF;
 }
+#AddressItem[card=&quot;true&quot;] {
+border: 1px solid #E7EAEF;
+border-radius: 4px;
+}
 #AddressItem:disabled {
 background-color: #F0F0F2;
 }
@@ -25,10 +29,6 @@ font-family: Roboto, Helvetica;
 color: #07142A;
 font-size: 14px;
 font-weight: 700;
-}
-#idType {
-color: #07142A;
-font-size: 12px;
 }
 QLabel[label] {
 font-size: 12px;
@@ -46,6 +46,42 @@ background: #F5EBED;
 QLabel[label=&quot;good&quot;] {
 color: #1A641B;
 background: #EAF8EA;
+}
+#tile {
+background-color: #F3F5F7;
+border-radius: 4px;
+}
+#tile[checked=&quot;true&quot;] {
+background-color: #EAF1F8;
+}
+#tile QLabel {
+color: #07142A;
+font-size: 14px;
+}
+#tile QLabel:disabled {
+color: #C4CBD8;
+}
+QCheckBox::indicator {
+width: 16px;
+height: 16px;
+}
+QCheckBox::indicator:unchecked {
+image: url(:/images/icon_checkbox.svg);
+}
+QCheckBox::indicator:unchecked:hover, QCheckBox::indicator:unchecked:focus {
+image: url(:/images/icon_checkbox_active.svg);
+}
+QCheckBox::indicator:unchecked:disabled {
+image: url(:/images/icon_checkbox_disabled.svg);
+}
+QCheckBox::indicator:checked {
+image: url(:/images/icon_checkbox_check.svg);
+}
+QCheckBox::indicator:checked:hover, QCheckBox::indicator:checked:focus {
+image: url(:/images/icon_checkbox_check_active.svg);
+}
+QCheckBox::indicator:checked:disabled {
+image: url(:/images/icon_checkbox_check_disabled.svg);
 }
 #add {
 padding: 9px 8px;
@@ -86,7 +122,7 @@ icon: url(:/images/icon_remove_hover.svg);
 icon: url(:/images/icon_remove_clicked.svg);
 }</string>
   </property>
-  <layout class="QGridLayout" name="AddressItemLayout">
+  <layout class="QGridLayout" name="AddressItemLayout" columnstretch="0,1,0,0,0">
    <property name="leftMargin">
     <number>8</number>
    </property>
@@ -103,9 +139,9 @@ icon: url(:/images/icon_remove_clicked.svg);
     <number>8</number>
    </property>
    <property name="verticalSpacing">
-    <number>2</number>
+    <number>4</number>
    </property>
-   <item row="0" column="0" rowspan="2">
+   <item row="0" column="0">
     <widget class="QSvgWidget" name="icon" native="true">
      <property name="minimumSize">
       <size>
@@ -121,7 +157,7 @@ icon: url(:/images/icon_remove_clicked.svg);
      </property>
     </widget>
    </item>
-   <item row="0" column="1" colspan="3">
+   <item row="0" column="1">
     <widget class="QLabel" name="name">
      <property name="focusPolicy">
       <enum>Qt::TabFocus</enum>
@@ -134,43 +170,7 @@ icon: url(:/images/icon_remove_clicked.svg);
      </property>
     </widget>
    </item>
-   <item row="1" column="1">
-    <widget class="QLabel" name="idType">
-     <property name="focusPolicy">
-      <enum>Qt::TabFocus</enum>
-     </property>
-     <property name="text">
-      <string notr="true">ID-card</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="2">
-    <widget class="QLabel" name="expire">
-     <property name="focusPolicy">
-      <enum>Qt::TabFocus</enum>
-     </property>
-     <property name="text">
-      <string notr="true">Expire</string>
-     </property>
-     <property name="label" stdset="0">
-      <string notr="true">default</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="3">
-    <spacer name="horizontalSpacer">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>40</width>
-       <height>0</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item row="0" column="4" rowspan="2">
+   <item row="0" column="2">
     <widget class="QPushButton" name="remove">
      <property name="maximumSize">
       <size>
@@ -199,7 +199,7 @@ icon: url(:/images/icon_remove_clicked.svg);
      </property>
     </widget>
    </item>
-   <item row="0" column="5" rowspan="2">
+   <item row="0" column="3">
     <widget class="QToolButton" name="add">
      <property name="cursor">
       <cursorShape>PointingHandCursor</cursorShape>
@@ -209,7 +209,7 @@ icon: url(:/images/icon_remove_clicked.svg);
      </property>
     </widget>
    </item>
-   <item row="0" column="6" rowspan="2">
+   <item row="0" column="4">
     <widget class="QToolButton" name="decrypt">
      <property name="cursor">
       <cursorShape>PointingHandCursor</cursorShape>
