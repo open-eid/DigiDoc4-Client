@@ -27,7 +27,7 @@
 #include "QSmartCard.h"
 #include "DigiDoc.h"
 #include "Settings.h"
-#ifdef Q_OS_MAC
+#ifdef Q_OS_MACOS
 #include "MacMenuBar.h"
 #else
 class MacMenuBar {};
@@ -174,7 +174,7 @@ public:
 			Settings::PROXY_PASS, [this] { return digidoc::XmlConfCurrent::proxyPass(); });
 	}
 
-#ifdef Q_OS_MAC
+#ifdef Q_OS_MACOS
 	std::string TSLCache() const final
 	{
 		return Application::groupContainerPath().toStdString();
@@ -384,7 +384,7 @@ Application::Application( int &argc, char **argv )
 #ifdef NDEBUG
 	setLibraryPaths({ applicationDirPath() });
 #endif
-#elif defined(Q_OS_MAC)
+#elifdef Q_OS_MACOS
 	qputenv("OPENSSL_CONF", applicationDirPath().toUtf8() + "../Resources/openssl.cnf");
 #ifdef NDEBUG
 	setLibraryPaths({ applicationDirPath() + "/../PlugIns" });
@@ -393,7 +393,7 @@ Application::Application( int &argc, char **argv )
 
 	QStringList args = arguments();
 	args.removeFirst();
-#ifndef Q_OS_MAC
+#ifndef Q_OS_MACOS
 	d->lockFile = Common::acquireInstanceLock(args);
 	if(!d->lockFile)
 		return;
@@ -422,6 +422,7 @@ Application::Application( int &argc, char **argv )
 	QFont f(QStringLiteral("Roboto, Helvetica"));
 	f.setPixelSize(14);
 	QToolTip::setFont(f);
+	Common::setLanguage(Settings::LANGUAGE);
 
 #ifdef CONFIG_URL
 	d->conf = new Configuration(this);
@@ -514,7 +515,7 @@ Application::Application( int &argc, char **argv )
 	connect(&d->lastWindowTimer, &QTimer::timeout, this, []{ if(topLevelWindows().isEmpty()) quit(); });
 	connect(this, &Application::lastWindowClosed, this, [&]{ d->lastWindowTimer.start(10s); });
 
-#ifdef Q_OS_MAC
+#ifdef Q_OS_MACOS
 	initMacServices();
 	d->bar = std::make_unique<MacMenuBar>();
 	d->bar->fileMenu()->addAction( d->newClientAction );
@@ -530,8 +531,7 @@ Application::Application( int &argc, char **argv )
 		d->cryptoManager = new QCryptoManager();
 		updateTSLCache(QDateTime::currentDateTimeUtc().addDays(-7));
 
-		digidoc::initialize(applicationName().toUtf8().constData(), QStringLiteral("%1/%2 (%3)")
-			.arg(applicationName(), applicationVersion(), Common::applicationOs()).toUtf8().constData(),
+		digidoc::initialize(applicationName().toUtf8().constData(), Common::userAgent().constData(),
 			[](const digidoc::Exception *ex) {
 				qDebug() << "TSL loading finished";
 				Q_EMIT qApp->TSLLoadingFinished();
@@ -549,7 +549,7 @@ Application::Application( int &argc, char **argv )
 	}
 
 	QMetaObject::invokeMethod(this, [this] {
-#ifdef Q_OS_MAC
+#ifdef Q_OS_MACOS
 		if(!Settings::PLUGINS.isSet())
 		{
 			auto *dlg = WarningDialog::create()
@@ -586,7 +586,7 @@ Application::~Application()
 	for(QWidget *top: topLevelWidgets())
 		top->close();
 
-#ifndef Q_OS_MAC
+#ifndef Q_OS_MACOS
 	if(!d->lockFile)
 	{
 		delete d;
@@ -612,7 +612,7 @@ Application::~Application()
 	}
 }
 
-#ifndef Q_OS_MAC
+#ifndef Q_OS_MACOS
 void Application::addRecent( const QString & ) {}
 #endif
 
@@ -620,10 +620,10 @@ void Application::browse( const QUrl &url )
 {
 	QUrl u = url;
 	u.setScheme(QStringLiteral("file"));
-#if defined(Q_OS_WIN)
+#ifdef Q_OS_WIN
 	if(QProcess::startDetached(QStringLiteral("explorer"), {QStringLiteral("/select,"), QDir::toNativeSeparators(u.toLocalFile())}))
 		return;
-#elif defined(Q_OS_MAC)
+#elifdef Q_OS_MACOS
 	if(QProcess::startDetached(QStringLiteral("open"), {QStringLiteral("-R"), u.toLocalFile()}))
 		return;
 #endif
@@ -632,7 +632,7 @@ void Application::browse( const QUrl &url )
 
 void Application::closeWindow()
 {
-#ifndef Q_OS_MAC
+#ifndef Q_OS_MACOS
 	if(auto *w = qobject_cast<MainWindow*>(activeWindow()))
 		w->close();
 	else
@@ -713,6 +713,7 @@ void Application::loadTranslation( const QString &lang )
 	if( d->lang == lang )
 		return;
 	Settings::LANGUAGE = d->lang = lang;
+	Common::setLanguage(lang);
 
 	if(lang == QLatin1String("en")) QLocale::setDefault(QLocale(QLocale::English, QLocale::UnitedKingdom));
 	else QLocale::setDefault(QLocale(QLocale::Estonian, QLocale::Estonia));
@@ -724,7 +725,7 @@ void Application::loadTranslation( const QString &lang )
 	if(d->helpAction) d->helpAction->setText(tr("DigiDoc4 Client Help"));
 }
 
-#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
+#if defined(Q_OS_UNIX) && !defined(Q_OS_MACOS)
 void Application::mailTo( const QUrl &url )
 {
 	QUrlQuery q(url);
@@ -885,7 +886,7 @@ uint Application::readTSLVersion(const QString &path)
 
 int Application::run()
 {
-#ifndef Q_OS_MAC
+#ifndef Q_OS_MACOS
 	if(!d->lockFile) return 0;
 #endif
 	return exec();
@@ -944,7 +945,7 @@ void Application::showClient(QStringList files, bool crypto, bool sign, bool new
 		}
 #endif
 	}
-#ifdef Q_OS_MAC
+#ifdef Q_OS_MACOS
 	// Required for restoring minimized window on macOS
 	w->setWindowState(Qt::WindowActive);
 #endif

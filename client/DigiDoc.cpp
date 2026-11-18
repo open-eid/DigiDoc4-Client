@@ -440,11 +440,7 @@ bool DigiDoc::extend()
 	QWidget *parent = parentWidget();
 	try {
 		ExtendSigner signer;
-		signer.setUserAgent(QStringLiteral("%1/%2 (%3) Devices: %4").arg(
-			QCoreApplication::applicationName(),
-			QCoreApplication::applicationVersion(),
-			Common::applicationOs(),
-			Common::drivers().join(',')).toUtf8().constData());
+		signer.setUserAgent(Common::userAgent(true).constData());
 		qApp->waitForTSL(fileName());
 		QString current = m_fileName;
 		size_t extendCount = 0;
@@ -794,11 +790,7 @@ bool DigiDoc::sign(const QString &city, const QString &state, const QString &zip
 			roles.push_back(to(role));
 		signer->setSignerRoles(roles);
 		signer->setProfile(Settings::DEFAULT_LTA ? "time-stamp-archive" : "time-stamp");
-		signer->setUserAgent(QStringLiteral("%1/%2 (%3) Devices: %4").arg(
-			 QCoreApplication::applicationName(),
-			 QCoreApplication::applicationVersion(),
-			 Common::applicationOs(),
-			 Common::drivers().join(',')).toUtf8().constData());
+		signer->setUserAgent(Common::userAgent(true).constData());
 		qApp->waitForTSL( fileName() );
 		digidoc::Signature *s = b->sign(signer);
 		return modified = waitFor([&] {

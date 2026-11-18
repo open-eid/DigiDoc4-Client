@@ -339,8 +339,7 @@ SslCertificate::Validity SslCertificate::validateOnline() const
 
 	// Get issuer
 	QNetworkRequest r(urls.values(SslCertificate::ad_CAIssuers).first());
-	r.setRawHeader("User-Agent", QStringLiteral("%1/%2 (%3)")
-		.arg(QCoreApplication::applicationName(), QCoreApplication::applicationVersion(), Common::applicationOs()).toUtf8());
+	r.setRawHeader("User-Agent", Common::userAgent());
 	r.setTransferTimeout(15000);
 	QNetworkReply *repl = m.get(r);
 	waitForSignal(&m, &QNetworkAccessManager::finished);
