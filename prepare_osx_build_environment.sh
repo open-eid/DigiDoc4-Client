@@ -8,7 +8,6 @@ set -e
 ######### Versions of libraries/frameworks to be compiled
 QT_VER="6.12.0"
 OPENSSL_VER="3.5.9"
-OPENLDAP_VER="2.6.15"
 REBUILD=false
 BUILD_PATH=~/cmake_builds
 : ${MACOSX_DEPLOYMENT_TARGET:="14.0"}
@@ -19,7 +18,6 @@ OPENSSL_SHA256="603f5602e2eef00d77fbd429d34dcd5822bb301757a1bc9cdb24c670f1eb859a
 QTBASE_SHA256="a951bd163c7b80fc6b8c88d7668fb56abf91c152373e13c10666763238131307"
 QTSVG_SHA256="e4ab39534ec97987b1b9b60ef7f4d3253d5912a69f8c713a01753174a4029331"
 QTTOOLS_SHA256="8dab8f3611496486a470ad5f115ceea584f36bc22a2b8b6f6ebdbafbb8160693"
-OPENLDAP_SHA256="bc91225dbfc50354033b1303bc91d1a7f6ddd1dc32fac950d79c28fe66d6bca8"
 
 verify_sha256() {
     local file="$1" expected="$2" actual
@@ -72,7 +70,6 @@ do
 done
 
 QT_PATH=${BUILD_PATH}/Qt-${QT_VER}-OpenSSL
-OPENLDAP_PATH=${BUILD_PATH}/OpenLDAP
 GREY='\033[0;37m'
 ORANGE='\033[0;33m'
 RED='\033[0;31m'
@@ -138,26 +135,6 @@ if [[ "$REBUILD" = true || ! -d ${QT_PATH} ]] ; then
     done
 else
     echo -e "\n${GREY}  Qt not built${RESET}"
-fi
-
-if [[ "$REBUILD" = true || ! -d ${OPENLDAP_PATH} ]] ; then
-    echo -e "\n${ORANGE}##### Building OpenLDAP ${OPENLDAP_VER} ${OPENLDAP_PATH} #####${RESET}\n"
-    if [ ! -f openldap-${OPENLDAP_VER}.tgz ]; then
-        curl -O -L --proto '=https' --proto-redir '=https' https://www.openldap.org/software/download/OpenLDAP/openldap-release/openldap-${OPENLDAP_VER}.tgz
-    fi
-    verify_sha256 openldap-${OPENLDAP_VER}.tgz ${OPENLDAP_SHA256}
-    tar xf openldap-${OPENLDAP_VER}.tgz
-    pushd openldap-${OPENLDAP_VER}
-    sed -ie 's! doc!!' Makefile.in
-    ARCH="-arch x86_64 -arch arm64"
-    CFLAGS="${ARCH}" CXXFLAGS="${ARCH}" LDFLAGS="${ARCH} -L${OPENSSL_PATH}/lib" CPPFLAGS="-I${OPENSSL_PATH}/include" ./configure \
-        --prefix ${OPENLDAP_PATH} --enable-static --disable-shared --disable-syslog --disable-local --disable-slapd \
-        --without-threads --without-cyrus-sasl --with-tls=openssl
-    make
-    make install
-    popd
-else
-    echo -e "\n${GREY}  OpenLDAP not built${RESET}"
 fi
 
 popd

@@ -22,7 +22,7 @@
 #include "CertificateHistory.h"
 
 #include <QDialog>
-#include <QtCore/QTemporaryFile>
+#include <QtCore/QUrl>
 
 namespace Ui {
 class AddRecipients;
@@ -54,16 +54,18 @@ private:
 
 	static AddressItem* itemListValue(ItemList *list, const CKey &key);
 	void search(const QString &term, bool select = false, const QString &type = {});
+	void finishSearch(bool failed = false);
 	void showError(const QString &title, const QString &details);
 	void showResult(const QList<QSslCertificate> &result, int resultCount, const QVariantMap &userData);
 
 	struct Private;
 	Private *ui;
 	QList<CKey> rightList;
-	QList<LdapSearch*> ldap_person;
-	LdapSearch *ldap_corp;
-	int multiSearch = 0;
+	LdapSearch *ldap;
+	QList<QUrl> ldapPersonUrls;
+	QUrl ldapCorpUrl;
+	int pendingSearches = 0;
+	bool searchFailed = false;
 
-	QTemporaryFile ldapCACerts;
 	HistoryList historyCertData;
 };
