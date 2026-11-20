@@ -43,6 +43,8 @@ struct CKey {
 	libcdoc::Lock lock;
     QSslCertificate rcpt_cert;
 
+	bool canDecrypt(const QSslCertificate &cert) const;
+	bool isSupported() const;
 	bool operator== (const CKey& rhs) const;
 };
 

@@ -311,10 +311,10 @@ background: transparent;
 }</string>
               </property>
               <property name="frameShape">
-               <enum>QFrame::Shape::NoFrame</enum>
+               <enum>QFrame::NoFrame</enum>
               </property>
               <property name="horizontalScrollBarPolicy">
-               <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
+               <enum>Qt::ScrollBarAlwaysOff</enum>
               </property>
               <property name="widgetResizable">
                <bool>true</bool>
@@ -420,9 +420,6 @@ font-weight: 400;
                   <width>0</width>
                   <height>20</height>
                  </size>
-                </property>
-                <property name="text">
-                 <string notr="true">Enter PIN2 code</string>
                 </property>
                 <property name="buddy">
                  <cstring>pin</cstring>
