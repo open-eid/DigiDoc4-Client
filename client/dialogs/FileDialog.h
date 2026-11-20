@@ -42,6 +42,9 @@ public:
 	static std::unique_ptr<QFile> keepAccessAlive(const QString &path,
 		QIODevice::OpenMode mode = QIODevice::WriteOnly|QIODevice::Append);
 	static bool isSignedPDF(const QString &path);
+	static QString logPath(const QString &name);
+	static bool openLogFile(QFile &f, const QString &path);
+	static void writeLog(QFile &f, QByteArrayView line);
 	static void setFileZone(const QString &target, const QString &source);
 	static void setReadOnly(const QString &path, bool readonly = true);
 	static QString normalized(const QString &file);
@@ -59,7 +62,6 @@ public:
 		const QString &filename = {}, QString filter = {});
 
 private:
-	static QString result( const QString &str );
-	static QStringList result( const QStringList &list );
+	static QString result(QString str);
 	static QString getDir( const QString &dir );
 };

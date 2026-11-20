@@ -309,6 +309,8 @@ jobs:
       with:
         patterns: |
           -**/*autogen*/**
+          -**/fmt/**
+          -**/httplib.h
           -**:cpp/loop-variable-changed
           -**:cpp/poorly-documented-function
         input: sarif-results/cpp.sarif

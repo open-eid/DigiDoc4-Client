@@ -65,8 +65,8 @@ private:
 	void checkConnection();
 	void applyProxy() const;
 	void retranslate(const QString& lang);
-	void saveFile(const QString &name, const QString &path);
-	void saveFile(const QString &name, const QByteArray &content);
+	bool saveFile(const QString &name, const QString &path);
+	bool saveFile(const QString &name, const QByteArray &content);
 	void saveProxy();
 	QSslCertificate selectCert(const QString &label, const QString &format);
 	void selectLanguage();

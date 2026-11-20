@@ -21,6 +21,7 @@
 #include "ui_SettingsDialog.h"
 
 #include "Application.h"
+#include "CDocSupport.h"
 #include "CheckConnection.h"
 #include "Configuration.h"
 #include "Diagnostics.h"
@@ -55,7 +56,7 @@
 using namespace Qt::StringLiterals;
 #endif
 
-#define qdigidoc4log QStringLiteral("%1/%2.log").arg(QDir::tempPath(), QApplication::applicationName())
+#define qdigidoc4log FileDialog::logPath(QStringLiteral("%1.log").arg(QApplication::applicationName()))
 
 namespace
 {
@@ -364,13 +365,10 @@ SettingsDialog::SettingsDialog(int page, QWidget *parent)
 	ui->chkLibdigidocppDebug->setChecked(Settings::LIBDIGIDOCPP_DEBUG);
 	connect(ui->chkLibdigidocppDebug, &QCheckBox::toggled, this, [this](bool checked) {
 		Settings::LIBDIGIDOCPP_DEBUG = checked;
+		Application::closeLog();
+		QFile::remove(qdigidoc4log);
 		if(!checked)
-		{
-			QFile::remove(qdigidoc4log);
 			return;
-		}
-		if(QFile f(qdigidoc4log); f.open(QFile::WriteOnly|QFile::Truncate))
-			f.write({});
 #ifdef Q_OS_MACOS
 		WarningDialog::create(this)
 			->withTitle(tr("Restart DigiDoc4 Client to activate logging"))
@@ -437,11 +435,14 @@ SettingsDialog::SettingsDialog(int page, QWidget *parent)
 	});
 	connect(ui->btnNavSaveLibdigidocpp, &QPushButton::clicked, this, [this]{
 		Settings::LIBDIGIDOCPP_DEBUG = false;
-		QString log = QStringLiteral("%1/libdigidocpp.log").arg(QDir::tempPath());
+		Application::closeLog();
+		const QByteArray cdocLog = DDCDocLogger::logData();
+		QString log = FileDialog::logPath(QStringLiteral("libdigidocpp.log"));
 		saveFile(QStringLiteral("libdigidocpp.txt"), log);
 		saveFile(QStringLiteral("qdigidoc4.txt"), qdigidoc4log);
-		QFile::remove(log);
-		ui->btnNavSaveLibdigidocpp->hide();
+		if(!cdocLog.isEmpty())
+			saveFile(QStringLiteral("libcdoc.txt"), cdocLog);
+		showPage(DiagnosticsSettings);
 	});
 #ifdef Q_OS_WIN
 	connect(ui->btnNavFromHistory, &QPushButton::clicked, this, [this] {
@@ -662,7 +663,8 @@ void SettingsDialog::showPage(int page)
 	ui->btnCheckConnection->setVisible(page == NetworkSettings);
 	ui->btnNavSaveReport->setVisible(page == DiagnosticsSettings);
 	ui->btnNavSaveLibdigidocpp->setVisible(page == DiagnosticsSettings &&
-		QFile::exists(QStringLiteral("%1/libdigidocpp.log").arg(QDir::tempPath())));
+		(QFile::exists(FileDialog::logPath(QStringLiteral("libdigidocpp.log"))) ||
+		 QFile::exists(qdigidoc4log)));
 #ifdef Q_OS_WIN
 	ui->btnNavFromHistory->setVisible(page == GeneralSettings);
 #else
@@ -670,15 +672,21 @@ void SettingsDialog::showPage(int page)
 #endif
 }
 
-void SettingsDialog::saveFile(const QString &name, const QString &path)
+bool SettingsDialog::saveFile(const QString &name, const QString &path)
 {
 	QFile f(path);
-	if(f.open(QFile::ReadOnly|QFile::Text))
-		saveFile(name, f.readAll());
-	f.remove();
+	if(!f.open(QIODevice::ReadOnly))
+		return false;
+	QByteArray content = f.readAll();
+	if(f.error() != QFileDevice::NoError)
+		return false;
+	f.close();
+	if(!saveFile(name, content))
+		return false;
+	return f.remove();
 }
 
-void SettingsDialog::saveFile(const QString &name, const QByteArray &content)
+bool SettingsDialog::saveFile(const QString &name, const QByteArray &content)
 {
 	QString filename = FileDialog::getSaveFileName(this, tr("Save as"), QStringLiteral( "%1/%2_%3_%4").arg(
 		QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation),
@@ -687,9 +695,13 @@ void SettingsDialog::saveFile(const QString &name, const QByteArray &content)
 		name),
 		tr("Text files (*.txt)"));
 	if( filename.isEmpty() )
-		return;
-	if(QFile f(filename); !f.open(QIODevice::WriteOnly|QIODevice::Text) || !f.write(content))
+		return false;
+	if(QFile f(filename); !f.open(QIODevice::WriteOnly) || f.write(content) != content.size() || !f.flush())
+	{
 		WarningDialog::create(this)->withText(tr("Failed write to file!"))->open();
+		return false;
+	}
+	return true;
 }
 
 

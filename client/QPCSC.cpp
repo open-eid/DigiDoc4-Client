@@ -27,8 +27,8 @@
 #include <array>
 #include <cstring>
 
-static Q_LOGGING_CATEGORY(APDU,"QPCSC.APDU")
-static Q_LOGGING_CATEGORY(SCard,"QPCSC.SCard")
+static Q_LOGGING_CATEGORY(APDU, "qdigidoc4.pcsc.apdu", QtWarningMsg)
+static Q_LOGGING_CATEGORY(SCard, "qdigidoc4.pcsc", QtInfoMsg)
 
 static QByteArray formatAPDU(const QByteArray &apdu, bool sensitive)
 {
@@ -99,8 +99,6 @@ quint32 QPCSCReader::Private::feature(DRIVER_FEATURES key)
 QPCSC::QPCSC()
 	: d(new Private)
 {
-	const_cast<QLoggingCategory&>(SCard()).setEnabled(QtDebugMsg, qEnvironmentVariableIsSet("PCSC_DEBUG"));
-	const_cast<QLoggingCategory&>(APDU()).setEnabled(QtDebugMsg, qEnvironmentVariableIsSet("APDU_DEBUG"));
 	Q_UNUSED(serviceRunning())
 }
 
@@ -189,7 +187,7 @@ void QPCSC::run()
 			if((i->dwCurrentState & SCARD_STATE_PRESENT) != (i->dwEventState & SCARD_STATE_PRESENT))
 				Q_EMIT cardChanged();
 			i->dwCurrentState = i->dwEventState;
-			qCDebug(SCard) << "New state: " << QString::fromLocal8Bit(i->szReader) << stateToString(i->dwCurrentState);
+			qCInfo(SCard) << "New state: " << QString::fromLocal8Bit(i->szReader) << stateToString(i->dwCurrentState);
 			if((i->dwCurrentState & (SCARD_STATE_UNKNOWN|SCARD_STATE_IGNORE)) > 0)
 			{
 				free((void*)i->szReader);
