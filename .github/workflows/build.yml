@@ -28,7 +28,7 @@ jobs:
         submodules: recursive
         persist-credentials: false
     - name: Download artifact
-      uses: dawidd6/action-download-artifact@eab87c9830c39eff17e5a6eadb20bfb4bc880477 # v27
+      uses: dawidd6/action-download-artifact@a92c7ae74cf1df8810783758581e485ac3aaa309 # v28
       with:
         workflow: build.yml
         branch: master
@@ -62,8 +62,10 @@ jobs:
       run: |
         cmake "-GNinja" -B build -S . -DCMAKE_BUILD_TYPE=RelWithDebInfo \
           -DOPENSSL_ROOT_DIR=${LIBS_PATH}/OpenSSL \
-          -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64"
+          -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64" \
+          -DBUILD_TESTING=ON
         cmake --build build
+        ctest --test-dir build --output-on-failure
         cmake --build build --target zipdebug
         cmake --build build --target macdeployqt
         cmake --build build --target zip
@@ -87,7 +89,7 @@ jobs:
       DEBEMAIL: github-actions@github.com
     steps:
     - name: Download artifact
-      uses: dawidd6/action-download-artifact@eab87c9830c39eff17e5a6eadb20bfb4bc880477 # v27
+      uses: dawidd6/action-download-artifact@a92c7ae74cf1df8810783758581e485ac3aaa309 # v28
       with:
         workflow: build.yml
         branch: master
@@ -136,7 +138,7 @@ jobs:
         container: [43, 44, 45]
     steps:
     - name: Download artifact
-      uses: dawidd6/action-download-artifact@eab87c9830c39eff17e5a6eadb20bfb4bc880477 # v27
+      uses: dawidd6/action-download-artifact@a92c7ae74cf1df8810783758581e485ac3aaa309 # v28
       with:
         workflow: build.yml
         branch: master
@@ -165,10 +167,12 @@ jobs:
         platform: [x64, arm64]
     env:
       VER_SUFFIX: .VS${{ matrix.vcver }}
+      VCPKG_ROOT: C:/vcpkg
+      PLATFORM: ${{ matrix.platform }}
     steps:
     - *Checkout
     - name: Download artifact
-      uses: dawidd6/action-download-artifact@eab87c9830c39eff17e5a6eadb20bfb4bc880477 # v27
+      uses: dawidd6/action-download-artifact@a92c7ae74cf1df8810783758581e485ac3aaa309 # v28
       with:
         workflow: build.yml
         branch: master
@@ -232,7 +236,7 @@ jobs:
     steps:
     - *Checkout
     - name: Download artifact
-      uses: dawidd6/action-download-artifact@eab87c9830c39eff17e5a6eadb20bfb4bc880477 # v27
+      uses: dawidd6/action-download-artifact@a92c7ae74cf1df8810783758581e485ac3aaa309 # v28
       with:
         workflow: build.yml
         branch: master
@@ -282,7 +286,7 @@ jobs:
     steps:
     - *Checkout
     - name: Download artifact
-      uses: dawidd6/action-download-artifact@eab87c9830c39eff17e5a6eadb20bfb4bc880477 # v27
+      uses: dawidd6/action-download-artifact@a92c7ae74cf1df8810783758581e485ac3aaa309 # v28
       with:
         workflow: build.yml
         branch: master

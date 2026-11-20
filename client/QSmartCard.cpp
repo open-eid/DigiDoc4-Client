@@ -283,19 +283,19 @@ bool IDEMIACard::updateCounters(QSmartCardDataPrivate *d) const
 	reader.transfer(AID);
 	if(auto data = reader.transfer(APDU("00CB3FFF 0A 4D087006 BF8101 02A080 00")))
 	{
-		if(auto info = TLV(data.data)[0xBF8101][0xA0]; auto retry = info[0x9B])
-			d->retry[QSmartCardData::Pin1Type] = quint8(retry.data[0]);
+		if(auto retry = TLV(data.data)[0xBF8101][0xA0][0x9B].value(); !retry.isEmpty())
+			d->retry[QSmartCardData::Pin1Type] = quint8(retry[0]);
 	}
 	if(auto data = reader.transfer(APDU("00CB3FFF 0A 4D087006 BF8102 02A080 00")))
 	{
-		if(auto info = TLV(data.data)[0xBF8102][0xA0]; auto retry = info[0x9B])
-			d->retry[QSmartCardData::PukType] = quint8(retry.data[0]);
+		if(auto retry = TLV(data.data)[0xBF8102][0xA0][0x9B].value(); !retry.isEmpty())
+			d->retry[QSmartCardData::PukType] = quint8(retry[0]);
 	}
 	reader.transfer(AID_QSCD);
 	if(auto data = reader.transfer(APDU("00CB3FFF 0A 4D087006 BF8105 02A080 00")))
 	{
-		if(auto info = TLV(data.data)[0xBF8105][0xA0]; auto retry = info[0x9B])
-			d->retry[QSmartCardData::Pin2Type] = quint8(retry.data[0]);
+		if(auto retry = TLV(data.data)[0xBF8105][0xA0][0x9B].value(); !retry.isEmpty())
+			d->retry[QSmartCardData::Pin2Type] = quint8(retry[0]);
 	}
 	return true;
 }
@@ -413,14 +413,13 @@ bool THALESCard::updateCounters(QSmartCardDataPrivate *d) const
 		auto data = reader.transfer(apdu);
 		if(!data)
 			return false;
-		if(auto info = TLV(data.data); auto retry = info[0xDF21])
-		{
-			d->retry[QSmartCardData::PinType(type)] = quint8(retry.data[0]);
-			auto changed = info[0xDF2F];
-			d->locked[QSmartCardData::PinType(type)] = (changed && changed.data[0] == 0);
-		}
-		else
+		TLV info(data.data);
+		auto retry = info[0xDF21].value();
+		if(retry.isEmpty())
 			return false;
+		d->retry[QSmartCardData::PinType(type)] = quint8(retry[0]);
+		auto changed = info[0xDF2F].value();
+		d->locked[QSmartCardData::PinType(type)] = (!changed.isEmpty() && changed[0] == 0);
 	}
 	return true;
 }

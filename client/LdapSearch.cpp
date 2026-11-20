@@ -31,7 +31,6 @@
 #include <QtNetwork/QSslSocket>
 
 #include <chrono>
-#include <type_traits>
 #include <utility>
 
 using namespace std::chrono;
@@ -60,82 +59,6 @@ constexpr int SIZE_LIMIT = 50;
 constexpr int RESULT_SUCCESS = 0;
 constexpr int RESULT_SIZE_LIMIT_EXCEEDED = 4;
 constexpr qsizetype MAX_RESPONSE_SIZE = 10 * 1024 * 1024;
-
-template<typename T>
-struct Ber final
-{
-	Tag tag;
-	T value;
-	constexpr qsizetype encodedSize() const;
-	operator QByteArray() const;
-};
-
-constexpr int lengthSize(qsizetype size)
-{
-	int length = 1;
-	if(size >= 0x80) for(; size > 0; size >>= 8)
-		++length;
-	return length;
-}
-
-template<typename T>
-constexpr qsizetype payloadSize(const T &value)
-{
-	if constexpr(std::is_same_v<T, int>)
-	{
-		qsizetype size = 1;
-		for(int n = value; n < -128 || n > 127; n >>= 8)
-			++size;
-		return size;
-	}
-	else if constexpr(std::is_convertible_v<const T&, QByteArrayView>)
-		return QByteArrayView(value).size();
-	else
-		return value.encodedSize();
-}
-
-template<typename T>
-constexpr qsizetype Ber<T>::encodedSize() const
-{
-	qsizetype size = payloadSize(value);
-	return 1 + lengthSize(size) + size;
-}
-
-template<typename T>
-inline QByteArray operator+(QByteArray lhs, const Ber<T>& rhs)
-{
-	// Tag
-	lhs.append(char(rhs.tag));
-	// Length
-	auto size = payloadSize(rhs.value);
-	if(int length = lengthSize(size); length == 1)
-		lhs.append(char(size));
-	else
-	{
-		lhs.append(char(0x80 | (length - 1)));
-		for(int shift = (length - 2) * 8; shift >= 0; shift -= 8)
-			lhs.append(char((size >> shift) & 0xFF));
-	}
-	// Value
-	if constexpr(std::is_same_v<T, QByteArray>)
-		lhs.append(rhs.value);
-	else if constexpr(std::is_same_v<T, int>)
-	{
-		for(int shift = (size - 1) * 8; shift >= 0; shift -= 8)
-			lhs.append(char((quint32(rhs.value) >> shift) & 0xFF));
-	}
-	else
-		return std::move(lhs) + rhs.value;
-	return lhs;
-}
-
-template<typename T>
-Ber<T>::operator QByteArray() const
-{
-	QByteArray result;
-	result.reserve(encodedSize());
-	return std::move(result) + *this;
-}
 
 QByteArray ldapMessage(Tag operation, QByteArray value)
 {
