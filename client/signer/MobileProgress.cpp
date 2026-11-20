@@ -22,7 +22,6 @@
 #include "Application.h"
 #include "CheckConnection.h"
 #include "Settings.h"
-#include "Utils.h"
 #include "dialogs/WarningDialog.h"
 
 #include <digidocpp/Exception.h>
@@ -277,11 +276,9 @@ std::vector<unsigned char> MobileProgress::sign(const std::string &method, const
 		{"hash", QByteArray::fromRawData((const char*)digest.data(), int(digest.size())).toBase64()},
 		{"hashType", digestMethod},
 		{"language", tr("ENG")},
-		{"displayText", "%1"},
+		{"displayText", tr("Sign document")},
 		{"displayTextFormat", "UCS-2"}
 	})).toJson();
-	// Workaround MID proxy issues
-	data = QString::fromUtf8(data).arg(escapeUnicode(tr("Sign document"))).toUtf8();
 	d->req.setUrl(QUrl(QStringLiteral("%1/signature").arg(d->URL)));
 	qCDebug(MIDLog).noquote() << d->req.url() << data;
 	d->manager->post(d->req, data);

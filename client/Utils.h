@@ -94,21 +94,6 @@ namespace {
 		}
 	}
 
-	inline QString escapeUnicode(const QString &str) {
-		QString escaped;
-		escaped.reserve(6 * str.size());
-		for (QChar ch: str) {
-			ushort code = ch.unicode();
-			if (code < 0x80) {
-				escaped += ch;
-			} else {
-				escaped += QString("\\u");
-				escaped += QString::number(code, 16).rightJustified(4, '0');
-			}
-		}
-		return escaped;
-	}
-
 	inline qint64 copyIODevice(QIODevice *from, QIODevice *to, qint64 max = (std::numeric_limits<qint64>::max)())
 	{
 		std::array<char,16*1024> buf{};
