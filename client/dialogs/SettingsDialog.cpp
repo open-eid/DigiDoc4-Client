@@ -5,7 +5,6 @@
 #include "ui_SettingsDialog.h"
 
 #include "Application.h"
-#include "CDocSupport.h"
 #include "CheckConnection.h"
 #include "Configuration.h"
 #include "Diagnostics.h"
@@ -420,12 +419,10 @@ SettingsDialog::SettingsDialog(int page, QWidget *parent)
 	connect(ui->btnNavSaveLibdigidocpp, &QPushButton::clicked, this, [this]{
 		Settings::LIBDIGIDOCPP_DEBUG = false;
 		Application::closeLog();
-		const QByteArray cdocLog = DDCDocLogger::logData();
 		QString log = FileDialog::logPath(QStringLiteral("libdigidocpp.log"));
 		saveFile(QStringLiteral("libdigidocpp.txt"), log);
 		saveFile(QStringLiteral("qdigidoc4.txt"), qdigidoc4log);
-		if(!cdocLog.isEmpty())
-			saveFile(QStringLiteral("libcdoc.txt"), cdocLog);
+		saveFile(QStringLiteral("libcdoc.txt"), FileDialog::logPath(QStringLiteral("libcdoc.log")));
 		showPage(DiagnosticsSettings);
 	});
 #ifdef Q_OS_WIN
@@ -648,6 +645,7 @@ void SettingsDialog::showPage(int page)
 	ui->btnNavSaveReport->setVisible(page == DiagnosticsSettings);
 	ui->btnNavSaveLibdigidocpp->setVisible(page == DiagnosticsSettings &&
 		(QFile::exists(FileDialog::logPath(QStringLiteral("libdigidocpp.log"))) ||
+		 QFile::exists(FileDialog::logPath(QStringLiteral("libcdoc.log"))) ||
 		 QFile::exists(qdigidoc4log)));
 #ifdef Q_OS_WIN
 	ui->btnNavFromHistory->setVisible(page == GeneralSettings);

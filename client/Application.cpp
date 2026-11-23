@@ -277,11 +277,10 @@ private:
 				log = path.toStdString();
 			else
 				log.reset();
-			DDCDocLogger::setLogLevel(libcdoc::LEVEL_DEBUG);
 		} else {
 			log.reset();
-			DDCDocLogger::setLogLevel(libcdoc::LEVEL_WARNING);
 		}
+		DDCDocLogger::enableLog(enable);
 	}
 
 	template<class T>
@@ -531,7 +530,6 @@ Application::Application( int &argc, char **argv )
 	d->helpAction = d->bar->helpMenu()->addAction(tr("DigiDoc4 Client Help"), this, &Application::openHelp);
 #endif
 
-	DDCDocLogger::setUpLogger(FileDialog::logPath(QStringLiteral("libcdoc.log")));
 	try
 	{
 		digidoc::Conf::init(new DigidocConf(debugLogging));
