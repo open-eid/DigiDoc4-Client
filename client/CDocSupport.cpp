@@ -134,7 +134,7 @@ CDocSupport::getCDocFileList(const QString &filename)
 	return files;
 }
 
-static libcdoc::result_t
+static constexpr libcdoc::result_t
 getDecryptStatus(QCryptoBackend::Status pin_status)
 {
 	switch (pin_status) {
@@ -163,7 +163,7 @@ getDecryptResultStatus(const std::vector<uint8_t> &result, std::unique_ptr<QCryp
 }
 
 libcdoc::result_t
-DDCryptoBackend::decryptRSA(std::vector<uint8_t>& dst, const std::vector<uint8_t> &data, bool oaep, unsigned int idx)
+DDCryptoBackend::decryptRSA(std::vector<uint8_t>& dst, const std::vector<uint8_t> &data, bool oaep, unsigned int /* idx */)
 {
 	if (!backend)
 		return BACKEND_ERROR;
@@ -173,7 +173,7 @@ DDCryptoBackend::decryptRSA(std::vector<uint8_t>& dst, const std::vector<uint8_t
 
 libcdoc::result_t
 DDCryptoBackend::deriveConcatKDF(std::vector<uint8_t>& dst, const std::vector<uint8_t> &publicKey, const std::string &digest,
-								 const std::vector<uint8_t> &algorithmID, const std::vector<uint8_t> &partyUInfo, const std::vector<uint8_t> &partyVInfo, unsigned int idx)
+								 const std::vector<uint8_t> &algorithmID, const std::vector<uint8_t> &partyUInfo, const std::vector<uint8_t> &partyVInfo, unsigned int /* idx */)
 {
 	static const QHash<std::string_view, QCryptographicHash::Algorithm> SHA_MTH{
 		{"http://www.w3.org/2001/04/xmlenc#sha256", QCryptographicHash::Sha256},
@@ -187,7 +187,7 @@ DDCryptoBackend::deriveConcatKDF(std::vector<uint8_t>& dst, const std::vector<ui
 }
 
 libcdoc::result_t
-DDCryptoBackend::deriveHMACExtract(std::vector<uint8_t>& dst, const std::vector<uint8_t> &key_material, const std::vector<uint8_t> &salt, unsigned int idx)
+DDCryptoBackend::deriveHMACExtract(std::vector<uint8_t>& dst, const std::vector<uint8_t> &key_material, const std::vector<uint8_t> &salt, unsigned int /* idx */)
 {
 	if (!backend)
 		return BACKEND_ERROR;
@@ -197,7 +197,7 @@ DDCryptoBackend::deriveHMACExtract(std::vector<uint8_t>& dst, const std::vector<
 
 libcdoc::result_t
 DDCryptoBackend::extractHKDF(std::vector<uint8_t> &dst, const std::vector<uint8_t> &salt,
-	const std::vector<uint8_t> &pwSalt, int32_t kdfIter, unsigned int idx)
+	const std::vector<uint8_t> &pwSalt, int32_t kdfIter, unsigned int /* idx */)
 {
 	if(secret.isEmpty() || salt.empty() || kdfIter < 0 || (kdfIter > 0 && pwSalt.empty()))
 		return INVALID_PARAMS;
@@ -238,16 +238,16 @@ std::string
 DDCryptoBackend::getLastErrorStr(libcdoc::result_t code) const
 {
 	switch (code) {
-		case PIN_CANCELED:
-			return "PIN entry canceled";
-		case PIN_INCORRECT:
-			return "PIN incorrect";
-		case PIN_LOCKED:
-			return "PIN locked";
-		case IN_PROGRESS:
-			return "Signing/decrypting is already in progress another window.";
-		case BACKEND_ERROR:
-			return "Backend error";
+	case PIN_CANCELED:
+		return "PIN entry canceled";
+	case PIN_INCORRECT:
+		return "PIN incorrect";
+	case PIN_LOCKED:
+		return "PIN locked";
+	case IN_PROGRESS:
+		return "Signing/decrypting is already in progress another window.";
+	case BACKEND_ERROR:
+		return "Backend error";
 	}
 	return libcdoc::CryptoBackend::getLastErrorStr(code);
 }
@@ -275,15 +275,11 @@ DDConfiguration::getValue(std::string_view domain, std::string_view param) const
 		QJsonObject data = list.value(QLatin1String(domain.data(), domain.size())).toObject();
 		if (QString url = data.value(QLatin1String("POST")).toString(); !url.isEmpty())
 			return url.toStdString();
-		if (!domain.empty() && domain == Settings::CDOC2_UUID) {
-			QString url = Settings::CDOC2_POST;
-			return url.toStdString();
-		}
+		if (!domain.empty() && domain == Settings::CDOC2_UUID)
+			return Settings::CDOC2_POST;
 #else
-		if (domain == Settings::CDOC2_DEFAULT_KEYSERVER) {
-			QString url = Settings::CDOC2_POST;
-			return url.toStdString();
-		}
+		if (domain == Settings::CDOC2_DEFAULT_KEYSERVER)
+			return Settings::CDOC2_POST;
 #endif
 	} else if (param == libcdoc::Configuration::KEYSERVER_FETCH_URL) {
 #ifdef CONFIG_URL
@@ -291,15 +287,11 @@ DDConfiguration::getValue(std::string_view domain, std::string_view param) const
 		QJsonObject data = list.value(QLatin1String(domain.data(), domain.size())).toObject();
 		if (QString url = data.value(QLatin1String("FETCH")).toString(); !url.isEmpty())
 			return url.toStdString();
-		if (!domain.empty() && domain == Settings::CDOC2_UUID) {
-			QString url = Settings::CDOC2_GET;
-			return url.toStdString();
-		}
+		if (!domain.empty() && domain == Settings::CDOC2_UUID)
+			return Settings::CDOC2_GET;
 #else
-		if (domain == Settings::CDOC2_DEFAULT_KEYSERVER) {
-			QString url = Settings::CDOC2_GET;
-			return url.toStdString();
-		}
+		if (domain == Settings::CDOC2_DEFAULT_KEYSERVER)
+			return Settings::CDOC2_GET;
 #endif
 	}
 	return {};
@@ -309,20 +301,20 @@ std::string
 DDNetworkBackend::getLastErrorStr(libcdoc::result_t code) const
 {
 	switch (code) {
-		case DDCryptoBackend::PIN_CANCELED:
-			return "PIN entry canceled";
-		case DDCryptoBackend::PIN_INCORRECT:
-			return "PIN incorrect";
-		case DDCryptoBackend::PIN_LOCKED:
-			return "PIN locked";
-		case DDCryptoBackend::IN_PROGRESS:
-			return "Signing/decrypting is already in progress another window.";
-		case NETWORK_ERROR:
-		case BACKEND_ERROR:
-		case CAPSULE_NOT_FOUND:
-		case SERVER_ERROR:
-		case DDCryptoBackend::BACKEND_ERROR:
-			return last_error;
+	case DDCryptoBackend::PIN_CANCELED:
+		return "PIN entry canceled";
+	case DDCryptoBackend::PIN_INCORRECT:
+		return "PIN incorrect";
+	case DDCryptoBackend::PIN_LOCKED:
+		return "PIN locked";
+	case DDCryptoBackend::IN_PROGRESS:
+		return "Signing/decrypting is already in progress another window.";
+	case NETWORK_ERROR:
+	case BACKEND_ERROR:
+	case CAPSULE_NOT_FOUND:
+	case SERVER_ERROR:
+	case DDCryptoBackend::BACKEND_ERROR:
+		return last_error;
 	}
 	return libcdoc::NetworkBackend::getLastErrorStr(code);
 }
@@ -442,7 +434,7 @@ level2Str(libcdoc::LogLevel level) noexcept
 
 void DDCDocLogger::logMessage(libcdoc::LogLevel level, std::string_view file, int line, std::string_view message) {
 	QMutexLocker locker(&mutex);
-	if (level > minLevel || !ofs.isOpen()) {
+	if (!ofs.isOpen()) {
 		return;
 	}
 	auto time = QDateTime::currentDateTime().toString(QStringLiteral("[yyyy-MM-dd hh:mm:ss]"));
@@ -457,6 +449,12 @@ void DDCDocLogger::logMessage(libcdoc::LogLevel level, std::string_view file, in
 	FileDialog::writeLog(ofs, text);
 }
 
+DDCDocLogger::DDCDocLogger()
+{
+	setMinLogLevel(libcdoc::LEVEL_DEBUG);
+	libcdoc::setLogger(this);
+}
+
 DDCDocLogger *
 DDCDocLogger::getLogger()
 {
@@ -464,29 +462,13 @@ DDCDocLogger::getLogger()
 	return &logger;
 }
 
-void DDCDocLogger::setUpLogger(const QString &path)
-{
-	DDCDocLogger *logger = getLogger();
-	logger->setMinLogLevel(libcdoc::LEVEL_TRACE);
-	if(FileDialog::openLogFile(logger->ofs, path))
-		libcdoc::setLogger(logger);
-}
-
-void DDCDocLogger::setLogLevel(libcdoc::LogLevel level)
+void DDCDocLogger::enableLog(bool enable)
 {
 	DDCDocLogger *logger = getLogger();
 	QMutexLocker locker(&logger->mutex);
-	logger->minLevel = level;
-}
-
-QByteArray DDCDocLogger::logData()
-{
-	DDCDocLogger *logger = getLogger();
-	QMutexLocker locker(&logger->mutex);
-	QFile file(logger->ofs.fileName());
-	if(!file.open(QIODevice::ReadOnly))
-		return {};
-	return file.readAll();
+	logger->ofs.close();
+	if(enable)
+		FileDialog::openLogFile(logger->ofs, FileDialog::logPath(QStringLiteral("libcdoc.log")));
 }
 
 TempListConsumer::TempListConsumer()
@@ -592,14 +574,14 @@ StreamListSource::StreamListSource(const std::vector<IOEntry>& files) : _files(f
 libcdoc::result_t
 StreamListSource::read(uint8_t *dst, size_t size) noexcept
 {
-	if ((_current < 0) || (_current >= _files.size())) return 0;
+	if (_current < 0 || std::cmp_greater_equal(_current, _files.size())) return 0;
 	return _files[_current].data->read((char *) dst, size);
 }
 
 bool
 StreamListSource::isError() noexcept
 {
-	if ((_current < 0) || (_current >= _files.size())) return 0;
+	if (_current < 0 || std::cmp_greater_equal(_current, _files.size())) return 0;
 	return _files[_current].data->isReadable();
 }
 
@@ -607,7 +589,7 @@ bool
 StreamListSource::isEof() noexcept
 {
 	if (_current < 0) return false;
-	if (_current >= _files.size()) return true;
+	if (std::cmp_greater_equal(_current, _files.size())) return true;
 	return _files[_current].data->atEnd();
 }
 
@@ -621,7 +603,7 @@ libcdoc::result_t
 StreamListSource::next(std::string& name, int64_t& size)
 {
 	++_current;
-	if (_current >= _files.size()) return libcdoc::END_OF_STREAM;
+	if (std::cmp_greater_equal(_current, _files.size())) return libcdoc::END_OF_STREAM;
 	_files[_current].data->seek(0);
 	name = _files[_current].name;
 	size = _files[_current].size;

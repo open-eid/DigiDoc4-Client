@@ -132,16 +132,13 @@ private:
 
 class DDCDocLogger final : private libcdoc::Logger {
   public:
-	static void setUpLogger(const QString &path);
-	static void setLogLevel(libcdoc::LogLevel level);
-	static QByteArray logData();
+	static void enableLog(bool enable);
 
   private:
-	DDCDocLogger() = default;
+	DDCDocLogger();
 	static DDCDocLogger *getLogger();
 	void logMessage(libcdoc::LogLevel level, std::string_view file, int line, std::string_view message) final;
 	QMutex mutex;
-	libcdoc::LogLevel minLevel = libcdoc::LEVEL_WARNING;
 	QFile ofs;
 };
 
