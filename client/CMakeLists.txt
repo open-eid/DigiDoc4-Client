@@ -106,6 +106,7 @@ qt_add_resources(${PROJECT_NAME} fonts BASE fonts PREFIX /fonts FILES
 
 target_link_libraries(${PROJECT_NAME}
 	qdigidoccommon
+	OpenSSL::Crypto
 	Qt6::PrintSupport
 	Qt6::SvgWidgets
 	digidocpp::digidocpp
@@ -201,7 +202,7 @@ if( APPLE )
 elseif(WIN32)
 	target_compile_options(${PROJECT_NAME} PRIVATE "/guard:cf")
 	target_link_options(${PROJECT_NAME} PRIVATE "/guard:cf" $<$<BOOL:${CROSSSIGNCERT}>:/INTEGRITYCHECK>)
-	target_link_libraries(${PROJECT_NAME} NCrypt Crypt32 Cryptui winscard)
+	target_link_libraries(${PROJECT_NAME} NCrypt Crypt32 Cryptui Version winscard)
 	get_filename_component(LIBS_PATH ${libdigidocpp_DIR} DIRECTORY)
 	get_filename_component(LIBS_PATH ${LIBS_PATH} DIRECTORY)
 	set(MSI_FILE "Digidoc4-${VERSION}$ENV{VER_SUFFIX}.$ENV{PLATFORM}")
