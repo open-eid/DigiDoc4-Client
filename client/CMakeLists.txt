@@ -45,8 +45,7 @@ add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
 	DateTime.cpp
 	DateTime.h
 	Diagnostics.cpp
-	Diagnostics_win.cpp
-	Diagnostics_unix.cpp
+	$<IF:$<PLATFORM_ID:Windows>,Diagnostics_win.cpp,Diagnostics_unix.cpp>
 	Diagnostics.h
 	DiagnosticsTask.cpp
 	DiagnosticsTask.h
@@ -85,16 +84,14 @@ add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE
 	Utils.h
 )
 if(WIN32)
-	set_source_files_properties(Diagnostics_unix.cpp PROPERTIES HEADER_FILE_ONLY TRUE)
 	target_sources(${PROJECT_NAME} PRIVATE Application_win.cpp)
 	target_link_libraries(${PROJECT_NAME} windowsapp)
-else()
-	set_source_files_properties(Diagnostics_win.cpp PROPERTIES HEADER_FILE_ONLY TRUE)
 endif()
 qt_add_translations(${PROJECT_NAME} TS_FILES
 	translations/en.ts
 	translations/et.ts
 	../common/translations/qtbase_et.ts
+	SOURCES Diagnostics_win.cpp Diagnostics_unix.cpp MacMenuBar.cpp
 	RESOURCE_PREFIX /translations
 	LUPDATE_OPTIONS -locations none
 )
@@ -142,9 +139,9 @@ if( APPLE )
 	file(GLOB RESOURCE_FILES mac/*.icns mac/*.lproj)
 	target_sources(${PROJECT_NAME} PRIVATE ${RESOURCE_FILES} Application_mac.mm MacMenuBar.cpp MacMenuBar.h dialogs/CertificateDetails_mac.mm)
 	set_source_files_properties(${RESOURCE_FILES} PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
-	set_source_files_properties( Application_mac.mm dialogs/CertificateDetails_mac.mm PROPERTIES COMPILE_FLAGS "-fobjc-arc" )
-	target_link_libraries(${PROJECT_NAME} "-framework QuickLookUI" "-framework Security" "-fobjc-arc")
-	find_library(PKCS11_MODULE NAMES opensc-pkcs11.so HINTS /Library/OpenSC/lib)
+	set_source_files_properties(Application_mac.mm dialogs/CertificateDetails_mac.mm PROPERTIES COMPILE_OPTIONS "-fobjc-arc")
+	target_link_libraries(${PROJECT_NAME} $<LINK_LIBRARY:FRAMEWORK,QuickLookUI,Security>)
+	find_library(PKCS11_MODULE NAMES opensc-pkcs11.so HINTS /Library/OpenSC/lib REQUIRED)
 	add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
 		COMMAND cp -a ${PKCS11_MODULE} $<TARGET_FILE_DIR:${PROJECT_NAME}>
 		COMMAND mkdir -p $<TARGET_BUNDLE_CONTENT_DIR:${PROJECT_NAME}>/PlugIns
@@ -284,8 +281,6 @@ elseif(WIN32)
 		VERBATIM
 	)
 else()
-	find_package( Threads REQUIRED )
-	target_link_libraries(${PROJECT_NAME} Threads::Threads )
 	configure_file( qdigidoc4.1.cmake qdigidoc4.1 )
 	install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_BINDIR})
 	install( FILES ${CMAKE_CURRENT_BINARY_DIR}/qdigidoc4.1 DESTINATION ${CMAKE_INSTALL_MANDIR}/man1 )

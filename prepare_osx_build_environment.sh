@@ -6,18 +6,18 @@
 set -e
 
 ######### Versions of libraries/frameworks to be compiled
-QT_VER="6.12.0"
+QT_VER="6.12.1"
 OPENSSL_VER="3.5.9"
 REBUILD=false
 BUILD_PATH=~/cmake_builds
-: ${MACOSX_DEPLOYMENT_TARGET:="14.0"}
+: ${MACOSX_DEPLOYMENT_TARGET:="14.4"}
 export MACOSX_DEPLOYMENT_TARGET
 
 ######### Checksums for the versions above; update alongside any version bump
 OPENSSL_SHA256="603f5602e2eef00d77fbd429d34dcd5822bb301757a1bc9cdb24c670f1eb859a"
-QTBASE_SHA256="a951bd163c7b80fc6b8c88d7668fb56abf91c152373e13c10666763238131307"
-QTSVG_SHA256="e4ab39534ec97987b1b9b60ef7f4d3253d5912a69f8c713a01753174a4029331"
-QTTOOLS_SHA256="8dab8f3611496486a470ad5f115ceea584f36bc22a2b8b6f6ebdbafbb8160693"
+QTBASE_SHA256="cd837bb9fd631e20439a04eaa0c2f252f19ad92fdf5adf10229d0fbc2fab2d53"
+QTSVG_SHA256="6a7157a9a0556a129ae6582c7fbe57a0d6c0b83083cfcbd38d5d4a93b30c46e1"
+QTTOOLS_SHA256="0d3d1a7eba32d1477f36211fb527c2c75f60cb10f3ddc41fdb804fd94147b640"
 
 verify_sha256() {
     local file="$1" expected="$2" actual
