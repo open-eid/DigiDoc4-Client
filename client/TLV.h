@@ -3,9 +3,12 @@
 
 #pragma once
 
+#include <QtCore/QByteArray>
 #include <QtCore/QByteArrayView>
 
 #include <iterator>
+#include <type_traits>
+#include <utility>
 
 struct TLV
 {
@@ -65,5 +68,80 @@ struct TLV
 
 	constexpr TLV operator[](quint32 find) const { return TLV(value()).find(find); }
 	constexpr TLV& operator++() { return *this = next(); }
-	constexpr operator bool() const { return !data.isEmpty(); }
+	constexpr operator bool() const { return !data.isNull(); }
 };
+
+// BER encoder counterpart of TLV, writes single-byte tags only
+template<typename T>
+struct Ber final
+{
+	quint8 tag;
+	T value;
+
+	static constexpr int lengthSize(qsizetype size)
+	{
+		int length = 1;
+		if(size >= 0x80) for(; size > 0; size >>= 8)
+			++length;
+		return length;
+	}
+
+	constexpr qsizetype payloadSize() const
+	{
+		if constexpr(std::is_same_v<T, int>)
+		{
+			qsizetype size = 1;
+			for(int n = value; n < -128 || n > 127; n >>= 8)
+				++size;
+			return size;
+		}
+		else if constexpr(std::is_convertible_v<const T&, QByteArrayView>)
+			return QByteArrayView(value).size();
+		else
+			return value.encodedSize();
+	}
+
+	constexpr qsizetype encodedSize() const
+	{
+		qsizetype size = payloadSize();
+		return 1 + lengthSize(size) + size;
+	}
+
+	operator QByteArray() const;
+};
+
+template<typename T>
+inline QByteArray operator+(QByteArray lhs, const Ber<T>& rhs)
+{
+	// Tag
+	lhs.append(char(rhs.tag));
+	// Length
+	auto size = rhs.payloadSize();
+	if(int length = Ber<T>::lengthSize(size); length == 1)
+		lhs.append(char(size));
+	else
+	{
+		lhs.append(char(0x80 | (length - 1)));
+		for(int shift = (length - 2) * 8; shift >= 0; shift -= 8)
+			lhs.append(char((size >> shift) & 0xFF));
+	}
+	// Value
+	if constexpr(std::is_convertible_v<const T&, QByteArrayView>)
+		lhs.append(QByteArrayView(rhs.value));
+	else if constexpr(std::is_same_v<T, int>)
+	{
+		for(int shift = (size - 1) * 8; shift >= 0; shift -= 8)
+			lhs.append(char((quint32(rhs.value) >> shift) & 0xFF));
+	}
+	else
+		return std::move(lhs) + rhs.value;
+	return lhs;
+}
+
+template<typename T>
+Ber<T>::operator QByteArray() const
+{
+	QByteArray result;
+	result.reserve(encodedSize());
+	return std::move(result) + *this;
+}

@@ -64,7 +64,7 @@
 3. Configure
 
         cmake -B build -S . \
-          -DCMAKE_PREFIX_PATH=~/cmake_builds/Qt-6.12.0-OpenSSL \
+          -DCMAKE_PREFIX_PATH=~/cmake_builds/Qt-6.12.1-OpenSSL \
           -DOPENSSL_ROOT_DIR=~/cmake_build/OpenSSL \
           -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64"
 
@@ -82,7 +82,7 @@
 1. Install dependencies from
     * [Visual Studio Community 2022](https://www.visualstudio.com/downloads/)
     * <https://www.cmake.org>
-    * <sqt-project.org>
+    * <https://www.qt.io>
     * [libdigidocpp-*.msi](https://github.com/open-eid/libdigidocpp/releases)
     * [vcpkg](https://vcpkg.io/)
 
@@ -94,7 +94,7 @@
 3. Configure
 
         cmake -G"NMAKE Makefiles" -B build -S . `
-          -DCMAKE_PREFIX_PATH=C:\Qt\6.12.0\msvc2022_64 `
+          -DCMAKE_PREFIX_PATH=C:\Qt\6.12.1\msvc2022_64 `
           -DLibDigiDocpp_ROOT="C:\Program Files (x86)\libdigidocpp" `
           -DVCPKG_MANIFEST_DIR=client/libcdoc
 

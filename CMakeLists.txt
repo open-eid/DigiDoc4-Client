@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
 cmake_minimum_required(VERSION 3.22)
+set(CMAKE_OSX_DEPLOYMENT_TARGET 14.0 CACHE STRING "Minimum macOS deployment version")
 if(NOT EXISTS ${CMAKE_SOURCE_DIR}/common/CMakeLists.txt)
     message(FATAL_ERROR "common submodule directory empty, did you 'git clone --recursive'?")
 endif()
@@ -26,7 +27,6 @@ set_env(CDOC2_POST_URL "https://cdoc2.id.ee:8443" CACHE STRING "CDoc 2.0 Key Ser
 set_env(MOBILEID_URL "https://eid-dd.ria.ee/mid" CACHE STRING "URL for Mobile-ID")
 set_env(SMARTID_URL "https://eid-dd.ria.ee/sid/v2" CACHE STRING "URL for Smart-ID")
 set(VERSION ${PROJECT_VERSION}.${BUILD_NUMBER})
-set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_C_VISIBILITY_PRESET hidden)
@@ -71,3 +71,9 @@ endif()
 
 add_subdirectory( common )
 add_subdirectory( client )
+
+option(BUILD_TESTING "Build the client unit tests" OFF)
+if(BUILD_TESTING)
+    enable_testing()
+    add_subdirectory(test)
+endif()

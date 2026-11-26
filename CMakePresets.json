@@ -1,0 +1,80 @@
+{
+    "version": 3,
+    "configurePresets": [
+        {
+            "name": "default",
+            "displayName": "Default Config",
+            "description": "Default build using Ninja generator",
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/build/${hostSystemName}$env{BUILD_SUFFIX}"
+        },
+        {
+            "name": "macos",
+            "inherits": "default",
+            "displayName": "macOS configuration",
+            "description": "This build is only available on macOS",
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Darwin"
+            },
+            "cacheVariables": {
+                "CMAKE_OSX_ARCHITECTURES": "arm64;x86_64"
+            }
+        },
+        {
+            "name": "windows",
+            "inherits": "default",
+            "displayName": "Windows configuration",
+            "description": "This build is only available on Windows",
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Windows"
+            },
+            "environment": {
+                "BUILD_SUFFIX": "-$env{PLATFORM}"
+            },
+            "cacheVariables": {
+                "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
+                "VCPKG_MANIFEST_DIR": "${sourceDir}/client/libcdoc"
+            }
+        }
+    ],
+    "buildPresets": [
+        {
+            "name": "default",
+            "configurePreset": "default"
+        },
+        {
+            "name": "macos",
+            "configurePreset": "macos"
+        },
+        {
+            "name": "windows",
+            "configurePreset": "windows"
+        }
+    ],
+    "testPresets": [
+        {
+            "name": "default",
+            "configurePreset": "default",
+            "output": {
+                "outputOnFailure": true
+            },
+            "execution": {
+                "noTestsAction": "error"
+            }
+        },
+        {
+            "name": "macos",
+            "inherits": "default",
+            "configurePreset": "macos"
+        },
+        {
+            "name": "windows",
+            "inherits": "default",
+            "configurePreset": "windows"
+        }
+    ]
+}

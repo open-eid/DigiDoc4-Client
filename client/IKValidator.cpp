@@ -6,6 +6,8 @@
 #include <QtCore/QDate>
 #include <QtCore/QStringList>
 
+#include <algorithm>
+
 QDate IKValidator::birthDate(QStringView ik)
 {
 	if(ik.size() != 11) return {};
@@ -29,7 +31,7 @@ QDate IKValidator::birthDate(QStringView ik)
 
 bool IKValidator::isValid(QStringView ik)
 {
-	if(ik.size() != 11)
+	if(ik.size() != 11 || !std::ranges::all_of(ik, [](QChar c) { return c >= u'0' && c <= u'9'; }))
 		return false;
 
 	// Mobile-ID test IK-s
@@ -76,13 +78,10 @@ NumberValidator::NumberValidator(QObject *parent)
 	: QValidator(parent)
 {}
 
-NumberValidator::State NumberValidator::validate(QString &input, int & /*pos*/) const
+NumberValidator::State NumberValidator::validate(QString &input, int &pos) const
 {
-	QString out;
-	static const QRegularExpression rx(QStringLiteral("(\\d+)"));
-	QRegularExpressionMatch match = rx.match(input);
-	for(int i = 0; i < match.lastCapturedIndex(); ++i)
-		out += match.captured(i);
-	input = std::move(out);
+	const auto nonDigit = [](QChar c) { return c < u'0' || c > u'9'; };
+	pos -= int(std::ranges::count_if(QStringView(input).left(pos), nonDigit));
+	input.removeIf(nonDigit);
 	return Acceptable;
 }

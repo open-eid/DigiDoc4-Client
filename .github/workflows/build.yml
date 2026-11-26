@@ -18,7 +18,6 @@ jobs:
     runs-on: macos-latest
     timeout-minutes: 120
     env:
-      MACOSX_DEPLOYMENT_TARGET: 14.0
       LIBS_PATH: ${{ github.workspace }}/cache
     steps:
     - &Checkout
@@ -28,7 +27,7 @@ jobs:
         submodules: recursive
         persist-credentials: false
     - name: Download artifact
-      uses: dawidd6/action-download-artifact@eab87c9830c39eff17e5a6eadb20bfb4bc880477 # v27
+      uses: dawidd6/action-download-artifact@a92c7ae74cf1df8810783758581e485ac3aaa309 # v28
       with:
         workflow: build.yml
         branch: master
@@ -50,28 +49,29 @@ jobs:
         key: vcpkg-macOS-${{ hashFiles('prepare_osx_build_environment.sh') }}
     - name: Build libraries
       run: |
-        mkdir -p ${LIBS_PATH}/Qt-6.12.0-OpenSSL
+        mkdir -p ${LIBS_PATH}/Qt-6.12.1-OpenSSL
         ./prepare_osx_build_environment.sh -p ${LIBS_PATH}
     - name: Install Qt
       uses: jurplel/install-qt-action@b344308e4483fc892e0d27b3cd1b173ebdd95f06 # v4.5.0
       with:
-        version: 6.12.0
+        version: 6.12.1
         arch: clang_64
         cache: true
     - name: Build
       run: |
-        cmake "-GNinja" -B build -S . -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+        cmake --preset macos -DCMAKE_BUILD_TYPE=RelWithDebInfo \
           -DOPENSSL_ROOT_DIR=${LIBS_PATH}/OpenSSL \
-          -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64"
-        cmake --build build
-        cmake --build build --target zipdebug
-        cmake --build build --target macdeployqt
-        cmake --build build --target zip
+          -DBUILD_TESTING=ON
+        cmake --build --preset macos
+        ctest --preset macos
+        cmake --build --preset macos --target zipdebug
+        cmake --build --preset macos --target macdeployqt
+        cmake --build --preset macos --target zip
     - name: Archive artifacts
       uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
       with:
         name: macOS
-        path: build/qdigidoc4*.zip
+        path: build/Darwin/qdigidoc4*.zip
   ubuntu:
     name: Build on Ubuntu ${{ matrix.container }} ${{ matrix.arch }}
     runs-on: ubuntu-24.04${{ matrix.arch == 'arm64' && '-arm' || '' }}
@@ -87,7 +87,7 @@ jobs:
       DEBEMAIL: github-actions@github.com
     steps:
     - name: Download artifact
-      uses: dawidd6/action-download-artifact@eab87c9830c39eff17e5a6eadb20bfb4bc880477 # v27
+      uses: dawidd6/action-download-artifact@a92c7ae74cf1df8810783758581e485ac3aaa309 # v28
       with:
         workflow: build.yml
         branch: master
@@ -133,10 +133,10 @@ jobs:
     container: fedora:${{ matrix.container }}
     strategy:
       matrix:
-        container: [43, 44, 45]
+        container: [44, 45]
     steps:
     - name: Download artifact
-      uses: dawidd6/action-download-artifact@eab87c9830c39eff17e5a6eadb20bfb4bc880477 # v27
+      uses: dawidd6/action-download-artifact@a92c7ae74cf1df8810783758581e485ac3aaa309 # v28
       with:
         workflow: build.yml
         branch: master
@@ -168,7 +168,7 @@ jobs:
     steps:
     - *Checkout
     - name: Download artifact
-      uses: dawidd6/action-download-artifact@eab87c9830c39eff17e5a6eadb20bfb4bc880477 # v27
+      uses: dawidd6/action-download-artifact@a92c7ae74cf1df8810783758581e485ac3aaa309 # v28
       with:
         workflow: build.yml
         branch: master
@@ -187,43 +187,42 @@ jobs:
           ${{ github.workspace }}/vcpkg_cache
           ~/.dotnet/tools
           ~/.wix
-        key: vcpkg-${{ matrix.vcver }}-${{ matrix.platform }}-${{ hashFiles('client/libcdoc/vcpkg.json') }}-wix-7.0.0
+        key: vcpkg-${{ matrix.vcver }}-${{ matrix.platform }}-${{ hashFiles('client/libcdoc/vcpkg.json') }}-wix-7.0.1
     - name: Install Qt
       uses: jurplel/install-qt-action@b344308e4483fc892e0d27b3cd1b173ebdd95f06 # v4.5.0
       with:
-        version: 6.12.0
+        version: 6.12.1
         arch: ${{ matrix.platform == 'arm64' && 'win64_msvc2022_arm64_cross_compiled' || 'win64_msvc2022_64' }}
         cache: true
         aqtsource: git+https://github.com/miurahr/aqtinstall.git@16db45a70b5905ad596941b223469bc86a56901e
     - name: Install WiX
       run: |
-        dotnet tool install -g wix --version 7.0.0
+        dotnet tool install -g wix --version 7.0.1
         wix eula accept wix7
-        wix extension -g add WixToolset.UI.wixext/7.0.0
-        wix extension -g add WixToolset.Util.wixext/7.0.0
+        wix extension -g add WixToolset.UI.wixext/7.0.1
+        wix extension -g add WixToolset.Util.wixext/7.0.1
     - name: Build
       shell: cmd
       env:
         VCPKG_BINARY_SOURCES: clear;files,${{ github.workspace }}/vcpkg_cache,readwrite
+        VCPKG_ROOT: "C:/vcpkg"
       run: |
         for /f "usebackq tokens=*" %%i in (`"%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe" -latest -find VC\Auxiliary\Build\vcvarsall.bat`) do call "%%i" ${{ matrix.platform == 'arm64' && 'amd64_arm64' || 'amd64' }}
         set QT_HOST_PATH=%QT_HOST_PATH:\=/%
-        cmake -GNinja -B build -S . -DCMAKE_BUILD_TYPE=RelWithDebInfo ^
-          -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake ^
-          -DVCPKG_MANIFEST_DIR=${{ github.workspace }}/client/libcdoc ^
+        cmake --preset windows -DCMAKE_BUILD_TYPE=RelWithDebInfo ^
           -Dlibdigidocpp_ROOT=${{ github.workspace }}/libs/PFiles64 ^
           ${{ matrix.platform == 'arm64' && '-DQT_HOST_PATH=%QT_HOST_PATH%' || '' }}
-        cmake --build build --target msi
-        cmake --build build --target msishellext
-        cmake --build build --target appx
+        cmake --build --preset windows --target msi
+        cmake --build --preset windows --target msishellext
+        cmake --build --preset windows --target appx
     - name: Archive artifacts
       uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
       with:
         name: msi_${{ matrix.vcver }}_${{ matrix.platform }}
         path: |
-          build/*.msi
-          build/*.appx
-          build/*.cer
+          build/Windows-${{ matrix.platform }}/*.msi
+          build/Windows-${{ matrix.platform }}/*.appx
+          build/Windows-${{ matrix.platform }}/*.cer
   coverity:
     name: Run Coverity tests
     if: github.repository == 'open-eid/DigiDoc4-Client' && contains(github.ref, 'coverity_scan')
@@ -232,7 +231,7 @@ jobs:
     steps:
     - *Checkout
     - name: Download artifact
-      uses: dawidd6/action-download-artifact@eab87c9830c39eff17e5a6eadb20bfb4bc880477 # v27
+      uses: dawidd6/action-download-artifact@a92c7ae74cf1df8810783758581e485ac3aaa309 # v28
       with:
         workflow: build.yml
         branch: master
@@ -282,7 +281,7 @@ jobs:
     steps:
     - *Checkout
     - name: Download artifact
-      uses: dawidd6/action-download-artifact@eab87c9830c39eff17e5a6eadb20bfb4bc880477 # v27
+      uses: dawidd6/action-download-artifact@a92c7ae74cf1df8810783758581e485ac3aaa309 # v28
       with:
         workflow: build.yml
         branch: master
