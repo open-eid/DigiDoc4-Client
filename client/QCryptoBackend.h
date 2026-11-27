@@ -4,7 +4,6 @@
 #pragma once
 
 #include "TokenData.h"
-#include "QSmartCard.h"
 
 #include <QtCore/QCoreApplication>
 #include <QtCore/QCryptographicHash>
@@ -13,6 +12,8 @@
 #include <cstdint>
 #include <expected>
 #include <vector>
+
+class QSmartCardData;
 
 class QCryptoBackend
 {
@@ -59,7 +60,7 @@ public:
 	 */
 	mutable Status status = PinOK;
 
-	static QString errorString(Status error);
+	static QString errorString(Status error, const TokenData &token = {});
 
 protected:
 	const TokenData &tokenData() const { return token; }

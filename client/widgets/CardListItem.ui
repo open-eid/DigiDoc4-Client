@@ -25,6 +25,10 @@ background-color: #EAF1F8;
 border-color: #003168;
 background-color: #EAF1F8;
 }
+#CardListItem:disabled {
+border-color: #E7EAEF;
+background-color: #F0F0F2;
+}
 #cardName {
 color: #07142A;
 font-family: Roboto, Helvetica;
@@ -37,6 +41,9 @@ font-family: Roboto, Helvetica;
 font-size: 12px;
 font-weight: 400;
 }
+#cardName:disabled, #cardIssuer:disabled {
+color: #607496;
+}
 #cardValidUntil {
 color: #091A36;
 font-family: Roboto, Helvetica;
@@ -45,6 +52,10 @@ font-weight: 400;
 padding: 2px 8px;
 border-radius: 8px;
 background-color: #F3F5F7;
+}
+#cardValidUntil:disabled {
+color: #607496;
+background-color: #E7EAEF;
 }
 #cardValidUntil[label=&quot;error&quot;] {
 color: #AD2A45;
