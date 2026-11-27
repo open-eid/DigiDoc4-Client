@@ -153,6 +153,7 @@ DigiDocSignature::SignatureStatus DigiDocSignature::status(DigiDocSignature::Sig
 		case Exception::IssuerNameSpaceWarning:
 		case Exception::ProducedATLateWarning:
 		case Exception::MimeTypeWarning:
+		case Exception::GeneralWarning:
 			result = std::max( result, Warning );
 			break;
 		case Exception::CertificateIssuerMissing:
